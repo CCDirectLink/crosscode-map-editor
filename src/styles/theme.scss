@@ -1,0 +1,11 @@
+@import "~@angular/material/theming";
+
+$anms-black-primary: mat-palette($mat-grey, 900, 500, 900);
+$anms-black-accent: mat-palette($mat-blue, A200);
+$anms-black-warn: mat-palette($mat-red, A200);
+
+$theme: mat-dark-theme(
+		$anms-black-primary,
+		$anms-black-accent,
+		$anms-black-warn
+);

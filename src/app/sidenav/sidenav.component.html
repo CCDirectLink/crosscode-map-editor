@@ -1,0 +1,12 @@
+<md-nav-list>
+	<h3 md-subheader>Layers</h3>
+	<md-list-item *ngFor="let layer of layers">
+		<div md-list-icon class="type-circle" [ngClass]="'type-' + layer.crossCode.type"></div>
+		<a md-line (click)="selectLayer(layer)">{{getDisplayName(layer)}}</a>
+		
+		<button md-icon-button (click)="toggleVisibility($event, layer)" class="green">
+			<md-icon>{{layer.visible ? 'visibility' : 'visibility_off'}}</md-icon>
+		</button>
+	</md-list-item>
+
+</md-nav-list>

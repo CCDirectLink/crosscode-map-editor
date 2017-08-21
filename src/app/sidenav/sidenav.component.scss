@@ -1,0 +1,37 @@
+@import "~@angular/material/theming";
+@import "../../styles/theme";
+
+$config: mat-typography-config();
+$background: map_get($theme, background);
+
+h3 {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+$type-hue: A200;
+
+.type-Background {
+	background-color: mat-color($mat-green, $type-hue);
+}
+
+.type-Collision {
+	background-color: mat-color($mat-red, $type-hue);
+}
+
+.type-Navigation {
+	background-color: mat-color($mat-blue, $type-hue);
+}
+
+.type-circle {
+	width: 32px !important;
+}
+
+md-nav-list {
+	padding-top: 0;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+md-list-item, .mat-list-item-content {
+	height: 36px !important;
+}

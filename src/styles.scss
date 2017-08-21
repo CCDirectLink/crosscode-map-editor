@@ -1,0 +1,27 @@
+/* You can add global styles to this file, and also import other style files */
+@import "styles/reset";
+@import "~@angular/material/theming";
+
+@include mat-core();
+
+@import "styles/theme";
+
+html * {
+	font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.theme {
+	@include angular-material-theme($theme)
+}
+
+.red {
+	background-color: #ff7060;
+}
+
+.blue {
+	background-color: aqua;
+}
+
+.green {
+	background-color: #5ad972;
+}

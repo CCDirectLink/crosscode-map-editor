@@ -1,0 +1,15 @@
+<md-toolbar fxLayout="column" color="primary" class="mat-elevation-z4 elevated-toolbar">
+	<div fxFlex>
+		<button md-icon-button (click)="onMenuClick.emit($event)">
+			<md-icon>menu</md-icon>
+		</button>
+	</div>
+	<div fxFlex>
+		<span class="mat-headline">{{mapName}}</span>
+	</div>
+	<div fxFlex fxLayoutAlign="end">
+		<input #fileUpload type="file" (change)="loadMap($event)" accept=".json"/>
+		
+		<button md-button (click)="fileUpload.click()">Load Map</button>
+	</div>
+</md-toolbar>

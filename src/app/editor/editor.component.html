@@ -1,0 +1,12 @@
+<div fxLayout="column" class="outer-container">
+	<app-toolbar (onMenuClick)="sidenav.toggle()"></app-toolbar>
+	<md-sidenav-container fxFlex>
+		<md-sidenav #sidenav mode="side" opened="true" class="mat-primary">
+			<app-sidenav></app-sidenav>
+		</md-sidenav>
+		
+		<div class="green outer-container no-scroll">
+			<app-phaser></app-phaser>
+		</div>
+	</md-sidenav-container>
+</div>
