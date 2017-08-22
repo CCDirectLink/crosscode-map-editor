@@ -18,6 +18,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {SidenavComponent} from './sidenav/sidenav.component';
 import {MapLoaderService} from './shared/map-loader.service';
 import {FormsModule} from '@angular/forms';
+import {MapSettingsComponent} from './shared/dialogs/map-settings/map-settings.component';
 
 @NgModule({
 	declarations: [
@@ -25,7 +26,8 @@ import {FormsModule} from '@angular/forms';
 		EditorComponent,
 		PhaserComponent,
 		ToolbarComponent,
-		SidenavComponent
+		SidenavComponent,
+		MapSettingsComponent
 	],
 	imports: [
 		BrowserModule,
@@ -37,6 +39,7 @@ import {FormsModule} from '@angular/forms';
 		MdToolbarModule,
 		MdSidenavModule,
 		MdDialogModule,
+		MdDialogModule,
 		MdInputModule,
 		MdSelectModule,
 		MdSnackBarModule,
@@ -44,6 +47,9 @@ import {FormsModule} from '@angular/forms';
 		MdListModule,
 		MdIconModule,
 		BrowserAnimationsModule
+	],
+	entryComponents: [
+		MapSettingsComponent,
 	],
 	providers: [
 		MapLoaderService

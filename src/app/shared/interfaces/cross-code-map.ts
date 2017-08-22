@@ -31,7 +31,7 @@ export interface MapLayer {
 	id: number;
 	type: string;
 	name: string;
-	level: number | { level: number, offset: number };
+	level: number | {level: number, offset: number};
 	width: number;
 	height: number;
 	visible: number;

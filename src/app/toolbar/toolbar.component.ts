@@ -1,5 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MapLoaderService} from '../shared/map-loader.service';
+import {MdDialog} from '@angular/material';
+import {MapSettingsComponent} from '../shared/dialogs/map-settings/map-settings.component';
 
 @Component({
 	selector: 'app-toolbar',
@@ -9,22 +11,26 @@ import {MapLoaderService} from '../shared/map-loader.service';
 export class ToolbarComponent implements OnInit {
 
 	@Output() onMenuClick = new EventEmitter();
-	mapName: string;
+	map: Phaser.Tilemap;
 
-	constructor(private mapLoader: MapLoaderService) {
+	constructor(private mapLoader: MapLoaderService,
+				private dialog: MdDialog) {
 	}
 
 	ngOnInit() {
-		this.mapLoader.map.subscribe((map) => {
-			if (map) {
-				this.mapName = map.name;
-			} else {
-				this.mapName = '';
-			}
+		this.mapLoader.tileMap.subscribe(map => {
+			this.map = map;
+			console.log(map);
 		});
 	}
 
 	loadMap(event) {
 		this.mapLoader.loadMap(event);
+	}
+
+	openMapSettings() {
+		this.dialog.open(MapSettingsComponent, {
+			data: this.map
+		});
 	}
 }

@@ -1,0 +1,38 @@
+@import "~@angular/material/theming";
+
+$config: mat-typography-config();
+
+.dialog-container {
+	width: 50vw;
+	height: 85vh;
+}
+
+.input-element {
+	margin-left: 16px;
+}
+
+.default-input {
+	margin-left: 16px;
+	margin-right: 16px;
+}
+
+.material-input {
+	margin-left: 16px;
+	margin-right: 16px;
+}
+
+.small-input {
+	width: 60px;
+}
+
+.attribute {
+	margin-top: 4px;
+	span {
+		text-align: right;
+		width: 130px;
+	}
+}
+
+.action-button-row {
+	margin-bottom: 8px;
+}

@@ -16,7 +16,7 @@
 	<md-list fxFlex="0 0 auto" class="settings-list">
 		<md-list-item fxLayout="column">
 			<span fxFlex="0 0 60px">Type: </span>
-			<md-select fxFlex [disabled]="!selectedLayer" color="accent" class="list-item" floatPlaceholder="never"
+			<md-select fxFlex [disabled]="!selectedLayer" class="list-item" floatPlaceholder="never"
 			           [(ngModel)]="selectedLayer?.crossCode.type">
 				<md-option value="Background">Background</md-option>
 				<md-option value="Collision">Collision</md-option>
@@ -26,14 +26,14 @@
 		
 		<md-list-item fxLayout="column">
 			<span fxFlex="0 0 60px">Name: </span>
-			<md-input-container class="list-item" color="accent" floatPlaceholder="never">
+			<md-input-container class="list-item" floatPlaceholder="never">
 				<input mdInput [disabled]="!selectedLayer" [(ngModel)]="selectedLayer?.crossCode.name">
 			</md-input-container>
 		</md-list-item>
 		
 		<md-list-item fxLayout="column">
 			<span fxFlex="0 0 60px">Level: </span>
-			<md-select fxFlex [disabled]="!selectedLayer" color="accent" class="list-item" floatPlaceholder="never"
+			<md-select fxFlex [disabled]="!selectedLayer" class="list-item" floatPlaceholder="never"
 			           [(ngModel)]="selectedLayer?.crossCode.level">
 				<md-option *ngFor="let level of map?.levels; let i=index" [value]="i">{{i}}</md-option>
 			</md-select>
@@ -41,7 +41,7 @@
 		
 		<md-list-item fxLayout="column">
 			<span fxFlex="0 0 60px">Level: </span>
-			<md-input-container class="list-item" color="accent" floatPlaceholder="never">
+			<md-input-container class="list-item" floatPlaceholder="never">
 				<input type="number" step="0.1" mdInput [disabled]="!selectedLayer"
 				       [(ngModel)]="selectedLayer?.crossCode.distance">
 			</md-input-container>

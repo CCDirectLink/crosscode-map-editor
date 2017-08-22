@@ -17,6 +17,8 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	map: CrossCodeMap;
 	mapPan: MapPan;
 
+	border: Phaser.Rectangle;
+
 	constructor(private element: ElementRef, private mapLoader: MapLoaderService) {
 		mapLoader.map.subscribe((v) => console.log('wohay', v));
 	}
@@ -43,9 +45,13 @@ export class PhaserComponent implements OnInit, OnDestroy {
 				this.tileMap = game.add.tilemap();
 				this.game.load.onLoadComplete.add(() => this.onLoadComplete());
 
+				this.border = new Phaser.Rectangle(0, 0, 100, 100);
+
 				// scroller plugin
 				this.mapPan = game.plugins.add(MapPan);
-			}
+			},
+			update: () => this.update(),
+			render: () => this.render(),
 		}, undefined, false);
 		this.sub = this.mapLoader.map.subscribe((map) => this.loadMap(map));
 	}
@@ -69,6 +75,14 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		this.createTilemap();
 	}
 
+	update() {
+		this.border.resize(this.tileMap.widthInPixels, this.tileMap.heightInPixels);
+	}
+
+	render() {
+		this.game.debug.geom(this.border, '#F00', false);
+	}
+
 	createTilemap() {
 		const game = this.game;
 		const map = this.map;
@@ -77,16 +91,22 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		this.tileMap = game.add.tilemap();
 		const tileMap = this.tileMap;
 
-		const firstLayer = tileMap.create('delete', map.mapWidth, map.mapHeight, map.layer[0].tilesize, map.layer[0].tilesize);
+		// copy crossCode specific map settings
+		tileMap.crossCode = {
+			name: map.name,
+			levels: map.levels,
+			masterLevel: map.masterLevel,
+			attributes: map.attributes,
+			screen: map.screen,
+		};
+
 
 		const layers: Phaser.TilemapLayer[] = [];
+		const firstLayer = tileMap.create('delete', map.mapWidth, map.mapHeight, map.layer[0].tilesize, map.layer[0].tilesize);
 
 		// generate layer
 		let firstGid = 0;
 		map.layer.forEach((layer, k) => {
-			// if (k !== 3 && k !== 0) {
-			// 	return;
-			// }
 			const index = tileMap.getTilesetIndex(layer.tilesetName);
 			let tileset: Phaser.Tileset;
 			if (index !== null) {

@@ -6,12 +6,35 @@
 
 @import "styles/theme";
 
+$config: mat-typography-config();
+
 html * {
 	font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .theme {
 	@include angular-material-theme($theme)
+}
+
+.default-input {
+	$font-type: subheading-1;
+	font-family: mat-font-family($config);
+	font-size: mat-font-size($config, $font-type);
+	font-weight: mat-font-weight($config, $font-type);
+	height: 24px;
+	color: white;
+	outline: solid 1px #c9c9c9;
+	//transition: border 0.3s;
+}
+
+.default-input:focus,
+.default-input.focus {
+	outline-offset: 0;
+	outline: solid 1px mat-color($mat-blue, 500);
+}
+
+button {
+	text-transform: uppercase;
 }
 
 .red {
