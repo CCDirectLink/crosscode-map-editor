@@ -1,6 +1,8 @@
 import {Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MapLoaderService} from '../shared/map-loader.service';
 import {CrossCodeMap, MapLayer} from '../shared/interfaces/cross-code-map';
+import {CCMap} from '../shared/phaser/tilemap/cc-map';
+import {CCMapLayer} from '../shared/phaser/tilemap/cc-map-layer';
 
 @Component({
 	selector: 'app-sidenav',
@@ -10,40 +12,29 @@ import {CrossCodeMap, MapLayer} from '../shared/interfaces/cross-code-map';
 })
 export class SidenavComponent implements OnInit {
 
-	selectedLayer: Phaser.TilemapLayer;
-	map: CrossCodeMap;
-	layers: Phaser.TilemapLayer[] = <any>[
-		{crossCode: {name: 'Layer1', level: '1', type: 'Collision'}},
-	];
+	selectedLayer: CCMapLayer;
+	tilemap: CCMap;
 
 	constructor(private mapLoader: MapLoaderService) {
-		this.mapLoader.selectedLayer.subscribe(layer => this.selectedLayer = layer);
-		this.mapLoader.map.subscribe(map => this.map = map);
 	}
 
 	ngOnInit() {
-		this.mapLoader.layers.subscribe((layers) => {
-			console.log(layers);
-			if (layers) {
-				this.layers = layers;
-			} else {
-				// this.layers = null;
-			}
-		});
+		this.mapLoader.selectedLayer.subscribe(layer => this.selectedLayer = layer);
+		this.mapLoader.tileMap.subscribe(tilemap => this.tilemap = tilemap);
 	}
 
-	getDisplayName(layer: Phaser.TilemapLayer): string {
-		return `${layer.crossCode.name} (${layer.crossCode.level})`;
+	getDisplayName(layer: CCMapLayer): string {
+		return `${layer.details.name} (${layer.details.level})`;
 	}
 
-	toggleVisibility(event, layer: Phaser.TilemapLayer) {
+	toggleVisibility(event, layer: CCMapLayer) {
 		event.stopPropagation();
 		layer.visible = !layer.visible;
 	}
 
-	selectLayer(layer: Phaser.TilemapLayer) {
+	selectLayer(layer: CCMapLayer) {
 		this.mapLoader.selectedLayer.next(layer);
-		console.log('click');
+		console.log(layer);
 	}
 
 	debug(input) {

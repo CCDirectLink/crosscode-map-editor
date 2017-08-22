@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MapLoaderService} from '../shared/map-loader.service';
 import {MdDialog} from '@angular/material';
 import {MapSettingsComponent} from '../shared/dialogs/map-settings/map-settings.component';
+import {CCMap} from '../shared/phaser/tilemap/cc-map';
 
 @Component({
 	selector: 'app-toolbar',
@@ -11,7 +12,7 @@ import {MapSettingsComponent} from '../shared/dialogs/map-settings/map-settings.
 export class ToolbarComponent implements OnInit {
 
 	@Output() onMenuClick = new EventEmitter();
-	map: Phaser.Tilemap;
+	map: CCMap;
 
 	constructor(private mapLoader: MapLoaderService,
 				private dialog: MdDialog) {

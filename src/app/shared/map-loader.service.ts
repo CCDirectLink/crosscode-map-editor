@@ -3,14 +3,15 @@ import {MdSnackBar} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
 import {CrossCodeMap} from './interfaces/cross-code-map';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {CCMap} from './phaser/tilemap/cc-map';
+import {CCMapLayer} from './phaser/tilemap/cc-map-layer';
 
 @Injectable()
 export class MapLoaderService {
 
 	private _map: BehaviorSubject<CrossCodeMap> = new BehaviorSubject(null);
-	tileMap: BehaviorSubject<Phaser.Tilemap> = new BehaviorSubject(null);
-	layers: BehaviorSubject<Phaser.TilemapLayer[]> = new BehaviorSubject(null);
-	selectedLayer: BehaviorSubject<Phaser.TilemapLayer> = new BehaviorSubject(null);
+	tileMap: BehaviorSubject<CCMap> = new BehaviorSubject(null);
+	selectedLayer: BehaviorSubject<CCMapLayer> = new BehaviorSubject(null);
 
 	constructor(private snackBar: MdSnackBar) {
 	}
@@ -32,6 +33,7 @@ export class MapLoaderService {
 				}
 				this._map.next(map);
 			} catch (e) {
+				console.log(e);
 				this.snackBar.open('Error: ' + e.message, undefined, {
 					duration: 2500
 				});

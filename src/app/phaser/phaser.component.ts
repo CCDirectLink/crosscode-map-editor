@@ -4,6 +4,7 @@ import {MapLoaderService} from '../shared/map-loader.service';
 import {Subscription} from 'rxjs/Subscription';
 import {CrossCodeMap} from '../shared/interfaces/cross-code-map';
 import {MapPan} from '../shared/phaser/map-pan';
+import {CCMap} from '../shared/phaser/tilemap/cc-map';
 
 @Component({
 	selector: 'app-phaser',
@@ -12,9 +13,8 @@ import {MapPan} from '../shared/phaser/map-pan';
 })
 export class PhaserComponent implements OnInit, OnDestroy {
 	game: Phaser.Game;
-	tileMap: Phaser.Tilemap;
+	tileMap: CCMap;
 	sub: Subscription;
-	map: CrossCodeMap;
 	mapPan: MapPan;
 
 	border: Phaser.Rectangle;
@@ -32,7 +32,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 				game.canvas.oncontextmenu = function (e) {
 					e.preventDefault();
 				};
-				game.world.setBounds(-600, -600, 30000, 20000);
+				game.world.setBounds(-100000, -100000, 200000, 200000);
 
 				game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
 
@@ -42,8 +42,14 @@ export class PhaserComponent implements OnInit, OnDestroy {
 				game.renderer.renderSession.roundPixels = true;
 				Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
 
-				this.tileMap = game.add.tilemap();
-				this.game.load.onLoadComplete.add(() => this.onLoadComplete());
+				this.tileMap = new CCMap(game);
+				this.sub = this.mapLoader.map.subscribe((map) => {
+					console.log('map loaded');
+					if (map) {
+						this.game.world.removeAll();
+						this.tileMap.loadMap(map).then(tilemap => this.mapLoader.tileMap.next(tilemap));
+					}
+				});
 
 				this.border = new Phaser.Rectangle(0, 0, 100, 100);
 
@@ -53,101 +59,19 @@ export class PhaserComponent implements OnInit, OnDestroy {
 			update: () => this.update(),
 			render: () => this.render(),
 		}, undefined, false);
-		this.sub = this.mapLoader.map.subscribe((map) => this.loadMap(map));
-	}
-
-	loadMap(map: CrossCodeMap) {
-		const game = this.game;
-		this.map = map;
-
-		if (!map) {
-			return;
-		}
-		// TODO: unload previous stuff first
-		map.layer.forEach(layer => {
-			game.load.image(layer.tilesetName, 'http://localhost:8080/' + layer.tilesetName);
-		});
-		game.load.start();
-	}
-
-	onLoadComplete() {
-		const game = this.game;
-		this.createTilemap();
 	}
 
 	update() {
-		this.border.resize(this.tileMap.widthInPixels, this.tileMap.heightInPixels);
+		if (this.tileMap.layers.length === 0) {
+			return;
+		}
+		console.log('set size');
+		const s = this.tileMap.layers[0].details.tilesize;
+		this.border.resize(this.tileMap.mapWidth * s, this.tileMap.mapHeight * s);
 	}
 
 	render() {
 		this.game.debug.geom(this.border, '#F00', false);
-	}
-
-	createTilemap() {
-		const game = this.game;
-		const map = this.map;
-
-		this.tileMap.destroy();
-		this.tileMap = game.add.tilemap();
-		const tileMap = this.tileMap;
-
-		// copy crossCode specific map settings
-		tileMap.crossCode = {
-			name: map.name,
-			levels: map.levels,
-			masterLevel: map.masterLevel,
-			attributes: map.attributes,
-			screen: map.screen,
-		};
-
-
-		const layers: Phaser.TilemapLayer[] = [];
-		const firstLayer = tileMap.create('delete', map.mapWidth, map.mapHeight, map.layer[0].tilesize, map.layer[0].tilesize);
-
-		// generate layer
-		let firstGid = 0;
-		map.layer.forEach((layer, k) => {
-			const index = tileMap.getTilesetIndex(layer.tilesetName);
-			let tileset: Phaser.Tileset;
-			if (index !== null) {
-				tileset = tileMap.tilesets[index];
-			} else {
-				tileset = tileMap.addTilesetImage(layer.tilesetName, undefined, layer.tilesize, layer.tilesize, undefined, undefined, firstGid);
-				firstGid += layer.height * layer.width;
-			}
-
-			const newLayer = tileMap.createBlankLayer('' + layer.id, layer.width, layer.height, layer.tilesize, layer.tilesize);
-			newLayer.crossCode = {
-				name: layer.name,
-				level: parseInt(<any>layer.level, 10),
-				type: layer.type,
-				distance: layer.distance,
-			};
-
-			const types = 'Collision Navigation'.split(' ');
-			types.forEach(type => {
-				if (layer.type === type) {
-					newLayer.visible = false;
-				}
-			});
-
-
-			for (let i = 0; i < layer.data.length; i++) {
-				for (let j = 0; j < layer.data[i].length; j++) {
-					let gid = layer.data[i][j] + tileset.firstgid - 1;
-					if (gid < tileset.firstgid) {
-						gid = -1;
-					}
-					tileMap.putTile(gid, j, i, newLayer);
-				}
-			}
-			layers.push(newLayer);
-		});
-
-		firstLayer.destroy();
-		tileMap.layers.shift();
-		this.mapLoader.tileMap.next(tileMap);
-		this.mapLoader.layers.next(layers);
 	}
 
 	ngOnDestroy() {

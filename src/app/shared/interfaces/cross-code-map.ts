@@ -6,17 +6,24 @@ export interface CrossCodeMap {
 	masterLevel: number;
 	entities: MapEntity[];
 	layer: MapLayer[];
-	attributes: {
-		saveMode: string;
-		bgm: string;
-		cameraInBounds: boolean;
-		'map-sounds': string;
-		mapStyle: string;
-		weather: string;
-		npcRunners: string;
-		area: string;
-	};
-	screen: { x: number, y: number };
+	attributes: Attributes;
+	screen: Point;
+}
+
+export interface Point {
+	x: number;
+	y: number;
+}
+
+export interface Attributes {
+	saveMode: string;
+	bgm: string;
+	cameraInBounds: boolean;
+	'map-sounds': string;
+	mapStyle: string;
+	weather: string;
+	npcRunners: string;
+	area: string;
 }
 
 export interface MapEntity {
@@ -31,7 +38,7 @@ export interface MapLayer {
 	id: number;
 	type: string;
 	name: string;
-	level: number | {level: number, offset: number};
+	level: number;
 	width: number;
 	height: number;
 	visible: number;
@@ -39,6 +46,6 @@ export interface MapLayer {
 	repeat: boolean;
 	distance: number;
 	tilesize: number;
-	moveSpeed: { x: number, y: number };
+	moveSpeed: Point;
 	data: number[][];
 }

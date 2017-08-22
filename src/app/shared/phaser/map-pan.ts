@@ -58,19 +58,19 @@ export class MapPan extends Phaser.Plugin {
 		}
 		let scale = event.deltaY > 0 ? 0.8 : 1.25;
 		scale *= this.game.camera.scale.x;
-		scale = Math.max(Math.min(scale, 4), 0.5);
-		// this.game.scale.setUserScale(scale, scale);
-		this.game.camera.scale.setTo(scale);
+		if (scale > 0.5 && scale < 6) {
+			this.game.camera.scale.setTo(scale);
+		}
 	}
 
 	update() {
 		if (this.isScrolling) {
 			// mouse
-			let dx = this.game.input.x - this.startMouse.x;
-			let dy = this.game.input.y - this.startMouse.y;
+			const dx = this.game.input.x - this.startMouse.x;
+			const dy = this.game.input.y - this.startMouse.y;
 
-			dx /= this.game.camera.scale.x;
-			dy /= this.game.camera.scale.y;
+			// dx /= this.game.camera.scale.x;
+			// dy /= this.game.camera.scale.y;
 
 			this.game.camera.x = this.startCam.x - dx;
 			this.game.camera.y = this.startCam.y - dy;
