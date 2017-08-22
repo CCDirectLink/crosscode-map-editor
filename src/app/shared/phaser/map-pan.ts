@@ -29,6 +29,11 @@ export class MapPan extends Phaser.Plugin {
 		this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
 		this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
 
+		game.input.keyboard.removeKeyCapture(this.upKey.keyCode);
+		game.input.keyboard.removeKeyCapture(this.downKey.keyCode);
+		game.input.keyboard.removeKeyCapture(this.leftKey.keyCode);
+		game.input.keyboard.removeKeyCapture(this.rightKey.keyCode);
+
 		this.zoomKey = game.input.keyboard.addKey(Phaser.Keyboard.ALT);
 
 		game.input.mouse.mouseWheelCallback = (v) => this.onMouseWheel(v);

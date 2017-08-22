@@ -11,6 +11,7 @@ declare module Phaser {
 			name: string;
 			level: any;
 			type: string;
+			distance: number;
 		};
 	}
 }

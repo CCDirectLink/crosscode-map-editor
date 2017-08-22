@@ -7,8 +7,8 @@ import {EditorComponent} from './editor/editor.component';
 import {PhaserComponent} from './phaser/phaser.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-	MD_RIPPLE_GLOBAL_OPTIONS,
-	MdButtonModule, MdCheckboxModule, MdDialogModule, MdIconModule, MdListModule, MdProgressSpinnerModule,
+	MdButtonModule, MdCheckboxModule, MdDialogModule, MdIconModule, MdInputModule, MdListModule,
+	MdProgressSpinnerModule, MdSelectModule,
 	MdSidenavModule,
 	MdSnackBarModule,
 	MdToolbarModule, RippleGlobalOptions
@@ -17,6 +17,7 @@ import {ToolbarComponent} from './toolbar/toolbar.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {SidenavComponent} from './sidenav/sidenav.component';
 import {MapLoaderService} from './shared/map-loader.service';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
 	declarations: [
@@ -29,12 +30,15 @@ import {MapLoaderService} from './shared/map-loader.service';
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
+		FormsModule,
 		FlexLayoutModule,
 		MdButtonModule,
 		MdCheckboxModule,
 		MdToolbarModule,
 		MdSidenavModule,
 		MdDialogModule,
+		MdInputModule,
+		MdSelectModule,
 		MdSnackBarModule,
 		MdProgressSpinnerModule,
 		MdListModule,

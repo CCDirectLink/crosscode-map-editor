@@ -1,7 +1,6 @@
-import {AfterViewInit, Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {MdSidenav} from '@angular/material';
+import {Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MapLoaderService} from '../shared/map-loader.service';
-import {MapLayer} from '../shared/interfaces/cross-code-map';
+import {CrossCodeMap, MapLayer} from '../shared/interfaces/cross-code-map';
 
 @Component({
 	selector: 'app-sidenav',
@@ -11,11 +10,15 @@ import {MapLayer} from '../shared/interfaces/cross-code-map';
 })
 export class SidenavComponent implements OnInit {
 
+	selectedLayer: Phaser.TilemapLayer;
+	map: CrossCodeMap;
 	layers: Phaser.TilemapLayer[] = <any>[
 		{crossCode: {name: 'Layer1', level: '1', type: 'Collision'}},
 	];
 
 	constructor(private mapLoader: MapLoaderService) {
+		this.mapLoader.selectedLayer.subscribe(layer => this.selectedLayer = layer);
+		this.mapLoader.map.subscribe(map => this.map = map);
 	}
 
 	ngOnInit() {
@@ -24,7 +27,7 @@ export class SidenavComponent implements OnInit {
 			if (layers) {
 				this.layers = layers;
 			} else {
-				this.layers = null;
+				// this.layers = null;
 			}
 		});
 	}
@@ -34,11 +37,13 @@ export class SidenavComponent implements OnInit {
 	}
 
 	toggleVisibility(event, layer: Phaser.TilemapLayer) {
+		event.stopPropagation();
 		layer.visible = !layer.visible;
 	}
 
 	selectLayer(layer: Phaser.TilemapLayer) {
-
+		this.mapLoader.selectedLayer.next(layer);
+		console.log('click');
 	}
 
 	debug(input) {

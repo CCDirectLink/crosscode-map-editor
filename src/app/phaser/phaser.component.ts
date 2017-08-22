@@ -25,6 +25,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		this.game = new Phaser.Game(screen.width * window.devicePixelRatio, screen.height * window.devicePixelRatio, Phaser.CANVAS, 'content', {
 			create: () => {
 				const game = this.game;
+
 				game.stage.backgroundColor = '#616161';
 				game.canvas.oncontextmenu = function (e) {
 					e.preventDefault();
@@ -66,9 +67,6 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	onLoadComplete() {
 		const game = this.game;
 		this.createTilemap();
-
-		game.camera.scale.setTo(1);
-		console.log(game.camera);
 	}
 
 	createTilemap() {
@@ -101,8 +99,9 @@ export class PhaserComponent implements OnInit, OnDestroy {
 			const newLayer = tileMap.createBlankLayer('' + layer.id, layer.width, layer.height, layer.tilesize, layer.tilesize);
 			newLayer.crossCode = {
 				name: layer.name,
-				level: layer.level,
-				type: layer.type
+				level: parseInt(<any>layer.level, 10),
+				type: layer.type,
+				distance: layer.distance,
 			};
 
 			const types = 'Collision Navigation'.split(' ');

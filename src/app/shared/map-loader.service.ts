@@ -10,6 +10,7 @@ export class MapLoaderService {
 	private _map: BehaviorSubject<CrossCodeMap> = new BehaviorSubject(null);
 	tileMap: BehaviorSubject<Phaser.Tilemap> = new BehaviorSubject(null);
 	layers: BehaviorSubject<Phaser.TilemapLayer[]> = new BehaviorSubject(null);
+	selectedLayer: BehaviorSubject<Phaser.TilemapLayer> = new BehaviorSubject(null);
 
 	constructor(private snackBar: MdSnackBar) {
 	}

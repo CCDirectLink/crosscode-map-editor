@@ -31,13 +31,13 @@ export interface MapLayer {
 	id: number;
 	type: string;
 	name: string;
-	level: string;
+	level: number | { level: number, offset: number };
 	width: number;
 	height: number;
 	visible: number;
 	tilesetName: string;
 	repeat: boolean;
-	distance: string;
+	distance: number;
 	tilesize: number;
 	moveSpeed: { x: number, y: number };
 	data: number[][];

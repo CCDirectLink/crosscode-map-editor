@@ -4,10 +4,23 @@
 $config: mat-typography-config();
 $background: map_get($theme, background);
 
-h3 {
-	background-color: rgba(255, 255, 255, 0.1);
+.nav-container {
+	height: 100%;
 }
 
+h3 {
+	font-weight: mat-font-weight($config, caption);
+	background-color: rgba(255, 255, 255, 0.1);
+	height: 30px;
+	line-height: 30px;
+	padding-left: 16px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+// layer selection
 $type-hue: A200;
 
 .type-Background {
@@ -26,12 +39,39 @@ $type-hue: A200;
 	width: 32px !important;
 }
 
-md-nav-list {
-	padding-top: 0;
-	overflow-x: hidden;
-	overflow-y: hidden;
+.item-selected-bg {
+	position: absolute;
+	left: 0;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	transition: background-color 100ms linear;
 }
 
-md-list-item, .mat-list-item-content {
-	height: 36px !important;
+.item-selected {
+	background-color: mat-color($mat-grey, 700);
+}
+
+md-nav-list {
+	padding-top: 0 !important;
+	overflow-x: hidden;
+	//noinspection CssInvalidPropertyValue
+	overflow-y: overlay;
+}
+
+.small-list {
+	min-height: 80px !important;
+	& md-list-item, .mat-list-item-content {
+		height: 36px !important;
+	}
+}
+
+// layer settings
+.settings-list {
+	//margin-top: 16px;
+}
+
+.list-item {
+	//padding-left: 16px;
+	width: 100%;
 }
