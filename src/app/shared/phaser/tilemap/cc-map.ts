@@ -34,15 +34,14 @@ export class CCMap {
 		// ignore entities for now
 		// this.entities = map.entities;
 
-		this.layers.forEach(layer => {
-			// layer.destroy();
-		});
+		// cleanup everything before loading new map
+		game.world.removeAll();
+
 		this.layers = [];
 
 		map.layer.forEach(layer => {
 			game.load.image(layer.tilesetName, 'http://localhost:8080/' + layer.tilesetName);
 		});
-		game.load.start();
 
 		return new Promise((resolve, reject) => {
 			game.load.onLoadComplete.addOnce(() => {
@@ -59,6 +58,8 @@ export class CCMap {
 
 				resolve(this);
 			});
+			game.load.start();
 		});
+
 	}
 }

@@ -46,7 +46,6 @@ export class PhaserComponent implements OnInit, OnDestroy {
 				this.sub = this.mapLoader.map.subscribe((map) => {
 					console.log('map loaded');
 					if (map) {
-						this.game.world.removeAll();
 						this.tileMap.loadMap(map).then(tilemap => this.mapLoader.tileMap.next(tilemap));
 					}
 				});
