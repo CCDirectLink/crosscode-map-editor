@@ -35,7 +35,7 @@ export class CCMap {
 		// this.entities = map.entities;
 
 		// cleanup everything before loading new map
-		game.world.removeAll();
+		this.layers.forEach(layer => layer.destroy());
 
 		this.layers = [];
 

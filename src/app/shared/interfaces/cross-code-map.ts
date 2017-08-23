@@ -11,8 +11,8 @@ export interface CrossCodeMap {
 }
 
 export interface Point {
-	x: number;
-	y: number;
+	x?: number;
+	y?: number;
 }
 
 export interface Attributes {

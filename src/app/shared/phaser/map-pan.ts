@@ -1,7 +1,5 @@
-interface Point {
-	x?: number;
-	y?: number;
-}
+
+import {Point} from '../interfaces/cross-code-map';
 
 export class MapPan extends Phaser.Plugin {
 
@@ -65,7 +63,7 @@ export class MapPan extends Phaser.Plugin {
 		const prevScale = cam.scale.x;
 		let scale = event.deltaY > 0 ? 0.8 : 1.25;
 		scale *= cam.scale.x;
-		if (scale > 0.5 && scale < 6) {
+		if (scale > 0.4 && scale < 6) {
 			cam.scale.setTo(scale);
 
 			// adjust position
@@ -107,9 +105,9 @@ export class MapPan extends Phaser.Plugin {
 				dx -= 1;
 			}
 
-			let scale = 5;
+			let scale = 10;
 			if (this.turboKey.isDown) {
-				scale = 15;
+				scale = 20;
 			}
 			this.game.camera.x += dx * scale;
 			this.game.camera.y += dy * scale;

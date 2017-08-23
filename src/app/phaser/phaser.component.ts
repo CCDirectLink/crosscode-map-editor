@@ -5,6 +5,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {CrossCodeMap} from '../shared/interfaces/cross-code-map';
 import {MapPan} from '../shared/phaser/map-pan';
 import {CCMap} from '../shared/phaser/tilemap/cc-map';
+import {TileDrawer} from '../shared/phaser/tilemap/tile-drawer';
 
 @Component({
 	selector: 'app-phaser',
@@ -15,9 +16,12 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	game: Phaser.Game;
 	tileMap: CCMap;
 	sub: Subscription;
-	mapPan: MapPan;
 
 	border: Phaser.Rectangle;
+
+	// plugins
+	private mapPan: MapPan;
+	private tileDrawer: TileDrawer;
 
 	constructor(private element: ElementRef, private mapLoader: MapLoaderService) {
 		mapLoader.map.subscribe((v) => console.log('wohay', v));
@@ -46,14 +50,20 @@ export class PhaserComponent implements OnInit, OnDestroy {
 				this.sub = this.mapLoader.map.subscribe((map) => {
 					console.log('map loaded');
 					if (map) {
-						this.tileMap.loadMap(map).then(tilemap => this.mapLoader.tileMap.next(tilemap));
+						this.tileMap.loadMap(map).then(tilemap => {
+							this.mapLoader.tileMap.next(tilemap);
+							this.mapLoader.selectedLayer.next(tilemap.layers[0]);
+						});
 					}
 				});
 
-				this.border = new Phaser.Rectangle(0, 0, 100, 100);
+				this.border = new Phaser.Rectangle(0, 0, 0, 0);
 
-				// scroller plugin
+				// plugins
 				this.mapPan = game.plugins.add(MapPan);
+				this.tileDrawer = game.plugins.add(TileDrawer);
+				this.mapLoader.selectedLayer.subscribe(layer => this.tileDrawer.selectLayer(layer));
+
 			},
 			update: () => this.update(),
 			render: () => this.render(),
@@ -64,8 +74,20 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		if (this.tileMap.layers.length === 0) {
 			return;
 		}
-		const s = this.tileMap.layers[0].details.tilesize;
+		const s = this.tileMap.layers[0].details.tilesize * this.game.camera.scale.x;
 		this.border.resize(this.tileMap.mapWidth * s, this.tileMap.mapHeight * s);
+
+		// should only sort when needed, refactor when performance becomes a problem
+		this.game.world.sort('zIndex');
+		// this.game.world.children.sort((a: any, b: any) => {
+		// 	const va = a.zIndex || 0;
+		// 	const vb = b.zIndex || 0;
+		// 	const diff = va - vb;
+		// 	if (diff !== 0) {
+		// 		return diff;
+		// 	}
+		// 	return a.z - b.z;
+		// });
 	}
 
 	render() {
