@@ -13,6 +13,7 @@ export class MapPan extends Phaser.Plugin {
 	private downKey: Phaser.Key;
 	private leftKey: Phaser.Key;
 	private rightKey: Phaser.Key;
+	private turboKey: Phaser.Key;
 	private zoomKey: Phaser.Key;
 
 	constructor(game: Phaser.Game, parent) {
@@ -28,11 +29,13 @@ export class MapPan extends Phaser.Plugin {
 		this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
 		this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
 		this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
+		this.turboKey = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
 
 		game.input.keyboard.removeKeyCapture(this.upKey.keyCode);
 		game.input.keyboard.removeKeyCapture(this.downKey.keyCode);
 		game.input.keyboard.removeKeyCapture(this.leftKey.keyCode);
 		game.input.keyboard.removeKeyCapture(this.rightKey.keyCode);
+		game.input.keyboard.removeKeyCapture(this.turboKey.keyCode);
 
 		this.zoomKey = game.input.keyboard.addKey(Phaser.Keyboard.ALT);
 
@@ -56,10 +59,22 @@ export class MapPan extends Phaser.Plugin {
 		if (!this.zoomKey.isDown) {
 			return;
 		}
+
+		const cam = this.game.camera;
+
+		const prevScale = cam.scale.x;
 		let scale = event.deltaY > 0 ? 0.8 : 1.25;
-		scale *= this.game.camera.scale.x;
+		scale *= cam.scale.x;
 		if (scale > 0.5 && scale < 6) {
-			this.game.camera.scale.setTo(scale);
+			cam.scale.setTo(scale);
+
+			// adjust position
+			const mouseX = this.game.input.worldX / prevScale;
+			const mouseY = this.game.input.worldY / prevScale;
+			const multiplier = scale - prevScale;
+
+			cam.x += mouseX * multiplier;
+			cam.y += mouseY * multiplier;
 		}
 	}
 
@@ -92,8 +107,12 @@ export class MapPan extends Phaser.Plugin {
 				dx -= 1;
 			}
 
-			this.game.camera.x += dx * 5;
-			this.game.camera.y += dy * 5;
+			let scale = 5;
+			if (this.turboKey.isDown) {
+				scale = 15;
+			}
+			this.game.camera.x += dx * scale;
+			this.game.camera.y += dy * scale;
 		}
 	}
 

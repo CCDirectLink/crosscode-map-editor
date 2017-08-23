@@ -64,7 +64,6 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		if (this.tileMap.layers.length === 0) {
 			return;
 		}
-		console.log('set size');
 		const s = this.tileMap.layers[0].details.tilesize;
 		this.border.resize(this.tileMap.mapWidth * s, this.tileMap.mapHeight * s);
 	}
