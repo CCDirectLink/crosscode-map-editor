@@ -21,7 +21,6 @@ export class ToolbarComponent implements OnInit {
 	ngOnInit() {
 		this.mapLoader.tileMap.subscribe(map => {
 			this.map = map;
-			console.log(map);
 		});
 	}
 

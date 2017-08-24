@@ -33,7 +33,7 @@ export class MapLoaderService {
 				}
 				this._map.next(map);
 			} catch (e) {
-				console.log(e);
+				console.error(e);
 				this.snackBar.open('Error: ' + e.message, undefined, {
 					duration: 2500
 				});

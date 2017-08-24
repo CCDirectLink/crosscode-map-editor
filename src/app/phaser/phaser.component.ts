@@ -24,11 +24,10 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	private tileDrawer: TileDrawer;
 
 	constructor(private element: ElementRef, private mapLoader: MapLoaderService) {
-		mapLoader.map.subscribe((v) => console.log('wohay', v));
 	}
 
 	ngOnInit() {
-		this.game = new Phaser.Game(screen.width * window.devicePixelRatio, screen.height * window.devicePixelRatio, Phaser.CANVAS, 'content', {
+		this.game = new Phaser.Game(screen.width * window.devicePixelRatio, screen.height * window.devicePixelRatio, Phaser.AUTO, 'content', {
 			create: () => {
 				const game = this.game;
 
@@ -48,9 +47,9 @@ export class PhaserComponent implements OnInit, OnDestroy {
 
 				this.tileMap = new CCMap(game);
 				this.sub = this.mapLoader.map.subscribe((map) => {
-					console.log('map loaded');
 					if (map) {
 						this.tileMap.loadMap(map).then(tilemap => {
+							console.log(tilemap);
 							this.mapLoader.tileMap.next(tilemap);
 							this.mapLoader.selectedLayer.next(tilemap.layers[0]);
 						});

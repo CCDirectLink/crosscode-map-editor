@@ -36,9 +36,4 @@ export class SidenavComponent implements OnInit {
 		this.mapLoader.selectedLayer.next(layer);
 		console.log(layer);
 	}
-
-	debug(input) {
-		console.log(input);
-	}
-
 }

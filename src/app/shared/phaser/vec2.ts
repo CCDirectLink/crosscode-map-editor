@@ -167,7 +167,7 @@ export class Vec2 {
 	 * @param y
 	 * @param {boolean=} copy
 	 */
-	public static divC(v1, x, y, copy?) {
+	public static divC(v1, x, y?, copy?) {
 		const res = copy || false ? {} : v1;
 		y = y === undefined || y === null ? x : y;
 		res.x = (v1.x || 0) / (x || 0);

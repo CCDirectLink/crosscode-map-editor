@@ -11,7 +11,7 @@
 		<input #fileUpload type="file" (change)="loadMap($event)" accept=".json"/>
 		
 		<div class="button-row">
-			<button *ngIf="map || true" md-button (click)="openMapSettings()">Map Settings</button>
+			<button *ngIf="map" md-button (click)="openMapSettings()">Map Settings</button>
 			<button md-button (click)="fileUpload.click()">Load Map</button>
 		</div>
 	</div>

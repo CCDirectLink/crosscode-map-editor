@@ -2,8 +2,12 @@ import {MapLayer, Point} from '../../interfaces/cross-code-map';
 import * as Phaser from 'phaser-ce';
 import {Sortable} from '../../interfaces/sortable';
 import {Helper} from '../helper';
+import {Globals} from '../../globals';
 
 export class CCMapLayer extends Phaser.Image implements Sortable {
+
+	public details: MapLayer;
+	public backgroundColor: { r: number, g: number, b: number, a: number };
 
 	private bitmap: Phaser.BitmapData;
 	private tilesetImage: Phaser.Image;
@@ -11,9 +15,9 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 	private tilesetSize: Point;
 	zIndex: number;
 
-	constructor(game: Phaser.Game,
-				public details: MapLayer) {
+	constructor(game: Phaser.Game, details: MapLayer) {
 		super(game, 0, 0, '');
+		this.details = details;
 		this.details.level = parseInt(<any>this.details.level, 10);
 		this.details.distance = parseFloat(<any>this.details.distance);
 		this.bitmap = game.make.bitmapData(details.width * details.tilesize, details.height * details.tilesize);
@@ -49,6 +53,10 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		const tileSize = details.tilesize;
 
 		bitmap.clear();
+		if (this.backgroundColor) {
+			const bg = this.backgroundColor;
+			bitmap.fill(bg.r, bg.g, bg.b, bg.a);
+		}
 
 		for (let y = 0; y < details.data.length; y++) {
 			for (let x = 0; x < details.data[y].length; x++) {
@@ -76,8 +84,33 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 	}
 
 	destroy() {
-		// TODO: bitmaps should be destroyed too, but when i try i get some cors errors
+		this.bitmap.destroy();
 		this.tilesetImage.destroy();
 		super.destroy();
+	}
+
+	resize(width: number, height: number) {
+		const data = this.details.data;
+		data.length = height;
+		for (let i = 0; i < data.length; i++) {
+			if (!data[i]) {
+				data[i] = new Array(width).fill(0);
+			} else {
+				if (width < this.details.width) {
+					data[i].length = width;
+				} else {
+					while (data[i].length < width) {
+						data[i].push(0);
+					}
+				}
+			}
+		}
+
+		this.details.width = width;
+		this.details.height = height;
+
+		this.bitmap.resize(width * Globals.tileSize, height * Globals.tileSize);
+
+		this.renderAll();
 	}
 }

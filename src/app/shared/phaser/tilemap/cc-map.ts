@@ -58,8 +58,20 @@ export class CCMap {
 
 				resolve(this);
 			});
+			game.load.crossOrigin = 'anonymous';
 			game.load.start();
 		});
 
+	}
+
+	resize(width: number, height: number) {
+		this.mapWidth = width;
+		this.mapHeight = height;
+
+		this.layers.forEach(layer => {
+			layer.resize(width, height);
+		});
+
+		console.log(this);
 	}
 }

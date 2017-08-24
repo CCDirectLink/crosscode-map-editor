@@ -26,13 +26,11 @@ export class MapSettingsComponent {
 			return;
 		}
 		const settings = this.settings;
-		// TODO
-		// settings.mapWidth = tileMap.mapWidth;
-		// settings.mapHeight = tileMap.mapHeight;
-		// settings.entities = undefined;
-		// settings.layer = undefined;
-
-		console.log(settings);
+		settings.mapWidth = tileMap.mapWidth;
+		settings.mapHeight = tileMap.mapHeight;
+		settings.levels = tileMap.levels;
+		settings.masterLevel = tileMap.masterLevel;
+		settings.attributes = tileMap.attributes;
 	}
 
 	update() {
@@ -40,23 +38,12 @@ export class MapSettingsComponent {
 		const settings = this.settings;
 		const tileMap = this.tileMap;
 
-		// TODO:
-		// tileMap.crossCode.levels = settings.levels;
-		// tileMap.crossCode.masterLevel = settings.masterLevel;
-		// tileMap.crossCode.attributes = settings.attributes;
-        //
-		// // resize
-		// tileMap.width = settings.mapWidth;
-		// tileMap.height = settings.mapHeight;
-		// // tileMap.widthInPixels =
-        //
-		// const layers = this.loader.layers.getValue();
-		// layers.forEach(layer => {
-		// 	layer.resize(settings.mapWidth * tileMap.tileWidth, settings.mapHeight * tileMap.tileHeight);
-		// 	layer.layer.width = settings.mapWidth;
-		// 	layer.layer.height = settings.mapHeight;
-		// 	// layer.layer.resize(settings.mapWidth, settings.mapHeight);
-		// });
+		tileMap.levels = settings.levels;
+		tileMap.masterLevel = settings.masterLevel;
+		tileMap.attributes = settings.attributes;
+
+		tileMap.resize(settings.mapWidth, settings.mapHeight);
+
 		this.ref.close();
 	}
 }
