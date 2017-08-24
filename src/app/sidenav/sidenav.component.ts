@@ -1,4 +1,7 @@
-import {Component, Input, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+	animate, Component, Input, OnInit, style, transition, trigger, ViewChild,
+	ViewEncapsulation
+} from '@angular/core';
 import {MapLoaderService} from '../shared/map-loader.service';
 import {CrossCodeMap, MapLayer} from '../shared/interfaces/cross-code-map';
 import {CCMap} from '../shared/phaser/tilemap/cc-map';
@@ -6,6 +9,14 @@ import {CCMapLayer} from '../shared/phaser/tilemap/cc-map-layer';
 
 @Component({
 	selector: 'app-sidenav',
+	animations: [
+		trigger('transition', [
+			transition(':enter', [
+				style({opacity: 0}),
+				animate('80ms', style({opacity: 1}))
+			])
+		])
+	],
 	templateUrl: './sidenav.component.html',
 	styleUrls: ['./sidenav.component.scss'],
 	encapsulation: ViewEncapsulation.None
@@ -14,6 +25,7 @@ export class SidenavComponent implements OnInit {
 
 	selectedLayer: CCMapLayer;
 	tilemap: CCMap;
+	tab = 1;
 
 	constructor(private mapLoader: MapLoaderService) {
 	}
@@ -35,5 +47,9 @@ export class SidenavComponent implements OnInit {
 	selectLayer(layer: CCMapLayer) {
 		this.mapLoader.selectedLayer.next(layer);
 		console.log(layer);
+	}
+
+	selectTab(id: number) {
+		this.tab = id;
 	}
 }

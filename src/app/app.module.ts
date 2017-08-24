@@ -10,7 +10,7 @@ import {
 	MdButtonModule, MdCheckboxModule, MdDialogModule, MdIconModule, MdInputModule, MdListModule,
 	MdProgressSpinnerModule, MdSelectModule,
 	MdSidenavModule,
-	MdSnackBarModule,
+	MdSnackBarModule, MdTabsModule,
 	MdToolbarModule, RippleGlobalOptions
 } from '@angular/material';
 import {ToolbarComponent} from './toolbar/toolbar.component';
@@ -19,6 +19,8 @@ import {SidenavComponent} from './sidenav/sidenav.component';
 import {MapLoaderService} from './shared/map-loader.service';
 import {FormsModule} from '@angular/forms';
 import {MapSettingsComponent} from './shared/dialogs/map-settings/map-settings.component';
+import {LayersComponent} from './sidenav/layers/layers.component';
+import {EntitiesComponent} from './sidenav/entities/entities.component';
 
 @NgModule({
 	declarations: [
@@ -27,7 +29,9 @@ import {MapSettingsComponent} from './shared/dialogs/map-settings/map-settings.c
 		PhaserComponent,
 		ToolbarComponent,
 		SidenavComponent,
-		MapSettingsComponent
+		MapSettingsComponent,
+		LayersComponent,
+		EntitiesComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -40,6 +44,7 @@ import {MapSettingsComponent} from './shared/dialogs/map-settings/map-settings.c
 		MdSidenavModule,
 		MdDialogModule,
 		MdDialogModule,
+		MdTabsModule,
 		MdInputModule,
 		MdSelectModule,
 		MdSnackBarModule,

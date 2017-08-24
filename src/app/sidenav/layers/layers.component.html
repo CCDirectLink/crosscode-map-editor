@@ -1,0 +1,48 @@
+<md-nav-list fxFlex="1 1 auto" class="small-list">
+	<md-list-item *ngFor="let layer of tilemap.layers" (click)="selectLayer(layer)">
+		<div class="item-selected-bg" [ngClass]="{'item-selected': layer === selectedLayer}"></div>
+		<div md-list-icon class="type-circle" [ngClass]="'type-' + layer.details.type"></div>
+		<span md-line>{{getDisplayName(layer)}}</span>
+		
+		<button md-icon-button (click)="toggleVisibility($event, layer)" class="green">
+			<md-icon>{{layer.visible ? 'visibility' : 'visibility_off'}}</md-icon>
+		</button>
+	</md-list-item>
+</md-nav-list>
+
+<h3 fxFlex="0 0 auto">Layer settings {{selectedLayer ? '- ' + getDisplayName(selectedLayer) : ''}}</h3>
+<md-list fxFlex="0 0 auto" class="settings-list">
+	<md-list-item fxLayout="column">
+		<span fxFlex="0 0 80px">Type: </span>
+		<md-select fxFlex [disabled]="!selectedLayer" class="list-item" floatPlaceholder="never"
+		           [(ngModel)]="selectedLayer?.details.type">
+			<md-option value="Background">Background</md-option>
+			<md-option value="Collision">Collision</md-option>
+			<md-option value="Navigation">Navigation</md-option>
+		</md-select>
+	</md-list-item>
+	
+	<md-list-item fxLayout="column">
+		<span fxFlex="0 0 80px">Name: </span>
+		<md-input-container class="list-item" floatPlaceholder="never">
+			<input mdInput [disabled]="!selectedLayer" [(ngModel)]="selectedLayer?.details.name">
+		</md-input-container>
+	</md-list-item>
+	
+	<md-list-item fxLayout="column">
+		<span fxFlex="0 0 80px">Level: </span>
+		<md-select fxFlex [disabled]="!selectedLayer" class="list-item" floatPlaceholder="never"
+		           [(ngModel)]="selectedLayer?.details.level">
+			<md-option *ngFor="let level of tilemap?.levels; let i=index" [value]="i">{{i}}</md-option>
+		</md-select>
+	</md-list-item>
+	
+	<md-list-item fxLayout="column">
+		<span fxFlex="0 0 80px">Distance: </span>
+		<md-input-container class="list-item" floatPlaceholder="never">
+			<input type="number" step="0.1" mdInput [disabled]="!selectedLayer"
+			       [(ngModel)]="selectedLayer?.details.distance">
+		</md-input-container>
+	</md-list-item>
+	<br>
+</md-list>
