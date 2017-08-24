@@ -18,7 +18,7 @@ export class TileDrawer extends Phaser.Plugin {
 		bitmap: Phaser.BitmapData,
 		imgName: string
 	};
-	private showTilemap: Phaser.Key;
+	private toggleTilemapKey: Phaser.Key;
 	private graphics: Phaser.Graphics;
 	private group: SortableGroup;
 	private tilesetImg: Phaser.Image;
@@ -27,12 +27,15 @@ export class TileDrawer extends Phaser.Plugin {
 	private rightClickStart: Point;
 	private rightClickEnd: Point;
 
+	private fillKey: Phaser.Key;
+
 	constructor(game: Phaser.Game, parent) {
 		super(game, parent);
 		this.active = true;
 		this.hasUpdate = true;
 		this.hasRender = true;
-		this.showTilemap = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+		this.toggleTilemapKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+		this.fillKey = game.input.keyboard.addKey(Phaser.Keyboard.F);
 		this.group = game.add.group();
 
 		// needs custom property because z gets reset to the index after a sort is done
@@ -55,7 +58,9 @@ export class TileDrawer extends Phaser.Plugin {
 
 		game.input.mousePointer.rightButton.onDown.add(() => this.onMouseRightDown());
 		game.input.mousePointer.rightButton.onUp.add(() => this.onMouseRightUp());
-		this.showTilemap.onDown.add(() => this.toggleTileSelectorMap());
+		this.toggleTilemapKey.onDown.add(() => this.toggleTileSelectorMap());
+		this.fillKey.onDown.add(() => this.fill());
+
 
 	}
 
@@ -163,7 +168,7 @@ export class TileDrawer extends Phaser.Plugin {
 		}
 	}
 
-	toggleTileSelectorMap() {
+	private toggleTileSelectorMap() {
 		const game = this.game;
 
 		this.tileSelectMap.visible = !this.tileSelectMap.visible;
@@ -176,7 +181,7 @@ export class TileDrawer extends Phaser.Plugin {
 		}
 	}
 
-	onMouseRightDown() {
+	private onMouseRightDown() {
 		if (!this.layer) {
 			return;
 		}
@@ -189,7 +194,7 @@ export class TileDrawer extends Phaser.Plugin {
 		this.rightClickStart = p;
 	}
 
-	onMouseRightUp() {
+	private onMouseRightUp() {
 		if (!this.layer) {
 			return;
 		}
@@ -250,7 +255,7 @@ export class TileDrawer extends Phaser.Plugin {
 		this.rightClickEnd = null;
 	}
 
-	renderPreview(data: number[][], offset: Point) {
+	private renderPreview(data: number[][], offset: Point) {
 		const tiles = this.selectedTiles;
 		const bitmap = tiles.bitmap;
 
@@ -277,21 +282,32 @@ export class TileDrawer extends Phaser.Plugin {
 		});
 	}
 
-	setDefaultStyle() {
+	private setDefaultStyle() {
 		this.graphics.lineStyle(1, 0xFFFFFF, 0.7);
 	}
 
-	isInBounds(layer: CCMapLayer, p: Point): boolean {
+	private isInBounds(layer: CCMapLayer, p: Point): boolean {
 		const offset = Vec2.create(layer);
 		Vec2.divC(offset, Globals.tileSize);
 		return p.x >= offset.x && p.y >= offset.y && p.x < layer.details.width + offset.x && p.y < layer.details.height + offset.y;
 	}
 
-	clampToBounds(layer: CCMapLayer, p: Point) {
+	private clampToBounds(layer: CCMapLayer, p: Point) {
 		const offset = Vec2.create(layer);
 		Vec2.divC(offset, Globals.tileSize);
 		p.x = Helper.clamp(p.x, offset.x, layer.details.width - 1 + offset.x);
 		p.y = Helper.clamp(p.y, offset.y, layer.details.height - 1 + offset.y);
 	}
 
+	private fill() {
+		if (!this.layer || this.tileSelectMap.visible) {
+			return;
+		}
+		const game = this.game;
+
+		const p = Helper.screenToTile(game, game.input.mousePointer);
+		if (this.selectedTiles.tiles.length > 0) {
+			this.layer.fill(this.selectedTiles.tiles[0].id, p);
+		}
+	}
 }

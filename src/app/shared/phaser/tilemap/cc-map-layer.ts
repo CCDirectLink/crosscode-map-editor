@@ -113,4 +113,43 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 
 		this.renderAll();
 	}
+
+	fill(newTile: number, p: Point) {
+		const data = this.details.data;
+		const prev = data[p.y][p.x];
+		if (newTile === prev) {
+			return;
+		}
+
+		let toCheck: Point[] = [p];
+		while (toCheck.length > 0) {
+			const currP = toCheck.pop();
+			const tile = data[currP.y][currP.x];
+			if (tile === prev) {
+				data[currP.y][currP.x] = newTile;
+				toCheck = toCheck.concat(this.getNeighbours(currP));
+			}
+		}
+
+		this.renderAll();
+	}
+
+	private getNeighbours(p: Point): Point[] {
+		const out: Point[] = [];
+
+		if (p.x > 0) {
+			out.push({x: p.x - 1, y: p.y});
+		}
+		if (p.x < this.details.width - 1) {
+			out.push({x: p.x + 1, y: p.y});
+		}
+		if (p.y > 0) {
+			out.push({x: p.x, y: p.y - 1});
+		}
+		if (p.y < this.details.height - 1) {
+			out.push({x: p.x, y: p.y + 1});
+		}
+
+		return out;
+	}
 }

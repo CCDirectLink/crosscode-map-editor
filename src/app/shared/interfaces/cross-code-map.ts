@@ -8,6 +8,8 @@ export interface CrossCodeMap {
 	layer: MapLayer[];
 	attributes: Attributes;
 	screen: Point;
+
+	filename?: string;
 }
 
 export interface Point {

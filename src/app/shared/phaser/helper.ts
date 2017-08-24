@@ -24,8 +24,12 @@ export class Helper {
 		return p;
 	}
 
-	public static screenToTile(game: Phaser.Game, x: number, y: number): Point {
-		let p = this.screenToWorld(game, x, y);
+	public static screenToTile(game: Phaser.Game, x: number | Point, y?: number): Point {
+		if (y === undefined) {
+			y = (<any>x).y;
+			x = (<any>x).x;
+		}
+		let p = this.screenToWorld(game, <any>x, y);
 		p = this.worldToTile(p.x, p.y);
 		return p;
 	}

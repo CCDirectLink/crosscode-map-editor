@@ -12,6 +12,18 @@ export class CCMap {
 	attributes: Attributes;
 	screen: Point;
 
+	filename: string;
+
+	private props = [
+		'name',
+		'levels',
+		'mapWidth',
+		'mapHeight',
+		'masterLevel',
+		'attributes',
+		'screen',
+	];
+
 	private inputLayers: MapLayer[];
 
 	constructor(private game: Phaser.Game) {
@@ -21,18 +33,13 @@ export class CCMap {
 
 		const game = this.game;
 
-		this.name = map.name;
-		this.levels = map.levels;
-		this.mapWidth = map.mapWidth;
-		this.mapHeight = map.mapHeight;
-		this.masterLevel = map.masterLevel;
-		this.attributes = map.attributes;
-		this.screen = map.screen;
+		this.props.forEach(prop => this[prop] = map[prop]);
+		this.filename = map.filename;
 
 		this.inputLayers = map.layer;
 
 		// ignore entities for now
-		// this.entities = map.entities;
+		this.entities = map.entities;
 
 		// cleanup everything before loading new map
 		this.layers.forEach(layer => layer.destroy());
@@ -73,5 +80,16 @@ export class CCMap {
 		});
 
 		console.log(this);
+	}
+
+	export(): CrossCodeMap {
+		const out: CrossCodeMap = <any>{};
+
+		this.props.forEach(prop => out[prop] = this[prop]);
+		out.entities = this.entities;
+		out.layer = [];
+		this.layers.forEach(l => out.layer.push(l.details));
+
+		return out;
 	}
 }

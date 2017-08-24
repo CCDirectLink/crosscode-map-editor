@@ -28,9 +28,10 @@ export class MapLoaderService {
 		reader.onload = (e: any) => {
 			try {
 				const map = JSON.parse(e.target.result);
-				if (!map.mapHeight || !map.layer[0].type) {
+				if (!map.mapHeight) {
 					throw new Error('invalid map');
 				}
+				map.filename = file.name;
 				this._map.next(map);
 			} catch (e) {
 				console.error(e);

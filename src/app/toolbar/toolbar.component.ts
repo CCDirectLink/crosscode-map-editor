@@ -28,6 +28,20 @@ export class ToolbarComponent implements OnInit {
 		this.mapLoader.loadMap(event);
 	}
 
+	saveMap() {
+		const file = new Blob([JSON.stringify(this.map.export(), null, 2)], {type: 'application/json'});
+		const a = document.createElement('a'),
+			url = URL.createObjectURL(file);
+		a.href = url;
+		a.download = this.map.filename;
+		document.body.appendChild(a);
+		a.click();
+		setTimeout(function () {
+			document.body.removeChild(a);
+			window.URL.revokeObjectURL(url);
+		}, 0);
+	}
+
 	openMapSettings() {
 		this.dialog.open(MapSettingsComponent, {
 			data: this.map
