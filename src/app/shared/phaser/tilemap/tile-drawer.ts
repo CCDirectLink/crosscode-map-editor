@@ -43,12 +43,12 @@ export class TileDrawer extends Phaser.Plugin {
 
 		this.graphics = game.add.graphics(0, 0);
 		this.setDefaultStyle();
-		this.graphics.drawRect(0, 0, Globals.tileSize, Globals.tileSize);
+		this.graphics.drawRect(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
 
 		this.selectedTiles = <any>{};
 		this.selectedTiles.tiles = [];
 
-		this.selectedTiles.bitmap = game.make.bitmapData(30 * Globals.tileSize, 30 * Globals.tileSize, 'tileDrawer');
+		this.selectedTiles.bitmap = game.make.bitmapData(30 * Globals.TILE_SIZE, 30 * Globals.TILE_SIZE, 'tileDrawer');
 		this.selectedTiles.img = game.make.image(0, 0);
 		this.selectedTiles.img.loadTexture(this.selectedTiles.bitmap);
 		this.selectedTiles.img.alpha = 0.5;
@@ -66,11 +66,15 @@ export class TileDrawer extends Phaser.Plugin {
 
 	selectLayer(selectedLayer: CCMapLayer) {
 		this.layer = selectedLayer;
+
+		// hide everything
 		if (!selectedLayer) {
+			this.group.visible = false;
 			return;
 		}
+		this.group.visible = true;
 		this.tilesetImg = this.game.make.image(0, 0, selectedLayer.details.tilesetName);
-		this.tilesetImg.crop(new Phaser.Rectangle(0, 0, Globals.tileSize * 10, Globals.tileSize * 10));
+		this.tilesetImg.crop(new Phaser.Rectangle(0, 0, Globals.TILE_SIZE * 10, Globals.TILE_SIZE * 10));
 		const tilesetSize = Helper.getTilesetSize(this.game.cache.getImage(selectedLayer.details.tilesetName));
 		this.selectedTiles.tilesetSize = tilesetSize;
 
@@ -84,7 +88,7 @@ export class TileDrawer extends Phaser.Plugin {
 		details.width = tilesetSize.x;
 		details.height = tilesetSize.y;
 		details.tilesetName = selectedLayer.details.tilesetName;
-		details.tilesize = Globals.tileSize;
+		details.tilesize = Globals.TILE_SIZE;
 		details.data = new Array(details.height);
 
 		let counter = 1;
@@ -110,13 +114,13 @@ export class TileDrawer extends Phaser.Plugin {
 		const graphics = this.graphics;
 		const game = this.game;
 		graphics.visible = true;
-		const p = Helper.screenToTile(game, game.input.mousePointer.x, game.input.mousePointer.y);
 
 		// hide cursor when no map loaded
 		if (!this.layer) {
 			graphics.visible = false;
 			return;
 		}
+		const p = Helper.screenToTile(game, game.input.mousePointer.x, game.input.mousePointer.y);
 
 		// render selection border
 		if (this.rightClickStart) {
@@ -129,27 +133,27 @@ export class TileDrawer extends Phaser.Plugin {
 			if (diff.x >= 0) {
 				diff.x++;
 			} else {
-				start.x = Globals.tileSize;
+				start.x = Globals.TILE_SIZE;
 				diff.x--;
 			}
 			if (diff.y >= 0) {
 				diff.y++;
 			} else {
-				start.y = Globals.tileSize;
+				start.y = Globals.TILE_SIZE;
 				diff.y--;
 			}
 
 			this.graphics.drawRect(
 				start.x,
 				start.y,
-				diff.x * Globals.tileSize,
-				diff.y * Globals.tileSize);
+				diff.x * Globals.TILE_SIZE,
+				diff.y * Globals.TILE_SIZE);
 			return;
 		}
 
 		// position tile drawer border to cursor
-		graphics.x = p.x * Globals.tileSize;
-		graphics.y = p.y * Globals.tileSize;
+		graphics.x = p.x * Globals.TILE_SIZE;
+		graphics.y = p.y * Globals.TILE_SIZE;
 		this.selectedTiles.img.x = graphics.x;
 		this.selectedTiles.img.y = graphics.y;
 
@@ -170,6 +174,10 @@ export class TileDrawer extends Phaser.Plugin {
 
 	private toggleTileSelectorMap() {
 		const game = this.game;
+		if (!this.layer) {
+			this.tileSelectMap.visible = false;
+			return;
+		}
 
 		this.tileSelectMap.visible = !this.tileSelectMap.visible;
 
@@ -177,7 +185,7 @@ export class TileDrawer extends Phaser.Plugin {
 			const p2 = Helper.screenToTile(game, 0, 0);
 			Vec2.addC(p2, 1, 1);
 			Vec2.assign(this.tileSelectMap, p2);
-			Vec2.mulF(this.tileSelectMap, Globals.tileSize);
+			Vec2.mulF(this.tileSelectMap, Globals.TILE_SIZE);
 		}
 	}
 
@@ -204,7 +212,7 @@ export class TileDrawer extends Phaser.Plugin {
 
 		// cancel current selection when out of bounds
 		if (!this.rightClickStart) {
-			this.graphics.drawRect(0, 0, Globals.tileSize, Globals.tileSize);
+			this.graphics.drawRect(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
 			this.selectedTiles.tiles.push({id: 0, offset: {x: 0, y: 0}});
 			this.selectedTiles.bitmap.clear();
 			return;
@@ -218,7 +226,7 @@ export class TileDrawer extends Phaser.Plugin {
 		if (this.tileSelectMap.visible) {
 			data = this.tileSelectMap.details.data;
 			const offset = Vec2.create(this.tileSelectMap);
-			Vec2.divC(offset, Globals.tileSize);
+			Vec2.divC(offset, Globals.TILE_SIZE);
 			Vec2.sub(start, offset);
 			Vec2.sub(end, offset);
 		}
@@ -247,8 +255,8 @@ export class TileDrawer extends Phaser.Plugin {
 		this.graphics.drawRect(
 			0,
 			0,
-			(bigger.x + 1 - smaller.x) * Globals.tileSize,
-			(bigger.y + 1 - smaller.y) * Globals.tileSize);
+			(bigger.x + 1 - smaller.x) * Globals.TILE_SIZE,
+			(bigger.y + 1 - smaller.y) * Globals.TILE_SIZE);
 
 
 		this.rightClickStart = null;
@@ -267,16 +275,16 @@ export class TileDrawer extends Phaser.Plugin {
 			if (id === 0) {
 				return;
 			}
-			this.tilesetImg.cropRect.x = pos.x * Globals.tileSize;
-			this.tilesetImg.cropRect.y = pos.y * Globals.tileSize;
-			this.tilesetImg.cropRect.width = Globals.tileSize;
-			this.tilesetImg.cropRect.height = Globals.tileSize;
+			this.tilesetImg.cropRect.x = pos.x * Globals.TILE_SIZE;
+			this.tilesetImg.cropRect.y = pos.y * Globals.TILE_SIZE;
+			this.tilesetImg.cropRect.width = Globals.TILE_SIZE;
+			this.tilesetImg.cropRect.height = Globals.TILE_SIZE;
 			this.tilesetImg.updateCrop();
 			bitmap.draw(
 				this.tilesetImg,
-				tile.offset.x * Globals.tileSize,
-				tile.offset.y * Globals.tileSize,
-				Globals.tileSize, Globals.tileSize
+				tile.offset.x * Globals.TILE_SIZE,
+				tile.offset.y * Globals.TILE_SIZE,
+				Globals.TILE_SIZE, Globals.TILE_SIZE
 			);
 
 		});
@@ -288,13 +296,13 @@ export class TileDrawer extends Phaser.Plugin {
 
 	private isInBounds(layer: CCMapLayer, p: Point): boolean {
 		const offset = Vec2.create(layer);
-		Vec2.divC(offset, Globals.tileSize);
+		Vec2.divC(offset, Globals.TILE_SIZE);
 		return p.x >= offset.x && p.y >= offset.y && p.x < layer.details.width + offset.x && p.y < layer.details.height + offset.y;
 	}
 
 	private clampToBounds(layer: CCMapLayer, p: Point) {
 		const offset = Vec2.create(layer);
-		Vec2.divC(offset, Globals.tileSize);
+		Vec2.divC(offset, Globals.TILE_SIZE);
 		p.x = Helper.clamp(p.x, offset.x, layer.details.width - 1 + offset.x);
 		p.y = Helper.clamp(p.y, offset.y, layer.details.height - 1 + offset.y);
 	}

@@ -6,10 +6,14 @@ export class Helper {
 	 * Transforms screen coordinates to world coordinates.
 	 * Phaser already offers a way to get world coordinates but it's messed up when the camera scales
 	 */
-	public static screenToWorld(game: Phaser.Game, x: number, y: number): Point {
+	public static screenToWorld(game: Phaser.Game, x: number | Point, y?: number): Point {
+		if (y === undefined) {
+			y = (<any>x).y;
+			x = (<any>x).x;
+		}
 		const p = <any>{};
 		const cam = game.camera;
-		p.x = (x + cam.x) / cam.scale.x;
+		p.x = (<any>x + cam.x) / cam.scale.x;
 		p.y = (y + cam.y) / cam.scale.y;
 
 		return p;
@@ -18,25 +22,21 @@ export class Helper {
 	public static worldToTile(x: number, y: number): Point {
 		const p = <any>{};
 
-		p.x = Math.floor(x / Globals.tileSize);
-		p.y = Math.floor(y / Globals.tileSize);
+		p.x = Math.floor(x / Globals.TILE_SIZE);
+		p.y = Math.floor(y / Globals.TILE_SIZE);
 
 		return p;
 	}
 
 	public static screenToTile(game: Phaser.Game, x: number | Point, y?: number): Point {
-		if (y === undefined) {
-			y = (<any>x).y;
-			x = (<any>x).x;
-		}
-		let p = this.screenToWorld(game, <any>x, y);
+		let p = this.screenToWorld(game, x, y);
 		p = this.worldToTile(p.x, p.y);
 		return p;
 	}
 
 	/** gets the position of the tile in the tilemap */
 	public static getTilePos(tilesetSize: Point, index: number): Point {
-		const tilesize = Globals.tileSize;
+		const tilesize = Globals.TILE_SIZE;
 		const pos = {x: 0, y: 0};
 
 		pos.x = index % tilesetSize.x;
@@ -53,8 +53,8 @@ export class Helper {
 
 	public static getTilesetSize(img: HTMLImageElement): Point {
 		return {
-			x: img.width / Globals.tileSize,
-			y: img.height / Globals.tileSize
+			x: img.width / Globals.TILE_SIZE,
+			y: img.height / Globals.TILE_SIZE
 		};
 	}
 

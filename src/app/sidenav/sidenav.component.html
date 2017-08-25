@@ -3,18 +3,20 @@
 		<a md-tab-link
 		   fxFlex="1 1 auto"
 		   class="tab"
-		   (click)="selectTab(1)"
-		   [active]="tab === 1">
+		   (click)="selectTab(editorViewEnum.Layers)"
+		   [active]="currentView === editorViewEnum.Layers">
 			Layers
 		</a>
 		<a md-tab-link
 		   fxFlex="1 1 auto"
 		   class="tab"
-		   (click)="selectTab(2)"
-		   [active]="tab === 2">
+		   (click)="selectTab(editorViewEnum.Entities)"
+		   [active]="currentView === editorViewEnum.Entities">
 			Entities
 		</a>
 	</nav>
-	<app-layers fxFlex="1 1 auto" fxLayout="column" *ngIf="tab === 1" [@transition]></app-layers>
-	<app-entities fxFlex="1 1 auto" fxLayout="column" *ngIf="tab === 2" [@transition]></app-entities>
+	<app-layers fxFlex="1 1 auto" fxLayout="column" *ngIf="currentView === editorViewEnum.Layers"
+	            [@transition]></app-layers>
+	<app-entities fxFlex="1 1 auto" fxLayout="column" *ngIf="currentView === editorViewEnum.Entities"
+	              [@transition]></app-entities>
 </div>

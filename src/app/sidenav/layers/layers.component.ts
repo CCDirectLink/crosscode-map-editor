@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
 import {MapLoaderService} from '../../shared/map-loader.service';
@@ -7,7 +7,8 @@ import {animate, animateChild, keyframes, query, stagger, style, transition, tri
 @Component({
 	selector: 'app-layers',
 	templateUrl: './layers.component.html',
-	styleUrls: ['./layers.component.scss']
+	styleUrls: ['./layers.component.scss'],
+	encapsulation: ViewEncapsulation.None
 })
 export class LayersComponent implements OnInit {
 
@@ -33,7 +34,6 @@ export class LayersComponent implements OnInit {
 
 	selectLayer(layer: CCMapLayer) {
 		this.mapLoader.selectedLayer.next(layer);
-		console.log(layer);
 	}
 
 }

@@ -17,9 +17,28 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 
 	constructor(game: Phaser.Game, details: MapLayer) {
 		super(game, 0, 0, '');
+		if (typeof details.level === 'string') {
+			// possible levels
+			// 'first'
+			// 'last'
+			// 'light'
+			// 'postlight'
+			// 'object1'
+			// 'object2'
+			// 'object3'
+			if (!isNaN(<any>details.level)) {
+				details.level = parseInt(details.level, 10);
+			} else if (details.level.startsWith('first')) {
+				details.level = 0;
+			} else {
+				// TODO: get actual max level;
+				details.level = 10;
+			}
+		}
+		if (typeof details.distance === 'string') {
+			details.distance = parseFloat(details.distance);
+		}
 		this.details = details;
-		this.details.level = parseInt(<any>this.details.level, 10);
-		this.details.distance = parseFloat(<any>this.details.distance);
 		this.bitmap = game.make.bitmapData(details.width * details.tilesize, details.height * details.tilesize);
 		this.loadTexture(this.bitmap);
 		game.add.existing(this);
@@ -39,14 +58,13 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 
 		this.zIndex = this.details.level;
 		if (isNaN(this.zIndex)) {
-			// this.zIndex = 0;
+			this.zIndex = 999;
 		}
 		// this.visible = false;
 		this.renderAll();
 	}
 
 	renderAll() {
-		console.log('renderAlll');
 		const bitmap = this.bitmap;
 		const tileset = this.tilesetImage;
 		const details = this.details;
@@ -109,7 +127,7 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		this.details.width = width;
 		this.details.height = height;
 
-		this.bitmap.resize(width * Globals.tileSize, height * Globals.tileSize);
+		this.bitmap.resize(width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
 
 		this.renderAll();
 	}

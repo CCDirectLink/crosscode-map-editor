@@ -17,6 +17,10 @@ export interface Point {
 	y?: number;
 }
 
+export interface Point3 extends Point {
+	z?: number;
+}
+
 export interface Attributes {
 	saveMode: string;
 	bgm: string;
@@ -40,7 +44,7 @@ export interface MapLayer {
 	id: number;
 	type: string;
 	name: string;
-	level: number;
+	level: any;
 	width: number;
 	height: number;
 	visible: number;

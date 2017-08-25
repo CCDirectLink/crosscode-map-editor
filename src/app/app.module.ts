@@ -21,6 +21,7 @@ import {FormsModule} from '@angular/forms';
 import {MapSettingsComponent} from './shared/dialogs/map-settings/map-settings.component';
 import {LayersComponent} from './sidenav/layers/layers.component';
 import {EntitiesComponent} from './sidenav/entities/entities.component';
+import {GlobalEventsService} from './shared/global-events.service';
 
 @NgModule({
 	declarations: [
@@ -57,7 +58,8 @@ import {EntitiesComponent} from './sidenav/entities/entities.component';
 		MapSettingsComponent,
 	],
 	providers: [
-		MapLoaderService
+		MapLoaderService,
+		GlobalEventsService,
 	],
 	bootstrap: [AppComponent]
 })

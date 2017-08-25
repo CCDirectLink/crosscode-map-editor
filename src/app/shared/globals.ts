@@ -1,3 +1,4 @@
 export class Globals {
-	static tileSize = 16;
+	static TILE_SIZE = 16;
+	static URL = 'http://localhost:8080/';
 }

@@ -6,6 +6,8 @@ import {MapLoaderService} from '../shared/map-loader.service';
 import {CrossCodeMap, MapLayer} from '../shared/interfaces/cross-code-map';
 import {CCMap} from '../shared/phaser/tilemap/cc-map';
 import {CCMapLayer} from '../shared/phaser/tilemap/cc-map-layer';
+import {EditorView} from '../shared/interfaces/editor-view';
+import {GlobalEventsService} from '../shared/global-events.service';
 
 @Component({
 	selector: 'app-sidenav',
@@ -25,14 +27,21 @@ export class SidenavComponent implements OnInit {
 
 	selectedLayer: CCMapLayer;
 	tilemap: CCMap;
-	tab = 1;
+	currentView: EditorView;
+	editorViewEnum = EditorView;
 
-	constructor(private mapLoader: MapLoaderService) {
+	constructor(private mapLoader: MapLoaderService, private globalEvents: GlobalEventsService) {
 	}
 
 	ngOnInit() {
-		this.mapLoader.selectedLayer.subscribe(layer => this.selectedLayer = layer);
+		this.mapLoader.selectedLayer.subscribe(layer => {
+			if (layer) {
+				this.selectedLayer = layer;
+			}
+		});
 		this.mapLoader.tileMap.subscribe(tilemap => this.tilemap = tilemap);
+		this.globalEvents.currentView.subscribe(view => this.currentView = view);
+
 	}
 
 	getDisplayName(layer: CCMapLayer): string {
@@ -46,10 +55,9 @@ export class SidenavComponent implements OnInit {
 
 	selectLayer(layer: CCMapLayer) {
 		this.mapLoader.selectedLayer.next(layer);
-		console.log(layer);
 	}
 
-	selectTab(id: number) {
-		this.tab = id;
+	selectTab(view) {
+		this.globalEvents.currentView.next(view);
 	}
 }

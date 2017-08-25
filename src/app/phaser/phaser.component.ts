@@ -6,6 +6,10 @@ import {CrossCodeMap} from '../shared/interfaces/cross-code-map';
 import {MapPan} from '../shared/phaser/map-pan';
 import {CCMap} from '../shared/phaser/tilemap/cc-map';
 import {TileDrawer} from '../shared/phaser/tilemap/tile-drawer';
+import {EntityManager} from '../shared/phaser/entities/entity-manager';
+import {GlobalEventsService} from '../shared/global-events.service';
+import {EditorView} from '../shared/interfaces/editor-view';
+import {Globals} from '../shared/globals';
 
 @Component({
 	selector: 'app-phaser',
@@ -22,8 +26,9 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	// plugins
 	private mapPan: MapPan;
 	private tileDrawer: TileDrawer;
+	private entityManager: EntityManager;
 
-	constructor(private element: ElementRef, private mapLoader: MapLoaderService) {
+	constructor(private element: ElementRef, private mapLoader: MapLoaderService, private globalEvents: GlobalEventsService) {
 	}
 
 	ngOnInit() {
@@ -49,10 +54,19 @@ export class PhaserComponent implements OnInit, OnDestroy {
 				this.sub = this.mapLoader.map.subscribe((map) => {
 					if (map) {
 						this.tileMap.loadMap(map).then(tilemap => {
-							console.log(tilemap);
 							this.mapLoader.tileMap.next(tilemap);
 							this.mapLoader.selectedLayer.next(tilemap.layers[0]);
 						});
+					}
+				});
+				this.globalEvents.currentView.subscribe(view => {
+					if (view === EditorView.Layers) {
+						this.tileDrawer.selectLayer(this.mapLoader.selectedLayer.getValue());
+						this.entityManager.deactivate();
+						console.log(this.game.world.children);
+					} else if (view === EditorView.Entities) {
+						this.tileDrawer.selectLayer(null);
+						this.entityManager.activate();
 					}
 				});
 
@@ -60,13 +74,63 @@ export class PhaserComponent implements OnInit, OnDestroy {
 
 				// plugins
 				this.mapPan = game.plugins.add(MapPan);
+				this.entityManager = game.plugins.add(EntityManager);
+				this.entityManager.initialize(this.tileMap);
 				this.tileDrawer = game.plugins.add(TileDrawer);
+
 				this.mapLoader.selectedLayer.subscribe(layer => this.tileDrawer.selectLayer(layer));
+				this.globalEvents.currentView.next(EditorView.Layers);
 
 			},
 			update: () => this.update(),
 			render: () => this.render(),
+			preload: () => this.preload(),
 		}, undefined, false);
+	}
+
+	preload() {
+		let props: any = 'autumn.json\n' +
+			'bergen.json\n' +
+			'bergen-inner.json\n' +
+			'bergen-trail.json\n' +
+			'cabins.json\n' +
+			'cargo-hold.json\n' +
+			'cave.json\n' +
+			'cold-dng.json\n' +
+			'dungeon-ar.json\n' +
+			'heat.json\n' +
+			'heat-dng.json\n' +
+			'heat-interior.json\n' +
+			'heat-village.json\n' +
+			'hideout.json\n' +
+			'invisible.json\n' +
+			'jungle.json\n' +
+			'jungle-city.json\n' +
+			'jungle-interior.json\n' +
+			'jungle-signs.json\n' +
+			'office.json\n' +
+			'rh-interior.json\n' +
+			'rhombus-interior.json\n' +
+			'rhombus-sqr.json\n' +
+			'rhombus-square-view.json\n' +
+			'rookie-harbor.json\n' +
+			'ship-bridge.json\n' +
+			'ship-outer.json\n' +
+			'shockwave-dng.json\n' +
+			'spooky.json\n' +
+			'trading-autumn.json\n' +
+			'unknown-interior.json\n' +
+			'upgrade-glow.json\n' +
+			'upgrade-symbols.json\n' +
+			'various.json';
+
+		props = props.split('\n');
+
+		props.forEach(prop => {
+			this.game.load.json(prop.split('.')[0], Globals.URL + 'data/props/' + prop);
+		});
+		this.game.load.image('media/entity/objects/block.png', Globals.URL + 'media/entity/objects/block.png');
+		this.game.load.crossOrigin = 'anonymous';
 	}
 
 	update() {
@@ -77,16 +141,16 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		this.border.resize(this.tileMap.mapWidth * s, this.tileMap.mapHeight * s);
 
 		// should only sort when needed, refactor when performance becomes a problem
-		this.game.world.sort('zIndex');
-		// this.game.world.children.sort((a: any, b: any) => {
-		// 	const va = a.zIndex || 0;
-		// 	const vb = b.zIndex || 0;
-		// 	const diff = va - vb;
-		// 	if (diff !== 0) {
-		// 		return diff;
-		// 	}
-		// 	return a.z - b.z;
-		// });
+		// this.game.world.sort('zIndex');
+		this.game.world.children.sort((a: any, b: any) => {
+			const va = a.zIndex || 0;
+			const vb = b.zIndex || 0;
+			const diff = va - vb;
+			if (diff !== 0) {
+				return diff;
+			}
+			return a.z - b.z;
+		});
 	}
 
 	render() {
