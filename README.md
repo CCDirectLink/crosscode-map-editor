@@ -1,6 +1,7 @@
 # CrossCode Map Editor
 
 CrossCode Map Editor build with [Angular](https://angular.io/) and [Phaser](https://phaser.io/).
+It's still early in development so don't expect too much.
 
 ## Getting started
 
