@@ -10,6 +10,7 @@ import {EntityManager} from '../shared/phaser/entities/entity-manager';
 import {GlobalEventsService} from '../shared/global-events.service';
 import {EditorView} from '../shared/interfaces/editor-view';
 import {Globals} from '../shared/globals';
+import {PropSheet, ScalableProp} from '../shared/interfaces/props';
 
 @Component({
 	selector: 'app-phaser',
@@ -32,7 +33,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		this.game = new Phaser.Game(screen.width * window.devicePixelRatio, screen.height * window.devicePixelRatio, Phaser.AUTO, 'content', {
+		this.game = new Phaser.Game(screen.width * window.devicePixelRatio, screen.height * window.devicePixelRatio, Phaser.CANVAS, 'content', {
 			create: () => {
 				const game = this.game;
 
@@ -127,10 +128,60 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		props = props.split('\n');
 
 		props.forEach(prop => {
-			this.game.load.json(prop.split('.')[0], Globals.URL + 'data/props/' + prop);
+			this.game.load.json('props/' + prop.split('.')[0], Globals.URL + 'data/props/' + prop);
 		});
+
+		let scalableProps: any = 'autumn.json\n' +
+			'bergen-trail.json\n' +
+			'cave.json\n' +
+			'cold-dng.json\n' +
+			'dungeon-ar.json\n' +
+			'heat-area.json\n' +
+			'heat-dng.json\n' +
+			'heat-village.json\n' +
+			'hideout.json\n' +
+			'jungle-city.json\n' +
+			'jungle.json\n' +
+			'rh-interior.json\n' +
+			'rhombus-sqr-inner.json\n' +
+			'rhombus-sqr.json\n' +
+			'rookie-harbor.json\n' +
+			'ship-outer.json\n' +
+			'shockwave-dng.json';
+
+		scalableProps = scalableProps.split('\n');
+
+		scalableProps.forEach(prop => {
+			this.game.load.json('scale-props/' + prop.split('.')[0], Globals.URL + 'data/scale-props/' + prop);
+		});
+
 		this.game.load.image('media/entity/objects/block.png', Globals.URL + 'media/entity/objects/block.png');
 		this.game.load.crossOrigin = 'anonymous';
+
+		this.game.load.onLoadComplete.addOnce(() => {
+
+			props.forEach(prop => {
+				const sheet: PropSheet = this.game.cache.getJSON('props/' + prop.split('.')[0]);
+				sheet.props.forEach(p => {
+					if (p.fix && p.fix.gfx) {
+						this.game.load.image(p.fix.gfx, Globals.URL + p.fix.gfx, false);
+					}
+				});
+			});
+
+			scalableProps.forEach(prop => {
+				const sheet = this.game.cache.getJSON('scale-props/' + prop.split('.')[0]);
+				Object.keys(sheet.entries).forEach(key => {
+					const p: ScalableProp = sheet.entries[key];
+					if (p.gfx) {
+						this.game.load.image(p.gfx, Globals.URL + p.gfx, false);
+					}
+				});
+			});
+
+			this.game.load.crossOrigin = 'anonymous';
+			this.game.load.start();
+		});
 	}
 
 	update() {

@@ -49,26 +49,6 @@ export class CCMap {
 
 		// load needed assets for sprite props
 		console.log(map.entities.length);
-		map.entities.forEach(entity => {
-			if (entity.type === 'Prop') {
-				const sheet: PropSheet = game.cache.getJSON(entity.settings.propType.sheet);
-				let prop: Prop;
-				for (let i = 0; i < sheet.props.length; i++) {
-					const p = sheet.props[i];
-					if (entity.settings.propType.name === p.name) {
-						prop = p;
-						break;
-					}
-				}
-				if (!prop) {
-					throw new Error(`prop not found: ${entity.settings.propType.name} in ${entity.settings.propType.sheet}`);
-				}
-
-				if (prop.fix) {
-					game.load.image(prop.fix.gfx, Globals.URL + prop.fix.gfx, false);
-				}
-			}
-		});
 
 		map.layer.forEach(layer => {
 			game.load.image(layer.tilesetName, Globals.URL + layer.tilesetName, false);
@@ -76,9 +56,13 @@ export class CCMap {
 
 		return new Promise((resolve, reject) => {
 			game.load.onLoadComplete.addOnce(() => {
+
 				// generate Map Layers
 				if (this.inputLayers) {
 					this.inputLayers.forEach(layer => {
+						if (!layer.tilesetName) {
+							return;
+						}
 						const ccLayer = new CCMapLayer(game, layer);
 						this.layers.push(ccLayer);
 					});

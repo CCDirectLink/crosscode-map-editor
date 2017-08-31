@@ -46,7 +46,7 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		this.tilesetImage = game.make.image(0, 0, details.tilesetName);
 		this.tilesetSize = Helper.getTilesetSize(game.cache.getImage(details.tilesetName));
 
-		this.tileCrop = new Phaser.Rectangle(0, 0, details.tilesize, details.tilesize);
+		this.tileCrop = new Phaser.Rectangle(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
 		this.tilesetImage.crop(this.tileCrop);
 
 		const skip = 'Navigation Collision'.split(' ');
