@@ -73,7 +73,7 @@ export class CCMap {
 				// generate Map Entities
 				if (map.entities) {
 					map.entities.forEach(entity => {
-						// if (entity.x < 400 || entity.x > 700 || entity.y > 200 || entity.y < 170) {
+						// if (entity.x < 10 || entity.x > 50 || entity.y > 300 || entity.y < 150) {
 						// 	return;
 						// }
 						const ccEntity = new CCEntity(game, this, entity.x, entity.y);

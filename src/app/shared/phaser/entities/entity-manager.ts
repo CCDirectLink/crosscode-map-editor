@@ -30,14 +30,27 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 
 	initialize(map: CCMap) {
 		this.map = map;
+
+		map.entities.forEach(entity => {
+			entity.setInputEvents((e, pointer) => {
+				console.log(e);
+				console.log(pointer);
+			});
+		});
 	}
 
 	deactivate() {
+		this.map.entities.forEach(entity => {
+			entity.setEnableInput(false);
+		});
 		this.keyBindings.forEach(binding => binding.detach());
 		this.keyBindings = [];
 	}
 
 	activate() {
+		this.map.entities.forEach(entity => {
+			entity.setEnableInput(true);
+		});
 		this.keyBindings.push(this.game.input.mousePointer.rightButton.onDown.add(() => this.openContextMenu()));
 	}
 

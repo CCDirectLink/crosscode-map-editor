@@ -61,4 +61,15 @@ export class Helper {
 	public static clamp(val, min, max) {
 		return Math.min(Math.max(val, min), max);
 	}
+
+	public static drawRect(context: CanvasRenderingContext2D, rect: Phaser.Rectangle, fillStyle, strokeStyle) {
+		const o = new Phaser.Rectangle(rect.x + 0.5, rect.y + 0.5, rect.width - 1, rect.height);
+
+		context.fillStyle = fillStyle;
+		context.fillRect(o.x, o.y, o.width, o.height);
+
+		context.lineWidth = 1;
+		context.strokeStyle = strokeStyle;
+		context.strokeRect(o.x, o.y, o.width, o.height);
+	}
 }
