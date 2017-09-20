@@ -11,7 +11,7 @@ export class Helper {
 			y = (<any>x).y;
 			x = (<any>x).x;
 		}
-		const p = <any>{};
+		const p: Point = {};
 		const cam = game.camera;
 		p.x = (<any>x + cam.x) / cam.scale.x;
 		p.y = (y + cam.y) / cam.scale.y;
@@ -20,7 +20,7 @@ export class Helper {
 	}
 
 	public static worldToTile(x: number, y: number): Point {
-		const p = <any>{};
+		const p: Point = {};
 
 		p.x = Math.floor(x / Globals.TILE_SIZE);
 		p.y = Math.floor(y / Globals.TILE_SIZE);

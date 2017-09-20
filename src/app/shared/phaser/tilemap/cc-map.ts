@@ -3,6 +3,7 @@ import {CCMapLayer} from './cc-map-layer';
 import {CCEntity} from '../entities/cc-entity';
 import {Globals} from '../../globals';
 import {Prop, PropSheet} from '../../interfaces/props';
+import {EntityManager} from '../entities/entity-manager';
 
 export class CCMap {
 	name: string;
@@ -71,18 +72,11 @@ export class CCMap {
 				}
 
 				// generate Map Entities
-				if (map.entities) {
-					map.entities.forEach(entity => {
-						// if (entity.x < 10 || entity.x > 50 || entity.y > 300 || entity.y < 150) {
-						// 	return;
-						// }
-						const ccEntity = new CCEntity(game, this, entity.x, entity.y);
-						ccEntity.settings = entity.settings;
-						ccEntity.ccType = entity.type;
-						ccEntity.level = entity.level;
-						this.entities.push(ccEntity);
-					});
-				}
+				game.plugins.plugins.forEach(plugin => {
+					if (plugin instanceof EntityManager) {
+						plugin.initialize(this, map);
+					}
+				});
 
 				resolve(this);
 			});

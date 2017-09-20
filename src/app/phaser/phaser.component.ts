@@ -60,6 +60,12 @@ export class PhaserComponent implements OnInit, OnDestroy {
 						});
 					}
 				});
+
+				// plugins
+				this.mapPan = game.plugins.add(MapPan);
+				this.entityManager = game.plugins.add(EntityManager);
+				this.tileDrawer = game.plugins.add(TileDrawer);
+
 				this.globalEvents.currentView.subscribe(view => {
 					if (view === EditorView.Layers) {
 						this.tileDrawer.selectLayer(this.mapLoader.selectedLayer.getValue());
@@ -72,12 +78,6 @@ export class PhaserComponent implements OnInit, OnDestroy {
 				});
 
 				this.border = new Phaser.Rectangle(0, 0, 0, 0);
-
-				// plugins
-				this.mapPan = game.plugins.add(MapPan);
-				this.entityManager = game.plugins.add(EntityManager);
-				this.entityManager.initialize(this.tileMap);
-				this.tileDrawer = game.plugins.add(TileDrawer);
 
 				this.mapLoader.selectedLayer.subscribe(layer => this.tileDrawer.selectLayer(layer));
 				this.globalEvents.currentView.next(EditorView.Layers);

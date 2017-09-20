@@ -1,16 +1,24 @@
 import {Sortable, SortableGroup} from '../../interfaces/sortable';
-import * as Phaser from 'phaser-ce';
 import {CCMap} from '../tilemap/cc-map';
 import {Prop, PropSheet, ScalableProp, ScalablePropSheet} from '../../interfaces/props';
-import {Globals} from '../../globals';
 import {Point, Point3} from '../../interfaces/cross-code-map';
 import {Helper} from '../helper';
+import * as Phaser from 'phaser-ce';
+import {Vec2} from '../vec2';
+
+export interface InputEvents {
+	onInputDown?: (entity: CCEntity, pointer: Phaser.Pointer) => void;
+	onInputUp?: (entity: CCEntity, pointer: Phaser.Pointer, isOver: boolean) => void;
+	onDragStart?: (entity: CCEntity, pointer: Phaser.Pointer, x: number, y: number) => void;
+	onDragUpdate?: (entity: CCEntity, pointer: Phaser.Pointer, x: number, y: number, point: Point, fromStart: boolean) => void;
+	onDragStop?: (entity: CCEntity, pointer: Phaser.Pointer) => void;
+}
 
 export class CCEntity extends Phaser.Image implements Sortable {
 
 	private boundingBox: Point3;
 	private map: CCMap;
-	private group: SortableGroup;
+	public group: SortableGroup;
 	private levelOffsetGroup: SortableGroup;
 	private boundingBoxOffsetGroup: SortableGroup;
 
@@ -18,22 +26,21 @@ export class CCEntity extends Phaser.Image implements Sortable {
 	private tileSprite: Phaser.TileSprite;
 	private bitmap: Phaser.BitmapData;
 
-	// input
-	private colissionBitmap: Phaser.BitmapData;
-	private colissionImage: Phaser.Image;
-	private inputEvents: {
-		onInputDown?;
-		onInputUp?;
-		onDragStart?;
-		onDragUpdate?;
-		onDragStop?;
-	} = {};
+	// input (is handled mostly by entity manager)
+	private collisionBitmap: Phaser.BitmapData;
+	public collisionImage: Phaser.Image;
+	private inputEvents: InputEvents = {};
+	private selected = false;
+
+	// drag
+	public isDragged = false;
+	public startOffset: Point = {};
 
 	zIndex: number;
 	details: { level: { level: number, offset: number }, type: string, settings: any };
 	entitySettings: {
 		collType: string;
-		size: Point3;
+		baseSize: Point3;
 		sheet: {
 			gfx: string;
 			x: number;
@@ -48,8 +55,9 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		pivot: Point;
 	} = <any>{};
 
-	constructor(game: Phaser.Game, map: CCMap, x: number, y: number) {
+	constructor(game: Phaser.Game, map: CCMap, x: number, y: number, inputEvents: InputEvents) {
 		super(game, 0, 0, 'media/entity/objects/block.png');
+		this.setInputEvents(inputEvents);
 		this.map = map;
 		game.add.existing(this);
 		this.crop(new Phaser.Rectangle(0, 0, 32, 32));
@@ -78,9 +86,9 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		const game = this.game;
 
 		// bound box offset
-		if (s.size) {
-			this.boundingBoxOffsetGroup.x = s.size.x / 2;
-			this.boundingBoxOffsetGroup.y = s.size.y;
+		if (s.baseSize) {
+			this.boundingBoxOffsetGroup.x = s.baseSize.x / 2;
+			this.boundingBoxOffsetGroup.y = s.baseSize.y;
 		}
 
 		// setup prop sprite
@@ -100,61 +108,31 @@ export class CCEntity extends Phaser.Image implements Sortable {
 				if (this.tileSprite) {
 					this.boundingBoxOffsetGroup.remove(this.tileSprite);
 				}
-				this.tileSprite = game.make.tileSprite(0, 0, settings.size.x, settings.size.y + s.size.z, this.bitmap, undefined);
+				this.tileSprite = game.make.tileSprite(0, 0, settings.size.x, settings.size.y + s.baseSize.z, this.bitmap, undefined);
 				this.boundingBoxOffsetGroup.add(this.tileSprite);
 				this.boundingBoxOffsetGroup.x = 0;
-				this.boundingBoxOffsetGroup.y = -s.size.z;
+				this.boundingBoxOffsetGroup.y = -s.baseSize.z;
 				this.visible = false;
 			}
 
 			// setup bounding box
-			if (s.size) {
-				if (this.colissionBitmap) {
-					this.colissionBitmap.destroy();
-				}
-				const inputArea = new Phaser.Rectangle(-s.size.x / 2, -s.size.y, s.size.x, s.size.y);
-				console.log(inputArea);
-
-				// display colissions
-				this.colissionBitmap = game.make.bitmapData(inputArea.width, inputArea.height + s.size.z);
-				const context = this.colissionBitmap.context;
-				const outline = 'rgba(0,0,0,1)';
-
-				const bottomRect = new Phaser.Rectangle(0, s.size.z - 1, inputArea.width, inputArea.height);
-				Helper.drawRect(context, bottomRect, 'rgba(255, 255, 40, 1)', outline);
-
-				// show middle and top part only if entity is not flat
-				if (s.size.z > 0) {
-					const middleRect = new Phaser.Rectangle(0, inputArea.height, inputArea.width, s.size.z - 1);
-					Helper.drawRect(context, middleRect, 'rgba(255, 40, 40, 1)', outline);
-
-					const topRect = new Phaser.Rectangle(0, 0, inputArea.width, inputArea.height);
-					Helper.drawRect(context, topRect, 'rgba(255, 255, 40, 1)', outline);
-
-					Helper.drawRect(context, bottomRect, 'rgba(255, 255, 40, 0.1)', outline);
-				}
-
-				let enableInput = false;
-				if (this.colissionImage) {
-					this.boundingBoxOffsetGroup.remove(this.colissionImage);
-					enableInput = this.colissionImage.inputEnabled;
-				}
-				this.colissionImage = game.add.image(inputArea.x, inputArea.y - (s.size.z || 0), this.colissionBitmap);
-				const collImg = this.colissionImage;
-				collImg.alpha = 0;
-
-				this.boundingBoxOffsetGroup.add(collImg);
+			if (s.baseSize) {
+				this.drawBoundingBox();
+				const collImg = this.collisionImage;
 
 				// handle input
 				collImg.events.onInputOver.add(() => {
-					collImg.alpha = 0.4;
+					if (!this.selected) {
+						collImg.alpha = 0.35;
+					}
 				});
 				collImg.events.onInputOut.add(() => {
-					collImg.alpha = 0;
+					if (!this.selected) {
+						collImg.alpha = 0;
+					}
 				});
 
-				collImg.inputEnabled = enableInput;
-				this.setEvents(false);
+				this.setEvents();
 			}
 		}
 	}
@@ -182,7 +160,7 @@ export class CCEntity extends Phaser.Image implements Sortable {
 
 			this.entitySettings = <any>{};
 			this.entitySettings.sheet = prop.fix;
-			this.entitySettings.size = prop.size;
+			this.entitySettings.baseSize = prop.size;
 			this.entitySettings.collType = prop.collType;
 		} else if (type === 'ScalableProp') {
 			const settings = this.details.settings;
@@ -206,7 +184,7 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			this.entitySettings.scalableX = prop.scalableX;
 			this.entitySettings.scalableY = prop.scalableY;
 			this.entitySettings.scalableStep = prop.scalableStep;
-			this.entitySettings.size = prop.baseSize;
+			this.entitySettings.baseSize = prop.baseSize;
 			this.entitySettings.collType = prop.collType;
 			this.entitySettings.pivot = prop.pivot;
 		}
@@ -216,25 +194,16 @@ export class CCEntity extends Phaser.Image implements Sortable {
 	set level(level: any) {
 		const details = this.details;
 
-		let zIndex = 0;
 		if (typeof level === 'object') {
-			zIndex = level.level;
 			details.level = level;
 		} else {
-			zIndex = level;
 			details.level = {
 				level: level,
 				offset: 0
 			};
 		}
 
-		zIndex *= 10;
-		zIndex++;
-
-		// sort entities by y when on same level
-		zIndex += this.group.y * 0.000001;
-
-		this.group.zIndex = zIndex;
+		this.updateZIndex();
 
 		this.levelOffsetGroup.y = -(this.map.levels[details.level.level].height + details.level.offset);
 	}
@@ -245,27 +214,19 @@ export class CCEntity extends Phaser.Image implements Sortable {
 	}
 
 	setEnableInput(enable: boolean) {
-		if (!this.colissionImage) {
+		if (!this.collisionImage) {
 			return;
 		}
-		this.colissionImage.inputEnabled = enable;
-		this.colissionImage.alpha = 0;
-		this.colissionImage.visible = enable;
+		this.collisionImage.inputEnabled = enable;
+		this.collisionImage.alpha = 0;
+		this.collisionImage.visible = enable;
 	}
 
-	setInputEvents(onInputDown, onInputUp?) {
-		this.setEvents(true);
-		this.inputEvents.onInputDown = (o, pointer) => onInputDown(this, event);
-		this.inputEvents.onInputUp = onInputUp;
-		this.setEvents(false);
-	}
-
-	setDragEvents(onDragStart, onDragUpdate?, onDragStop?) {
-		this.setEvents(true);
-		this.inputEvents.onDragStart = onDragStart;
-		this.inputEvents.onDragUpdate = onDragUpdate;
-		this.inputEvents.onDragStop = onDragStop;
-		this.setEvents(false);
+	setSelected(selected: boolean) {
+		this.selected = selected;
+		if (this.collisionImage) {
+			this.collisionImage.alpha = selected ? 0.6 : 0;
+		}
 	}
 
 	destroy() {
@@ -278,26 +239,101 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		if (this.bitmap) {
 			this.bitmap.destroy();
 		}
-		if (this.colissionBitmap) {
-			this.colissionBitmap.destroy();
+		if (this.collisionBitmap) {
+			this.collisionBitmap.destroy();
 		}
 		super.destroy();
 	}
 
-	private setEvents(remove: boolean) {
-		if (!this.colissionImage) {
+	update() {
+		super.update();
+		if (this.isDragged) {
+			const p = Helper.screenToWorld(this.game, this.game.input.mousePointer);
+			this.group.x = Math.round(p.x - this.startOffset.x);
+			this.group.y = Math.round(p.y - this.startOffset.y);
+			this.updateZIndex();
+		}
+	}
+
+	updateZIndex() {
+		let zIndex = this.details.level.level * 10 + 1;
+
+		// sort entities by y when on same level
+		zIndex += this.group.y * 0.000001;
+
+		this.group.zIndex = zIndex;
+	}
+
+	private setInputEvents(inputEvents: InputEvents) {
+		const events = this.inputEvents;
+		const input = inputEvents;
+		events.onInputDown = (o, pointer) => {
+
+			if (input.onInputDown) {
+				input.onInputDown(this, pointer);
+			}
+		};
+		events.onInputUp = (o, pointer, isOver) => {
+			this.isDragged = false;
+			if (input.onInputUp) {
+				input.onInputUp(this, pointer, isOver);
+			}
+		};
+	}
+
+	private setEvents() {
+		if (!this.collisionImage) {
 			return;
 		}
 		Object.entries(this.inputEvents).forEach(([key, value]) => {
 			if (!value) {
 				return;
 			}
-			if (remove) {
-				this.colissionImage.events[key].remove(value);
-			} else {
-				this.colissionImage.events[key].add(value);
-			}
+			this.collisionImage.events[key].removeAll();
+			this.collisionImage.events[key].add(value);
 		});
+	}
+
+	private drawBoundingBox() {
+		const s = this.entitySettings;
+
+		if (this.collisionBitmap) {
+			this.collisionBitmap.destroy();
+		}
+		const size = this.details.settings.size || s.baseSize;
+		size.z = size.z || s.baseSize.z || 0;
+		const inputArea = new Phaser.Rectangle(0, 0, size.x, size.y);
+
+		this.collisionBitmap = this.game.make.bitmapData(inputArea.width, inputArea.height + size.z);
+		const context = this.collisionBitmap.context;
+		const outline = 'rgba(0,0,0,1)';
+
+		const bottomRect = new Phaser.Rectangle(0, size.z - 1, inputArea.width, inputArea.height);
+		Helper.drawRect(context, bottomRect, 'rgba(255, 255, 40, 1)', outline);
+
+		// show middle and top part only if entity is not flat
+		if (size.z > 0) {
+			const middleRect = new Phaser.Rectangle(0, inputArea.height, inputArea.width, size.z - 1);
+			Helper.drawRect(context, middleRect, 'rgba(255, 40, 40, 1)', outline);
+
+			const topRect = new Phaser.Rectangle(0, 0, inputArea.width, inputArea.height);
+			Helper.drawRect(context, topRect, 'rgba(255, 255, 40, 1)', outline);
+
+			Helper.drawRect(context, bottomRect, 'rgba(255, 255, 40, 0.1)', outline);
+		}
+
+		let enableInput = false;
+		if (this.collisionImage) {
+			this.levelOffsetGroup.remove(this.collisionImage);
+			enableInput = this.collisionImage.inputEnabled;
+		}
+		this.collisionImage = this.game.add.image(inputArea.x, inputArea.y - (size.z || 0), this.collisionBitmap);
+		const collImg = this.collisionImage;
+		collImg.alpha = 0;
+
+		this.levelOffsetGroup.add(collImg);
+
+		collImg.inputEnabled = enableInput;
 	}
 
 }

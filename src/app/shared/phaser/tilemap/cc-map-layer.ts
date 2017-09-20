@@ -56,7 +56,7 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 			}
 		});
 
-		this.zIndex = this.details.level;
+		this.zIndex = this.details.level * 10;
 		if (isNaN(this.zIndex)) {
 			this.zIndex = 999;
 		}
