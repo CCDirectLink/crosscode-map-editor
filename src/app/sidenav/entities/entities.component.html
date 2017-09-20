@@ -1,3 +1,32 @@
-<p>
-  entities yey
-</p>
+<h2 class="mat-title">{{entity?.details.type}}</h2>
+<div class="entity-settings-container" fxLayout="column" fxFlex="1 0 100%" *ngIf="entity">
+	
+	<div fxLayout="row" fxFlex="0 0 auto" class="property-container">
+		<span class="property-name">Name:</span>
+		<input class="default-input">
+	</div>
+	
+	<div fxLayout="row" fxFlex="0 0 auto" class="property-container">
+		<span class="property-name">Pos:</span>
+		
+		<span class="property-name-small">X:</span>
+		<input type="number" class="default-input small-input" [(ngModel)]="entity.group.x">
+		
+		<span class="property-name-small">Y:</span>
+		<input type="number" class="default-input small-input" [(ngModel)]="entity.group.y">
+	</div>
+	
+	<div fxLayout="row" fxFlex="0 0 auto" class="property-container">
+		<span class="property-name">Level:</span>
+		
+		<input type="number" class="default-input small-input" min="0" [max]="map.levels.length-1"
+		       [ngModel]="entity.details.level.level" (input)="setLevel($event.target.value)">
+		
+		<span class="property-name-small">+</span>
+		<input type="number" class="default-input small-input" [ngModel]="entity.details.level.offset"
+		       (input)="setOffset($event.target.value)">
+		<span class="property-name-small">px</span>
+	
+	</div>
+
+</div>

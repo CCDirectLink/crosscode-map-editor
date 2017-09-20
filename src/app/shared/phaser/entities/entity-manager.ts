@@ -4,6 +4,7 @@ import {Helper} from '../helper';
 import {CCMap} from '../tilemap/cc-map';
 import {CrossCodeMap, Point} from '../../interfaces/cross-code-map';
 import {Vec2} from '../vec2';
+import {GlobalEventsService} from '../../global-events.service';
 
 export class EntityManager extends Phaser.Plugin implements Sortable {
 
@@ -13,6 +14,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 
 	private inputEvents: InputEvents = {};
 	private selectedEntity: CCEntity;
+	private globalEvents: GlobalEventsService;
 
 	constructor(game: Phaser.Game, parent) {
 		super(game, parent);
@@ -31,13 +33,6 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 				e.isDragged = true;
 			}
 		};
-	}
-
-	private openContextMenu() {
-	}
-
-	update() {
-
 	}
 
 	/** generates all entities and adds proper input handling */
@@ -59,13 +54,22 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	}
 
 	selectEntity(entity: CCEntity) {
-		if (this.selectedEntity) {
-			this.selectedEntity.setSelected(false);
+		if (this.selectedEntity !== entity) {
+			this.globalEvents.selectedEntity.next(entity);
 		}
-		this.selectedEntity = entity;
-		if (entity) {
-			entity.setSelected(true);
-		}
+	}
+
+	setGlobalEvents(globalEvents: GlobalEventsService) {
+		this.globalEvents = globalEvents;
+		this.globalEvents.selectedEntity.subscribe(entity => {
+			if (this.selectedEntity) {
+				this.selectedEntity.setSelected(false);
+			}
+			this.selectedEntity = entity;
+			if (entity) {
+				entity.setSelected(true);
+			}
+		});
 	}
 
 	deactivate() {
@@ -74,14 +78,16 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		if (!this.map) {
 			return;
 		}
+		this.selectedEntity = null;
 		this.map.entities.forEach(entity => {
 			entity.setEnableInput(false);
+			entity.setSelected(false);
 		});
 	}
 
 	activate() {
 		// this.keyBindings.push(this.game.input.mousePointer.rightButton.onDown.add(() => this.openContextMenu()));
-		this.keyBindings.push(this.game.input.mousePointer.leftButton.onDown.add(() => this.selectEntity(null)));
+		// this.keyBindings.push(this.game.input.mousePointer.leftButton.onDown.add(() => this.selectEntity(null)));
 		if (!this.map) {
 			return;
 		}

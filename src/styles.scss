@@ -27,6 +27,10 @@ html * {
 	//transition: border 0.3s;
 }
 
+.small-input {
+	width: 60px;
+}
+
 .default-input:focus,
 .default-input.focus {
 	outline-offset: 0;

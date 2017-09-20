@@ -203,9 +203,14 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			};
 		}
 
-		this.updateZIndex();
+		this.updateLevel();
+	}
 
-		this.levelOffsetGroup.y = -(this.map.levels[details.level.level].height + details.level.offset);
+	updateLevel() {
+		this.updateZIndex();
+		const height = this.map.levels[this.details.level.level].height;
+		const offset = this.details.level.offset;
+		this.levelOffsetGroup.y = -(height + offset);
 	}
 
 	set settings(settings: any) {
@@ -314,7 +319,7 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		// show middle and top part only if entity is not flat
 		if (size.z > 0) {
 			const middleRect = new Phaser.Rectangle(0, inputArea.height, inputArea.width, size.z - 1);
-			Helper.drawRect(context, middleRect, 'rgba(255, 40, 40, 1)', outline);
+			Helper.drawRect(context, middleRect, 'rgba(255, 40, 40, 0.5)', outline);
 
 			const topRect = new Phaser.Rectangle(0, 0, inputArea.width, inputArea.height);
 			Helper.drawRect(context, topRect, 'rgba(255, 255, 40, 1)', outline);
@@ -335,5 +340,4 @@ export class CCEntity extends Phaser.Image implements Sortable {
 
 		collImg.inputEnabled = enableInput;
 	}
-
 }

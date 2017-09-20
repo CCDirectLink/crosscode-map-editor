@@ -64,6 +64,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 				// plugins
 				this.mapPan = game.plugins.add(MapPan);
 				this.entityManager = game.plugins.add(EntityManager);
+				this.entityManager.setGlobalEvents(this.globalEvents);
 				this.tileDrawer = game.plugins.add(TileDrawer);
 
 				this.globalEvents.currentView.subscribe(view => {

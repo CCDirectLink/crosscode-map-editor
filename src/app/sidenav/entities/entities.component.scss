@@ -1,0 +1,38 @@
+h2 {
+	margin-left: 14px;
+	margin-top: 10px;
+	margin-bottom: 0;
+	background: transparent;
+}
+
+.property-container {
+	margin-bottom: 14px;
+}
+
+.small-input {
+	margin-right: 8px;
+	width: 58px;
+}
+
+.entity-settings-container {
+	margin-left: 16px;
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
+
+.property-name {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	width: 94px;
+	height: 24px;
+	margin-right: 10px;
+	//border: 1px solid #5ad972;
+}
+
+.property-name-small {
+	@extend .property-name;
+	width: 20px;
+	justify-content: center;
+	margin-right: 0;
+}
