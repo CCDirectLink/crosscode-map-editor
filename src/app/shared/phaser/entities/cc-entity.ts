@@ -42,11 +42,12 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		collType: string;
 		baseSize: Point3;
 		sheet: {
-			gfx: string;
+			gfx: string | Phaser.BitmapData;
 			x: number;
 			y: number;
 			w: number;
 			h: number;
+			singleColor?: boolean;
 			flipX: boolean;
 		}
 		scalableX: boolean;
@@ -56,11 +57,10 @@ export class CCEntity extends Phaser.Image implements Sortable {
 	} = <any>{};
 
 	constructor(game: Phaser.Game, map: CCMap, x: number, y: number, inputEvents: InputEvents) {
-		super(game, 0, 0, 'media/entity/objects/block.png');
+		super(game, 0, 0, null);
 		this.setInputEvents(inputEvents);
 		this.map = map;
 		game.add.existing(this);
-		this.crop(new Phaser.Rectangle(0, 0, 32, 32));
 		this.details = <any>{};
 
 		this.boundingBoxOffsetGroup = game.add.group();
@@ -91,12 +91,16 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			this.boundingBoxOffsetGroup.y = s.baseSize.y;
 		}
 
-		// setup prop sprite
+		// setup sprite
 		if (s.sheet) {
 			const o = s.sheet;
 			this.loadTexture(o.gfx);
-			this.cropRect.setTo(o.x, o.y, o.w, o.h);
-			this.updateCrop();
+			if (!this.cropRect) {
+				this.crop(new Phaser.Rectangle(o.x, o.y, o.w, o.h));
+			} else {
+				this.cropRect.setTo(o.x, o.y, o.w, o.h);
+				this.updateCrop();
+			}
 
 			// setup scalable
 			if (s.scalableX || s.scalableY) {
@@ -114,35 +118,32 @@ export class CCEntity extends Phaser.Image implements Sortable {
 				this.boundingBoxOffsetGroup.y = -s.baseSize.z;
 				this.visible = false;
 			}
-
-			// setup bounding box
-			if (s.baseSize) {
-				this.drawBoundingBox();
-				const collImg = this.collisionImage;
-
-				// handle input
-				collImg.events.onInputOver.add(() => {
-					if (!this.selected) {
-						collImg.alpha = 0.35;
-					}
-				});
-				collImg.events.onInputOut.add(() => {
-					if (!this.selected) {
-						collImg.alpha = 0;
-					}
-				});
-
-				this.setEvents();
-			}
 		}
+
+		this.drawBoundingBox();
+		const collImg = this.collisionImage;
+
+		// handle hover input
+		collImg.events.onInputOver.add(() => {
+			if (!this.selected) {
+				collImg.alpha = 0.35;
+			}
+		});
+		collImg.events.onInputOut.add(() => {
+			if (!this.selected) {
+				collImg.alpha = 0;
+			}
+		});
+
+		this.setEvents();
 	}
 
 	set ccType(type: string) {
 		this.details.type = type;
 
+		const settings = this.details.settings;
 		// load correct image if prop
 		if (type === 'Prop') {
-			const settings = this.details.settings;
 			const sheet: PropSheet = this.game.cache.getJSON('props/' + settings.propType.sheet);
 			let prop: Prop;
 			for (let i = 0; i < sheet.props.length; i++) {
@@ -163,7 +164,6 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			this.entitySettings.baseSize = prop.size;
 			this.entitySettings.collType = prop.collType;
 		} else if (type === 'ScalableProp') {
-			const settings = this.details.settings;
 			const sheet: ScalablePropSheet = this.game.cache.getJSON('scale-props/' + settings.propConfig.sheet);
 			const prop: ScalableProp = sheet.entries[settings.propConfig.name];
 			if (!prop) {
@@ -187,6 +187,28 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			this.entitySettings.baseSize = prop.baseSize;
 			this.entitySettings.collType = prop.collType;
 			this.entitySettings.pivot = prop.pivot;
+		} else {
+			// default
+			this.entitySettings = <any>{};
+			this.entitySettings.baseSize = {x: 16, y: 16, z: settings.zHeight || 0};
+			if (settings.size) {
+				this.entitySettings.scalableX = true;
+				this.entitySettings.scalableY = true;
+			} else {
+				this.anchor.y = 1;
+				this.anchor.x = 0.5;
+			}
+			const singleColor = this.game.make.bitmapData(16, 16);
+			singleColor.fill(40, 60, 255, 0.5);
+			this.entitySettings.sheet = {
+				gfx: singleColor,
+				x: 0,
+				y: 0,
+				w: 16,
+				h: 16,
+				singleColor: true,
+				flipX: false,
+			};
 		}
 		this.updateSettings();
 	}
@@ -306,15 +328,14 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			this.collisionBitmap.destroy();
 		}
 		const size = this.details.settings.size || s.baseSize;
-		size.z = size.z || s.baseSize.z || 0;
+		size.z = size.z || this.details.settings.zHeight || s.baseSize.z || 0;
 		const inputArea = new Phaser.Rectangle(0, 0, size.x, size.y);
 
 		this.collisionBitmap = this.game.make.bitmapData(inputArea.width, inputArea.height + size.z);
 		const context = this.collisionBitmap.context;
 		const outline = 'rgba(0,0,0,1)';
 
-		const bottomRect = new Phaser.Rectangle(0, size.z - 1, inputArea.width, inputArea.height);
-		Helper.drawRect(context, bottomRect, 'rgba(255, 255, 40, 1)', outline);
+		const bottomRect = new Phaser.Rectangle(0, size.z, inputArea.width, inputArea.height - 1);
 
 		// show middle and top part only if entity is not flat
 		if (size.z > 0) {
@@ -325,6 +346,8 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			Helper.drawRect(context, topRect, 'rgba(255, 255, 40, 1)', outline);
 
 			Helper.drawRect(context, bottomRect, 'rgba(255, 255, 40, 0.1)', outline);
+		} else {
+			Helper.drawRect(context, bottomRect, 'rgba(255, 255, 40, 1)', outline);
 		}
 
 		let enableInput = false;

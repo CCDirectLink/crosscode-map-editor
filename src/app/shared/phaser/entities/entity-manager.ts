@@ -41,6 +41,9 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 
 		if (mapInput.entities) {
 			mapInput.entities.forEach(entity => {
+				// if (entity.type === 'Prop' || entity.type === 'ScalableProp') {
+				// 	return;
+				// }
 				// if (entity.x < 10 || entity.x > 50 || entity.y > 300 || entity.y < 150) {
 				// 	return;
 				// }
