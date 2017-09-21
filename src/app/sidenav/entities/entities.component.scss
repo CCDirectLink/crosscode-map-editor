@@ -1,3 +1,7 @@
+@import "~@angular/material/theming";
+
+$config: mat-typography-config();
+
 h2 {
 	margin-left: 14px;
 	margin-top: 10px;
@@ -9,22 +13,34 @@ h2 {
 	margin-bottom: 14px;
 }
 
+.default-input{
+	flex: 1 1 0;
+	width: 0;
+}
+
 .small-input {
 	margin-right: 8px;
-	width: 58px;
+	width: 50px;
 }
 
 .entity-settings-container {
-	margin-left: 16px;
-	margin-top: 16px;
-	margin-bottom: 16px;
+	padding: 16px 16px 16px 16px;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .property-name {
 	display: flex;
+	flex: 0 0 auto;
 	justify-content: flex-end;
 	align-items: center;
-	width: 94px;
+
+	$font-type: body-1;
+	font-family: mat-font-family($config);
+	font-size: mat-font-size($config, $font-type);
+	font-weight: mat-font-weight($config, $font-type);
+
+	width: 100px;
 	height: 24px;
 	margin-right: 10px;
 	//border: 1px solid #5ad972;

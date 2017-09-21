@@ -1,5 +1,5 @@
 <h2 class="mat-title">{{entity?.details.type}}</h2>
-<div class="entity-settings-container" fxLayout="column" fxFlex="1 0 100%" *ngIf="entity">
+<div class="entity-settings-container" fxLayout="column" *ngIf="entity">
 	
 	<div fxLayout="row" fxFlex="0 0 auto" class="property-container">
 		<span class="property-name">Name:</span>
@@ -26,7 +26,12 @@
 		<input type="number" class="default-input small-input" [ngModel]="entity.details.level.offset"
 		       (input)="setOffset($event.target.value)">
 		<span class="property-name-small">px</span>
+	</div>
 	
+	<!-- TODO: should load custom components based on input type -->
+	<div fxLayout="row" fxFlex="0 0 auto" class="property-container" *ngFor="let key of settingKeys">
+		<span class="property-name">{{key}}:</span>
+		<textarea class="default-input" [ngModel]="json.stringify(entity.details.settings[key], undefined, 2)" (input)="setSetting($event.target.value, key)"></textarea>
 	</div>
 
 </div>

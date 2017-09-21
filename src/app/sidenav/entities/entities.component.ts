@@ -13,9 +13,19 @@ export class EntitiesComponent implements OnInit {
 
 	entity: CCEntity;
 	map: CCMap;
+	settingKeys: string[];
+	json = JSON;
 
 	constructor(private events: GlobalEventsService, private loader: MapLoaderService) {
-		events.selectedEntity.subscribe(e => this.entity = e);
+		events.selectedEntity.subscribe(e => {
+			this.entity = e;
+			if (!e) {
+				return;
+			}
+			this.settingKeys = Object.keys(e.details.settings);
+			// removes name, because it's already hardcoded
+			this.settingKeys.shift();
+		});
 		loader.tileMap.subscribe(map => this.map = map);
 	}
 
@@ -30,6 +40,11 @@ export class EntitiesComponent implements OnInit {
 	setOffset(offset: number) {
 		this.entity.details.level.offset = Number(offset);
 		this.entity.updateLevel();
+	}
+
+	setSetting(value: string, key: string) {
+		this.entity.details.settings[key] = JSON.parse(value);
+		this.entity.updateType();
 	}
 
 }

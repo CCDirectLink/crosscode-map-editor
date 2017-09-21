@@ -56,12 +56,13 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		pivot: Point;
 	} = <any>{};
 
-	constructor(game: Phaser.Game, map: CCMap, x: number, y: number, inputEvents: InputEvents) {
+	constructor(game: Phaser.Game, map: CCMap, x: number, y: number, type: string, inputEvents: InputEvents) {
 		super(game, 0, 0, null);
 		this.setInputEvents(inputEvents);
 		this.map = map;
 		game.add.existing(this);
 		this.details = <any>{};
+		this.details.type = type;
 
 		this.boundingBoxOffsetGroup = game.add.group();
 		this.boundingBoxOffsetGroup.add(this);
@@ -138,9 +139,8 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		this.setEvents();
 	}
 
-	set ccType(type: string) {
-		this.details.type = type;
-
+	updateType() {
+		const type = this.details.type;
 		const settings = this.details.settings;
 		// load correct image if prop
 		if (type === 'Prop') {
@@ -154,7 +154,8 @@ export class CCEntity extends Phaser.Image implements Sortable {
 				}
 			}
 			if (!prop) {
-				throw new Error('prop not found: ' + settings.propType.name);
+				console.error('prop not found: ' + settings.propType.name);
+				return this.generateUndefinedType();
 			}
 			this.anchor.y = 1;
 			this.anchor.x = 0.5;
@@ -167,7 +168,8 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			const sheet: ScalablePropSheet = this.game.cache.getJSON('scale-props/' + settings.propConfig.sheet);
 			const prop: ScalableProp = sheet.entries[settings.propConfig.name];
 			if (!prop) {
-				throw new Error('scale-prop not found: ' + settings.propConfig.name);
+				console.error('scale-prop not found: ' + settings.propConfig.name);
+				return this.generateUndefinedType();
 			}
 
 			this.entitySettings = <any>{};
@@ -188,28 +190,33 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			this.entitySettings.collType = prop.collType;
 			this.entitySettings.pivot = prop.pivot;
 		} else {
-			// default
-			this.entitySettings = <any>{};
-			this.entitySettings.baseSize = {x: 16, y: 16, z: settings.zHeight || 0};
-			if (settings.size) {
-				this.entitySettings.scalableX = true;
-				this.entitySettings.scalableY = true;
-			} else {
-				this.anchor.y = 1;
-				this.anchor.x = 0.5;
-			}
-			const singleColor = this.game.make.bitmapData(16, 16);
-			singleColor.fill(40, 60, 255, 0.5);
-			this.entitySettings.sheet = {
-				gfx: singleColor,
-				x: 0,
-				y: 0,
-				w: 16,
-				h: 16,
-				singleColor: true,
-				flipX: false,
-			};
+			return this.generateUndefinedType();
 		}
+		this.updateSettings();
+	}
+
+	private generateUndefinedType() {
+		const settings = this.details.settings;
+		this.entitySettings = <any>{};
+		this.entitySettings.baseSize = {x: 16, y: 16, z: settings.zHeight || 0};
+		if (settings.size) {
+			this.entitySettings.scalableX = true;
+			this.entitySettings.scalableY = true;
+		} else {
+			this.anchor.y = 1;
+			this.anchor.x = 0.5;
+		}
+		const singleColor = this.game.make.bitmapData(16, 16);
+		singleColor.fill(40, 60, 255, 0.5);
+		this.entitySettings.sheet = {
+			gfx: singleColor,
+			x: 0,
+			y: 0,
+			w: 16,
+			h: 16,
+			singleColor: true,
+			flipX: false,
+		};
 		this.updateSettings();
 	}
 
@@ -235,9 +242,10 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		this.levelOffsetGroup.y = -(height + offset);
 	}
 
+	// TODO: refactor
 	set settings(settings: any) {
 		this.details.settings = settings;
-		this.ccType = this.details.type;
+		this.updateType();
 	}
 
 	setEnableInput(enable: boolean) {
@@ -350,17 +358,17 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			Helper.drawRect(context, bottomRect, 'rgba(255, 255, 40, 1)', outline);
 		}
 
-		let enableInput = false;
-		if (this.collisionImage) {
-			this.levelOffsetGroup.remove(this.collisionImage);
-			enableInput = this.collisionImage.inputEnabled;
+		let collImg = this.collisionImage;
+		// TODO: refactor. Image can be generated in the constructor
+		if (!collImg) {
+			this.collisionImage = this.game.add.image();
+			collImg = this.collisionImage;
+			collImg.alpha = 0;
+			this.levelOffsetGroup.add(collImg);
+			collImg.inputEnabled = false;
 		}
-		this.collisionImage = this.game.add.image(inputArea.x, inputArea.y - (size.z || 0), this.collisionBitmap);
-		const collImg = this.collisionImage;
-		collImg.alpha = 0;
-
-		this.levelOffsetGroup.add(collImg);
-
-		collImg.inputEnabled = enableInput;
+		collImg.x = inputArea.x;
+		collImg.y = inputArea.y - (size.z || 0);
+		collImg.loadTexture(this.collisionBitmap);
 	}
 }

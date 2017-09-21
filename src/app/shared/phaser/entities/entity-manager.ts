@@ -47,9 +47,8 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 				// if (entity.x < 10 || entity.x > 50 || entity.y > 300 || entity.y < 150) {
 				// 	return;
 				// }
-				const ccEntity = new CCEntity(this.game, ccMap, entity.x, entity.y, this.inputEvents);
+				const ccEntity = new CCEntity(this.game, ccMap, entity.x, entity.y, entity.type, this.inputEvents);
 				ccEntity.settings = entity.settings;
-				ccEntity.ccType = entity.type;
 				ccEntity.level = entity.level;
 				ccMap.entities.push(ccEntity);
 			});
