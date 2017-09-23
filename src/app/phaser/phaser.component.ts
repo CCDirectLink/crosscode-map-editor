@@ -156,6 +156,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 			this.game.load.json('scale-props/' + prop.split('.')[0], Globals.URL + 'data/scale-props/' + prop);
 		});
 
+		this.game.load.json('definitions.json', 'assets/definitions.json');
 		this.game.load.image('media/entity/objects/block.png', Globals.URL + 'media/entity/objects/block.png');
 		this.game.load.crossOrigin = 'anonymous';
 

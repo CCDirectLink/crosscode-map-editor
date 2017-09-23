@@ -5,6 +5,7 @@ import {CCMap} from '../tilemap/cc-map';
 import {CrossCodeMap, Point} from '../../interfaces/cross-code-map';
 import {Vec2} from '../vec2';
 import {GlobalEventsService} from '../../global-events.service';
+import {EntityDefinition} from '../../interfaces/entity-definition';
 
 export class EntityManager extends Phaser.Plugin implements Sortable {
 
@@ -38,16 +39,16 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	/** generates all entities and adds proper input handling */
 	initialize(ccMap: CCMap, mapInput: CrossCodeMap) {
 		this.map = ccMap;
+		const definitions = this.game.cache.getJSON('definitions.json', false);
 
 		if (mapInput.entities) {
 			mapInput.entities.forEach(entity => {
 				// if (entity.type === 'Prop' || entity.type === 'ScalableProp') {
 				// 	return;
 				// }
-				// if (entity.x < 10 || entity.x > 50 || entity.y > 300 || entity.y < 150) {
-				// 	return;
-				// }
-				const ccEntity = new CCEntity(this.game, ccMap, entity.x, entity.y, entity.type, this.inputEvents);
+				const def: EntityDefinition = definitions[entity.type];
+				def.type = entity.type;
+				const ccEntity = new CCEntity(this.game, ccMap, entity.x, entity.y, def, this.inputEvents);
 				ccEntity.settings = entity.settings;
 				ccEntity.level = entity.level;
 				ccMap.entities.push(ccEntity);
@@ -89,7 +90,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 
 	activate() {
 		// this.keyBindings.push(this.game.input.mousePointer.rightButton.onDown.add(() => this.openContextMenu()));
-		// this.keyBindings.push(this.game.input.mousePointer.leftButton.onDown.add(() => this.selectEntity(null)));
+		this.keyBindings.push(this.game.input.mousePointer.leftButton.onDown.add(() => this.selectEntity(null)));
 		if (!this.map) {
 			return;
 		}

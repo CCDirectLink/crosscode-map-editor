@@ -5,6 +5,7 @@ import {Point, Point3} from '../../interfaces/cross-code-map';
 import {Helper} from '../helper';
 import * as Phaser from 'phaser-ce';
 import {Vec2} from '../vec2';
+import {EntityDefinition} from '../../interfaces/entity-definition';
 
 export interface InputEvents {
 	onInputDown?: (entity: CCEntity, pointer: Phaser.Pointer) => void;
@@ -21,6 +22,8 @@ export class CCEntity extends Phaser.Image implements Sortable {
 	public group: SortableGroup;
 	private levelOffsetGroup: SortableGroup;
 	private boundingBoxOffsetGroup: SortableGroup;
+
+	public definition: EntityDefinition;
 
 	// for resizeable entities
 	private tileSprite: Phaser.TileSprite;
@@ -56,13 +59,14 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		pivot: Point;
 	} = <any>{};
 
-	constructor(game: Phaser.Game, map: CCMap, x: number, y: number, type: string, inputEvents: InputEvents) {
+	constructor(game: Phaser.Game, map: CCMap, x: number, y: number, definition: EntityDefinition, inputEvents: InputEvents) {
 		super(game, 0, 0, null);
 		this.setInputEvents(inputEvents);
 		this.map = map;
+		this.definition = definition;
 		game.add.existing(this);
 		this.details = <any>{};
-		this.details.type = type;
+		this.details.type = definition.type;
 
 		this.boundingBoxOffsetGroup = game.add.group();
 		this.boundingBoxOffsetGroup.add(this);
@@ -335,7 +339,7 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		if (this.collisionBitmap) {
 			this.collisionBitmap.destroy();
 		}
-		const size = this.details.settings.size || s.baseSize;
+		const size = Object.assign({}, this.details.settings.size || s.baseSize);
 		size.z = size.z || this.details.settings.zHeight || s.baseSize.z || 0;
 		const inputArea = new Phaser.Rectangle(0, 0, size.x, size.y);
 

@@ -22,6 +22,9 @@ import {MapSettingsComponent} from './shared/dialogs/map-settings/map-settings.c
 import {LayersComponent} from './sidenav/layers/layers.component';
 import {EntitiesComponent} from './sidenav/entities/entities.component';
 import {GlobalEventsService} from './shared/global-events.service';
+import {StringWidgetComponent} from './sidenav/entities/widgets/string-widget/string-widget.component';
+import {HostDirective} from './shared/host.directive';
+import {WidgetRegistryService} from './sidenav/entities/widgets/widget-registry.service';
 
 @NgModule({
 	declarations: [
@@ -33,6 +36,8 @@ import {GlobalEventsService} from './shared/global-events.service';
 		MapSettingsComponent,
 		LayersComponent,
 		EntitiesComponent,
+		StringWidgetComponent,
+		HostDirective,
 	],
 	imports: [
 		BrowserModule,
@@ -56,10 +61,12 @@ import {GlobalEventsService} from './shared/global-events.service';
 	],
 	entryComponents: [
 		MapSettingsComponent,
+		StringWidgetComponent,
 	],
 	providers: [
 		MapLoaderService,
 		GlobalEventsService,
+		WidgetRegistryService,
 	],
 	bootstrap: [AppComponent]
 })
