@@ -183,8 +183,10 @@ export class PhaserComponent implements OnInit, OnDestroy {
 				});
 			});
 
-			this.game.load.crossOrigin = 'anonymous';
-			this.game.load.start();
+			setTimeout(() => {
+				this.game.load.crossOrigin = 'anonymous';
+				this.game.load.start();
+			}, 0);
 		});
 	}
 
