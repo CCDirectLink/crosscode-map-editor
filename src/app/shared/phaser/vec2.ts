@@ -333,6 +333,17 @@ export class Vec2 {
 	 * @inline
 	 * @param v1
 	 * @param v2
+	 */
+	public static distance2(v1, v2) {
+		const x = ((v1.x - v2.x) || 0);
+		const y = ((v1.y - v2.y) || 0);
+		return x * x + y * y;
+	}
+
+	/**
+	 * @inline
+	 * @param v1
+	 * @param v2
 	 * @param i
 	 * @param {boolean=} copy
 	 */

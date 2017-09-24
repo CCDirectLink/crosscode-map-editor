@@ -5,8 +5,10 @@ import {MapEntity, Point, Point3} from '../../interfaces/cross-code-map';
 import {Helper} from '../helper';
 import * as Phaser from 'phaser-ce';
 import {EntityDefinition} from '../../interfaces/entity-definition';
+import {Vec2} from '../vec2';
 
 export interface InputEvents {
+	onLeftClick?: (entity: CCEntity, pointer: Phaser.Pointer) => void;
 	onInputDown?: (entity: CCEntity, pointer: Phaser.Pointer) => void;
 	onInputUp?: (entity: CCEntity, pointer: Phaser.Pointer, isOver: boolean) => void;
 	onDragStart?: (entity: CCEntity, pointer: Phaser.Pointer, x: number, y: number) => void;
@@ -32,6 +34,10 @@ export class CCEntity extends Phaser.Image implements Sortable {
 	public collisionImage: Phaser.Image;
 	private inputEvents: InputEvents = {};
 	private selected = false;
+	private leftClickOpts: {
+		timer?: number;
+		pos?: Point;
+	} = {};
 
 	// drag
 	public isDragged = false;
@@ -260,6 +266,7 @@ export class CCEntity extends Phaser.Image implements Sortable {
 
 	update() {
 		super.update();
+		this.leftClickOpts.timer += this.game.time.elapsed;
 		if (this.isDragged) {
 			const p = Helper.screenToWorld(this.game, this.game.input.mousePointer);
 			this.group.x = Math.round(p.x - this.startOffset.x);
@@ -306,15 +313,22 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		const events = this.inputEvents;
 		const input = inputEvents;
 		events.onInputDown = (o, pointer) => {
-
+			if (pointer.leftButton.isDown) {
+				this.leftClickOpts.timer = 0;
+				this.leftClickOpts.pos = Vec2.create(pointer);
+			}
 			if (input.onInputDown) {
 				input.onInputDown(this, pointer);
 			}
 		};
 		events.onInputUp = (o, pointer, isOver) => {
-			this.isDragged = false;
 			if (input.onInputUp) {
 				input.onInputUp(this, pointer, isOver);
+			}
+			if (isOver && this.leftClickOpts.timer < 300 && Vec2.distance2(pointer, this.leftClickOpts.pos) < 10) {
+				if (input.onLeftClick) {
+					input.onLeftClick(this, pointer);
+				}
 			}
 		};
 	}
@@ -325,6 +339,9 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		}
 		Object.entries(this.inputEvents).forEach(([key, value]) => {
 			if (!value) {
+				return;
+			}
+			if (!this.collisionImage.events[key]) {
 				return;
 			}
 			this.collisionImage.events[key].removeAll();

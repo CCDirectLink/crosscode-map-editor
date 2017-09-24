@@ -14,8 +14,10 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	private map: CCMap;
 	private entities: CCEntity[];
 
+	private multiSelectKey: Phaser.Key;
+	private cancelSelectionKey: Phaser.DeviceButton;
 	private inputEvents: InputEvents = {};
-	private selectedEntity: CCEntity;
+	private selectedEntities: CCEntity[];
 	private globalEvents: GlobalEventsService;
 
 	constructor(game: Phaser.Game, parent) {
@@ -23,14 +25,45 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		this.active = true;
 		this.hasUpdate = true;
 		this.zIndex = 900;
+		this.selectedEntities = [];
+		this.multiSelectKey = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
+		this.cancelSelectionKey = game.input.mousePointer.rightButton;
+
+		this.inputEvents.onLeftClick = (e, pointer) => {
+			// multi select
+			if (this.multiSelectKey.isDown) {
+				const i = this.selectedEntities.indexOf(e);
+				// remove entity if already selected
+				if (i >= 0) {
+					e.setSelected(false);
+					this.selectedEntities.splice(i, 1);
+				} else {
+					e.setSelected(true);
+					this.selectedEntities.push(e);
+				}
+			} else {
+				this.selectEntity(e);
+			}
+
+		};
 
 		this.inputEvents.onInputDown = (e, pointer) => {
-			console.log(e);
 			if (pointer.leftButton.isDown) {
-				this.selectEntity(e);
-				e.startOffset = Vec2.sub(Helper.screenToWorld(this.game, pointer), e.group, true);
-				e.isDragged = true;
+				if (this.selectedEntities.indexOf(e) < 0) {
+					if (!this.multiSelectKey.isDown) {
+						this.selectEntity(e);
+					}
+				}
+				this.selectedEntities.forEach(entity => {
+					entity.startOffset = Vec2.sub(Helper.screenToWorld(this.game, pointer), entity.group, true);
+					entity.isDragged = true;
+				});
 			}
+		};
+		this.inputEvents.onInputUp = (e, pointer, isOver) => {
+			this.selectedEntities.forEach(entity => {
+				entity.isDragged = false;
+			});
 		};
 	}
 
@@ -59,7 +92,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	}
 
 	selectEntity(entity: CCEntity) {
-		if (this.selectedEntity !== entity) {
+		if (this.selectedEntities[0] !== entity || this.selectedEntities.length !== 1) {
 			this.globalEvents.selectedEntity.next(entity);
 		}
 	}
@@ -67,12 +100,11 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	setGlobalEvents(globalEvents: GlobalEventsService) {
 		this.globalEvents = globalEvents;
 		this.globalEvents.selectedEntity.subscribe(entity => {
-			if (this.selectedEntity) {
-				this.selectedEntity.setSelected(false);
-			}
-			this.selectedEntity = entity;
+			this.selectedEntities.forEach(e => e.setSelected(false));
+			this.selectedEntities = [];
 			if (entity) {
 				entity.setSelected(true);
+				this.selectedEntities.push(entity);
 			}
 		});
 	}
@@ -92,7 +124,8 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 
 	activate() {
 		// this.keyBindings.push(this.game.input.mousePointer.rightButton.onDown.add(() => this.openContextMenu()));
-		this.keyBindings.push(this.game.input.mousePointer.leftButton.onDown.add(() => this.selectEntity(null)));
+		// this.keyBindings.push(this.game.input.mousePointer.leftButton.onDown.add(() => this.selectEntity(null)));
+		this.keyBindings.push(this.cancelSelectionKey.onDown.add(() => this.selectEntity(null)));
 		if (!this.map) {
 			return;
 		}
