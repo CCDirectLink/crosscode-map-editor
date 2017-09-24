@@ -1,0 +1,19 @@
+<div fxLayout="row" class="property-container" [mdTooltip]="entity.definition.attributes[key]?.description">
+	<label class="property-name">{{key}}:</label>
+	
+	<label [for]="key + '.x'" class="property-name-small">X:</label>
+	<input [id]="key + '.x'" type="number" class="default-input small-input"
+	       [step]="step"
+	       [min]="minSize.x"
+	       [disabled]="!enableX"
+	       [ngModel]="entity.details.settings[key].x"
+	       (input)="setVal('x', toInt($event.target.value))">
+	
+	<label [for]="key + '.y'" class="property-name-small">Y:</label>
+	<input [id]="key + '.y'" type="number" class="default-input small-input"
+	       [step]="step"
+	       [min]="minSize.x"
+	       [disabled]="!enableY"
+	       [ngModel]="entity.details.settings[key].y"
+	       (input)="setVal('y', toInt($event.target.value))">
+</div>

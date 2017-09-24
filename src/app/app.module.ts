@@ -28,6 +28,7 @@ import {WidgetRegistryService} from './sidenav/entities/widgets/widget-registry.
 import { JsonWidgetComponent } from './sidenav/entities/widgets/json-widget/json-widget.component';
 import {NumberWidgetComponent} from './sidenav/entities/widgets/number-widget/number-widget.component';
 import { BooleanWidgetComponent } from './sidenav/entities/widgets/boolean-widget/boolean-widget.component';
+import { Vec2WidgetComponent } from './sidenav/entities/widgets/vec2-widget/vec2-widget.component';
 
 @NgModule({
 	declarations: [
@@ -44,6 +45,7 @@ import { BooleanWidgetComponent } from './sidenav/entities/widgets/boolean-widge
 		HostDirective,
 		JsonWidgetComponent,
 		BooleanWidgetComponent,
+		Vec2WidgetComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -72,6 +74,7 @@ import { BooleanWidgetComponent } from './sidenav/entities/widgets/boolean-widge
 		NumberWidgetComponent,
 		BooleanWidgetComponent,
 		JsonWidgetComponent,
+		Vec2WidgetComponent,
 	],
 	providers: [
 		MapLoaderService,

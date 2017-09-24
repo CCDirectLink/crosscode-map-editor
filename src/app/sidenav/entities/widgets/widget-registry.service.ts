@@ -3,6 +3,7 @@ import {StringWidgetComponent} from './string-widget/string-widget.component';
 import {JsonWidgetComponent} from './json-widget/json-widget.component';
 import {NumberWidgetComponent} from './number-widget/number-widget.component';
 import {BooleanWidgetComponent} from './boolean-widget/boolean-widget.component';
+import {Vec2WidgetComponent} from './vec2-widget/vec2-widget.component';
 
 @Injectable()
 export class WidgetRegistryService {
@@ -14,6 +15,7 @@ export class WidgetRegistryService {
 		this.register('String', StringWidgetComponent);
 		this.register('Number', NumberWidgetComponent);
 		this.register('Boolean', BooleanWidgetComponent);
+		this.register('Vec2', Vec2WidgetComponent);
 	}
 
 	private setDefaultWidget(widget: any) {

@@ -16,6 +16,7 @@
 	<div fxLayout="row" fxFlex="0 0 auto" class="property-container" *ngIf="entity">
 		<span class="property-name">Level:</span>
 		
+		<span class="property-name-small"> </span>
 		<input type="number" class="default-input small-input" min="0" [max]="map.levels.length-1"
 		       [ngModel]="entity.details.level.level" (input)="setLevel($event.target.value)">
 		

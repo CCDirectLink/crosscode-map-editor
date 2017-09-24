@@ -31,6 +31,12 @@ html * {
 	width: 60px;
 }
 
+.default-input:disabled {
+	outline-offset: 0;
+	outline: dotted 1px rgba(201, 201, 201, 0.34);
+	color: rgba(255, 255, 255, 0.5);
+}
+
 .default-input:focus,
 .default-input.focus {
 	outline-offset: 0;
