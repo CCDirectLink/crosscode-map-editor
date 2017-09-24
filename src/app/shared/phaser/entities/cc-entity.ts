@@ -284,6 +284,17 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		this.group.zIndex = zIndex;
 	}
 
+	exportEntity(): MapEntity {
+		const out = {
+			type: this.details.type,
+			x: this.group.x,
+			y: this.group.y,
+			level: this.details.level.offset ? this.details.level : this.details.level.level,
+			settings: this.details.settings
+		};
+		return JSON.parse(JSON.stringify(out));
+	}
+
 	private generateUndefinedType() {
 		const settings = this.details.settings;
 		this.entitySettings = <any>{};
@@ -325,7 +336,7 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			if (input.onInputUp) {
 				input.onInputUp(this, pointer, isOver);
 			}
-			if (isOver && this.leftClickOpts.timer < 300 && Vec2.distance2(pointer, this.leftClickOpts.pos) < 10) {
+			if (isOver && this.leftClickOpts.timer < 200 && Vec2.distance2(pointer, this.leftClickOpts.pos) < 10) {
 				if (input.onLeftClick) {
 					input.onLeftClick(this, pointer);
 				}
@@ -390,16 +401,5 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		collImg.x = inputArea.x;
 		collImg.y = inputArea.y - (size.z || 0);
 		collImg.loadTexture(this.collisionBitmap);
-	}
-
-	exportEntity(): MapEntity {
-
-		return {
-			type: this.details.type,
-			x: this.group.x,
-			y: this.group.y,
-			level: this.details.level.offset ? this.details.level : this.details.level.level,
-			settings: this.details.settings
-		};
 	}
 }
