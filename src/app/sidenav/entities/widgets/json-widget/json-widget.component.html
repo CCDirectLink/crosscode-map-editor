@@ -1,0 +1,8 @@
+<div fxLayout="row" class="property-container" [mdTooltip]="entity.definition.attributes[key].description">
+	<label [for]="key" class="property-name">{{key}}:</label>
+	<textarea class="default-input"
+	          [id]="key"
+	          [ngModel]="json.stringify(entity.details.settings[key], undefined, 2)"
+	          (input)="setSetting(key, $event.target.value, true, true)">
+	</textarea>
+</div>

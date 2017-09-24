@@ -1,10 +1,7 @@
 <h2 class="mat-title">{{entity?.details.type}}</h2>
 <div class="entity-settings-container" fxLayout="column">
 	
-	<div fxLayout="row" fxFlex="0 0 auto" class="property-container" *ngIf="entity">
-		<span class="property-name">Name:</span>
-		<input class="default-input">
-	</div>
+	<app-string-widget [key]="'name'" [entity]="entity" *ngIf="entity"></app-string-widget>
 	
 	<div fxLayout="row" fxFlex="0 0 auto" class="property-container" *ngIf="entity">
 		<span class="property-name">Pos:</span>
@@ -28,11 +25,5 @@
 		<span class="property-name-small">px</span>
 	</div>
 	
-	<!-- TODO: should load custom components based on input type -->
-	<!--<div fxLayout="row" fxFlex="0 0 auto" class="property-container" *ngFor="let key of settingKeys">-->
-		<!--<span class="property-name">{{key}}:</span>-->
-		<!--<textarea class="default-input" [ngModel]="json.stringify(entity.details.settings[key], undefined, 2)" (input)="setSetting($event.target.value, key)"></textarea>-->
-	<!--</div>-->
-
 	<ng-template appHost></ng-template>
 </div>

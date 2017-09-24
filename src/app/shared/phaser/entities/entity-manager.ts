@@ -2,7 +2,7 @@ import {CCEntity, InputEvents} from './cc-entity';
 import {Sortable} from '../../interfaces/sortable';
 import {Helper} from '../helper';
 import {CCMap} from '../tilemap/cc-map';
-import {CrossCodeMap, Point} from '../../interfaces/cross-code-map';
+import {CrossCodeMap, MapEntity} from '../../interfaces/cross-code-map';
 import {Vec2} from '../vec2';
 import {GlobalEventsService} from '../../global-events.service';
 import {EntityDefinition} from '../../interfaces/entity-definition';
@@ -12,6 +12,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	public zIndex: number;
 	private keyBindings: Phaser.SignalBinding[] = [];
 	private map: CCMap;
+	private entities: CCEntity[];
 
 	private inputEvents: InputEvents = {};
 	private selectedEntity: CCEntity;
@@ -22,8 +23,6 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		this.active = true;
 		this.hasUpdate = true;
 		this.zIndex = 900;
-
-		const ref = this;
 
 		this.inputEvents.onInputDown = (e, pointer) => {
 			console.log(e);
@@ -40,6 +39,10 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	initialize(ccMap: CCMap, mapInput: CrossCodeMap) {
 		this.map = ccMap;
 		const definitions = this.game.cache.getJSON('definitions.json', false);
+		if (this.entities) {
+			this.entities.forEach(e => e.destroy());
+		}
+		this.entities = [];
 
 		if (mapInput.entities) {
 			mapInput.entities.forEach(entity => {
@@ -51,7 +54,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 				const ccEntity = new CCEntity(this.game, ccMap, entity.x, entity.y, def, this.inputEvents);
 				ccEntity.settings = entity.settings;
 				ccEntity.level = entity.level;
-				ccMap.entities.push(ccEntity);
+				this.entities.push(ccEntity);
 			});
 		}
 	}
@@ -81,8 +84,8 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		if (!this.map) {
 			return;
 		}
-		this.selectedEntity = null;
-		this.map.entities.forEach(entity => {
+		this.selectEntity(null);
+		this.entities.forEach(entity => {
 			entity.setEnableInput(false);
 			entity.setSelected(false);
 		});
@@ -94,8 +97,14 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		if (!this.map) {
 			return;
 		}
-		this.map.entities.forEach(entity => {
+		this.entities.forEach(entity => {
 			entity.setEnableInput(true);
 		});
+	}
+
+	exportEntities(): MapEntity[] {
+		const out = [];
+		this.entities.forEach(e => out.push(e.exportEntity()));
+		return out;
 	}
 }

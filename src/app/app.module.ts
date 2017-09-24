@@ -11,7 +11,7 @@ import {
 	MdProgressSpinnerModule, MdSelectModule,
 	MdSidenavModule,
 	MdSnackBarModule, MdTabsModule,
-	MdToolbarModule, RippleGlobalOptions
+	MdToolbarModule, MdTooltipModule
 } from '@angular/material';
 import {ToolbarComponent} from './toolbar/toolbar.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -25,6 +25,9 @@ import {GlobalEventsService} from './shared/global-events.service';
 import {StringWidgetComponent} from './sidenav/entities/widgets/string-widget/string-widget.component';
 import {HostDirective} from './shared/host.directive';
 import {WidgetRegistryService} from './sidenav/entities/widgets/widget-registry.service';
+import { JsonWidgetComponent } from './sidenav/entities/widgets/json-widget/json-widget.component';
+import {NumberWidgetComponent} from './sidenav/entities/widgets/number-widget/number-widget.component';
+import { BooleanWidgetComponent } from './sidenav/entities/widgets/boolean-widget/boolean-widget.component';
 
 @NgModule({
 	declarations: [
@@ -37,7 +40,10 @@ import {WidgetRegistryService} from './sidenav/entities/widgets/widget-registry.
 		LayersComponent,
 		EntitiesComponent,
 		StringWidgetComponent,
+		NumberWidgetComponent,
 		HostDirective,
+		JsonWidgetComponent,
+		BooleanWidgetComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -45,6 +51,7 @@ import {WidgetRegistryService} from './sidenav/entities/widgets/widget-registry.
 		FormsModule,
 		FlexLayoutModule,
 		MdButtonModule,
+		MdTooltipModule,
 		MdCheckboxModule,
 		MdToolbarModule,
 		MdSidenavModule,
@@ -62,6 +69,9 @@ import {WidgetRegistryService} from './sidenav/entities/widgets/widget-registry.
 	entryComponents: [
 		MapSettingsComponent,
 		StringWidgetComponent,
+		NumberWidgetComponent,
+		BooleanWidgetComponent,
+		JsonWidgetComponent,
 	],
 	providers: [
 		MapLoaderService,

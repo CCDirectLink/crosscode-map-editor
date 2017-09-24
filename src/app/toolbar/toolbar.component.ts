@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MapLoaderService} from '../shared/map-loader.service';
 import {MdDialog} from '@angular/material';
 import {MapSettingsComponent} from '../shared/dialogs/map-settings/map-settings.component';
@@ -29,7 +29,7 @@ export class ToolbarComponent implements OnInit {
 	}
 
 	saveMap() {
-		const file = new Blob([JSON.stringify(this.map.export(), null, 2)], {type: 'application/json'});
+		const file = new Blob([JSON.stringify(this.map.exportMap(), null, 2)], {type: 'application/json'});
 		const a = document.createElement('a'),
 			url = URL.createObjectURL(file);
 		a.href = url;

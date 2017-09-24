@@ -23,13 +23,7 @@ export class EntitiesComponent implements OnInit {
 				private widgetRegistry: WidgetRegistryService) {
 		events.selectedEntity.subscribe(e => {
 			this.entity = e;
-			if (!e) {
-				if (this.appHost) {
-					this.appHost.viewContainerRef.clear();
-				}
-				return;
-			}
-			this.loadSettings();
+			this.loadSettings(e);
 		});
 		loader.tileMap.subscribe(map => this.map = map);
 	}
@@ -47,14 +41,24 @@ export class EntitiesComponent implements OnInit {
 		this.entity.updateLevel();
 	}
 
-	loadSettings() {
-		const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.widgetRegistry.getWidget('String'));
-		const viewContainerRef = this.appHost.viewContainerRef;
-		viewContainerRef.clear();
+	loadSettings(entity: CCEntity) {
+		if (!this.appHost) {
+			return;
+		}
+		const ref = this.appHost.viewContainerRef;
+		ref.clear();
 
-		const componentRef = viewContainerRef.createComponent(componentFactory);
-		const instance = <AbstractWidget> componentRef.instance;
-		instance.entity = this.entity;
-		instance.key = 'dynamic widget';
+		if (!entity) {
+			return;
+		}
+
+		const def = entity.definition;
+		Object.entries(def.attributes).forEach(([key, val]) => {
+			const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.widgetRegistry.getWidget(val.type));
+			const componentRef = ref.createComponent(componentFactory);
+			const instance = <AbstractWidget> componentRef.instance;
+			instance.entity = entity;
+			instance.key = key;
+		});
 	}
 }

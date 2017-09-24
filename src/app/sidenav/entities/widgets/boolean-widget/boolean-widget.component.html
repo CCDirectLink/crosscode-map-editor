@@ -1,0 +1,9 @@
+<div fxLayout="row" class="property-container" [mdTooltip]="entity.definition.attributes[key].description">
+	<label [for]="key" class="property-name">{{key}}:</label>
+	<md-checkbox [id]="key"
+	             color="primary"
+	             [ngModel]="entity.details.settings[key]"
+	             (input)="setSetting(key, $event.target.value)">
+		<div style="width: 150px"></div>
+	</md-checkbox>
+</div>

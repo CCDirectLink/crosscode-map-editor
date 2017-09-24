@@ -1,5 +1,8 @@
 import {Injectable} from '@angular/core';
 import {StringWidgetComponent} from './string-widget/string-widget.component';
+import {JsonWidgetComponent} from './json-widget/json-widget.component';
+import {NumberWidgetComponent} from './number-widget/number-widget.component';
+import {BooleanWidgetComponent} from './boolean-widget/boolean-widget.component';
 
 @Injectable()
 export class WidgetRegistryService {
@@ -7,7 +10,10 @@ export class WidgetRegistryService {
 	private defaultWidget: any;
 
 	constructor() {
+		this.setDefaultWidget(JsonWidgetComponent);
 		this.register('String', StringWidgetComponent);
+		this.register('Number', NumberWidgetComponent);
+		this.register('Boolean', BooleanWidgetComponent);
 	}
 
 	private setDefaultWidget(widget: any) {

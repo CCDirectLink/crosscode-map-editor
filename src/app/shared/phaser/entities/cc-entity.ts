@@ -1,10 +1,9 @@
 import {Sortable, SortableGroup} from '../../interfaces/sortable';
 import {CCMap} from '../tilemap/cc-map';
 import {Prop, PropSheet, ScalableProp, ScalablePropSheet} from '../../interfaces/props';
-import {Point, Point3} from '../../interfaces/cross-code-map';
+import {MapEntity, Point, Point3} from '../../interfaces/cross-code-map';
 import {Helper} from '../helper';
 import * as Phaser from 'phaser-ce';
-import {Vec2} from '../vec2';
 import {EntityDefinition} from '../../interfaces/entity-definition';
 
 export interface InputEvents {
@@ -17,7 +16,6 @@ export interface InputEvents {
 
 export class CCEntity extends Phaser.Image implements Sortable {
 
-	private boundingBox: Point3;
 	private map: CCMap;
 	public group: SortableGroup;
 	private levelOffsetGroup: SortableGroup;
@@ -199,30 +197,6 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		this.updateSettings();
 	}
 
-	private generateUndefinedType() {
-		const settings = this.details.settings;
-		this.entitySettings = <any>{};
-		this.entitySettings.baseSize = {x: 16, y: 16, z: settings.zHeight || 0};
-		if (settings.size) {
-			this.entitySettings.scalableX = true;
-			this.entitySettings.scalableY = true;
-		} else {
-			this.anchor.y = 1;
-			this.anchor.x = 0.5;
-		}
-		const singleColor = this.game.make.bitmapData(16, 16);
-		singleColor.fill(40, 60, 255, 0.5);
-		this.entitySettings.sheet = {
-			gfx: singleColor,
-			x: 0,
-			y: 0,
-			w: 16,
-			h: 16,
-			singleColor: true,
-			flipX: false,
-		};
-		this.updateSettings();
-	}
 
 	set level(level: any) {
 		const details = this.details;
@@ -303,6 +277,31 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		this.group.zIndex = zIndex;
 	}
 
+	private generateUndefinedType() {
+		const settings = this.details.settings;
+		this.entitySettings = <any>{};
+		this.entitySettings.baseSize = {x: 16, y: 16, z: settings.zHeight || 0};
+		if (settings.size) {
+			this.entitySettings.scalableX = true;
+			this.entitySettings.scalableY = true;
+		} else {
+			this.anchor.y = 1;
+			this.anchor.x = 0.5;
+		}
+		const singleColor = this.game.make.bitmapData(16, 16);
+		singleColor.fill(40, 60, 255, 0.5);
+		this.entitySettings.sheet = {
+			gfx: singleColor,
+			x: 0,
+			y: 0,
+			w: 16,
+			h: 16,
+			singleColor: true,
+			flipX: false,
+		};
+		this.updateSettings();
+	}
+
 	private setInputEvents(inputEvents: InputEvents) {
 		const events = this.inputEvents;
 		const input = inputEvents;
@@ -374,5 +373,16 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		collImg.x = inputArea.x;
 		collImg.y = inputArea.y - (size.z || 0);
 		collImg.loadTexture(this.collisionBitmap);
+	}
+
+	exportEntity(): MapEntity {
+
+		return {
+			type: this.details.type,
+			x: this.group.x,
+			y: this.group.y,
+			level: this.details.level.offset ? this.details.level : this.details.level.level,
+			settings: this.details.settings
+		};
 	}
 }
