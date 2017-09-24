@@ -2,5 +2,5 @@
 	<label [for]="key" class="property-name">{{key}}:</label>
 	<input type="number" class="default-input" [id]="key"
 	       [ngModel]="entity.details.settings[key]"
-	       (input)="setSetting(key, $event.target.value)">
+	       (input)="setSetting(key, toInt($event.target.value))">
 </div>

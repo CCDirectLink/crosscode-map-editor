@@ -23,6 +23,7 @@ export class TileDrawer extends Phaser.Plugin {
 	private group: SortableGroup;
 	private tilesetImg: Phaser.Image;
 	private tileSelectMap: CCMapLayer;
+	private keyBindings: Phaser.SignalBinding[] = [];
 
 	private rightClickStart: Point;
 	private rightClickEnd: Point;
@@ -55,13 +56,6 @@ export class TileDrawer extends Phaser.Plugin {
 
 		this.group.add(this.graphics);
 		this.group.add(this.selectedTiles.img);
-
-		game.input.mousePointer.rightButton.onDown.add(() => this.onMouseRightDown());
-		game.input.mousePointer.rightButton.onUp.add(() => this.onMouseRightUp());
-		this.toggleTilemapKey.onDown.add(() => this.toggleTileSelectorMap());
-		this.fillKey.onDown.add(() => this.fill());
-
-
 	}
 
 	selectLayer(selectedLayer: CCMapLayer) {
@@ -170,6 +164,22 @@ export class TileDrawer extends Phaser.Plugin {
 			});
 			this.layer.renderAll();
 		}
+	}
+
+	deactivate() {
+		this.keyBindings.forEach(binding => binding.detach());
+		this.keyBindings = [];
+		this.game.input.keyboard.removeKeyCapture(this.toggleTilemapKey.keyCode);
+	}
+
+	activate() {
+		this.keyBindings.push(this.game.input.mousePointer.rightButton.onDown.add(() => this.onMouseRightDown()));
+		this.keyBindings.push(this.game.input.mousePointer.rightButton.onUp.add(() => this.onMouseRightUp()));
+		this.keyBindings.push(this.toggleTilemapKey.onDown.add(() => this.toggleTileSelectorMap()));
+		this.keyBindings.push(this.fillKey.onDown.add(() => this.fill()));
+
+		this.game.input.keyboard.addKeyCapture(this.toggleTilemapKey.keyCode);
+		this.game.input.keyboard.removeKeyCapture(this.fillKey.keyCode);
 	}
 
 	private toggleTileSelectorMap() {

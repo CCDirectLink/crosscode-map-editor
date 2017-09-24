@@ -26,7 +26,6 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 
 		this.inputEvents.onInputDown = (e, pointer) => {
 			console.log(e);
-			console.log(pointer);
 			if (pointer.leftButton.isDown) {
 				this.selectEntity(e);
 				e.startOffset = Vec2.sub(Helper.screenToWorld(this.game, pointer), e.group, true);

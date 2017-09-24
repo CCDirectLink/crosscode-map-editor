@@ -15,6 +15,10 @@ export abstract class AbstractWidget {
 		}
 	}
 
+	toInt(val) {
+		return parseInt(val, 10);
+	}
+
 	updateSettings() {
 		this.entity.updateSettings();
 	}

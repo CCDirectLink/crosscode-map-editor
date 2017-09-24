@@ -69,11 +69,13 @@ export class PhaserComponent implements OnInit, OnDestroy {
 
 				this.globalEvents.currentView.subscribe(view => {
 					if (view === EditorView.Layers) {
+						this.tileDrawer.activate();
 						this.tileDrawer.selectLayer(this.mapLoader.selectedLayer.getValue());
 						this.entityManager.deactivate();
 						console.log(this.game.world.children);
 					} else if (view === EditorView.Entities) {
 						this.tileDrawer.selectLayer(null);
+						this.tileDrawer.deactivate();
 						this.entityManager.activate();
 					}
 				});
