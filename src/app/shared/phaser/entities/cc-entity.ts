@@ -239,6 +239,9 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		this.collisionImage.inputEnabled = enable;
 		this.collisionImage.alpha = 0;
 		this.collisionImage.visible = enable;
+		if (enable) {
+			this.collisionImage.input.priorityID = 10;
+		}
 	}
 
 	setSelected(selected: boolean) {

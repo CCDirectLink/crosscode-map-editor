@@ -7,7 +7,7 @@ import {EditorComponent} from './editor/editor.component';
 import {PhaserComponent} from './phaser/phaser.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-	MdButtonModule, MdCheckboxModule, MdDialogModule, MdIconModule, MdInputModule, MdListModule,
+	MdButtonModule, MdCheckboxModule, MdDialogModule, MdIconModule, MdInputModule, MdListModule, MdMenuModule,
 	MdProgressSpinnerModule, MdSelectModule,
 	MdSidenavModule,
 	MdSnackBarModule, MdTabsModule,
@@ -29,6 +29,7 @@ import { JsonWidgetComponent } from './sidenav/entities/widgets/json-widget/json
 import {NumberWidgetComponent} from './sidenav/entities/widgets/number-widget/number-widget.component';
 import { BooleanWidgetComponent } from './sidenav/entities/widgets/boolean-widget/boolean-widget.component';
 import { Vec2WidgetComponent } from './sidenav/entities/widgets/vec2-widget/vec2-widget.component';
+import { AddEntityMenuComponent } from './editor/add-entity-menu/add-entity-menu.component';
 
 @NgModule({
 	declarations: [
@@ -46,6 +47,7 @@ import { Vec2WidgetComponent } from './sidenav/entities/widgets/vec2-widget/vec2
 		JsonWidgetComponent,
 		BooleanWidgetComponent,
 		Vec2WidgetComponent,
+		AddEntityMenuComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -56,6 +58,7 @@ import { Vec2WidgetComponent } from './sidenav/entities/widgets/vec2-widget/vec2
 		MdTooltipModule,
 		MdCheckboxModule,
 		MdToolbarModule,
+		MdMenuModule,
 		MdSidenavModule,
 		MdDialogModule,
 		MdDialogModule,

@@ -7,6 +7,12 @@ import {Vec2} from '../vec2';
 import {GlobalEventsService} from '../../global-events.service';
 import {EntityDefinition} from '../../interfaces/entity-definition';
 
+enum MouseButtons {
+	Left,
+	Right,
+	Middle
+}
+
 export class EntityManager extends Phaser.Plugin implements Sortable {
 
 	public zIndex: number;
@@ -18,11 +24,14 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	private copyKey: Phaser.Key;
 	private pasteKey: Phaser.Key;
 	private deleteKey: Phaser.Key;
-	private cancelSelectionKey: Phaser.DeviceButton;
+
 	private inputEvents: InputEvents = {};
 	private selectedEntities: CCEntity[];
 	private copyEntities: CCEntity[];
 	private globalEvents: GlobalEventsService;
+
+	// image to receive input behind the sprites
+	private inputImg: Phaser.Image;
 
 	constructor(game: Phaser.Game, parent) {
 		super(game, parent);
@@ -34,7 +43,32 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		this.copyKey = game.input.keyboard.addKey(Phaser.Keyboard.C);
 		this.pasteKey = game.input.keyboard.addKey(Phaser.Keyboard.V);
 		this.deleteKey = game.input.keyboard.addKey(Phaser.Keyboard.DELETE);
-		this.cancelSelectionKey = game.input.mousePointer.rightButton;
+		game.input.keyboard.removeKeyCapture(this.copyKey.keyCode);
+		game.input.keyboard.removeKeyCapture(this.pasteKey.keyCode);
+		game.input.keyboard.removeKeyCapture(this.deleteKey.keyCode);
+
+		this.inputImg = game.add.image(-9999, -9999);
+		this.inputImg.width = 999999;
+		this.inputImg.height = 999999;
+		let buttonPressed: MouseButtons;
+		this.inputImg.events.onInputDown.add((e, pointer) => {
+			if (pointer.middleButton.isDown) {
+				buttonPressed = MouseButtons.Middle;
+			} else if (pointer.leftButton.isDown) {
+				buttonPressed = MouseButtons.Left;
+			} else if (pointer.rightButton.isDown) {
+				buttonPressed = MouseButtons.Right;
+			}
+		});
+		this.inputImg.events.onInputUp.add((e, pointer) => {
+			if (buttonPressed === MouseButtons.Middle) {
+				return;
+			}
+			this.selectEntity(null);
+			if (buttonPressed === MouseButtons.Right) {
+				this.showAddEntityMenu();
+			}
+		});
 
 		this.inputEvents.onLeftClick = (e, pointer) => {
 			this.selectEntity(e, this.multiSelectKey.isDown);
@@ -145,7 +179,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		console.log(this.entities);
 	}
 
-	delete() {
+	deleteSelectedEntities() {
 		this.selectedEntities.forEach(e => {
 			const i = this.entities.indexOf(e);
 			this.entities.splice(i, 1);
@@ -155,6 +189,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	}
 
 	deactivate() {
+		this.inputImg.inputEnabled = false;
 		this.keyBindings.forEach(binding => binding.detach());
 		this.keyBindings = [];
 		if (!this.map) {
@@ -168,10 +203,10 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	}
 
 	activate() {
-		// this.keyBindings.push(this.game.input.mousePointer.rightButton.onDown.add(() => this.openContextMenu()));
-		// this.keyBindings.push(this.game.input.mousePointer.leftButton.onDown.add(() => this.selectEntity(null)));
-		this.keyBindings.push(this.cancelSelectionKey.onDown.add(() => this.selectEntity(null)));
-		this.keyBindings.push(this.deleteKey.onDown.add(() => this.delete()));
+		this.inputImg.inputEnabled = true;
+		this.inputImg.input.priorityID = 1;
+
+		this.keyBindings.push(this.deleteKey.onDown.add(() => this.deleteSelectedEntities()));
 		this.keyBindings.push(this.copyKey.onDown.add(() => {
 			if (!this.game.input.keyboard.isDown(Phaser.Keyboard.CONTROL)) {
 				return;
@@ -196,5 +231,12 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		const out = [];
 		this.entities.forEach(e => out.push(e.exportEntity()));
 		return out;
+	}
+
+	private showAddEntityMenu() {
+		this.globalEvents.showAddEntityMenu.next({
+			show: true,
+			definitions: this.game.cache.getJSON('definitions.json', false)
+		});
 	}
 }
