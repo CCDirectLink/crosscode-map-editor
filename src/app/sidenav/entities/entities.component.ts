@@ -24,6 +24,8 @@ export class EntitiesComponent implements OnInit {
 				private componentFactoryResolver: ComponentFactoryResolver,
 				private widgetRegistry: WidgetRegistryService) {
 		events.selectedEntity.subscribe(e => {
+			// clear focus of input fields to enable phaser inputs again
+			(<HTMLElement>document.activeElement).blur();
 			this.entity = e;
 			this.loadSettings(e);
 		});

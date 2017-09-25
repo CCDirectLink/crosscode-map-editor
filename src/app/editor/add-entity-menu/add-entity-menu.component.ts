@@ -1,38 +1,35 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {GlobalEventsService} from '../../shared/global-events.service';
-import {Point} from '../../shared/interfaces/cross-code-map';
+import {MapEntity, Point} from '../../shared/interfaces/cross-code-map';
 import {MdMenuTrigger} from '@angular/material';
 import {Vec2} from '../../shared/phaser/vec2';
+import {Helper} from '../../shared/phaser/helper';
 
 @Component({
 	selector: 'app-add-entity-menu',
 	templateUrl: './add-entity-menu.component.html',
 	styleUrls: ['./add-entity-menu.component.scss']
 })
-export class AddEntityMenuComponent implements OnInit {
+export class AddEntityMenuComponent {
 	@ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
 	@ViewChild('filter') filter: ElementRef;
 
-	@Input() pos: Point = {x: 0, y: 0};
-	@Input() keys: string[];
+	pos: Point = {x: 0, y: 0};
+	keys: string[];
 	filteredKeys: string[];
 	searchInput: string;
 
+	private worldPos: Point;
 	private mousePos: Point = {};
 
 	constructor(private events: GlobalEventsService) {
 		document.onmousemove = e => {
-			this.mousePos.x = e.pageX + 5;
-			this.mousePos.y = e.pageY + 5;
+			this.mousePos.x = e.pageX;
+			this.mousePos.y = e.pageY;
 		};
 		this.events.showAddEntityMenu.subscribe(val => {
-			if (!val.show) {
-				this.trigger.closeMenu();
-				return;
-			}
-
 			Vec2.assign(this.pos, this.mousePos);
-
+			this.worldPos = val.worldPos;
 			if (!this.keys) {
 				this.keys = Object.keys(val.definitions);
 			}
@@ -46,8 +43,16 @@ export class AddEntityMenuComponent implements OnInit {
 		});
 	}
 
-	ngOnInit() {
+	generateEntity(key: string) {
+		const entity: MapEntity = {
+			x: this.worldPos.x,
+			y: this.worldPos.y,
+			type: key,
+			level: 0,
+			settings: {}
+		};
 
+		this.events.generateNewEntity.next(entity);
 	}
 
 	filterKeys(search: string) {

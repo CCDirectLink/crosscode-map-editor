@@ -1,5 +1,6 @@
 
 import {Point} from '../interfaces/cross-code-map';
+import {Helper} from './helper';
 
 export class MapPan extends Phaser.Plugin {
 
@@ -89,6 +90,9 @@ export class MapPan extends Phaser.Plugin {
 			this.game.camera.y = this.startCam.y - dy;
 		} else {
 			// keyboard
+			if (Helper.isInputFocused()) {
+				return;
+			}
 			let dx = 0;
 			let dy = 0;
 

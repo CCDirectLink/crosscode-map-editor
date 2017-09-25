@@ -151,7 +151,7 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		const type = this.details.type;
 		const settings = this.details.settings;
 		// load correct image if prop
-		if (type === 'Prop') {
+		if (type === 'Prop' && settings.propType) {
 			const sheet: PropSheet = this.game.cache.getJSON('props/' + settings.propType.sheet);
 			let prop: Prop;
 			for (let i = 0; i < sheet.props.length; i++) {
@@ -172,7 +172,7 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			this.entitySettings.sheet = prop.fix;
 			this.entitySettings.baseSize = prop.size;
 			this.entitySettings.collType = prop.collType;
-		} else if (type === 'ScalableProp') {
+		} else if (type === 'ScalableProp' && settings.propConfig) {
 			const sheet: ScalablePropSheet = this.game.cache.getJSON('scale-props/' + settings.propConfig.sheet);
 			const prop: ScalableProp = sheet.entries[settings.propConfig.name];
 			if (!prop) {
@@ -271,7 +271,7 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		super.update();
 		this.leftClickOpts.timer += this.game.time.elapsed;
 		if (this.isDragged) {
-			const p = Helper.screenToWorld(this.game, this.game.input.mousePointer);
+			const p = Helper.screenToWorld(this.game.input.mousePointer);
 			this.group.x = Math.round(p.x - this.startOffset.x);
 			this.group.y = Math.round(p.y - this.startOffset.y);
 			this.updateZIndex();

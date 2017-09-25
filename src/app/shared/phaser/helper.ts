@@ -6,13 +6,13 @@ export class Helper {
 	 * Transforms screen coordinates to world coordinates.
 	 * Phaser already offers a way to get world coordinates but it's messed up when the camera scales
 	 */
-	public static screenToWorld(game: Phaser.Game, x: number | Point, y?: number): Point {
+	public static screenToWorld(x: number | Point, y?: number): Point {
 		if (y === undefined) {
 			y = (<any>x).y;
 			x = (<any>x).x;
 		}
 		const p: Point = {};
-		const cam = game.camera;
+		const cam = Globals.game.camera;
 		p.x = (<any>x + cam.x) / cam.scale.x;
 		p.y = (y + cam.y) / cam.scale.y;
 
@@ -28,8 +28,8 @@ export class Helper {
 		return p;
 	}
 
-	public static screenToTile(game: Phaser.Game, x: number | Point, y?: number): Point {
-		let p = this.screenToWorld(game, x, y);
+	public static screenToTile(x: number | Point, y?: number): Point {
+		let p = this.screenToWorld(x, y);
 		p = this.worldToTile(p.x, p.y);
 		return p;
 	}
@@ -71,5 +71,15 @@ export class Helper {
 		context.lineWidth = 1;
 		context.strokeStyle = strokeStyle;
 		context.strokeRect(o.x, o.y, o.width, o.height);
+	}
+
+	/**
+	 * every key listener should check this method and only proceed when
+	 * false is returned, so the user can write everything into input fields
+	 * without messing up the map
+	 * */
+	public static isInputFocused() {
+		const tag = document.activeElement.tagName.toLowerCase();
+		return tag === 'input' || tag === 'textarea';
 	}
 }

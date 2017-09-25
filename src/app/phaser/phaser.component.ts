@@ -90,6 +90,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 			render: () => this.render(),
 			preload: () => this.preload(),
 		}, undefined, false);
+		Globals.game = this.game;
 	}
 
 	preload() {

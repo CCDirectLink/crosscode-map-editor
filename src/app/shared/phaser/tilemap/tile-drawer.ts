@@ -114,7 +114,7 @@ export class TileDrawer extends Phaser.Plugin {
 			graphics.visible = false;
 			return;
 		}
-		const p = Helper.screenToTile(game, game.input.mousePointer.x, game.input.mousePointer.y);
+		const p = Helper.screenToTile(game.input.mousePointer);
 
 		// render selection border
 		if (this.rightClickStart) {
@@ -192,7 +192,7 @@ export class TileDrawer extends Phaser.Plugin {
 		this.tileSelectMap.visible = !this.tileSelectMap.visible;
 
 		if (this.tileSelectMap.visible) {
-			const p2 = Helper.screenToTile(game, 0, 0);
+			const p2 = Helper.screenToTile(0, 0);
 			Vec2.addC(p2, 1, 1);
 			Vec2.assign(this.tileSelectMap, p2);
 			Vec2.mulF(this.tileSelectMap, Globals.TILE_SIZE);
@@ -205,7 +205,7 @@ export class TileDrawer extends Phaser.Plugin {
 		}
 
 		// only start tile copy when cursor in bounds
-		const p = Helper.screenToTile(this.game, this.game.input.mousePointer.x, this.game.input.mousePointer.y);
+		const p = Helper.screenToTile(this.game.input.mousePointer);
 		if (!this.isInBounds(this.tileSelectMap.visible ? this.tileSelectMap : this.layer, p)) {
 			return;
 		}
@@ -323,7 +323,7 @@ export class TileDrawer extends Phaser.Plugin {
 		}
 		const game = this.game;
 
-		const p = Helper.screenToTile(game, game.input.mousePointer);
+		const p = Helper.screenToTile(game.input.mousePointer);
 		if (this.selectedTiles.tiles.length > 0) {
 			this.layer.fill(this.selectedTiles.tiles[0].id, p);
 		}

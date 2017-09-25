@@ -5,6 +5,6 @@
 	       (input)="filterKeys($event.target.value)"/>
 	
 	<div class="entity-list">
-		<button md-menu-item *ngFor="let key of filteredKeys">{{key}}</button>
+		<button md-menu-item *ngFor="let key of filteredKeys" (click)="generateEntity(key)">{{key}}</button>
 	</div>
 </md-menu>

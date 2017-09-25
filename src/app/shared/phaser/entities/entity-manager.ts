@@ -61,7 +61,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 			}
 		});
 		this.inputImg.events.onInputUp.add((e, pointer) => {
-			if (buttonPressed === MouseButtons.Middle) {
+			if (buttonPressed === MouseButtons.Middle || this.multiSelectKey.isDown) {
 				return;
 			}
 			this.selectEntity(null);
@@ -83,7 +83,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 					}
 				}
 				this.selectedEntities.forEach(entity => {
-					entity.startOffset = Vec2.sub(Helper.screenToWorld(this.game, pointer), entity.group, true);
+					entity.startOffset = Vec2.sub(Helper.screenToWorld(pointer), entity.group, true);
 					entity.isDragged = true;
 				});
 			}
@@ -152,9 +152,26 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 				this.selectedEntities.push(entity);
 			}
 		});
+		this.globalEvents.generateNewEntity.subscribe(entity => {
+
+			// TODO: better generate level from collision tiles
+			entity.level = this.map.masterLevel;
+			const e = this.generateEntity(entity);
+
+			// level offset
+			const offset = this.map.levels[e.details.level.level];
+			e.group.y += offset.height;
+
+			// entity manager is activated
+			if (this.inputImg.inputEnabled) {
+				e.setEnableInput(true);
+				this.selectEntity(e);
+			}
+		});
 	}
 
 	copy() {
+		console.log(Helper.isInputFocused());
 		this.copyEntities = this.selectedEntities.slice();
 	}
 
@@ -164,7 +181,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		}
 		const offset = Vec2.create(this.copyEntities[0].group);
 		offset.y -= this.map.levels[this.copyEntities[0].details.level.level].height;
-		const mousePos = Vec2.create(Helper.screenToWorld(this.game, this.game.input.mousePointer));
+		const mousePos = Vec2.create(Helper.screenToWorld(this.game.input.mousePointer));
 		this.selectEntity(null);
 
 		this.copyEntities.forEach(e => {
@@ -206,15 +223,26 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		this.inputImg.inputEnabled = true;
 		this.inputImg.input.priorityID = 1;
 
-		this.keyBindings.push(this.deleteKey.onDown.add(() => this.deleteSelectedEntities()));
+		this.keyBindings.push(this.deleteKey.onDown.add(() => {
+			if (Helper.isInputFocused()) {
+				return;
+			}
+			this.deleteSelectedEntities();
+		}));
 		this.keyBindings.push(this.copyKey.onDown.add(() => {
 			if (!this.game.input.keyboard.isDown(Phaser.Keyboard.CONTROL)) {
+				return;
+			}
+			if (Helper.isInputFocused()) {
 				return;
 			}
 			this.copy();
 		}));
 		this.keyBindings.push(this.pasteKey.onDown.add(() => {
 			if (!this.game.input.keyboard.isDown(Phaser.Keyboard.CONTROL)) {
+				return;
+			}
+			if (Helper.isInputFocused()) {
 				return;
 			}
 			this.paste();
@@ -235,7 +263,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 
 	private showAddEntityMenu() {
 		this.globalEvents.showAddEntityMenu.next({
-			show: true,
+			worldPos: Helper.screenToWorld(this.game.input.mousePointer),
 			definitions: this.game.cache.getJSON('definitions.json', false)
 		});
 	}
