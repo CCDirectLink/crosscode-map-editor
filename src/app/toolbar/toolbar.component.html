@@ -13,7 +13,10 @@
 		<div class="button-row">
 			<button *ngIf="map" md-button (click)="openMapSettings()">Map Settings</button>
 			<button *ngIf="map" md-button (click)="saveMap()">Save Map</button>
-			<button md-button (click)="fileUpload.click()">Load Map</button>
+			<button md-button *ngIf="loaded; else loader" (click)="fileUpload.click()">Load Map</button>
+			<ng-template #loader>
+				<md-spinner></md-spinner>
+			</ng-template>
 		</div>
 	</div>
 </md-toolbar>

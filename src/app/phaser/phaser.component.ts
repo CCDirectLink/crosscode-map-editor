@@ -169,6 +169,10 @@ export class PhaserComponent implements OnInit, OnDestroy {
 				this.game.load.image(media, Globals.URL + media, false);
 			});
 
+			this.game.load.onLoadComplete.addOnce(() => {
+				this.globalEvents.loadComplete.next(true);
+			});
+
 			setTimeout(() => {
 				this.game.load.crossOrigin = 'anonymous';
 				this.game.load.start();

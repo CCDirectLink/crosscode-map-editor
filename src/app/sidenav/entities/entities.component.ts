@@ -58,12 +58,16 @@ export class EntitiesComponent implements OnInit {
 		}
 
 		const def: EntityDefinition = entity.definition;
-		if (def.resizable) {
+		if (def.scalableX || def.scalableY) {
 			const vec2Widget: Vec2WidgetComponent = <Vec2WidgetComponent>this.generateWidget(entity, 'size', {type: 'Vec2'}, ref);
 			if (def.type === 'ScalableProp') {
 				vec2Widget.enableX = entity.entitySettings.scalableX;
 				vec2Widget.enableY = entity.entitySettings.scalableY;
 				vec2Widget.step = entity.entitySettings.scalableStep;
+				vec2Widget.minSize = entity.entitySettings.baseSize;
+			} else {
+				vec2Widget.enableX = def.scalableX;
+				vec2Widget.enableY = def.scalableY;
 				vec2Widget.minSize = entity.entitySettings.baseSize;
 			}
 		}

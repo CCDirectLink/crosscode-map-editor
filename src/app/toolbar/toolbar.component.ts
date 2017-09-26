@@ -3,6 +3,7 @@ import {MapLoaderService} from '../shared/map-loader.service';
 import {MdDialog} from '@angular/material';
 import {MapSettingsComponent} from '../shared/dialogs/map-settings/map-settings.component';
 import {CCMap} from '../shared/phaser/tilemap/cc-map';
+import {GlobalEventsService} from '../shared/global-events.service';
 
 @Component({
 	selector: 'app-toolbar',
@@ -13,8 +14,10 @@ export class ToolbarComponent implements OnInit {
 
 	@Output() onMenuClick = new EventEmitter();
 	map: CCMap;
+	loaded: boolean;
 
 	constructor(private mapLoader: MapLoaderService,
+				private events: GlobalEventsService,
 				private dialog: MdDialog) {
 	}
 
@@ -22,6 +25,7 @@ export class ToolbarComponent implements OnInit {
 		this.mapLoader.tileMap.subscribe(map => {
 			this.map = map;
 		});
+		this.events.loadComplete.subscribe(isLoaded => this.loaded = isLoaded);
 	}
 
 	loadMap(event) {

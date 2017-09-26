@@ -45,6 +45,9 @@ html * {
 
 button {
 	text-transform: uppercase;
+	&:disabled {
+		color: rgba(255, 255, 255, 0.5);
+	}
 }
 
 .red {

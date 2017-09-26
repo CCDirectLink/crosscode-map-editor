@@ -64,7 +64,7 @@ export class MapPan extends Phaser.Plugin {
 		const prevScale = cam.scale.x;
 		let scale = event.deltaY > 0 ? 0.8 : 1.25;
 		scale *= cam.scale.x;
-		if (scale > 0.4 && scale < 6) {
+		if (scale > 0.4 && scale < 8) {
 			cam.scale.setTo(scale);
 
 			// adjust position

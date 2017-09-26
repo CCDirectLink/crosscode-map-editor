@@ -6,6 +6,7 @@ export interface PropSheet {
 }
 
 export interface ScalablePropSheet {
+	jsonTEMPLATES?: any;
 	DOCTYPE: string;
 	entries: any;
 }
@@ -18,14 +19,18 @@ export interface Prop {
 		z: number
 	};
 	collType: string;
-	fix: {
-		gfx: string;
-		x: number;
-		y: number;
-		w: number;
-		h: number;
-		flipX: boolean;
-	};
+	fix: Fix;
+}
+
+export interface Fix {
+	gfx: string;
+	x: number;
+	y: number;
+	w: number;
+	h: number;
+	offsetX?: number;
+	offsetY?: number;
+	flipX: boolean;
 }
 
 export interface ScalableProp {
@@ -54,4 +59,8 @@ export interface ScalableProp {
 		hide: string;
 	};
 	pivot: Point;
+	jsonINSTANCE?: string;
+	srcX?: number;
+	srcY?: number;
+	width?: number;
 }

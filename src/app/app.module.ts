@@ -61,7 +61,6 @@ import { AddEntityMenuComponent } from './editor/add-entity-menu/add-entity-menu
 		MdMenuModule,
 		MdSidenavModule,
 		MdDialogModule,
-		MdDialogModule,
 		MdTabsModule,
 		MdInputModule,
 		MdSelectModule,

@@ -14,6 +14,7 @@ export class WidgetRegistryService {
 		this.setDefaultWidget(JsonWidgetComponent);
 		this.register('String', StringWidgetComponent);
 		this.register('Number', NumberWidgetComponent);
+		this.register('Integer', NumberWidgetComponent);
 		this.register('Boolean', BooleanWidgetComponent);
 		this.register('Vec2', Vec2WidgetComponent);
 	}

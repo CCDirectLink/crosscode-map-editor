@@ -6,6 +6,7 @@ import {Helper} from '../helper';
 import * as Phaser from 'phaser-ce';
 import {EntityDefinition} from '../../interfaces/entity-definition';
 import {Vec2} from '../vec2';
+import {max} from 'rxjs/operator/max';
 
 export interface InputEvents {
 	onLeftClick?: (entity: CCEntity, pointer: Phaser.Pointer) => void;
@@ -25,9 +26,12 @@ export class CCEntity extends Phaser.Image implements Sortable {
 
 	public definition: EntityDefinition;
 
+	// for normal entities
+	private entityBitmap: Phaser.BitmapData;
+
 	// for resizeable entities
 	private tileSprite: Phaser.TileSprite;
-	private bitmap: Phaser.BitmapData;
+	private tileSpriteBitmap: Phaser.BitmapData;
 
 	// input (is handled mostly by entity manager)
 	private collisionBitmap: Phaser.BitmapData;
@@ -48,12 +52,17 @@ export class CCEntity extends Phaser.Image implements Sortable {
 	entitySettings: {
 		collType: string;
 		baseSize: Point3;
-		sheet: {
-			gfx: string | Phaser.BitmapData;
-			x: number;
-			y: number;
-			w: number;
-			h: number;
+		sheets: {
+			fix: {
+				gfx: string | Phaser.BitmapData;
+				x: number;
+				y: number;
+				w: number;
+				h: number;
+				offsetX?: number;
+				offsetY?: number;
+			}[],
+			renderMode?: string;
 			singleColor?: boolean;
 			flipX: boolean;
 		}
@@ -85,8 +94,8 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		this.group.x = Math.round(x);
 		this.group.y = Math.round(y);
 
-		const testimg = game.add.image(0, 0, 'media/entity/objects/block.png', undefined, this.group);
-		testimg.crop(new Phaser.Rectangle(10, 20, 5, 5));
+		// const testimg = game.add.image(0, 0, 'media/entity/objects/block.png', undefined, this.group);
+		// testimg.crop(new Phaser.Rectangle(10, 20, 5, 5));
 	}
 
 	updateSettings() {
@@ -101,31 +110,76 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		}
 
 		// setup sprite
-		if (s.sheet) {
-			const o = s.sheet;
-			this.loadTexture(o.gfx);
-			if (!this.cropRect) {
-				this.crop(new Phaser.Rectangle(o.x, o.y, o.w, o.h));
-			} else {
-				this.cropRect.setTo(o.x, o.y, o.w, o.h);
-				this.updateCrop();
-			}
-
-			// setup scalable
+		if (s.sheets && s.sheets.fix) {
 			if (s.scalableX || s.scalableY) {
-				if (this.bitmap) {
-					this.bitmap.destroy();
+				// scalable
+				const fix = s.sheets.fix[0];
+				if (this.tileSpriteBitmap) {
+					this.tileSpriteBitmap.destroy();
 				}
-				this.bitmap = game.make.bitmapData(o.w, o.h);
-				this.bitmap.draw(this, 0, 0, o.w, o.h);
+				this.tileSpriteBitmap = game.make.bitmapData(fix.w, fix.h);
+
+				this.loadTexture(fix.gfx);
+				this.crop(new Phaser.Rectangle(fix.x, fix.y, fix.w, fix.h));
+
+				this.tileSpriteBitmap.draw(this, 0, 0, fix.w, fix.h);
 				if (this.tileSprite) {
 					this.boundingBoxOffsetGroup.remove(this.tileSprite);
 				}
-				this.tileSprite = game.make.tileSprite(0, 0, settings.size.x, settings.size.y + s.baseSize.z, this.bitmap, undefined);
+				this.tileSprite = game.make.tileSprite(0, 0, settings.size.x, settings.size.y + s.baseSize.z, this.tileSpriteBitmap, undefined);
 				this.boundingBoxOffsetGroup.add(this.tileSprite);
 				this.boundingBoxOffsetGroup.x = 0;
 				this.boundingBoxOffsetGroup.y = -s.baseSize.z;
 				this.visible = false;
+			} else {
+				// default
+
+				// normalize
+				const minOffset = {x: 0, y: 0};
+				s.sheets.fix.forEach(sheet => {
+					sheet.offsetX = sheet.offsetX || 0;
+					sheet.offsetY = sheet.offsetY || 0;
+					minOffset.x = Math.min(sheet.offsetX, minOffset.x);
+					minOffset.y = Math.min(sheet.offsetY, minOffset.y);
+				});
+				s.sheets.fix.forEach(sheet => {
+					sheet.offsetX -= minOffset.x;
+					sheet.offsetY -= minOffset.y;
+				});
+
+				const maxSize = {x: 0, y: 0};
+				s.sheets.fix.forEach(sheet => {
+					maxSize.x = Math.max(sheet.w + sheet.offsetX, maxSize.x);
+					maxSize.y = Math.max(sheet.h + sheet.offsetY, maxSize.y);
+				});
+				if (this.entityBitmap) {
+					this.entityBitmap.destroy();
+				}
+				this.entityBitmap = this.game.make.bitmapData(maxSize.x, maxSize.y);
+				const bmp = this.entityBitmap;
+				const img = this.game.make.image(0, 0);
+				s.sheets.fix.forEach(sheet => {
+					img.loadTexture(sheet.gfx);
+					img.crop(new Phaser.Rectangle(sheet.x, sheet.y, sheet.w, sheet.h));
+					img.x = sheet.offsetX;
+					img.y = sheet.offsetY;
+					bmp.draw(img);
+				});
+				img.destroy();
+
+				this.loadTexture(bmp);
+				Vec2.assign(this, minOffset);
+
+				// flip image
+				this.scale.x = s.sheets.flipX ? -1 : 1;
+			}
+
+			if (s.sheets.renderMode === 'lighter') {
+				this.tileSprite.blendMode = PIXI.blendModes.ADD;
+				this.blendMode = PIXI.blendModes.ADD;
+			} else if (s.sheets.renderMode === 'source-over') {
+				// TODO: no idea what that actually is
+				console.warn('renderMode source-over found');
 			}
 		}
 
@@ -146,63 +200,6 @@ export class CCEntity extends Phaser.Image implements Sortable {
 
 		this.setEvents();
 	}
-
-	updateType() {
-		const type = this.details.type;
-		const settings = this.details.settings;
-		// load correct image if prop
-		if (type === 'Prop' && settings.propType) {
-			const sheet: PropSheet = this.game.cache.getJSON('props/' + settings.propType.sheet);
-			let prop: Prop;
-			for (let i = 0; i < sheet.props.length; i++) {
-				const p = sheet.props[i];
-				if (settings.propType.name === p.name) {
-					prop = p;
-					break;
-				}
-			}
-			if (!prop) {
-				console.error('prop not found: ' + settings.propType.name);
-				return this.generateUndefinedType();
-			}
-			this.anchor.y = 1;
-			this.anchor.x = 0.5;
-
-			this.entitySettings = <any>{};
-			this.entitySettings.sheet = prop.fix;
-			this.entitySettings.baseSize = prop.size;
-			this.entitySettings.collType = prop.collType;
-		} else if (type === 'ScalableProp' && settings.propConfig) {
-			const sheet: ScalablePropSheet = this.game.cache.getJSON('scale-props/' + settings.propConfig.sheet);
-			const prop: ScalableProp = sheet.entries[settings.propConfig.name];
-			if (!prop) {
-				console.error('scale-prop not found: ' + settings.propConfig.name);
-				return this.generateUndefinedType();
-			}
-
-			this.entitySettings = <any>{};
-			if (prop.gfx) {
-				this.entitySettings.sheet = {
-					gfx: prop.gfx,
-					x: prop.gfxBaseX + prop.patterns.x,
-					y: prop.gfxBaseY + prop.patterns.y,
-					w: prop.patterns.w,
-					h: prop.patterns.h,
-					flipX: false,
-				};
-			}
-			this.entitySettings.scalableX = prop.scalableX;
-			this.entitySettings.scalableY = prop.scalableY;
-			this.entitySettings.scalableStep = prop.scalableStep;
-			this.entitySettings.baseSize = prop.baseSize;
-			this.entitySettings.collType = prop.collType;
-			this.entitySettings.pivot = prop.pivot;
-		} else {
-			return this.generateUndefinedType();
-		}
-		this.updateSettings();
-	}
-
 
 	set level(level: any) {
 		const details = this.details;
@@ -258,8 +255,8 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		if (this.tileSprite) {
 			this.tileSprite.destroy();
 		}
-		if (this.bitmap) {
-			this.bitmap.destroy();
+		if (this.tileSpriteBitmap) {
+			this.tileSpriteBitmap.destroy();
 		}
 		if (this.collisionBitmap) {
 			this.collisionBitmap.destroy();
@@ -281,6 +278,11 @@ export class CCEntity extends Phaser.Image implements Sortable {
 	updateZIndex() {
 		let zIndex = this.details.level.level * 10 + 1;
 
+		// TODO: hack to display OLPlatform over objects because right now Object Layer is always on level 10
+		if (this.details.type === 'OLPlatform') {
+			zIndex += 100;
+		}
+
 		// sort entities by y when on same level
 		zIndex += this.group.y * 0.000001;
 
@@ -298,29 +300,142 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		return JSON.parse(JSON.stringify(out));
 	}
 
+	updateType() {
+		const type = this.details.type;
+		const settings = this.details.settings;
+		// load correct image if prop
+		if (type === 'Prop' && settings.propType) {
+			const sheet: PropSheet = this.game.cache.getJSON('props/' + settings.propType.sheet);
+			let prop: Prop;
+			for (let i = 0; i < sheet.props.length; i++) {
+				const p = sheet.props[i];
+				if (settings.propType.name === p.name) {
+					prop = p;
+					break;
+				}
+			}
+			if (!prop) {
+				console.error('prop not found: ' + settings.propType.name);
+				return this.generateUndefinedType();
+			}
+			this.anchor.y = 1;
+			this.anchor.x = 0.5;
+
+			this.entitySettings = <any>{sheets: {fix: []}};
+			this.entitySettings.sheets.fix[0] = prop.fix;
+			this.entitySettings.baseSize = prop.size;
+			this.entitySettings.collType = prop.collType;
+		} else if (type === 'ScalableProp' && settings.propConfig) {
+			const sheet: ScalablePropSheet = this.game.cache.getJSON('scale-props/' + settings.propConfig.sheet);
+			if (!sheet) {
+				console.log('wtf');
+				console.log(this);
+			}
+			let prop: ScalableProp = sheet.entries[settings.propConfig.name];
+			if (!prop) {
+				console.error('scale-prop not found: ' + settings.propConfig.name);
+				return this.generateUndefinedType();
+			}
+
+			this.entitySettings = <any>{};
+			if (prop.jsonINSTANCE) {
+				const jsonInstance = sheet.jsonTEMPLATES[prop.jsonINSTANCE];
+				const p = jsonInstance.patterns;
+				this.replaceJsonParams(jsonInstance, prop);
+				prop = jsonInstance;
+			}
+
+			if (prop.gfx) {
+				this.entitySettings.sheets = {
+					fix: [{
+						gfx: prop.gfx,
+						x: prop.gfxBaseX + prop.patterns.x,
+						y: prop.gfxBaseY + prop.patterns.y,
+						w: prop.patterns.w,
+						h: prop.patterns.h
+					}],
+					renderMode: prop.renderMode,
+					flipX: false,
+				};
+			}
+			this.entitySettings.scalableX = prop.scalableX;
+			this.entitySettings.scalableY = prop.scalableY;
+			this.entitySettings.scalableStep = prop.scalableStep;
+			this.entitySettings.baseSize = prop.baseSize;
+			this.entitySettings.collType = prop.collType;
+			this.entitySettings.pivot = prop.pivot;
+		} else {
+			// other entities;
+			const def = this.definition;
+			if (!def.definitions) {
+				return this.generateUndefinedType();
+			}
+
+			this.entitySettings = <any>{sheets: {}};
+
+			let attr = settings[def.definitionAttribute];
+			if (!attr) {
+				attr = 'default';
+			}
+			const entityDef = def.definitions[attr];
+			if (!entityDef) {
+				return this.generateUndefinedType();
+			}
+
+			this.entitySettings.sheets.fix = entityDef.fix;
+			this.entitySettings.sheets.flipX = entityDef.flipX;
+
+			if (def.scalableX || def.scalableY) {
+				this.entitySettings.scalableX = def.scalableX;
+				this.entitySettings.scalableY = def.scalableY;
+			} else {
+				this.anchor.y = 1;
+				this.anchor.x = 0.5;
+			}
+
+			this.entitySettings.baseSize = entityDef.size;
+		}
+		this.updateSettings();
+	}
+
 	private generateUndefinedType() {
 		const settings = this.details.settings;
+		const def = this.definition;
 		this.entitySettings = <any>{};
 		this.entitySettings.baseSize = {x: 16, y: 16, z: settings.zHeight || 0};
-		if (settings.size) {
-			this.entitySettings.scalableX = true;
-			this.entitySettings.scalableY = true;
+		if (def.scalableX || def.scalableY) {
+			this.entitySettings.scalableX = def.scalableX;
+			this.entitySettings.scalableY = def.scalableY;
 		} else {
 			this.anchor.y = 1;
 			this.anchor.x = 0.5;
 		}
 		const singleColor = this.game.make.bitmapData(16, 16);
 		singleColor.fill(40, 60, 255, 0.5);
-		this.entitySettings.sheet = {
-			gfx: singleColor,
-			x: 0,
-			y: 0,
-			w: 16,
-			h: 16,
+		this.entitySettings.sheets = {
+			fix: [{
+				gfx: singleColor,
+				x: 0,
+				y: 0,
+				w: 16,
+				h: 16,
+			}],
 			singleColor: true,
 			flipX: false,
 		};
 		this.updateSettings();
+	}
+
+	private replaceJsonParams(jsonInstance, prop: ScalableProp) {
+		Object.entries(jsonInstance).forEach(([key, value]) => {
+			if (value.jsonPARAM) {
+				jsonInstance[key] = prop[value.jsonPARAM];
+				return;
+			}
+			if (typeof value === 'object') {
+				this.replaceJsonParams(value, prop);
+			}
+		});
 	}
 
 	private setInputEvents(inputEvents: InputEvents) {
@@ -370,7 +485,12 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			this.collisionBitmap.destroy();
 		}
 		const size = Object.assign({}, this.details.settings.size || s.baseSize);
-		size.z = size.z || this.details.settings.zHeight || s.baseSize.z || 0;
+		try {
+			size.z = size.z || this.details.settings.zHeight || s.baseSize.z || 0;
+		} catch (e) {
+			console.log(this);
+			console.error(e);
+		}
 		const inputArea = new Phaser.Rectangle(0, 0, size.x, size.y);
 
 		this.collisionBitmap = this.game.make.bitmapData(inputArea.width, inputArea.height + size.z);
