@@ -160,28 +160,13 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		});
 
 		this.game.load.json('definitions.json', 'assets/definitions.json');
-		this.game.load.image('media/entity/objects/block.png', Globals.URL + 'media/entity/objects/block.png');
+		this.game.load.json('media.json', 'assets/media.json');
 		this.game.load.crossOrigin = 'anonymous';
 
 		this.game.load.onLoadComplete.addOnce(() => {
-
-			props.forEach(prop => {
-				const sheet: PropSheet = this.game.cache.getJSON('props/' + prop.split('.')[0]);
-				sheet.props.forEach(p => {
-					if (p.fix && p.fix.gfx) {
-						this.game.load.image(p.fix.gfx, Globals.URL + p.fix.gfx, false);
-					}
-				});
-			});
-
-			scalableProps.forEach(prop => {
-				const sheet = this.game.cache.getJSON('scale-props/' + prop.split('.')[0]);
-				Object.keys(sheet.entries).forEach(key => {
-					const p: ScalableProp = sheet.entries[key];
-					if (p.gfx) {
-						this.game.load.image(p.gfx, Globals.URL + p.gfx, false);
-					}
-				});
+			const allMedia = this.game.cache.getJSON('media.json');
+			allMedia.forEach(media => {
+				this.game.load.image(media, Globals.URL + media, false);
 			});
 
 			setTimeout(() => {
