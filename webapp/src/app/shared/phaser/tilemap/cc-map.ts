@@ -30,7 +30,7 @@ export class CCMap {
 	constructor(private game: Phaser.Game) {
 	}
 
-	loadMap(map: CrossCodeMap): Promise<CCMap> {
+	loadMap(map: CrossCodeMap) {
 		const game = this.game;
 
 		this.props.forEach(prop => this[prop] = map[prop]);
@@ -45,37 +45,23 @@ export class CCMap {
 
 		// load needed assets for sprite props
 		console.log(map.entities.length);
-
-		map.layer.forEach(layer => {
-			game.load.image(layer.tilesetName, Globals.URL + layer.tilesetName, false);
-		});
-
-		return new Promise((resolve, reject) => {
-			game.load.onLoadComplete.addOnce(() => {
-
-				// generate Map Layers
-				if (this.inputLayers) {
-					this.inputLayers.forEach(layer => {
-						const ccLayer = new CCMapLayer(game, layer);
-						this.layers.push(ccLayer);
-					});
-
-					this.inputLayers = null;
-				}
-
-				// generate Map Entities
-				game.plugins.plugins.forEach(plugin => {
-					if (plugin instanceof EntityManager) {
-						(<EntityManager>plugin).initialize(this, map);
-					}
-				});
-
-				resolve(this);
+		
+		// generate Map Layers
+		if (this.inputLayers) {
+			this.inputLayers.forEach(layer => {
+				const ccLayer = new CCMapLayer(game, layer);
+				this.layers.push(ccLayer);
 			});
-			game.load.crossOrigin = 'anonymous';
-			game.load.start();
+			
+			this.inputLayers = null;
+		}
+		
+		// generate Map Entities
+		game.plugins.plugins.forEach(plugin => {
+			if (plugin instanceof EntityManager) {
+				(<EntityManager>plugin).initialize(this, map);
+			}
 		});
-
 	}
 
 	resize(width: number, height: number) {

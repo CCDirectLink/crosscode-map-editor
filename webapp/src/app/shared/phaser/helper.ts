@@ -15,64 +15,95 @@ export class Helper {
 		const cam = Globals.game.camera;
 		p.x = (<any>x + cam.x) / cam.scale.x;
 		p.y = (y + cam.y) / cam.scale.y;
-
+		
 		return p;
 	}
-
+	
 	public static worldToTile(x: number, y: number): Point {
 		const p: Point = {};
-
+		
 		p.x = Math.floor(x / Globals.TILE_SIZE);
 		p.y = Math.floor(y / Globals.TILE_SIZE);
-
+		
 		return p;
 	}
-
+	
 	public static screenToTile(x: number | Point, y?: number): Point {
 		let p = this.screenToWorld(x, y);
 		p = this.worldToTile(p.x, p.y);
 		return p;
 	}
-
+	
 	/** gets the position of the tile in the tilemap */
 	public static getTilePos(tilesetSize: Point, index: number): Point {
 		const tilesize = Globals.TILE_SIZE;
 		const pos = {x: 0, y: 0};
-
+		
 		pos.x = index % tilesetSize.x;
 		pos.y = Math.floor(index / tilesetSize.x);
-
+		
 		if (pos.x === 0) {
 			pos.x = tilesetSize.x;
 			pos.y--;
 		}
 		pos.x--;
-
+		
 		return pos;
 	}
-
+	
 	public static getTilesetSize(img: HTMLImageElement): Point {
 		return {
 			x: img.width / Globals.TILE_SIZE,
 			y: img.height / Globals.TILE_SIZE
 		};
 	}
-
+	
 	public static clamp(val, min, max) {
 		return Math.min(Math.max(val, min), max);
 	}
-
+	
 	public static drawRect(context: CanvasRenderingContext2D, rect: Phaser.Rectangle, fillStyle, strokeStyle) {
 		const o = new Phaser.Rectangle(rect.x + 0.5, rect.y + 0.5, rect.width - 1, rect.height);
-
+		
 		context.fillStyle = fillStyle;
 		context.fillRect(o.x, o.y, o.width, o.height);
-
+		
 		context.lineWidth = 1;
 		context.strokeStyle = strokeStyle;
 		context.strokeRect(o.x, o.y, o.width, o.height);
 	}
-
+	
+	public static deepFind(key, obj) {
+		const paths = key.split('.');
+		let current = obj;
+		
+		for (let i = 0; i < paths.length; ++i) {
+			if (current[paths[i]] === undefined || current[paths[i]] === null) {
+				return current[paths[i]];
+			} else {
+				current = current[paths[i]];
+			}
+		}
+		return current;
+	}
+	
+	public static getJson(key: string, callback: (json) => void) {
+		const game = Globals.game;
+		
+		// get json from cache
+		if (game.cache.checkJSONKey(key)) {
+			return callback(game.cache.getJSON(key));
+		}
+		
+		// load json
+		game.load.json(key, Globals.URL + 'source/' + key + '.json');
+		game.load.onLoadComplete.addOnce(() => {
+			return callback(game.cache.getJSON(key));
+		});
+		game.load.crossOrigin = 'anonymous';
+		game.load.start();
+	}
+	
 	/**
 	 * every key listener should check this method and only proceed when
 	 * false is returned, so the user can write everything into input fields

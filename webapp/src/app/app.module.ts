@@ -25,11 +25,12 @@ import {GlobalEventsService} from './shared/global-events.service';
 import {StringWidgetComponent} from './sidenav/entities/widgets/string-widget/string-widget.component';
 import {HostDirective} from './shared/host.directive';
 import {WidgetRegistryService} from './sidenav/entities/widgets/widget-registry.service';
-import { JsonWidgetComponent } from './sidenav/entities/widgets/json-widget/json-widget.component';
+import {JsonWidgetComponent} from './sidenav/entities/widgets/json-widget/json-widget.component';
 import {NumberWidgetComponent} from './sidenav/entities/widgets/number-widget/number-widget.component';
-import { BooleanWidgetComponent } from './sidenav/entities/widgets/boolean-widget/boolean-widget.component';
-import { Vec2WidgetComponent } from './sidenav/entities/widgets/vec2-widget/vec2-widget.component';
-import { AddEntityMenuComponent } from './editor/add-entity-menu/add-entity-menu.component';
+import {BooleanWidgetComponent} from './sidenav/entities/widgets/boolean-widget/boolean-widget.component';
+import {Vec2WidgetComponent} from './sidenav/entities/widgets/vec2-widget/vec2-widget.component';
+import {AddEntityMenuComponent} from './editor/add-entity-menu/add-entity-menu.component';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
 	declarations: [
@@ -54,6 +55,7 @@ import { AddEntityMenuComponent } from './editor/add-entity-menu/add-entity-menu
 		AppRoutingModule,
 		FormsModule,
 		FlexLayoutModule,
+		HttpClientModule,
 		MdButtonModule,
 		MdTooltipModule,
 		MdCheckboxModule,

@@ -5,6 +5,7 @@ export interface EntityDefinition {
 	type: string;
 	attributes: any;
 	definitionAttribute: string;
+	definitionRef?: string;
 	definitions: {[s: string]: {
 		size: Point3
 		fix: Fix[],

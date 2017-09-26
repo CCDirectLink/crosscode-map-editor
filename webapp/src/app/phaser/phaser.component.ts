@@ -11,6 +11,7 @@ import {GlobalEventsService} from '../shared/global-events.service';
 import {EditorView} from '../shared/interfaces/editor-view';
 import {Globals} from '../shared/globals';
 import {PropSheet, ScalableProp} from '../shared/interfaces/props';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
 	selector: 'app-phaser',
@@ -21,172 +22,106 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	game: Phaser.Game;
 	tileMap: CCMap;
 	sub: Subscription;
-
+	
 	border: Phaser.Rectangle;
-
+	
 	// plugins
 	private mapPan: MapPan;
 	private tileDrawer: TileDrawer;
 	private entityManager: EntityManager;
-
-	constructor(private element: ElementRef, private mapLoader: MapLoaderService, private globalEvents: GlobalEventsService) {
+	
+	constructor(private element: ElementRef,
+	            private mapLoader: MapLoaderService,
+	            private globalEvents: GlobalEventsService,
+	            private http: HttpClient) {
 	}
-
+	
 	ngOnInit() {
-		this.game = new Phaser.Game(screen.width * window.devicePixelRatio, screen.height * window.devicePixelRatio, Phaser.CANVAS, 'content', {
-			create: () => {
-				const game = this.game;
-
-				game.stage.backgroundColor = '#616161';
-				game.canvas.oncontextmenu = function (e) {
-					e.preventDefault();
-				};
-				game.world.setBounds(-100000, -100000, 200000, 200000);
-
-				game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
-
-				const scale = 1 / window.devicePixelRatio;
-				game.scale.setUserScale(scale, scale);
-
-				game.renderer.renderSession.roundPixels = true;
-				Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
-
-				this.tileMap = new CCMap(game);
-				this.sub = this.mapLoader.map.subscribe((map) => {
-					if (map) {
-						this.tileMap.loadMap(map).then(tilemap => {
-							this.mapLoader.tileMap.next(tilemap);
-							this.mapLoader.selectedLayer.next(tilemap.layers[0]);
-						});
-					}
-				});
-
-				// plugins
-				this.mapPan = game.plugins.add(MapPan);
-				this.entityManager = game.plugins.add(EntityManager);
-				this.entityManager.setGlobalEvents(this.globalEvents);
-				this.tileDrawer = game.plugins.add(TileDrawer);
-
-				this.globalEvents.currentView.subscribe(view => {
-					if (view === EditorView.Layers) {
-						this.tileDrawer.activate();
-						this.tileDrawer.selectLayer(this.mapLoader.selectedLayer.getValue());
-						this.entityManager.deactivate();
-						console.log(this.game.world.children);
-					} else if (view === EditorView.Entities) {
-						this.tileDrawer.selectLayer(null);
-						this.tileDrawer.deactivate();
-						this.entityManager.activate();
-					}
-				});
-
-				this.border = new Phaser.Rectangle(0, 0, 0, 0);
-
-				this.mapLoader.selectedLayer.subscribe(layer => this.tileDrawer.selectLayer(layer));
-				this.globalEvents.currentView.next(EditorView.Layers);
-
-			},
-			update: () => this.update(),
-			render: () => this.render(),
-			preload: () => this.preload(),
-		}, undefined, false);
-		Globals.game = this.game;
+		this.http.get(Globals.URL + 'api/allFiles').subscribe(res => {
+			this.game = new Phaser.Game(screen.width * window.devicePixelRatio, screen.height * window.devicePixelRatio, Phaser.CANVAS, 'content', {
+				create: () => this.create(),
+				update: () => this.update(),
+				render: () => this.render(),
+				preload: () => this.preload(res),
+			}, undefined, false);
+			Globals.game = this.game;
+		});
 	}
-
-	preload() {
-		let props: any = 'autumn.json\n' +
-			'bergen.json\n' +
-			'bergen-inner.json\n' +
-			'bergen-trail.json\n' +
-			'cabins.json\n' +
-			'cargo-hold.json\n' +
-			'cave.json\n' +
-			'cold-dng.json\n' +
-			'dungeon-ar.json\n' +
-			'heat.json\n' +
-			'heat-dng.json\n' +
-			'heat-interior.json\n' +
-			'heat-village.json\n' +
-			'hideout.json\n' +
-			'invisible.json\n' +
-			'jungle.json\n' +
-			'jungle-city.json\n' +
-			'jungle-interior.json\n' +
-			'jungle-signs.json\n' +
-			'office.json\n' +
-			'rh-interior.json\n' +
-			'rhombus-interior.json\n' +
-			'rhombus-sqr.json\n' +
-			'rhombus-square-view.json\n' +
-			'rookie-harbor.json\n' +
-			'ship-bridge.json\n' +
-			'ship-outer.json\n' +
-			'shockwave-dng.json\n' +
-			'spooky.json\n' +
-			'trading-autumn.json\n' +
-			'unknown-interior.json\n' +
-			'upgrade-glow.json\n' +
-			'upgrade-symbols.json\n' +
-			'various.json';
-
-		props = props.split('\n');
-
-		props.forEach(prop => {
-			this.game.load.json('props/' + prop.split('.')[0], Globals.URL + 'data/props/' + prop);
+	
+	create() {
+		const game = this.game;
+		
+		game.stage.backgroundColor = '#616161';
+		game.canvas.oncontextmenu = function (e) {
+			e.preventDefault();
+		};
+		game.world.setBounds(-100000, -100000, 200000, 200000);
+		
+		game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
+		
+		const scale = 1 / window.devicePixelRatio;
+		game.scale.setUserScale(scale, scale);
+		
+		game.renderer.renderSession.roundPixels = true;
+		Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
+		
+		this.tileMap = new CCMap(game);
+		this.sub = this.mapLoader.map.subscribe((map) => {
+			if (map) {
+				this.tileMap.loadMap(map);
+				this.mapLoader.tileMap.next(this.tileMap);
+				this.mapLoader.selectedLayer.next(this.tileMap.layers[0]);
+			}
 		});
-
-		let scalableProps: any = 'autumn.json\n' +
-			'bergen-trail.json\n' +
-			'cave.json\n' +
-			'cold-dng.json\n' +
-			'dungeon-ar.json\n' +
-			'heat-area.json\n' +
-			'heat-dng.json\n' +
-			'heat-village.json\n' +
-			'hideout.json\n' +
-			'jungle-city.json\n' +
-			'jungle.json\n' +
-			'rh-interior.json\n' +
-			'rhombus-sqr-inner.json\n' +
-			'rhombus-sqr.json\n' +
-			'rookie-harbor.json\n' +
-			'ship-outer.json\n' +
-			'shockwave-dng.json';
-
-		scalableProps = scalableProps.split('\n');
-
-		scalableProps.forEach(prop => {
-			this.game.load.json('scale-props/' + prop.split('.')[0], Globals.URL + 'data/scale-props/' + prop);
+		
+		// plugins
+		this.mapPan = game.plugins.add(MapPan);
+		this.entityManager = game.plugins.add(EntityManager);
+		this.entityManager.setGlobalEvents(this.globalEvents);
+		this.tileDrawer = game.plugins.add(TileDrawer);
+		
+		this.globalEvents.currentView.subscribe(view => {
+			if (view === EditorView.Layers) {
+				this.tileDrawer.activate();
+				this.tileDrawer.selectLayer(this.mapLoader.selectedLayer.getValue());
+				this.entityManager.deactivate();
+				console.log(this.game.world.children);
+			} else if (view === EditorView.Entities) {
+				this.tileDrawer.selectLayer(null);
+				this.tileDrawer.deactivate();
+				this.entityManager.activate();
+			}
 		});
-
-		this.game.load.json('definitions.json', 'assets/definitions.json');
-		this.game.load.json('media.json', 'assets/media.json');
+		
+		this.border = new Phaser.Rectangle(0, 0, 0, 0);
+		
+		this.mapLoader.selectedLayer.subscribe(layer => this.tileDrawer.selectLayer(layer));
+		this.globalEvents.currentView.next(EditorView.Layers);
+	}
+	
+	preload(res) {
+		// res.data.forEach(json => {
+		// 	this.game.load.json(json, Globals.URL + 'source/' + json);
+		// });
+		res.images.forEach(img => {
+			this.game.load.image(img, Globals.URL + 'source/' + img);
+		});
+		
+		this.game.load.json('definitions.json', Globals.URL + 'public/definitions.json');
 		this.game.load.crossOrigin = 'anonymous';
-
+		
 		this.game.load.onLoadComplete.addOnce(() => {
-			const allMedia = this.game.cache.getJSON('media.json');
-			allMedia.forEach(media => {
-				this.game.load.image(media, Globals.URL + media, false);
-			});
-
-			this.game.load.onLoadComplete.addOnce(() => {
-				this.globalEvents.loadComplete.next(true);
-			});
-
-			setTimeout(() => {
-				this.game.load.crossOrigin = 'anonymous';
-				this.game.load.start();
-			}, 0);
+			this.globalEvents.loadComplete.next(true);
 		});
 	}
-
+	
 	update() {
 		if (this.tileMap.layers.length === 0) {
 			return;
 		}
 		const s = this.tileMap.layers[0].details.tilesize * this.game.camera.scale.x;
 		this.border.resize(this.tileMap.mapWidth * s, this.tileMap.mapHeight * s);
-
+		
 		// should only sort when needed, refactor when performance becomes a problem
 		// this.game.world.sort('zIndex');
 		this.game.world.children.sort((a: any, b: any) => {
@@ -199,11 +134,11 @@ export class PhaserComponent implements OnInit, OnDestroy {
 			return a.z - b.z;
 		});
 	}
-
+	
 	render() {
 		this.game.debug.geom(this.border, '#F00', false);
 	}
-
+	
 	ngOnDestroy() {
 		if (this.sub) {
 			this.sub.unsubscribe();
