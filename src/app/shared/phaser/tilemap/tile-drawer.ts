@@ -61,8 +61,8 @@ export class TileDrawer extends Phaser.Plugin {
 	selectLayer(selectedLayer: CCMapLayer) {
 		this.layer = selectedLayer;
 
-		// hide everything
-		if (!selectedLayer) {
+		// hide when no layer selected or has no tileset
+		if (!selectedLayer || !selectedLayer.details.tilesetName) {
 			this.group.visible = false;
 			return;
 		}

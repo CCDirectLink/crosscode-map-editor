@@ -56,9 +56,6 @@ export class CCMap {
 				// generate Map Layers
 				if (this.inputLayers) {
 					this.inputLayers.forEach(layer => {
-						if (!layer.tilesetName) {
-							return;
-						}
 						const ccLayer = new CCMapLayer(game, layer);
 						this.layers.push(ccLayer);
 					});
@@ -100,7 +97,7 @@ export class CCMap {
 			}
 		});
 		out.layer = [];
-		this.layers.forEach(l => out.layer.push(l.details));
+		this.layers.forEach(l => out.layer.push(l.exportLayer()));
 
 		return out;
 	}

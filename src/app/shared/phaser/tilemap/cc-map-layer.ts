@@ -28,11 +28,14 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 			// 'object3'
 			if (!isNaN(<any>details.level)) {
 				details.level = parseInt(details.level, 10);
-			} else if (details.level.startsWith('first')) {
-				details.level = 0;
 			} else {
-				// TODO: get actual max level;
-				details.level = 10;
+				details.levelName = details.level;
+				if (details.level.startsWith('first')) {
+					details.level = 0;
+				} else {
+					// TODO: get actual max level;
+					details.level = 10;
+				}
 			}
 		}
 		if (typeof details.distance === 'string') {
@@ -43,12 +46,13 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		this.loadTexture(this.bitmap);
 		game.add.existing(this);
 
-		this.tilesetImage = game.make.image(0, 0, details.tilesetName);
-		this.tilesetSize = Helper.getTilesetSize(game.cache.getImage(details.tilesetName));
+		if (details.tilesetName) {
+			this.tilesetImage = game.make.image(0, 0, details.tilesetName);
+			this.tilesetSize = Helper.getTilesetSize(game.cache.getImage(details.tilesetName));
 
-		this.tileCrop = new Phaser.Rectangle(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
-		this.tilesetImage.crop(this.tileCrop);
-
+			this.tileCrop = new Phaser.Rectangle(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
+			this.tilesetImage.crop(this.tileCrop);
+		}
 		const skip = 'Navigation Collision'.split(' ');
 		skip.forEach(type => {
 			if (type === details.type) {
@@ -102,8 +106,12 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 	}
 
 	destroy() {
-		this.bitmap.destroy();
-		this.tilesetImage.destroy();
+		if (this.bitmap) {
+			this.bitmap.destroy();
+		}
+		if (this.tilesetImage) {
+			this.tilesetImage.destroy();
+		}
 		super.destroy();
 	}
 
@@ -168,6 +176,15 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 			out.push({x: p.x, y: p.y + 1});
 		}
 
+		return out;
+	}
+
+	exportLayer() {
+		const out: MapLayer = Object.assign({}, this.details);
+		if (out.levelName) {
+			out.level = out.levelName;
+			out.levelName = undefined;
+		}
 		return out;
 	}
 }

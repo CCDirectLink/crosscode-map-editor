@@ -45,6 +45,7 @@ export interface MapLayer {
 	type: string;
 	name: string;
 	level: any;
+	levelName?: string;
 	width: number;
 	height: number;
 	visible: number;
