@@ -1,4 +1,4 @@
-import {Point3} from './cross-code-map';
+import {Point, Point3} from './cross-code-map';
 import {Fix} from './props';
 
 export interface EntityDefinition {
@@ -10,6 +10,7 @@ export interface EntityDefinition {
 		[s: string]: {
 			size: Point3
 			fix?: Fix[],
+			offset?: Point,
 			flipX?: boolean,
 			color?: {
 				r: number,

@@ -61,7 +61,10 @@ export class CCEntity extends Phaser.Image implements Sortable {
 				h: number;
 				offsetX?: number;
 				offsetY?: number;
+				flipX?: boolean;
+				flipY?: boolean;
 			}[],
+			offset?: Point;
 			renderMode?: string;
 			singleColor?: boolean;
 			flipX: boolean;
@@ -140,21 +143,25 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			} else {
 				// default
 				
-				// normalize
 				const minOffset = {x: 0, y: 0};
+				const fixCopy = [];
 				s.sheets.fix.forEach(sheet => {
+					fixCopy.push(Object.assign({}, sheet));
+				});
+				// normalize
+				fixCopy.forEach(sheet => {
 					sheet.offsetX = sheet.offsetX || 0;
 					sheet.offsetY = sheet.offsetY || 0;
 					minOffset.x = Math.min(sheet.offsetX, minOffset.x);
 					minOffset.y = Math.min(sheet.offsetY, minOffset.y);
 				});
-				s.sheets.fix.forEach(sheet => {
+				fixCopy.forEach(sheet => {
 					sheet.offsetX -= minOffset.x;
 					sheet.offsetY -= minOffset.y;
 				});
 				
 				const maxSize = {x: 0, y: 0};
-				s.sheets.fix.forEach(sheet => {
+				fixCopy.forEach(sheet => {
 					maxSize.x = Math.max(sheet.w + sheet.offsetX, maxSize.x);
 					maxSize.y = Math.max(sheet.h + sheet.offsetY, maxSize.y);
 				});
@@ -164,17 +171,33 @@ export class CCEntity extends Phaser.Image implements Sortable {
 				this.entityBitmap = this.game.make.bitmapData(maxSize.x, maxSize.y);
 				const bmp = this.entityBitmap;
 				const img = this.game.make.image(0, 0);
-				s.sheets.fix.forEach(sheet => {
+				fixCopy.forEach(sheet => {
 					img.loadTexture(sheet.gfx);
 					img.crop(new Phaser.Rectangle(sheet.x, sheet.y, sheet.w, sheet.h));
 					img.x = sheet.offsetX;
 					img.y = sheet.offsetY;
+					img.anchor.set(0, 0);
+					img.scale.set(1, 1);
+					if (sheet.flipY) {
+						img.anchor.y = 1;
+						img.scale.y = -1;
+					}
+					if (sheet.flipX) {
+						img.anchor.x = 1;
+						img.scale.x = -1;
+					}
 					bmp.draw(img);
 				});
 				img.destroy();
 				
 				this.loadTexture(bmp);
 				Vec2.assign(this, minOffset);
+				if (s.sheets.offset) {
+					Vec2.add(this, s.sheets.offset);
+				}
+				if (s.sheets.flipX) {
+					Vec2.mulF(this, -1);
+				}
 				
 				// flip image
 				this.scale.x = s.sheets.flipX ? -1 : 1;
@@ -464,6 +487,7 @@ export class CCEntity extends Phaser.Image implements Sortable {
 				if (entityDef.fix) {
 					this.entitySettings.sheets.fix = entityDef.fix;
 					this.entitySettings.sheets.flipX = entityDef.flipX;
+					this.entitySettings.sheets.offset = entityDef.offset;
 				} else {
 					const c = entityDef.color || {r: 150, g: 0, b: 255, a: 0.5};
 					this.generateSingleColorSheet(c.r, c.g, c.b, c.a);
