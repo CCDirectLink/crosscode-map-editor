@@ -30,6 +30,7 @@ export interface Fix {
 	h: number;
 	offsetX?: number;
 	offsetY?: number;
+	renderMode?: string;
 	flipX: boolean;
 }
 

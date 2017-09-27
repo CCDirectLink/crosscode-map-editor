@@ -6,11 +6,19 @@ export interface EntityDefinition {
 	attributes: any;
 	definitionAttribute: string;
 	definitionRef?: string;
-	definitions: {[s: string]: {
-		size: Point3
-		fix: Fix[],
-		flipX?: boolean
-	}};
+	definitions: {
+		[s: string]: {
+			size: Point3
+			fix?: Fix[],
+			flipX?: boolean,
+			color?: {
+				r: number,
+				g: number,
+				b: number,
+				a?: number
+			}
+		}
+	};
 	scalableX: boolean;
 	scalableY: boolean;
 }

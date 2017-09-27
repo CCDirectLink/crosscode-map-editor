@@ -126,7 +126,13 @@ export class CCEntity extends Phaser.Image implements Sortable {
 				if (this.tileSprite) {
 					this.boundingBoxOffsetGroup.remove(this.tileSprite);
 				}
-				this.tileSprite = game.make.tileSprite(0, 0, settings.size.x, settings.size.y + s.baseSize.z, this.tileSpriteBitmap, undefined);
+				this.tileSprite = game.make.tileSprite(
+					0,
+					0,
+					settings.size.x,
+					settings.size.y + s.baseSize.z,
+					this.tileSpriteBitmap, undefined
+				);
 				this.boundingBoxOffsetGroup.add(this.tileSprite);
 				this.boundingBoxOffsetGroup.x = 0;
 				this.boundingBoxOffsetGroup.y = -s.baseSize.z;
@@ -175,7 +181,9 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			}
 			
 			if (s.sheets.renderMode === 'lighter') {
-				this.tileSprite.blendMode = PIXI.blendModes.ADD;
+				if (this.tileSprite) {
+					this.tileSprite.blendMode = PIXI.blendModes.ADD;
+				}
 				this.blendMode = PIXI.blendModes.ADD;
 			} else if (s.sheets.renderMode === 'source-over') {
 				// TODO: no idea what that actually is
@@ -322,7 +330,15 @@ export class CCEntity extends Phaser.Image implements Sortable {
 				this.anchor.x = 0.5;
 				
 				this.entitySettings = <any>{sheets: {fix: []}};
-				this.entitySettings.sheets.fix[0] = prop.fix;
+				if (prop.fix) {
+					this.entitySettings.sheets.fix[0] = prop.fix;
+					this.entitySettings.sheets.renderMode = prop.fix.renderMode;
+				} else {
+					console.log('sheet not found for prop: ' + prop.name);
+					console.log(this.group.x);
+					console.log(this.group.y);
+					return this.generateUndefinedType(0, 255, 60);
+				}
 				this.entitySettings.baseSize = prop.size;
 				this.entitySettings.collType = prop.collType;
 				this.updateSettings();
@@ -388,7 +404,6 @@ export class CCEntity extends Phaser.Image implements Sortable {
 				
 				// replace vars
 				while (true) {
-					console.log(defKey);
 					matched = defKey.split('${')[1];
 					if (!matched) {
 						break;
@@ -411,7 +426,6 @@ export class CCEntity extends Phaser.Image implements Sortable {
 					}
 					const animKey = 'data/animations/' + json.anims.replace('.', '/');
 					Helper.getJson(animKey, anim => {
-						console.log(anim);
 						const namedSheet = anim.namedSheets.move;
 						if (!namedSheet) {
 							return this.generateUndefinedType();
@@ -440,20 +454,31 @@ export class CCEntity extends Phaser.Image implements Sortable {
 					return this.generateUndefinedType();
 				}
 				
-				this.entitySettings.sheets.fix = entityDef.fix;
-				this.entitySettings.sheets.flipX = entityDef.flipX;
-				
 				this.entitySettings.baseSize = entityDef.size;
+				if (settings.zHeight) {
+					this.entitySettings.baseSize.z = settings.zHeight;
+				} else if (settings.wallZHeight) {
+					this.entitySettings.baseSize.z = settings.wallZHeight;
+				}
+				
+				if (entityDef.fix) {
+					this.entitySettings.sheets.fix = entityDef.fix;
+					this.entitySettings.sheets.flipX = entityDef.flipX;
+				} else {
+					const c = entityDef.color || {r: 150, g: 0, b: 255, a: 0.5};
+					this.generateSingleColorSheet(c.r, c.g, c.b, c.a);
+				}
+				
 				this.updateSettings();
 			}
 		}
 	}
 	
-	private generateUndefinedType() {
+	private generateUndefinedType(r?: number, g?: number, b?: number, a?: number) {
 		const settings = this.details.settings;
 		const def = this.definition;
 		this.entitySettings = <any>{};
-		this.entitySettings.baseSize = {x: 16, y: 16, z: settings.zHeight || 0};
+		this.entitySettings.baseSize = {x: 16, y: 16, z: settings.zHeight || settings.wallZHeight || 0};
 		if (def.scalableX || def.scalableY) {
 			this.entitySettings.scalableX = def.scalableX;
 			this.entitySettings.scalableY = def.scalableY;
@@ -461,20 +486,25 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			this.anchor.y = 1;
 			this.anchor.x = 0.5;
 		}
-		const singleColor = this.game.make.bitmapData(16, 16);
-		singleColor.fill(40, 60, 255, 0.5);
+		this.generateSingleColorSheet(r || 40, g || 60, b || 255);
+		this.updateSettings();
+	}
+	
+	private generateSingleColorSheet(r: number, g: number, b: number, a?: number) {
+		const size = this.entitySettings.baseSize;
+		const singleColor = this.game.make.bitmapData(size.x, size.y);
+		singleColor.fill(r, g, b, a || 0.5);
 		this.entitySettings.sheets = {
 			fix: [{
 				gfx: singleColor,
 				x: 0,
 				y: 0,
-				w: 16,
-				h: 16,
+				w: size.x,
+				h: size.y,
 			}],
 			singleColor: true,
 			flipX: false,
 		};
-		this.updateSettings();
 	}
 	
 	private replaceJsonParams(jsonInstance, prop: ScalableProp) {
@@ -537,7 +567,7 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		}
 		const size = Object.assign({}, this.details.settings.size || s.baseSize);
 		try {
-			size.z = size.z || this.details.settings.zHeight || s.baseSize.z || 0;
+			size.z = size.z || this.details.settings.zHeight || this.details.settings.wallZHeight || s.baseSize.z || 0;
 		} catch (e) {
 			console.log(this);
 			console.error(e);
