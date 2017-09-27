@@ -34,7 +34,6 @@ export class TileDrawer extends Phaser.Plugin {
 		super(game, parent);
 		this.active = true;
 		this.hasUpdate = true;
-		this.hasRender = true;
 		this.toggleTilemapKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		this.fillKey = game.input.keyboard.addKey(Phaser.Keyboard.F);
 		this.group = game.add.group();

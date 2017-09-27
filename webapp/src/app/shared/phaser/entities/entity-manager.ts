@@ -6,6 +6,7 @@ import {CrossCodeMap, MapEntity} from '../../interfaces/cross-code-map';
 import {Vec2} from '../vec2';
 import {GlobalEventsService} from '../../global-events.service';
 import {EntityDefinition} from '../../interfaces/entity-definition';
+import {Globals} from '../../globals';
 
 enum MouseButtons {
 	Left,
@@ -24,6 +25,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	private copyKey: Phaser.Key;
 	private pasteKey: Phaser.Key;
 	private deleteKey: Phaser.Key;
+	private gridKey: Phaser.Key;
 
 	private inputEvents: InputEvents = {};
 	private selectedEntities: CCEntity[];
@@ -43,9 +45,11 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		this.copyKey = game.input.keyboard.addKey(Phaser.Keyboard.C);
 		this.pasteKey = game.input.keyboard.addKey(Phaser.Keyboard.V);
 		this.deleteKey = game.input.keyboard.addKey(Phaser.Keyboard.DELETE);
+		this.gridKey = game.input.keyboard.addKey(Phaser.Keyboard.G);
 		game.input.keyboard.removeKeyCapture(this.copyKey.keyCode);
 		game.input.keyboard.removeKeyCapture(this.pasteKey.keyCode);
 		game.input.keyboard.removeKeyCapture(this.deleteKey.keyCode);
+		game.input.keyboard.removeKeyCapture(this.gridKey.keyCode);
 
 		this.inputImg = game.add.image(-9999, -9999);
 		this.inputImg.width = 999999;
@@ -223,6 +227,12 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		this.inputImg.inputEnabled = true;
 		this.inputImg.input.priorityID = 1;
 
+		this.keyBindings.push(this.gridKey.onDown.add(() => {
+			if (Helper.isInputFocused()) {
+				return;
+			}
+			Globals.entitySettings.enableGrid = !Globals.entitySettings.enableGrid;
+		}));
 		this.keyBindings.push(this.deleteKey.onDown.add(() => {
 			if (Helper.isInputFocused()) {
 				return;
@@ -247,6 +257,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 			}
 			this.paste();
 		}));
+		
 		if (!this.map) {
 			return;
 		}

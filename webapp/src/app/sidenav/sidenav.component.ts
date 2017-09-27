@@ -44,19 +44,6 @@ export class SidenavComponent implements OnInit {
 
 	}
 
-	getDisplayName(layer: CCMapLayer): string {
-		return `${layer.details.name} (${layer.details.level})`;
-	}
-
-	toggleVisibility(event, layer: CCMapLayer) {
-		event.stopPropagation();
-		layer.visible = !layer.visible;
-	}
-
-	selectLayer(layer: CCMapLayer) {
-		this.mapLoader.selectedLayer.next(layer);
-	}
-
 	selectTab(view) {
 		this.globalEvents.currentView.next(view);
 	}

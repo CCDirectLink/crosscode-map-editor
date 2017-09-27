@@ -7,6 +7,7 @@ import * as Phaser from 'phaser-ce';
 import {EntityDefinition} from '../../interfaces/entity-definition';
 import {Vec2} from '../vec2';
 import {max} from 'rxjs/operator/max';
+import {Globals} from '../../globals';
 
 export interface InputEvents {
 	onLeftClick?: (entity: CCEntity, pointer: Phaser.Pointer) => void;
@@ -302,6 +303,23 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			const p = Helper.screenToWorld(this.game.input.mousePointer);
 			this.group.x = Math.round(p.x - this.startOffset.x);
 			this.group.y = Math.round(p.y - this.startOffset.y);
+			
+			const settings = Globals.entitySettings;
+			if (settings.enableGrid) {
+				const diffX = this.group.x % settings.gridSize;
+				if (diffX * 2 < settings.gridSize) {
+					this.group.x -= diffX;
+				} else {
+					this.group.x += settings.gridSize - diffX;
+				}
+				
+				const diffY = this.group.y % settings.gridSize;
+				if (diffY * 2 < settings.gridSize) {
+					this.group.y -= diffY;
+				} else {
+					this.group.y += settings.gridSize - diffY;
+				}
+			}
 			this.updateZIndex();
 		}
 	}
