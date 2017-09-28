@@ -110,7 +110,11 @@ export class Helper {
 	 * without messing up the map
 	 * */
 	public static isInputFocused() {
+		if (Globals.disablePhaserInput) {
+			return true;
+		}
 		const tag = document.activeElement.tagName.toLowerCase();
+		
 		return tag === 'input' || tag === 'textarea';
 	}
 }

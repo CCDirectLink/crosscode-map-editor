@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
+import {JsonEditorComponent} from '../../../../shared/json-editor/json-editor.component';
+import {MdDialog} from '@angular/material';
 
 @Component({
 	selector: 'app-json-widget',
@@ -13,11 +15,26 @@ export class JsonWidgetComponent extends AbstractWidget implements OnInit {
 	private timer;
 	json = JSON;
 	
-	constructor() {
+	constructor(private dialog: MdDialog) {
 		super();
 	}
 	
 	ngOnInit() {
+	}
+	
+	openJsonEditor() {
+		const ref = this.dialog.open(JsonEditorComponent, {
+			data: {
+				val: this.custom ? this.custom[this.key] : this.entity.details.settings[this.key],
+				key: this.key
+			}
+		});
+		
+		ref.afterClosed().subscribe(res => {
+			if (res) {
+				this.setCustomSetting(this.key, JSON.stringify(res));
+			}
+		});
 	}
 	
 	setCustomSetting(key, value) {

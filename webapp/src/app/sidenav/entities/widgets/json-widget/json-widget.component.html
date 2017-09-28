@@ -5,4 +5,5 @@
 	          [ngModel]="json.stringify(custom ? custom[key] : entity.details.settings[key], undefined, 2)"
 	          (input)="setCustomSetting(key, $event.target.value)">
 	</textarea>
+	<button class="mini-button" (click)="openJsonEditor()">+</button>
 </div>

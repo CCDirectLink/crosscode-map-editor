@@ -41,6 +41,10 @@ export class TileDrawer extends Phaser.Plugin {
 		this.toggleTilemapKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		this.fillKey = game.input.keyboard.addKey(Phaser.Keyboard.F);
 		this.transparentKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
+		
+		this.game.input.keyboard.removeKeyCapture(this.fillKey.keyCode);
+		this.game.input.keyboard.removeKeyCapture(this.transparentKey.keyCode);
+		
 		this.group = game.add.group();
 		
 		// needs custom property because z gets reset to the index after a sort is done
@@ -197,7 +201,6 @@ export class TileDrawer extends Phaser.Plugin {
 		}));
 		
 		this.game.input.keyboard.addKeyCapture(this.toggleTilemapKey.keyCode);
-		this.game.input.keyboard.removeKeyCapture(this.fillKey.keyCode);
 	}
 	
 	private setLayerAlpha() {

@@ -6,4 +6,5 @@ export class Globals {
 		gridSize: 8,
 		enableGrid: true
 	};
+	static disablePhaserInput = true;
 }

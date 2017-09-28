@@ -31,6 +31,7 @@ import {BooleanWidgetComponent} from './sidenav/entities/widgets/boolean-widget/
 import {Vec2WidgetComponent} from './sidenav/entities/widgets/vec2-widget/vec2-widget.component';
 import {AddEntityMenuComponent} from './editor/add-entity-menu/add-entity-menu.component';
 import {HttpClientModule} from '@angular/common/http';
+import {JsonEditorComponent} from './shared/json-editor/json-editor.component';
 
 @NgModule({
 	declarations: [
@@ -49,6 +50,7 @@ import {HttpClientModule} from '@angular/common/http';
 		BooleanWidgetComponent,
 		Vec2WidgetComponent,
 		AddEntityMenuComponent,
+		JsonEditorComponent,
 	],
 	imports: [
 		BrowserModule,
@@ -74,6 +76,7 @@ import {HttpClientModule} from '@angular/common/http';
 	],
 	entryComponents: [
 		MapSettingsComponent,
+		JsonEditorComponent,
 		StringWidgetComponent,
 		NumberWidgetComponent,
 		BooleanWidgetComponent,

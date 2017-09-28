@@ -1,0 +1,13 @@
+<div class="dialog-container" fxLayout="column">
+	<div fxLayout="row" fxFlex="1 1 auto">
+		<div #editor class="input-container"></div>
+		<textarea class="raw-input input-container"
+		          [ngModel]="json.stringify(data, null, 2)"
+		          (input)="setJson($event.target.value)">
+		</textarea>
+	</div>
+	<div class="button-container" fxFlex="0 0 auto" fxLayout="row" fxLayoutAlign="end">
+		<button md-button (click)="ref.close()">Cancel</button>
+		<button md-button (click)="ref.close(data)">Save</button>
+	</div>
+</div>
