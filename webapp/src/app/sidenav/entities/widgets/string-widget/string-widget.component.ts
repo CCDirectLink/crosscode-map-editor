@@ -7,12 +7,17 @@ import {AbstractWidget} from '../abstract-widget';
 	styleUrls: ['./string-widget.component.scss', '../../entities.component.scss']
 })
 export class StringWidgetComponent extends AbstractWidget implements OnInit {
-
+	
+	keys: string[] = [];
+	
 	constructor() {
 		super();
 	}
-
+	
 	ngOnInit() {
+		const attr = this.entity.definition.attributes[this.key];
+		if (attr) {
+			this.keys = Object.keys(attr.options);
+		}
 	}
-
 }

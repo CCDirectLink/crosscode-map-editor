@@ -7,6 +7,7 @@ import {EditorComponent} from './editor/editor.component';
 import {PhaserComponent} from './phaser/phaser.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
+	MdAutocompleteModule,
 	MdButtonModule, MdCheckboxModule, MdDialogModule, MdIconModule, MdInputModule, MdListModule, MdMenuModule,
 	MdProgressSpinnerModule, MdSelectModule,
 	MdSidenavModule,
@@ -64,6 +65,7 @@ import {JsonEditorComponent} from './shared/json-editor/json-editor.component';
 		MdToolbarModule,
 		MdMenuModule,
 		MdSidenavModule,
+		MdAutocompleteModule,
 		MdDialogModule,
 		MdTabsModule,
 		MdInputModule,

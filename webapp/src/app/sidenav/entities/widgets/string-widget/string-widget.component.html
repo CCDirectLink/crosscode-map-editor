@@ -1,6 +1,19 @@
 <div fxLayout="row" class="property-container" [mdTooltip]="entity.definition.attributes[key]?.description">
 	<label [for]="key" class="property-name">{{key}}:</label>
-	<input class="default-input" [id]="key"
-	       [ngModel]="entity.details.settings[key]"
-	       (input)="setSetting(key, $event.target.value)">
+	<div *ngIf="entity.definition.attributes[key]?.options; else defaultInput">
+		<md-select [id]="key"
+		           [ngModel]="entity.details.settings[key]"
+		           (change)="setSetting(key, $event.value)">
+			<md-option *ngFor="let option of keys" [value]="option">
+				{{ option }}
+			</md-option>
+		</md-select>
+	</div>
+	
+	<ng-template #defaultInput>
+		<input class="default-input"
+		       [id]="key"
+		       [ngModel]="entity.details.settings[key]"
+		       (input)="setSetting(key, $event.target.value)">
+	</ng-template>
 </div>
