@@ -15,26 +15,27 @@ enum MouseButtons {
 }
 
 export class EntityManager extends Phaser.Plugin implements Sortable {
-
+	
 	public zIndex: number;
 	private keyBindings: Phaser.SignalBinding[] = [];
 	private map: CCMap;
 	private entities: CCEntity[];
-
+	
 	private multiSelectKey: Phaser.Key;
 	private copyKey: Phaser.Key;
 	private pasteKey: Phaser.Key;
 	private deleteKey: Phaser.Key;
 	private gridKey: Phaser.Key;
-
+	private visibilityKey: Phaser.Key;
+	
 	private inputEvents: InputEvents = {};
 	private selectedEntities: CCEntity[];
 	private copyEntities: CCEntity[];
 	private globalEvents: GlobalEventsService;
-
+	
 	// image to receive input behind the sprites
 	private inputImg: Phaser.Image;
-
+	
 	constructor(game: Phaser.Game, parent) {
 		super(game, parent);
 		this.active = true;
@@ -46,11 +47,14 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		this.pasteKey = game.input.keyboard.addKey(Phaser.Keyboard.V);
 		this.deleteKey = game.input.keyboard.addKey(Phaser.Keyboard.DELETE);
 		this.gridKey = game.input.keyboard.addKey(Phaser.Keyboard.G);
+		this.visibilityKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
+		
 		game.input.keyboard.removeKeyCapture(this.copyKey.keyCode);
 		game.input.keyboard.removeKeyCapture(this.pasteKey.keyCode);
 		game.input.keyboard.removeKeyCapture(this.deleteKey.keyCode);
 		game.input.keyboard.removeKeyCapture(this.gridKey.keyCode);
-
+		game.input.keyboard.removeKeyCapture(this.visibilityKey.keyCode);
+		
 		this.inputImg = game.add.image(-9999, -9999);
 		this.inputImg.width = 999999;
 		this.inputImg.height = 999999;
@@ -73,11 +77,11 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 				this.showAddEntityMenu();
 			}
 		});
-
+		
 		this.inputEvents.onLeftClick = (e, pointer) => {
 			this.selectEntity(e, this.multiSelectKey.isDown);
 		};
-
+		
 		this.inputEvents.onInputDown = (e, pointer) => {
 			if (pointer.leftButton.isDown) {
 				// to allow instant drag of a single entity
@@ -98,7 +102,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 			});
 		};
 	}
-
+	
 	/** generates all entities and adds proper input handling */
 	initialize(ccMap: CCMap, mapInput: CrossCodeMap) {
 		this.map = ccMap;
@@ -106,7 +110,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 			this.entities.forEach(e => e.destroy());
 		}
 		this.entities = [];
-
+		
 		if (mapInput.entities) {
 			mapInput.entities.forEach((entity, i) => {
 				// if (entity.type === 'Prop' || entity.type === 'ScalableProp') {
@@ -119,7 +123,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 			});
 		}
 	}
-
+	
 	selectEntity(entity: CCEntity, multiple = false) {
 		if (multiple) {
 			const i = this.selectedEntities.indexOf(entity);
@@ -134,7 +138,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 			this.globalEvents.selectedEntity.next(entity);
 		}
 	}
-
+	
 	generateEntity(entity: MapEntity): CCEntity {
 		const definitions = this.game.cache.getJSON('definitions.json', false);
 		const def: EntityDefinition = definitions[entity.type];
@@ -145,7 +149,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		this.entities.push(ccEntity);
 		return ccEntity;
 	}
-
+	
 	setGlobalEvents(globalEvents: GlobalEventsService) {
 		this.globalEvents = globalEvents;
 		this.globalEvents.selectedEntity.subscribe(entity => {
@@ -157,15 +161,15 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 			}
 		});
 		this.globalEvents.generateNewEntity.subscribe(entity => {
-
+			
 			// TODO: better generate level from collision tiles
 			entity.level = this.map.masterLevel;
 			const e = this.generateEntity(entity);
-
+			
 			// level offset
 			const offset = this.map.levels[e.details.level.level];
 			e.group.y += offset.height;
-
+			
 			// entity manager is activated
 			if (this.inputImg.inputEnabled) {
 				e.setEnableInput(true);
@@ -173,12 +177,12 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 			}
 		});
 	}
-
+	
 	copy() {
 		console.log(Helper.isInputFocused());
 		this.copyEntities = this.selectedEntities.slice();
 	}
-
+	
 	paste() {
 		if (this.copyEntities.length === 0) {
 			return;
@@ -187,7 +191,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		offset.y -= this.map.levels[this.copyEntities[0].details.level.level].height;
 		const mousePos = Vec2.create(Helper.screenToWorld(this.game.input.mousePointer));
 		this.selectEntity(null);
-
+		
 		this.copyEntities.forEach(e => {
 			const entityDef = e.exportEntity();
 			Vec2.sub(entityDef, offset);
@@ -196,10 +200,10 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 			newEntity.setEnableInput(true);
 			this.selectEntity(newEntity, this.copyEntities.length > 1);
 		});
-
+		
 		console.log(this.entities);
 	}
-
+	
 	deleteSelectedEntities() {
 		this.selectedEntities.forEach(e => {
 			const i = this.entities.indexOf(e);
@@ -208,7 +212,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		});
 		this.selectEntity(null);
 	}
-
+	
 	deactivate() {
 		this.inputImg.inputEnabled = false;
 		this.keyBindings.forEach(binding => binding.detach());
@@ -222,12 +226,14 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 			entity.setSelected(false);
 		});
 	}
-
+	
 	activate() {
 		this.inputImg.inputEnabled = true;
 		this.inputImg.input.priorityID = 1;
-
+		
 		this.keyBindings.push(this.gridKey.onDown.add(() => {
+			console.log('grid key down');
+			console.log(Helper.isInputFocused());
 			if (Helper.isInputFocused()) {
 				return;
 			}
@@ -257,6 +263,14 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 			}
 			this.paste();
 		}));
+		this.keyBindings.push(this.visibilityKey.onDown.add(() => {
+			if (Helper.isInputFocused()) {
+				return;
+			}
+			this.entities.forEach(e => {
+				e.group.visible = !e.group.visible;
+			});
+		}));
 		
 		if (!this.map) {
 			return;
@@ -265,13 +279,13 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 			entity.setEnableInput(true);
 		});
 	}
-
+	
 	exportEntities(): MapEntity[] {
 		const out = [];
 		this.entities.forEach(e => out.push(e.exportEntity()));
 		return out;
 	}
-
+	
 	private showAddEntityMenu() {
 		this.globalEvents.showAddEntityMenu.next({
 			worldPos: Helper.screenToWorld(this.game.input.mousePointer),

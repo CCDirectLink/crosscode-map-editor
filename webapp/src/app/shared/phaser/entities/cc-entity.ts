@@ -130,6 +130,9 @@ export class CCEntity extends Phaser.Image implements Sortable {
 				if (this.tileSprite) {
 					this.boundingBoxOffsetGroup.remove(this.tileSprite);
 				}
+				if (!settings.size) {
+					settings.size = Vec2.create(s.baseSize);
+				}
 				this.tileSprite = game.make.tileSprite(
 					0,
 					0,

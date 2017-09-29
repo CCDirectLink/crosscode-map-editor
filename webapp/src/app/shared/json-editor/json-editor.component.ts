@@ -19,7 +19,6 @@ export class JsonEditorComponent implements AfterViewInit {
 	
 	constructor(@Optional() @Inject(MD_DIALOG_DATA) data,
 	            public ref: MdDialogRef<JsonEditorComponent>) {
-		Globals.disablePhaserInput = true;
 		this.data = data.val;
 		this.key = data.key;
 		ref.afterClosed().subscribe(() => {
@@ -28,6 +27,7 @@ export class JsonEditorComponent implements AfterViewInit {
 	}
 	
 	ngAfterViewInit() {
+		Globals.disablePhaserInput = true;
 		this.options = {};
 		this.options.onChange = () => {
 			this.data = this.editor.get();
