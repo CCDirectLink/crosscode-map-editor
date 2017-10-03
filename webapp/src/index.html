@@ -3,6 +3,10 @@
 <head>
 	<meta charset="utf-8">
 	<title>MapEditor</title>
+	<script type="text/javascript">
+		window.requireNode = window.require;
+		window.require = undefined;
+	</script>
 	<base href="/">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
@@ -12,6 +16,7 @@
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body class="theme">
+<input id="inputDirectory" type="file" nwdirectory name="was is das " style="display: none" />
 <!--<body class="theme" oncontextmenu="return false;">-->
 <app-root></app-root>
 </body>

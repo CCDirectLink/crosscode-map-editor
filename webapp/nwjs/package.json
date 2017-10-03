@@ -1,0 +1,11 @@
+{
+	"name": "cc-map-editor",
+	"main": "index.html",
+	"version": "0.0.1",
+	"window": {
+		"title": "CrossCode Map Editor",
+		"width": 1280,
+		"height": 720,
+		"icon": "favicon.ico"
+	}
+}

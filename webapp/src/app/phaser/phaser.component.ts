@@ -2,7 +2,6 @@ import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit} f
 import * as Phaser from 'phaser-ce';
 import {MapLoaderService} from '../shared/map-loader.service';
 import {Subscription} from 'rxjs/Subscription';
-import {CrossCodeMap} from '../shared/interfaces/cross-code-map';
 import {MapPan} from '../shared/phaser/map-pan';
 import {CCMap} from '../shared/phaser/tilemap/cc-map';
 import {TileDrawer} from '../shared/phaser/tilemap/tile-drawer';
@@ -10,8 +9,7 @@ import {EntityManager} from '../shared/phaser/entities/entity-manager';
 import {GlobalEventsService} from '../shared/global-events.service';
 import {EditorView} from '../shared/interfaces/editor-view';
 import {Globals} from '../shared/globals';
-import {PropSheet, ScalableProp} from '../shared/interfaces/props';
-import {HttpClient} from '@angular/common/http';
+import {HttpClientService} from '../shared/http-client.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -33,11 +31,11 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	constructor(private element: ElementRef,
 	            private mapLoader: MapLoaderService,
 	            private globalEvents: GlobalEventsService,
-	            private http: HttpClient) {
+	            private http: HttpClientService) {
 	}
 	
 	ngOnInit() {
-		this.http.get(Globals.URL + 'api/allFiles').subscribe(res => {
+		this.http.getAllFiles().subscribe(res => {
 			this.game = new Phaser.Game(screen.width * window.devicePixelRatio, screen.height * window.devicePixelRatio, Phaser.CANVAS, 'content', {
 				create: () => this.create(),
 				update: () => this.update(),
@@ -101,13 +99,13 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	
 	preload(res) {
 		// res.data.forEach(json => {
-		// 	this.game.load.json(json, Globals.URL + 'source/' + json);
+		// 	this.game.load.json(json, Globals.URL + json);
 		// });
 		res.images.forEach(img => {
-			this.game.load.image(img, Globals.URL + 'source/' + img);
+			this.game.load.image(img, Globals.URL + img);
 		});
 		
-		this.game.load.json('definitions.json', Globals.URL + 'public/definitions.json');
+		this.game.load.json('definitions.json', 'assets/definitions.json');
 		this.game.load.crossOrigin = 'anonymous';
 		
 		this.game.load.onLoadComplete.addOnce(() => {

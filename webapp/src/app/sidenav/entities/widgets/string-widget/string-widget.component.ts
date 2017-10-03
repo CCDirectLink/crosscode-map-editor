@@ -16,7 +16,7 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 	
 	ngOnInit() {
 		const attr = this.entity.definition.attributes[this.key];
-		if (attr) {
+		if (attr && attr.options) {
 			this.keys = Object.keys(attr.options);
 		}
 	}

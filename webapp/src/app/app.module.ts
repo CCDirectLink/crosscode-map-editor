@@ -33,6 +33,7 @@ import {Vec2WidgetComponent} from './sidenav/entities/widgets/vec2-widget/vec2-w
 import {AddEntityMenuComponent} from './editor/add-entity-menu/add-entity-menu.component';
 import {HttpClientModule} from '@angular/common/http';
 import {JsonEditorComponent} from './shared/json-editor/json-editor.component';
+import {HttpClientService} from './shared/http-client.service';
 
 @NgModule({
 	declarations: [
@@ -87,6 +88,7 @@ import {JsonEditorComponent} from './shared/json-editor/json-editor.component';
 	],
 	providers: [
 		MapLoaderService,
+		HttpClientService,
 		GlobalEventsService,
 		WidgetRegistryService,
 	],

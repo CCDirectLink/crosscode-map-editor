@@ -13,7 +13,7 @@ export class JsonEditorComponent implements AfterViewInit {
 	
 	private editor: JSONEditor;
 	private options: JSONEditorOptions;
-	private data;
+	data;
 	private key: string;
 	json = JSON;
 	

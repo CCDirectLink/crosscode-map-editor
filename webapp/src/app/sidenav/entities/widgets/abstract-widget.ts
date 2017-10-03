@@ -4,8 +4,8 @@ import {CCEntity} from '../../../shared/phaser/entities/cc-entity';
 export abstract class AbstractWidget {
 	@Input() key: string;
 	@Input() entity: CCEntity;
-
-	setSetting(key: string, value: string, updateType = true, parse = false) {
+	
+	setSetting(key: string, value: any, updateType = true, parse = false) {
 		if (parse) {
 			value = JSON.parse(value);
 		}
@@ -14,15 +14,15 @@ export abstract class AbstractWidget {
 			this.updateType();
 		}
 	}
-
+	
 	toInt(val) {
 		return parseInt(val, 10);
 	}
-
+	
 	updateSettings() {
 		this.entity.updateSettings();
 	}
-
+	
 	updateType() {
 		this.entity.updateType();
 	}

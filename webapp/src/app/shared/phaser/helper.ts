@@ -96,7 +96,7 @@ export class Helper {
 		}
 		
 		// load json
-		game.load.json(key, Globals.URL + 'source/' + key + '.json');
+		game.load.json(key, Globals.URL + key + '.json');
 		game.load.onLoadComplete.addOnce(() => {
 			return callback(game.cache.getJSON(key));
 		});
