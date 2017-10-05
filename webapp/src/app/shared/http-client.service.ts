@@ -12,6 +12,7 @@ export class HttpClientService {
 	private fs;
 	private path;
 	private config;
+	private isClicked = false;
 	
 	constructor(private http: HttpClient) {
 		if (Globals.isNwjs) {
@@ -47,6 +48,9 @@ export class HttpClientService {
 	}
 	
 	private selectCcFolder() {
+		if (this.isClicked) {
+			return;
+		}
 		const fs = this.fs;
 		const path = this.path;
 		const dirInput = document.getElementById('inputDirectory');
@@ -59,6 +63,7 @@ export class HttpClientService {
 		}, false);
 		
 		dirInput.click();
+		this.isClicked = true;
 	}
 	
 	private listAllFiles(dir: string, filelist, ending: string): string[] {
