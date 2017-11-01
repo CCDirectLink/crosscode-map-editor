@@ -62,9 +62,18 @@ mat-nav-list {
 	}
 }
 
+// firefox fix
+.item-selected-bg {
+	top: 0;
+}
+
 // layer settings
 .settings-list {
 	//margin-top: 16px;
+}
+
+.label {
+	flex: 0 0 80px;
 }
 
 .list-item {

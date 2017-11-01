@@ -8,11 +8,23 @@ $background: map_get($theme, background);
 	height: 100%;
 }
 
-.tab-container{
+.mat-tab-header{
 	background-color: rgba(255, 255, 255, 0.1);
-	width: 100%;
 }
 
-.mat-tab-links {
+
+// tab 100% height fix (https://github.com/angular/material2/issues/4591#issuecomment-308226870)
+.mat-tab-body-wrapper {
+	flex-grow: 1;
+}
+
+.mat-tab-body {
+	display: flex !important;
+	flex-direction: column;
+}
+
+.mat-tab-body-content {
+	display: flex;
+	flex-direction: column;
 	flex-grow: 1;
 }

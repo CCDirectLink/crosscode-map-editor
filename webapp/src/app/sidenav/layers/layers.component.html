@@ -13,7 +13,7 @@
 <h3 fxFlex="0 0 auto">Layer settings {{selectedLayer ? '- ' + getDisplayName(selectedLayer) : ''}}</h3>
 <mat-list fxFlex="0 0 auto" class="settings-list">
 	<mat-list-item fxLayout="column">
-		<span fxFlex="0 0 80px">Type: </span>
+		<span class="label">Type: </span>
 		<mat-select fxFlex [disabled]="!selectedLayer" class="list-item" floatPlaceholder="never"
 		           [(ngModel)]="selectedLayer?.details.type">
 			<mat-option value="Background">Background</mat-option>
@@ -23,14 +23,14 @@
 	</mat-list-item>
 	
 	<mat-list-item fxLayout="column">
-		<span fxFlex="0 0 80px">Name: </span>
+		<span class="label">Name: </span>
 		<mat-input-container class="list-item" floatPlaceholder="never">
 			<input matInput [disabled]="!selectedLayer" [(ngModel)]="selectedLayer?.details.name">
 		</mat-input-container>
 	</mat-list-item>
 	
 	<mat-list-item fxLayout="column">
-		<span fxFlex="0 0 80px">Level: </span>
+		<span class="label">Level: </span>
 		<mat-select fxFlex [disabled]="!selectedLayer" class="list-item" floatPlaceholder="never"
 		           [(ngModel)]="selectedLayer?.details.level">
 			<mat-option *ngFor="let level of tilemap?.levels; let i=index" [value]="i">{{i}}</mat-option>
@@ -38,7 +38,7 @@
 	</mat-list-item>
 	
 	<mat-list-item fxLayout="column">
-		<span fxFlex="0 0 80px">Distance: </span>
+		<span class="label">Distance: </span>
 		<mat-input-container class="list-item" floatPlaceholder="never">
 			<input type="number" step="0.1" matInput [disabled]="!selectedLayer"
 			       [(ngModel)]="selectedLayer?.details.distance">

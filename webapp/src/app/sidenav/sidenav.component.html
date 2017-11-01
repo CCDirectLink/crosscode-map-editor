@@ -1,22 +1,10 @@
 <div fxLayout="column" class="nav-container" *ngIf="tilemap">
-	<nav mat-tab-nav-bar fxFlex="0 0 auto" fxLayout="row" class="tab-container">
-		<a mat-tab-link
-		   fxFlex="1 1 auto"
-		   class="tab"
-		   (click)="selectTab(editorViewEnum.Layers)"
-		   [active]="currentView === editorViewEnum.Layers">
-			Layers
-		</a>
-		<a mat-tab-link
-		   fxFlex="1 1 auto"
-		   class="tab"
-		   (click)="selectTab(editorViewEnum.Entities)"
-		   [active]="currentView === editorViewEnum.Entities">
-			Entities
-		</a>
-	</nav>
-	<app-layers fxFlex="1 1 auto" fxLayout="column" *ngIf="currentView === editorViewEnum.Layers"
-	            [@transition]></app-layers>
-	<app-entities fxFlex="1 1 auto" fxLayout="column" *ngIf="currentView === editorViewEnum.Entities"
-	              [@transition]></app-entities>
+	<mat-tab-group fxFlex="1 1 auto" (selectedTabChange)="tabChanged($event)">
+		<mat-tab label="Layers">
+			<app-layers style="height: 100%" fxLayout="column"></app-layers>
+		</mat-tab>
+		<mat-tab label="Entities">
+			<app-entities fxLayout="column"></app-entities>
+		</mat-tab>
+	</mat-tab-group>
 </div>

@@ -8,6 +8,7 @@ import {CCMap} from '../shared/phaser/tilemap/cc-map';
 import {CCMapLayer} from '../shared/phaser/tilemap/cc-map-layer';
 import {EditorView} from '../shared/interfaces/editor-view';
 import {GlobalEventsService} from '../shared/global-events.service';
+import {MatTabChangeEvent} from '@angular/material';
 
 @Component({
 	selector: 'app-sidenav',
@@ -24,15 +25,15 @@ import {GlobalEventsService} from '../shared/global-events.service';
 	encapsulation: ViewEncapsulation.None
 })
 export class SidenavComponent implements OnInit {
-
+	
 	selectedLayer: CCMapLayer;
 	tilemap: CCMap;
 	currentView: EditorView;
 	editorViewEnum = EditorView;
-
+	
 	constructor(private mapLoader: MapLoaderService, private globalEvents: GlobalEventsService) {
 	}
-
+	
 	ngOnInit() {
 		this.mapLoader.selectedLayer.subscribe(layer => {
 			if (layer) {
@@ -41,10 +42,10 @@ export class SidenavComponent implements OnInit {
 		});
 		this.mapLoader.tileMap.subscribe(tilemap => this.tilemap = tilemap);
 		this.globalEvents.currentView.subscribe(view => this.currentView = view);
-
+		
 	}
-
-	selectTab(view) {
-		this.globalEvents.currentView.next(view);
+	
+	tabChanged(event: MatTabChangeEvent) {
+		this.globalEvents.currentView.next(event.index === 0 ? EditorView.Layers : EditorView.Entities);
 	}
 }
