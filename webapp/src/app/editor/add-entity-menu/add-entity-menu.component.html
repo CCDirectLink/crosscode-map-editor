@@ -1,10 +1,10 @@
-<div class="menu-trigger" [style.left]="pos.x + 'px'" [style.top]="pos.y + 'px'" [mdMenuTriggerFor]="menu"></div>
-<md-menu #menu="mdMenu" yPosition="below" xPosition="after">
+<div class="menu-trigger" [style.left]="pos.x + 'px'" [style.top]="pos.y + 'px'" [matMenuTriggerFor]="menu"></div>
+<mat-menu #menu="matMenu" yPosition="below" xPosition="after">
 	<input class="default-input" (click)="$event.stopPropagation()" #filter type="text"
 	       [ngModel]="searchInput"
 	       (input)="filterKeys($event.target.value)"/>
 	
 	<div class="entity-list">
-		<button md-menu-item *ngFor="let key of filteredKeys" (click)="generateEntity(key)">{{key}}</button>
+		<button mat-menu-item *ngFor="let key of filteredKeys" (click)="generateEntity(key)">{{key}}</button>
 	</div>
-</md-menu>
+</mat-menu>

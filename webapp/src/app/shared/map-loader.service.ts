@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {MdSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
 import {CrossCodeMap} from './interfaces/cross-code-map';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
@@ -13,7 +13,7 @@ export class MapLoaderService {
 	tileMap: BehaviorSubject<CCMap> = new BehaviorSubject(null);
 	selectedLayer: BehaviorSubject<CCMapLayer> = new BehaviorSubject(null);
 
-	constructor(private snackBar: MdSnackBar) {
+	constructor(private snackBar: MatSnackBar) {
 	}
 
 	loadMap(event) {

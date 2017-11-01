@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MD_DIALOG_DATA, MdDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {CrossCodeMap} from '../../interfaces/cross-code-map';
 import {MapLoaderService} from '../../map-loader.service';
 import {CCMap} from '../../phaser/tilemap/cc-map';
@@ -18,7 +18,7 @@ export class MapSettingsComponent {
 		attributes: {},
 	};
 
-	constructor(private loader: MapLoaderService, public ref: MdDialogRef<MapSettingsComponent>) {
+	constructor(private loader: MapLoaderService, public ref: MatDialogRef<MapSettingsComponent>) {
 		this.tileMap = loader.tileMap.getValue();
 		const tileMap = this.tileMap;
 

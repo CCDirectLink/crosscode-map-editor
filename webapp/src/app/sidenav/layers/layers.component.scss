@@ -48,7 +48,7 @@ $type-hue: A200;
 	background-color: mat-color($mat-grey, 700);
 }
 
-md-nav-list {
+mat-nav-list {
 	padding-top: 0 !important;
 	overflow-x: hidden;
 	//noinspection CssInvalidPropertyValue
@@ -57,7 +57,7 @@ md-nav-list {
 
 .small-list {
 	min-height: 80px !important;
-	& md-list-item, .mat-list-item-content {
+	& mat-list-item, .mat-list-item-content {
 		height: 36px !important;
 	}
 }

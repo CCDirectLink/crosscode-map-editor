@@ -1,7 +1,7 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {MapEntity, Point} from '../../shared/interfaces/cross-code-map';
-import {MdMenuTrigger} from '@angular/material';
+import {MatMenuTrigger} from '@angular/material';
 import {Vec2} from '../../shared/phaser/vec2';
 import {Helper} from '../../shared/phaser/helper';
 
@@ -11,7 +11,7 @@ import {Helper} from '../../shared/phaser/helper';
 	styleUrls: ['./add-entity-menu.component.scss']
 })
 export class AddEntityMenuComponent {
-	@ViewChild(MdMenuTrigger) trigger: MdMenuTrigger;
+	@ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
 	@ViewChild('filter') filter: ElementRef;
 
 	pos: Point = {x: 0, y: 0};

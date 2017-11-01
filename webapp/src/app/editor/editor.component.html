@@ -1,13 +1,13 @@
 <div fxLayout="column" class="outer-container">
 	<app-toolbar (onMenuClick)="sidenav.toggle()"></app-toolbar>
-	<md-sidenav-container fxFlex>
-		<md-sidenav disableClose #sidenav mode="side" opened="true" class="mat-primary">
+	<mat-sidenav-container fxFlex>
+		<mat-sidenav disableClose #sidenav mode="side" opened="true" class="mat-primary">
 			<app-sidenav></app-sidenav>
-		</md-sidenav>
+		</mat-sidenav>
 		
 		<div class="green outer-container no-scroll">
 			<app-phaser></app-phaser>
 		</div>
-	</md-sidenav-container>
+	</mat-sidenav-container>
 	<app-add-entity-menu></app-add-entity-menu>
 </div>

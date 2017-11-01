@@ -1,7 +1,7 @@
-<md-toolbar fxLayout="column" class="mat-elevation-z4 elevated-toolbar">
+<mat-toolbar fxLayout="column" class="mat-elevation-z4 elevated-toolbar">
 	<div fxFlex>
-		<button md-icon-button (click)="onMenuClick.emit($event)">
-			<md-icon>menu</md-icon>
+		<button mat-icon-button (click)="onMenuClick.emit($event)">
+			<mat-icon>menu</mat-icon>
 		</button>
 	</div>
 	<div fxFlex>
@@ -11,12 +11,12 @@
 		<input #fileUpload type="file" (change)="loadMap($event)" accept=".json"/>
 		
 		<div class="button-row">
-			<button *ngIf="map" md-button (click)="openMapSettings()">Map Settings</button>
-			<button *ngIf="map" md-button (click)="saveMap()">Save Map</button>
-			<button md-button *ngIf="loaded; else loader" (click)="fileUpload.click()">Load Map</button>
+			<button *ngIf="map" mat-button (click)="openMapSettings()">Map Settings</button>
+			<button *ngIf="map" mat-button (click)="saveMap()">Save Map</button>
+			<button mat-button *ngIf="loaded; else loader" (click)="fileUpload.click()">Load Map</button>
 			<ng-template #loader>
-				<md-spinner></md-spinner>
+				<mat-spinner></mat-spinner>
 			</ng-template>
 		</div>
 	</div>
-</md-toolbar>
+</mat-toolbar>

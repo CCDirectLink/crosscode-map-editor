@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 import {JsonEditorComponent} from '../../../../shared/json-editor/json-editor.component';
-import {MdDialog} from '@angular/material';
+import {MatDialog} from '@angular/material';
 
 @Component({
 	selector: 'app-json-widget',
@@ -15,7 +15,7 @@ export class JsonWidgetComponent extends AbstractWidget implements OnInit {
 	private timer;
 	json = JSON;
 	
-	constructor(private dialog: MdDialog) {
+	constructor(private dialog: MatDialog) {
 		super();
 	}
 	

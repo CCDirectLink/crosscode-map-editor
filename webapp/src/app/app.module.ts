@@ -7,12 +7,12 @@ import {EditorComponent} from './editor/editor.component';
 import {PhaserComponent} from './phaser/phaser.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {
-	MdAutocompleteModule,
-	MdButtonModule, MdCheckboxModule, MdDialogModule, MdIconModule, MdInputModule, MdListModule, MdMenuModule,
-	MdProgressSpinnerModule, MdSelectModule,
-	MdSidenavModule,
-	MdSnackBarModule, MdTabsModule,
-	MdToolbarModule, MdTooltipModule
+	MatAutocompleteModule,
+	MatButtonModule, MatCheckboxModule, MatDialogModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule,
+	MatProgressSpinnerModule, MatSelectModule,
+	MatSidenavModule,
+	MatSnackBarModule, MatTabsModule,
+	MatToolbarModule, MatTooltipModule
 } from '@angular/material';
 import {ToolbarComponent} from './toolbar/toolbar.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
@@ -60,21 +60,21 @@ import {HttpClientService} from './shared/http-client.service';
 		FormsModule,
 		FlexLayoutModule,
 		HttpClientModule,
-		MdButtonModule,
-		MdTooltipModule,
-		MdCheckboxModule,
-		MdToolbarModule,
-		MdMenuModule,
-		MdSidenavModule,
-		MdAutocompleteModule,
-		MdDialogModule,
-		MdTabsModule,
-		MdInputModule,
-		MdSelectModule,
-		MdSnackBarModule,
-		MdProgressSpinnerModule,
-		MdListModule,
-		MdIconModule,
+		MatButtonModule,
+		MatTooltipModule,
+		MatCheckboxModule,
+		MatToolbarModule,
+		MatMenuModule,
+		MatSidenavModule,
+		MatAutocompleteModule,
+		MatDialogModule,
+		MatTabsModule,
+		MatInputModule,
+		MatSelectModule,
+		MatSnackBarModule,
+		MatProgressSpinnerModule,
+		MatListModule,
+		MatIconModule,
 		BrowserAnimationsModule
 	],
 	entryComponents: [
