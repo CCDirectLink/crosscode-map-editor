@@ -10,7 +10,7 @@
     "test": "jest --forceExit",
     "build-ts": "tsc",
     "watch-ts": "tsc -w",
-    "tslint": "tslint -c ../tslint.json -p tsconfig.json",
+    "tslint": "tslint -c ./tslint.json -p tsconfig.json",
     "copy-static-assets": "node copyStaticAssets.js",
     "debug": "npm run build && npm run watch-debug",
     "serve-debug": "nodemon --inspect dist/server.js",

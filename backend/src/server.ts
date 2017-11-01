@@ -17,7 +17,6 @@ const app = express();
  */
 app.set('port', process.env.PORT || 8080);
 app.use(cors());
-app.use('/public', express.static(path.join(__dirname, 'public'), {maxAge: 0}));
 app.use(express.static(config.pathToCrosscode, {maxAge: 0}));
 // app.use(compression());
 app.use(logger('dev'));
