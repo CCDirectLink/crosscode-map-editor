@@ -5,6 +5,8 @@ import {AppModule} from './app/app.module';
 import {environment} from './environments/environment';
 import {Globals} from './app/shared/globals';
 
+declare let requireNode: any;
+
 if (environment.production) {
 	enableProdMode();
 }

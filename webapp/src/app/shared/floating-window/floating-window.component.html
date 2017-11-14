@@ -1,0 +1,10 @@
+<div class="container mat-elevation-z8" ngDraggable [handle]="handle" (stopped)="onDragEnd($event)" fxLayout="column"
+     [style.top]="top" [style.right]="right">
+	<div #handle class="dragable-toolbar"></div>
+	<div class="toolbar" fxLayout="column" fxLayoutAlign="center">
+		<span class="title">{{title}}</span>
+	</div>
+	<div class="content">
+		<ng-content></ng-content>
+	</div>
+</div>

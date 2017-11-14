@@ -18,9 +18,10 @@ $background: map_get($theme, background);
 	flex-grow: 1;
 }
 
-.mat-tab-body {
-	display: flex !important;
-	flex-direction: column;
+.mat-tab-label {
+	min-width: 150px !important;
+	//display: flex !important;
+	//flex-direction: column;
 }
 
 .mat-tab-body-content {

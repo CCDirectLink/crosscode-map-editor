@@ -5,7 +5,7 @@ export class Globals {
 	static URL = 'http://localhost:8080/';
 	static entitySettings = {
 		gridSize: 8,
-		enableGrid: true
+		enableGrid: false
 	};
 	static disablePhaserInput = false;
 }

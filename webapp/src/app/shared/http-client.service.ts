@@ -5,6 +5,7 @@ import {Globals} from './globals';
 
 declare let nw: any;
 declare let chrome: any;
+declare let requireNode: any;
 
 @Injectable()
 export class HttpClientService {

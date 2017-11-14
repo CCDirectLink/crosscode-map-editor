@@ -6,34 +6,19 @@ import {AppComponent} from './app.component';
 import {EditorComponent} from './editor/editor.component';
 import {PhaserComponent} from './phaser/phaser.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {
-	MatAutocompleteModule,
-	MatButtonModule, MatCheckboxModule, MatDialogModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule,
-	MatProgressSpinnerModule, MatSelectModule,
-	MatSidenavModule,
-	MatSnackBarModule, MatTabsModule,
-	MatToolbarModule, MatTooltipModule
-} from '@angular/material';
 import {ToolbarComponent} from './toolbar/toolbar.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {SidenavComponent} from './sidenav/sidenav.component';
-import {MapLoaderService} from './shared/map-loader.service';
 import {FormsModule} from '@angular/forms';
-import {MapSettingsComponent} from './shared/dialogs/map-settings/map-settings.component';
 import {LayersComponent} from './sidenav/layers/layers.component';
 import {EntitiesComponent} from './sidenav/entities/entities.component';
-import {GlobalEventsService} from './shared/global-events.service';
-import {StringWidgetComponent} from './sidenav/entities/widgets/string-widget/string-widget.component';
-import {HostDirective} from './shared/host.directive';
 import {WidgetRegistryService} from './sidenav/entities/widgets/widget-registry.service';
-import {JsonWidgetComponent} from './sidenav/entities/widgets/json-widget/json-widget.component';
-import {NumberWidgetComponent} from './sidenav/entities/widgets/number-widget/number-widget.component';
-import {BooleanWidgetComponent} from './sidenav/entities/widgets/boolean-widget/boolean-widget.component';
-import {Vec2WidgetComponent} from './sidenav/entities/widgets/vec2-widget/vec2-widget.component';
 import {AddEntityMenuComponent} from './editor/add-entity-menu/add-entity-menu.component';
 import {HttpClientModule} from '@angular/common/http';
-import {JsonEditorComponent} from './shared/json-editor/json-editor.component';
-import {HttpClientService} from './shared/http-client.service';
+import {SharedModule} from './shared/shared.module';
+import {MaterialModule} from './material.module';
+import {HistoryModule} from './history/history.module';
+import {WidgetModule} from './sidenav/entities/widgets/widget.module';
 
 @NgModule({
 	declarations: [
@@ -42,54 +27,23 @@ import {HttpClientService} from './shared/http-client.service';
 		PhaserComponent,
 		ToolbarComponent,
 		SidenavComponent,
-		MapSettingsComponent,
 		LayersComponent,
 		EntitiesComponent,
-		StringWidgetComponent,
-		NumberWidgetComponent,
-		HostDirective,
-		JsonWidgetComponent,
-		BooleanWidgetComponent,
-		Vec2WidgetComponent,
 		AddEntityMenuComponent,
-		JsonEditorComponent,
 	],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
 		FormsModule,
 		FlexLayoutModule,
+		MaterialModule,
 		HttpClientModule,
-		MatButtonModule,
-		MatTooltipModule,
-		MatCheckboxModule,
-		MatToolbarModule,
-		MatMenuModule,
-		MatSidenavModule,
-		MatAutocompleteModule,
-		MatDialogModule,
-		MatTabsModule,
-		MatInputModule,
-		MatSelectModule,
-		MatSnackBarModule,
-		MatProgressSpinnerModule,
-		MatListModule,
-		MatIconModule,
-		BrowserAnimationsModule
-	],
-	entryComponents: [
-		MapSettingsComponent,
-		JsonEditorComponent,
-		StringWidgetComponent,
-		NumberWidgetComponent,
-		BooleanWidgetComponent,
-		JsonWidgetComponent,
-		Vec2WidgetComponent,
+		BrowserAnimationsModule,
+		WidgetModule,
+		SharedModule,
+		HistoryModule,
 	],
 	providers: [
-		MapLoaderService,
-		HttpClientService,
-		GlobalEventsService,
 		WidgetRegistryService,
 	],
 	bootstrap: [AppComponent]

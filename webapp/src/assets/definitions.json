@@ -704,7 +704,7 @@
 				"description": "View direction of teleport ground.",
 				"options": {
 					"NORTH": "unused",
-					"EAST": "unused", 
+					"EAST": "unused",
 					"SOUTH": "unused",
 					"WEST": "unused"
 				},
@@ -912,7 +912,8 @@
 				"description": "If true: initially set all enemies as killed when activated."
 			}
 		},
-		"scalableX": true
+		"scalableX": true,
+		"scalableY": true
 	},
 	"RespawnBlocker": {
 		"attributes": {},
@@ -1075,7 +1076,7 @@
 				"description": "View direction of teleport ground.",
 				"options": {
 					"NORTH": "unused",
-					"EAST": "unused", 
+					"EAST": "unused",
 					"SOUTH": "unused",
 					"WEST": "unused"
 				},
@@ -1314,7 +1315,7 @@
 				"description": "Direction to face",
 				"options": {
 					"NORTH": "unused",
-					"EAST": "unused", 
+					"EAST": "unused",
 					"SOUTH": "unused",
 					"WEST": "unused"
 				}
@@ -1573,7 +1574,7 @@
 			"collType": {
 				"type": "String",
 				"description": "Top End Type",
-				"options": {	
+				"options": {
 					"NONE": "unused",
 					"IGNORE": "unused",
 					"PROJECTILE": "unused",
@@ -1585,7 +1586,7 @@
 					"PASSIVE": "unused",
 					"SEMI_IGNORE": "unused",
 					"FENCE": "unused",
-					"NPFENCE": "unused"	
+					"NPFENCE": "unused"
 				}
 			}
 		},
@@ -2806,7 +2807,7 @@
 				"description": "Condition for Enemy to spawn",
 				"bd": true
 			},
-			"Rkb": {
+			"analType": {
 				"type": "Select",
 				"description": "Type of the Analyzable",
 				"options": {
