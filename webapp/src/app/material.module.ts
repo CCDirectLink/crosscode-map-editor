@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {
 	MatAutocompleteModule,
 	MatButtonModule, MatCheckboxModule, MatDialogModule, MatIconModule, MatInputModule, MatListModule, MatMenuModule,
-	MatProgressSpinnerModule, MatSelectModule,
+	MatProgressSpinnerModule, MatRippleModule, MatSelectModule,
 	MatSidenavModule,
 	MatSnackBarModule, MatTabsModule,
 	MatToolbarModule, MatTooltipModule
@@ -13,6 +13,7 @@ const MODULES = [
 	MatTooltipModule,
 	MatCheckboxModule,
 	MatToolbarModule,
+	MatRippleModule,
 	MatMenuModule,
 	MatSidenavModule,
 	MatAutocompleteModule,

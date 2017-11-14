@@ -19,6 +19,7 @@ import {SharedModule} from './shared/shared.module';
 import {MaterialModule} from './material.module';
 import {HistoryModule} from './history/history.module';
 import {WidgetModule} from './sidenav/entities/widgets/widget.module';
+import {StateHistoryService} from './history/state-history.service';
 
 @NgModule({
 	declarations: [
@@ -45,6 +46,7 @@ import {WidgetModule} from './sidenav/entities/widgets/widget.module';
 	],
 	providers: [
 		WidgetRegistryService,
+		StateHistoryService,
 	],
 	bootstrap: [AppComponent]
 })

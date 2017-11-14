@@ -10,6 +10,7 @@ import {GlobalEventsService} from '../shared/global-events.service';
 import {EditorView} from '../shared/interfaces/editor-view';
 import {Globals} from '../shared/globals';
 import {HttpClientService} from '../shared/http-client.service';
+import {StateHistoryService} from '../history/state-history.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -31,6 +32,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	constructor(private element: ElementRef,
 	            private mapLoader: MapLoaderService,
 	            private globalEvents: GlobalEventsService,
+	            private stateHistory: StateHistoryService,
 	            private http: HttpClientService) {
 	}
 	
@@ -48,6 +50,8 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	
 	create() {
 		const game = this.game;
+		this.game['StateHistoryService'] = this.stateHistory;
+		this.game['MapLoaderService'] = this.mapLoader;
 		
 		game.stage.backgroundColor = '#616161';
 		game.canvas.oncontextmenu = function (e) {
@@ -67,8 +71,6 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		this.sub = this.mapLoader.map.subscribe((map) => {
 			if (map) {
 				this.tileMap.loadMap(map);
-				this.mapLoader.tileMap.next(this.tileMap);
-				this.mapLoader.selectedLayer.next(this.tileMap.layers[0]);
 			}
 		});
 		

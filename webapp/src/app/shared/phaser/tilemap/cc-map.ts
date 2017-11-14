@@ -2,6 +2,8 @@ import {Attributes, CrossCodeMap, MapLayer, Point} from '../../interfaces/cross-
 import {CCMapLayer} from './cc-map-layer';
 import {Globals} from '../../globals';
 import {EntityManager} from '../entities/entity-manager';
+import {Helper} from '../helper';
+import {StateHistoryService} from '../../../history/state-history.service';
 
 export class CCMap {
 	name: string;
@@ -12,9 +14,9 @@ export class CCMap {
 	layers: CCMapLayer[] = [];
 	attributes: Attributes;
 	screen: Point;
-
+	
 	filename: string;
-
+	
 	private props = [
 		'name',
 		'levels',
@@ -24,25 +26,51 @@ export class CCMap {
 		'attributes',
 		'screen',
 	];
-
+	
 	private inputLayers: MapLayer[];
-
+	
 	constructor(private game: Phaser.Game) {
+		const stateHistory: StateHistoryService = game['StateHistoryService'];
+		stateHistory.selectedState.subscribe(container => {
+			if (!container || !container.state) {
+				return;
+			}
+			const i = this.layers.indexOf(this.game['MapLoaderService'].selectedLayer.getValue());
+			this.loadMap(Helper.copy(container.state.state), true);
+			if (i >= 0 && this.layers.length > i) {
+				this.game['MapLoaderService'].selectedLayer.next(this.layers[i]);
+			}
+		});
+		
+		const undoKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+		undoKey.onDown.add(() => {
+			if (Helper.isInputFocused()) {
+				return;
+			}
+			if (game.input.keyboard.isDown(Phaser.KeyCode.CONTROL)) {
+				if (game.input.keyboard.isDown(Phaser.KeyCode.SHIFT)) {
+					stateHistory.redo();
+				} else {
+					stateHistory.undo();
+				}
+			}
+			
+		});
 	}
-
-	loadMap(map: CrossCodeMap) {
+	
+	loadMap(map: CrossCodeMap, skipInit = false) {
 		const game = this.game;
-
+		
 		this.props.forEach(prop => this[prop] = map[prop]);
 		this.filename = map.filename;
-
+		
 		this.inputLayers = map.layer;
-
+		
 		// cleanup everything before loading new map
 		this.layers.forEach(layer => layer.destroy());
-
+		
 		this.layers = [];
-
+		
 		// load needed assets for sprite props
 		console.log(map.entities.length);
 		
@@ -62,20 +90,31 @@ export class CCMap {
 				(<EntityManager>plugin).initialize(this, map);
 			}
 		});
+		
+		if (!skipInit) {
+			this.game['StateHistoryService'].init({
+				name: 'load',
+				icon: 'insert_drive_file',
+				state: Helper.copy(this.exportMap())
+			});
+		}
+		
+		this.game['MapLoaderService'].tileMap.next(this);
+		this.game['MapLoaderService'].selectedLayer.next(this.layers[0]);
 	}
-
+	
 	resize(width: number, height: number) {
 		this.mapWidth = width;
 		this.mapHeight = height;
-
+		
 		this.layers.forEach(layer => {
 			layer.resize(width, height);
 		});
 	}
-
+	
 	exportMap(): CrossCodeMap {
 		const out: CrossCodeMap = <any>{};
-
+		
 		this.props.forEach(prop => out[prop] = this[prop]);
 		this.game.plugins.plugins.forEach(plugin => {
 			if (plugin instanceof EntityManager) {
@@ -84,7 +123,7 @@ export class CCMap {
 		});
 		out.layer = [];
 		this.layers.forEach(l => out.layer.push(l.exportLayer()));
-
+		
 		return out;
 	}
 }

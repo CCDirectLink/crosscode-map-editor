@@ -87,6 +87,11 @@ export class Helper {
 		return current;
 	}
 	
+	/** copies obj via JSON.parse(JSON.stringify(obj)); */
+	public static copy(obj) {
+		return JSON.parse(JSON.stringify(obj));
+	}
+	
 	public static getJson(key: string, callback: (json) => void) {
 		const game = Globals.game;
 		

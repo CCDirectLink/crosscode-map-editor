@@ -7,6 +7,11 @@ import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
 })
 export class FloatingWindowComponent implements OnInit {
 	
+	@Input() visible = true;
+	@Input() title: string;
+	
+	@Input() height: string;
+	@Input() width: string;
 	@Input() top: string | number = 0;
 	@Input() right: string | number = 0;
 	
@@ -18,6 +23,10 @@ export class FloatingWindowComponent implements OnInit {
 	
 	onDragEnd($event) {
 		// console.log($event);
+	}
+	
+	toggle() {
+		this.visible = !this.visible;
 	}
 	
 }

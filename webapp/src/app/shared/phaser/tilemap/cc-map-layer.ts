@@ -53,7 +53,7 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 			this.tileCrop = new Phaser.Rectangle(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
 			this.tilesetImage.crop(this.tileCrop);
 		}
-		const skip = 'Navigation Collision'.split(' ');
+		const skip = 'Navigation Collision HeightMap'.split(' ');
 		skip.forEach(type => {
 			if (type === details.type) {
 				this.visible = false;
