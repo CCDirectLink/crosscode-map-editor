@@ -53,8 +53,8 @@ export class Helper {
 	
 	public static getTilesetSize(img: HTMLImageElement): Point {
 		return {
-			x: img.width / Globals.TILE_SIZE,
-			y: img.height / Globals.TILE_SIZE
+			x: Math.ceil(img.width / Globals.TILE_SIZE),
+			y: Math.ceil(img.height / Globals.TILE_SIZE)
 		};
 	}
 	
