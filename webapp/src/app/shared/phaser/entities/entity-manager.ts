@@ -7,6 +7,7 @@ import {Vec2} from '../vec2';
 import {GlobalEventsService} from '../../global-events.service';
 import {EntityDefinition} from '../../interfaces/entity-definition';
 import {Globals} from '../../globals';
+import {SelectionBox} from './selection-box';
 
 enum MouseButtons {
 	Left,
@@ -33,6 +34,8 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	private copyEntities: CCEntity[];
 	private globalEvents: GlobalEventsService;
 	
+	private selectionBox: SelectionBox;
+	
 	// image to receive input behind the sprites
 	private inputImg: Phaser.Image;
 	
@@ -55,6 +58,8 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		game.input.keyboard.removeKeyCapture(this.gridKey.keyCode);
 		game.input.keyboard.removeKeyCapture(this.visibilityKey.keyCode);
 		
+		this.selectionBox = new SelectionBox(this.game);
+		
 		this.inputImg = game.add.image(-9999, -9999);
 		this.inputImg.width = 999999;
 		this.inputImg.height = 999999;
@@ -64,17 +69,28 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 				buttonPressed = MouseButtons.Middle;
 			} else if (pointer.leftButton.isDown) {
 				buttonPressed = MouseButtons.Left;
+				this.selectionBox.onInputDown(Helper.screenToWorld(pointer));
 			} else if (pointer.rightButton.isDown) {
 				buttonPressed = MouseButtons.Right;
 			}
 		});
 		this.inputImg.events.onInputUp.add((e, pointer) => {
-			if (buttonPressed === MouseButtons.Middle || this.multiSelectKey.isDown) {
+			if (buttonPressed === MouseButtons.Middle) {
 				return;
 			}
-			this.selectEntity(null);
 			if (buttonPressed === MouseButtons.Right) {
+				this.selectEntity(null);
 				this.showAddEntityMenu();
+			}
+			
+			if (buttonPressed === MouseButtons.Left) {
+				const entities = this.selectionBox.onInputUp();
+				if (!this.multiSelectKey.isDown) {
+					this.selectEntity(null, false);
+				}
+				entities.forEach(entity => {
+					this.selectEntity(entity, true);
+				});
 			}
 		});
 		
@@ -122,6 +138,10 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 				this.generateEntity(entity);
 			});
 		}
+	}
+	
+	update() {
+		this.selectionBox.update(this.entities);
 	}
 	
 	selectEntity(entity: CCEntity, multiple = false) {

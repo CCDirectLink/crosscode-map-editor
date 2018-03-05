@@ -19,6 +19,15 @@ export class Helper {
 		return p;
 	}
 	
+	/** Transforms phaser world coordinates to actual world coordinates (see {@link screenToWorld}) */
+	public static phaserWorldtoWorld(p: Point): Point {
+		const out: Point = {};
+		const cam = Globals.game.camera;
+		out.x = p.x / cam.scale.x;
+		out.y = p.y / cam.scale.y;
+		return out;
+	}
+	
 	public static worldToTile(x: number, y: number): Point {
 		const p: Point = {};
 		

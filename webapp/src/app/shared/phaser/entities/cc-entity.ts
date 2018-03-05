@@ -588,6 +588,13 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		};
 	}
 	
+	public getBoundingBox(): Phaser.Rectangle {
+		const img = this.collisionImage;
+		const p = Helper.phaserWorldtoWorld(img.world);
+		const rect = new Phaser.Rectangle(p.x, p.y, img.width, img.height);
+		return rect;
+	}
+	
 	private setEvents() {
 		if (!this.collisionImage) {
 			return;
