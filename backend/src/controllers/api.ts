@@ -1,5 +1,3 @@
-import * as async from 'async';
-import * as request from 'request';
 import * as fs from 'fs';
 import * as path from 'path';
 import {Response, Request, NextFunction} from 'express';

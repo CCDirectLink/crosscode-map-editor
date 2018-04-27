@@ -1,9 +1,7 @@
 import * as express from 'express';
-import * as compression from 'compression';  // compresses requests
 import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
 import * as errorHandler from 'errorhandler';
-import * as path from 'path';
 import * as cors from 'cors';
 import {config} from './config';
 
