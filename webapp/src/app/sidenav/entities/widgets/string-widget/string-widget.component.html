@@ -3,7 +3,7 @@
 	<div *ngIf="entity.definition.attributes[key]?.options; else defaultInput">
 		<mat-select [id]="key"
 		           [ngModel]="entity.details.settings[key]"
-		           (change)="setSetting(key, $event.value)">
+		           (selectionChange)="setSetting(key, $event.value)">
 			<mat-option *ngFor="let option of keys" [value]="option">
 				{{ option }}
 			</mat-option>

@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {MatSnackBar} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
+import {Observable, BehaviorSubject} from 'rxjs';
 import {CrossCodeMap} from './interfaces/cross-code-map';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {CCMap} from './phaser/tilemap/cc-map';
 import {CCMapLayer} from './phaser/tilemap/cc-map-layer';
 

@@ -1,9 +1,6 @@
-import {
-	animate, Component, Input, OnInit, style, transition, trigger, ViewChild,
-	ViewEncapsulation
-} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {animate, style, transition, trigger} from '@angular/animations';
 import {MapLoaderService} from '../shared/map-loader.service';
-import {CrossCodeMap, MapLayer} from '../shared/interfaces/cross-code-map';
 import {CCMap} from '../shared/phaser/tilemap/cc-map';
 import {CCMapLayer} from '../shared/phaser/tilemap/cc-map-layer';
 import {EditorView} from '../shared/interfaces/editor-view';

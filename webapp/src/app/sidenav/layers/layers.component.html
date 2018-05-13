@@ -24,9 +24,9 @@
 	
 	<mat-list-item fxLayout="column">
 		<span class="label">Name: </span>
-		<mat-input-container class="list-item" floatPlaceholder="never">
+		<mat-form-field class="list-item" floatLabel="never">
 			<input matInput [disabled]="!selectedLayer" [(ngModel)]="selectedLayer?.details.name">
-		</mat-input-container>
+		</mat-form-field>
 	</mat-list-item>
 	
 	<mat-list-item fxLayout="column">
@@ -39,10 +39,10 @@
 	
 	<mat-list-item fxLayout="column">
 		<span class="label">Distance: </span>
-		<mat-input-container class="list-item" floatPlaceholder="never">
+		<mat-form-field class="list-item" floatLabel="never">
 			<input type="number" step="0.1" matInput [disabled]="!selectedLayer"
 			       [(ngModel)]="selectedLayer?.details.distance">
-		</mat-input-container>
+		</mat-form-field>
 	</mat-list-item>
 	<br>
 </mat-list>

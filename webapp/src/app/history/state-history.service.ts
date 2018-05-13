@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs';
 import {CrossCodeMap} from '../shared/interfaces/cross-code-map';
-import {Observable} from 'rxjs/Observable';
 
 export interface HistoryState {
 	icon: string;

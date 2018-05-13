@@ -6,7 +6,7 @@ import {Helper} from '../helper';
 import * as Phaser from 'phaser-ce';
 import {EntityDefinition} from '../../interfaces/entity-definition';
 import {Vec2} from '../vec2';
-import {max} from 'rxjs/operator/max';
+
 import {Globals} from '../../globals';
 
 export interface InputEvents {
@@ -554,8 +554,8 @@ export class CCEntity extends Phaser.Image implements Sortable {
 	
 	private replaceJsonParams(jsonInstance, prop: ScalableProp) {
 		Object.entries(jsonInstance).forEach(([key, value]) => {
-			if (value.jsonPARAM) {
-				jsonInstance[key] = prop[value.jsonPARAM];
+			if (value['jsonPARAM']) {
+				jsonInstance[key] = prop[value['jsonPARAM']];
 				return;
 			}
 			if (typeof value === 'object') {

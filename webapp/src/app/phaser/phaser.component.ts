@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit} from '@angular/core';
 import * as Phaser from 'phaser-ce';
 import {MapLoaderService} from '../shared/map-loader.service';
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {MapPan} from '../shared/phaser/map-pan';
 import {CCMap} from '../shared/phaser/tilemap/cc-map';
 import {TileDrawer} from '../shared/phaser/tilemap/tile-drawer';
