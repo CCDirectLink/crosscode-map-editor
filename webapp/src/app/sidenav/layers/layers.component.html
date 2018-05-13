@@ -1,7 +1,7 @@
 <mat-nav-list fxFlex="1 1 auto" class="small-list">
 	<mat-list-item *ngFor="let layer of tilemap.layers" (click)="selectLayer(layer)">
 		<div class="item-selected-bg" [ngClass]="{'item-selected': layer === selectedLayer}"></div>
-		<div mat-list-icon class="type-circle" [ngClass]="'type-' + layer.details.type"></div>
+		<div mat-list-icon [ngClass]="'type-' + layer.details.type"></div>
 		<span mat-line>{{getDisplayName(layer)}}</span>
 		
 		<button mat-icon-button (click)="toggleVisibility($event, layer)" class="green">
