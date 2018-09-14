@@ -3,7 +3,7 @@ import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {animate, animateChild, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
-
+// TODO: Make a map-config file for weather settings...
 @Component({
 	selector: 'app-layers',
 	templateUrl: './layers.component.html',

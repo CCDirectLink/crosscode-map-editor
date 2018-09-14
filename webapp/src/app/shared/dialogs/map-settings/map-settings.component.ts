@@ -12,7 +12,13 @@ import {CCMap} from '../../phaser/tilemap/cc-map';
 export class MapSettingsComponent {
 
 	private tileMap: CCMap;
-
+	weatherTypes = require('./map-settings.json').weather;
+	saveModeTypes = require('./map-settings.json').saveModeTypes;
+	bgm = require('./map-settings.json').bgm;
+	mapSounds = require('./map-settings.json').mapSounds;
+	mapStyles = require('./map-settings.json').mapStyles;
+	areas = require('./map-settings.json').areas;
+	npcRunnerTypes = require('./map-settings.json').npcRunnerTypes;
 	settings: CrossCodeMap = <any>{
 		levels: [{height: -32}, {height: 0}, {height: 32}, {height: 64}],
 		attributes: {},
