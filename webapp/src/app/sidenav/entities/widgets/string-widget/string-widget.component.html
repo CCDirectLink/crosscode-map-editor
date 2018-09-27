@@ -1,15 +1,13 @@
 <div fxLayout="row" class="property-container" [matTooltip]="entity.definition.attributes[key]?.description">
 	<label [for]="key" class="property-name">{{key}}:</label>
-	<div *ngIf="entity.definition.attributes[key]?.options; else defaultInput">
-		<div class="mat-select-container">
-			<mat-select [id]="key"
-			            [ngModel]="entity.details.settings[key]"
-			            (selectionChange)="setSetting(key, $event.value)">
-				<mat-option *ngFor="let option of keys" [value]="option">
-					{{ option }}
-				</mat-option>
-			</mat-select>
-		</div>
+	<div class="mat-select-container" *ngIf="entity.definition.attributes[key]?.options; else defaultInput">
+		<mat-select [id]="key"
+		            [ngModel]="entity.details.settings[key]"
+		            (selectionChange)="setSetting(key, $event.value)">
+			<mat-option *ngFor="let option of keys" [value]="option">
+				{{ option }}
+			</mat-option>
+		</mat-select>
 	</div>
 	
 	<ng-template #defaultInput>
