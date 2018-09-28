@@ -1,4 +1,5 @@
 import {Point, Point3} from './cross-code-map';
+import {Prop} from '../phaser/entities/prop';
 
 export interface PropSheet {
 	DOCTYPE: string;
@@ -9,17 +10,6 @@ export interface ScalablePropSheet {
 	jsonTEMPLATES?: any;
 	DOCTYPE: string;
 	entries: any;
-}
-
-export interface Prop {
-	name: string;
-	size: {
-		x: number;
-		y: number;
-		z: number
-	};
-	collType: string;
-	fix: Fix;
 }
 
 export interface Fix {

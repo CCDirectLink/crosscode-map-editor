@@ -5,9 +5,9 @@ import {CCMap} from '../tilemap/cc-map';
 import {CrossCodeMap, MapEntity} from '../../interfaces/cross-code-map';
 import {Vec2} from '../vec2';
 import {GlobalEventsService} from '../../global-events.service';
-import {EntityDefinition} from '../../interfaces/entity-definition';
 import {Globals} from '../../globals';
 import {SelectionBox} from './selection-box';
+import {EntityRegistryService} from '../../entity-registry.service';
 
 enum MouseButtons {
 	Left,
@@ -160,11 +160,12 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	}
 	
 	generateEntity(entity: MapEntity): CCEntity {
-		const definitions = this.game.cache.getJSON('definitions.json', false);
-		const def: EntityDefinition = definitions[entity.type];
-		def.type = entity.type;
-		const ccEntity = new CCEntity(this.game, this.map, entity.x, entity.y, def, this.inputEvents);
-		ccEntity.settings = entity.settings;
+		const registry: EntityRegistryService = this.game['EntityRegistryService'];
+		
+		const entityClass = registry.getEntity(entity.type);
+		
+		const ccEntity = new entityClass(this.game, this.map, entity.x, entity.y, this.inputEvents, entity.type);
+		ccEntity.setSettings(entity.settings);
 		ccEntity.level = entity.level;
 		this.entities.push(ccEntity);
 		return ccEntity;

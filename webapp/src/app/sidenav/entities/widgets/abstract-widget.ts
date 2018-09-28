@@ -3,6 +3,7 @@ import {CCEntity} from '../../../shared/phaser/entities/cc-entity';
 
 export abstract class AbstractWidget {
 	@Input() key: string;
+	@Input() attribute: any;
 	@Input() entity: CCEntity;
 	
 	setSetting(key: string, value: any, updateType = true, parse = false) {
