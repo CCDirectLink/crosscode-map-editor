@@ -57,12 +57,12 @@ export class EntitiesComponent implements OnInit {
 		}
 
 		const def = entity.getScaleSettings();
-		if (def && (def.scaleX || def.scaleY)) {
+		if (def && (def.scalableX || def.scalableY)) {
 			const vec2Widget: Vec2WidgetComponent = <Vec2WidgetComponent>this.generateWidget(entity, 'size', {type: 'Vec2'}, ref);
-			vec2Widget.enableX = def.scaleX;
-			vec2Widget.enableY = def.scaleY;
-			vec2Widget.step = def.step;
-			vec2Widget.minSize = def.minSize;
+			vec2Widget.enableX = def.scalableX;
+			vec2Widget.enableY = def.scalableY;
+			vec2Widget.step = def.scalableStep;
+			vec2Widget.minSize = def.baseSize;
 			// TODO implement scalable prop then delete this
 			/*if (def.type === 'ScalableProp') {
 				vec2Widget.enableX = entity.entitySettings.scalableX;

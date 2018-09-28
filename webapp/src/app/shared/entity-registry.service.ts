@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {DefaultEntity} from './phaser/entities/default-entity';
 import {CCEntity} from './phaser/entities/cc-entity';
 import {Prop} from './phaser/entities/prop';
+import {ScalableProp} from './phaser/entities/scalable-prop';
 
 @Injectable({
 	providedIn: 'root'
@@ -14,6 +15,7 @@ export class EntityRegistryService {
 	constructor() {
 		this.setDefaultEntity(DefaultEntity);
 		this.register('Prop', Prop);
+		this.register('ScalableProp', ScalableProp);
 	}
 	
 	private setDefaultEntity(entity: any) {

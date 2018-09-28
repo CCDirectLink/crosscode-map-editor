@@ -19,7 +19,6 @@ export class DefaultEntity extends CCEntity {
 	
 	protected setupType(settings: any) {
 		this.settings = settings;
-		console.log('settings', settings);
 		this.generateNoImageType();
 	}
 }

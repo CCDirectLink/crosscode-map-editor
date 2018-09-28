@@ -1,6 +1,5 @@
 import {Sortable, SortableGroup} from '../../interfaces/sortable';
 import {CCMap} from '../tilemap/cc-map';
-import {ScalableProp} from '../../interfaces/props';
 import {MapEntity, Point, Point3} from '../../interfaces/cross-code-map';
 import {Helper} from '../helper';
 import * as Phaser from 'phaser-ce';
@@ -18,10 +17,10 @@ export interface InputEvents {
 }
 
 export interface ScaleSettings {
-	scaleX?: boolean;
-	scaleY?: boolean;
-	minSize?: Point;
-	step?: number;
+	scalableX?: boolean;
+	scalableY?: boolean;
+	baseSize?: Point;
+	scalableStep?: number;
 }
 
 export abstract class CCEntity extends Phaser.Image implements Sortable {
@@ -30,6 +29,7 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 	public group: SortableGroup;
 	private levelOffsetGroup: SortableGroup;
 	private boundingBoxOffsetGroup: SortableGroup;
+	private text: Phaser.Text;
 	
 	// for normal entities
 	private entityBitmap: Phaser.BitmapData;
@@ -123,6 +123,15 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		
 		this.setEvents();
 		
+		// text
+		this.text = this.game.add.text(0, 0, '', {
+			font: '400 18pt Roboto',
+			fill: 'white',
+			stroke: 'black',
+			strokeThickness: 2
+		}, this.levelOffsetGroup);
+		this.text.scale.set(0.274);
+		this.text.anchor.set(0.5, 0.5);
 	}
 	
 	updateSettings() {
@@ -543,9 +552,9 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		this.entitySettings = <any>{};
 		this.entitySettings.baseSize = baseSize;
 		const scaleSettings = this.getScaleSettings();
-		if (scaleSettings && (scaleSettings.scaleX || scaleSettings.scaleY)) {
-			this.entitySettings.scalableX = scaleSettings.scaleX;
-			this.entitySettings.scalableY = scaleSettings.scaleY;
+		if (scaleSettings && (scaleSettings.scalableX || scaleSettings.scalableY)) {
+			this.entitySettings.scalableX = scaleSettings.scalableX;
+			this.entitySettings.scalableY = scaleSettings.scalableY;
 		} else {
 			this.anchor.y = 1;
 			this.anchor.x = 0.5;
@@ -571,7 +580,7 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		};
 	}
 	
-	private replaceJsonParams(jsonInstance, prop: ScalableProp) {
+	protected replaceJsonParams(jsonInstance, prop: any) {
 		Object.entries(jsonInstance).forEach(([key, value]) => {
 			if (value['jsonPARAM']) {
 				jsonInstance[key] = prop[value['jsonPARAM']];
@@ -668,5 +677,9 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		collImg.x = inputArea.x;
 		collImg.y = inputArea.y - (size.z || 0);
 		collImg.loadTexture(this.collisionBitmap);
+		
+		// text
+		this.text.setText(this.details.settings.name || '');
+		this.text.position.set(size.x / 2, size.y / 2);
 	}
 }
