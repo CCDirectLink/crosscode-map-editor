@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {DefaultEntity} from './phaser/entities/default-entity';
-import {CCEntity} from './phaser/entities/cc-entity';
-import {Prop} from './phaser/entities/prop';
-import {ScalableProp} from './phaser/entities/scalable-prop';
+import {DefaultEntity} from './default-entity';
+import {CCEntity} from './cc-entity';
+import {Prop} from './prop';
+import {ScalableProp} from './scalable-prop';
+import {ItemDestruct} from './item-destruct';
 
 @Injectable({
 	providedIn: 'root'
@@ -16,6 +17,7 @@ export class EntityRegistryService {
 		this.setDefaultEntity(DefaultEntity);
 		this.register('Prop', Prop);
 		this.register('ScalableProp', ScalableProp);
+		this.register('ItemDestruct', ItemDestruct);
 	}
 	
 	private setDefaultEntity(entity: any) {

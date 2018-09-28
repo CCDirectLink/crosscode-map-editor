@@ -7,7 +7,7 @@ import {Vec2} from '../vec2';
 import {GlobalEventsService} from '../../global-events.service';
 import {Globals} from '../../globals';
 import {SelectionBox} from './selection-box';
-import {EntityRegistryService} from '../../entity-registry.service';
+import {EntityRegistryService} from './entity-registry.service';
 
 enum MouseButtons {
 	Left,

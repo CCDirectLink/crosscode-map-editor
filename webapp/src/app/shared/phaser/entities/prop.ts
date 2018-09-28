@@ -77,10 +77,14 @@ export class Prop extends CCEntity {
 	protected setupType(settings: any) {
 		if (!settings.propType) {
 			console.warn('prop without prop type');
-			return;
+			return this.generateNoImageType();
 		}
 		Helper.getJson('data/props/' + settings.propType.sheet, (sheet) => {
 			let prop: PropDef;
+			if (!sheet) {
+				console.warn('prop without sheet', settings);
+				return this.generateNoImageType();
+			}
 			for (let i = 0; i < sheet.props.length; i++) {
 				const p = sheet.props[i];
 				if (settings.propType.name === p.name) {
