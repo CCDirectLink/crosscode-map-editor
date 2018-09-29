@@ -40,18 +40,25 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	
 	ngOnInit() {
 		this.http.getAllFiles().subscribe(res => {
-			this.game = new Phaser.Game(screen.width * window.devicePixelRatio, screen.height * window.devicePixelRatio, Phaser.CANVAS, 'content', {
-				create: () => this.create(),
-				update: () => this.update(),
-				render: () => this.render(),
-				preload: () => this.preload(res),
-			}, undefined, false);
+			this.game = new Phaser.Game(
+				screen.width * window.devicePixelRatio,
+				screen.height * window.devicePixelRatio,
+				Phaser.WEBGL_MULTI,
+				'content', {
+					create: () => this.create(),
+					update: () => this.update(),
+					render: () => this.render(),
+					preload: () => this.preload(res),
+				},
+				undefined,
+				false);
 			Globals.game = this.game;
 		});
 	}
 	
 	create() {
 		const game = this.game;
+		game.time.advancedTiming = true;
 		this.game['StateHistoryService'] = this.stateHistory;
 		this.game['MapLoaderService'] = this.mapLoader;
 		this.game['EntityRegistryService'] = this.entityRegistry;
@@ -74,6 +81,8 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		this.sub = this.mapLoader.map.subscribe((map) => {
 			if (map) {
 				this.tileMap.loadMap(map);
+				const s = this.tileMap.layers[0].details.tilesize * this.game.camera.scale.x;
+				this.border.resize(this.tileMap.mapWidth * s, this.tileMap.mapHeight * s);
 			}
 		});
 		
@@ -97,7 +106,6 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		});
 		
 		this.border = new Phaser.Rectangle(0, 0, 0, 0);
-		
 		this.mapLoader.selectedLayer.subscribe(layer => this.tileDrawer.selectLayer(layer));
 		this.globalEvents.currentView.next(EditorView.Layers);
 	}
@@ -120,26 +128,25 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	}
 	
 	update() {
-		if (this.tileMap.layers.length === 0) {
-			return;
+		if (Globals.zIndexUpdate) {
+			Globals.zIndexUpdate = false;
+			this.game.world.children.sort(this.sortFunc);
 		}
-		const s = this.tileMap.layers[0].details.tilesize * this.game.camera.scale.x;
-		this.border.resize(this.tileMap.mapWidth * s, this.tileMap.mapHeight * s);
+	}
+	
+	sortFunc(a, b) {
+		const va = a.zIndex || 0;
+		const vb = b.zIndex || 0;
+		const diff = va - vb;
+		if (diff !== 0) {
+			return diff;
+		}
+		return a.z - b.z;
 		
-		// should only sort when needed, refactor when performance becomes a problem
-		// this.game.world.sort('zIndex');
-		this.game.world.children.sort((a: any, b: any) => {
-			const va = a.zIndex || 0;
-			const vb = b.zIndex || 0;
-			const diff = va - vb;
-			if (diff !== 0) {
-				return diff;
-			}
-			return a.z - b.z;
-		});
 	}
 	
 	render() {
+		this.game.debug.text(this.game.time.fps.toString(), 2, 14, '#00ff00');
 		this.game.debug.geom(this.border, '#F00', false);
 	}
 	

@@ -122,16 +122,6 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		});
 		
 		this.setEvents();
-		
-		// text
-		this.text = this.game.add.text(0, 0, '', {
-			font: '400 18pt Roboto',
-			fill: 'white',
-			stroke: 'black',
-			strokeThickness: 2
-		}, this.levelOffsetGroup);
-		this.text.scale.set(0.274);
-		this.text.anchor.set(0.5, 0.5);
 	}
 	
 	updateSettings() {
@@ -160,7 +150,7 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 				
 				this.tileSpriteBitmap.draw(this, 0, 0, fix.w, fix.h);
 				if (this.tileSprite) {
-					this.boundingBoxOffsetGroup.remove(this.tileSprite);
+					this.tileSprite.destroy();
 				}
 				if (!settings.size) {
 					settings.size = Vec2.create(s.baseSize);
@@ -313,6 +303,9 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		if (this.collisionBitmap) {
 			this.collisionBitmap.destroy();
 		}
+		if (this.text) {
+			this.text.destroy();
+		}
 		super.destroy();
 	}
 	
@@ -356,6 +349,7 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		zIndex += this.group.y * 0.000001;
 		
 		this.group.zIndex = zIndex;
+		Globals.zIndexUpdate = true;
 	}
 	
 	exportEntity(): MapEntity {
@@ -678,8 +672,27 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		collImg.y = inputArea.y - (size.z || 0);
 		collImg.loadTexture(this.collisionBitmap);
 		
-		// text
-		this.text.setText(this.details.settings.name || '');
-		this.text.position.set(size.x / 2, size.y / 2);
+		this.generateText(this.details.settings.name, size);
+	}
+	
+	private generateText(name: string, size: Point) {
+		if (name) {
+			if (!this.text) {
+				this.text = this.game.add.text(0, 0, '', {
+					font: '400 18pt Roboto',
+					fill: 'white',
+					stroke: 'black',
+					strokeThickness: 2
+				}, this.levelOffsetGroup);
+				this.text.scale.set(0.274);
+				this.text.anchor.set(0.5, 0.5);
+			}
+			this.text.setText(name);
+			this.text.position.set(size.x / 2, size.y / 2);
+		} else if (this.text) {
+			this.text.destroy();
+			this.text = null;
+		}
+		
 	}
 }

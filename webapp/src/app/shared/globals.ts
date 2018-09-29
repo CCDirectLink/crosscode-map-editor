@@ -8,4 +8,5 @@ export class Globals {
 		enableGrid: false
 	};
 	static disablePhaserInput = false;
+	static zIndexUpdate = false;
 }
