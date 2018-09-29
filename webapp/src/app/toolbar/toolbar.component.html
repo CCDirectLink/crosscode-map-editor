@@ -9,7 +9,6 @@
 	</div>
 	<div fxFlex fxLayoutAlign="end">
 		<input #fileUpload type="file" (change)="loadMap($event)" accept=".json"/>
-		
 		<div class="button-row">
 			<button *ngIf="map" mat-button (click)="openMapSettings()">Map Settings</button>
 			<button *ngIf="map" mat-button (click)="saveMap()">Save Map</button>

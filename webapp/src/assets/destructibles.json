@@ -1,0 +1,4886 @@
+{
+  "StoneOfValor": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.stones",
+      "name": "burstValor"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/destructible-stones.png",
+        "width": 24,
+        "height": 32,
+        "offY": 0
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "StoneOfSpace": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.stones",
+      "name": "burstSpace"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/destructible-stones.png",
+        "width": 24,
+        "height": 32,
+        "offY": 32
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "StoneOfTruth": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.stones",
+      "name": "burstTruth"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/destructible-stones.png",
+        "width": 24,
+        "height": 32,
+        "offY": 64
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "StoneOfSpirit": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.stones",
+      "name": "burstSpirit"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/destructible-stones.png",
+        "width": 24,
+        "height": 32,
+        "offY": 96
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "StoneOfAges": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.stones",
+      "name": "burstAges"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/destructible-stones.png",
+        "width": 24,
+        "height": 32,
+        "offY": 128
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "StoneOfNothing": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.stones",
+      "name": "burst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/destructible-stones.png",
+        "width": 24,
+        "height": 32,
+        "offY": 160
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "AutumnPlantA": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.autumn",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/autumn-destructibles.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Autumn-Ground-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.autumn",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/autumn-destructibles.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Autumn-Ground-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.autumn",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/autumn-destructibles.png",
+        "width": 24,
+        "height": 32,
+        "offY": 32
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Autumn-Water-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.autumn",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/autumn-destructibles.png",
+        "width": 24,
+        "height": 32,
+        "offY": 64
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Autumn-Water-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.autumn",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/autumn-destructibles.png",
+        "width": 24,
+        "height": 32,
+        "offY": 96
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Autumn-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.autumn",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/autumn-destructibles.png",
+        "width": 24,
+        "height": 32,
+        "offY": 128
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Autumn-Water-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.autumn",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/autumn-destructibles.png",
+        "width": 24,
+        "height": 32,
+        "offY": 160
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Autumn-Fall-Ground-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.autumn",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/autumn-destructibles.png",
+        "width": 24,
+        "height": 32,
+        "offX": 128
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Autumn-Fall-Ground-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.autumn",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/autumn-destructibles.png",
+        "width": 24,
+        "height": 32,
+        "offY": 32,
+        "offX": 128
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Autumn-Fall-Water-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.autumn",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/autumn-destructibles.png",
+        "width": 24,
+        "height": 32,
+        "offY": 64,
+        "offX": 128
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Autumn-Fall-Water-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.autumn",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/autumn-destructibles.png",
+        "width": 24,
+        "height": 32,
+        "offY": 96,
+        "offX": 128
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Autumn-Fall-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.autumn",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/autumn-destructibles.png",
+        "width": 24,
+        "height": 32,
+        "offY": 128,
+        "offX": 128
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Autumn-Fall-Water-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.autumn",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/entity/objects/autumn-destructibles.png",
+        "width": 24,
+        "height": 32,
+        "offY": 160,
+        "offX": 128
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bergen-PlantA-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.bergen",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/bergen-trail.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 384
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bergen-PlantA-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.bergen",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/bergen-trail.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 416
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bergen-PlantA-Rare": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.bergen",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/bergen-trail.png",
+        "width": 24,
+        "height": 32,
+        "offX": 144,
+        "offY": 384
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bergen-PlantB-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.bergen",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/bergen-trail.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 448
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bergen-PlantB-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.bergen",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/bergen-trail.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 480
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bergen-PlantB-Rare": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.bergen",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/bergen-trail.png",
+        "width": 24,
+        "height": 32,
+        "offX": 144,
+        "offY": 448
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bergen-PlantA-1-Snow": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.bergen",
+      "name": "plantBurstSnow"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/bergen-trail.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 384
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bergen-PlantA-2-Snow": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.bergen",
+      "name": "plantBurstSnow"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/bergen-trail.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 416
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bergen-PlantA-Snow-Rare": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.bergen",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/bergen-trail.png",
+        "width": 24,
+        "height": 32,
+        "offX": 144,
+        "offY": 416
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bergen-PlantB-1-Snow": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.bergen",
+      "name": "plantBurstSnow"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/bergen-trail.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 448
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bergen-PlantB-2-Snow": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.bergen",
+      "name": "plantBurstSnow"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/bergen-trail.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 480
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bergen-PlantB-Snow-Rare": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.bergen",
+      "name": "plantBurstSnow"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/bergen-trail.png",
+        "width": 24,
+        "height": 32,
+        "offX": 144,
+        "offY": 480
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bergen-Snow-Crystal": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 8
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.bergen",
+      "name": "burstSnow"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/bergen-trail.png",
+        "width": 24,
+        "height": 32,
+        "offX": 216,
+        "offY": 480
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bergen-Vase-1": {
+    "size": {
+      "x": 16,
+      "y": 10,
+      "z": 18
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 9
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.bergen",
+      "name": "vase-break"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/bergen-trail.png",
+        "width": 16,
+        "height": 28,
+        "offX": 224,
+        "offY": 964
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Cold-Dng-Egg-1": {
+    "size": {
+      "x": 14,
+      "y": 16,
+      "z": 16
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 9
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.cold-dng",
+      "name": "eggs"
+    },
+    "Aa": {
+      "wallY": 0.4,
+      "sheet": {
+        "src": "media/map/cold-dng.png",
+        "width": 16,
+        "height": 32,
+        "offX": 192,
+        "offY": 560
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false,
+          "aboveZ": 1
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Cold-Dng-Egg-2": {
+    "size": {
+      "x": 14,
+      "y": 16,
+      "z": 16
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 9
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.cold-dng",
+      "name": "eggs"
+    },
+    "Aa": {
+      "wallY": 0.4,
+      "sheet": {
+        "src": "media/map/cold-dng.png",
+        "width": 16,
+        "height": 32,
+        "offX": 192,
+        "offY": 592
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false,
+          "aboveZ": 1
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Cold-Dng-Egg-3": {
+    "size": {
+      "x": 14,
+      "y": 16,
+      "z": 16
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 9
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.cold-dng",
+      "name": "eggs"
+    },
+    "Aa": {
+      "wallY": 0.4,
+      "sheet": {
+        "src": "media/map/cold-dng.png",
+        "width": 16,
+        "height": 32,
+        "offX": 192,
+        "offY": 624
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false,
+          "aboveZ": 1
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Cold-Dng-Egg-4": {
+    "size": {
+      "x": 24,
+      "y": 16,
+      "z": 16
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 9
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.cold-dng",
+      "name": "eggs"
+    },
+    "Aa": {
+      "wallY": 0.4,
+      "sheet": {
+        "src": "media/map/cold-dng.png",
+        "width": 32,
+        "height": 32,
+        "offX": 240,
+        "offY": 560
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false,
+          "aboveZ": 1
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Cold-Dng-Egg-Special-A": {
+    "size": {
+      "x": 36,
+      "y": 24,
+      "z": 24
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 9
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.cold-dng",
+      "name": "eggs"
+    },
+    "Aa": {
+      "wallY": 0.4,
+      "sheet": {
+        "src": "media/map/cold-dng.png",
+        "width": 40,
+        "height": 48,
+        "offX": 72,
+        "offY": 560
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false,
+          "aboveZ": 1
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Cold-Dng-Egg-Special-B": {
+    "size": {
+      "x": 36,
+      "y": 24,
+      "z": 24
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 9
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.cold-dng",
+      "name": "eggs"
+    },
+    "Aa": {
+      "wallY": 0.4,
+      "sheet": {
+        "src": "media/map/cold-dng.png",
+        "width": 40,
+        "height": 48,
+        "offX": 72,
+        "offY": 608
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false,
+          "aboveZ": 1
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Cactus-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 208,
+        "offY": 320
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Cactus-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 208,
+        "offY": 352
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Cactus-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 208,
+        "offY": 384
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Dry-Cactus-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 176,
+        "offY": 128
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Dry-Cactus-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 176,
+        "offY": 160
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Palmapple-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 208,
+        "offY": 416
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Palmapple-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 208,
+        "offY": 448
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Palmapple-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 208,
+        "offY": 480
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Dry-Bush-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "plantBurstRed"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 280,
+        "offY": 320
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Dry-Bush-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "plantBurstRed"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 280,
+        "offY": 352
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Dry-Bush-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "plantBurstRed"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 280,
+        "offY": 384
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Bones-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "boneBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 208,
+        "offY": 512
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Bones-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "boneBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 208,
+        "offY": 544
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Bones-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "boneBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 280,
+        "offY": 512
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Hill-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "termiteDust"
+    },
+    "Aa": {
+      "wallY": 1,
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 280,
+        "offY": 416
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Hill-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "termiteDust"
+    },
+    "Aa": {
+      "wallY": 1,
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 280,
+        "offY": 448
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Heat-Hill-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "termiteDust"
+    },
+    "Aa": {
+      "wallY": 1,
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 24,
+        "height": 32,
+        "offX": 280,
+        "offY": 480
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Bakii-Vase": {
+    "size": {
+      "x": 16,
+      "y": 12,
+      "z": 20
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 9
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.heat",
+      "name": "vase-break"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/heat-area.png",
+        "width": 16,
+        "height": 32,
+        "offX": 464,
+        "offY": 320
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Flower-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "plantBurstViolet"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 224
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Flower-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "plantBurstViolet"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 256
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Flower-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "plantBurstViolet"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 288
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Bees-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "honeyBurst"
+    },
+    "YA": 0,
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 320
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Bees-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "honeyBurst"
+    },
+    "YA": 0,
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 352
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Bees-3": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "honeyBurst"
+    },
+    "YA": 0,
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 352
+      },
+      "flipX": true,
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Waterplant-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "plantBurstWater"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 224
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Waterplant-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "plantBurstWater"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 256
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Waterplant-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "plantBurstWater"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 288
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Waterplant-Closed-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "plantBurstWater"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 384
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Waterplant-Closed-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "plantBurstWater"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 416
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Shroom-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "shroomBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 320
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Shroom-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "shroomBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 352
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Shroom-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "shroomBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 384
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Flower-Dotted-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "plantBurstViolet"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 416
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Flower-Dotted-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "plantBurstViolet"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 448
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Jungle-Flower-Dotted-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "plantBurstViolet"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 480
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false
+        }
+      ]
+    }
+  },
+  "Sapphire-Bush-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.forest",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/forest.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 704
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false,
+          "shapeType": "Z_FLAT"
+        }
+      ]
+    }
+  },
+  "Sapphire-Bush-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.forest",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/forest.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 736
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false,
+          "shapeType": "Z_FLAT"
+        }
+      ]
+    }
+  },
+  "Sapphire-Bush-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.forest",
+      "name": "plantBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/forest.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 768
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false,
+          "shapeType": "Z_FLAT"
+        }
+      ]
+    }
+  },
+  "Sapphire-Bamboo-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.forest",
+      "name": "bambooBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/forest.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 704
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false,
+          "shapeType": "Z_FLAT"
+        }
+      ]
+    }
+  },
+  "Sapphire-Bamboo-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.forest",
+      "name": "bambooBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/forest.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 736
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false,
+          "shapeType": "Z_FLAT"
+        }
+      ]
+    }
+  },
+  "Sapphire-Bamboo-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 12
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.forest",
+      "name": "bambooBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/forest.png",
+        "width": 24,
+        "height": 32,
+        "offX": 72,
+        "offY": 768
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false,
+          "shapeType": "Z_FLAT"
+        }
+      ]
+    }
+  },
+  "Sapphire-Cobalt-1": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 8
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.cave-cobalt",
+      "name": "cobaltBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/cave-cobalt.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 0
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false,
+          "shapeType": "Z_FLAT"
+        }
+      ]
+    }
+  },
+  "Sapphire-Cobalt-2": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 8
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.cave-cobalt",
+      "name": "cobaltBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/cave-cobalt.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 32
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false,
+          "shapeType": "Z_FLAT"
+        }
+      ]
+    }
+  },
+  "Sapphire-Cobalt-Special": {
+    "size": {
+      "x": 16,
+      "y": 16,
+      "z": 22
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 8
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.cave-cobalt",
+      "name": "cobaltBurst"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/cave-cobalt.png",
+        "width": 24,
+        "height": 32,
+        "offX": 0,
+        "offY": 64
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false,
+          "shapeType": "Z_FLAT"
+        }
+      ]
+    }
+  },
+  "TrashBag1": {
+    "size": {
+      "x": 32,
+      "y": 16,
+      "z": 16
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 8
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "trashBag"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 32,
+        "height": 32,
+        "offX": 352,
+        "offY": 528
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false,
+          "shapeType": "Z_FLAT"
+        }
+      ]
+    }
+  },
+  "TrashBag2": {
+    "size": {
+      "x": 32,
+      "y": 16,
+      "z": 16
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 8
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "trashBag"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 32,
+        "height": 32,
+        "offX": 352,
+        "offY": 560
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false,
+          "shapeType": "Z_FLAT"
+        }
+      ]
+    }
+  },
+  "TrashBag3": {
+    "size": {
+      "x": 32,
+      "y": 16,
+      "z": 24
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 8
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "trashBag"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 32,
+        "height": 40,
+        "offX": 352,
+        "offY": 592
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false,
+          "shapeType": "Z_FLAT"
+        }
+      ]
+    }
+  },
+  "TrashBag4": {
+    "size": {
+      "x": 32,
+      "y": 16,
+      "z": 24
+    },
+    "kd": {
+      "x": 0,
+      "y": 0,
+      "z": 8
+    },
+    "Ob": {
+      "sheet": "puzzle.destructible",
+      "name": "small"
+    },
+    "Xb": {
+      "sheet": "area.jungle",
+      "name": "trashBag"
+    },
+    "Aa": {
+      "shapeType": "Y_FLAT",
+      "sheet": {
+        "src": "media/map/jungle-props.png",
+        "width": 32,
+        "height": 40,
+        "offX": 352,
+        "offY": 632
+      },
+      "SUB": [
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            0
+          ],
+          "repeat": false
+        },
+        {
+          "name": "default",
+          "time": 1,
+          "frames": [
+            1
+          ],
+          "repeat": false
+        },
+        {
+          "name": "dropped",
+          "time": 1,
+          "frames": [
+            2
+          ],
+          "repeat": false,
+          "shapeType": "Z_FLAT"
+        }
+      ]
+    }
+  }
+}

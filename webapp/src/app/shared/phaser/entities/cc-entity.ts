@@ -1,10 +1,8 @@
 import {Sortable, SortableGroup} from '../../interfaces/sortable';
 import {CCMap} from '../tilemap/cc-map';
-import {Prop, PropSheet, ScalableProp, ScalablePropSheet} from '../../interfaces/props';
 import {MapEntity, Point, Point3} from '../../interfaces/cross-code-map';
 import {Helper} from '../helper';
 import * as Phaser from 'phaser-ce';
-import {EntityDefinition} from '../../interfaces/entity-definition';
 import {Vec2} from '../vec2';
 
 import {Globals} from '../../globals';
@@ -18,14 +16,20 @@ export interface InputEvents {
 	onDragStop?: (entity: CCEntity, pointer: Phaser.Pointer) => void;
 }
 
-export class CCEntity extends Phaser.Image implements Sortable {
+export interface ScaleSettings {
+	scalableX?: boolean;
+	scalableY?: boolean;
+	baseSize?: Point;
+	scalableStep?: number;
+}
+
+export abstract class CCEntity extends Phaser.Image implements Sortable {
 	
 	private map: CCMap;
 	public group: SortableGroup;
 	private levelOffsetGroup: SortableGroup;
 	private boundingBoxOffsetGroup: SortableGroup;
-	
-	public definition: EntityDefinition;
+	private text: Phaser.Text;
 	
 	// for normal entities
 	private entityBitmap: Phaser.BitmapData;
@@ -76,14 +80,14 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		pivot: Point;
 	} = <any>{};
 	
-	constructor(game: Phaser.Game, map: CCMap, x: number, y: number, definition: EntityDefinition, inputEvents: InputEvents) {
+	protected constructor(game: Phaser.Game, map: CCMap, x: number, y: number, inputEvents: InputEvents, typeName: string) {
 		super(game, 0, 0, null);
 		this.setInputEvents(inputEvents);
 		this.map = map;
-		this.definition = definition;
 		game.add.existing(this);
-		this.details = <any>{};
-		this.details.type = definition.type;
+		this.details = <any>{
+			type: typeName
+		};
 		
 		this.boundingBoxOffsetGroup = game.add.group();
 		this.boundingBoxOffsetGroup.add(this);
@@ -98,8 +102,36 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		this.group.x = Math.round(x);
 		this.group.y = Math.round(y);
 		
-		// const testimg = game.add.image(0, 0, 'media/entity/objects/block.png', undefined, this.group);
-		// testimg.crop(new Phaser.Rectangle(10, 20, 5, 5));
+		const collImg = this.game.add.image();
+		this.collisionImage = collImg;
+		
+		collImg.alpha = 0;
+		this.levelOffsetGroup.add(collImg);
+		collImg.inputEnabled = false;
+		
+		// handle hover input
+		collImg.events.onInputOver.add(() => {
+			if (!this.selected) {
+				collImg.alpha = 0.35;
+			}
+		});
+		collImg.events.onInputOut.add(() => {
+			if (!this.selected) {
+				collImg.alpha = 0;
+			}
+		});
+		
+		this.setEvents();
+		
+		// text
+		this.text = this.game.add.text(0, 0, '', {
+			font: '400 18pt Roboto',
+			fill: 'white',
+			stroke: 'black',
+			strokeThickness: 2
+		}, this.levelOffsetGroup);
+		this.text.scale.set(0.274);
+		this.text.anchor.set(0.5, 0.5);
 	}
 	
 	updateSettings() {
@@ -219,21 +251,6 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		}
 		
 		this.drawBoundingBox();
-		const collImg = this.collisionImage;
-		
-		// handle hover input
-		collImg.events.onInputOver.add(() => {
-			if (!this.selected) {
-				collImg.alpha = 0.35;
-			}
-		});
-		collImg.events.onInputOut.add(() => {
-			if (!this.selected) {
-				collImg.alpha = 0;
-			}
-		});
-		
-		this.setEvents();
 	}
 	
 	set level(level: any) {
@@ -259,7 +276,7 @@ export class CCEntity extends Phaser.Image implements Sortable {
 	}
 	
 	// TODO: refactor
-	set settings(settings: any) {
+	setSettings(settings: any) {
 		this.details.settings = settings;
 		this.updateType();
 	}
@@ -352,13 +369,19 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		return JSON.parse(JSON.stringify(out));
 	}
 	
-	updateType() {
-		const type = this.details.type;
+	public abstract getScaleSettings(): ScaleSettings;
+	
+	public abstract getAttributes();
+	
+	protected abstract setupType(settings: any);
+	
+	public updateType() {
 		const settings = this.details.settings;
-		// load correct image if prop
+		this.setupType(settings);
+		/*
 		if (type === 'Prop' && settings.propType) {
 			Helper.getJson('data/props/' + settings.propType.sheet, (sheet) => {
-				let prop: Prop;
+				let prop: PropDef;
 				for (let i = 0; i < sheet.props.length; i++) {
 					const p = sheet.props[i];
 					if (settings.propType.name === p.name) {
@@ -517,21 +540,26 @@ export class CCEntity extends Phaser.Image implements Sortable {
 				this.updateSettings();
 			}
 		}
+		*/
 	}
 	
-	private generateUndefinedType(r?: number, g?: number, b?: number, a?: number) {
+	public generateNoImageType(r?: number, g?: number, b?: number, a?: number) {
 		const settings = this.details.settings;
-		const def = this.definition;
+		
+		const baseSize = settings.size || {x: 16, y: 16};
+		baseSize.z = settings.zHeight || settings.wallZHeight || 0;
+		
 		this.entitySettings = <any>{};
-		this.entitySettings.baseSize = {x: 16, y: 16, z: settings.zHeight || settings.wallZHeight || 0};
-		if (def.scalableX || def.scalableY) {
-			this.entitySettings.scalableX = def.scalableX;
-			this.entitySettings.scalableY = def.scalableY;
+		this.entitySettings.baseSize = baseSize;
+		const scaleSettings = this.getScaleSettings();
+		if (scaleSettings && (scaleSettings.scalableX || scaleSettings.scalableY)) {
+			this.entitySettings.scalableX = scaleSettings.scalableX;
+			this.entitySettings.scalableY = scaleSettings.scalableY;
 		} else {
 			this.anchor.y = 1;
 			this.anchor.x = 0.5;
 		}
-		this.generateSingleColorSheet(r || 40, g || 60, b || 255);
+		this.generateSingleColorSheet(r || 155, g || 60, b || 40);
 		this.updateSettings();
 	}
 	
@@ -552,7 +580,7 @@ export class CCEntity extends Phaser.Image implements Sortable {
 		};
 	}
 	
-	private replaceJsonParams(jsonInstance, prop: ScalableProp) {
+	protected replaceJsonParams(jsonInstance, prop: any) {
 		Object.entries(jsonInstance).forEach(([key, value]) => {
 			if (value['jsonPARAM']) {
 				jsonInstance[key] = prop[value['jsonPARAM']];
@@ -645,17 +673,13 @@ export class CCEntity extends Phaser.Image implements Sortable {
 			Helper.drawRect(context, bottomRect, 'rgba(255, 255, 40, 1)', outline);
 		}
 		
-		let collImg = this.collisionImage;
-		// TODO: refactor. Image can be generated in the constructor
-		if (!collImg) {
-			this.collisionImage = this.game.add.image();
-			collImg = this.collisionImage;
-			collImg.alpha = 0;
-			this.levelOffsetGroup.add(collImg);
-			collImg.inputEnabled = false;
-		}
+		const collImg = this.collisionImage;
 		collImg.x = inputArea.x;
 		collImg.y = inputArea.y - (size.z || 0);
 		collImg.loadTexture(this.collisionBitmap);
+		
+		// text
+		this.text.setText(this.details.settings.name || '');
+		this.text.position.set(size.x / 2, size.y / 2);
 	}
 }

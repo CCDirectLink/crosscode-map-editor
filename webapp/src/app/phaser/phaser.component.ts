@@ -11,6 +11,7 @@ import {EditorView} from '../shared/interfaces/editor-view';
 import {Globals} from '../shared/globals';
 import {HttpClientService} from '../shared/http-client.service';
 import {StateHistoryService} from '../history/state-history.service';
+import {EntityRegistryService} from '../shared/phaser/entities/entity-registry.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -32,6 +33,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	constructor(private element: ElementRef,
 	            private mapLoader: MapLoaderService,
 	            private globalEvents: GlobalEventsService,
+	            private entityRegistry: EntityRegistryService,
 	            private stateHistory: StateHistoryService,
 	            private http: HttpClientService) {
 	}
@@ -52,6 +54,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		const game = this.game;
 		this.game['StateHistoryService'] = this.stateHistory;
 		this.game['MapLoaderService'] = this.mapLoader;
+		this.game['EntityRegistryService'] = this.entityRegistry;
 		
 		game.stage.backgroundColor = '#616161';
 		game.canvas.oncontextmenu = function (e) {
@@ -108,6 +111,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		});
 		
 		this.game.load.json('definitions.json', 'assets/definitions.json');
+		this.game.load.json('destructibles.json', 'assets/destructibles.json');
 		this.game.load.crossOrigin = 'anonymous';
 		
 		this.game.load.onLoadComplete.addOnce(() => {
