@@ -75,6 +75,7 @@ export class MapPan extends Phaser.Plugin {
 			cam.x += mouseX * multiplier;
 			cam.y += mouseY * multiplier;
 		}
+		this.game['PhaserEventsService'].cameraZoomUpdate.next(cam.scale);
 	}
 
 	update() {

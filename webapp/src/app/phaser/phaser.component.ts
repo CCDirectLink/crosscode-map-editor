@@ -12,6 +12,7 @@ import {Globals} from '../shared/globals';
 import {HttpClientService} from '../shared/http-client.service';
 import {StateHistoryService} from '../history/state-history.service';
 import {EntityRegistryService} from '../shared/phaser/entities/entity-registry.service';
+import {PhaserEventsService} from '../shared/phaser/phaser-events.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -35,6 +36,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	            private globalEvents: GlobalEventsService,
 	            private entityRegistry: EntityRegistryService,
 	            private stateHistory: StateHistoryService,
+	            private phaserEventsService: PhaserEventsService,
 	            private http: HttpClientService) {
 	}
 	
@@ -62,6 +64,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		this.game['StateHistoryService'] = this.stateHistory;
 		this.game['MapLoaderService'] = this.mapLoader;
 		this.game['EntityRegistryService'] = this.entityRegistry;
+		this.game['PhaserEventsService'] = this.phaserEventsService;
 		
 		game.stage.backgroundColor = '#616161';
 		game.canvas.oncontextmenu = function (e) {
@@ -81,10 +84,11 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		this.sub = this.mapLoader.map.subscribe((map) => {
 			if (map) {
 				this.tileMap.loadMap(map);
-				const s = this.tileMap.layers[0].details.tilesize * this.game.camera.scale.x;
-				this.border.resize(this.tileMap.mapWidth * s, this.tileMap.mapHeight * s);
+				this.rescaleBorder();
 			}
 		});
+		
+		this.phaserEventsService.cameraZoomUpdate.subscribe(a => this.rescaleBorder());
 		
 		// plugins
 		this.mapPan = game.plugins.add(MapPan);
@@ -154,5 +158,13 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		if (this.sub) {
 			this.sub.unsubscribe();
 		}
+	}
+	
+	private rescaleBorder() {
+		if (!this.tileMap.layers) {
+			return;
+		}
+		const s = this.tileMap.layers[0].details.tilesize * this.game.camera.scale.x;
+		this.border.resize(this.tileMap.mapWidth * s, this.tileMap.mapHeight * s);
 	}
 }
