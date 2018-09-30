@@ -1,3 +1,4 @@
+[![Discord Server](https://img.shields.io/discord/382339402338402315.svg?label=Discord%20Server)](https://discord.gg/SJmMZKy)
 # CrossCode Map Editor
 
 CrossCode Map Editor build with [Angular](https://angular.io/) and [Phaser](https://phaser.io/). It's still early in development so don't expect too much.
