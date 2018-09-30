@@ -8,6 +8,7 @@ export interface ScalablePropDef {
 	scalableX: boolean;
 	scalableY: boolean;
 	scalableStep: number;
+	renderHeight?: number;
 	renderMode: string;
 	collType: string;
 	gfx: string;
@@ -106,7 +107,8 @@ export class ScalableProp extends CCEntity {
 						x: prop.gfxBaseX + prop.patterns.x,
 						y: prop.gfxBaseY + prop.patterns.y,
 						w: prop.patterns.w,
-						h: prop.patterns.h
+						h: prop.patterns.h,
+						renderHeight: prop.renderHeight
 					}],
 					renderMode: prop.renderMode,
 					flipX: false,

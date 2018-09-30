@@ -23,6 +23,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	game: Phaser.Game;
 	tileMap: CCMap;
 	sub: Subscription;
+	private fpsLogCounter = 0;
 	
 	border: Phaser.Rectangle;
 	
@@ -150,7 +151,15 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	}
 	
 	render() {
+		// expensive call, use only for debugging
 		this.game.debug.text(this.game.time.fps.toString(), 2, 14, '#00ff00');
+		
+		// this.fpsLogCounter++;
+		// if (this.fpsLogCounter > 60) {
+		// 	this.fpsLogCounter %= 60;
+		// 	console.log(this.game.time.fps);
+		// }
+		
 		this.game.debug.geom(this.border, '#F00', false);
 	}
 	
