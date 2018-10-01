@@ -5,16 +5,16 @@ import {Helper} from '../helper';
 import {Globals} from '../../globals';
 
 export class CCMapLayer extends Phaser.Image implements Sortable {
-
+	
 	public details: MapLayer;
 	public backgroundColor: { r: number, g: number, b: number, a: number };
-
+	
 	private bitmap: Phaser.BitmapData;
 	private tilesetImage: Phaser.Image;
 	private tileCrop: Phaser.Rectangle;
 	private tilesetSize: Point;
 	zIndex: number;
-
+	
 	constructor(game: Phaser.Game, details: MapLayer) {
 		super(game, 0, 0, '');
 		if (typeof details.level === 'string') {
@@ -45,11 +45,11 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		this.bitmap = game.make.bitmapData(details.width * details.tilesize, details.height * details.tilesize);
 		this.loadTexture(this.bitmap);
 		game.add.existing(this);
-
+		
 		if (details.tilesetName) {
 			this.tilesetImage = game.make.image(0, 0, details.tilesetName);
 			this.tilesetSize = Helper.getTilesetSize(game.cache.getImage(details.tilesetName));
-
+			
 			this.tileCrop = new Phaser.Rectangle(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
 			this.tilesetImage.crop(this.tileCrop);
 		}
@@ -59,7 +59,7 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 				this.visible = false;
 			}
 		});
-
+		
 		this.zIndex = this.details.level * 10;
 		if (isNaN(this.zIndex)) {
 			this.zIndex = 999;
@@ -67,19 +67,19 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		// this.visible = false;
 		this.renderAll();
 	}
-
+	
 	renderAll() {
 		const bitmap = this.bitmap;
 		const tileset = this.tilesetImage;
 		const details = this.details;
 		const tileSize = details.tilesize;
-
+		
 		bitmap.clear();
 		if (this.backgroundColor) {
 			const bg = this.backgroundColor;
 			bitmap.fill(bg.r, bg.g, bg.b, bg.a);
 		}
-
+		
 		for (let y = 0; y < details.data.length; y++) {
 			for (let x = 0; x < details.data[y].length; x++) {
 				const tile = details.data[y][x];
@@ -91,20 +91,39 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 			}
 		}
 	}
-
-	makeTile(index: number) {
+	
+	drawTile(x: number, y: number, tile: number) {
+		const bitmap = this.bitmap;
 		const tileset = this.tilesetImage;
+		const details = this.details;
+		const tileSize = details.tilesize;
+		
+		const oldTile = details.data[y][x];
+		if (oldTile === tile) {
+			return;
+		}
+		details.data[y][x] = tile;
+		const tileX = x * tileSize;
+		const tileY = y * tileSize;
+		bitmap.clear(tileX, tileY, tileSize, tileSize);
+		if (tile !== 0) {
+			this.makeTile(tile);
+			bitmap.draw(tileset, tileX, tileY);
+		}
+	}
+	
+	makeTile(index: number) {
 		const tilesize = this.details.tilesize;
 		const crop = this.tileCrop;
-
+		
 		const p = Helper.getTilePos(this.tilesetSize, index);
-
+		
 		crop.x = p.x * tilesize;
 		crop.y = p.y * tilesize;
-
-		tileset.updateCrop();
+		
+		this.tilesetImage.updateCrop();
 	}
-
+	
 	destroy() {
 		if (this.bitmap) {
 			this.bitmap.destroy();
@@ -114,7 +133,7 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		}
 		super.destroy();
 	}
-
+	
 	resize(width: number, height: number) {
 		const data = this.details.data;
 		data.length = height;
@@ -131,22 +150,22 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 				}
 			}
 		}
-
+		
 		this.details.width = width;
 		this.details.height = height;
-
+		
 		this.bitmap.resize(width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
-
+		
 		this.renderAll();
 	}
-
+	
 	fill(newTile: number, p: Point) {
 		const data = this.details.data;
 		const prev = data[p.y][p.x];
 		if (newTile === prev) {
 			return;
 		}
-
+		
 		let toCheck: Point[] = [p];
 		while (toCheck.length > 0) {
 			const currP = toCheck.pop();
@@ -156,13 +175,13 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 				toCheck = toCheck.concat(this.getNeighbours(currP));
 			}
 		}
-
+		
 		this.renderAll();
 	}
-
+	
 	private getNeighbours(p: Point): Point[] {
 		const out: Point[] = [];
-
+		
 		if (p.x > 0) {
 			out.push({x: p.x - 1, y: p.y});
 		}
@@ -175,10 +194,10 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		if (p.y < this.details.height - 1) {
 			out.push({x: p.x, y: p.y + 1});
 		}
-
+		
 		return out;
 	}
-
+	
 	exportLayer() {
 		const out: MapLayer = Object.assign({}, this.details);
 		if (out.levelName) {

@@ -172,10 +172,9 @@ export class TileDrawer extends Phaser.Plugin {
 					y: p.y + tile.offset.y
 				};
 				if (this.isInBounds(this.layer, finalPos)) {
-					this.layer.details.data[finalPos.y][finalPos.x] = tile.id;
+					this.layer.drawTile(finalPos.x, finalPos.y, tile.id);
 				}
 			});
-			this.layer.renderAll();
 		}
 	}
 	
