@@ -4,6 +4,7 @@ import {MatDialog} from '@angular/material';
 import {MapSettingsComponent} from '../shared/dialogs/map-settings/map-settings.component';
 import {CCMap} from '../shared/phaser/tilemap/cc-map';
 import {GlobalEventsService} from '../shared/global-events.service';
+import {PhaserEventsService} from '../shared/phaser/phaser-events.service';
 
 @Component({
 	selector: 'app-toolbar',
@@ -50,5 +51,9 @@ export class ToolbarComponent implements OnInit {
 		this.dialog.open(MapSettingsComponent, {
 			data: this.map
 		});
+	}
+	
+	generateHeights() {
+		this.events.generateHeights.next(true);
 	}
 }

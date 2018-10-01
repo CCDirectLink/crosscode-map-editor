@@ -8,11 +8,6 @@ export class MapPan extends Phaser.Plugin {
 	private isScrolling = false;
 	private startMouse: Point = {};
 	private startCam: Point = {};
-	private upKey: Phaser.Key;
-	private downKey: Phaser.Key;
-	private leftKey: Phaser.Key;
-	private rightKey: Phaser.Key;
-	private turboKey: Phaser.Key;
 	private zoomKey: Phaser.Key;
 
 	constructor(game: Phaser.Game, parent) {
@@ -23,18 +18,6 @@ export class MapPan extends Phaser.Plugin {
 		this.button = game.input.activePointer.middleButton;
 		this.button.onDown.add(() => this.onMouseDown());
 		this.button.onUp.add(() => this.onMouseUp());
-
-		this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
-		this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
-		this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
-		this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
-		this.turboKey = game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
-
-		game.input.keyboard.removeKeyCapture(this.upKey.keyCode);
-		game.input.keyboard.removeKeyCapture(this.downKey.keyCode);
-		game.input.keyboard.removeKeyCapture(this.leftKey.keyCode);
-		game.input.keyboard.removeKeyCapture(this.rightKey.keyCode);
-		game.input.keyboard.removeKeyCapture(this.turboKey.keyCode);
 
 		this.zoomKey = game.input.keyboard.addKey(Phaser.Keyboard.ALT);
 
@@ -89,33 +72,6 @@ export class MapPan extends Phaser.Plugin {
 
 			this.game.camera.x = this.startCam.x - dx;
 			this.game.camera.y = this.startCam.y - dy;
-		} else {
-			// keyboard
-			if (Helper.isInputFocused()) {
-				return;
-			}
-			let dx = 0;
-			let dy = 0;
-
-			if (this.downKey.isDown) {
-				dy += 1;
-			}
-			if (this.upKey.isDown) {
-				dy -= 1;
-			}
-			if (this.rightKey.isDown) {
-				dx += 1;
-			}
-			if (this.leftKey.isDown) {
-				dx -= 1;
-			}
-
-			let scale = 10;
-			if (this.turboKey.isDown) {
-				scale = 20;
-			}
-			this.game.camera.x += dx * scale;
-			this.game.camera.y += dy * scale;
 		}
 	}
 

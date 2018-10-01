@@ -17,6 +17,7 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 	
 	constructor(game: Phaser.Game, details: MapLayer) {
 		super(game, 0, 0, '');
+		// this.backgroundColor = {r: 255, g: 128, b: 0, a: 1};
 		if (typeof details.level === 'string') {
 			// possible levels
 			// 'first'
@@ -53,7 +54,9 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 			this.tileCrop = new Phaser.Rectangle(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
 			this.tilesetImage.crop(this.tileCrop);
 		}
+		
 		const skip = 'Navigation Collision HeightMap'.split(' ');
+		// const skip = 'Navigation Background HeightMap'.split(' ');
 		skip.forEach(type => {
 			if (type === details.type) {
 				this.visible = false;
@@ -122,6 +125,11 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		crop.y = p.y * tilesize;
 		
 		this.tilesetImage.updateCrop();
+	}
+	
+	clear() {
+		this.bitmap.clear();
+		this.details.data.forEach(arr => arr.fill(0));
 	}
 	
 	destroy() {

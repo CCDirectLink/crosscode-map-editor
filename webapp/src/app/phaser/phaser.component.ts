@@ -13,6 +13,7 @@ import {HttpClientService} from '../shared/http-client.service';
 import {StateHistoryService} from '../history/state-history.service';
 import {EntityRegistryService} from '../shared/phaser/entities/entity-registry.service';
 import {PhaserEventsService} from '../shared/phaser/phaser-events.service';
+import {HeightMapGeneratorService} from '../shared/height-map-generator/height-map-generator.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -38,7 +39,8 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	            private entityRegistry: EntityRegistryService,
 	            private stateHistory: StateHistoryService,
 	            private phaserEventsService: PhaserEventsService,
-	            private http: HttpClientService) {
+	            private http: HttpClientService,
+	            private heightGenerator: HeightMapGeneratorService) {
 	}
 	
 	ngOnInit() {
@@ -57,6 +59,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 				false);
 			Globals.game = this.game;
 		});
+		this.heightGenerator.init();
 	}
 	
 	create() {
@@ -82,6 +85,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		Phaser.Canvas.setImageRenderingCrisp(this.game.canvas);
 		
 		this.tileMap = new CCMap(game);
+		Globals.map = this.tileMap;
 		this.sub = this.mapLoader.map.subscribe((map) => {
 			if (map) {
 				this.tileMap.loadMap(map);

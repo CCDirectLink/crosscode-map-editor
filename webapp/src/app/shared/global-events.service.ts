@@ -12,6 +12,7 @@ export class GlobalEventsService {
 	showAddEntityMenu: Subject<{ worldPos: Point, definitions: any }> = new Subject();
 	generateNewEntity: Subject<MapEntity> = new Subject();
 	loadComplete: Subject<boolean> = new Subject();
+	generateHeights: Subject<boolean> = new Subject();
 
 	constructor() {
 	}
