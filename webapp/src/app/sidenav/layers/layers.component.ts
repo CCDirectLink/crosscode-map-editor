@@ -11,29 +11,33 @@ import {animate, animateChild, keyframes, query, stagger, style, transition, tri
 	encapsulation: ViewEncapsulation.None
 })
 export class LayersComponent implements OnInit {
-
+	
 	selectedLayer: CCMapLayer;
 	tilemap: CCMap;
-
+	
 	constructor(private mapLoader: MapLoaderService) {
 	}
-
+	
 	ngOnInit() {
 		this.mapLoader.selectedLayer.subscribe(layer => this.selectedLayer = layer);
 		this.mapLoader.tileMap.subscribe(tilemap => this.tilemap = tilemap);
 	}
-
+	
 	getDisplayName(layer: CCMapLayer): string {
 		return `${layer.details.name} (${layer.details.level})`;
 	}
-
+	
 	toggleVisibility(event, layer: CCMapLayer) {
 		event.stopPropagation();
 		layer.visible = !layer.visible;
+		if (layer.visible) {
+			this.selectLayer(layer);
+		}
 	}
-
+	
 	selectLayer(layer: CCMapLayer) {
+		layer.visible = true;
 		this.mapLoader.selectedLayer.next(layer);
 	}
-
+	
 }

@@ -19,6 +19,9 @@ h3 {
 // layer selection
 $type-hue: A200;
 
+// hidden layers brightness reduction
+$brightness: 60%;
+
 .type-Background {
 	background-color: mat-color($mat-green, $type-hue);
 }
@@ -75,4 +78,8 @@ mat-nav-list {
 .list-item {
 	//padding-left: 16px;
 	width: 100%;
+}
+
+.layer-hidden {
+	filter: brightness($brightness);
 }
