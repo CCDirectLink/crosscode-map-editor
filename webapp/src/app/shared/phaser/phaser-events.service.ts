@@ -6,5 +6,6 @@ import Point = Phaser.Point;
 	providedIn: 'root'
 })
 export class PhaserEventsService {
-	cameraZoomUpdate: Subject<Point> = new Subject();
+	// TODO: event should be informational (camera zoomed/map size changed) instead of a command
+	updateMapBorder: Subject<boolean> = new Subject();
 }

@@ -5,8 +5,9 @@
 		</button>
 	</div>
 	<div *ngIf="map" fxFlex fxFlexOffset="40px">
-		<button mat-button [matMenuTriggerFor]="menu">Map Settings</button>
+		<button mat-button [matMenuTriggerFor]="menu">Tools</button>
 		<mat-menu #menu="matMenu">
+			<button mat-menu-item (click)="offsetMap()">Offset Map</button>
 			<button mat-menu-item (click)="generateHeights()">Generate Heights</button>
 		</mat-menu>
 	</div>

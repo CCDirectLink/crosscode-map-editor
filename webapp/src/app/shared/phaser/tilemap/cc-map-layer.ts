@@ -95,6 +95,16 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		}
 	}
 	
+	// checks bounds before drawing
+	updateTileChecked(x: number, y: number, tile: number) {
+		if (x >= 0 && x < this.details.data[0].length) {
+			if (y >= 0 && y < this.details.data.length) {
+				this.details.data[y][x] = tile;
+			}
+		}
+	}
+	
+	
 	drawTile(x: number, y: number, tile: number) {
 		const bitmap = this.bitmap;
 		const tileset = this.tilesetImage;
@@ -127,6 +137,12 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		this.tilesetImage.updateCrop();
 	}
 	
+	getTile(x: number, y: number) {
+		let index = x + 1;
+		index += y * this.tilesetSize.x;
+		return index;
+	}
+	
 	clear() {
 		this.bitmap.clear();
 		this.details.data.forEach(arr => arr.fill(0));
@@ -142,7 +158,7 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		super.destroy();
 	}
 	
-	resize(width: number, height: number) {
+	resize(width: number, height: number, skipRender = false) {
 		const data = this.details.data;
 		data.length = height;
 		for (let i = 0; i < data.length; i++) {
@@ -163,8 +179,36 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		this.details.height = height;
 		
 		this.bitmap.resize(width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
+		if (!skipRender) {
+			this.renderAll();
+		}
+	}
+	
+	offsetLayer(offset: Point, borderTiles = false, skipRender = false) {
+		const data = this.details.data;
+		const newData: number[][] = JSON.parse(JSON.stringify(data));
 		
-		this.renderAll();
+		for (let y = 0; y < data.length; y++) {
+			for (let x = 0; x < data[y].length; x++) {
+				let newTile = 0;
+				let row = data[y - offset.y];
+				if (!row && borderTiles) {
+					row = offset.y > 0 ? data[0] : data[data.length - 1];
+				}
+				if (row) {
+					newTile = row[x - offset.x];
+					if (borderTiles && newTile === undefined) {
+						newTile = offset.x > 0 ? row[0] : row[row.length - 1];
+					}
+				}
+				newData[y][x] = newTile || 0;
+			}
+		}
+		
+		this.details.data = newData;
+		if (!skipRender) {
+			this.renderAll();
+		}
 	}
 	
 	fill(newTile: number, p: Point) {

@@ -11,6 +11,7 @@ import {MaterialModule} from '../material.module';
 import {AngularDraggableModule} from 'angular2-draggable';
 import {CommonModule} from '@angular/common';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import {OffsetMapComponent} from './dialogs/offset-map/offset-map.component';
 
 @NgModule({
 	imports: [
@@ -25,6 +26,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 		MapSettingsComponent,
 		JsonEditorComponent,
 		FloatingWindowComponent,
+		OffsetMapComponent,
 	],
 	providers: [
 		HttpClientService,
@@ -33,7 +35,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 	],
 	entryComponents: [
 		JsonEditorComponent,
-		MapSettingsComponent
+		MapSettingsComponent,
+		OffsetMapComponent,
 	],
 	exports: [
 		HostDirective,

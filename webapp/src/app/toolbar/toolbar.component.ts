@@ -4,7 +4,7 @@ import {MatDialog} from '@angular/material';
 import {MapSettingsComponent} from '../shared/dialogs/map-settings/map-settings.component';
 import {CCMap} from '../shared/phaser/tilemap/cc-map';
 import {GlobalEventsService} from '../shared/global-events.service';
-import {PhaserEventsService} from '../shared/phaser/phaser-events.service';
+import {OffsetMapComponent} from '../shared/dialogs/offset-map/offset-map.component';
 
 @Component({
 	selector: 'app-toolbar',
@@ -55,5 +55,11 @@ export class ToolbarComponent implements OnInit {
 	
 	generateHeights() {
 		this.events.generateHeights.next(true);
+	}
+	
+	offsetMap() {
+		this.dialog.open(OffsetMapComponent, {
+			data: this.map
+		});
 	}
 }

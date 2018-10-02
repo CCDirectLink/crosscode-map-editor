@@ -13,6 +13,7 @@ export class GlobalEventsService {
 	generateNewEntity: Subject<MapEntity> = new Subject();
 	loadComplete: Subject<boolean> = new Subject();
 	generateHeights: Subject<boolean> = new Subject();
+	offsetMap: Subject<Point> = new Subject();
 
 	constructor() {
 	}

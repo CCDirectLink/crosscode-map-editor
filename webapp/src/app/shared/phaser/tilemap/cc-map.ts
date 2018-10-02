@@ -4,6 +4,9 @@ import {Globals} from '../../globals';
 import {EntityManager} from '../entities/entity-manager';
 import {Helper} from '../helper';
 import {StateHistoryService} from '../../../history/state-history.service';
+import {Subscription} from 'rxjs';
+import {GlobalEventsService} from '../../global-events.service';
+import {PhaserEventsService} from '../phaser-events.service';
 
 export class CCMap {
 	name: string;
@@ -14,6 +17,10 @@ export class CCMap {
 	layers: CCMapLayer[] = [];
 	attributes: Attributes;
 	screen: Point;
+	
+	private historySub: Subscription;
+	private offsetSub: Subscription;
+	private keyBinding: Phaser.SignalBinding;
 	
 	filename: string;
 	
@@ -31,7 +38,7 @@ export class CCMap {
 	
 	constructor(private game: Phaser.Game) {
 		const stateHistory: StateHistoryService = game['StateHistoryService'];
-		stateHistory.selectedState.subscribe(container => {
+		this.historySub = stateHistory.selectedState.subscribe(container => {
 			if (!container || !container.state) {
 				return;
 			}
@@ -43,7 +50,7 @@ export class CCMap {
 		});
 		
 		const undoKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
-		undoKey.onDown.add(() => {
+		this.keyBinding = undoKey.onDown.add(() => {
 			if (Helper.isInputFocused()) {
 				return;
 			}
@@ -56,6 +63,14 @@ export class CCMap {
 			}
 			
 		});
+		const globalEvents: GlobalEventsService = this.game['GlobalEventsService'];
+		this.offsetSub = globalEvents.offsetMap.subscribe(offset => this.offsetMap(offset));
+	}
+	
+	destroy() {
+		this.historySub.unsubscribe();
+		this.offsetSub.unsubscribe();
+		this.keyBinding.detach();
 	}
 	
 	loadMap(map: CrossCodeMap, skipInit = false) {
@@ -103,13 +118,21 @@ export class CCMap {
 		this.game['MapLoaderService'].selectedLayer.next(this.layers[0]);
 	}
 	
-	resize(width: number, height: number) {
+	resize(width: number, height: number, skipRender = false) {
 		this.mapWidth = width;
 		this.mapHeight = height;
 		
-		this.layers.forEach(layer => {
-			layer.resize(width, height);
-		});
+		this.layers.forEach(layer => layer.resize(width, height, skipRender));
+		const events: PhaserEventsService = this.game['PhaserEventsService'];
+		events.updateMapBorder.next(true);
+	}
+	
+	offsetMap(offset: Point, borderTiles = false, skipRender = false) {
+		this.layers.forEach(layer => layer.offsetLayer(offset, borderTiles, skipRender));
+	}
+	
+	renderAll() {
+		this.layers.forEach(layer => layer.renderAll());
 	}
 	
 	exportMap(): CrossCodeMap {

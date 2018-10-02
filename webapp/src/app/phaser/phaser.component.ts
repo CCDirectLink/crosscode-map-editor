@@ -59,7 +59,6 @@ export class PhaserComponent implements OnInit, OnDestroy {
 				false);
 			Globals.game = this.game;
 		});
-		this.heightGenerator.init();
 	}
 	
 	create() {
@@ -69,6 +68,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		this.game['MapLoaderService'] = this.mapLoader;
 		this.game['EntityRegistryService'] = this.entityRegistry;
 		this.game['PhaserEventsService'] = this.phaserEventsService;
+		this.game['GlobalEventsService'] = this.globalEvents;
 		
 		game.stage.backgroundColor = '#616161';
 		game.canvas.oncontextmenu = function (e) {
@@ -93,7 +93,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 			}
 		});
 		
-		this.phaserEventsService.cameraZoomUpdate.subscribe(a => this.rescaleBorder());
+		this.phaserEventsService.updateMapBorder.subscribe(a => this.rescaleBorder());
 		
 		// plugins
 		this.mapPan = game.plugins.add(MapPan);
@@ -117,6 +117,8 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		this.border = new Phaser.Rectangle(0, 0, 0, 0);
 		this.mapLoader.selectedLayer.subscribe(layer => this.tileDrawer.selectLayer(layer));
 		this.globalEvents.currentView.next(EditorView.Layers);
+		
+		this.heightGenerator.init(game);
 	}
 	
 	preload(res) {
