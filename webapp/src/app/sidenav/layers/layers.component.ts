@@ -3,6 +3,7 @@ import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {animate, animateChild, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
+import {GlobalEventsService} from '../../shared/global-events.service';
 
 @Component({
 	selector: 'app-layers',
@@ -15,7 +16,15 @@ export class LayersComponent implements OnInit {
 	selectedLayer: CCMapLayer;
 	tilemap: CCMap;
 	
-	constructor(private mapLoader: MapLoaderService) {
+	constructor(private mapLoader: MapLoaderService, events: GlobalEventsService) {
+		events.toggleVisibility.subscribe(() => {
+			if (this.selectedLayer) {
+				this.toggleVisibility({
+					stopPropagation: () => {
+					}
+				}, this.selectedLayer);
+			}
+		});
 	}
 	
 	ngOnInit() {

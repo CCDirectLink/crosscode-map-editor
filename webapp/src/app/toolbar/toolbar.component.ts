@@ -54,7 +54,7 @@ export class ToolbarComponent implements OnInit {
 	}
 	
 	generateHeights() {
-		this.events.generateHeights.next(true);
+		this.events.generateHeights.next();
 	}
 	
 	offsetMap() {

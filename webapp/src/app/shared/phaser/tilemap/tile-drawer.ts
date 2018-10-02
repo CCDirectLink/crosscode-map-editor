@@ -7,6 +7,7 @@ import {Vec2} from '../vec2';
 import {CCMap} from './cc-map';
 import {MapLoaderService} from '../../map-loader.service';
 import {HistoryState} from '../../../history/state-history.service';
+import {GlobalEventsService} from '../../global-events.service';
 
 export class TileDrawer extends Phaser.Plugin {
 	
@@ -33,6 +34,7 @@ export class TileDrawer extends Phaser.Plugin {
 	
 	private renderLayersTransparent = false;
 	private transparentKey: Phaser.Key;
+	private visibilityKey: Phaser.Key;
 	private fillKey: Phaser.Key;
 	private map: CCMap;
 	
@@ -43,6 +45,7 @@ export class TileDrawer extends Phaser.Plugin {
 		this.toggleTilemapKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		this.fillKey = game.input.keyboard.addKey(Phaser.Keyboard.F);
 		this.transparentKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
+		this.visibilityKey = game.input.keyboard.addKey(Phaser.Keyboard.V);
 		
 		this.game.input.keyboard.removeKeyCapture(this.fillKey.keyCode);
 		this.game.input.keyboard.removeKeyCapture(this.transparentKey.keyCode);
@@ -218,6 +221,12 @@ export class TileDrawer extends Phaser.Plugin {
 			if (!Helper.isInputFocused()) {
 				this.renderLayersTransparent = !this.renderLayersTransparent;
 				this.setLayerAlpha();
+			}
+		}));
+		this.keyBindings.push(this.visibilityKey.onDown.add(() => {
+			if (!Helper.isInputFocused()) {
+				const events: GlobalEventsService = this.game['GlobalEventsService'];
+				events.toggleVisibility.next();
 			}
 		}));
 		

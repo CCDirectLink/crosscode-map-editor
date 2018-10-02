@@ -120,7 +120,7 @@ export class HeightMapGeneratorService {
 	}
 	
 	public init(game: Phaser.Game) {
-		this.events.generateHeights.subscribe(val => this.generateHeights());
+		this.events.generateHeights.subscribe(() => this.generateHeights());
 		const generateKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
 		generateKey.onDown.add(() => this.generateHeights());
 	}
