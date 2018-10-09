@@ -6,6 +6,8 @@ import {MapLayer, Point} from '../../interfaces/cross-code-map';
 import {Vec2} from '../vec2';
 import {CCMap} from './cc-map';
 import {MapLoaderService} from '../../map-loader.service';
+import {HistoryState} from '../../../history/state-history.service';
+import {GlobalEventsService} from '../../global-events.service';
 
 export class TileDrawer extends Phaser.Plugin {
 	
@@ -32,6 +34,7 @@ export class TileDrawer extends Phaser.Plugin {
 	
 	private renderLayersTransparent = false;
 	private transparentKey: Phaser.Key;
+	private visibilityKey: Phaser.Key;
 	private fillKey: Phaser.Key;
 	private map: CCMap;
 	
@@ -42,6 +45,7 @@ export class TileDrawer extends Phaser.Plugin {
 		this.toggleTilemapKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		this.fillKey = game.input.keyboard.addKey(Phaser.Keyboard.F);
 		this.transparentKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
+		this.visibilityKey = game.input.keyboard.addKey(Phaser.Keyboard.V);
 		
 		this.game.input.keyboard.removeKeyCapture(this.fillKey.keyCode);
 		this.game.input.keyboard.removeKeyCapture(this.transparentKey.keyCode);
@@ -78,6 +82,7 @@ export class TileDrawer extends Phaser.Plugin {
 			this.group.visible = false;
 			return;
 		}
+		Globals.zIndexUpdate = true;
 		this.group.visible = true;
 		this.tilesetImg = this.game.make.image(0, 0, selectedLayer.details.tilesetName);
 		this.tilesetImg.crop(new Phaser.Rectangle(0, 0, Globals.TILE_SIZE * 10, Globals.TILE_SIZE * 10));
@@ -172,10 +177,9 @@ export class TileDrawer extends Phaser.Plugin {
 					y: p.y + tile.offset.y
 				};
 				if (this.isInBounds(this.layer, finalPos)) {
-					this.layer.details.data[finalPos.y][finalPos.x] = tile.id;
+					this.layer.drawTile(finalPos.x, finalPos.y, tile.id);
 				}
 			});
-			this.layer.renderAll();
 		}
 	}
 	
@@ -188,13 +192,15 @@ export class TileDrawer extends Phaser.Plugin {
 	activate() {
 		this.keyBindings.push(this.game.input.mousePointer.leftButton.onUp.add(() => {
 			const ccmap: CCMap = <any>this.game['MapLoaderService'].tileMap.getValue();
-			const curr = <any> this.game['StateHistoryService'].selectedState.getValue().state.state;
+			const stateContainer = <any>  this.game['StateHistoryService'].selectedState.getValue();
+			if (!stateContainer.state) {
+				return;
+			}
+			const curr = stateContainer.state.state;
 			const state = ccmap.exportMap();
 			const currJson = JSON.stringify(curr);
 			const stateJson = JSON.stringify(state);
 			
-			console.log(curr.layer[0].data);
-			console.log(state.layer[0].data);
 			if (currJson !== stateJson) {
 				this.game['StateHistoryService'].saveState({
 					name: 'Tile Drawer',
@@ -215,6 +221,12 @@ export class TileDrawer extends Phaser.Plugin {
 			if (!Helper.isInputFocused()) {
 				this.renderLayersTransparent = !this.renderLayersTransparent;
 				this.setLayerAlpha();
+			}
+		}));
+		this.keyBindings.push(this.visibilityKey.onDown.add(() => {
+			if (!Helper.isInputFocused()) {
+				const events: GlobalEventsService = this.game['GlobalEventsService'];
+				events.toggleVisibility.next();
 			}
 		}));
 		
@@ -308,8 +320,10 @@ export class TileDrawer extends Phaser.Plugin {
 					id: data[y][x],
 					offset: {x: x - smaller.x, y: y - smaller.y}
 				});
+				// console.log('pos', {x: x, y: y});
 			}
 		}
+		console.log(this.selectedTiles.tiles[0].id);
 		
 		this.renderPreview(data, smaller);
 		this.graphics.drawRect(

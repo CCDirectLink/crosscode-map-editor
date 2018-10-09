@@ -54,8 +54,7 @@ export class ItemDestruct extends CCEntity {
 				desType = globalSettings.ENTITY.ItemDestruct[settings.__GLOBAL__].desType;
 			}
 			const def = destructibles[desType];
-			this.anchor.y = 1;
-			this.anchor.x = 0.5;
+			this.anchor.set(0.5, 1);
 			this.entitySettings = <any>{
 				sheets: {
 					fix: [{

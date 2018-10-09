@@ -31,12 +31,8 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 	private boundingBoxOffsetGroup: SortableGroup;
 	private text: Phaser.Text;
 	
-	// for normal entities
-	private entityBitmap: Phaser.BitmapData;
-	
-	// for resizeable entities
-	private tileSprite: Phaser.TileSprite;
-	private tileSpriteBitmap: Phaser.BitmapData;
+	// for all sprites
+	private images: Phaser.Image[] = [];
 	
 	// input (is handled mostly by entity manager)
 	private collisionBitmap: Phaser.BitmapData;
@@ -64,6 +60,7 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 				y: number;
 				w: number;
 				h: number;
+				renderHeight?: number;
 				offsetX?: number;
 				offsetY?: number;
 				flipX?: boolean;
@@ -121,23 +118,17 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 			}
 		});
 		
+		this.visible = false;
 		this.setEvents();
-		
-		// text
-		this.text = this.game.add.text(0, 0, '', {
-			font: '400 18pt Roboto',
-			fill: 'white',
-			stroke: 'black',
-			strokeThickness: 2
-		}, this.levelOffsetGroup);
-		this.text.scale.set(0.274);
-		this.text.anchor.set(0.5, 0.5);
 	}
 	
 	updateSettings() {
 		const s = this.entitySettings;
 		const settings = this.details.settings;
 		const game = this.game;
+		
+		this.images.forEach(img => img.destroy());
+		this.images = [];
 		
 		// bound box offset
 		if (s.baseSize) {
@@ -150,100 +141,44 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 			if (s.scalableX || s.scalableY) {
 				// scalable
 				const fix = s.sheets.fix[0];
-				if (this.tileSpriteBitmap) {
-					this.tileSpriteBitmap.destroy();
-				}
-				this.tileSpriteBitmap = game.make.bitmapData(fix.w, fix.h);
+				const width = settings.size.x;
+				const height = (fix.renderHeight || s.baseSize.z) + settings.size.y;
 				
-				this.loadTexture(fix.gfx);
-				this.crop(new Phaser.Rectangle(fix.x, fix.y, fix.w, fix.h));
+				for (let x = 0; x < width; x += fix.w) {
+					const imgWidth = Math.min(fix.w, width - x);
+					for (let y = 0; y < height; y += fix.h) {
+						const imgHeight = Math.min(fix.h, height - y);
+						const img = game.add.image(x, -y + settings.size.y + s.baseSize.z, null, null, this.boundingBoxOffsetGroup);
+						img.loadTexture(fix.gfx);
+						
+						img.crop(new Phaser.Rectangle(fix.x, fix.y, imgWidth, imgHeight));
+						img.anchor.set(0, 1);
+						this.images.push(img);
+					}
+				}
 				
-				this.tileSpriteBitmap.draw(this, 0, 0, fix.w, fix.h);
-				if (this.tileSprite) {
-					this.boundingBoxOffsetGroup.remove(this.tileSprite);
-				}
-				if (!settings.size) {
-					settings.size = Vec2.create(s.baseSize);
-				}
-				this.tileSprite = game.make.tileSprite(
-					0,
-					0,
-					settings.size.x,
-					settings.size.y + s.baseSize.z,
-					this.tileSpriteBitmap, undefined
-				);
-				this.boundingBoxOffsetGroup.add(this.tileSprite);
 				this.boundingBoxOffsetGroup.x = 0;
 				this.boundingBoxOffsetGroup.y = -s.baseSize.z;
-				this.visible = false;
 			} else {
 				// default
-				
-				const minOffset = {x: 0, y: 0};
-				const fixCopy = [];
 				s.sheets.fix.forEach(sheet => {
-					fixCopy.push(Object.assign({}, sheet));
-				});
-				// normalize
-				fixCopy.forEach(sheet => {
-					sheet.offsetX = sheet.offsetX || 0;
-					sheet.offsetY = sheet.offsetY || 0;
-					minOffset.x = Math.min(sheet.offsetX, minOffset.x);
-					minOffset.y = Math.min(sheet.offsetY, minOffset.y);
-				});
-				fixCopy.forEach(sheet => {
-					sheet.offsetX -= minOffset.x;
-					sheet.offsetY -= minOffset.y;
-				});
-				
-				const maxSize = {x: 0, y: 0};
-				fixCopy.forEach(sheet => {
-					maxSize.x = Math.max(sheet.w + sheet.offsetX, maxSize.x);
-					maxSize.y = Math.max(sheet.h + sheet.offsetY, maxSize.y);
-				});
-				if (this.entityBitmap) {
-					this.entityBitmap.destroy();
-				}
-				this.entityBitmap = this.game.make.bitmapData(maxSize.x, maxSize.y);
-				const bmp = this.entityBitmap;
-				const img = this.game.make.image(0, 0);
-				fixCopy.forEach(sheet => {
-					img.loadTexture(sheet.gfx);
+					const img = this.game.add.image(sheet.offsetX, sheet.offsetY, sheet.gfx, undefined, this.boundingBoxOffsetGroup);
 					img.crop(new Phaser.Rectangle(sheet.x, sheet.y, sheet.w, sheet.h));
-					img.x = sheet.offsetX;
-					img.y = sheet.offsetY;
-					img.anchor.set(0, 0);
-					img.scale.set(1, 1);
-					if (sheet.flipY) {
-						img.anchor.y = 1;
-						img.scale.y = -1;
-					}
-					if (sheet.flipX) {
-						img.anchor.x = 1;
-						img.scale.x = -1;
-					}
-					bmp.draw(img);
+					img.anchor.set(0.5, 1);
+					img.scale.set(sheet.flipX ? -1 : 1, sheet.flipY ? -1 : 1);
+					this.images.push(img);
 				});
-				img.destroy();
 				
-				this.loadTexture(bmp);
-				Vec2.assign(this, minOffset);
 				if (s.sheets.offset) {
-					Vec2.add(this, s.sheets.offset);
+					this.images.forEach(img => Vec2.add(img, s.sheets.offset));
 				}
 				if (s.sheets.flipX) {
-					Vec2.mulF(this, -1);
+					this.images.forEach(img => img.scale.x *= -1);
 				}
-				
-				// flip image
-				this.scale.x = s.sheets.flipX ? -1 : 1;
 			}
 			
 			if (s.sheets.renderMode === 'lighter') {
-				if (this.tileSprite) {
-					this.tileSprite.blendMode = PIXI.blendModes.ADD;
-				}
-				this.blendMode = PIXI.blendModes.ADD;
+				this.images.forEach(img => img.blendMode = PIXI.blendModes.ADD);
 			} else if (s.sheets.renderMode === 'source-over') {
 				// TODO: no idea what that actually is
 				console.warn('renderMode source-over found');
@@ -304,14 +239,11 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		this.group.destroy();
 		this.levelOffsetGroup.destroy();
 		this.boundingBoxOffsetGroup.destroy();
-		if (this.tileSprite) {
-			this.tileSprite.destroy();
-		}
-		if (this.tileSpriteBitmap) {
-			this.tileSpriteBitmap.destroy();
-		}
 		if (this.collisionBitmap) {
 			this.collisionBitmap.destroy();
+		}
+		if (this.text) {
+			this.text.destroy();
 		}
 		super.destroy();
 	}
@@ -356,6 +288,7 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		zIndex += this.group.y * 0.000001;
 		
 		this.group.zIndex = zIndex;
+		Globals.zIndexUpdate = true;
 	}
 	
 	exportEntity(): MapEntity {
@@ -678,8 +611,27 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		collImg.y = inputArea.y - (size.z || 0);
 		collImg.loadTexture(this.collisionBitmap);
 		
-		// text
-		this.text.setText(this.details.settings.name || '');
-		this.text.position.set(size.x / 2, size.y / 2);
+		this.generateText(this.details.settings.name, size);
+	}
+	
+	private generateText(name: string, size: Point) {
+		if (name) {
+			if (!this.text) {
+				this.text = this.game.add.text(0, 0, '', {
+					font: '400 18pt Roboto',
+					fill: 'white',
+					stroke: 'black',
+					strokeThickness: 2
+				}, this.levelOffsetGroup);
+				this.text.scale.set(0.274);
+				this.text.anchor.set(0.5, 0.5);
+			}
+			this.text.setText(name);
+			this.text.position.set(size.x / 2, size.y / 2);
+		} else if (this.text) {
+			this.text.destroy();
+			this.text = null;
+		}
+		
 	}
 }

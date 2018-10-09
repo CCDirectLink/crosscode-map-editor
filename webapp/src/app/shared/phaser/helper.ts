@@ -1,5 +1,6 @@
 import {Point} from '../interfaces/cross-code-map';
 import {Globals} from '../globals';
+import {CCMapLayer} from './tilemap/cc-map-layer';
 
 export class Helper {
 	/**

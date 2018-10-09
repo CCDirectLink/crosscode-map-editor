@@ -1,0 +1,23 @@
+<div class="dialog-container" fxLayout="column">
+	<h1 class="mat-headline">Offset Map</h1>
+	
+	<!--Map Size-->
+	<div fxLayout="row" fxFlex="0 0 auto">
+		<span fxFlexAlign="center" fxFlex="1 0 auto">X:</span>
+		<input type="number" class="default-input" [(ngModel)]="offset.x">
+	</div>
+	<br>
+	<div fxLayout="row" fxFlex="0 0 auto">
+		<span fxFlexAlign="center" fxFlex="1 0 auto">Y:</span>
+		<input type="number" class="default-input" [(ngModel)]="offset.y">
+	</div>
+	
+	<!--Actions-->
+	<div fxFlex="1 0 100px" fxLayoutAlign="end">
+		<div fxFlexAlign="end" class="action-button-row">
+			<button mat-button (click)="ref.close()">Cancel</button>
+			<button mat-button (click)="update()">Offset</button>
+		</div>
+	</div>
+
+</div>

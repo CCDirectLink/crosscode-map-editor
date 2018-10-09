@@ -96,8 +96,7 @@ export class Prop extends CCEntity {
 				console.error('prop not found: ' + settings.propType.name);
 				return this.generateNoImageType();
 			}
-			this.anchor.y = 1;
-			this.anchor.x = 0.5;
+			this.anchor.set(0.5, 1);
 			
 			this.entitySettings = <any>{sheets: {fix: []}};
 			if (prop.fix) {

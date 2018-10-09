@@ -1,15 +1,22 @@
 <mat-toolbar fxLayout="row" class="mat-elevation-z4 elevated-toolbar">
-	<div fxFlex>
+	<div>
 		<button mat-icon-button (click)="onMenuClick.emit($event)">
 			<mat-icon>menu</mat-icon>
 		</button>
+	</div>
+	<div *ngIf="map" fxFlex fxFlexOffset="40px">
+		<button mat-button [matMenuTriggerFor]="menu">Tools</button>
+		<mat-menu #menu="matMenu">
+			<button mat-menu-item (click)="offsetMap()">Offset Map</button>
+			<button mat-menu-item (click)="generateHeights()">Generate Heights</button>
+		</mat-menu>
 	</div>
 	<div fxFlex>
 		<span class="mat-headline">{{map?.name}}</span>
 	</div>
 	<div fxFlex fxLayoutAlign="end">
 		<input #fileUpload type="file" (change)="loadMap($event)" accept=".json"/>
-		<div class="button-row">
+		<div>
 			<button *ngIf="map" mat-button (click)="openMapSettings()">Map Settings</button>
 			<button *ngIf="map" mat-button (click)="saveMap()">Save Map</button>
 			<button mat-button *ngIf="loaded; else loader" (click)="fileUpload.click()">Load Map</button>
