@@ -1,2 +1,0 @@
-cd webapp
-npm start
