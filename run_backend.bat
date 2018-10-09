@@ -1,0 +1,2 @@
+cd backend
+npm start
