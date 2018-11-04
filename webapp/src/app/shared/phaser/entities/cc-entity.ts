@@ -205,7 +205,11 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 	
 	updateLevel() {
 		this.updateZIndex();
-		const height = this.map.levels[this.details.level.level].height;
+		const level = this.map.levels[this.details.level.level];
+		let height = 0;
+		if (level) {
+			height = level.height;
+		}
 		const offset = this.details.level.offset;
 		this.levelOffsetGroup.y = -(height + offset);
 	}

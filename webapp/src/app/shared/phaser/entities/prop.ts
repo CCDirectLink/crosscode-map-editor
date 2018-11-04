@@ -10,7 +10,22 @@ export interface PropDef {
 		z: number
 	};
 	collType: string;
-	fix: Fix;
+	fix?: Fix;
+	anims?: {
+		SUB: any[];
+		frames: any[];
+		framesGfxOffset: any[];
+		namedSheets: any;
+		repeat: boolean;
+		shape: string;
+		sheet: string;
+		time: number;
+	};
+	effects?: {
+		hide: string;
+		sheet: string;
+		show: string;
+	};
 }
 
 export class Prop extends CCEntity {
