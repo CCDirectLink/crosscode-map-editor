@@ -9,6 +9,8 @@
 	overflow-y: hidden;
 }
 
+// somewhere 1px is lost, material tabs have a size of 150px per tab.
+// So when using 2 tabs a width of 300px is needed to avoid rendering scroll arrows
 mat-sidenav {
-	width: 300px;
+	width: 301px;
 }
