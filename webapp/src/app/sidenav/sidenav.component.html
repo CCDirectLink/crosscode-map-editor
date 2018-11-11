@@ -1,5 +1,5 @@
 <div fxLayout="column" class="nav-container" *ngIf="tilemap">
-	<mat-tab-group fxFlex="1 1 auto" (selectedTabChange)="tabChanged($event)">
+	<mat-tab-group mat-stretch-tabs (selectedTabChange)="tabChanged($event)">
 		<mat-tab label="Layers">
 			<app-layers style="height: 100%" fxLayout="column"></app-layers>
 		</mat-tab>
