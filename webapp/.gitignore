@@ -8,6 +8,9 @@
 # dependencies
 /node_modules
 
+# variable app files
+backend/src/config.ts
+
 # IDEs and editors
 /.idea
 .project

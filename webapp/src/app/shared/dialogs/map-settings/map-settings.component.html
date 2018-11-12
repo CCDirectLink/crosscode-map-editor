@@ -32,44 +32,31 @@
 	<div fxLayout="row" fxFlex="0 0 auto">
 		<span fxFlexAlign="center">Master Level: </span>
 		<!--<input type="number" class="default-input small-input" [(ngModel)]="settings.masterLevel">-->
-		<mat-select class="material-input" [(ngModel)]="settings.masterLevel">
-			<mat-option *ngFor="let level of settings.levels; let i=index" [value]="i">
-				{{i}}
-			</mat-option>
-		</mat-select>
+		<mat-form-field class="masterlevel-input">
+			<mat-select [(ngModel)]="settings.masterLevel">
+				<mat-option *ngFor="let level of settings.levels; let i=index" [value]="i">
+					{{i}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
 	</div>
 	<hr>
 	
 	<!--Attributes-->
 	<div fxLayout="column" fxFlex="0 0 auto">
-		<div class="attribute" fxLayout="row">
+		<div fxLayout="row" class="attribute">
 			<span fxFlexAlign="center">cameraInBounds: </span>
 			<mat-checkbox class="material-input" color="primary"
-			             [(ngModel)]="settings.attributes.cameraInBounds"></mat-checkbox>
+			              [(ngModel)]="settings.attributes.cameraInBounds"></mat-checkbox>
 		</div>
-		<div class="attribute" fxLayout="row">
-			<span fxFlexAlign="center">saveMode: </span>
-			<input class="default-input" [(ngModel)]="settings.attributes.saveMode">
-		</div>
-		<div class="attribute" fxLayout="row">
-			<span fxFlexAlign="center">bgm: </span>
-			<input class="default-input" [(ngModel)]="settings.attributes.bgm">
-		</div>
-		<div class="attribute" fxLayout="row">
-			<span fxFlexAlign="center">map-sounds: </span>
-			<input class="default-input" [(ngModel)]="settings.attributes['map-sounds']">
-		</div>
-		<div class="attribute" fxLayout="row">
-			<span fxFlexAlign="center">mapStyle: </span>
-			<input class="default-input" [(ngModel)]="settings.attributes.mapStyle">
-		</div>
-		<div class="attribute" fxLayout="row">
-			<span fxFlexAlign="center">weather: </span>
-			<input class="default-input" [(ngModel)]="settings.attributes.weather">
-		</div>
-		<div class="attribute" fxLayout="row">
-			<span fxFlexAlign="center">area: </span>
-			<input class="default-input" [(ngModel)]="settings.attributes.area">
+		
+		<div *ngFor="let prop of mapSettings | keyvalue" fxLayout="row" class="attribute">
+			<span fxFlex="0 0 100px" fxFlexAlign="center">{{prop.key}}: </span>
+			<select class="default-input select-input" [(ngModel)]="settings.attributes[prop.key]">
+				<option *ngFor="let item of prop.value" [value]="item">
+					{{item}}
+				</option>
+			</select>
 		</div>
 	</div>
 	

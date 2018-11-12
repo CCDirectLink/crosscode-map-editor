@@ -1,4 +1,4 @@
 export let config = {
-	pathToCrosscode: 'D:/programming/CrossCode/entpackt/assets/'
+	pathToCrosscode: 'C:/Program Files (x86)/Steam/steamapps/common/CrossCode/assets/'
 };
 
