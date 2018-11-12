@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import {CrossCodeMap} from '../shared/interfaces/cross-code-map';
+import {CCMap} from '../shared/phaser/tilemap/cc-map';
+import {Globals} from '../shared/globals';
 
 export interface HistoryState {
 	icon: string;
 	name: string;
-	state: CrossCodeMap;
+	state?: string;
 }
 
 @Injectable()
@@ -23,7 +25,20 @@ export class StateHistoryService {
 		this.states.next([state]);
 	}
 	
-	saveState(state: HistoryState) {
+	saveState(state: HistoryState, ignoreCheck = false) {
+		
+		if (!state.state) {
+			const newState = Globals.map.exportMap();
+			const stateJson = JSON.stringify(newState);
+			if (!ignoreCheck) {
+				const curr = this.selectedState.getValue().state.state;
+				if (curr === stateJson) {
+					return;
+				}
+			}
+			state.state = stateJson;
+		}
+		
 		const states = this.states.getValue();
 		const selected = this.selectedState.getValue();
 		const i = states.indexOf(selected.state);

@@ -43,7 +43,7 @@ export class CCMap {
 				return;
 			}
 			const i = this.layers.indexOf(this.game['MapLoaderService'].selectedLayer.getValue());
-			this.loadMap(Helper.copy(container.state.state), true);
+			this.loadMap(JSON.parse(container.state.state), true);
 			if (i >= 0 && this.layers.length > i) {
 				this.game['MapLoaderService'].selectedLayer.next(this.layers[i]);
 			}
@@ -111,7 +111,7 @@ export class CCMap {
 			this.game['StateHistoryService'].init({
 				name: 'load',
 				icon: 'insert_drive_file',
-				state: Helper.copy(this.exportMap())
+				state: JSON.stringify(this.exportMap())
 			});
 		}
 		

@@ -6,7 +6,7 @@ import {MapLayer, Point} from '../../interfaces/cross-code-map';
 import {Vec2} from '../vec2';
 import {CCMap} from './cc-map';
 import {MapLoaderService} from '../../map-loader.service';
-import {HistoryState} from '../../../history/state-history.service';
+import {HistoryState, StateHistoryService} from '../../../history/state-history.service';
 import {GlobalEventsService} from '../../global-events.service';
 
 export class TileDrawer extends Phaser.Plugin {
@@ -191,23 +191,12 @@ export class TileDrawer extends Phaser.Plugin {
 	
 	activate() {
 		this.keyBindings.push(this.game.input.mousePointer.leftButton.onUp.add(() => {
-			const ccmap: CCMap = <any>this.game['MapLoaderService'].tileMap.getValue();
-			const stateContainer = <any>  this.game['StateHistoryService'].selectedState.getValue();
-			if (!stateContainer.state) {
-				return;
-			}
-			const curr = stateContainer.state.state;
-			const state = ccmap.exportMap();
-			const currJson = JSON.stringify(curr);
-			const stateJson = JSON.stringify(state);
+			const stateHistory = <StateHistoryService> this.game['StateHistoryService'];
 			
-			if (currJson !== stateJson) {
-				this.game['StateHistoryService'].saveState({
-					name: 'Tile Drawer',
-					icon: 'create',
-					state: JSON.parse(stateJson)
-				});
-			}
+			stateHistory.saveState({
+				name: 'Tile Drawer',
+				icon: 'create',
+			});
 		}));
 		this.keyBindings.push(this.game.input.mousePointer.rightButton.onDown.add(() => this.onMouseRightDown()));
 		this.keyBindings.push(this.game.input.mousePointer.rightButton.onUp.add(() => this.onMouseRightUp()));

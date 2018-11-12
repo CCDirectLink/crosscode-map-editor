@@ -44,14 +44,6 @@ export class HistoryComponent implements OnInit {
 		this.selectedIndex = this.states.indexOf(container.state);
 	}
 	
-	create() {
-		this.stateHistory.saveState({
-			state: <any>{name: Math.random()},
-			name: '' + Math.random().toFixed(7),
-			icon: 'house'
-		});
-	}
-	
 	undo() {
 		this.stateHistory.undo();
 	}
