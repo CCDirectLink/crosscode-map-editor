@@ -50,6 +50,7 @@ export class CCMap {
 		});
 		
 		const undoKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+		game.input.keyboard.removeKeyCapture(undoKey.keyCode);
 		this.keyBinding = undoKey.onDown.add(() => {
 			if (Helper.isInputFocused()) {
 				return;

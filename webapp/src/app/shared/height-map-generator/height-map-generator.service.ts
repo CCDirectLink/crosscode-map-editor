@@ -7,6 +7,7 @@ import {Point} from '../interfaces/cross-code-map';
 import {CCMap} from '../phaser/tilemap/cc-map';
 import {Vec2} from '../phaser/vec2';
 import {Helper} from '../phaser/helper';
+import {MatSnackBar} from '@angular/material';
 
 interface Dir {
 	n: number;
@@ -79,7 +80,8 @@ export class HeightMapGeneratorService {
 	
 	private tilesetConfig: { [s: string]: TilesetConfig } = {};
 	
-	constructor(private events: GlobalEventsService) {
+	constructor(private events: GlobalEventsService,
+	            private snackbar: MatSnackBar) {
 		this.tilesetConfig['media/map/autumn-outside.png'] = {
 			tileCountX: 32,
 			base: {
@@ -122,12 +124,30 @@ export class HeightMapGeneratorService {
 	public init(game: Phaser.Game) {
 		this.events.generateHeights.subscribe(() => this.generateHeights());
 		const generateKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
-		generateKey.onDown.add(() => this.generateHeights());
+		game.input.keyboard.removeKeyCapture(generateKey.keyCode);
+		generateKey.onDown.add(() => {
+			if (Helper.isInputFocused()) {
+				return;
+			}
+			if (game.input.keyboard.isDown(Phaser.Keyboard.CONTROL) &&
+				game.input.keyboard.isDown(Phaser.Keyboard.SHIFT)) {
+				
+				this.generateHeights();
+			}
+		});
 	}
 	
 	private generateHeights() {
 		const game = Globals.game;
 		const map = Globals.map;
+		
+		const heightmap = map.layers.find(layer => layer.details.type === 'HeightMap');
+		if (!heightmap) {
+			this.snackbar.open('Generation Failed! No HeightMap found', undefined, {
+				duration: 2500
+			});
+			return;
+		}
 		
 		const extraSpace = 7;
 		const topOffset = 1;
@@ -137,35 +157,31 @@ export class HeightMapGeneratorService {
 		map.offsetMap({x: 0, y: -(extraSpace - topOffset)}, true, true);
 		
 		const masterLevel = map.masterLevel;
-		const heightmap = map.layers.find(layer => layer.details.type === 'HeightMap');
-		if(heightmap) {
-			for (let i = 0; i < map.levels.length; i++) {
-				const collision = map.layers.find(layer => layer.details.level === i && layer.details.type === 'Collision');
-				const background = map.layers.find(layer => layer.details.level === i && layer.details.type === 'Background');
-				
-				if (collision) {
-					collision.clear();
-				}
-				if (background) {
-					background.clear();
-				}
-			}
+		for (let i = 0; i < map.levels.length; i++) {
+			const collision = map.layers.find(layer => layer.details.level === i && layer.details.type === 'Collision');
+			const background = map.layers.find(layer => layer.details.level === i && layer.details.type === 'Background');
 			
-			for (let i = masterLevel; i < map.levels.length; i++) {
-				const collision = map.layers.find(layer => layer.details.level === i && layer.details.type === 'Collision');
-				const background = map.layers.find(layer => layer.details.level === i && layer.details.type === 'Background');
-				if (!collision) {
-					console.warn(`collision for level ${i} not found`);
-					continue;
-				}
-				if (i === masterLevel && masterLevel > 0) {
-					const waterBg = map.layers.find(layer => layer.details.level === i - 1 && layer.details.type === 'Background');
-					this.generateLayer(collision, waterBg, heightmap, i - 1, map, map.levels[i - 1].height - map.levels[masterLevel].height);
-				}
-				this.generateLayer(collision, background, heightmap, i, map, map.levels[i].height - map.levels[masterLevel].height);
+			if (collision) {
+				collision.clear();
+			}
+			if (background) {
+				background.clear();
 			}
 		}
-		console.log('WHYYYYYYYYYY');
+		
+		for (let i = masterLevel; i < map.levels.length; i++) {
+			const collision = map.layers.find(layer => layer.details.level === i && layer.details.type === 'Collision');
+			const background = map.layers.find(layer => layer.details.level === i && layer.details.type === 'Background');
+			if (!collision) {
+				console.warn(`collision for level ${i} not found`);
+				continue;
+			}
+			if (i === masterLevel && masterLevel > 0) {
+				const waterBg = map.layers.find(layer => layer.details.level === i - 1 && layer.details.type === 'Background');
+				this.generateLayer(collision, waterBg, heightmap, i - 1, map, map.levels[i - 1].height - map.levels[masterLevel].height);
+			}
+			this.generateLayer(collision, background, heightmap, i, map, map.levels[i].height - map.levels[masterLevel].height);
+		}
 		map.offsetMap({x: 0, y: -topOffset}, false, true);
 		map.resize(map.mapWidth, map.mapHeight - extraSpace, true);
 		
@@ -422,7 +438,7 @@ export class HeightMapGeneratorService {
 		const h = layer.details.height;
 		const data = layer.details.data;
 		
-		// TODO: i think extend is not neccessary
+		// TODO: i think extend is not necessary
 		
 		if (x > 0) {
 			out.w = data[y][x - 1];
