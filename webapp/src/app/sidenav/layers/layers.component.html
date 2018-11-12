@@ -1,48 +1,90 @@
-<mat-nav-list fxFlex="1 1 auto" class="small-list">
-	<mat-list-item *ngFor="let layer of tilemap.layers" (click)="selectLayer(layer)" [ngClass]="{'layer-hidden': !layer.visible}">
-		<div class="item-selected-bg" [ngClass]="{'item-selected': layer === selectedLayer}"></div>
-		<div mat-list-icon [ngClass]="'type-' + layer.details.type"></div>
-		<span mat-line>{{getDisplayName(layer)}}</span>
+<div fxLayout="column" class="layers-tab-container">
+	<mat-nav-list fxFlex="1 1 auto" class="small-list" cdkDropList (cdkDropListDropped)="drop($event)">
+		<mat-list-item *ngFor="let layer of tilemap.layers" (click)="selectLayer(layer)"
+		               [ngClass]="{'layer-hidden': !layer.visible}" cdkDrag>
+			<div *cdkDragPreview></div>
+			<div class="item-selected-bg" [ngClass]="{'item-selected': layer === selectedLayer}"></div>
+			<div cdkDragHandle mat-list-icon [ngClass]="'type-' + layer.details.type"></div>
+			<span mat-line>{{getDisplayName(layer)}}</span>
+			<button mat-icon-button (click)="toggleVisibility($event, layer)" class="green">
+				<mat-icon>{{layer.visible ? 'visibility' : 'visibility_off'}}</mat-icon>
+			</button>
+		</mat-list-item>
+		<mat-list-item disableRipple="true">
+			<div mat-list-icon></div>
+			<input matInput mat-line class="simple-input" [(ngModel)]="newLayerName">
+			<button mat-icon-button (click)="addNewLayer($event)" class="green">
+				<mat-icon>add</mat-icon>
+			</button>
+		</mat-list-item>
+	</mat-nav-list>
+	
+	<mat-accordion fxFlex="0 1 auto">
+		<mat-expansion-panel>
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					Settings {{selectedLayer ? '- ' + getDisplayName(selectedLayer) : ''}}
+				</mat-panel-title>
+			</mat-expansion-panel-header>
+			
+			<mat-list fxFlex="0 0 auto" class="settings-list">
+				<mat-list-item fxLayout="column">
+					<span class="label">Type: </span>
+					<mat-form-field>
+						<mat-select fxFlex [disabled]="!selectedLayer" class="list-item" floatPlaceholder="never"
+						            [(ngModel)]="selectedLayer?.details.type">
+							<mat-option value="Background">Background</mat-option>
+							<mat-option value="Collision">Collision</mat-option>
+							<mat-option value="Navigation">Navigation</mat-option>
+							<mat-option value="HeightMap">HeightMap</mat-option>
+							<mat-option value="Light">Light</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</mat-list-item>
+				
+				<mat-list-item fxLayout="column">
+					<span class="label">Name: </span>
+					<mat-form-field class="list-item" floatLabel="never">
+						<input matInput [disabled]="!selectedLayer" [(ngModel)]="selectedLayer?.details.name">
+					</mat-form-field>
+				</mat-list-item>
+				
+				<mat-list-item fxLayout="column">
+					<span class="label">Level: </span>
+					<mat-form-field>
+						<mat-select fxFlex [disabled]="!selectedLayer" class="list-item" floatPlaceholder="never"
+						            [(ngModel)]="selectedLayer?.details.level">
+							<mat-option *ngFor="let level of tilemap?.levels; let i=index" [value]="i">{{i}}</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</mat-list-item>
+				
+				<mat-list-item fxLayout="column">
+					<span class="label">Distance: </span>
+					<mat-form-field class="list-item" floatLabel="never">
+						<input type="number" step="0.1" matInput [disabled]="!selectedLayer"
+						       [(ngModel)]="selectedLayer?.details.distance">
+					</mat-form-field>
+				</mat-list-item>
+				
+				<mat-list-item fxLayout="column">
+					<span class="label">Tileset: </span>
+					<mat-form-field class="list-item" floatLabel="never">
+						<input matInput [disabled]="!selectedLayer" [(ngModel)]="selectedLayer?.details.tilesetName">
+					</mat-form-field>
+				</mat-list-item>
+				
+				<mat-list-item fxLayout="column">
+					<span class="label">Actions: </span>
+					<button mat-stroked-button [disabled]="!selectedLayer" (click)="deleteSelected(selectedLayer)">Delete</button>
+					<!--<button mat-icon-button (click)="deleteLayer(selectedLayer)">-->
+					<!--<mat-icon>delete</mat-icon>-->
+					<!--</button>-->
+				</mat-list-item>
+				<br>
+			</mat-list>
 		
-		<button mat-icon-button (click)="toggleVisibility($event, layer)" class="green">
-			<mat-icon>{{layer.visible ? 'visibility' : 'visibility_off'}}</mat-icon>
-		</button>
-	</mat-list-item>
-</mat-nav-list>
+		</mat-expansion-panel>
+	</mat-accordion>
 
-<h3 fxFlex="0 0 auto">Layer settings {{selectedLayer ? '- ' + getDisplayName(selectedLayer) : ''}}</h3>
-<mat-list fxFlex="0 0 auto" class="settings-list">
-	<mat-list-item fxLayout="column">
-		<span class="label">Type: </span>
-		<mat-select fxFlex [disabled]="!selectedLayer" class="list-item" floatPlaceholder="never"
-		           [(ngModel)]="selectedLayer?.details.type">
-			<mat-option value="Background">Background</mat-option>
-			<mat-option value="Collision">Collision</mat-option>
-			<mat-option value="Navigation">Navigation</mat-option>
-		</mat-select>
-	</mat-list-item>
-	
-	<mat-list-item fxLayout="column">
-		<span class="label">Name: </span>
-		<mat-form-field class="list-item" floatLabel="never">
-			<input matInput [disabled]="!selectedLayer" [(ngModel)]="selectedLayer?.details.name">
-		</mat-form-field>
-	</mat-list-item>
-	
-	<mat-list-item fxLayout="column">
-		<span class="label">Level: </span>
-		<mat-select fxFlex [disabled]="!selectedLayer" class="list-item" floatPlaceholder="never"
-		           [(ngModel)]="selectedLayer?.details.level">
-			<mat-option *ngFor="let level of tilemap?.levels; let i=index" [value]="i">{{i}}</mat-option>
-		</mat-select>
-	</mat-list-item>
-	
-	<mat-list-item fxLayout="column">
-		<span class="label">Distance: </span>
-		<mat-form-field class="list-item" floatLabel="never">
-			<input type="number" step="0.1" matInput [disabled]="!selectedLayer"
-			       [(ngModel)]="selectedLayer?.details.distance">
-		</mat-form-field>
-	</mat-list-item>
-	<br>
-</mat-list>
+</div>

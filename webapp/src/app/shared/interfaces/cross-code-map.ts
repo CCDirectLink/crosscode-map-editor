@@ -41,7 +41,7 @@ export interface MapEntity {
 }
 
 export interface MapLayer {
-	id: number;
+	id?: number;
 	type: string;
 	name: string;
 	level: any;

@@ -1,7 +1,7 @@
 <div fxLayout="column" class="nav-container" *ngIf="tilemap">
-	<mat-tab-group mat-stretch-tabs (selectedTabChange)="tabChanged($event)">
+	<mat-tab-group (selectedTabChange)="tabChanged($event)">
 		<mat-tab label="Layers">
-			<app-layers style="height: 100%" fxLayout="column"></app-layers>
+			<app-layers class="hacky-tab-height-fix" fxLayout="column"></app-layers>
 		</mat-tab>
 		<mat-tab label="Entities">
 			<app-entities fxLayout="column"></app-entities>

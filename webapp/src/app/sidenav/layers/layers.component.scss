@@ -4,16 +4,8 @@
 $config: mat-typography-config();
 $background: map_get($theme, background);
 
-h3 {
-	font-weight: mat-font-weight($config, caption);
-	background-color: rgba(255, 255, 255, 0.1);
-	height: 30px;
-	line-height: 30px;
-	padding-left: 16px;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow-x: hidden;
-	overflow-y: hidden;
+mat-expansion-panel-header {
+	background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 // layer selection
@@ -32,6 +24,14 @@ $brightness: 60%;
 
 .type-Navigation {
 	background-color: mat-color($mat-blue, $type-hue);
+}
+
+.type-HeightMap {
+	background-color: mat-color($mat-orange, $type-hue);
+}
+
+.type-Light {
+	background-color: mat-color($mat-yellow, $type-hue);
 }
 
 .item-selected-bg {
@@ -61,14 +61,21 @@ mat-nav-list {
 	}
 }
 
+.layers-tab-container{
+	height: 100%;
+}
+
 // firefox fix
 .item-selected-bg {
 	top: 0;
 }
 
+.mat-expansion-panel-body {
+	padding: 0 !important;
+}
+
 // layer settings
 .settings-list {
-	//margin-top: 16px;
 }
 
 .label {
@@ -78,6 +85,11 @@ mat-nav-list {
 .list-item {
 	//padding-left: 16px;
 	width: 100%;
+}
+
+.simple-input {
+	padding-bottom: 5px !important;
+	box-shadow: inset 0px -1px 0px 0px rgb(255, 255, 255);
 }
 
 .layer-hidden {

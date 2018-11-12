@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {animate, style, transition, trigger} from '@angular/animations';
 import {MapLoaderService} from '../shared/map-loader.service';
 import {CCMap} from '../shared/phaser/tilemap/cc-map';
 import {CCMapLayer} from '../shared/phaser/tilemap/cc-map-layer';
@@ -9,14 +8,6 @@ import {MatTabChangeEvent} from '@angular/material';
 
 @Component({
 	selector: 'app-sidenav',
-	animations: [
-		trigger('transition', [
-			transition(':enter', [
-				style({opacity: 0}),
-				animate('80ms', style({opacity: 1}))
-			])
-		])
-	],
 	templateUrl: './sidenav.component.html',
 	styleUrls: ['./sidenav.component.scss'],
 	encapsulation: ViewEncapsulation.None

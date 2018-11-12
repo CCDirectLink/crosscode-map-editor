@@ -136,6 +136,17 @@ export class CCMap {
 		this.layers.forEach(layer => layer.renderAll());
 	}
 	
+	addLayer(layer: CCMapLayer) {
+		this.layers.push(layer);
+		layer.renderAll();
+	}
+	
+	removeLayer(layer: CCMapLayer) {
+		const index = this.layers.indexOf(layer);
+		this.layers.splice(index, 1);
+		layer.destroy();
+	}
+	
 	exportMap(): CrossCodeMap {
 		const out: CrossCodeMap = <any>{};
 		

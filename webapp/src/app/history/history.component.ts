@@ -24,7 +24,6 @@ export class HistoryComponent implements OnInit {
 			}
 			setTimeout(() => {
 				const el = this.list.nativeElement;
-				console.log(el);
 				el.scrollTop = el.scrollHeight * 2;
 			}, 0);
 		});
