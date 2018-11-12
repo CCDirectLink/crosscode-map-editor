@@ -8,6 +8,7 @@ import {CCMap} from '../phaser/tilemap/cc-map';
 import {Vec2} from '../phaser/vec2';
 import {Helper} from '../phaser/helper';
 import {MatSnackBar} from '@angular/material';
+import {StateHistoryService} from '../../history/state-history.service';
 
 interface Dir {
 	n: number;
@@ -81,7 +82,8 @@ export class HeightMapGeneratorService {
 	private tilesetConfig: { [s: string]: TilesetConfig } = {};
 	
 	constructor(private events: GlobalEventsService,
-	            private snackbar: MatSnackBar) {
+	            private snackbar: MatSnackBar,
+	            private stateHistory: StateHistoryService) {
 		this.tilesetConfig['media/map/autumn-outside.png'] = {
 			tileCountX: 32,
 			base: {
@@ -186,6 +188,10 @@ export class HeightMapGeneratorService {
 		map.resize(map.mapWidth, map.mapHeight - extraSpace, true);
 		
 		map.renderAll();
+		this.stateHistory.saveState({
+			name: 'Height Generation',
+			icon: 'landscape'
+		}, true);
 	}
 	
 	generateLayer(collisions: CCMapLayer, background: CCMapLayer, heightmap: CCMapLayer, level: number, map: CCMap, height: number) {
