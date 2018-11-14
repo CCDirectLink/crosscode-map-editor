@@ -3,6 +3,7 @@ import {CCEntity} from '../cc-entity';
 import {Prop} from './prop';
 import {ScalableProp} from './scalable-prop';
 import {ItemDestruct} from './item-destruct';
+import {NPC} from './npc';
 
 export class EntityRegistry {
 	private entities: { [type: string]: any } = {};
@@ -13,6 +14,7 @@ export class EntityRegistry {
 		this.register('Prop', Prop);
 		this.register('ScalableProp', ScalableProp);
 		this.register('ItemDestruct', ItemDestruct);
+		this.register('NPC', NPC);
 	}
 	
 	private setDefaultEntity(entity: any) {

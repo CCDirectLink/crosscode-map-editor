@@ -496,7 +496,7 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 			this.anchor.y = 1;
 			this.anchor.x = 0.5;
 		}
-		this.generateSingleColorSheet(r || 155, g || 60, b || 40);
+		this.generateSingleColorSheet(r || 155, g || 60, b || 40, a);
 		this.updateSettings();
 	}
 	

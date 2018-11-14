@@ -23,6 +23,7 @@ export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDe
 	}
 	
 	ngOnInit() {
+		this.ngOnChanges(null);
 	}
 	
 	ngOnDestroy(): void {

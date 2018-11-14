@@ -23,6 +23,7 @@ export class Vec2WidgetComponent extends AbstractWidget implements OnInit, OnCha
 	}
 
 	ngOnInit() {
+		this.ngOnChanges(null);
 	}
 	
 	ngOnChanges(changes: SimpleChanges): void {

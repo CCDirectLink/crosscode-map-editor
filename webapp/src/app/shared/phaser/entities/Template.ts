@@ -1,6 +1,6 @@
 import {CCEntity, ScaleSettings} from './cc-entity';
 
-export class EntityTemplate extends CCEntity {
+export class Template extends CCEntity {
 	
 	private attributes = {};
 	
