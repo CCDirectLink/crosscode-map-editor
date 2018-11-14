@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, Subject} from 'rxjs';
-import {EditorView} from './interfaces/editor-view';
+import {EditorView} from '../models/editor-view';
 import {CCEntity} from './phaser/entities/cc-entity';
-import {MapEntity, Point} from './interfaces/cross-code-map';
+import {MapEntity, Point} from '../models/cross-code-map';
 
 @Injectable()
 export class GlobalEventsService {

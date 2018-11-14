@@ -1,9 +1,9 @@
-import {Attributes, CrossCodeMap, MapLayer, Point} from '../../interfaces/cross-code-map';
+import {Attributes, CrossCodeMap, MapLayer, Point} from '../../../models/cross-code-map';
 import {CCMapLayer} from './cc-map-layer';
 import {Globals} from '../../globals';
 import {EntityManager} from '../entities/entity-manager';
 import {Helper} from '../helper';
-import {StateHistoryService} from '../../../history/state-history.service';
+import {StateHistoryService} from '../../history/state-history.service';
 import {Subscription} from 'rxjs';
 import {GlobalEventsService} from '../../global-events.service';
 import {PhaserEventsService} from '../phaser-events.service';

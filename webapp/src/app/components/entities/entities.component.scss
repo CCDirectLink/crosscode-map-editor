@@ -1,0 +1,16 @@
+@import "~@angular/material/theming";
+
+$config: mat-typography-config();
+
+h2 {
+	margin-left: 14px;
+	margin-top: 10px;
+	margin-bottom: 0;
+	background: transparent;
+}
+
+.entity-settings-container {
+	padding: 16px 16px 16px 16px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}

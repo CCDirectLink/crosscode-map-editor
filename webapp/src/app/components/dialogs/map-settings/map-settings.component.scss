@@ -1,0 +1,40 @@
+@import "~@angular/material/theming";
+@import "theme";
+
+$config: mat-typography-config();
+$color: map_get($theme, accent);
+
+.dialog-container {
+	width: 50vw;
+	height: 85vh;
+}
+
+.masterlevel-input {
+	margin-left: 16px;
+}
+
+.default-input {
+	margin-left: 16px;
+	margin-right: 16px;
+}
+
+.select-input {
+	height: 26px;
+	option {
+		background-color: mat-color($color, 800);
+	}
+}
+
+.material-input {
+	margin-left: 16px;
+	margin-right: 16px;
+}
+
+.attribute {
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
+
+.action-button-row {
+	margin-bottom: 8px;
+}

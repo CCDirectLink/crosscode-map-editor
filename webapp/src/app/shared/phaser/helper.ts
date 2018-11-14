@@ -1,4 +1,4 @@
-import {Point} from '../interfaces/cross-code-map';
+import {Point} from '../../models/cross-code-map';
 import {Globals} from '../globals';
 import {CCMapLayer} from './tilemap/cc-map-layer';
 

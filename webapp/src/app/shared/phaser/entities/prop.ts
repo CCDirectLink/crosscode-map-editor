@@ -1,6 +1,6 @@
 import {CCEntity, InputEvents, ScaleSettings} from './cc-entity';
 import {Helper} from '../helper';
-import {Fix} from '../../interfaces/props';
+import {Fix} from '../../../models/props';
 
 export interface PropDef {
 	name: string;

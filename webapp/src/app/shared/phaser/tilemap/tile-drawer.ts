@@ -1,12 +1,12 @@
 import {CCMapLayer} from './cc-map-layer';
 import {Globals} from '../../globals';
-import {SortableGroup} from '../../interfaces/sortable';
+import {SortableGroup} from '../../../models/sortable';
 import {Helper} from '../helper';
-import {MapLayer, Point} from '../../interfaces/cross-code-map';
+import {MapLayer, Point} from '../../../models/cross-code-map';
 import {Vec2} from '../vec2';
 import {CCMap} from './cc-map';
 import {MapLoaderService} from '../../map-loader.service';
-import {HistoryState, StateHistoryService} from '../../../history/state-history.service';
+import {HistoryState, StateHistoryService} from '../../history/state-history.service';
 import {GlobalEventsService} from '../../global-events.service';
 
 export class TileDrawer extends Phaser.Plugin {

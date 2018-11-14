@@ -1,6 +1,6 @@
-import {Sortable, SortableGroup} from '../../interfaces/sortable';
+import {Sortable, SortableGroup} from '../../../models/sortable';
 import {CCMap} from '../tilemap/cc-map';
-import {MapEntity, Point, Point3} from '../../interfaces/cross-code-map';
+import {MapEntity, Point, Point3} from '../../../models/cross-code-map';
 import {Helper} from '../helper';
 import * as Phaser from 'phaser-ce';
 import {Vec2} from '../vec2';

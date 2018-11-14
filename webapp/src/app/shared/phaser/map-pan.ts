@@ -1,5 +1,5 @@
 
-import {Point} from '../interfaces/cross-code-map';
+import {Point} from '../../models/cross-code-map';
 import {Helper} from './helper';
 
 export class MapPan extends Phaser.Plugin {

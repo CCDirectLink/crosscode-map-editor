@@ -1,0 +1,97 @@
+@import "~@angular/material/theming";
+@import "theme";
+
+$config: mat-typography-config();
+$background: map_get($theme, background);
+
+mat-expansion-panel-header {
+	background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+// layer selection
+$type-hue: A200;
+
+// hidden layers brightness reduction
+$brightness: 60%;
+
+.type-Background {
+	background-color: mat-color($mat-green, $type-hue);
+}
+
+.type-Collision {
+	background-color: mat-color($mat-red, $type-hue);
+}
+
+.type-Navigation {
+	background-color: mat-color($mat-blue, $type-hue);
+}
+
+.type-HeightMap {
+	background-color: mat-color($mat-orange, $type-hue);
+}
+
+.type-Light {
+	background-color: mat-color($mat-yellow, $type-hue);
+}
+
+.item-selected-bg {
+	position: absolute;
+	left: 0;
+	z-index: -1;
+	width: 100%;
+	height: 100%;
+	transition: background-color 100ms linear;
+}
+
+.item-selected {
+	background-color: mat-color($mat-grey, 700);
+}
+
+mat-nav-list {
+	padding-top: 0 !important;
+	overflow-x: hidden;
+	//noinspection CssInvalidPropertyValue
+	overflow-y: overlay;
+}
+
+.small-list {
+	min-height: 80px !important;
+	& mat-list-item, .mat-list-item-content {
+		height: 36px !important;
+	}
+}
+
+.layers-tab-container{
+	height: 100%;
+}
+
+// firefox fix
+.item-selected-bg {
+	top: 0;
+}
+
+.mat-expansion-panel-body {
+	padding: 0 !important;
+}
+
+// layer settings
+.settings-list {
+}
+
+.label {
+	flex: 0 0 80px;
+}
+
+.list-item {
+	//padding-left: 16px;
+	width: 100%;
+}
+
+.simple-input {
+	padding-bottom: 5px !important;
+	box-shadow: inset 0px -1px 0px 0px rgb(255, 255, 255);
+}
+
+.layer-hidden {
+	filter: brightness($brightness);
+}

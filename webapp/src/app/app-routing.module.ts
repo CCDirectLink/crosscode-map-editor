@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {EditorComponent} from './editor/editor.component';
+import {EditorComponent} from './components/editor/editor.component';
 
 const routes: Routes = [
 	{

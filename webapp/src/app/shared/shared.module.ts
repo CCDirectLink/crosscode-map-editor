@@ -1,17 +1,17 @@
 import {NgModule} from '@angular/core';
 import {GlobalEventsService} from './global-events.service';
 import {HostDirective} from './host.directive';
-import {HttpClientService} from './http-client.service';
+import {HttpClientService} from '../services/http-client.service';
 import {MapLoaderService} from './map-loader.service';
-import {MapSettingsComponent} from './dialogs/map-settings/map-settings.component';
-import {FloatingWindowComponent} from './floating-window/floating-window.component';
-import {JsonEditorComponent} from './json-editor/json-editor.component';
+import {MapSettingsComponent} from '../components/dialogs/map-settings/map-settings.component';
+import {FloatingWindowComponent} from '../components/floating-window/floating-window.component';
+import {JsonEditorComponent} from '../components/json-editor/json-editor.component';
 import {FormsModule} from '@angular/forms';
 import {MaterialModule} from '../material.module';
 import {AngularDraggableModule} from 'angular2-draggable';
 import {CommonModule} from '@angular/common';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {OffsetMapComponent} from './dialogs/offset-map/offset-map.component';
+import {OffsetMapComponent} from '../components/dialogs/offset-map/offset-map.component';
 
 @NgModule({
 	imports: [

@@ -1,6 +1,6 @@
-import {Point} from '../../interfaces/cross-code-map';
+import {Point} from '../../../models/cross-code-map';
 import {Helper} from '../helper';
-import {SortableGroup} from '../../interfaces/sortable';
+import {SortableGroup} from '../../../models/sortable';
 import {CCEntity} from './cc-entity';
 
 export class SelectionBox {

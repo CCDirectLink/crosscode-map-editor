@@ -1,6 +1,6 @@
-import {MapLayer, Point} from '../../interfaces/cross-code-map';
+import {MapLayer, Point} from '../../../models/cross-code-map';
 import * as Phaser from 'phaser-ce';
-import {Sortable} from '../../interfaces/sortable';
+import {Sortable} from '../../../models/sortable';
 import {Helper} from '../helper';
 import {Globals} from '../../globals';
 

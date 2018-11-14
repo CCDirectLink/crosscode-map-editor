@@ -9,6 +9,7 @@ import {ItemDestruct} from './item-destruct';
 	providedIn: 'root'
 })
 
+// TODO move shouldn't be a service
 export class EntityRegistryService {
 	private entities: { [type: string]: any } = {};
 	private defaultEntity: any;

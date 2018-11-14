@@ -1,0 +1,41 @@
+@import "~@angular/material/theming";
+
+$config: mat-typography-config();
+
+.property-container {
+	margin-bottom: 14px;
+}
+
+.default-input{
+	flex: 1 1 0;
+	width: 0;
+}
+
+.small-input {
+	margin-right: 8px;
+	width: 50px;
+}
+
+.property-name {
+	display: flex;
+	flex: 0 0 auto;
+	justify-content: flex-end;
+	align-items: center;
+
+	$font-type: body-1;
+	font-family: mat-font-family($config);
+	font-size: mat-font-size($config, $font-type);
+	font-weight: mat-font-weight($config, $font-type);
+
+	width: 100px;
+	height: 24px;
+	margin-right: 10px;
+	//border: 1px solid #5ad972;
+}
+
+.property-name-small {
+	@extend .property-name;
+	width: 20px;
+	justify-content: center;
+	margin-right: 0;
+}

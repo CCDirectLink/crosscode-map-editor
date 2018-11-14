@@ -1,0 +1,30 @@
+@import "~@angular/material/theming";
+@import "theme";
+
+$config: mat-typography-config();
+$primary: map-get($theme, primary);
+$accent: map-get($theme, accent);
+
+button {
+	text-transform: none;
+	$font-type: body-1;
+	font-family: mat-font-family($config);
+	font-size: mat-font-size($config, $font-type);
+	font-weight: mat-font-weight($config, $font-type);
+}
+
+.default-input {
+}
+
+.menu-trigger {
+	position: absolute;
+	//width: 20px;
+	//height: 20px;
+	//background-color: mat-color($accent, 800);
+}
+
+.entity-list {
+	overflow-y: overlay;
+	overflow-x: hidden;
+	height: 300px;
+}

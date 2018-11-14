@@ -1,8 +1,8 @@
 import {CCEntity, InputEvents} from './cc-entity';
-import {Sortable} from '../../interfaces/sortable';
+import {Sortable} from '../../../models/sortable';
 import {Helper} from '../helper';
 import {CCMap} from '../tilemap/cc-map';
-import {CrossCodeMap, MapEntity} from '../../interfaces/cross-code-map';
+import {CrossCodeMap, MapEntity} from '../../../models/cross-code-map';
 import {Vec2} from '../vec2';
 import {GlobalEventsService} from '../../global-events.service';
 import {Globals} from '../../globals';

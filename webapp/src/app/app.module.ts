@@ -3,24 +3,24 @@ import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {EditorComponent} from './editor/editor.component';
-import {PhaserComponent} from './phaser/phaser.component';
+import {PhaserComponent} from './components/phaser/phaser.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ToolbarComponent} from './toolbar/toolbar.component';
+import {ToolbarComponent} from './components/toolbar/toolbar.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
-import {SidenavComponent} from './sidenav/sidenav.component';
+import {SidenavComponent} from './components/sidenav/sidenav.component';
 import {FormsModule} from '@angular/forms';
-import {LayersComponent} from './sidenav/layers/layers.component';
-import {EntitiesComponent} from './sidenav/entities/entities.component';
-import {WidgetRegistryService} from './sidenav/entities/widgets/widget-registry.service';
-import {AddEntityMenuComponent} from './editor/add-entity-menu/add-entity-menu.component';
+import {LayersComponent} from './components/layers/layers.component';
+import {EntitiesComponent} from './components/entities/entities.component';
+import {WidgetRegistryService} from './shared/widgets/widget-registry.service';
 import {HttpClientModule} from '@angular/common/http';
 import {SharedModule} from './shared/shared.module';
 import {MaterialModule} from './material.module';
-import {HistoryModule} from './history/history.module';
-import {WidgetModule} from './sidenav/entities/widgets/widget.module';
-import {StateHistoryService} from './history/state-history.service';
+import {HistoryModule} from './shared/history/history.module';
+import {WidgetModule} from './shared/widgets/widget.module';
+import {StateHistoryService} from './shared/history/state-history.service';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {EditorComponent} from './components/editor/editor.component';
+import {AddEntityMenuComponent} from './components/editor/add-entity-menu/add-entity-menu.component';
 
 @NgModule({
 	declarations: [
