@@ -53,7 +53,7 @@
 					<span class="label">Level: </span>
 					<mat-form-field>
 						<mat-select fxFlex [disabled]="!selectedLayer" class="list-item" floatPlaceholder="never"
-						            [(ngModel)]="selectedLayer?.details.level">
+						            [ngModel]="selectedLayer?.details.level" (selectionChange)="updateLevel($event.value)">
 							<mat-option *ngFor="let level of tilemap?.levels; let i=index" [value]="i">{{i}}</mat-option>
 						</mat-select>
 					</mat-form-field>
@@ -70,7 +70,7 @@
 				<mat-list-item fxLayout="column">
 					<span class="label">Tileset: </span>
 					<mat-form-field class="list-item" floatLabel="never">
-						<input matInput [disabled]="!selectedLayer" [(ngModel)]="selectedLayer?.details.tilesetName">
+						<input matInput [disabled]="!selectedLayer" [ngModel]="selectedLayer?.details.tilesetName" (input)="updateTilesetName($event.target.value)">
 					</mat-form-field>
 				</mat-list-item>
 				

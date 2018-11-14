@@ -99,6 +99,15 @@ export class LayersComponent implements OnInit {
 		this.mapLoader.selectedLayer.next(layer);
 	}
 	
+	updateTilesetName(name) {
+		this.selectedLayer.updateTileset(name);
+	}
+	
+	updateLevel(level) {
+		console.log(level);
+		this.selectedLayer.updateLevel(level);
+	}
+	
 	drop(event: CdkDragDrop<string[]>) {
 		if (event.previousIndex === event.currentIndex) {
 			return;

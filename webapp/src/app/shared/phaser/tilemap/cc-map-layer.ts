@@ -47,14 +47,6 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		this.loadTexture(this.bitmap);
 		game.add.existing(this);
 		
-		if (details.tilesetName) {
-			this.tilesetImage = game.make.image(0, 0, details.tilesetName);
-			this.tilesetSize = Helper.getTilesetSize(game.cache.getImage(details.tilesetName));
-			
-			this.tileCrop = new Phaser.Rectangle(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
-			this.tilesetImage.crop(this.tileCrop);
-		}
-		
 		const skip = 'Navigation Collision HeightMap'.split(' ');
 		// const skip = 'Navigation Background HeightMap'.split(' ');
 		skip.forEach(type => {
@@ -63,12 +55,8 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 			}
 		});
 		
-		this.zIndex = this.details.level * 10;
-		if (isNaN(this.zIndex)) {
-			this.zIndex = 999;
-		}
-		// this.visible = false;
-		this.renderAll();
+		this.updateLevel(this.details.level);
+		this.updateTileset(details.tilesetName);
 	}
 	
 	renderAll() {
@@ -103,7 +91,6 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 			}
 		}
 	}
-	
 	
 	drawTile(x: number, y: number, tile: number) {
 		const bitmap = this.bitmap;
@@ -209,6 +196,28 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 		if (!skipRender) {
 			this.renderAll();
 		}
+	}
+	
+	updateTileset(tilesetname: string) {
+		const details = this.details;
+		details.tilesetName = tilesetname;
+		if (details.tilesetName) {
+			this.tilesetImage = this.game.make.image(0, 0, details.tilesetName);
+			this.tilesetSize = Helper.getTilesetSize(this.game.cache.getImage(details.tilesetName));
+			
+			this.tileCrop = new Phaser.Rectangle(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
+			this.tilesetImage.crop(this.tileCrop);
+		}
+		this.renderAll();
+	}
+	
+	updateLevel(level) {
+		this.details.level = level;
+		this.zIndex = this.details.level * 10;
+		if (isNaN(this.zIndex)) {
+			this.zIndex = 999;
+		}
+		Globals.zIndexUpdate = true;
 	}
 	
 	fill(newTile: number, p: Point) {
