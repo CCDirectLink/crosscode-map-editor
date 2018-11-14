@@ -1,16 +1,10 @@
-import {Injectable} from '@angular/core';
 import {DefaultEntity} from './default-entity';
-import {CCEntity} from './cc-entity';
+import {CCEntity} from '../cc-entity';
 import {Prop} from './prop';
 import {ScalableProp} from './scalable-prop';
 import {ItemDestruct} from './item-destruct';
 
-@Injectable({
-	providedIn: 'root'
-})
-
-// TODO move shouldn't be a service
-export class EntityRegistryService {
+export class EntityRegistry {
 	private entities: { [type: string]: any } = {};
 	private defaultEntity: any;
 	

@@ -7,7 +7,7 @@ import {Vec2} from '../vec2';
 import {GlobalEventsService} from '../../global-events.service';
 import {Globals} from '../../globals';
 import {SelectionBox} from './selection-box';
-import {EntityRegistryService} from './entity-registry.service';
+import {EntityRegistry} from './registry/entity-registry';
 
 enum MouseButtons {
 	Left,
@@ -36,6 +36,8 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	
 	private selectionBox: SelectionBox;
 	
+	private entityRegistry: EntityRegistry;
+	
 	// image to receive input behind the sprites
 	private inputImg: Phaser.Image;
 	
@@ -51,6 +53,8 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 		this.deleteKey = game.input.keyboard.addKey(Phaser.Keyboard.DELETE);
 		this.gridKey = game.input.keyboard.addKey(Phaser.Keyboard.G);
 		this.visibilityKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
+		
+		this.entityRegistry = new EntityRegistry();
 		
 		game.input.keyboard.removeKeyCapture(this.copyKey.keyCode);
 		game.input.keyboard.removeKeyCapture(this.pasteKey.keyCode);
@@ -160,9 +164,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	}
 	
 	generateEntity(entity: MapEntity): CCEntity {
-		const registry: EntityRegistryService = this.game['EntityRegistryService'];
-		
-		const entityClass = registry.getEntity(entity.type);
+		const entityClass = this.entityRegistry.getEntity(entity.type);
 		
 		const ccEntity = new entityClass(this.game, this.map, entity.x, entity.y, this.inputEvents, entity.type);
 		ccEntity.setSettings(entity.settings);

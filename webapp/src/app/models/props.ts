@@ -1,5 +1,5 @@
 import {Point, Point3} from './cross-code-map';
-import {Prop} from '../shared/phaser/entities/prop';
+import {Prop} from '../shared/phaser/entities/registry/prop';
 
 export interface PropSheet {
 	DOCTYPE: string;

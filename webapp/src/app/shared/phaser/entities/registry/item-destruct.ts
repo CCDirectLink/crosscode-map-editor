@@ -1,5 +1,5 @@
-import {CCEntity, ScaleSettings} from './cc-entity';
-import {Helper} from '../helper';
+import {CCEntity, ScaleSettings} from '../cc-entity';
+import {Helper} from '../../helper';
 import {PropDef} from './prop';
 import * as Phaser from 'phaser-ce';
 

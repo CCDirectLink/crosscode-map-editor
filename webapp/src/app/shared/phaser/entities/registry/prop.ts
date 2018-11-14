@@ -1,6 +1,6 @@
-import {CCEntity, InputEvents, ScaleSettings} from './cc-entity';
-import {Helper} from '../helper';
-import {Fix} from '../../../models/props';
+import {CCEntity, InputEvents, ScaleSettings} from '../cc-entity';
+import {Helper} from '../../helper';
+import {Fix} from '../../../../models/props';
 
 export interface PropDef {
 	name: string;
@@ -39,7 +39,7 @@ export class Prop extends CCEntity {
 			type: 'EntityAnim',
 			description: 'Animation of prop'
 		},
-		AG: {
+		condAnims: {
 			type: 'CondAnims',
 			description: 'Animations shown by conditions'
 		},
@@ -48,7 +48,7 @@ export class Prop extends CCEntity {
 			description: 'Condition for prop to appear',
 			bd: true
 		},
-		HL: {
+		touchVar: {
 			type: 'VarName',
 			description: 'Variable to be changed when prop is touched',
 			R: true
@@ -59,17 +59,17 @@ export class Prop extends CCEntity {
 			bd: true,
 			R: true
 		},
-		jGa: {
+		showEffect: {
 			type: 'Effect',
 			description: 'Effect to show when showing entity',
 			R: true
 		},
-		Zrb: {
+		hideEffect: {
 			type: 'Effect',
 			description: 'Effect to show when hiding entity',
 			R: true
 		},
-		MB: {
+		permaEffect: {
 			type: 'Effect',
 			description: 'Effect to be shown permanently',
 			R: true

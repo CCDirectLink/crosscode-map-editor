@@ -1,4 +1,4 @@
-import {CCEntity} from './cc-entity';
+import {CCEntity} from '../cc-entity';
 
 export class DefaultEntity extends CCEntity {
 	private settings;

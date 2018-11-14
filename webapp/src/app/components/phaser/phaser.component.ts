@@ -11,7 +11,6 @@ import {EditorView} from '../../models/editor-view';
 import {Globals} from '../../shared/globals';
 import {HttpClientService} from '../../services/http-client.service';
 import {StateHistoryService} from '../../shared/history/state-history.service';
-import {EntityRegistryService} from '../../shared/phaser/entities/entity-registry.service';
 import {PhaserEventsService} from '../../shared/phaser/phaser-events.service';
 import {HeightMapGeneratorService} from '../../services/height-map-generator.service';
 
@@ -36,7 +35,6 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	constructor(private element: ElementRef,
 	            private mapLoader: MapLoaderService,
 	            private globalEvents: GlobalEventsService,
-	            private entityRegistry: EntityRegistryService,
 	            private stateHistory: StateHistoryService,
 	            private phaserEventsService: PhaserEventsService,
 	            private http: HttpClientService,
@@ -66,7 +64,6 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		game.time.advancedTiming = true;
 		this.game['StateHistoryService'] = this.stateHistory;
 		this.game['MapLoaderService'] = this.mapLoader;
-		this.game['EntityRegistryService'] = this.entityRegistry;
 		this.game['PhaserEventsService'] = this.phaserEventsService;
 		this.game['GlobalEventsService'] = this.globalEvents;
 		

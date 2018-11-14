@@ -1,6 +1,6 @@
-import {CCEntity, InputEvents, ScaleSettings} from './cc-entity';
-import {Point, Point3} from '../../../models/cross-code-map';
-import {Helper} from '../helper';
+import {CCEntity, InputEvents, ScaleSettings} from '../cc-entity';
+import {Point, Point3} from '../../../../models/cross-code-map';
+import {Helper} from '../../helper';
 
 export interface ScalablePropDef {
 	baseSize: Point3;
