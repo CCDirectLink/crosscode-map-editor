@@ -103,7 +103,6 @@ export class PhaserComponent implements OnInit, OnDestroy {
 				this.tileDrawer.activate();
 				this.tileDrawer.selectLayer(this.mapLoader.selectedLayer.getValue(), this.tileMap);
 				this.entityManager.deactivate();
-				console.log(this.game.world.children);
 			} else if (view === EditorView.Entities) {
 				this.tileDrawer.selectLayer(null);
 				this.tileDrawer.deactivate();
@@ -156,12 +155,6 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	render() {
 		// expensive call, use only for debugging
 		this.game.debug.text(this.game.time.fps.toString(), 2, 14, '#00ff00');
-		
-		// this.fpsLogCounter++;
-		// if (this.fpsLogCounter > 60) {
-		// 	this.fpsLogCounter %= 60;
-		// 	console.log(this.game.time.fps);
-		// }
 		
 		this.game.debug.geom(this.border, '#F00', false);
 	}

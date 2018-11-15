@@ -119,6 +119,12 @@ export class Helper {
 		game.load.start();
 	}
 	
+	public static getJsonPromise(key: string): any {
+		return new Promise(resolve => {
+			this.getJson(key, json => resolve(json));
+		});
+	}
+	
 	/**
 	 * every key listener should check this method and only proceed when
 	 * false is returned, so the user can write everything into input fields

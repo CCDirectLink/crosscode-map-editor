@@ -1,5 +1,6 @@
 import {CCEntity, ScaleSettings} from '../cc-entity';
 import {Helper} from '../../helper';
+import {Point3} from '../../../../models/cross-code-map';
 
 interface CharacterSettings {
 	jsonINSTANCE?: string;
@@ -13,6 +14,32 @@ interface CharacterSettings {
 	runSrc?: string;
 	runX?: number;
 	runY?: number;
+	walkAnimSet?: {
+		normal: {
+			idle: string,
+			move: string
+		}
+	};
+	
+	animSheet?: {
+		namedSheets: {
+			move?: NamedSheet
+			walk?: NamedSheet
+		};
+		DOCTYPE?: string;
+		shapeType?: string;
+		offset?: Point3;
+		SUB?: any;
+	};
+}
+
+interface NamedSheet {
+	src: string;
+	width: number;
+	height: number;
+	xCount: number;
+	offX: number;
+	offY: number;
 }
 
 export class NPC extends CCEntity {
@@ -43,7 +70,7 @@ export class NPC extends CCEntity {
 		}
 	};
 	
-	private NPCAvatarSimple = {
+	private NPCSimple = {
 		width: 32,
 		height: 40,
 		sprites: {
@@ -69,40 +96,89 @@ export class NPC extends CCEntity {
 		return undefined;
 	}
 	
-	protected setupType(settings: any) {
-		const splitted = settings.characterName.split('.');
-		const name = splitted.splice(-1, 1)[0];
-		Helper.getJson('data/characters/' + splitted.join('/') + '/' + name, (charSettings: CharacterSettings) => {
-			if (charSettings.jsonINSTANCE === 'NPCAvatarSimple') {
-				const img = charSettings.img;
-				this.anchor.set(0.5, 1);
-				const state = settings.npcStates[0] || {};
-				const npc = this.NPCAvatarSimple;
-				const config = npc.sprites[state.config];
-				if (!config) {
-					throw new Error('unknown NPCAvatarSimple config: ' + state.config);
-				}
-				const offset = config[state.face] || config.default;
-				
-				this.entitySettings = <any>{
-					sheets: {
-						fix: [{
-							gfx: charSettings.img,
-							x: npc.width * offset.x + charSettings.x,
-							y: npc.height * offset.y + charSettings.y,
-							offsetY: offset.offsetY || 0,
-							w: npc.width,
-							h: npc.height,
-							flipX: offset.flipX || false
-						}]
-					},
-					baseSize: {x: 12, y: 12, z: 28}
-				};
-				this.updateSettings();
-			} else {
-				console.error('npc type not implemented with name ' + settings.name);
-				this.generateNoImageType(255, 0, 0, 1);
+	protected async setupType(settings: any) {
+		
+		const charSettings: CharacterSettings = await Helper.getJsonPromise(this.getPath('data/characters/', settings.characterName));
+		const state = settings.npcStates[0] || {};
+		const npc = this.NPCSimple;
+		let config = npc.sprites[state.config];
+		if (!config) {
+			console.error('unknown npc config: [' + state.config + '], using default');
+			console.error('char settings', charSettings);
+			config = npc.sprites.normal;
+		}
+		const offset = config[state.face] || config.default;
+		
+		let width = npc.width;
+		let height = npc.height;
+		let src = charSettings.img;
+		let x = charSettings.x || 0;
+		let y = charSettings.y || 0;
+		if (charSettings.animSheet) {
+			if (!charSettings.animSheet.namedSheets) {
+				// sheet is only reference
+				charSettings.animSheet = await Helper.getJsonPromise(this.getPath('data/animations/', charSettings.animSheet));
 			}
-		});
+			
+			const sheets = charSettings.animSheet.namedSheets;
+			let move = sheets.move || sheets.walk;
+			if (!move) {
+				let key;
+				
+				if (charSettings.walkAnimSet) {
+					// try to get sheet through walkAnimSet
+					const animKey = charSettings.walkAnimSet.normal.idle;
+					for (let i = 0; i < charSettings.animSheet.SUB.length; i++) {
+						const sub = charSettings.animSheet.SUB[i];
+						const privateKey = sub.sheet;
+						if (!sub.SUB) {
+							continue;
+						}
+						if (sub.SUB.some(sheet => sheet.name === animKey)) {
+							key = privateKey;
+							break;
+						}
+					}
+				}
+				
+				if (!key) {
+					// no key found, use anything so the npc is not invisible
+					key = Object.keys(sheets)[0];
+					console.warn('key not found, used [' + key + '] instead', charSettings);
+				}
+				move = sheets[key];
+			}
+			
+			width = move.width || width;
+			height = move.height || height;
+			src = move.src || src;
+			x = move.offX || x;
+			y = move.offY || y;
+		}
+		
+		this.anchor.set(0.5, 1);
+		this.entitySettings = <any>{
+			sheets: {
+				fix: [{
+					gfx: src,
+					x: width * offset.x + x,
+					y: height * offset.y + y,
+					offsetX: offset.offsetX || 0,
+					offsetY: offset.offsetY || 0,
+					w: width,
+					h: height,
+					flipX: offset.flipX || false,
+					flipY: offset.flipY || false
+				}]
+			},
+			baseSize: {x: 12, y: 12, z: 28}
+		};
+		this.updateSettings();
+	}
+	
+	private getPath(prefix, path): string {
+		const split = path.split('.');
+		const name = split.splice(-1, 1)[0];
+		return prefix + split.join('/') + '/' + name;
 	}
 }
