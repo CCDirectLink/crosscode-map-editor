@@ -43,23 +43,8 @@ $listItemHeight: 28px;
 
 .history-list-icon {
 	padding-right: 8px;
-
 	$size: 18px;
 	font-size: $size;
 	height: $size !important;
 	width: $size !important;
-}
-
-// scroll bar styles
-.scroll-bar-style::-webkit-scrollbar-track {
-	background-color: mat-color($accent, 800);
-}
-
-.scroll-bar-style::-webkit-scrollbar {
-	width: 8px;
-	background-color: #F5F5F5;
-}
-
-.scroll-bar-style::-webkit-scrollbar-thumb {
-	background-color: mat-color($accent, 600);
 }

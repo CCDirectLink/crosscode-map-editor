@@ -1,6 +1,6 @@
 <app-floating-window [right]="'4px'" [top]="'4px'" [title]="'History'" [width]="'180px'" [height]="'180px'">
 	<div class="history-container" fxLayout="column">
-		<div fxFlex="1 1 auto" class="history-list scroll-bar-style small-list" #listContainer>
+		<div fxFlex="1 1 auto" class="history-list small-dark-scrollbar small-list" #listContainer>
 			<button mat-button fxLayout="row" class="history-list-item"
 			        [ngClass]="{'item-selected': state === selected.state}"
 			        *ngFor="let state of states; let i = index"

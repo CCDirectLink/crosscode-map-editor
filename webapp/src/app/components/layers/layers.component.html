@@ -1,5 +1,5 @@
 <div fxLayout="column" class="layers-tab-container">
-	<mat-nav-list fxFlex="1 1 auto" class="small-list" cdkDropList (cdkDropListDropped)="drop($event)">
+	<mat-nav-list fxFlex="1 1 auto" class="small-list dark-scrollbar" cdkDropList (cdkDropListDropped)="drop($event)">
 		<mat-list-item *ngFor="let layer of tilemap.layers" (click)="selectLayer(layer)"
 		               [ngClass]="{'layer-hidden': !layer.visible}" cdkDrag>
 			<div *cdkDragPreview></div>

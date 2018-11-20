@@ -158,6 +158,9 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 				entity.setSelected(true);
 				this.selectedEntities.push(entity);
 			}
+			if (this.selectedEntities.length === 1) {
+				this.globalEvents.selectedEntity.next(entity);
+			}
 		} else if (this.selectedEntities[0] !== entity || this.selectedEntities.length !== 1) {
 			this.globalEvents.selectedEntity.next(entity);
 		}
