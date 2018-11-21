@@ -1,0 +1,28 @@
+{
+	"reactType": [
+		"PUSHABLE",
+		"FIXED_POS",
+		"FIXED_FACE"
+	],
+	"face": [
+		"NORTH",
+		"EAST",
+		"SOUTH",
+		"WEST",
+		"NORTH_EAST",
+		"SOUTH_EAST",
+		"SOUTH_WEST",
+		"NORTH_WEST"
+	],
+	"hidde": [
+		true,
+		false
+	],
+	"config": [
+		"normal",
+		"sit",
+		"sitFloat",
+		"sit2",
+		"sit2Float"
+	]
+}

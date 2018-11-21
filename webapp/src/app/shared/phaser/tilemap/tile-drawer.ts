@@ -47,6 +47,7 @@ export class TileDrawer extends Phaser.Plugin {
 		this.transparentKey = game.input.keyboard.addKey(Phaser.Keyboard.R);
 		this.visibilityKey = game.input.keyboard.addKey(Phaser.Keyboard.V);
 		
+		this.game.input.keyboard.removeKeyCapture(this.toggleTilemapKey.keyCode);
 		this.game.input.keyboard.removeKeyCapture(this.fillKey.keyCode);
 		this.game.input.keyboard.removeKeyCapture(this.transparentKey.keyCode);
 		
@@ -186,12 +187,11 @@ export class TileDrawer extends Phaser.Plugin {
 	deactivate() {
 		this.keyBindings.forEach(binding => binding.detach());
 		this.keyBindings = [];
-		this.game.input.keyboard.removeKeyCapture(this.toggleTilemapKey.keyCode);
 	}
 	
 	activate() {
 		this.keyBindings.push(this.game.input.mousePointer.leftButton.onUp.add(() => {
-			const stateHistory = <StateHistoryService> this.game['StateHistoryService'];
+			const stateHistory = <StateHistoryService>this.game['StateHistoryService'];
 			
 			stateHistory.saveState({
 				name: 'Tile Drawer',
@@ -200,7 +200,11 @@ export class TileDrawer extends Phaser.Plugin {
 		}));
 		this.keyBindings.push(this.game.input.mousePointer.rightButton.onDown.add(() => this.onMouseRightDown()));
 		this.keyBindings.push(this.game.input.mousePointer.rightButton.onUp.add(() => this.onMouseRightUp()));
-		this.keyBindings.push(this.toggleTilemapKey.onDown.add(() => this.toggleTileSelectorMap()));
+		this.keyBindings.push(this.toggleTilemapKey.onDown.add(() => {
+			if (!Helper.isInputFocused()) {
+				this.toggleTileSelectorMap();
+			}
+		}));
 		this.keyBindings.push(this.fillKey.onDown.add(() => {
 			if (!Helper.isInputFocused()) {
 				this.fill();
@@ -218,8 +222,6 @@ export class TileDrawer extends Phaser.Plugin {
 				events.toggleVisibility.next();
 			}
 		}));
-		
-		this.game.input.keyboard.addKeyCapture(this.toggleTilemapKey.keyCode);
 	}
 	
 	private setLayerAlpha() {

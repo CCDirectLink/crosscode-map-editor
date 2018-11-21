@@ -9,6 +9,10 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {LevelWidgetComponent} from './level-widget/level-widget.component';
+import {NPCStatesWidgetComponent} from './npc-states-widget/npc-states-widget.component';
+import {NpcStatesComponent} from './npc-states-widget/npc-states/npc-states.component';
+import {SharedModule} from '../shared.module';
+import {AngularDraggableModule} from 'angular2-draggable';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -17,6 +21,8 @@ const COMPONENTS = [
 	JsonWidgetComponent,
 	LevelWidgetComponent,
 	Vec2WidgetComponent,
+	NPCStatesWidgetComponent,
+	NpcStatesComponent
 ];
 
 @NgModule({
@@ -25,6 +31,7 @@ const COMPONENTS = [
 		FlexLayoutModule,
 		CommonModule,
 		MaterialModule,
+		AngularDraggableModule,
 	],
 	declarations: COMPONENTS,
 	entryComponents: COMPONENTS,

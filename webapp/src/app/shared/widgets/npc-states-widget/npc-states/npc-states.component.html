@@ -1,0 +1,75 @@
+<div class="container mat-elevation-z8" ngDraggable [handle]="handle" fxLayout="column">
+	<div fxFlex="0 0 auto" #handle class="toolbar" fxLayout="row" fxLayoutAlign="center">
+		<div class="buttons" fxFlexAlign="center" fxFlex>
+			<button mat-stroked-button>New Page</button>
+			<button mat-stroked-button>Copy Page</button>
+			<button mat-stroked-button>Paste Page</button>
+			<button mat-stroked-button>Remove Page</button>
+		</div>
+	</div>
+	<mat-tab-group fxFlex="auto" id="groupTabGroup" animationDuration="0ms" (selectedIndexChange)="selectTab($event)">
+		<mat-tab class="stretched-tabs" *ngFor="let state of states; let index = index" [label]="index + 1">
+			<div class="tab-content" fxLayout="column">
+				<div fxFlex="0 0 54px" fxLayout="row">
+					<div fxLayout="row" fxFlexAlign="center" fxFlex="auto">
+						<label for="condition" class="condition-label" fxFlexAlign="center">condition:</label>
+						<input class="default-input condition-padding" id="condition" [(ngModel)]="state.condition">
+						<div class="condition-icon">
+							<!--TODO: search icon-->
+						</div>
+					</div>
+				</div>
+				<div class="content-body" fxFlex="auto" fxLayout="row">
+					<div class="content-left" fxFlex="0 0 200px" fxLayout="column">
+						
+						<!-- Position -->
+						<div fxFlex="0 0 auto">
+							<div fxLayout="row" class="attribute">
+								<mat-checkbox color="primary" [(ngModel)]="state.position.active">Position
+								</mat-checkbox>
+							</div>
+						</div>
+						<div fxFlex="0 1 auto" *ngIf="state.position.active">
+							<div fxLayout="row" class="property-container">
+								<label fxFlexAlign="center" class="pos-label">Pos:</label>
+								
+								<label for="posx" class="property-name-small">X:</label>
+								<input id="posx" type="number" class="default-input small-input"
+								       [(ngModel)]="state.position.x">
+								
+								<label for="posy" class="property-name-small">Y:</label>
+								<input id="posy" type="number" class="default-input small-input"
+								       [(ngModel)]="state.position.y">
+							</div>
+							
+							<div fxLayout="row" class="property-container">
+								<label fxFlexAlign="center" class="pos-label" for="level">Level:</label>
+								
+								<input id="level" type="number" class="default-input small-input"
+								       [(ngModel)]="state.position.lvl">
+								
+								<label for="offset" class="property-name-small">+</label>
+								<input disabled id="offset" type="number" class="default-input small-input">
+							</div>
+							<br><br>
+						</div>
+						
+						<!-- Other -->
+						<div *ngFor="let prop of props | keyvalue" fxLayout="row" class="attribute" fxFlex="0 0 auto">
+							<span fxFlex="0 0 87px" fxFlexAlign="center">{{prop.key}}: </span>
+							<select class="default-input select-input" [(ngModel)]="state[prop.key]">
+								<option *ngFor="let item of prop.value" [value]="item">
+									{{item}}
+								</option>
+							</select>
+						</div>
+					</div>
+					<div class="content-right" fxFlex="1 1 auto" fxLayout="column">
+						<textarea class="event-block dark-scrollbar" fxFlex="1 1 auto">{{state.event | json}}</textarea>
+						<div class="button-block" fxFlex="0 0 54px">button <br> button2</div>
+					</div>
+				</div>
+			</div>
+		</mat-tab>
+	</mat-tab-group>
+</div>
