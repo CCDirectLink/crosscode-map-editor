@@ -4,15 +4,13 @@ import {
 	Input,
 	OnChanges, OnDestroy,
 	OnInit,
-	SimpleChanges,
-	ViewChild,
-	ViewContainerRef
+	SimpleChanges
 } from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
-import {ModalDirective} from '../../modal.directive';
-import {StringWidgetComponent} from '../string-widget/string-widget.component';
 import {NpcStatesComponent} from './npc-states/npc-states.component';
-import {ModalService} from '../../../services/modal.service';
+import {OverlayService} from '../../overlay/overlay.service';
+import {OverlayRefControl} from '../../overlay/overlay-ref-control';
+import {Overlay} from '@angular/cdk/overlay';
 
 export interface NPCState {
 	reactType: string;
@@ -41,16 +39,16 @@ export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, 
 	@Input() custom = null;
 	settings: any;
 	npcStates: NPCState[];
-	private ref: ViewContainerRef;
+	private ref: OverlayRefControl;
 	
 	constructor(private componentFactoryResolver: ComponentFactoryResolver,
-	            private modalService: ModalService) {
+	            private overlayService: OverlayService,
+	            private overlay: Overlay) {
 		super();
 	}
 	
 	ngOnInit() {
 		this.ngOnChanges(null);
-		this.ref = this.modalService.modalHost.viewContainerRef;
 	}
 	
 	ngOnChanges(changes: SimpleChanges): void {
@@ -59,21 +57,30 @@ export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, 
 	}
 	
 	ngOnDestroy() {
-		this.ref.clear();
+		if (this.ref) {
+			this.ref.close();
+		}
 	}
 	
 	open() {
-		this.ref.clear();
+		if (this.ref && this.ref.isOpen()) {
+			return;
+		}
+		const obj = this.overlayService.open(NpcStatesComponent, {
+			positionStrategy: this.overlay.position().global()
+				.left('28vw')
+				.top('calc(64px + 6vh / 2)')
+		});
 		
-		const componentFactory = this.componentFactoryResolver.resolveComponentFactory(NpcStatesComponent);
-		const componentRef = this.ref.createComponent(componentFactory);
-		const instance = <NpcStatesComponent>componentRef.instance;
-		instance.states = JSON.parse(JSON.stringify(this.npcStates));
-		instance.exit.subscribe(v => {
-			this.ref.clear();
+		this.ref = obj.ref;
+		
+		obj.instance.states = JSON.parse(JSON.stringify(this.npcStates));
+		
+		obj.instance.exit.subscribe(v => {
+			this.ref.close();
 			this.settings[this.key] = v;
 			this.npcStates = v;
-		}, e => this.ref.clear());
+		}, e => this.ref.close());
 	}
 	
 	

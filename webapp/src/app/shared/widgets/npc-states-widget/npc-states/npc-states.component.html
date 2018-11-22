@@ -4,7 +4,7 @@
 		<div class="buttons" fxFlexAlign="center" fxFlex>
 			<button mat-stroked-button (click)="newPage()">New Page</button>
 			<button mat-stroked-button (click)="copyPage()">Copy Page</button>
-			<button mat-stroked-button [disabled]="!clipboard" (click)="pastePage()">Paste Page</button>
+			<button mat-stroked-button (click)="pastePage()" [disabled]="!clipboard" >Paste Page</button>
 			<button mat-stroked-button (click)="removePage()">Remove Page</button>
 		</div>
 	</div>

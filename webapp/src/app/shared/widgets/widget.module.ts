@@ -11,8 +11,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {LevelWidgetComponent} from './level-widget/level-widget.component';
 import {NPCStatesWidgetComponent} from './npc-states-widget/npc-states-widget.component';
 import {NpcStatesComponent} from './npc-states-widget/npc-states/npc-states.component';
-import {SharedModule} from '../shared.module';
 import {AngularDraggableModule} from 'angular2-draggable';
+import {OverlayModule} from '@angular/cdk/overlay';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -31,6 +31,7 @@ const COMPONENTS = [
 		FlexLayoutModule,
 		CommonModule,
 		MaterialModule,
+		OverlayModule,
 		AngularDraggableModule,
 	],
 	declarations: COMPONENTS,

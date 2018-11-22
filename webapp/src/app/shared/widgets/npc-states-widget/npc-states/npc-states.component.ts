@@ -41,6 +41,9 @@ export class NpcStatesComponent implements OnInit {
 	
 	selectTab(index: number) {
 		this.currentState = this.states[index];
+		if (!this.currentState) {
+			return;
+		}
 		this.positionActive = this.currentState.position.active;
 		this.index = index;
 	}
@@ -65,12 +68,16 @@ export class NpcStatesComponent implements OnInit {
 	}
 	
 	copyPage() {
-		this.clipboard = JSON.parse(JSON.stringify(this.currentState));
+		if (!this.currentState) {
+			return;
+		}
+		
+		this.clipboard = JSON.stringify(this.currentState);
 	}
 	
 	pastePage() {
 		this.index++;
-		this.states.splice(this.index, 0, this.clipboard);
+		this.states.splice(this.index, 0, JSON.parse(this.clipboard));
 	}
 	
 	removePage() {

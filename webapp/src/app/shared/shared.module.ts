@@ -13,7 +13,6 @@ import {CommonModule} from '@angular/common';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {OffsetMapComponent} from '../components/dialogs/offset-map/offset-map.component';
 import {ModalDirective} from './modal.directive';
-import {ModalService} from '../services/modal.service';
 
 @NgModule({
 	imports: [
@@ -33,7 +32,6 @@ import {ModalService} from '../services/modal.service';
 	],
 	providers: [
 		HttpClientService,
-		ModalService,
 		MapLoaderService,
 		GlobalEventsService,
 	],

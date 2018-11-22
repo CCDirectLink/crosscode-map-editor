@@ -191,6 +191,9 @@ export class TileDrawer extends Phaser.Plugin {
 	
 	activate() {
 		this.keyBindings.push(this.game.input.mousePointer.leftButton.onUp.add(() => {
+			if (!this.layer){
+				return;
+			}
 			const stateHistory = <StateHistoryService>this.game['StateHistoryService'];
 			
 			stateHistory.saveState({
