@@ -17,6 +17,11 @@ body {
 	overflow: hidden;
 }
 
+// no scrollbars when dragging history outside
+.mat-drawer-content {
+	overflow: hidden !important;
+}
+
 .theme {
 	@include angular-material-theme($theme)
 }

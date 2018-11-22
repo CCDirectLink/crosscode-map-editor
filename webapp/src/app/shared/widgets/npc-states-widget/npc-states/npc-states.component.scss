@@ -35,17 +35,18 @@ $toolbarHeight: 54px;
 	}
 }
 
-#groupTabGroup ::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active {
-	min-width: 50px !important;
-	max-width: 50px !important;
-}
+#groupTabGroup {
+	&::ng-deep.mat-tab-label, &::ng-deep.mat-tab-label-active {
+		min-width: 50px !important;
+	}
 
-#groupTabGroup ::ng-deep.mat-tab-label-active {
-	background: mat-color($accent, 600);
-}
+	&::ng-deep.mat-tab-label-active {
+		background: mat-color($accent, 600);
+	}
 
-#groupTabGroup ::ng-deep .mat-tab-body-wrapper {
-	flex-grow: 1;
+	&::ng-deep .mat-tab-body-wrapper {
+		flex-grow: 1;
+	}
 }
 
 .content {
@@ -83,7 +84,7 @@ $toolbarHeight: 54px;
 		margin-bottom: 10px;
 	}
 
-	.pos-label{
+	.pos-label {
 		margin-right: 20px;
 	}
 }

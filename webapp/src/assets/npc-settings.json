@@ -20,6 +20,10 @@
 	],
 	"config": [
 		"normal",
+		"run",
+		"ground",
+		"groundFloat",
+		"offline",
 		"sit",
 		"sitFloat",
 		"sit2",

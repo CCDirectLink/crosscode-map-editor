@@ -12,6 +12,8 @@ import {AngularDraggableModule} from 'angular2-draggable';
 import {CommonModule} from '@angular/common';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {OffsetMapComponent} from '../components/dialogs/offset-map/offset-map.component';
+import {ModalDirective} from './modal.directive';
+import {ModalService} from '../services/modal.service';
 
 @NgModule({
 	imports: [
@@ -23,6 +25,7 @@ import {OffsetMapComponent} from '../components/dialogs/offset-map/offset-map.co
 	],
 	declarations: [
 		HostDirective,
+		ModalDirective,
 		MapSettingsComponent,
 		JsonEditorComponent,
 		FloatingWindowComponent,
@@ -30,6 +33,7 @@ import {OffsetMapComponent} from '../components/dialogs/offset-map/offset-map.co
 	],
 	providers: [
 		HttpClientService,
+		ModalService,
 		MapLoaderService,
 		GlobalEventsService,
 	],
@@ -40,6 +44,7 @@ import {OffsetMapComponent} from '../components/dialogs/offset-map/offset-map.co
 	],
 	exports: [
 		HostDirective,
+		ModalDirective,
 		MapSettingsComponent,
 		JsonEditorComponent,
 		FloatingWindowComponent,
