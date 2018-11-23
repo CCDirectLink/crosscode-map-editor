@@ -68,7 +68,7 @@ export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, 
 		}
 		const obj = this.overlayService.open(NpcStatesComponent, {
 			positionStrategy: this.overlay.position().global()
-				.left('28vw')
+				.left('23vw')
 				.top('calc(64px + 6vh / 2)')
 		});
 		

@@ -7,7 +7,7 @@ $btnWidth: 34px;
 $toolbarHeight: 54px;
 
 .container {
-	width: 50vw;
+	width: 60vw;
 	height: calc(94vh - 64px);
 	color: white;
 	background: mat-color($accent, 800);
@@ -89,10 +89,8 @@ $toolbarHeight: 54px;
 .event-block {
 	margin: 10px;
 	overflow: auto;
-	color: white;
-
-	resize: none;
-	background-color: mat-color($accent, 700);
+	$color: mat-color($accent, 800);
+	background-color: darken($color, 7%);
 }
 
 .button-block {

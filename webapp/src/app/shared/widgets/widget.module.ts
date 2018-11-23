@@ -13,6 +13,11 @@ import {NPCStatesWidgetComponent} from './npc-states-widget/npc-states-widget.co
 import {NpcStatesComponent} from './npc-states-widget/npc-states/npc-states.component';
 import {AngularDraggableModule} from 'angular2-draggable';
 import {OverlayModule} from '@angular/cdk/overlay';
+import {EventWidgetComponent} from './event-widget/event-widget.component';
+import {EventRegistryService} from './event-widget/event-registry/event-registry.service';
+import {SharedModule} from '../shared.module';
+import {EventEditorComponent} from './event-widget/event-editor/editor/event-editor.component';
+import {EventRowComponent} from './event-widget/event-editor/row/event-row.component';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -22,7 +27,10 @@ const COMPONENTS = [
 	LevelWidgetComponent,
 	Vec2WidgetComponent,
 	NPCStatesWidgetComponent,
-	NpcStatesComponent
+	NpcStatesComponent,
+	EventWidgetComponent,
+	EventEditorComponent,
+	EventRowComponent
 ];
 
 @NgModule({
@@ -33,6 +41,10 @@ const COMPONENTS = [
 		MaterialModule,
 		OverlayModule,
 		AngularDraggableModule,
+		SharedModule
+	],
+	providers: [
+		EventRegistryService
 	],
 	declarations: COMPONENTS,
 	entryComponents: COMPONENTS,

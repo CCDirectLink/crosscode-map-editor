@@ -13,6 +13,7 @@ import {CommonModule} from '@angular/common';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {OffsetMapComponent} from '../components/dialogs/offset-map/offset-map.component';
 import {ModalDirective} from './modal.directive';
+import {KeepHtmlPipe} from './keep-html.pipe';
 
 @NgModule({
 	imports: [
@@ -29,6 +30,7 @@ import {ModalDirective} from './modal.directive';
 		JsonEditorComponent,
 		FloatingWindowComponent,
 		OffsetMapComponent,
+		KeepHtmlPipe
 	],
 	providers: [
 		HttpClientService,
@@ -46,6 +48,7 @@ import {ModalDirective} from './modal.directive';
 		MapSettingsComponent,
 		JsonEditorComponent,
 		FloatingWindowComponent,
+		KeepHtmlPipe
 	]
 })
 export class SharedModule {

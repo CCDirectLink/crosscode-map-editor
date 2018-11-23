@@ -4,7 +4,7 @@
 		<div class="buttons" fxFlexAlign="center" fxFlex>
 			<button mat-stroked-button (click)="newPage()">New Page</button>
 			<button mat-stroked-button (click)="copyPage()">Copy Page</button>
-			<button mat-stroked-button (click)="pastePage()" [disabled]="!clipboard" >Paste Page</button>
+			<button mat-stroked-button (click)="pastePage()" [disabled]="!clipboard">Paste Page</button>
 			<button mat-stroked-button (click)="removePage()">Remove Page</button>
 		</div>
 	</div>
@@ -50,7 +50,7 @@
 							<div fxLayout="row" class="property-container">
 								<label fxFlexAlign="center" class="pos-label" for="level">Level:</label>
 								
-								<input id="level" type="number" class="default-input small-input"
+								<input id="level" type="number" class="default-input small-input" min="0"
 								       [(ngModel)]="state.position.lvl">
 								
 								<label for="offset" class="property-name-small">+</label>
@@ -76,8 +76,8 @@
 						</div>
 					</div>
 					<div class="content-right" fxFlex="1 1 auto" fxLayout="column">
-						<!-- TODO: insert proper event editing -->
-						<textarea class="event-block dark-scrollbar" fxFlex="1 1 auto">{{state.event | json}}</textarea>
+						<app-event-editor class="event-block dark-scrollbar" fxFlex="auto" fxLayout="column"
+						                  [eventData]="state.event"></app-event-editor>
 						
 						<!-- buttons -->
 						<div class="button-block" fxFlex="0 0 54px" fxLayout="row">

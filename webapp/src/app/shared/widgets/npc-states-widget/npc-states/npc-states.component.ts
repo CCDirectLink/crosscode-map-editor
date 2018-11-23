@@ -33,7 +33,7 @@ export class NpcStatesComponent implements OnInit {
 					lvl: 0,
 					active: false
 				};
-			} else {
+			} else if (state.position.active !== false) {
 				state.position.active = true;
 			}
 		});

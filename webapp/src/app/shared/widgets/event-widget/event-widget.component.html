@@ -1,0 +1,6 @@
+<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
+	<label class="property-name">{{displayName || key}}:</label>
+	
+	<label [for]="key" class="property-name-small">X:</label>
+	<input [id]="key" class="default-input" value="EVENT" (click)="openEvent()">
+</div>

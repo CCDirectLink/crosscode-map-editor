@@ -1,0 +1,40 @@
+export interface EventType {
+	type: string;
+}
+
+export abstract class AbstractEvent<T extends EventType> {
+	
+	public infos: string[] = [];
+	public hideGreaterSign = [];
+	public children = [];
+	
+	constructor(public data: T) {
+	}
+	
+	public abstract getAttributes(): { [key: string]: any };
+	
+	public abstract updateInfo();
+	
+	protected combineStrings(...values): string {
+		return values.join(' ');
+	}
+	
+	protected getPropString(key: string, value?: string): string {
+		if (!value) {
+			value = this.data[key];
+		}
+		return `<span style="color: #858585">${key}</span>: ${value}`;
+	}
+	
+	protected getTypeString(color: string): string {
+		return this.getBoldString(this.data.type, color);
+	}
+	
+	protected getBoldString(text: string, color: string): string {
+		return `<b style="color: ${color}">${text}</b>`;
+	}
+	
+	protected getColoredString(text: string, color: string): string {
+		return `<span style="color: ${color}">${text}</span>`;
+	}
+}

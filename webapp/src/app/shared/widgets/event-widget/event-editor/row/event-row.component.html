@@ -1,0 +1,11 @@
+<button class="event-row">
+	<div *ngFor="let info of data.infos; let index = index">
+		<div class="event-row-text">
+			<span style="color: #b8b8b8" *ngIf="!data.hideGreaterSign[index]">> </span> <span class="no-click" [innerHTML]="info | keepHtml"></span>
+		</div>
+		<div *ngIf="data.children[index]" class="child-offset">
+			<app-event-row [data]="child" *ngFor="let child of data.children[index]"></app-event-row>
+		</div>
+	</div>
+</button>
+
