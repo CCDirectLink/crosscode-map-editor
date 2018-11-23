@@ -37,6 +37,7 @@ export class NpcStatesComponent implements OnInit {
 				state.position.active = true;
 			}
 		});
+		this.selectTab(this.index);
 	}
 	
 	selectTab(index: number) {

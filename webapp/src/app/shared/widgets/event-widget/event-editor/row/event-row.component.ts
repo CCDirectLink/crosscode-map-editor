@@ -1,14 +1,14 @@
-import {Component, OnChanges, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import {EventRegistryService} from '../../event-registry/event-registry.service';
-import {AbstractEvent} from '../../event-registry/abstract-event';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 
 @Component({
 	selector: 'app-event-row',
 	templateUrl: './event-row.component.html',
 	styleUrls: ['./event-row.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventRowComponent implements OnInit {
-	@Input() data;
+	@Input() data = {};
+	@Input() isLast = false;
 	
 	constructor() {
 	}

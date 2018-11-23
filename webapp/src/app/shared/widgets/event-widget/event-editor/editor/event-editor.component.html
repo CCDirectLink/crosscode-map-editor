@@ -1,6 +1,4 @@
-<div class="event-container" fxFlex="auto" fxLayout="column">
-	<app-event-row class="event-row-level1" fxFlex="0 0 auto" [data]="data" *ngFor="let data of workingData"></app-event-row>
-	<button class="event-row last-row" fxFlex="auto">
-		<span class="last-row-span" style="color: #b8b8b8">></span>
-	</button>
+<div fxFlex="auto" fxLayout="column">
+	<app-event-row fxFlex="0 0 auto" [data]="data" *ngFor="let data of workingData" [isLast]="false"></app-event-row>
+	<app-event-row [isLast]="true"></app-event-row>
 </div>

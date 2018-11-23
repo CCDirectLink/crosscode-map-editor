@@ -11,10 +11,6 @@ $config: mat-typography-config();
 .event-row {
 	user-select: none;
 
-	&:nth-child(even) {
-		background-color: rgba(255, 255, 255, 0.05);
-	}
-
 	&:focus {
 		border: none;
 		outline: none;
