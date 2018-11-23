@@ -26,7 +26,7 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 		
 		this.data.options.forEach((option, index) => {
 			this.children[index] = {
-				subTitle: this.getColoredString('Choice. ' + option.label.en_US, '#838383'),
+				title: this.getColoredString('Choice. ' + option.label.en_US, '#838383'),
 				events: this.data[index],
 				hideGreaterSign: true
 			};

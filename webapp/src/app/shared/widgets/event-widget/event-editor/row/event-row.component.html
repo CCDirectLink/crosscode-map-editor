@@ -3,21 +3,13 @@
 	<!-- Children -->
 	<div *ngFor="let child of data.children">
 		<!-- Title -->
-		<app-row-text [text]="child.title">
+		<app-row-text [text]="child.title" [hideGreaterSign]="child.hideGreaterSign">
 			<div class="child-offset">
+				<!-- every children -->
+				<app-event-row [data]="event" *ngFor="let event of child.events"></app-event-row>
 				
-				<!-- Sub title -->
-				<app-row-text [text]="child.subTitle"
-				              [hideGreaterSign]="child.hideGreaterSign">
-					<div [ngClass]="{'child-offset': child.subTitle}">
-						
-						<!-- every children -->
-						<app-event-row [data]="event" *ngFor="let event of child.events"></app-event-row>
-						
-						<!-- extra line for adding new events -->
-						<app-row-text text="  "></app-row-text>
-					</div>
-				</app-row-text>
+				<!-- extra line for adding new events -->
+				<app-row-text text="  "></app-row-text>
 			</div>
 		</app-row-text>
 	</div>

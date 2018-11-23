@@ -7,7 +7,6 @@ export abstract class AbstractEvent<T extends EventType> {
 	public info = '---';
 	public children: {
 		title?: string,
-		subTitle?: string,
 		hideGreaterSign?: boolean
 		events: AbstractEvent<any>[]
 	}[] = [];
