@@ -13,8 +13,8 @@ export class AddMsgPerson extends AbstractEvent<AddMsgPersonData> {
 		return {};
 	}
 	
-	updateInfo() {
-		this.infos[0] = this.combineStrings(
+	update() {
+		this.info = this.combineStrings(
 			this.getTypeString('#7ea3ff'),
 			this.getPropString('person', this.data.person.person) + '>' + this.data.person.expression,
 			this.getPropString('side'),

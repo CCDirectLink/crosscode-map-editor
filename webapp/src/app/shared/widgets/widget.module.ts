@@ -18,6 +18,7 @@ import {EventRegistryService} from './event-widget/event-registry/event-registry
 import {SharedModule} from '../shared.module';
 import {EventEditorComponent} from './event-widget/event-editor/editor/event-editor.component';
 import {EventRowComponent} from './event-widget/event-editor/row/event-row.component';
+import {RowTextComponent} from './event-widget/event-editor/row-text/row-text.component';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -30,7 +31,11 @@ const COMPONENTS = [
 	NpcStatesComponent,
 	EventWidgetComponent,
 	EventEditorComponent,
-	EventRowComponent
+];
+
+const PRIVATE_COMPONENTS = [
+	EventRowComponent,
+	RowTextComponent,
 ];
 
 @NgModule({
@@ -46,7 +51,7 @@ const COMPONENTS = [
 	providers: [
 		EventRegistryService
 	],
-	declarations: COMPONENTS,
+	declarations: [COMPONENTS, PRIVATE_COMPONENTS],
 	entryComponents: COMPONENTS,
 	exports: COMPONENTS
 })

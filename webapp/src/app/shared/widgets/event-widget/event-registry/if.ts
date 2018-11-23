@@ -12,16 +12,22 @@ export class If extends AbstractEvent<IfData> {
 		return {};
 	}
 	
-	updateInfo() {
-		this.infos[0] = this.combineStrings(
+	update() {
+		this.info = this.combineStrings(
 			this.getTypeString('#ffffff'),
 			this.getPropString('condition')
 		);
-		this.children[0] = this.data.thenStep;
+		this.children[0] = {
+			events: this.data.thenStep
+		};
 		if (this.data.withElse) {
-			this.infos[1] = this.getBoldString('ELSE', '#ffffff');
-			this.children[1] = this.data.elseStep;
+			this.children[1] = {
+				title: this.getBoldString('ELSE', '#ffffff'),
+				events: this.data.elseStep
+			};
 		}
+		
+		console.log('IF', this);
 	}
 	
 }

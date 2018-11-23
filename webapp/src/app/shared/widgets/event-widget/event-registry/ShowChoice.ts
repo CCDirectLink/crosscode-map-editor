@@ -18,18 +18,19 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 		return {};
 	}
 	
-	updateInfo() {
-		this.data.options.forEach((option, index) => {
-			this.infos[index + 1] = this.getColoredString('Choice. ' + option.label.en_US, '#838383');
-			this.children[index + 1] = this.data[index];
-			this.hideGreaterSign[index + 1] = true;
-		});
-		console.log(this.children);
-		
-		this.infos[0] = this.combineStrings(
+	update() {
+		this.info = this.combineStrings(
 			this.getTypeString('#7ea3ff'),
 			this.getPropString('person', this.data.person.person + '>' + this.data.person.expression)
 		);
+		
+		this.data.options.forEach((option, index) => {
+			this.children[index] = {
+				subTitle: this.getColoredString('Choice. ' + option.label.en_US, '#838383'),
+				events: this.data[index],
+				hideGreaterSign: true
+			};
+		});
 	}
 	
 }

@@ -1,0 +1,7 @@
+<button class="event-row-text event-row" (click)="click()">
+	<div *ngIf="text">
+		<span style="color: #b8b8b8" *ngIf="!hideGreaterSign">> </span>
+		<span class="no-click" [innerHTML]="text | keepHtml"></span>
+	</div>
+	<ng-content></ng-content>
+</button>

@@ -1,6 +1,6 @@
 <div class="event-container dark-scrollbar" fxFlex="auto">
 	<div class="event-inner-container" fxLayout="column">
-		<app-event-row fxFlex="0 0 auto" [data]="data" *ngFor="let data of workingData" [isLast]="false"></app-event-row>
-		<app-event-row [isLast]="true"></app-event-row>
+		<app-event-row fxFlex="0 0 auto" [data]="data" *ngFor="let data of workingData"></app-event-row>
+		<app-event-row [data]="{info: ' '}"></app-event-row>
 	</div>
 </div>

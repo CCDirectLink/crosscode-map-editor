@@ -38,7 +38,7 @@ export class EventEditorComponent implements OnInit {
 			});
 		}
 		
-		instance.updateInfo();
+		instance.update();
 		
 		return instance;
 	}

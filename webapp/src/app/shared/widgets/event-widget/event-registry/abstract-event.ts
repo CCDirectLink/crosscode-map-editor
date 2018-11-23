@@ -4,16 +4,20 @@ export interface EventType {
 
 export abstract class AbstractEvent<T extends EventType> {
 	
-	public infos: string[] = [];
-	public hideGreaterSign = [];
-	public children = [];
+	public info = '---';
+	public children: {
+		title?: string,
+		subTitle?: string,
+		hideGreaterSign?: boolean
+		events: AbstractEvent<any>[]
+	}[] = [];
 	
 	constructor(public data: T) {
 	}
 	
 	public abstract getAttributes(): { [key: string]: any };
 	
-	public abstract updateInfo();
+	public abstract update();
 	
 	protected combineStrings(...values): string {
 		return values.join(' ');
