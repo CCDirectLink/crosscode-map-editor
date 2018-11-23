@@ -88,9 +88,6 @@ $toolbarHeight: 54px;
 
 .event-block {
 	margin: 10px;
-	overflow: auto;
-	$color: mat-color($accent, 800);
-	background-color: darken($color, 7%);
 }
 
 .button-block {

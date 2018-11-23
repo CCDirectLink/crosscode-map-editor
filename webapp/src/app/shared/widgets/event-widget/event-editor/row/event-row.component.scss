@@ -5,9 +5,6 @@ $accent: map-get($theme, accent);
 
 $config: mat-typography-config();
 
-.event-container {
-}
-
 .event-row {
 	user-select: none;
 
@@ -24,7 +21,8 @@ $config: mat-typography-config();
 }
 
 .event-row-text {
-	padding: 4px 4px 4px 6px;
+	padding-left: 6px;
+	line-height: 26px;
 }
 
 .child-offset {
