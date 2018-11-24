@@ -6,23 +6,12 @@ import {AbstractWidget} from '../abstract-widget';
 	templateUrl: './event-widget.component.html',
 	styleUrls: ['./event-widget.component.scss', '../widget.scss']
 })
-export class EventWidgetComponent extends AbstractWidget implements OnInit, OnChanges {
+export class EventWidgetComponent extends AbstractWidget {
 
-	@Input() custom = null;
 	@Input() displayName;
-	
-	settings;
 
 	constructor() {
 		super();
-	}
-
-	ngOnInit() {
-		this.ngOnChanges(null);
-	}
-	
-	ngOnChanges(changes: SimpleChanges) {
-		this.settings = this.custom || this.entity.details.settings;
 	}
 	
 	openEvent() {

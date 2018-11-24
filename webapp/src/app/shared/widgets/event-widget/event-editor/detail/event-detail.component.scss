@@ -1,0 +1,39 @@
+@import "theme";
+
+$primary: map-get($theme, primary);
+$accent: map-get($theme, accent);
+
+.detail-container {
+	overflow-y: auto;
+	overflow-x: hidden;
+	width: 300px;
+	max-height: 78vh;
+	color: white;
+	background-color: mat-color($accent, 800);
+}
+
+.content {
+	padding: 16px 16px 16px 16px;
+}
+
+.header {
+	user-select: none;
+	text-align: center;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: mat-color($accent, 900);
+
+	& h2 {
+		margin-bottom: 0;
+	}
+}
+.ng-draggable {
+	cursor: move;
+}
+
+.button-row {
+	padding-top: 16px;
+	& button{
+		margin-left: 16px;
+	}
+}

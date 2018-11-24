@@ -1,0 +1,20 @@
+<div class="detail-container mat-elevation-z8" ngDraggable [handle]="handle" fxLayout="column"
+     [@slideContent]="animState">
+	<div #handle class="header">
+		<h2 class="mat-title">{{event.data.type}}</h2>
+	</div>
+	<div class="content">
+		<div *ngIf="warning">
+			<span>WARNING: type cannot be changed</span>
+			<br><br>
+		</div>
+		<ng-template appHost></ng-template>
+		<div class="button-row" fxLayout="row" fxLayoutAlign="end">
+			<button mat-stroked-button (click)="cancel()">Cancel</button>
+			<button mat-stroked-button (click)="save()">Save</button>
+		</div>
+	</div>
+
+
+</div>
+

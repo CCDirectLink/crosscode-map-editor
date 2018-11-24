@@ -8,8 +8,24 @@ interface ShowMsgData extends EventType {
 }
 
 export class ShowMsg extends AbstractEvent<ShowMsgData> {
+	private attributes = {
+		person: {
+			type: 'PersonExpression',
+			description: 'Talking person'
+		},
+		message: {
+			type: 'LangLabel',
+			description: 'Message to display',
+			hs: true
+		},
+		autoContinue: {
+			type: 'Boolean',
+			description: 'Automatically continue after message'
+		}
+	};
+	
 	getAttributes() {
-		return {};
+		return this.attributes;
 	}
 	
 	update() {

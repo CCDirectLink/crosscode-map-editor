@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {ApplicationRef, ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {AbstractEvent} from '../../event-registry/abstract-event';
 
 @Component({

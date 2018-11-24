@@ -7,27 +7,16 @@ import {Point} from '../../../models/cross-code-map';
 	templateUrl: './vec2-widget.component.html',
 	styleUrls: ['./vec2-widget.component.scss', '../widget.scss']
 })
-export class Vec2WidgetComponent extends AbstractWidget implements OnInit, OnChanges {
-
+export class Vec2WidgetComponent extends AbstractWidget {
+	
 	@Input() step = 1;
-	@Input() custom = null;
 	@Input() minSize: Point = {x: -9999, y: -9999};
 	@Input() enableX = true;
 	@Input() enableY = true;
 	@Input() displayName;
 	
-	settings;
-
 	constructor() {
 		super();
-	}
-
-	ngOnInit() {
-		this.ngOnChanges(null);
-	}
-	
-	ngOnChanges(changes: SimpleChanges): void {
-		this.settings = this.custom || this.entity.details.settings;
 	}
 	
 	setVal(key, val) {
@@ -36,5 +25,5 @@ export class Vec2WidgetComponent extends AbstractWidget implements OnInit, OnCha
 		setting[key] = Math.max(val, this.minSize[key]);
 		this.updateType();
 	}
-
+	
 }

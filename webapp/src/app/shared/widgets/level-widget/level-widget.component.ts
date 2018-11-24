@@ -11,9 +11,7 @@ import {Subscription} from 'rxjs';
 })
 export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDestroy, OnChanges {
 	
-	@Input() custom = null;
 	@Input() displayName;
-	settings;
 	map;
 	private subscription: Subscription;
 	
@@ -22,16 +20,8 @@ export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDe
 		this.subscription = this.maploader.map.subscribe(map => this.map = map);
 	}
 	
-	ngOnInit() {
-		this.ngOnChanges(null);
-	}
-	
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe();
-	}
-	
-	ngOnChanges(changes: SimpleChanges): void {
-		this.settings = this.custom || this.entity.details.settings;
 	}
 	
 	setLevel(level: number) {

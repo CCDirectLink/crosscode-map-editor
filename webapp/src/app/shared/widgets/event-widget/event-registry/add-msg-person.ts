@@ -2,15 +2,44 @@ import {AbstractEvent, EventType} from './abstract-event';
 import {Person} from '../../../../models/events';
 
 interface AddMsgPersonData extends EventType {
+	person: Person;
+	name: string;
 	side: string;
 	order: number;
 	clearSide: boolean;
-	person: Person;
 }
 
 export class AddMsgPerson extends AbstractEvent<AddMsgPersonData> {
+	private attributes = {
+		person: {
+			type: 'PersonExpression',
+			description: 'Person + Expression to add'
+		},
+		name: {
+			type: 'LangLabel',
+			description: 'Name to display under portrait if any',
+			I: true
+		},
+		side: {
+			type: 'String',
+			description: 'Side to display Person at.',
+			options: {
+				RIGHT: 1,
+				LEFT: 2
+			}
+		},
+		order: {
+			type: 'Number',
+			description: 'Determines the order in which people are displayed on one side. LOWER values are in FRONT'
+		},
+		clearSide: {
+			type: 'Boolean',
+			description: 'Clear the side before adding the person'
+		}
+	};
+	
 	getAttributes() {
-		return {};
+		return this.attributes;
 	}
 	
 	update() {
@@ -22,5 +51,4 @@ export class AddMsgPerson extends AbstractEvent<AddMsgPersonData> {
 			this.getPropString('clearSide')
 		);
 	}
-	
 }

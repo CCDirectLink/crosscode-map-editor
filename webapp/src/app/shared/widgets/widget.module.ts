@@ -19,7 +19,8 @@ import {SharedModule} from '../shared.module';
 import {EventEditorComponent} from './event-widget/event-editor/editor/event-editor.component';
 import {EventRowComponent} from './event-widget/event-editor/row/event-row.component';
 import {RowTextComponent} from './event-widget/event-editor/row-text/row-text.component';
-import {EventStorageService} from './event-widget/event-editor/event-storage.service';
+import {EventHelperService} from './event-widget/event-editor/event-helper.service';
+import {EventDetailComponent} from './event-widget/event-editor/detail/event-detail.component';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -37,6 +38,7 @@ const COMPONENTS = [
 const PRIVATE_COMPONENTS = [
 	EventRowComponent,
 	RowTextComponent,
+	EventDetailComponent
 ];
 
 @NgModule({
@@ -51,10 +53,10 @@ const PRIVATE_COMPONENTS = [
 	],
 	providers: [
 		EventRegistryService,
-		EventStorageService
+		EventHelperService
 	],
 	declarations: [COMPONENTS, PRIVATE_COMPONENTS],
-	entryComponents: COMPONENTS,
+	entryComponents: [COMPONENTS, PRIVATE_COMPONENTS],
 	exports: COMPONENTS
 })
 export class WidgetModule {

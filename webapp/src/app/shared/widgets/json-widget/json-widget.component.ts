@@ -8,10 +8,9 @@ import {MatDialog} from '@angular/material';
 	templateUrl: './json-widget.component.html',
 	styleUrls: ['./json-widget.component.scss', '../widget.scss']
 })
-export class JsonWidgetComponent extends AbstractWidget implements OnInit {
+export class JsonWidgetComponent extends AbstractWidget {
 	
-	@Input() custom;
-	
+	@Input() noPropName = false;
 	private timer;
 	json = JSON;
 	
@@ -19,13 +18,10 @@ export class JsonWidgetComponent extends AbstractWidget implements OnInit {
 		super();
 	}
 	
-	ngOnInit() {
-	}
-	
 	openJsonEditor() {
 		const ref = this.dialog.open(JsonEditorComponent, {
 			data: {
-				val: this.custom ? this.custom[this.key] : this.entity.details.settings[this.key],
+				val: this.settings[this.key],
 				key: this.key
 			}
 		});
@@ -43,11 +39,7 @@ export class JsonWidgetComponent extends AbstractWidget implements OnInit {
 		}
 		this.timer = setTimeout(() => {
 			value = JSON.parse(value);
-			if (this.custom) {
-				this.custom[key] = value;
-			} else {
-				this.entity.details.settings[key] = value;
-			}
+			this.settings[key] = value;
 			this.updateType();
 		}, 500);
 	}

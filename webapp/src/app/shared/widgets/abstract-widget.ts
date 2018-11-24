@@ -1,16 +1,27 @@
-import {Input} from '@angular/core';
+import {Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {CCEntity} from '../phaser/entities/cc-entity';
 
-export abstract class AbstractWidget {
+export abstract class AbstractWidget implements OnInit, OnChanges{
 	@Input() key: string;
 	@Input() attribute: any;
 	@Input() entity: CCEntity;
+	@Input() custom: CCEntity;
+	
+	settings;
+	
+	ngOnInit() {
+		this.ngOnChanges(null);
+	}
+	
+	ngOnChanges(changes: SimpleChanges): void {
+		this.settings = this.custom || this.entity.details.settings;
+	}
 	
 	setSetting(key: string, value: any, updateType = true, parse = false) {
 		if (parse) {
 			value = JSON.parse(value);
 		}
-		this.entity.details.settings[key] = value;
+		this.settings[key] = value;
 		if (updateType) {
 			this.updateType();
 		}
@@ -21,10 +32,14 @@ export abstract class AbstractWidget {
 	}
 	
 	updateSettings() {
-		this.entity.updateSettings();
+		if (this.entity) {
+			this.entity.updateSettings();
+		}
 	}
 	
 	updateType() {
-		this.entity.updateType();
+		if (this.entity) {
+			this.entity.updateType();
+		}
 	}
 }

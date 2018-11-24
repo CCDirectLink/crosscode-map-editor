@@ -6,13 +6,8 @@ import {AbstractWidget} from '../abstract-widget';
 	templateUrl: './boolean-widget.component.html',
 	styleUrls: ['./boolean-widget.component.scss', '../widget.scss']
 })
-export class BooleanWidgetComponent extends AbstractWidget implements OnInit {
-
+export class BooleanWidgetComponent extends AbstractWidget {
 	constructor() {
 		super();
 	}
-
-	ngOnInit() {
-	}
-
 }

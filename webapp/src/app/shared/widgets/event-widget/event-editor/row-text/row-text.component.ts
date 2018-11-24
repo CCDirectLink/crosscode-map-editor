@@ -1,6 +1,19 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
-import {EventStorageService} from '../event-storage.service';
+import {
+	ApplicationRef,
+	ChangeDetectionStrategy,
+	Component,
+	EventEmitter,
+	Input, NgZone,
+	Output,
+	ViewChild
+} from '@angular/core';
+import {EventHelperService} from '../event-helper.service';
 import {AbstractEvent} from '../../event-registry/abstract-event';
+import {OverlayService} from '../../../../overlay/overlay.service';
+import {Overlay} from '@angular/cdk/overlay';
+import {NpcStatesComponent} from '../../../npc-states-widget/npc-states/npc-states.component';
+import {EventDetailComponent} from '../detail/event-detail.component';
+import {OverlayRefControl} from '../../../../overlay/overlay-ref-control';
 
 @Component({
 	selector: 'app-row-text',
@@ -10,14 +23,22 @@ import {AbstractEvent} from '../../event-registry/abstract-event';
 export class RowTextComponent {
 	private static clipboard;
 	
+	@ViewChild('elementRef') elementRef;
+	
 	@Input() text;
 	@Input() data: AbstractEvent<any>;
 	@Input() parent: AbstractEvent<any>[];
 	@Input() hideGreaterSign = false;
 	@Output() dblClick = new EventEmitter();
 	@Output() click = new EventEmitter();
+	@Output() dataChange = new EventEmitter();
 	
-	constructor(private storage: EventStorageService) {
+	private overlayRef: OverlayRefControl;
+	
+	constructor(private storage: EventHelperService,
+	            private overlayService: OverlayService,
+	            private overlay: Overlay,
+	            private helper: EventHelperService) {
 	}
 	
 	leftClick(event: MouseEvent) {
@@ -28,6 +49,26 @@ export class RowTextComponent {
 	
 	rightClick(event: MouseEvent) {
 		this.leftClick(event);
+		
+		const obj = this.overlayService.open(EventDetailComponent, {
+			positionStrategy: this.overlay.position().global()
+				.left('calc(28vw - 110px)')
+				.top('calc((64px + 6vh / 2) + 60px)'),
+			hasBackdrop: true,
+			// backdropClass: '',
+			backdropClickClose: true,
+		});
+		
+		this.overlayRef = obj.ref;
+		
+		obj.instance.event = this.data;
+		obj.instance.exit.subscribe(v => {
+			this.overlayRef.close();
+			this.data = v;
+			this.data.update();
+			this.dataChange.emit(v);
+		}, e => this.overlayRef.close());
+		
 		return false;
 	}
 	
@@ -36,6 +77,7 @@ export class RowTextComponent {
 		this.dblClick.emit(this);
 	}
 	
+	// region keys copy/paste/del
 	keyPress(event: KeyboardEvent) {
 		event.stopPropagation();
 		console.log(event.code);
@@ -58,7 +100,7 @@ export class RowTextComponent {
 	
 	private copy() {
 		if (this.data) {
-			RowTextComponent.clipboard = JSON.stringify(this.data);
+			RowTextComponent.clipboard = this.data.export();
 		}
 	}
 	
@@ -66,7 +108,7 @@ export class RowTextComponent {
 		const clipboard = RowTextComponent.clipboard;
 		if (clipboard) {
 			const index = this.getIndex();
-			this.parent.splice(index, 0, JSON.parse(clipboard));
+			this.parent.splice(index, 0, this.helper.getEventFromType(clipboard));
 		}
 	}
 	
@@ -77,6 +119,8 @@ export class RowTextComponent {
 		const index = this.getIndex();
 		this.parent.splice(index, 1);
 	}
+	
+	// endregion
 	
 	private getIndex() {
 		const index = this.parent.indexOf(this.data);

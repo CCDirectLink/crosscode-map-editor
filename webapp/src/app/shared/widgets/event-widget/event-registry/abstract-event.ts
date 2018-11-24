@@ -18,6 +18,10 @@ export abstract class AbstractEvent<T extends EventType> {
 	
 	public abstract update();
 	
+	public export(): T {
+		return JSON.parse(JSON.stringify(this.data));
+	}
+	
 	protected combineStrings(...values): string {
 		return values.join(' ');
 	}

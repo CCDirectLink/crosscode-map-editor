@@ -68,11 +68,11 @@ export class NpcStatesComponent implements OnInit {
 		});
 	}
 	
+	// TODO: make proper export for copy/paste and export
 	copyPage() {
 		if (!this.currentState) {
 			return;
 		}
-		
 		this.clipboard = JSON.stringify(this.currentState);
 	}
 	

@@ -36,23 +36,16 @@ export interface NPCState {
 })
 export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, OnChanges, OnDestroy {
 	
-	@Input() custom = null;
-	settings: any;
 	npcStates: NPCState[];
 	private ref: OverlayRefControl;
 	
-	constructor(private componentFactoryResolver: ComponentFactoryResolver,
-	            private overlayService: OverlayService,
+	constructor(private overlayService: OverlayService,
 	            private overlay: Overlay) {
 		super();
 	}
 	
-	ngOnInit() {
-		this.ngOnChanges(null);
-	}
-	
 	ngOnChanges(changes: SimpleChanges): void {
-		this.settings = this.custom || this.entity.details.settings;
+		super.ngOnChanges(changes);
 		this.npcStates = this.settings[this.key];
 	}
 	
@@ -80,6 +73,7 @@ export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, 
 			this.ref.close();
 			this.settings[this.key] = v;
 			this.npcStates = v;
+			this.updateType();
 		}, e => this.ref.close());
 	}
 	
