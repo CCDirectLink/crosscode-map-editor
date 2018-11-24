@@ -315,6 +315,7 @@ export class EntityManager extends Phaser.Plugin implements Sortable {
 	private showAddEntityMenu() {
 		this.globalEvents.showAddEntityMenu.next({
 			worldPos: Helper.screenToWorld(this.game.input.mousePointer),
+			// TODO: remove definitions.json, use entity registry instead
 			definitions: this.game.cache.getJSON('definitions.json', false)
 		});
 	}

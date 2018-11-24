@@ -19,6 +19,7 @@ import {SharedModule} from '../shared.module';
 import {EventEditorComponent} from './event-widget/event-editor/editor/event-editor.component';
 import {EventRowComponent} from './event-widget/event-editor/row/event-row.component';
 import {RowTextComponent} from './event-widget/event-editor/row-text/row-text.component';
+import {EventStorageService} from './event-widget/event-editor/event-storage.service';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -49,7 +50,8 @@ const PRIVATE_COMPONENTS = [
 		SharedModule
 	],
 	providers: [
-		EventRegistryService
+		EventRegistryService,
+		EventStorageService
 	],
 	declarations: [COMPONENTS, PRIVATE_COMPONENTS],
 	entryComponents: COMPONENTS,

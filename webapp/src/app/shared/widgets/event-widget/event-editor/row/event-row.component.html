@@ -1,4 +1,4 @@
-<app-row-text [text]="data.info">
+<app-row-text [text]="data.info" [data]="data" [parent]="parent">
 	
 	<!-- Children -->
 	<div *ngFor="let child of data.children">
@@ -6,10 +6,10 @@
 		<app-row-text [text]="child.title" [hideGreaterSign]="child.hideGreaterSign">
 			<div class="child-offset">
 				<!-- every children -->
-				<app-event-row [data]="event" *ngFor="let event of child.events"></app-event-row>
+				<app-event-row [data]="event" [parent]="child.events" *ngFor="let event of child.events"></app-event-row>
 				
 				<!-- extra line for adding new events -->
-				<app-row-text text="  "></app-row-text>
+				<app-row-text text=" " [parent]="child.events"></app-row-text>
 			</div>
 		</app-row-text>
 	</div>

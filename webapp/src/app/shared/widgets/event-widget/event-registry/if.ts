@@ -26,8 +26,6 @@ export class If extends AbstractEvent<IfData> {
 				events: this.data.elseStep
 			};
 		}
-		
-		console.log('IF', this);
 	}
 	
 }

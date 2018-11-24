@@ -1,22 +1,45 @@
-import {Component, OnChanges, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {
+	Component,
+	OnInit,
+	Input,
+	ChangeDetectionStrategy
+} from '@angular/core';
 import {AbstractEvent} from '../../event-registry/abstract-event';
 import {EventRegistryService} from '../../event-registry/event-registry.service';
+import {EventStorageService} from '../event-storage.service';
 
 @Component({
 	selector: 'app-event-editor',
 	templateUrl: './event-editor.component.html',
 	styleUrls: ['./event-editor.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventEditorComponent implements OnInit {
 	@Input() eventData = [];
 	
 	workingData: AbstractEvent<any>[];
+	focusedElement;
 	
-	constructor(private eventRegistry: EventRegistryService) {
+	constructor(private eventRegistry: EventRegistryService,
+	            private storage: EventStorageService) {
+		storage.selectedEvent.subscribe(v => {
+			if (v) {
+				// TODO: remove event?
+				// console.log(v.text);
+			}
+		});
+	}
+	
+	show() {
+		console.log(this.workingData);
 	}
 	
 	ngOnInit(): void {
 		this.initialize();
+	}
+	
+	setFocusedElement(element) {
+		this.focusedElement = element;
 	}
 	
 	initialize() {
