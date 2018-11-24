@@ -39,6 +39,7 @@ export class EventDetailComponent implements OnInit {
 	
 	animState = 'enter';
 	newData;
+	unknownObj;
 	warning;
 	
 	constructor(private componentFactoryResolver: ComponentFactoryResolver,
@@ -52,7 +53,7 @@ export class EventDetailComponent implements OnInit {
 	}
 	
 	save() {
-		this.event.data = this.newData;
+		this.event.data = this.unknownObj ? this.unknownObj.data : this.newData;
 		this.exit.emit(this.event);
 	}
 	
@@ -76,7 +77,8 @@ export class EventDetailComponent implements OnInit {
 			});
 		} else {
 			this.warning = true;
-			const instance: JsonWidgetComponent = <any>this.generateWidget({data: this.newData}, 'data', {}, ref);
+			this.unknownObj = {data: this.newData};
+			const instance: JsonWidgetComponent = <any>this.generateWidget(this.unknownObj, 'data', {}, ref);
 			instance.noPropName = true;
 		}
 	}
