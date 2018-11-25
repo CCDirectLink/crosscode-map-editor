@@ -8,87 +8,90 @@
 			<button mat-stroked-button (click)="removePage()">Remove Page</button>
 		</div>
 	</div>
-	<mat-tab-group fxFlex="auto" id="groupTabGroup" animationDuration="0ms" (selectedIndexChange)="selectTab($event)"
+	<mat-tab-group fxFlex="0 0 auto" id="groupTabGroup" animationDuration="0ms" (selectedIndexChange)="selectTab($event)"
 	               [selectedIndex]="index">
 		<mat-tab class="stretched-tabs" *ngFor="let state of states; let index = index"
 		         [label]="state.pageName && state.pageName.trim() ? state.pageName : (index + 1)">
-			<div class="tab-content" fxLayout="column">
+		</mat-tab>
+	</mat-tab-group>
+	
+	<div class="tab-content" fxLayout="column">
+		
+		<!-- condition -->
+		<div fxFlex="0 0 54px" fxLayout="row">
+			<div fxLayout="row" fxFlexAlign="center" fxFlex="auto">
+				<label for="condition" class="condition-label" fxFlexAlign="center">condition:</label>
+				<input class="default-input condition-padding" id="condition" [(ngModel)]="currentState.condition">
+				<div class="condition-icon">
+					<!--TODO: search icon-->
+				</div>
+			</div>
+		</div>
+		<div class="content-body" fxFlex="auto" fxLayout="row">
+			<div class="content-left" fxFlex="0 0 200px" fxLayout="column">
 				
-				<!-- condition -->
-				<div fxFlex="0 0 54px" fxLayout="row">
-					<div fxLayout="row" fxFlexAlign="center" fxFlex="auto">
-						<label for="condition" class="condition-label" fxFlexAlign="center">condition:</label>
-						<input class="default-input condition-padding" id="condition" [(ngModel)]="state.condition">
-						<div class="condition-icon">
-							<!--TODO: search icon-->
-						</div>
+				<!-- Position -->
+				<div fxFlex="0 0 auto">
+					<div fxLayout="row" class="attribute">
+						<mat-checkbox color="primary" [(ngModel)]="currentState.position.active">Position
+						</mat-checkbox>
 					</div>
 				</div>
-				<div class="content-body" fxFlex="auto" fxLayout="row">
-					<div class="content-left" fxFlex="0 0 200px" fxLayout="column">
+				<div fxFlex="0 1 auto" *ngIf="currentState.position.active">
+					<div fxLayout="row" class="property-container">
+						<label fxFlexAlign="center" class="pos-label">Pos:</label>
 						
-						<!-- Position -->
-						<div fxFlex="0 0 auto">
-							<div fxLayout="row" class="attribute">
-								<mat-checkbox color="primary" [(ngModel)]="state.position.active">Position
-								</mat-checkbox>
-							</div>
-						</div>
-						<div fxFlex="0 1 auto" *ngIf="state.position.active">
-							<div fxLayout="row" class="property-container">
-								<label fxFlexAlign="center" class="pos-label">Pos:</label>
-								
-								<label for="posx" class="property-name-small">X:</label>
-								<input id="posx" type="number" class="default-input small-input"
-								       [(ngModel)]="state.position.x">
-								
-								<label for="posy" class="property-name-small">Y:</label>
-								<input id="posy" type="number" class="default-input small-input"
-								       [(ngModel)]="state.position.y">
-							</div>
-							
-							<div fxLayout="row" class="property-container">
-								<label fxFlexAlign="center" class="pos-label" for="level">Level:</label>
-								
-								<input id="level" type="number" class="default-input small-input" min="0"
-								       [(ngModel)]="state.position.lvl">
-								
-								<label for="offset" class="property-name-small">+</label>
-								<input disabled id="offset" type="number" class="default-input small-input">
-							</div>
-							<br><br>
-						</div>
+						<label for="posx" class="property-name-small">X:</label>
+						<input id="posx" type="number" class="default-input small-input"
+						       [(ngModel)]="currentState.position.x">
 						
-						<!-- page name -->
-						<div fxLayout="row" class="attribute" fxFlex="0 0 auto">
-							<span fxFlex="0 0 87px" fxFlexAlign="center">Page name: </span>
-							<input class="default-input" [(ngModel)]="state.pageName">
-						</div>
-						
-						<!-- Other -->
-						<div *ngFor="let prop of props | keyvalue" fxLayout="row" class="attribute" fxFlex="0 0 auto">
-							<span fxFlex="0 0 87px" fxFlexAlign="center">{{prop.key}}: </span>
-							<select class="default-input select-input" [(ngModel)]="state[prop.key]">
-								<option *ngFor="let item of prop.value" [value]="item">
-									{{item}}
-								</option>
-							</select>
-						</div>
+						<label for="posy" class="property-name-small">Y:</label>
+						<input id="posy" type="number" class="default-input small-input"
+						       [(ngModel)]="currentState.position.y">
 					</div>
-					<div class="content-right" fxFlex="1 1 auto" fxLayout="column">
-						<app-event-editor class="event-block" fxFlex="auto" fxLayout="column"
-						                  [eventData]="state.event"></app-event-editor>
+					
+					<div fxLayout="row" class="property-container">
+						<label fxFlexAlign="center" class="pos-label" for="level">Level:</label>
 						
-						<!-- buttons -->
-						<div class="button-block" fxFlex="0 0 54px" fxLayout="row">
-							<div class="buttons" fxFlexAlign="center" fxLayoutAlign="end" fxFlex>
-								<button mat-stroked-button (click)="cancel()">Cancel</button>
-								<button mat-stroked-button (click)="save()">Save</button>
-							</div>
-						</div>
+						<input id="level" type="number" class="default-input small-input" min="0"
+						       [(ngModel)]="currentState.position.lvl">
+						
+						<label for="offset" class="property-name-small">+</label>
+						<input disabled id="offset" type="number" class="default-input small-input">
+					</div>
+					<br><br>
+				</div>
+				
+				<!-- page name -->
+				<div fxLayout="row" class="attribute" fxFlex="0 0 auto">
+					<span fxFlex="0 0 87px" fxFlexAlign="center">Page name: </span>
+					<input class="default-input" [(ngModel)]="currentState.pageName">
+				</div>
+				
+				<!-- Other -->
+				<div *ngFor="let prop of props | keyvalue" fxLayout="row" class="attribute" fxFlex="0 0 auto">
+					<span fxFlex="0 0 87px" fxFlexAlign="center">{{prop.key}}: </span>
+					<select class="default-input select-input" [(ngModel)]="currentState[prop.key]">
+						<option *ngFor="let item of prop.value" [value]="item">
+							{{item}}
+						</option>
+					</select>
+				</div>
+			</div>
+			<div class="content-right" fxFlex="1 1 auto" fxLayout="column">
+				
+				<!-- Event Editor -->
+				<app-event-editor #eventEditor class="event-block" fxFlex="auto" fxLayout="column"
+				                  [eventData]="currentState.event"></app-event-editor>
+				
+				<!-- buttons -->
+				<div class="button-block" fxFlex="0 0 54px" fxLayout="row">
+					<div class="buttons" fxFlexAlign="center" fxLayoutAlign="end" fxFlex>
+						<button mat-stroked-button (click)="cancel()">Cancel</button>
+						<button mat-stroked-button (click)="save()">Save</button>
 					</div>
 				</div>
 			</div>
-		</mat-tab>
-	</mat-tab-group>
+		</div>
+	</div>
 </div>

@@ -2,7 +2,7 @@ import {
 	Component,
 	OnInit,
 	Input,
-	ChangeDetectionStrategy
+	ChangeDetectionStrategy, OnChanges
 } from '@angular/core';
 import {AbstractEvent} from '../../event-registry/abstract-event';
 import {EventRegistryService} from '../../event-registry/event-registry.service';
@@ -14,7 +14,7 @@ import {EventHelperService} from '../event-helper.service';
 	styleUrls: ['./event-editor.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EventEditorComponent implements OnInit {
+export class EventEditorComponent implements OnInit, OnChanges {
 	@Input() eventData = [];
 	
 	workingData: AbstractEvent<any>[];
@@ -34,14 +34,18 @@ export class EventEditorComponent implements OnInit {
 	}
 	
 	ngOnInit(): void {
-		this.initialize();
 	}
 	
 	setFocusedElement(element) {
 		this.focusedElement = element;
 	}
 	
-	initialize() {
-		this.workingData = this.eventData.map(val => this.helper.getEventFromType(val));
+	ngOnChanges() {
+		const cpy = JSON.parse(JSON.stringify(this.eventData));
+		this.workingData = cpy.map(val => this.helper.getEventFromType(val));
+	}
+	
+	export() {
+		return this.workingData.map(event => event.export());
 	}
 }

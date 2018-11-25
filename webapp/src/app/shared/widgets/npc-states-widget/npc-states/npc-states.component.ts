@@ -1,7 +1,8 @@
-import {Component, OnChanges, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import {Component, OnChanges, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {NPCState} from '../npc-states-widget.component';
 import * as settingsJson from '../../../../../assets/npc-settings.json';
 import {Globals} from '../../../globals';
+import {EventEditorComponent} from '../../event-widget/event-editor/editor/event-editor.component';
 
 @Component({
 	selector: 'app-npc-states',
@@ -9,6 +10,8 @@ import {Globals} from '../../../globals';
 	styleUrls: ['./npc-states.component.scss', '../../widget.scss'],
 })
 export class NpcStatesComponent implements OnInit {
+	
+	@ViewChild('eventEditor') eventEditor: EventEditorComponent;
 	
 	@Input() states: NPCState[] = [];
 	@Output() exit: EventEmitter<NPCState[]> = new EventEmitter<NPCState[]>();
@@ -41,7 +44,11 @@ export class NpcStatesComponent implements OnInit {
 	}
 	
 	selectTab(index: number) {
+		if (this.currentState){
+			this.currentState.event = this.eventEditor.export();
+		}
 		this.currentState = this.states[index];
+		
 		if (!this.currentState) {
 			return;
 		}
@@ -73,7 +80,9 @@ export class NpcStatesComponent implements OnInit {
 		if (!this.currentState) {
 			return;
 		}
+		this.currentState.event = this.eventEditor.export();
 		this.clipboard = JSON.stringify(this.currentState);
+		console.log(JSON.parse(this.clipboard));
 	}
 	
 	pastePage() {

@@ -9,4 +9,8 @@ export class DefaultEvent extends AbstractEvent<any> {
 		this.info = this.getTypeString('#ff5a5b') + ' ---';
 	}
 	
+	protected generateNewDataInternal() {
+		return {};
+	}
+	
 }
