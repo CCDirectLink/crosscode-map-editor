@@ -1,17 +1,14 @@
 <div class="event-add-container mat-elevation-z8" fxLayout="column" [@slideContent]="animState">
-	<label class="header" fxLayoutAlign="center" fxLayout="column">
+	<label class="header" fxLayoutAlign="center" fxLayout="column" fxFlex="60px">
 		<mat-form-field>
 			<input matInput #filterInput [(ngModel)]="filterText">
 		</mat-form-field>
 	</label>
-	<div class="content" fxLayout="column">
-		<mat-nav-list>
-			<a mat-list-item *ngFor="let event of eventsFiltered" (click)="select(event)">
-				<span class="list-item">{{event}}</span>
-				<mat-divider></mat-divider>
-			</a>
-		</mat-nav-list>
-	</div>
-
+	<mat-nav-list class="dark-scrollbar">
+		<a mat-list-item *ngFor="let event of eventsFiltered" (click)="select(event)">
+			<span class="list-item">{{event}}</span>
+			<mat-divider></mat-divider>
+		</a>
+	</mat-nav-list>
 </div>
 

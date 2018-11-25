@@ -6,7 +6,7 @@ export class DefaultEvent extends AbstractEvent<any> {
 	}
 	
 	update() {
-		this.info = this.getTypeString('#ff5a5b') + ' ---';
+		this.info = this.getTypeString('#ff5a5b') + ' ' + this.getAllPropStrings();
 	}
 	
 	protected generateNewDataInternal() {

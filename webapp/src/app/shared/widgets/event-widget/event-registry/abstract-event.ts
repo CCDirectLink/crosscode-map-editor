@@ -34,11 +34,34 @@ export abstract class AbstractEvent<T extends EventType> {
 		return values.join(' ');
 	}
 	
-	protected getPropString(key: string, value?: string): string {
+	protected getAllPropStrings(): string {
+		const keys = Object.keys(this.data);
+		return keys
+			.filter(key => key !== 'type')
+			.map(key => this.getPropString(key))
+			.join(' ');
+	}
+	
+	protected getPropString(key: string, value?: any): string {
 		if (!value) {
 			value = this.data[key];
 		}
+		const attr = this.getAttributes();
+		if (attr && attr[key]) {
+			const type = attr[key].type;
+			if (type === 'Color') {
+				value = this.getColorRectangle(value);
+			} else if (type === 'Vec2') {
+				value = this.getVec2String(value.x, value.y);
+			} else if (type === 'Entity') {
+				value = '[' + value.name + ']';
+			}
+		}
 		return `<span style="color: #858585">${key}</span>: ${value}`;
+	}
+	
+	protected getVec2String(x, y): string {
+		return `(${x}, ${y})`;
 	}
 	
 	protected getTypeString(color: string): string {
@@ -51,5 +74,9 @@ export abstract class AbstractEvent<T extends EventType> {
 	
 	protected getColoredString(text: string, color: string): string {
 		return `<span style="color: ${color}">${text}</span>`;
+	}
+	
+	protected getColorRectangle(color: string): string {
+		return `<span style="background-color: ${color};">&nbsp &nbsp &nbsp &nbsp</span>`;
 	}
 }
