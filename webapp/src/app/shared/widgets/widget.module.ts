@@ -22,6 +22,7 @@ import {RowTextComponent} from './event-widget/event-editor/row-text/row-text.co
 import {EventHelperService} from './event-widget/event-editor/event-helper.service';
 import {EventDetailComponent} from './event-widget/event-editor/detail/event-detail.component';
 import {EventAddComponent} from './event-widget/event-editor/add/event-add.component';
+import {EventWindowComponent} from './event-widget/event-window/event-window.component';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -38,6 +39,7 @@ const COMPONENTS = [
 
 const PRIVATE_COMPONENTS = [
 	EventRowComponent,
+	EventWindowComponent,
 	RowTextComponent,
 	EventDetailComponent,
 	EventAddComponent

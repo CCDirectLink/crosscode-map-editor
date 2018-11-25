@@ -5,6 +5,7 @@ import {NumberWidgetComponent} from './number-widget/number-widget.component';
 import {BooleanWidgetComponent} from './boolean-widget/boolean-widget.component';
 import {Vec2WidgetComponent} from './vec2-widget/vec2-widget.component';
 import {NPCStatesWidgetComponent} from './npc-states-widget/npc-states-widget.component';
+import {EventWidgetComponent} from './event-widget/event-widget.component';
 
 @Injectable()
 export class WidgetRegistryService {
@@ -19,6 +20,7 @@ export class WidgetRegistryService {
 		this.register('Boolean', BooleanWidgetComponent);
 		this.register('NPCStates', NPCStatesWidgetComponent);
 		this.register('Vec2', Vec2WidgetComponent);
+		this.register('Event', EventWidgetComponent);
 	}
 
 	private setDefaultWidget(widget: any) {

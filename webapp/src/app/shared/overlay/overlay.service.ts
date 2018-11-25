@@ -3,9 +3,11 @@ import {SharedModule} from '../shared.module';
 import {ComponentType, Overlay, OverlayConfig} from '@angular/cdk/overlay';
 import {ComponentPortal} from '@angular/cdk/portal';
 import {OverlayRefControl} from './overlay-ref-control';
+import {Globals} from '../globals';
 
 interface CustomOverlayConfig extends OverlayConfig {
 	backdropClickClose?: boolean;
+	disablePhaserInput?: boolean;
 }
 
 @Injectable({
@@ -16,7 +18,7 @@ export class OverlayService {
 	
 	}
 	
-	open<T>(component: ComponentType<T>, options: CustomOverlayConfig = {}): {ref: OverlayRefControl, instance: T} {
+	open<T>(component: ComponentType<T>, options: CustomOverlayConfig = {}): { ref: OverlayRefControl, instance: T } {
 		const config = this.getOverlayConfig(options);
 		const ref = this.overlay.create(config);
 		const portal = new ComponentPortal(component);
@@ -25,6 +27,10 @@ export class OverlayService {
 		
 		if (options.backdropClickClose) {
 			ref.backdropClick().subscribe(() => refControl.close());
+		}
+		if (options.disablePhaserInput) {
+			Globals.disablePhaserInput = true;
+			ref.detachments().subscribe(() => Globals.disablePhaserInput = false);
 		}
 		
 		const instance: any = ref.attach(portal).instance;
