@@ -44,7 +44,7 @@ export class NpcStatesComponent implements OnInit {
 	}
 	
 	selectTab(index: number) {
-		if (this.currentState){
+		if (this.currentState) {
 			this.currentState.event = this.eventEditor.export();
 		}
 		this.currentState = this.states[index];
@@ -96,7 +96,10 @@ export class NpcStatesComponent implements OnInit {
 	}
 	
 	export() {
-		const out = JSON.parse(JSON.stringify(this.states));
+		if (this.currentState) {
+			this.currentState.event = this.eventEditor.export();
+		}
+		const out = this.states;
 		out.forEach(state => {
 			if (state.position.active) {
 				state.position.active = undefined;

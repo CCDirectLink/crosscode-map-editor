@@ -1,7 +1,7 @@
 <div class="event-add-container mat-elevation-z8" fxLayout="column" [@slideContent]="animState">
 	<label class="header" fxLayoutAlign="center" fxLayout="column">
 		<mat-form-field>
-			<input matInput [(ngModel)]="filterText">
+			<input matInput #filterInput [(ngModel)]="filterText">
 		</mat-form-field>
 	</label>
 	<div class="content" fxLayout="column">

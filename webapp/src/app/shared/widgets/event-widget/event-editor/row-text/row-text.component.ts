@@ -116,6 +116,12 @@ export class RowTextComponent {
 					this.copy();
 				}
 				break;
+			case 'KeyX':
+				if (event.ctrlKey) {
+					this.copy();
+					this.delete();
+				}
+				break;
 			case 'KeyV':
 				if (event.ctrlKey) {
 					this.paste();

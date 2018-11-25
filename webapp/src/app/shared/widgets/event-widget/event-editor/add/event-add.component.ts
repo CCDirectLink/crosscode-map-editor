@@ -1,4 +1,5 @@
 import {
+	AfterViewInit,
 	Component,
 	ComponentFactoryResolver, EventEmitter,
 	Input,
@@ -32,7 +33,9 @@ const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 	templateUrl: './event-add.component.html',
 	styleUrls: ['./event-add.component.scss']
 })
-export class EventAddComponent implements OnInit {
+export class EventAddComponent implements OnInit, AfterViewInit {
+	@ViewChild('filterInput') filterInput;
+	
 	@Output() getEventClass: EventEmitter<AbstractEvent<any>> = new EventEmitter<any>();
 	
 	events: string[];
@@ -46,6 +49,10 @@ export class EventAddComponent implements OnInit {
 	ngOnInit(): void {
 		this.events = Object.keys(this.eventRegistry.getAll());
 		this.filterText = '';
+	}
+	
+	ngAfterViewInit(): void {
+		this.filterInput.nativeElement.focus();
 	}
 	
 	set filterText(event) {
