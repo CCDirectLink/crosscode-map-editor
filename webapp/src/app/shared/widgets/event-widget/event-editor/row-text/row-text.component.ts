@@ -53,6 +53,9 @@ export class RowTextComponent {
 	}
 	
 	rightClick(event: MouseEvent) {
+		if (!this.data) {
+			return false;
+		}
 		this.leftClick(event);
 		
 		const obj = this.overlayService.open(EventDetailComponent, {
