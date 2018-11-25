@@ -51,4 +51,10 @@ export class AddMsgPerson extends AbstractEvent<AddMsgPersonData> {
 			this.getPropString('clearSide')
 		);
 	}
+	
+	generateNewDataInternal() {
+		return {
+			person: {}
+		};
+	}
 }

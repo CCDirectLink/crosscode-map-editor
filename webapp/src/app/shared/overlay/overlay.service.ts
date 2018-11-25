@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {SharedModule} from '../shared.module';
-import {Overlay, OverlayConfig} from '@angular/cdk/overlay';
+import {ComponentType, Overlay, OverlayConfig} from '@angular/cdk/overlay';
 import {ComponentPortal} from '@angular/cdk/portal';
 import {OverlayRefControl} from './overlay-ref-control';
 
@@ -16,7 +16,7 @@ export class OverlayService {
 	
 	}
 	
-	open(component, options: CustomOverlayConfig = {}) {
+	open<T>(component: ComponentType<T>, options: CustomOverlayConfig = {}): {ref: OverlayRefControl, instance: T} {
 		const config = this.getOverlayConfig(options);
 		const ref = this.overlay.create(config);
 		const portal = new ComponentPortal(component);
@@ -26,7 +26,6 @@ export class OverlayService {
 		if (options.backdropClickClose) {
 			ref.backdropClick().subscribe(() => refControl.close());
 		}
-		
 		
 		const instance: any = ref.attach(portal).instance;
 		return {ref: refControl, instance: instance};

@@ -14,6 +14,7 @@ import {Overlay} from '@angular/cdk/overlay';
 import {NpcStatesComponent} from '../../../npc-states-widget/npc-states/npc-states.component';
 import {EventDetailComponent} from '../detail/event-detail.component';
 import {OverlayRefControl} from '../../../../overlay/overlay-ref-control';
+import {EventAddComponent} from '../add/event-add.component';
 
 @Component({
 	selector: 'app-row-text',
@@ -26,12 +27,16 @@ export class RowTextComponent {
 	@ViewChild('elementRef') elementRef;
 	
 	@Input() text;
-	@Input() data: AbstractEvent<any>;
-	@Input() parent: AbstractEvent<any>[];
 	@Input() hideGreaterSign = false;
+	
+	@Input() data: AbstractEvent<any>;
+	@Output() dataChange = new EventEmitter();
+	
+	@Input() parent: AbstractEvent<any>[];
+	@Output() parentChange = new EventEmitter();
+	
 	@Output() dblClick = new EventEmitter();
 	@Output() click = new EventEmitter();
-	@Output() dataChange = new EventEmitter();
 	
 	private overlayRef: OverlayRefControl;
 	
@@ -75,6 +80,24 @@ export class RowTextComponent {
 	doubleClick(event: MouseEvent) {
 		event.stopPropagation();
 		this.dblClick.emit(this);
+		
+		const obj = this.overlayService.open(EventAddComponent, {
+			positionStrategy: this.overlay.position().global()
+				.left('calc(18vw)')
+				.top('6vh'),
+			hasBackdrop: true,
+			// backdropClass: '',
+			backdropClickClose: true,
+		});
+		
+		this.overlayRef = obj.ref;
+		
+		obj.instance.getEventClass.subscribe(v => {
+			this.overlayRef.close();
+			const index = this.getIndex();
+			this.parent.splice(index, 0, v);
+			this.parentChange.emit(this.parent);
+		}, e => this.overlayRef.close());
 	}
 	
 	// region keys copy/paste/del
@@ -108,7 +131,8 @@ export class RowTextComponent {
 		const clipboard = RowTextComponent.clipboard;
 		if (clipboard) {
 			const index = this.getIndex();
-			this.parent.splice(index, 0, this.helper.getEventFromType(clipboard));
+			const cpy = JSON.parse(JSON.stringify(clipboard));
+			this.parent.splice(index, 0, this.helper.getEventFromType(cpy));
 		}
 	}
 	

@@ -53,7 +53,7 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 		this.data.options.forEach((option, index) => {
 			this.children[index] = {
 				title: this.getColoredString('Choice. ' + option.label.en_US, '#838383'),
-				events: this.data[index],
+				events: this.data[index] || [],
 				hideGreaterSign: true
 			};
 		});
@@ -69,9 +69,23 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 			forceWidth: this.data.forceWidth
 		};
 		this.children.forEach((child, index) => {
+			if (!child.events) {
+				console.error('wtf', this);
+			}
 			out[index] = child.events.map(v => v.export());
 		});
 		
 		return JSON.parse(JSON.stringify(out));
+	}
+	
+	protected generateNewDataInternal() {
+		return {
+			person: {},
+			options: [{
+				label: {}
+			}, {
+				label: {}
+			}]
+		};
 	}
 }

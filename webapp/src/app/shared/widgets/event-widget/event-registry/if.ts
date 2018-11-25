@@ -53,4 +53,10 @@ export class If extends AbstractEvent<IfData> {
 		}
 		return out;
 	}
+	
+	protected generateNewDataInternal() {
+		return {
+			condition: ''
+		};
+	}
 }

@@ -34,6 +34,10 @@ export class EventRegistryService {
 		return this.events[type] || this.defaultEvent;
 	}
 	
+	public getAll() {
+		return this.events;
+	}
+	
 	private hasEvent(type: string): boolean {
 		return this.events.hasOwnProperty(type);
 	}

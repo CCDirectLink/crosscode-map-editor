@@ -1,4 +1,4 @@
-import {ApplicationRef, ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AbstractEvent} from '../../event-registry/abstract-event';
 
 @Component({
@@ -15,5 +15,4 @@ export class EventRowComponent implements OnInit {
 	
 	ngOnInit(): void {
 	}
-	
 }

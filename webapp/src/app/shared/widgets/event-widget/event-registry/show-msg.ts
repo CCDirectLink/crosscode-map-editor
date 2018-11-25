@@ -35,4 +35,11 @@ export class ShowMsg extends AbstractEvent<ShowMsgData> {
 		);
 	}
 	
+	protected generateNewDataInternal() {
+		return {
+			person: {},
+			message: {}
+		};
+	}
+	
 }

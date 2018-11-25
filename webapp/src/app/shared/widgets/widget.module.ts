@@ -21,6 +21,7 @@ import {EventRowComponent} from './event-widget/event-editor/row/event-row.compo
 import {RowTextComponent} from './event-widget/event-editor/row-text/row-text.component';
 import {EventHelperService} from './event-widget/event-editor/event-helper.service';
 import {EventDetailComponent} from './event-widget/event-editor/detail/event-detail.component';
+import {EventAddComponent} from './event-widget/event-editor/add/event-add.component';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -38,7 +39,8 @@ const COMPONENTS = [
 const PRIVATE_COMPONENTS = [
 	EventRowComponent,
 	RowTextComponent,
-	EventDetailComponent
+	EventDetailComponent,
+	EventAddComponent
 ];
 
 @NgModule({

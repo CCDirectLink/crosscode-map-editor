@@ -14,6 +14,14 @@ export abstract class AbstractEvent<T extends EventType> {
 	constructor(public data: T) {
 	}
 	
+	protected abstract generateNewDataInternal(): { [key: string]: any };
+	
+	public generateNewData() {
+		const data = this.generateNewDataInternal();
+		data.type = this.data.type;
+		this.data = <any>data;
+	}
+	
 	public abstract getAttributes(): { [key: string]: any };
 	
 	public abstract update();
