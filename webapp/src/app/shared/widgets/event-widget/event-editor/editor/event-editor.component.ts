@@ -41,11 +41,23 @@ export class EventEditorComponent implements OnInit, OnChanges {
 	}
 	
 	ngOnChanges() {
-		const cpy = JSON.parse(JSON.stringify(this.eventData));
-		this.workingData = cpy.map(val => this.helper.getEventFromType(val));
+		let cpy = JSON.parse(JSON.stringify(this.eventData));
+		if (!cpy.map) {
+			// TODO: find out how to properly handle quests
+			cpy = cpy.quest;
+		}
+		if (cpy.map) {
+			this.workingData = cpy.map(val => this.helper.getEventFromType(val));
+		} else {
+			this.workingData = [];
+		}
 	}
 	
 	export() {
-		return this.workingData.map(event => event.export());
+		if (this.workingData) {
+			return this.workingData.map(event => event.export());
+		} else {
+			return this.eventData;
+		}
 	}
 }

@@ -44,15 +44,15 @@ export class EventAddComponent implements OnInit, AfterViewInit {
 	_filterText: string;
 	
 	constructor(private eventRegistry: EventRegistryService) {
-	}
-	
-	ngOnInit(): void {
 		this.events = Object.keys(this.eventRegistry.getAll());
 		this.filterText = '';
 	}
 	
-	ngAfterViewInit(): void {
+	ngOnInit(): void {
 		this.filterInput.nativeElement.focus();
+	}
+	
+	ngAfterViewInit(): void {
 	}
 	
 	set filterText(event) {
