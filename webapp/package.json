@@ -12,6 +12,17 @@
 		"win": {
 			"target": [
 				"portable"
+			],
+			"publish": [
+				"github"
+			]
+		},
+		"linux": {
+			"target": [
+				"AppImage"
+			],
+			"publish": [
+				"github"
 			]
 		}
 	},
@@ -28,7 +39,8 @@
 		"builder:pack": "electron-builder --dir",
 		"builder:dist": "electron-builder",
 		"postinstall": "electron-builder install-app-deps",
-		"package": "npm run postinstall && npm run build:prod && npm run builder:dist"
+		"package": "npm run postinstall && npm run build:prod && npm run builder:dist",
+		"dist": "npm run build:prod && build"
 	},
 	"private": true,
 	"dependencies": {
