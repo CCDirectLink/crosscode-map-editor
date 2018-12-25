@@ -1,7 +1,7 @@
 import {CCMap} from './phaser/tilemap/cc-map';
 
 export class Globals {
-	static isNwjs = false;
+	static isElectron = false;
 	static game: Phaser.Game;
 	static map: CCMap;
 	static TILE_SIZE = 16;

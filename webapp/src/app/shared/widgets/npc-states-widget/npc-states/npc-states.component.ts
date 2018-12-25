@@ -22,7 +22,7 @@ export class NpcStatesComponent implements OnInit {
 	positionActive = false;
 	
 	// TODO: move to global events service
-	private clipboard;
+	clipboard;
 	
 	constructor() {
 	}
