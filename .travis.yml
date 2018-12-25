@@ -3,6 +3,8 @@ dist: trusty
 
 language: node_js
 
+if: tag IS present
+
 before_install:
   - cd webapp
 
@@ -10,8 +12,6 @@ matrix:
   include:
     - os: linux
     - os: windows
-      env: CC=clang CXX=clang++ npm_config_clang=1
-      compiler: clang
 
 node_js:
   - 8
