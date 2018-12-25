@@ -1,10 +1,14 @@
+'use strict';
+
 const {app, BrowserWindow} = require('electron');
 const windowStateKeeper = require('electron-window-state');
+const path = require('path');
+const url = require('url');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
 const args = process.argv.slice(1);
-const prod = args.some(val => val === '--prod');
+const dev = args.some(val => val === '--dev');
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
 
 function createWindow() {
@@ -22,15 +26,21 @@ function createWindow() {
 		webPreferences: {webSecurity: false}
 	});
 	
-	if (prod) {
-		console.log('prod');
-		win.loadFile('dist/index.html');
-		// win.webContents.openDevTools();
-		// win.setMenu(null);
-	} else {
+	if (dev) {
 		console.log('dev');
 		win.loadURL('http://localhost:4200/index.html');
 		win.webContents.openDevTools();
+	} else {
+		console.log('prod');
+		const indexPath = url.format({
+			pathname: path.join(__dirname, 'distAngular', 'index.html'),
+			protocol: 'file',
+			slashes: true
+		});
+		console.log('path', indexPath);
+		win.loadURL(indexPath);
+		// win.webContents.openDevTools();
+		// win.setMenu(null);
 	}
 	
 	win.on('closed', () => {

@@ -22,7 +22,7 @@ export class HttpClientService {
 			this.remote = window.require('electron').remote;
 			this.fs = this.remote.require('fs');
 			this.path = this.remote.require('path');
-			this.configPath = this.path.join(this.remote.app.getAppPath(), this.fileName);
+			this.configPath = this.path.join(this.remote.app.getPath('userData'), this.fileName);
 			
 			try {
 				this.config = JSON.parse(this.fs.readFileSync(this.configPath));
