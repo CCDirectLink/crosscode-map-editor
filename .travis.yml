@@ -3,7 +3,7 @@ dist: trusty
 
 language: node_js
 
-if: tag IS present
+#if: tag IS present
 
 before_install:
   - cd webapp
@@ -12,6 +12,9 @@ matrix:
   include:
     - os: linux
     - os: windows
+
+node_js:
+  - "node"
 
 cache:
   directories:
