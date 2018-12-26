@@ -11,9 +11,7 @@ before_install:
 matrix:
   include:
     - os: linux
-
-node_js:
-  - 8
+    - os: windows
 
 cache:
   directories:

@@ -38,10 +38,9 @@
 		"electron:prod": "electron .",
 		"builder:pack": "electron-builder --dir",
 		"builder:dist": "electron-builder",
-		"builder:wl": "electron-builder -wl",
 		"postinstall": "electron-builder install-app-deps",
 		"package": "npm run postinstall && npm run build:prod && npm run builder:dist",
-		"dist": "npm run build:prod && npm run builder:wl"
+		"dist": "npm run build:prod && npm run builder:dist"
 	},
 	"private": true,
 	"dependencies": {
