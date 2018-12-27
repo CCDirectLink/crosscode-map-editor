@@ -10,17 +10,11 @@
 			"distAngular"
 		],
 		"win": {
-			"target": [
-				"zip"
-			],
 			"publish": [
 				"github"
 			]
 		},
 		"linux": {
-			"target": [
-				"AppImage"
-			],
 			"publish": [
 				"github"
 			]
