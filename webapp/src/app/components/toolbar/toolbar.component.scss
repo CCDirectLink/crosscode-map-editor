@@ -10,3 +10,11 @@ input[type="file"] {
 mat-spinner {
 	height: 40px;
 }
+
+.version {
+	bottom: 5px;
+	right: 5px;
+	color: white;
+	z-index: 9999;
+	position: absolute;
+}

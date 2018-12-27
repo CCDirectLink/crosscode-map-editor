@@ -1,4 +1,6 @@
+<p *ngIf="!map" class="version caption">{{version}}</p>
 <mat-toolbar fxLayout="row" class="mat-elevation-z4 elevated-toolbar">
+	
 	<div>
 		<button mat-icon-button (click)="onMenuClick.emit($event)">
 			<mat-icon>menu</mat-icon>

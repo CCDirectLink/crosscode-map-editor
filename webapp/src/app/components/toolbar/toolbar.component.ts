@@ -5,6 +5,7 @@ import {MapSettingsComponent} from '../dialogs/map-settings/map-settings.compone
 import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {OffsetMapComponent} from '../dialogs/offset-map/offset-map.component';
+import {environment} from '../../../environments/environment';
 
 @Component({
 	selector: 'app-toolbar',
@@ -16,6 +17,7 @@ export class ToolbarComponent implements OnInit {
 	@Output() onMenuClick = new EventEmitter();
 	map: CCMap;
 	loaded: boolean;
+	version = environment.version;
 
 	constructor(private mapLoader: MapLoaderService,
 				private events: GlobalEventsService,

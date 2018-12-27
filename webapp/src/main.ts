@@ -5,22 +5,14 @@ import {AppModule} from './app/app.module';
 import {environment} from './environments/environment';
 import {Globals} from './app/shared/globals';
 
-declare let requireNode: any;
-
 if (environment.production) {
 	enableProdMode();
 }
 
-try {
-	if (requireNode) {
-		Globals.isNwjs = typeof requireNode('nw.gui') !== 'undefined';
-	} else {
-		Globals.isNwjs = false;
-	}
-} catch (e) {
-	Globals.isNwjs = false;
+// @ts-ignore
+if (typeof process !== 'undefined' && typeof process.versions === 'object' && !!process.versions.electron) {
+	Globals.isElectron = true;
 }
-console.log('is nwjs: ', Globals.isNwjs);
-
+console.log('is electron: ', Globals.isElectron);
 
 platformBrowserDynamic().bootstrapModule(AppModule);

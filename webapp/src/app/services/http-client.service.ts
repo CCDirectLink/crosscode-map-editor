@@ -2,83 +2,95 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Globals} from '../shared/globals';
-
-declare let nw: any;
-declare let chrome: any;
-declare let requireNode: any;
+import {Remote, Dialog} from 'electron';
 
 @Injectable()
 export class HttpClientService {
 	
-	private fs;
-	private path;
-	private config;
+	private readonly fileName = 'config.json';
+	
+	private readonly remote: Remote;
+	private readonly fs;
+	private readonly path;
+	private config: { pathToCrosscode: string };
+	private configPath: string;
 	private isClicked = false;
 	
 	constructor(private http: HttpClient) {
-		if (Globals.isNwjs) {
-			this.fs = requireNode('fs');
-			this.path = requireNode('path');
+		if (Globals.isElectron) {
+			// @ts-ignore
+			this.remote = window.require('electron').remote;
+			this.fs = this.remote.require('fs');
+			this.path = this.remote.require('path');
+			this.configPath = this.path.join(this.remote.app.getPath('userData'), this.fileName);
+			
 			try {
-				this.config = JSON.parse(this.fs.readFileSync(this.path.join(nw.App.dataPath, 'config.json')));
-				Globals.URL = 'file:///' + this.config.pathToCrosscode;
+				this.config = JSON.parse(this.fs.readFileSync(this.configPath));
+				let p = this.config.pathToCrosscode;
+				if (p.endsWith('\\')) {
+					p = p.split('\\').join('/');
+				}
+				if (!p.endsWith('/')) {
+					p += '/';
+				}
+				Globals.URL = 'file:///' + p;
+				this.config.pathToCrosscode = p;
 			} catch (e) {
-				this.selectCcFolder();
 			}
 		}
 	}
 	
 	getAllFiles(): Observable<Object> {
-		if (!Globals.isNwjs) {
+		if (!this.fs) {
 			return this.http.get(Globals.URL + 'api/allFiles');
 		}
 		return new Observable(obs => {
-			try {
+			if (this.config && this.config.pathToCrosscode) {
 				const o = {
-					images: this.listAllFiles(this.config.pathToCrosscode + 'media/', [], 'png'),
-					data: this.listAllFiles(this.config.pathToCrosscode + 'data/', [], 'json')
+					images: this.listAllFiles(this.path.resolve(this.config.pathToCrosscode, 'media/'), [], 'png'),
+					data: this.listAllFiles(this.path.resolve(this.config.pathToCrosscode, 'data/'), [], 'json')
 				};
 				
 				obs.next(o);
 				obs.complete();
-			} catch (e) {
-				console.error(e);
+			} else {
+				console.warn('path to crosscode not found, opening file dialog');
 				this.selectCcFolder();
 			}
 		});
 	}
 	
 	private selectCcFolder() {
-		if (this.isClicked) {
-			return;
-		}
-		const fs = this.fs;
-		const path = this.path;
-		const dirInput = document.getElementById('inputDirectory');
 		
-		dirInput.addEventListener('change', function (evt) {
-			const ccPath: string = (<any>this).value + '\\';
-			fs.writeFileSync(path.join(nw.App.dataPath, 'config.json'), JSON.stringify({pathToCrosscode: ccPath}, null, 2));
-			console.log(nw.App.dataPath);
-			chrome.runtime.reload();
-		}, false);
+		const dialog: Dialog = this.remote.dialog;
+		const newPath = dialog.showOpenDialog({
+			title: 'Select CrossCode assets folder',
+			defaultPath: 'C:\\Program Files (x86)\\Steam\\steamapps\\common\\CrossCode\\assets',
+			properties: ['openDirectory']
+		});
 		
-		dirInput.click();
-		this.isClicked = true;
+		this.fs.writeFileSync(this.configPath, JSON.stringify({pathToCrosscode: newPath[0]}, null, 2));
+		this.remote.app.relaunch();
+		this.remote.app.exit();
 	}
 	
-	private listAllFiles(dir: string, filelist, ending: string): string[] {
-		const files = this.fs.readdirSync(dir);
-		const that = this;
+	private listAllFiles(dir: string, filelist: string[], ending: string): string[] {
+		const fs = this.fs;
+		const path = this.path;
+		const files = fs.readdirSync(dir);
 		filelist = filelist || [];
-		files.forEach(function (file) {
-			if (that.fs.statSync(dir + file).isDirectory()) {
-				filelist = that.listAllFiles(dir + file + '/', filelist, ending);
+		files.forEach(file => {
+			if (fs.statSync(path.resolve(dir, file)).isDirectory()) {
+				filelist = this.listAllFiles(path.resolve(dir, file), filelist, ending);
 			} else if (!ending || file.toLowerCase().endsWith(ending.toLowerCase())) {
-				filelist.push((dir + file).split(that.config.pathToCrosscode)[1]);
+				let normalized = path.resolve(dir, file).split(path.normalize(this.config.pathToCrosscode))[1];
+				normalized = normalized.split('\\').join('/');
+				if (normalized.startsWith('/')) {
+					normalized = normalized.substr(1);
+				}
+				filelist.push(normalized);
 			}
 		});
 		return filelist;
-		
 	}
 }

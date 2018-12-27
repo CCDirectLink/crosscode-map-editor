@@ -1,49 +1,92 @@
 {
-  "name": "cc-map-editor",
-  "version": "1.0.0",
-  "license": "MIT",
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "startNoLiveReload": "ng serve --live-reload false",
-    "build": "ng build && cpx nwjs/package.json dist",
-    "test": "ng test",
-    "lint": "ng lint"
-  },
-  "private": true,
-  "dependencies": {
-    "@angular/animations": "^7.0.4",
-    "@angular/cdk": "^7.1.0",
-    "@angular/common": "^7.0.3",
-    "@angular/compiler": "^7.0.3",
-    "@angular/core": "^7.0.3",
-    "@angular/flex-layout": "^7.0.0-beta.19",
-    "@angular/forms": "^7.0.3",
-    "@angular/http": "^7.0.3",
-    "@angular/material": "^7.1.0",
-    "@angular/platform-browser": "^7.0.3",
-    "@angular/platform-browser-dynamic": "^7.0.3",
-    "@angular/router": "^7.0.3",
-    "angular2-draggable": "^1.0.7",
-    "core-js": "^2.4.1",
-    "jsoneditor": "^5.9.6",
-    "node-sass": "^4.9.0",
-    "phaser-ce": "^2.9.2",
-    "rxjs": "^6.1.0",
-    "zone.js": "^0.8.14"
-  },
-  "devDependencies": {
-    "@angular/cli": "^7.0.5",
-    "@angular/compiler-cli": "^7.0.3",
-    "@angular/language-service": "^7.0.3",
-    "@types/jsoneditor": "^5.5.2",
-    "@types/node": "^6.0.90",
-    "@types/nw.js": "^0.13.7",
-    "codelyzer": "~4.3.0",
-    "cpx": "^1.5.0",
-    "ts-node": "~3.2.0",
-    "tslint": "~5.3.2",
-    "typescript": "3.1.6",
-    "@angular-devkit/build-angular": "~0.10.0"
-  }
+	"name": "cc-map-editor",
+	"version": "0.2.6",
+	"license": "MIT",
+	"repository": "https://github.com/CCDirectLink/crosscode-map-editor",
+	"main": "main.js",
+	"build": {
+		"appId": "CCDirectLink.crosscode.map.editor",
+		"files": [
+			"main.js",
+			"distAngular"
+		],
+		"nsis": {
+			"oneClick": false,
+			"allowToChangeInstallationDirectory": true
+		},
+		"win": {
+			"target": [
+				"nsis"
+			],
+			"publish": [
+				"github"
+			]
+		},
+		"linux": {
+			"target": [
+				"AppImage"
+			],
+			"publish": [
+				"github"
+			]
+		}
+	},
+	"scripts": {
+		"ng": "ng",
+		"start": "ng serve",
+		"startNoLiveReload": "ng serve --live-reload false",
+		"build": "ng build",
+		"build:prod": "ng build --prod",
+		"test": "ng test",
+		"lint": "ng lint",
+		"electron:dev": "electron . --dev",
+		"electron:prod": "electron .",
+		"builder:pack": "electron-builder --dir",
+		"builder:dist": "electron-builder",
+		"postinstall": "electron-builder install-app-deps",
+		"package": "npm run postinstall && npm run build:prod && npm run builder:dist",
+		"dist": "npm run build:prod && npm run builder:dist",
+		"release": "npm run build:prod && electron-builder --publish always"
+	},
+	"private": true,
+	"dependencies": {
+		"@angular/animations": "^7.0.4",
+		"@angular/cdk": "^7.1.0",
+		"@angular/common": "^7.0.3",
+		"@angular/compiler": "^7.0.3",
+		"@angular/core": "^7.0.3",
+		"@angular/flex-layout": "^7.0.0-beta.19",
+		"@angular/forms": "^7.0.3",
+		"@angular/http": "^7.0.3",
+		"@angular/material": "^7.1.0",
+		"@angular/platform-browser": "^7.0.3",
+		"@angular/platform-browser-dynamic": "^7.0.3",
+		"@angular/router": "^7.0.3",
+		"angular2-draggable": "^1.0.7",
+		"core-js": "^2.4.1",
+		"electron-log": "^2.2.17",
+		"electron-updater": "^4.0.6",
+		"electron-window-state": "^5.0.3",
+		"jsoneditor": "^5.9.6",
+		"node-sass": "^4.9.0",
+		"phaser-ce": "^2.9.2",
+		"rxjs": "^6.1.0",
+		"zone.js": "^0.8.14"
+	},
+	"devDependencies": {
+		"@angular-devkit/build-angular": "~0.10.0",
+		"@angular/cli": "^7.0.5",
+		"@angular/compiler-cli": "^7.0.3",
+		"@angular/language-service": "^7.0.3",
+		"@types/jsoneditor": "^5.5.2",
+		"@types/node": "^6.0.90",
+		"@types/nw.js": "^0.13.7",
+		"codelyzer": "~4.3.0",
+		"cpx": "^1.5.0",
+		"electron": "^4.0.0",
+		"electron-builder": "^20.38.4",
+		"ts-node": "~3.2.0",
+		"tslint": "~5.3.2",
+		"typescript": "3.1.6"
+	}
 }
