@@ -1,12 +1,9 @@
-sudo: required
-dist: trusty
-
-language: node_js
+language: generic
 
 #if: tag IS present
 
-before_install:
-  - cd webapp
+#before_install:
+#  - cd webapp
 
 matrix:
   include:
