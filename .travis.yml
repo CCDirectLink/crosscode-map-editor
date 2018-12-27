@@ -1,13 +1,16 @@
+sudo: required
+dist: trusty
+
 language: node_js
-# no change
+
 #if: tag IS present
 
-#before_install:
-#  - cd webapp
+before_install:
+  - cd webapp
 
 matrix:
   include:
-    - os: windows
+    - os: linux
 
 node_js:
   - "node"
