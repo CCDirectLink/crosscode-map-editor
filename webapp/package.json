@@ -1,7 +1,8 @@
 {
 	"name": "cc-map-editor",
-	"version": "0.2.1",
+	"version": "0.2.4",
 	"license": "MIT",
+	"repository": "https://github.com/CCDirectLink/crosscode-map-editor",
 	"main": "main.js",
 	"build": {
 		"appId": "CCDirectLink.crosscode.map.editor",
@@ -9,12 +10,22 @@
 			"main.js",
 			"distAngular"
 		],
+		"nsis": {
+			"oneClick": false,
+			"allowToChangeInstallationDirectory": true
+		},
 		"win": {
+			"target": [
+				"nsis"
+			],
 			"publish": [
 				"github"
 			]
 		},
 		"linux": {
+			"target": [
+				"AppImage"
+			],
 			"publish": [
 				"github"
 			]
@@ -34,7 +45,8 @@
 		"builder:dist": "electron-builder",
 		"postinstall": "electron-builder install-app-deps",
 		"package": "npm run postinstall && npm run build:prod && npm run builder:dist",
-		"dist": "npm run build:prod && npm run builder:dist"
+		"dist": "npm run build:prod && npm run builder:dist",
+		"release": "build"
 	},
 	"private": true,
 	"dependencies": {
