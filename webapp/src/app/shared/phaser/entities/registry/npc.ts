@@ -26,6 +26,7 @@ interface CharacterSettings {
 			move?: NamedSheet
 			walk?: NamedSheet
 		};
+		sheet?: NamedSheet,
 		DOCTYPE?: string;
 		shapeType?: string;
 		offset?: Point3;
@@ -107,7 +108,7 @@ export class NPC extends CCEntity {
 			console.error('char settings', charSettings);
 			config = npc.sprites.normal;
 		}
-		const offset = config[state.face] || config.default;
+		let offset = config[state.face] || config.default;
 		
 		let width = npc.width;
 		let height = npc.height;
@@ -115,14 +116,21 @@ export class NPC extends CCEntity {
 		let x = charSettings.x || 0;
 		let y = charSettings.y || 0;
 		if (charSettings.animSheet) {
-			if (!charSettings.animSheet.namedSheets) {
+			if (typeof charSettings.animSheet === 'string') {
 				// sheet is only reference
 				charSettings.animSheet = await Helper.getJsonPromise(this.getPath('data/animations/', charSettings.animSheet));
 			}
-			
-			const sheets = charSettings.animSheet.namedSheets;
-			let move = sheets.move || sheets.walk;
-			if (!move) {
+			if (charSettings.animSheet.sheet) {
+				// sheet exists, test how to get proper offset
+				console.group('sheet exists for ' + settings.characterName);
+				console.warn(settings);
+				console.warn('assuming no offset, check if this is correct');
+				console.groupEnd();
+				offset = {x: 0, y: 0};
+			}
+			const sheets = charSettings.animSheet.namedSheets || {};
+			let sheet = sheets.move || sheets.walk || charSettings.animSheet.sheet;
+			if (!sheet) {
 				let key;
 				
 				if (charSettings.walkAnimSet) {
@@ -146,14 +154,16 @@ export class NPC extends CCEntity {
 					key = Object.keys(sheets)[0];
 					console.warn('key not found, used [' + key + '] instead', charSettings);
 				}
-				move = sheets[key];
+				sheet = sheets[key];
 			}
 			
-			width = move.width || width;
-			height = move.height || height;
-			src = move.src || src;
-			x = move.offX || x;
-			y = move.offY || y;
+			width = sheet.width || width;
+			height = sheet.height || height;
+			src = sheet.src || src;
+			x = sheet.offX || x;
+			y = sheet.offY || y;
+			
+			src = src.trim();
 		}
 		
 		this.anchor.set(0.5, 1);
