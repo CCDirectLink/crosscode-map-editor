@@ -106,5 +106,8 @@
       "check-separator",
       "check-type"
     ]
+  },
+  "linterOptions": {
+    "exclude": ["src/config.ts"]
   }
 }
