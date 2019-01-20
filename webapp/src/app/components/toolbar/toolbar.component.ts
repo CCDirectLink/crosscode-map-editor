@@ -6,8 +6,7 @@ import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {OffsetMapComponent} from '../dialogs/offset-map/offset-map.component';
 import {environment} from '../../../environments/environment';
-
-
+import {MapSocketService} from '../../services/map-socket.service';
 @Component({
 	selector: 'app-toolbar',
 	templateUrl: './toolbar.component.html',
@@ -22,7 +21,8 @@ export class ToolbarComponent implements OnInit {
 
 	constructor(private mapLoader: MapLoaderService,
 				private events: GlobalEventsService,
-				private dialog: MatDialog) {
+				private dialog: MatDialog,
+				private mapSocket : MapSocketService) {
 	}
 
 	ngOnInit() {
@@ -30,6 +30,7 @@ export class ToolbarComponent implements OnInit {
 			this.map = map;
 		});
 		this.events.loadComplete.subscribe(isLoaded => this.loaded = isLoaded);
+
 	}
 
 	loadMap(event) {
@@ -49,7 +50,9 @@ export class ToolbarComponent implements OnInit {
 			window.URL.revokeObjectURL(url);
 		}, 0);
 	}
-
+	sendToCrossCode() {
+		this.mapSocket.sendToCrossCode(this.map.exportMap());
+	}
 	openMapSettings() {
 		this.dialog.open(MapSettingsComponent, {
 			data: this.map
