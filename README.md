@@ -11,8 +11,9 @@ A Map Editor for the game [CrossCode](http://www.cross-code.com/en/home), build 
 - automatic height map generation https://youtu.be/hHkvK48lvr0
 
 ## Getting started
+If you just want to use the editor install the latest [Release](https://github.com/CCDirectLink/crosscode-map-editor/releases/latest).
 
-To use the editor you need to run the backend and the webapp
+For development you need to run the backend and the webapp
 
 ### backend
 move into the `backend` folder and then install dependencies via `npm`
