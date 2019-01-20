@@ -7,7 +7,6 @@ import {GlobalEventsService} from '../../shared/global-events.service';
 import {OffsetMapComponent} from '../dialogs/offset-map/offset-map.component';
 import {environment} from '../../../environments/environment';
 
-import {js_beautify} from 'js-beautify';
 
 @Component({
 	selector: 'app-toolbar',
@@ -38,14 +37,7 @@ export class ToolbarComponent implements OnInit {
 	}
 
 	saveMap() {
-		const beautifierConfig = {
-			indent_size: 3,
-			space_in_empty_paren: true
-		};
-		let mapData = this.map.exportMap();
-		let mapDataText = JSON.stringify(mapData);
-
-		const file = new Blob([js_beautify(mapDataText, beautifierConfig)], {type: 'application/json'});
+		const file = new Blob([JSON.stringify(this.map.exportMap())], {type: 'application/json'});
 		const a = document.createElement('a'),
 			url = URL.createObjectURL(file);
 		a.href = url;
