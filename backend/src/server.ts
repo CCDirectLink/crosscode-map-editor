@@ -41,3 +41,25 @@ app.listen(app.get('port'), () => {
 });
 
 module.exports = app;
+
+
+/**
+ * Websocket to communicate with game
+ */
+
+
+const {Server} = require('ws');
+
+
+const ws = new Server({port : 8000 });
+
+ws.on('connection', function connection(socket) {
+    socket.on('message', function(message) {
+        ws.clients.forEach((clientSocket) => {
+            if (clientSocket !== socket) {
+                clientSocket.send(message);
+            }
+        });
+    });
+});
+
