@@ -8,7 +8,8 @@
 		"appId": "CCDirectLink.crosscode.map.editor",
 		"files": [
 			"main.js",
-			"distAngular"
+			"distAngular",
+			"server.js"
 		],
 		"nsis": {
 			"oneClick": false,
