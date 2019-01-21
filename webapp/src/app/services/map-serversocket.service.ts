@@ -1,16 +1,17 @@
-import { Injectable , HostListener  } from '@angular/core';
+import { Injectable  } from '@angular/core';
 import {Globals} from '../shared/globals';
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class MapServerSocketService {
+export class MapServerSocketService   {
   private server = null;
   private socket = null;
   private readonly WEBSOCKET_ADDR = 'ws://localhost:8000';
   private ws;
   constructor() { 
+    // @ts-ignore
     if (Globals.isElectron) {
       // @ts-ignore
       let remote = window.require('electron').remote;
@@ -22,23 +23,25 @@ export class MapServerSocketService {
       remote.getCurrentWebContents().on('will-navigate', () => {
         this.close();
       });
-
       let url = remote.getCurrentWebContents().getURL();
-
+      
       // safe to create server
       // TODO: find a better way to check if 
       // port is open 
       // (this will fail if some other program is using it)
-      if (url.indexOf("localhost") === -1) {
+      if(url.indexOf("localhost") === -1) {
         this.server = new this.ws.Server({port : 8000 });
       }
-      
+         
     }
 
     if (this.server === null) {
       this.socket = new WebSocket(this.WEBSOCKET_ADDR);
-    }
+    } 
+
   }
+ 
+  
   isAvailable() {
     return  this.isAvailableServer() || this.isAvailableSocket();
   }
