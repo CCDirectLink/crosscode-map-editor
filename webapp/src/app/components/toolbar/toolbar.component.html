@@ -20,7 +20,7 @@
 		<input #fileUpload type="file" (change)="loadMap($event)" accept=".json"/>
 		<div>
 			<button *ngIf="map" mat-button (click)="openMapSettings()">Map Settings</button>
-			<button *ngIf="mapServerAvailable() && map" mat-button (click)="sendToCrossCode()">Send to CrossCode</button>
+			<button *ngIf="mapServerSocketAvailable() && map" mat-button (click)="sendToCrossCode()">Send to CrossCode</button>
 			<button *ngIf="map" mat-button (click)="saveMap()">Save Map</button>
 			<button mat-button *ngIf="loaded; else loader" (click)="fileUpload.click()">Load Map</button>
 			<ng-template #loader>
