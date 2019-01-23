@@ -13,6 +13,7 @@ A Map Editor for the game [CrossCode](http://www.cross-code.com/en/home), build 
 ## Getting started
 If you just want to use the editor install the latest [Release](https://github.com/CCDirectLink/crosscode-map-editor/releases/latest).
 
+## Development
 For development you need to run the backend and the webapp
 
 ### backend
