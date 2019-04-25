@@ -23,7 +23,7 @@ export class HttpClientService {
 			this.fs = this.remote.require('fs');
 			this.path = this.remote.require('path');
 			this.configPath = this.path.join(this.remote.app.getPath('userData'), this.fileName);
-			
+
 			try {
 				this.config = JSON.parse(this.fs.readFileSync(this.configPath));
 				let p = this.config.pathToCrosscode;

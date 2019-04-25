@@ -45,7 +45,7 @@ function createWindow() {
 		const log = require("electron-log");
 		log.transports.file.level = "debug";
 		autoUpdater.logger = log;
-		autoUpdater.checkForUpdatesAndNotify();
+		// autoUpdater.checkForUpdatesAndNotify();
 		// win.webContents.openDevTools();
 		// win.setMenu(null);
 	}
