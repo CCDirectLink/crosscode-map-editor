@@ -6,6 +6,8 @@ export class Globals {
 	static map: CCMap;
 	static TILE_SIZE = 16;
 	static URL = 'http://localhost:8080/';
+	static assetsFolders: string[] = [];
+	static resourceManager: any;
 	static entitySettings = {
 		gridSize: 8,
 		enableGrid: false

@@ -111,12 +111,8 @@ export class Helper {
 		}
 		
 		// load json
-		game.load.json(key, Globals.URL + key + '.json');
-		game.load.onLoadComplete.addOnce(() => {
-			return callback(game.cache.getJSON(key));
-		});
-		game.load.crossOrigin = 'anonymous';
-		game.load.start();
+		Globals.resourceManager.loadJSON(key, key + '.json', callback);
+		
 	}
 	
 	public static getJsonPromise(key: string): any {

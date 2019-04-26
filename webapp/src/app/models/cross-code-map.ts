@@ -10,6 +10,7 @@ export interface CrossCodeMap {
 	screen: Point;
 
 	filename?: string;
+	path?: string;
 }
 
 export interface Point {

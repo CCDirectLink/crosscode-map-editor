@@ -31,6 +31,7 @@ export class MapLoaderService {
 					throw new Error('invalid map');
 				}
 				map.filename = file.name;
+				map.path = file.path;
 				this._map.next(map);
 			} catch (e) {
 				console.error(e);

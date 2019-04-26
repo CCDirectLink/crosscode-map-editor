@@ -33,7 +33,7 @@ export class HttpClientService {
 				if (!p.endsWith('/')) {
 					p += '/';
 				}
-				Globals.URL = 'file:///' + p;
+				Globals.assetsFolders.push(p);
 				this.config.pathToCrosscode = p;
 			} catch (e) {
 			}

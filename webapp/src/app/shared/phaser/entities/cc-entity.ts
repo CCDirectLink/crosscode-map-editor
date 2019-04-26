@@ -122,7 +122,7 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		this.setEvents();
 	}
 	
-	updateSettings() {
+	async updateSettings() {
 		const s = this.entitySettings;
 		const settings = this.details.settings;
 		const game = this.game;
@@ -149,6 +149,7 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 					for (let y = 0; y < height; y += fix.h) {
 						const imgHeight = Math.min(fix.h, height - y);
 						const img = game.add.image(x, -y + settings.size.y + s.baseSize.z, null, null, this.boundingBoxOffsetGroup);
+						console.log(fix.gfx);
 						img.loadTexture(fix.gfx);
 						
 						img.crop(new Phaser.Rectangle(fix.x, fix.y, imgWidth, imgHeight));
@@ -161,7 +162,10 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 				this.boundingBoxOffsetGroup.y = -s.baseSize.z;
 			} else {
 				// default
-				s.sheets.fix.forEach(sheet => {
+				await s.sheets.fix.forEach(async (sheet) => {
+					try {
+						await Globals.resourceManager.loadImage(sheet.gfx); 
+					} catch(e) {}
 					const img = this.game.add.image(sheet.offsetX, sheet.offsetY, sheet.gfx, undefined, this.boundingBoxOffsetGroup);
 					img.crop(new Phaser.Rectangle(sheet.x, sheet.y, sheet.w, sheet.h));
 					img.anchor.set(0.5, 1);

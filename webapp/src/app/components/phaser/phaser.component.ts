@@ -10,6 +10,7 @@ import {GlobalEventsService} from '../../shared/global-events.service';
 import {EditorView} from '../../models/editor-view';
 import {Globals} from '../../shared/globals';
 import {HttpClientService} from '../../services/http-client.service';
+import {ResourceManagerService} from '../../shared/resource-manager.service';
 import {StateHistoryService} from '../../shared/history/state-history.service';
 import {PhaserEventsService} from '../../shared/phaser/phaser-events.service';
 import {HeightMapGeneratorService} from '../../services/height-map-generator.service';
@@ -37,7 +38,8 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	            private globalEvents: GlobalEventsService,
 	            private stateHistory: StateHistoryService,
 	            private phaserEventsService: PhaserEventsService,
-	            private http: HttpClientService,
+				private http: HttpClientService,
+				private resourceManager: ResourceManagerService,
 	            private heightGenerator: HeightMapGeneratorService) {
 	}
 	
@@ -122,7 +124,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		// 	this.game.load.json(json, Globals.URL + json);
 		// });
 		res.images.forEach(img => {
-			this.game.load.image(img, Globals.URL + img);
+			this.resourceManager.loadImage(img);
 		});
 		
 		this.game.load.json('definitions.json', 'assets/definitions.json');

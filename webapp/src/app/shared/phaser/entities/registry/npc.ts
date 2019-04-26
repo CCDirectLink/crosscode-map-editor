@@ -183,7 +183,7 @@ export class NPC extends CCEntity {
 			},
 			baseSize: {x: 12, y: 12, z: 28}
 		};
-		this.updateSettings();
+		await this.updateSettings();
 	}
 	
 	private getPath(prefix, path): string {
