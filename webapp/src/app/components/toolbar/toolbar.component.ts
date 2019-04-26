@@ -35,8 +35,10 @@ export class ToolbarComponent implements OnInit {
 		this.mapLoader.loadMap(event);
 	}
 
-	saveMap() {
-		const file = new Blob([JSON.stringify(this.map.exportMap(), null, 2)], {type: 'application/json'});
+	async saveMap() {
+		let data = (await this.map.exportMap());
+
+		const file = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
 		const a = document.createElement('a'),
 			url = URL.createObjectURL(file);
 		a.href = url;

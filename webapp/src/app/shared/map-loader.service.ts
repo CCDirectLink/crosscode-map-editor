@@ -35,7 +35,7 @@ export class MapLoaderService {
 				throw new Error('invalid map');
 			}
 			map.filename = file.name;
-			map.path = file.path;
+			map.path = Globals.resourceManager.getRelativePath(filePath);
 			map.patched = isPatched;
 			this._map.next(map);
 		});

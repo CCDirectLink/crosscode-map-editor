@@ -59,7 +59,6 @@ export class ResourceManagerService {
 
     if (key === "!") { 
       // convert from full to relative path
-      path = this.normalizePath(path);
       let relativePath = this.getRelativePath(path);
       this._loadJSON("!", relativePath, callback, true);
     } else {
@@ -113,6 +112,72 @@ export class ResourceManagerService {
 				obj[key] = patch[key];
 		}
   }
+
+  public async generatePatch(path, mapObject) {
+    
+    console.log(path);
+
+    let originalPath = this.getValidResourcePath(path);
+
+    // @ts-ignore
+    let original = JSON.parse(await this.getResource(originalPath));
+    console.log("About to generate patch");
+    console.log(original);
+    console.log(mapObject);
+    let patch = this._generatePatch(original,mapObject);
+    console.log(patch);
+    return patch;
+  }
+  private _generatePatch(original, modified) {
+		const result = {};
+
+		for (const key in modified) {
+			if (modified[key] == undefined && original[key] == undefined) {
+				continue;
+			}
+      if(typeof modified[key] === "number" && typeof original[key] === "string") {
+        if (Number(original[key]) === Number(modified[key])) {
+          continue;
+        }
+      }
+			if (modified[key] == undefined && original.hasOwnProperty(key)) {
+				result[key] = null;
+			} else if (!original.hasOwnProperty(key) || original[key] === undefined || original[key].constructor !== modified[key].constructor) {
+				result[key] = modified[key];
+			} else if (original[key] !== modified[key]) {
+				if (modified[key].constructor === Object || modified[key].constructor === Array) {
+					const res = this._generatePatch(original[key], modified[key]);
+					if(res !== undefined) {
+						result[key] = res;
+					}
+        } else if (typeof modified[key] === "number" && (Number(original[key]) === Number(modified[key]))) {
+          // layer properties sometimes have strings for numbers
+          continue;
+        } else {
+					result[key] = modified[key];
+				}
+			}
+		}
+
+		for (const key in original) {
+			if(modified[key] === undefined) {
+				result[key] = null;
+			}
+		}
+
+		for (const key in result) {
+			if(result[key] && result[key].constructor === Function){
+				result[key] = undefined;
+				delete result[key];
+			}
+		}
+
+		if (Object.keys(result).length == 0) {
+			return undefined;
+		} else {
+			return result;
+		}
+	}
   
   private getValidResourcePath(relativePath, searchIndex = 0) {
     if (searchIndex >= Globals.assetsFolders.length) {
@@ -163,7 +228,8 @@ export class ResourceManagerService {
       return path;
   }
   
-  private getRelativePath(path: string) : string {
+  public getRelativePath(path: string) : string {
+    path = this.normalizePath(path);
     let assetsPath = this.getAssetsPath(path);
     return path.replace(assetsPath, "");
   }

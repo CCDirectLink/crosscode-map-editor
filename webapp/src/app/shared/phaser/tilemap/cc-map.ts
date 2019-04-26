@@ -21,7 +21,8 @@ export class CCMap {
 	private historySub: Subscription;
 	private offsetSub: Subscription;
 	private keyBinding: Phaser.SignalBinding;
-	
+	private patched: boolean = false;
+	private path: string = "";
 	filename: string;
 	
 	private props = [
@@ -76,7 +77,10 @@ export class CCMap {
 	
 	loadMap(map: CrossCodeMap, skipInit = false) {
 		const game = this.game;
-		
+
+		this.patched = !!map.patched;
+		this.path = map.path;
+
 		this.props.forEach(prop => this[prop] = map[prop]);
 		this.filename = map.filename;
 		
@@ -147,8 +151,8 @@ export class CCMap {
 		layer.destroy();
 	}
 	
-	exportMap(): CrossCodeMap {
-		const out: CrossCodeMap = <any>{};
+	async exportMap(): Promise<any> {
+		const out = <any>{};
 		
 		this.props.forEach(prop => out[prop] = this[prop]);
 		this.game.plugins.plugins.forEach(plugin => {
@@ -158,7 +162,12 @@ export class CCMap {
 		});
 		out.layer = [];
 		this.layers.forEach(l => out.layer.push(l.exportLayer()));
-		
+		if(this.patched) {
+			console.log("It's patched");
+			
+			let result = await Globals.resourceManager.generatePatch(this.path, out);
+			return result;
+		}
 		return out;
 	}
 }
