@@ -38,8 +38,16 @@ export class ResourceManagerService {
     
     Globals.assetsFolders.push(path);
   }
-  public async loadImage(key, cb = () => {}) : Promise<any> {
+  public async loadImage(key) : Promise<any> {
+    const game = Globals.game;
+    if (game.cache.checkImageKey(key)) {
+      return Promise.resolve();
+    }
+    
+    console.log("Loading image", key);
+    
     let resourcePath = this.getValidResourcePath(key);
+    
     if(resourcePath) {
       return new Promise((resolve, reject) => {
         const game = Globals.game;
@@ -50,15 +58,15 @@ export class ResourceManagerService {
         game.load.start();
       })
     }
-    console.log('Could not load...', key);
+    
     return Promise.reject(`Could not load ${key}`);
   }
 
   public loadJSON(key, path, callback) {
-    // it is a map file
 
     if (key === "!") { 
-      // convert from full to relative path
+      // this is a map
+      // convert from full to relative path 
       let relativePath = this.getRelativePath(path);
       this._loadJSON("!", relativePath, callback, true);
     } else {
