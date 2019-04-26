@@ -17,7 +17,7 @@
 		<span class="mat-headline">{{map?.name}}</span>
 	</div>
 	<div fxFlex fxLayoutAlign="end">
-		<input #fileUpload type="file" (change)="loadMap($event)" accept=".json"/>
+		<input #fileUpload type="file" (change)="loadMap($event)" accept=".json,.patch"/>
 		<div>
 			<button *ngIf="map" mat-button (click)="openMapSettings()">Map Settings</button>
 			<button *ngIf="map" mat-button (click)="saveMap()">Save Map</button>

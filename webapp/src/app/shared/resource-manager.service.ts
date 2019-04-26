@@ -3,7 +3,6 @@ import {MapLoaderService} from './map-loader.service';
 import {Globals} from './globals';
 import {Subscription} from 'rxjs';
 import {Remote, Dialog} from 'electron';
-import {} from 'pixi';
 
 @Injectable({
   providedIn: 'root'
@@ -17,30 +16,28 @@ export class ResourceManagerService {
   };
   private readonly remote: Remote;
   private fs;
+  private path;
   constructor(private mapLoader: MapLoaderService) {
     if(Globals.isElectron) {
       Globals.resourceManager = this;
       // @ts-ignore
       this.remote = window.require('electron').remote;
       this.fs = this.remote.require('fs');
-
-      this.mapSubscription = this.mapLoader.map.subscribe((map) => {
-        if(!map || !map.path) {
-          return;
-        }
-        if(Globals.assetsFolders.length > 1) {
-          Globals.assetsFolders.pop();
-        }
-        const normalizedPath: string = this.normalizePath(map.path);
-        
-        const path: string = this.getAssetsPath(normalizedPath);
-        
-        Globals.assetsFolders.push(path);
-      });
+      // @ts-ignore
+      this.path = window.require('path');
     }
     
   }
-
+  public addAssetsPath(mapAssetsPath : string) {
+    if(Globals.assetsFolders.length > 1) {
+      Globals.assetsFolders.pop();
+    }
+    const normalizedPath: string = this.normalizePath(mapAssetsPath);
+    
+    const path: string = this.getAssetsPath(normalizedPath);
+    
+    Globals.assetsFolders.push(path);
+  }
   public async loadImage(key, cb = () => {}) : Promise<any> {
     let resourcePath = this.getValidResourcePath(key);
     if(resourcePath) {
@@ -56,22 +53,67 @@ export class ResourceManagerService {
     console.log('Could not load...', key);
     return Promise.reject(`Could not load ${key}`);
   }
-  
+
   public loadJSON(key, path, callback) {
-    this._loadJSON(key, path, callback);
+    // it is a map file
+
+    if (key === "!") { 
+      // convert from full to relative path
+      path = this.normalizePath(path);
+      let relativePath = this.getRelativePath(path);
+      this._loadJSON("!", relativePath, callback, true);
+    } else {
+      this._loadJSON(key, path, callback);
+    }
+    
   }
-  private _loadJSON(key: string, relativePath: string, callback: any, isHighest = false) {
-    if (this.cache['json'][key]) {
+  private _loadJSON(key: string, relativePath: string, callback: any, ignoreCache: boolean = false) {
+    if (!ignoreCache && this.cache['json'][key]) {
       callback(this.cache['json'][key]);
       return;
     }
+
     this.loadResource(relativePath).then((data : string) => {
       const jsonData = JSON.parse(data);
-      this.cache['json'][key] = jsonData;
+
       console.log(`Successfully loaded ${key}`);
+      
+      return jsonData;
+    }).then(async (jsonData) => {
+      let resourcePatchPath = this.getValidResourcePath(relativePath + '.patch');
+      console.log(relativePath + '.patch', resourcePatchPath);
+      if (resourcePatchPath) {
+        console.log("Resource had patches...applying");
+        
+        let patchJSON: any = await this.getResource(resourcePatchPath);
+        patchJSON = JSON.parse(patchJSON);
+
+        this.applyPatch(jsonData, patchJSON);
+      }
+      
+      if(!ignoreCache) {
+        this.cache['json'][key] = jsonData;
+      }
+      
       callback(jsonData);
+
     });
   }
+
+  // https://github.com/CCDirectLink/CCLoader/blob/master/assets/mods/simplify/mod.js (line: 1050)
+	private applyPatch(obj, patch) {
+		for (const key in patch){
+			if(obj[key] === undefined)
+				obj[key] = patch[key];
+			else if(patch[key] === undefined)
+				obj[key] = undefined;
+			else if(patch[key].constructor === Object)
+				this.applyPatch(obj[key], patch[key]);
+			else
+				obj[key] = patch[key];
+		}
+  }
+  
   private getValidResourcePath(relativePath, searchIndex = 0) {
     if (searchIndex >= Globals.assetsFolders.length) {
       return null;
@@ -83,6 +125,7 @@ export class ResourceManagerService {
     }
     return this.getValidResourcePath(relativePath, searchIndex + 1);
   }
+
   private async loadResource(relativePath: string) {
     let resourcePath = this.getValidResourcePath(relativePath);
     if (!resourcePath) {
@@ -95,8 +138,11 @@ export class ResourceManagerService {
     return new Promise((resolve, reject) => {
       this.fs.readFile(path,"utf8",(error, data) => {
           if(error) {
+            console.log(path);
+            console.log(error);
             reject(Promise.reject(error));
           }
+          
           resolve(Promise.resolve(data));
       })
     });
@@ -115,5 +161,10 @@ export class ResourceManagerService {
         return path.substring(0, index);
       }
       return path;
+  }
+  
+  private getRelativePath(path: string) : string {
+    let assetsPath = this.getAssetsPath(path);
+    return path.replace(assetsPath, "");
   }
 }

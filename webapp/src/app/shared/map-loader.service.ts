@@ -4,7 +4,8 @@ import {Observable, BehaviorSubject} from 'rxjs';
 import {CrossCodeMap} from '../models/cross-code-map';
 import {CCMap} from './phaser/tilemap/cc-map';
 import {CCMapLayer} from './phaser/tilemap/cc-map-layer';
-
+import {ResourceManagerService} from './resource-manager.service';
+import {Globals} from './globals';
 @Injectable()
 export class MapLoaderService {
 
@@ -22,27 +23,22 @@ export class MapLoaderService {
 		}
 
 		const file = files[0];
-		const reader = new FileReader();
-
-		reader.onload = (e: any) => {
-			try {
-				const map = JSON.parse(e.target.result);
-				if (!map.mapHeight) {
-					throw new Error('invalid map');
-				}
-				map.filename = file.name;
-				map.path = file.path;
-				this._map.next(map);
-			} catch (e) {
-				console.error(e);
-				this.snackBar.open('Error: ' + e.message, undefined, {
-					duration: 2500
-				});
-				return;
+		const isPatched = file.name.endsWith(".patch");
+		let filePath = file.path;
+		if(isPatched) {
+			filePath = filePath.substring(0, filePath.length - ".patch".length);
+		}
+		Globals.resourceManager.addAssetsPath(file.path);
+		Globals.resourceManager.loadJSON("!", filePath, (map) => {
+			console.log("Loaded map", map);
+			if (!map.mapHeight) {
+				throw new Error('invalid map');
 			}
-		};
-
-		reader.readAsText(file);
+			map.filename = file.name;
+			map.path = file.path;
+			map.patched = isPatched;
+			this._map.next(map);
+		});
 	}
 
 	get map(): Observable<CrossCodeMap> {

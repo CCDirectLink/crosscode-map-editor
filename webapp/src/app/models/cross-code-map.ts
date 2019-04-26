@@ -11,6 +11,7 @@ export interface CrossCodeMap {
 
 	filename?: string;
 	path?: string;
+	patched?: boolean;
 }
 
 export interface Point {
