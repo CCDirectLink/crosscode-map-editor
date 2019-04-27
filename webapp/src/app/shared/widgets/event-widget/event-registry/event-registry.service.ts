@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AddMsgPerson} from './add-msg-person';
+import {RemoveMsgPerson} from './remove-msg-person';
 import {DefaultEvent} from './default-event';
 import {If} from './if';
 import {ShowMsg} from './show-msg';
@@ -23,6 +24,7 @@ export class EventRegistryService {
 	constructor() {
 		this.setDefaultEvent(DefaultEvent);
 		this.register('ADD_MSG_PERSON', AddMsgPerson);
+		this.register('REMOVE_MSG_PERSON', RemoveMsgPerson);
 		this.register('SHOW_MSG', ShowMsg);
 		this.register('SHOW_CHOICE', ShowChoice);
 		this.register('IF', If);
