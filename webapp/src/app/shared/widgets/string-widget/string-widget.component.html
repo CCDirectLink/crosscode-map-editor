@@ -1,5 +1,22 @@
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
+<div *ngIf="nested !== 'true'"fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
 	<label [for]="key" class="property-name">{{key}}:</label>
+	<div class="mat-select-container" *ngIf="attribute?.options; else defaultInput">
+		<mat-select [id]="key"
+		            [ngModel]="settings[key]"
+		            (selectionChange)="setSetting(key, $event.value)">
+			<mat-option *ngFor="let option of keys" [value]="option">
+				{{ option }}
+			</mat-option>
+		</mat-select>
+	</div>
+	<ng-template #defaultInput>
+		<input class="default-input"
+		       [id]="key"
+		       [ngModel]="settings[key]"
+		       (input)="setSetting(key, $event.target.value)">
+	</ng-template>
+</div>
+<div *ngIf="nested === 'true'">
 	<div class="mat-select-container" *ngIf="attribute?.options; else defaultInput">
 		<mat-select [id]="key"
 		            [ngModel]="settings[key]"

@@ -8,6 +8,7 @@ import {NPCStatesWidgetComponent} from './npc-states-widget/npc-states-widget.co
 import {EventWidgetComponent} from './event-widget/event-widget.component';
 import {CharacterWidgetComponent} from './character-widget/character-widget.component';
 import {PersonWidgetComponent} from './person-widget/person-widget.component';
+import {LangLabelWidgetComponent} from './lang-label-widget/lang-label-widget.component';
 
 @Injectable()
 export class WidgetRegistryService {
@@ -25,6 +26,7 @@ export class WidgetRegistryService {
 		this.register('Event', EventWidgetComponent);
 		this.register('Character', CharacterWidgetComponent);
 		this.register('PersonExpression', PersonWidgetComponent);
+		this.register('LangLabel', LangLabelWidgetComponent);
 	}
 
 	private setDefaultWidget(widget: any) {
