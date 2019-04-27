@@ -30,13 +30,13 @@ export class ResourceManagerService {
   }
   public addAssetsPath(mapAssetsPath : string) {
     if(Globals.assetsFolders.length > 1) {
-      Globals.assetsFolders.pop();
+      Globals.assetsFolders.shift();
     }
     const normalizedPath: string = this.normalizePath(mapAssetsPath);
     
     const path: string = this.getAssetsPath(normalizedPath);
     console.log(Globals.assetsFolders);
-    Globals.assetsFolders.push(path);
+    Globals.assetsFolders.unshift(path);
   }
   public async loadImage(key) : Promise<any> {
     const game = Globals.game;
