@@ -1,8 +1,8 @@
 <div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
-    <label [for]="key" class="property-name">{{key}}:</label>
-    <mat-select class="default-input small-input" [(ngModel)]="settings[key]" (selectionChange)="setSetting(key, $event.value)">
-      <mat-option *ngFor="let item of getAllNames()" [value]="item">
-        {{item}}
-      </mat-option>
-    </mat-select>
+  <span class="property-name">{{key}}:</span>
+  <input list="characters" class="default-input" [(ngModel)]="settings[key]" (change)="setSetting(key, $event.target.value)">
+
+  <datalist id="characters">
+    <option *ngFor="let item of getAllNames()" [value]="item">
+  </datalist>
 </div>

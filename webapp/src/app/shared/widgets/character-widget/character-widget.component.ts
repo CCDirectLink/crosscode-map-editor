@@ -5,7 +5,7 @@ import {AbstractWidget} from '../abstract-widget';
 @Component({
   selector: 'app-character-widget',
   templateUrl: './character-widget.component.html',
-  styleUrls: ['./character-widget.component.scss']
+  styleUrls: ['./character-widget.component.scss', '../widget.scss']
 })
 export class CharacterWidgetComponent extends AbstractWidget implements OnInit {
 
