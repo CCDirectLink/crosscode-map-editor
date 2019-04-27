@@ -1,0 +1,43 @@
+@import "~@angular/material/theming";
+@import "theme";
+
+$config: mat-typography-config();
+
+$accent: map-get($theme, accent);
+
+.container {
+	position: relative;
+	background-color: mat-color($accent, 800);
+	width: 80vw;
+	top: 5vh;
+	left: 5vw;
+}
+textarea {
+	outline: none;
+	resize: none;
+	overflow: hidden;
+	
+	line-height: 1;
+	$textSize: 20px;
+	min-width: 10vw;
+	max-width: 50vw;
+
+	font-size: $textSize * 1;
+	min-height: $textSize * 3;
+	max-height: $textSize * 3;
+}
+.action-button-row {
+	margin-bottom: 8px;
+}
+
+.text {
+    $font-type: body-1;
+	font-family: mat-font-family($config);
+	font-size: large;
+    font-weight: mat-font-weight($config, $font-type);
+	color: white;	
+}
+
+input[type=text] {
+	margin-right: 10px;
+}

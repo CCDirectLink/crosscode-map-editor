@@ -1,0 +1,88 @@
+@import "theme";
+
+$primary: map-get($theme, primary);
+$accent: map-get($theme, accent);
+
+$btnWidth: 34px;
+$toolbarHeight: 54px;
+
+.container {
+	width: 60vw;
+	height: calc(94vh - 64px);
+	color: white;
+	background: mat-color($accent, 800);
+}
+
+.ng-draggable {
+	cursor: move;
+}
+
+.toolbar {
+	padding-left: 16px;
+	background-color: mat-color(map-get($theme, background), app-bar);
+	height: $toolbarHeight;
+}
+
+.buttons {
+	& button {
+		margin: 0 8px;
+	}
+}
+
+#groupTabGroup {
+	&::ng-deep.mat-tab-label, &::ng-deep.mat-tab-label-active {
+		min-width: 50px !important;
+	}
+
+	&::ng-deep.mat-tab-label-active {
+		background: mat-color($accent, 600);
+	}
+
+	&::ng-deep .mat-tab-body-wrapper {
+		flex-grow: 1;
+	}
+}
+
+.content {
+	height: 100%;
+}
+
+.tab-content {
+	padding-left: 12px;
+	padding-right: 12px;
+	height: 100%;
+	flex-direction: column;
+}
+
+.condition-label {
+	margin: 0 10px;
+}
+
+.condition-icon {
+	margin: 0 10px;
+}
+
+.content-left {
+	margin: 10px;
+
+	.select-input {
+		height: 26px;
+
+		option {
+			background-color: mat-color($accent, 800);
+		}
+	}
+
+	.attribute {
+		margin-bottom: 10px;
+	}
+
+	.pos-label {
+		margin-right: 20px;
+	}
+}
+
+.event-block {
+	margin: 10px;
+}
+

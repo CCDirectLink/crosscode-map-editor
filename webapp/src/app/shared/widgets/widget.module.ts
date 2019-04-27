@@ -26,6 +26,7 @@ import {EventWindowComponent} from './event-widget/event-window/event-window.com
 import { CharacterWidgetComponent } from './character-widget/character-widget.component';
 import { PersonWidgetComponent } from './person-widget/person-widget.component';
 import { LangLabelWidgetComponent } from './lang-label-widget/lang-label-widget.component';
+import { LangLabelComponent } from './lang-label-widget/lang-label/lang-label.component';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -40,7 +41,8 @@ const COMPONENTS = [
 	EventEditorComponent,
 	CharacterWidgetComponent,
 	PersonWidgetComponent,
-	LangLabelWidgetComponent
+	LangLabelWidgetComponent,
+	LangLabelComponent
 ];
 
 const PRIVATE_COMPONENTS = [
@@ -65,7 +67,7 @@ const PRIVATE_COMPONENTS = [
 		EventRegistryService,
 		EventHelperService
 	],
-	declarations: [COMPONENTS, PRIVATE_COMPONENTS, CharacterWidgetComponent],
+	declarations: [COMPONENTS, PRIVATE_COMPONENTS, CharacterWidgetComponent, LangLabelComponent],
 	entryComponents: [COMPONENTS, PRIVATE_COMPONENTS],
 	exports: COMPONENTS
 })

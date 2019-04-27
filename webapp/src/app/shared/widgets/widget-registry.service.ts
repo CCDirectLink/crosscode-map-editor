@@ -27,6 +27,7 @@ export class WidgetRegistryService {
 		this.register('Character', CharacterWidgetComponent);
 		this.register('PersonExpression', PersonWidgetComponent);
 		this.register('LangLabel', LangLabelWidgetComponent);
+		this.register('VarCondition',StringWidgetComponent);
 	}
 
 	private setDefaultWidget(widget: any) {

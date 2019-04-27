@@ -1,0 +1,20 @@
+<div class="container mat-elevation-z8" ngDraggable [handle]="handle">
+	<div #handle class="toolbar" fxLayout="row" fxLayoutAlign="center">
+		<span fxFlexAlign="center" class="title text" style="pointer-events: none;" fxFlex>LangLabel</span>
+	</div>
+  <div class="content">
+    <div *ngFor="let lang of languageIds" fxLayout="row" class="property-container" matTooltip="Set language text for">
+      <span class="property-name text">{{lang}}:</span>
+      <textarea wrap="off" rows="3" (input)="input($event)" class="text" [(ngModel)]="langLabel[lang]"></textarea>
+    </div>
+  </div>
+  <div class="content">
+    <!--Actions-->
+    <div fxFlex="1 0 40px" fxLayoutAlign="end">
+      <div fxFlexAlign="end" class="action-button-row">
+        <button mat-button class="text" (click)="cancel()">Cancel</button>
+        <button mat-button class="text" (click)="save()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
