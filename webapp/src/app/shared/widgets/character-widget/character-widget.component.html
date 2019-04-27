@@ -1,3 +1,8 @@
-<p>
-  character-widget works!
-</p>
+<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
+    <label [for]="key" class="property-name">{{key}}:</label>
+    <mat-select class="default-input small-input" [(ngModel)]="settings[key]" (selectionChange)="setSetting(key, $event.value)">
+      <mat-option *ngFor="let item of getAllNames()" [value]="item">
+        {{item}}
+      </mat-option>
+    </mat-select>
+</div>

@@ -35,7 +35,7 @@ export class ResourceManagerService {
     const normalizedPath: string = this.normalizePath(mapAssetsPath);
     
     const path: string = this.getAssetsPath(normalizedPath);
-    
+    console.log(Globals.assetsFolders);
     Globals.assetsFolders.push(path);
   }
   public async loadImage(key) : Promise<any> {
