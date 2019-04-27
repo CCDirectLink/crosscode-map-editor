@@ -1,6 +1,6 @@
 import {AbstractEvent, EventType} from './abstract-event';
 import {Label, Person} from '../../../../models/events';
-
+import {Globals} from '../../../globals';
 interface ShowMsgData extends EventType {
 	message: Label;
 	autoContinue: boolean;
@@ -31,7 +31,7 @@ export class ShowMsg extends AbstractEvent<ShowMsgData> {
 	update() {
 		this.info = this.combineStrings(
 			this.getColoredString(this.data.person.person + '>' + this.data.person.expression, '#ffe188'),
-			this.data.message.en_US
+			this.data.message[Globals.lang]
 		);
 	}
 	

@@ -1,6 +1,6 @@
 import {AbstractEvent, EventType} from './abstract-event';
 import {Label, Person} from '../../../../models/events';
-
+import {Globals} from '../../../globals';
 interface ShowChoiceData extends EventType {
 	0?: AbstractEvent<any>[];
 	1?: AbstractEvent<any>[];
@@ -52,7 +52,7 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 		
 		this.data.options.forEach((option, index) => {
 			this.children[index] = {
-				title: this.getColoredString('Choice. ' + option.label.en_US, '#838383'),
+				title: this.getColoredString('Choice. ' + option.label[Globals.lang], '#838383'),
 				events: this.data[index] || [],
 				hideGreaterSign: true
 			};

@@ -7,6 +7,7 @@ export class Globals {
 	static TILE_SIZE = 16;
 	static URL = 'http://localhost:8080/';
 	static assetsFolders: string[] = [];
+	static lang = "en_US";
 	static resourceManager: any;
 	static entitySettings = {
 		gridSize: 8,
