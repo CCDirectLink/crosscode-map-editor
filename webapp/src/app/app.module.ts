@@ -22,6 +22,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import {EditorComponent} from './components/editor/editor.component';
 import {AddEntityMenuComponent} from './components/editor/add-entity-menu/add-entity-menu.component';
 
+
 @NgModule({
 	declarations: [
 		AppComponent,

@@ -1,0 +1,14 @@
+<div class="dialog-container" fxLayout="column">
+  <!-- Editor Lang -->
+  <div fxLayout="row" fxFlex="0 0 auto">
+    <span fxFlexAlign="center">Lang: </span>
+    <input type="text" class="default-input" [(ngModel)]="lang">
+  </div>
+  	<!--Actions-->
+	<div fxFlex="1 0 40px" fxLayoutAlign="end">
+    <div fxFlexAlign="end" class="action-button-row">
+      <button mat-button (click)="closeDialogue()">Cancel</button>
+      <button mat-button (click)="update()">Update</button>
+    </div>
+  </div>
+</div>

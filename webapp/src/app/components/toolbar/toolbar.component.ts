@@ -6,7 +6,7 @@ import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {OffsetMapComponent} from '../dialogs/offset-map/offset-map.component';
 import {environment} from '../../../environments/environment';
-
+import {EditorSettingsComponent} from '../dialogs/editor-settings/editor-settings.component';
 @Component({
 	selector: 'app-toolbar',
 	templateUrl: './toolbar.component.html',
@@ -56,7 +56,9 @@ export class ToolbarComponent implements OnInit {
 			data: this.map
 		});
 	}
-	
+	openEditorSettings() {
+		this.dialog.open(EditorSettingsComponent, {});
+	}
 	generateHeights() {
 		this.events.generateHeights.next();
 	}

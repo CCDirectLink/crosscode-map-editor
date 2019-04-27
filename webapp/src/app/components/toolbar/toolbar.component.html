@@ -19,6 +19,7 @@
 	<div fxFlex fxLayoutAlign="end">
 		<input #fileUpload type="file" (change)="loadMap($event)" accept=".json,.patch"/>
 		<div>
+			<button mat-button *ngIf="loaded" (click)="openEditorSettings()">Editor Settings</button>
 			<button *ngIf="map" mat-button (click)="openMapSettings()">Map Settings</button>
 			<button *ngIf="map" mat-button (click)="saveMap()">Save Map</button>
 			<button mat-button *ngIf="loaded; else loader" (click)="fileUpload.click()">Load Map</button>
