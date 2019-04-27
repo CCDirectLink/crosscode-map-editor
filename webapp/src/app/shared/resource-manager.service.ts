@@ -43,9 +43,7 @@ export class ResourceManagerService {
     if (game.cache.checkImageKey(key)) {
       return Promise.resolve();
     }
-    
-    console.log("Loading image", key);
-    
+      
     let resourcePath = this.getValidResourcePath(key);
     
     if(resourcePath) {
