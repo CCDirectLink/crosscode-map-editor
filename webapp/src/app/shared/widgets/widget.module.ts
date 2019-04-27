@@ -63,7 +63,7 @@ const PRIVATE_COMPONENTS = [
 		EventRegistryService,
 		EventHelperService
 	],
-	declarations: [COMPONENTS, PRIVATE_COMPONENTS, CharacterWidgetComponent, PersonWidgetComponent],
+	declarations: [COMPONENTS, PRIVATE_COMPONENTS, CharacterWidgetComponent, PersonWidgetComponent,CharacterWidgetComponent],
 	entryComponents: [COMPONENTS, PRIVATE_COMPONENTS],
 	exports: COMPONENTS
 })

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , Input} from '@angular/core';
 import {Globals} from '../../globals';
 import {AbstractWidget} from '../abstract-widget';
 
@@ -9,6 +9,7 @@ import {AbstractWidget} from '../abstract-widget';
 })
 export class CharacterWidgetComponent extends AbstractWidget implements OnInit {
 
+  @Input() nested: string;
   constructor() { 
     super();
     if(CharacterNamesManager.hasNoNames()) {
@@ -18,7 +19,6 @@ export class CharacterWidgetComponent extends AbstractWidget implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-    console.log(this);
   }
   getAllNames() {
     return CharacterNamesManager.names;
