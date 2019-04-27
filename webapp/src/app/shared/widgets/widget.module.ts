@@ -24,6 +24,7 @@ import {EventDetailComponent} from './event-widget/event-editor/detail/event-det
 import {EventAddComponent} from './event-widget/event-editor/add/event-add.component';
 import {EventWindowComponent} from './event-widget/event-window/event-window.component';
 import { CharacterWidgetComponent } from './character-widget/character-widget.component';
+import { PersonWidgetComponent } from './person-widget/person-widget.component';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -36,7 +37,8 @@ const COMPONENTS = [
 	NpcStatesComponent,
 	EventWidgetComponent,
 	EventEditorComponent,
-	CharacterWidgetComponent
+	CharacterWidgetComponent,
+	PersonWidgetComponent
 ];
 
 const PRIVATE_COMPONENTS = [
@@ -61,7 +63,7 @@ const PRIVATE_COMPONENTS = [
 		EventRegistryService,
 		EventHelperService
 	],
-	declarations: [COMPONENTS, PRIVATE_COMPONENTS, CharacterWidgetComponent],
+	declarations: [COMPONENTS, PRIVATE_COMPONENTS, CharacterWidgetComponent, PersonWidgetComponent],
 	entryComponents: [COMPONENTS, PRIVATE_COMPONENTS],
 	exports: COMPONENTS
 })
