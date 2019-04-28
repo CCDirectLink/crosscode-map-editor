@@ -1,0 +1,28 @@
+@import "~@angular/material/theming";
+@import "theme";
+
+$primary: map-get($theme, primary);
+$accent: map-get($theme, accent);
+
+$listItemHeight: 28px;
+
+.tile-selector-container {
+	display: inline-block;
+	position: relative;
+	background-color: mat-color($accent, 800);
+	height: 100%;
+	width: 100%;
+}
+
+.button-container {
+	padding-right: 16px;
+	margin-bottom: 8px;
+}
+
+.tile-selector-is-future{
+	color: mat-color($mat-grey, 500);
+}
+
+.item-selected {
+	background-color: mat-color($mat-grey, 700) !important;
+}

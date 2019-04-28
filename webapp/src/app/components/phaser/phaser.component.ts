@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, Input} from '@angular/core';
 import * as Phaser from 'phaser-ce';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {Subscription} from 'rxjs';
@@ -13,6 +13,8 @@ import {HttpClientService} from '../../services/http-client.service';
 import {StateHistoryService} from '../../shared/history/state-history.service';
 import {PhaserEventsService} from '../../shared/phaser/phaser-events.service';
 import {HeightMapGeneratorService} from '../../services/height-map-generator.service';
+import { FileInfos } from '../../models/file-infos';
+import { ISelectedTiles } from '../../models/tile-selector';
 
 @Component({
 	selector: 'app-phaser',
@@ -32,6 +34,13 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	private tileDrawer: TileDrawer;
 	private entityManager: EntityManager;
 	
+	@Input()
+	set selected(value: ISelectedTiles) {
+		if (this.tileDrawer) {
+			this.tileDrawer.select(value);
+		}
+	}
+
 	constructor(private element: ElementRef,
 	            private mapLoader: MapLoaderService,
 	            private globalEvents: GlobalEventsService,
@@ -40,6 +49,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	            private http: HttpClientService,
 	            private heightGenerator: HeightMapGeneratorService) {
 	}
+
 	
 	ngOnInit() {
 		this.http.getAllFiles().subscribe(res => {

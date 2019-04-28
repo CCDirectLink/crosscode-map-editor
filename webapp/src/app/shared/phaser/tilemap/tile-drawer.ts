@@ -8,6 +8,7 @@ import {CCMap} from './cc-map';
 import {MapLoaderService} from '../../map-loader.service';
 import {HistoryState, StateHistoryService} from '../../history/state-history.service';
 import {GlobalEventsService} from '../../global-events.service';
+import { ISelectedTiles } from '../../../models/tile-selector';
 
 export class TileDrawer extends Phaser.Plugin {
 	
@@ -17,6 +18,7 @@ export class TileDrawer extends Phaser.Plugin {
 			id: number;
 			offset: Point
 		}[],
+		size: Phaser.Point,
 		img: Phaser.Image,
 		tilesetSize: Point,
 		bitmap: Phaser.BitmapData,
@@ -120,6 +122,12 @@ export class TileDrawer extends Phaser.Plugin {
 		this.tileSelectMap.visible = false;
 		
 		this.group.add(this.tileSelectMap, false, 0);
+	}
+
+	public select(selected: ISelectedTiles) {
+		this.selectedTiles.tiles = selected.tiles;
+		this.selectedTiles.size = selected.size;
+		this.renderPreviewById();
 	}
 	
 	
@@ -356,6 +364,34 @@ export class TileDrawer extends Phaser.Plugin {
 			);
 			
 		});
+	}
+	
+	private renderPreviewById() {
+		const tiles = this.selectedTiles;
+		const bitmap = tiles.bitmap;
+
+		this.graphics.clear();
+		this.setDefaultStyle();
+		this.graphics.drawRect(0, 0, tiles.size.x * Globals.TILE_SIZE, tiles.size.y * Globals.TILE_SIZE);
+		
+		bitmap.clear();
+		for (const tile of tiles.tiles) {
+			const pos = Helper.getTilePos(tiles.tilesetSize, tile.id);
+			if (tile.id === 0) {
+				return;
+			}
+			this.tilesetImg.cropRect.x = pos.x * Globals.TILE_SIZE;
+			this.tilesetImg.cropRect.y = pos.y * Globals.TILE_SIZE;
+			this.tilesetImg.cropRect.width = Globals.TILE_SIZE;
+			this.tilesetImg.cropRect.height = Globals.TILE_SIZE;
+			this.tilesetImg.updateCrop();
+			bitmap.draw(
+				this.tilesetImg,
+				tile.offset.x * Globals.TILE_SIZE,
+				tile.offset.y * Globals.TILE_SIZE,
+				Globals.TILE_SIZE, Globals.TILE_SIZE
+			);
+		}
 	}
 	
 	private setDefaultStyle() {
