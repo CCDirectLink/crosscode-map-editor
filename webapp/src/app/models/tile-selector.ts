@@ -1,9 +1,9 @@
-import { Point } from 'phaser-ce';
+import * as Phaser from 'phaser-ce';
 
 export interface ISelectedTiles {
     tiles: {
         id: number;
-        offset: Point;
+        offset: Phaser.Point;
     }[];
-    size: Point;
+    size: Phaser.Point;
 }
