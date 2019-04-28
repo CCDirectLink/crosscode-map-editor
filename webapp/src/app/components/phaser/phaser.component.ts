@@ -117,18 +117,18 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		this.heightGenerator.init(game);
 	}
 	
-	preload(res) {
+	preload(res: FileInfos) {
 		// res.data.forEach(json => {
 		// 	this.game.load.json(json, Globals.URL + json);
 		// });
-		res.images.forEach(img => {
-			this.game.load.image(img, Globals.URL + img);
-		});
+		this.game.load.images(res.images, res.images.map(i => Globals.URL + i));
 		
 		this.game.load.json('definitions.json', 'assets/definitions.json');
 		this.game.load.json('destructibles.json', 'assets/destructibles.json');
 		this.game.load.crossOrigin = 'anonymous';
 		
+		this.game.load.maxParallelDownloads = res.images.length;
+
 		this.game.load.onLoadComplete.addOnce(() => {
 			this.globalEvents.loadComplete.next(true);
 		});
