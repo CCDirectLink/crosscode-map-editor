@@ -154,7 +154,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	
 	render() {
 		// expensive call, use only for debugging
-		this.game.debug.text(this.game.time.fps.toString(), 2, 14, '#00ff00');
+		// this.game.debug.text(this.game.time.fps.toString(), 2, 14, '#00ff00');
 		
 		this.game.debug.geom(this.border, '#F00', false);
 	}
