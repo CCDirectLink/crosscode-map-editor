@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Globals} from '../shared/globals';
 import {Remote, Dialog} from 'electron';
+import { FileInfos } from '../models/file-infos';
 
 @Injectable()
 export class HttpClientService {
@@ -40,18 +41,33 @@ export class HttpClientService {
 		}
 	}
 	
-	getAllFiles(): Observable<Object> {
+	getAllFiles(): Observable<FileInfos> {
 		if (!this.fs) {
-			return this.http.get(Globals.URL + 'api/allFiles');
+			return this.http.get<FileInfos>(Globals.URL + 'api/allFiles');
 		}
 		return new Observable(obs => {
 			if (this.config && this.config.pathToCrosscode) {
 				const o = {
 					images: this.listAllFiles(this.path.resolve(this.config.pathToCrosscode, 'media/'), [], 'png'),
 					data: this.listAllFiles(this.path.resolve(this.config.pathToCrosscode, 'data/'), [], 'json')
-				};
+				} as FileInfos;
 				
 				obs.next(o);
+				obs.complete();
+			} else {
+				console.warn('path to crosscode not found, opening file dialog');
+				this.selectCcFolder();
+			}
+		});
+	}
+
+	getAllTilesets(): Observable<string[]> {
+		if (!this.fs) {
+			return this.http.get<string[]>(Globals.URL + 'api/allTilesets');
+		}
+		return new Observable(obs => {
+			if (this.config && this.config.pathToCrosscode) {
+				obs.next(this.listAllFiles(this.path.resolve(this.config.pathToCrosscode, 'media/map/'), [], 'png'));
 				obs.complete();
 			} else {
 				console.warn('path to crosscode not found, opening file dialog');
