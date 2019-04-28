@@ -10,7 +10,7 @@ import { ISelectedTiles } from '../../models/tile-selector';
 	styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent {
-	private selected: ISelectedTiles;
+	selected: ISelectedTiles;
 
 	constructor(overlayService: OverlayService, overlay: Overlay) {
 		// const obj = overlayService.open(NpcStatesComponent, {

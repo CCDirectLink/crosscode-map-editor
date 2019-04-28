@@ -12,13 +12,9 @@ import { ISelectedTiles } from '../../models/tile-selector';
 @Component({
 	selector: 'app-tile-selector',
 	templateUrl: './tile-selector.component.html',
-	styleUrls: ['./tile-selector.component.scss'],
-	encapsulation: ViewEncapsulation.None
+	styleUrls: ['./tile-selector.component.scss']
 })
 export class TileSelectorComponent implements OnInit {
-	private width = 300 * window.devicePixelRatio;
-	private height = 300 * window.devicePixelRatio;
-
 	private display: Phaser.Game;
 	private tileSelector: CCMapLayer;
 	private group: Phaser.Group;
@@ -34,8 +30,7 @@ export class TileSelectorComponent implements OnInit {
 	
 	constructor(
 		private mapLoader: MapLoaderService,
-		private http: HttpClientService,
-		private ref: ChangeDetectorRef) {
+		private http: HttpClientService) {
 	}
 	
 	ngOnInit() {
@@ -80,8 +75,6 @@ export class TileSelectorComponent implements OnInit {
 		
 		const scale = 1 / window.devicePixelRatio;
 		this.display.scale.setUserScale(scale, scale);
-
-		this.ref.detectChanges();
 		
 		let counter = 1;
 		
@@ -208,11 +201,21 @@ export class TileSelectorComponent implements OnInit {
 	}
 
 	private updateSelection() {
-		const sx = this.border.x / Globals.TILE_SIZE;
-		const sy = this.border.y / Globals.TILE_SIZE;
+		let sx = this.border.x / Globals.TILE_SIZE;
+		let sy = this.border.y / Globals.TILE_SIZE;
 
-		const width = this.border.width / Globals.TILE_SIZE;
-		const height = this.border.height / Globals.TILE_SIZE;
+		let width = this.border.width / Globals.TILE_SIZE;
+		let height = this.border.height / Globals.TILE_SIZE;
+
+		if (width < 0) {
+			sx += width;
+			width = -width;
+		}
+
+		if (height < 0) {
+			sy += height;
+			height = -height;
+		}
 
 		this.selected.tiles = [];
 		for (let y = 0; y < height; y++) {

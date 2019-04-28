@@ -12,6 +12,8 @@ $listItemHeight: 28px;
 	background-color: mat-color($accent, 800);
 	height: 100%;
 	width: 100%;
+	max-height: 80vh;
+	overflow-y: auto;
 }
 
 .button-container {
