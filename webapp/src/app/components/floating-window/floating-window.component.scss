@@ -23,17 +23,28 @@ $toolbarHeight: 32px;
 	padding-left: 16px;
 	background-color: mat-color(map-get($theme, background), app-bar);
 	height: $toolbarHeight !important;
-	.minimize-button {
+
+	.toolbar-button {
 		//background-color: mat-color($primary, 700);
 		width: $btnWidth;
 		height: 100%;
-		font-size: 24px !important;
 		line-height: normal;
-		font-weight: 800;
 		min-width: 0;
 		min-height: 0;
 		border-radius: 0;
 		padding: 0;
+	}
+
+	.minimize-button {
+		padding-top: 5px;
+		font-size: 24px !important;
+		font-weight: 800;
+	}
+
+	.close-button {
+		font-size: 18px !important;
+		font-weight: 800;
+		text-transform: none;
 	}
 }
 
