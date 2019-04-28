@@ -9,6 +9,7 @@ import {MapLoaderService} from '../../map-loader.service';
 import {HistoryState, StateHistoryService} from '../../history/state-history.service';
 import {GlobalEventsService} from '../../global-events.service';
 import { ISelectedTiles } from '../../../models/tile-selector';
+import * as Phaser from 'phaser-ce';
 
 export class TileDrawer extends Phaser.Plugin {
 	
@@ -16,7 +17,7 @@ export class TileDrawer extends Phaser.Plugin {
 	private selectedTiles: {
 		tiles: {
 			id: number;
-			offset: Point
+			offset: Phaser.Point
 		}[],
 		size: Phaser.Point,
 		img: Phaser.Image,
@@ -287,7 +288,7 @@ export class TileDrawer extends Phaser.Plugin {
 		// cancel current selection when out of bounds
 		if (!this.rightClickStart) {
 			this.graphics.drawRect(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
-			this.selectedTiles.tiles.push({id: 0, offset: {x: 0, y: 0}});
+			this.selectedTiles.tiles.push({id: 0, offset: new Phaser.Point(0, 0)});
 			this.selectedTiles.bitmap.clear();
 			return;
 		}
@@ -320,7 +321,7 @@ export class TileDrawer extends Phaser.Plugin {
 			for (let y = smaller.y; y <= bigger.y; y++) {
 				this.selectedTiles.tiles.push({
 					id: data[y][x],
-					offset: {x: x - smaller.x, y: y - smaller.y}
+					offset: new Phaser.Point(x - smaller.x, y - smaller.y)
 				});
 				// console.log('pos', {x: x, y: y});
 			}
@@ -351,18 +352,8 @@ export class TileDrawer extends Phaser.Plugin {
 			if (id === 0) {
 				return;
 			}
-			this.tilesetImg.cropRect.x = pos.x * Globals.TILE_SIZE;
-			this.tilesetImg.cropRect.y = pos.y * Globals.TILE_SIZE;
-			this.tilesetImg.cropRect.width = Globals.TILE_SIZE;
-			this.tilesetImg.cropRect.height = Globals.TILE_SIZE;
-			this.tilesetImg.updateCrop();
-			bitmap.draw(
-				this.tilesetImg,
-				tile.offset.x * Globals.TILE_SIZE,
-				tile.offset.y * Globals.TILE_SIZE,
-				Globals.TILE_SIZE, Globals.TILE_SIZE
-			);
-			
+
+			this.renderPreviewTile(pos, tile.offset);
 		});
 	}
 	
@@ -380,18 +371,26 @@ export class TileDrawer extends Phaser.Plugin {
 			if (tile.id === 0) {
 				return;
 			}
-			this.tilesetImg.cropRect.x = pos.x * Globals.TILE_SIZE;
-			this.tilesetImg.cropRect.y = pos.y * Globals.TILE_SIZE;
-			this.tilesetImg.cropRect.width = Globals.TILE_SIZE;
-			this.tilesetImg.cropRect.height = Globals.TILE_SIZE;
-			this.tilesetImg.updateCrop();
-			bitmap.draw(
-				this.tilesetImg,
-				tile.offset.x * Globals.TILE_SIZE,
-				tile.offset.y * Globals.TILE_SIZE,
-				Globals.TILE_SIZE, Globals.TILE_SIZE
-			);
+
+			this.renderPreviewTile(pos, tile.offset);
 		}
+	}
+
+	private renderPreviewTile(pos: Point, offset: Point) {
+		const bitmap = this.selectedTiles.bitmap;
+
+		this.tilesetImg.cropRect.x = pos.x * Globals.TILE_SIZE;
+		this.tilesetImg.cropRect.y = pos.y * Globals.TILE_SIZE;
+		this.tilesetImg.cropRect.width = Globals.TILE_SIZE;
+		this.tilesetImg.cropRect.height = Globals.TILE_SIZE;
+		this.tilesetImg.updateCrop();
+		bitmap.draw(
+			this.tilesetImg,
+			offset.x * Globals.TILE_SIZE,
+			offset.y * Globals.TILE_SIZE,
+			Globals.TILE_SIZE, Globals.TILE_SIZE
+		);
+
 	}
 	
 	private setDefaultStyle() {
