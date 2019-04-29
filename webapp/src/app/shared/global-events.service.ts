@@ -11,7 +11,7 @@ export class GlobalEventsService {
 	selectedEntity: BehaviorSubject<CCEntity> = new BehaviorSubject(null);
 	showAddEntityMenu: Subject<{ worldPos: Point, definitions: any }> = new Subject();
 	generateNewEntity: Subject<MapEntity> = new Subject();
-	loadComplete: Subject<boolean> = new Subject();
+	loadComplete: Subject<void> = new Subject();
 	generateHeights: Subject<void> = new Subject();
 	offsetMap: Subject<Point> = new Subject();
 	toggleVisibility: Subject<void> = new Subject();

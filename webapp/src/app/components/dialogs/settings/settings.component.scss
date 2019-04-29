@@ -1,0 +1,26 @@
+.content-container {
+	padding: 16px;
+}
+
+.option-row {
+	align-items: center;
+}
+
+.actions-container {
+	align-items: center;
+
+	& button {
+		margin-left: 12px;
+	}
+}
+
+.validator {
+
+	.success {
+		color: green;
+	}
+
+	.error {
+		color: red;
+	}
+}

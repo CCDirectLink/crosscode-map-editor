@@ -2,11 +2,12 @@ import {NgModule} from '@angular/core';
 import {GlobalEventsService} from './global-events.service';
 import {HostDirective} from './host.directive';
 import {HttpClientService} from '../services/http-client.service';
+import {ElectronService} from '../services/electron.service';
 import {MapLoaderService} from './map-loader.service';
 import {MapSettingsComponent} from '../components/dialogs/map-settings/map-settings.component';
 import {FloatingWindowComponent} from '../components/floating-window/floating-window.component';
 import {JsonEditorComponent} from '../components/json-editor/json-editor.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MaterialModule} from '../external-modules/material.module';
 import {AngularDraggableModule} from 'angular2-draggable';
 import {CommonModule} from '@angular/common';
@@ -19,9 +20,10 @@ import {OverlayModule} from './overlay/overlay.module';
 
 @NgModule({
 	imports: [
-		FormsModule,
-		FlexLayoutModule,
 		CommonModule,
+		FormsModule,
+		ReactiveFormsModule,
+		FlexLayoutModule,
 		MaterialModule,
 		AngularDraggableModule,
 		OverlayModule
@@ -38,6 +40,7 @@ import {OverlayModule} from './overlay/overlay.module';
 	],
 	providers: [
 		HttpClientService,
+		ElectronService,
 		MapLoaderService,
 		GlobalEventsService,
 	],

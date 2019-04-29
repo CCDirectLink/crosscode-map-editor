@@ -53,19 +53,22 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	
 	ngOnInit() {
 		this.http.getAllFiles().subscribe(res => {
-			this.game = new Phaser.Game(
-				window.innerWidth * window.devicePixelRatio,
-				window.innerHeight * window.devicePixelRatio - 64,
-				Phaser.AUTO,
-				'content', {
+			this.game = new Phaser.Game({
+				width: window.innerWidth * window.devicePixelRatio,
+				height: window.innerHeight * window.devicePixelRatio - 64,
+				renderer: Phaser.AUTO,
+				parent: 'content',
+				state: {
 					create: () => this.create(),
 					update: () => this.update(),
 					render: () => this.render(),
 					preload: () => this.preload(res),
 				},
-				undefined,
-				false);
+				antialias: false,
+			});
 			Globals.game = this.game;
+		}, err => {
+			this.globalEvents.loadComplete.error(err);
 		});
 	}
 	
@@ -140,7 +143,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		this.game.load.maxParallelDownloads = res.images.length;
 		
 		this.game.load.onLoadComplete.addOnce(() => {
-			this.globalEvents.loadComplete.next(true);
+			this.globalEvents.loadComplete.next();
 		});
 	}
 	
