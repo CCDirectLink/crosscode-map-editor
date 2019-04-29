@@ -10,6 +10,7 @@ import {OverlayService} from '../../shared/overlay/overlay.service';
 import {NpcStatesComponent} from '../../shared/widgets/npc-states-widget/npc-states/npc-states.component';
 import {Overlay} from '@angular/cdk/overlay';
 import {SettingsComponent} from '../dialogs/settings/settings.component';
+import {Globals} from '../../shared/globals';
 
 @Component({
 	selector: 'app-toolbar',
@@ -18,6 +19,7 @@ import {SettingsComponent} from '../dialogs/settings/settings.component';
 })
 export class ToolbarComponent implements OnInit {
 	
+	isElectron = Globals.isElectron;
 	map: CCMap;
 	loaded: boolean;
 	error: string;

@@ -4,7 +4,7 @@
 	<div fxFlex fxLayoutAlign="start">
 		<button mat-button [matMenuTriggerFor]="menu">Edit</button>
 		<mat-menu #menu="matMenu">
-			<button mat-menu-item (click)="showSettings()">Settings</button>
+			<button *ngIf="isElectron" mat-menu-item (click)="showSettings()">Settings</button>
 		</mat-menu>
 		
 		<div *ngIf="map">
