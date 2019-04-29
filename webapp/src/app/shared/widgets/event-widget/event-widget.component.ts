@@ -34,7 +34,9 @@ export class EventWidgetComponent extends AbstractWidget {
 			disablePhaserInput: true
 		});
 		this.ref = obj.ref;
-		
+		if(!Array.isArray(this.settings[this.key])) {
+			this.settings[this.key] = [];
+		}
 		obj.instance.event = this.settings[this.key];
 		
 		obj.instance.exit.subscribe(v => {
