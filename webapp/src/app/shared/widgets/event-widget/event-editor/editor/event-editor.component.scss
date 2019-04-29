@@ -1,4 +1,9 @@
+:host {
+	flex: 1 1;
+}
+
 .event-container {
+	flex: 1 1 0;
 	overflow: auto;
 }
 
@@ -6,7 +11,7 @@
 	padding-left: 6px;
 	$color1: #3a3a3a;
 	$color2: #343434;
-	$size: 25.6px;
+	$size: 25.38px;
 	background: repeating-linear-gradient(
 			180deg,
 			$color1,
