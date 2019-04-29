@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, Input} from '@angular/core';
 import * as Phaser from 'phaser-ce';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {Subscription} from 'rxjs';
@@ -14,6 +14,8 @@ import {ResourceManagerService} from '../../shared/resource-manager.service';
 import {StateHistoryService} from '../../shared/history/state-history.service';
 import {PhaserEventsService} from '../../shared/phaser/phaser-events.service';
 import {HeightMapGeneratorService} from '../../services/height-map-generator.service';
+import { FileInfos } from '../../models/file-infos';
+import { ISelectedTiles } from '../../models/tile-selector';
 
 @Component({
 	selector: 'app-phaser',
@@ -33,6 +35,13 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	private tileDrawer: TileDrawer;
 	private entityManager: EntityManager;
 	
+	@Input()
+	set selected(value: ISelectedTiles) {
+		if (this.tileDrawer) {
+			this.tileDrawer.select(value);
+		}
+	}
+
 	constructor(private element: ElementRef,
 	            private mapLoader: MapLoaderService,
 	            private globalEvents: GlobalEventsService,
@@ -42,6 +51,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 				private resourceManager: ResourceManagerService,
 	            private heightGenerator: HeightMapGeneratorService) {
 	}
+
 	
 	ngOnInit() {
 		this.http.getAllFiles().subscribe(res => {
@@ -119,18 +129,18 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		this.heightGenerator.init(game);
 	}
 	
-	preload(res) {
+	preload(res: FileInfos) {
 		// res.data.forEach(json => {
 		// 	this.game.load.json(json, Globals.URL + json);
 		// });
-		res.images.forEach(img => {
-			// this.resourceManager.loadImage(img);
-		});
+		this.game.load.images(res.images, res.images.map(i => Globals.URL + i));
 		
 		this.game.load.json('definitions.json', 'assets/definitions.json');
 		this.game.load.json('destructibles.json', 'assets/destructibles.json');
 		this.game.load.crossOrigin = 'anonymous';
 		
+		this.game.load.maxParallelDownloads = res.images.length;
+
 		this.game.load.onLoadComplete.addOnce(() => {
 			this.globalEvents.loadComplete.next(true);
 		});
@@ -156,7 +166,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	
 	render() {
 		// expensive call, use only for debugging
-		this.game.debug.text(this.game.time.fps.toString(), 2, 14, '#00ff00');
+		// this.game.debug.text(this.game.time.fps.toString(), 2, 14, '#00ff00');
 		
 		this.game.debug.geom(this.border, '#F00', false);
 	}
