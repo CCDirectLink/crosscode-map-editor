@@ -61,8 +61,11 @@ export class ToolbarComponent implements OnInit {
 	}
 	
 	openMapSettings() {
-		this.dialog.open(MapSettingsComponent, {
-			data: this.map
+		this.overlayService.open(MapSettingsComponent, {
+			positionStrategy: this.overlay.position().global()
+				.left('23vw')
+				.top('calc(64px + 6vh / 2)'),
+			hasBackdrop: true
 		});
 	}
 	
