@@ -6,9 +6,10 @@
 		</mat-sidenav>
 		
 		<div class="green outer-container no-scroll">
-			<app-phaser></app-phaser>
+			<app-phaser [selected]="selected"></app-phaser>
 		</div>
 		<app-history></app-history>
+		<app-tile-selector (selectionChanged)="selectionChanged($event)"></app-tile-selector>
 	</mat-sidenav-container>
 	<app-add-entity-menu></app-add-entity-menu>
 </div>

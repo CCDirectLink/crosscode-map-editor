@@ -21,6 +21,7 @@ import {StateHistoryService} from './shared/history/state-history.service';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {EditorComponent} from './components/editor/editor.component';
 import {AddEntityMenuComponent} from './components/editor/add-entity-menu/add-entity-menu.component';
+import { TileSelectorComponent } from './components/tile-selector/tile-selector.component';
 
 @NgModule({
 	declarations: [
@@ -32,6 +33,7 @@ import {AddEntityMenuComponent} from './components/editor/add-entity-menu/add-en
 		LayersComponent,
 		EntitiesComponent,
 		AddEntityMenuComponent,
+		TileSelectorComponent
 	],
 	imports: [
 		BrowserModule,
