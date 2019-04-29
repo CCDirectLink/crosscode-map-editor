@@ -1,6 +1,2 @@
-<div class="event-container dark-scrollbar" fxFlex="auto" fxLayout="column">
-	<div class="event-inner-container" fxFlex="1 0 100%" fxLayout="column">
-		<app-event-row [data]="data" [parent]="workingData" *ngFor="let data of workingData"></app-event-row>
-		<app-row-text fxFlex="auto" fxLayout="column" text=" " [(parent)]="workingData"></app-row-text>
-	</div>
-</div>
+<app-event-row [data]="null" [parent]="workingData" [placeHolder]="false" [parentElement]="null"></app-event-row>
+

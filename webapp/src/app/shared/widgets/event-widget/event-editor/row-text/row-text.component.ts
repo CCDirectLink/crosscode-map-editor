@@ -5,7 +5,11 @@ import {
 	EventEmitter,
 	Input, NgZone,
 	Output,
-	ViewChild
+	ViewChild,
+	OnInit,
+	AfterViewInit,
+	OnDestroy,
+	ChangeDetectorRef
 } from '@angular/core';
 import {EventHelperService} from '../event-helper.service';
 import {AbstractEvent} from '../../event-registry/abstract-event';
@@ -15,20 +19,21 @@ import {NpcStatesComponent} from '../../../npc-states-widget/npc-states/npc-stat
 import {EventDetailComponent} from '../detail/event-detail.component';
 import {OverlayRefControl} from '../../../../overlay/overlay-ref-control';
 import {EventAddComponent} from '../add/event-add.component';
-
+MouseEvent
 @Component({
 	selector: 'app-row-text',
 	templateUrl: './row-text.component.html',
 	styleUrls: ['./row-text.component.scss']
 })
-export class RowTextComponent {
+export class RowTextComponent implements OnInit, AfterViewInit, OnDestroy {
 	private static clipboard;
 	
 	@ViewChild('elementRef') elementRef;
 	
 	@Input() text;
 	@Input() hideGreaterSign = false;
-	
+	@Input() placeHolder: boolean;
+	@Input() sub : boolean = false;
 	@Input() data: AbstractEvent<any>;
 	@Output() dataChange = new EventEmitter();
 	
@@ -38,20 +43,62 @@ export class RowTextComponent {
 	@Output() dblClick = new EventEmitter();
 	@Output() click = new EventEmitter();
 	
-	private overlayRef: OverlayRefControl;
 	
+	@Input() set parentElement(value) {
+		this._parent = value;
+		
+	}
+
+	get parentElement(): any {
+		return this._parent;
+	}
+	@Input() top;
+
+	private overlayRef: OverlayRefControl;
+	private element;
+	private _parent;
+
 	constructor(private storage: EventHelperService,
 	            private overlayService: OverlayService,
 	            private overlay: Overlay,
-	            private helper: EventHelperService) {
+				private helper: EventHelperService) {
 	}
-	
+	ngOnInit() {
+		if(this._parent) {
+			this.getParent().addComponent(this, this.getIndex());
+		} else {
+			console.log("Could not find parent", this);
+		}
+	}
+	isPlaceHolder() {
+		return this.placeHolder;
+	}
+	ngAfterViewInit() {
+		this.element = this.elementRef.nativeElement;
+		if(this.isPlaceHolder()) {
+			this.element = this.element.querySelector('.no-click');
+		}
+		if(this.data && (<any>this.data)._pasted) {
+			console.log("It's pasted");
+			this.helper.selectedEvent.next({
+				force: true,
+				value : this
+			});
+		}
+	}
+	ngOnDestroy() {
+	}
 	leftClick(event: MouseEvent) {
 		event.stopPropagation();
 		this.storage.selectedEvent.next(this);
 		this.click.emit(this);
 	}
-	
+	select() {
+		this.element.classList.add("selected");
+	}
+	unselect() {
+		this.element.classList.remove("selected");
+	}
 	rightClick(event: MouseEvent) {
 		if (!this.data) {
 			return false;
@@ -94,59 +141,76 @@ export class RowTextComponent {
 		});
 		
 		this.overlayRef = obj.ref;
-		
+		// Need to figure out how to check for changes
+		// and update accordingly.
 		obj.instance.getEventClass.subscribe(v => {
 			this.overlayRef.close();
 			const index = this.getIndex();
 			this.parent.splice(index, 0, v);
 			this.parentChange.emit(this.parent);
+			// it wouldn't update instantly
+			// dete
+			this.getParent().detectChanges();
+
 		}, e => this.overlayRef.close());
 	}
 	
 	// region keys copy/paste/del
 	keyPress(event: KeyboardEvent) {
 		event.stopPropagation();
-		console.log(event.code);
+		//console.log(event.code);
 		switch (event.code) {
 			case 'Delete':
-				this.delete();
-				break;
-			case 'KeyC':
-				if (event.ctrlKey) {
-					this.copy();
-				}
+				this.emitDeleteEvent();
 				break;
 			case 'KeyX':
 				if (event.ctrlKey) {
-					this.copy();
-					this.delete();
+					this.emitCopyAndDeleteEvent();
 				}
 				break;
 			case 'KeyV':
 				if (event.ctrlKey) {
-					this.paste();
+					this.emitPasteEvent();
 				}
 				break;
 		}
 	}
-	
-	private copy() {
-		if (this.data) {
-			RowTextComponent.clipboard = this.data.export();
+
+	getParent() {
+		return this._parent;
+	}
+	copy() {
+		if (this.data && !this.isPlaceHolder()) {
+			return this.data.export();
 		}
 	}
-	
-	private paste() {
-		const clipboard = RowTextComponent.clipboard;
-		if (clipboard) {
-			const index = this.getIndex();
-			const cpy = JSON.parse(JSON.stringify(clipboard));
-			this.parent.splice(index, 0, this.helper.getEventFromType(cpy));
-		}
+	private emitCopyAndDeleteEvent() {
+		this.helper.copyAndDeleteEvent.next(this);
+		this.helper.copyAndDeleteEvent.next(null);
 	}
-	
-	private delete() {
-		if (!this.data) {
+	private emitDeleteEvent() {
+		this.helper.deleteEvent.next(this);
+		this.helper.deleteEvent.next(null);
+	}
+	private emitPasteEvent() {
+		if(this.sub) {
+			this.helper.pasteEvent.next({
+				data : this.parent,
+				index : this.getComponentIndex(),
+				parent: this.getParent()
+			});
+		} else {
+			this.helper.pasteEvent.next({
+				data : this.getParent().getData(),
+				index : this.getIndex(),
+				parent: this.getParent()
+			});			
+		}
+		
+		this.helper.pasteEvent.next(null);
+	}
+	delete() {
+		if (!this.data || this.isPlaceHolder()) {
 			return;
 		}
 		const index = this.getIndex();
@@ -158,5 +222,10 @@ export class RowTextComponent {
 	private getIndex() {
 		const index = this.parent.indexOf(this.data);
 		return index === -1 ? this.parent.length : index;
+	}
+
+	public getComponentIndex() {
+		const index = this._parent.getChildComponentIndex(this);
+		return index === -1 ? this._parent.getComponentLength() : index;
 	}
 }

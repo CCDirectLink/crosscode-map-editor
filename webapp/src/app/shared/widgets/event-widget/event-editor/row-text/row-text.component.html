@@ -1,8 +1,8 @@
 <button class="event-row-text event-row" #elementRef
-        (click)="leftClick($event)"
+        (click)="select($event) || leftClick($event)"
         (dblclick)="doubleClick($event)"
         (contextmenu)="rightClick($event)"
-        (keydown)="keyPress($event)" >
+		(keydown)="keyPress($event)">
 	<div *ngIf="text">
 		<span style="color: #b8b8b8" *ngIf="!hideGreaterSign">> </span>
 		<span class="no-click" [innerHTML]="text | keepHtml"></span>

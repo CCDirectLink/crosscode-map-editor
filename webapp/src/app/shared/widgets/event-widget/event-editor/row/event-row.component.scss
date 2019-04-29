@@ -2,3 +2,20 @@
 	padding-left: 14px;
 }
 
+.event-container {
+	overflow: auto;
+}
+
+.event-inner-container {
+	padding-left: 6px;
+	$color1: #3a3a3a;
+	$color2: #343434;
+	$size: 25.6px;
+	background: repeating-linear-gradient(
+			180deg,
+			$color1,
+			$color1 $size,
+			$color2 $size,
+			$color2 $size * 2
+	);
+}

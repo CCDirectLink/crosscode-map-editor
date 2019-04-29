@@ -10,6 +10,7 @@ $config: mat-typography-config();
 	pointer-events: none;
 }
 
+
 .event-row-text {
 	line-height: 26px;
 }
@@ -33,8 +34,15 @@ $config: mat-typography-config();
 	}
 }
 
+.selected {
+	border: none;
+	outline: none;
+	background-color: rgb(38, 78, 100);
+}
+
 button {
 	width: 100%;
+	height: 100%;
 	text-transform: none;
 	$font-type: subheading-1;
 	font-family: mat-font-family($config);

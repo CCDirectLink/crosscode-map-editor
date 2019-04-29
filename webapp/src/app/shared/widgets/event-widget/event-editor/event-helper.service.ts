@@ -8,11 +8,13 @@ import {EventRegistryService} from '../event-registry/event-registry.service';
 export class EventHelperService {
 	
 	selectedEvent: BehaviorSubject<any> = new BehaviorSubject(null);
-	
+	pasteEvent: BehaviorSubject<any> = new BehaviorSubject(null);
+	copyAndDeleteEvent: BehaviorSubject<any> = new BehaviorSubject(null);
+	deleteEvent: BehaviorSubject<any> = new BehaviorSubject(null);
 	constructor(private eventRegistry: EventRegistryService) {
 	}
 	
-	public getEventFromType(val) {
+	public getEventFromType(val) { 
 		const eventClass = this.eventRegistry.getEvent(val.type);
 		const instance: AbstractEvent<any> = new eventClass(val);
 		
