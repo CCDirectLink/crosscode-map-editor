@@ -124,7 +124,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		// 	this.game.load.json(json, Globals.URL + json);
 		// });
 		res.images.forEach(img => {
-			this.resourceManager.loadImage(img);
+			// this.resourceManager.loadImage(img);
 		});
 		
 		this.game.load.json('definitions.json', 'assets/definitions.json');
