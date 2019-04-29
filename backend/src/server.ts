@@ -26,6 +26,7 @@ app.use(bodyParser.urlencoded({extended: true}));
  */
 app.get('/api/allFiles', apiController.getAllFiles);
 
+app.get('/api/allTilesets', apiController.getAllTilesets);
 
 /**
  * Error Handler. Provides full stack - remove for production
