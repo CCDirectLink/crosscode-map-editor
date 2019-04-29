@@ -1,0 +1,20 @@
+<div class="container mat-elevation-z8" ngDraggable [handle]="handle" fxLayout="column">
+	<div fxFlex="0 0 auto" #handle class="toolbar mat-elevation-z4 elevated-toolbar" fxLayout="column"
+	     fxLayoutAlign="center">
+		
+		<h1 *ngIf="title" class="overlay-headline mat-headline">{{title}}</h1>
+		<ng-content select="toolbar"></ng-content>
+	</div>
+	<div class="content" fxFlex="auto" fxLayout="column">
+		
+		<div class="scrollable-content dark-scrollbar" fxFlex="1 1">
+			<ng-content select="content"></ng-content>
+		</div>
+		
+		<div fxFlex="0 0 54px" fxLayout="row">
+			<div class="buttons" fxFlexAlign="center" fxLayoutAlign="end" fxFlex>
+				<ng-content select="actions"></ng-content>
+			</div>
+		</div>
+	</div>
+</div>

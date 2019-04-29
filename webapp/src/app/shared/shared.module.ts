@@ -14,6 +14,8 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 import {OffsetMapComponent} from '../components/dialogs/offset-map/offset-map.component';
 import {ModalDirective} from './modal.directive';
 import {KeepHtmlPipe} from './keep-html.pipe';
+import {SettingsComponent} from '../components/dialogs/settings/settings.component';
+import {OverlayModule} from './overlay/overlay.module';
 
 @NgModule({
 	imports: [
@@ -22,6 +24,7 @@ import {KeepHtmlPipe} from './keep-html.pipe';
 		CommonModule,
 		MaterialModule,
 		AngularDraggableModule,
+		OverlayModule
 	],
 	declarations: [
 		HostDirective,
@@ -30,7 +33,8 @@ import {KeepHtmlPipe} from './keep-html.pipe';
 		JsonEditorComponent,
 		FloatingWindowComponent,
 		OffsetMapComponent,
-		KeepHtmlPipe
+		KeepHtmlPipe,
+		SettingsComponent,
 	],
 	providers: [
 		HttpClientService,
@@ -41,6 +45,7 @@ import {KeepHtmlPipe} from './keep-html.pipe';
 		JsonEditorComponent,
 		MapSettingsComponent,
 		OffsetMapComponent,
+		SettingsComponent,
 	],
 	exports: [
 		HostDirective,
@@ -48,7 +53,8 @@ import {KeepHtmlPipe} from './keep-html.pipe';
 		MapSettingsComponent,
 		JsonEditorComponent,
 		FloatingWindowComponent,
-		KeepHtmlPipe
+		KeepHtmlPipe,
+		SettingsComponent,
 	]
 })
 export class SharedModule {

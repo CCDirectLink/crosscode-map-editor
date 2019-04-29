@@ -1,0 +1,43 @@
+@import "theme";
+
+$primary: map-get($theme, primary);
+$accent: map-get($theme, accent);
+
+$toolbarHeight: 54px;
+
+.overlay-headline {
+	text-align: center;
+	margin: 0;
+}
+
+.container {
+	width: 60vw;
+	height: calc(94vh - 64px);
+	color: white;
+	background: mat-color($accent, 800);
+}
+
+.ng-draggable {
+	cursor: move;
+}
+
+.toolbar {
+	padding-left: 16px;
+	background-color: mat-color(map-get($theme, background), app-bar);
+	height: $toolbarHeight;
+}
+
+.buttons {
+	& ::ng-deep button {
+		margin: 0 8px;
+	}
+}
+
+.content {
+	height: 100%;
+}
+
+.scrollable-content {
+	overflow: auto;
+}
+

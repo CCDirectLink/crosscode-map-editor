@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {SharedModule} from '../shared.module';
 import {ComponentType, Overlay, OverlayConfig} from '@angular/cdk/overlay';
 import {ComponentPortal} from '@angular/cdk/portal';
 import {OverlayRefControl} from './overlay-ref-control';
 import {Globals} from '../globals';
+import {OverlayModule} from './overlay.module';
 
 interface CustomOverlayConfig extends OverlayConfig {
 	backdropClickClose?: boolean;
@@ -11,7 +11,7 @@ interface CustomOverlayConfig extends OverlayConfig {
 }
 
 @Injectable({
-	providedIn: SharedModule
+	providedIn: OverlayModule
 })
 export class OverlayService {
 	constructor(private overlay: Overlay) {
