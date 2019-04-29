@@ -15,7 +15,7 @@
 		</mat-tab>
 	</mat-tab-group>
 	
-	<div class="tab-content" fxLayout="column">
+	<div class="tab-content" fxLayout="column" fxFlex="auto">
 		
 		<!-- condition -->
 		<div fxFlex="0 0 54px" fxLayout="row">
@@ -81,7 +81,7 @@
 			<div class="content-right" fxFlex="1 1 auto" fxLayout="column">
 				
 				<!-- Event Editor -->
-				<app-event-editor #eventEditor class="event-block" fxFlex="auto" fxLayout="column"
+				<app-event-editor #eventEditor class="event-block" fxLayout="column"
 				                  [eventData]="currentState.event"></app-event-editor>
 				
 				<!-- buttons -->
