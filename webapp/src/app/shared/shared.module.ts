@@ -7,7 +7,7 @@ import {MapSettingsComponent} from '../components/dialogs/map-settings/map-setti
 import {FloatingWindowComponent} from '../components/floating-window/floating-window.component';
 import {JsonEditorComponent} from '../components/json-editor/json-editor.component';
 import {FormsModule} from '@angular/forms';
-import {MaterialModule} from '../material.module';
+import {MaterialModule} from '../external-modules/material.module';
 import {AngularDraggableModule} from 'angular2-draggable';
 import {CommonModule} from '@angular/common';
 import {FlexLayoutModule} from '@angular/flex-layout';
