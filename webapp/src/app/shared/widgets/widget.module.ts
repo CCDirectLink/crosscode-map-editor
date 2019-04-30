@@ -23,7 +23,8 @@ import {EventHelperService} from './event-widget/event-editor/event-helper.servi
 import {EventDetailComponent} from './event-widget/event-editor/detail/event-detail.component';
 import {EventAddComponent} from './event-widget/event-editor/add/event-add.component';
 import {EventWindowComponent} from './event-widget/event-window/event-window.component';
-import { CharacterWidgetComponent } from './character-widget/character-widget.component';
+import {CharacterWidgetComponent} from './character-widget/character-widget.component';
+import {CharacterNamesService } from './character-widget/character-names.service'; 
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -36,7 +37,7 @@ const COMPONENTS = [
 	NpcStatesComponent,
 	EventWidgetComponent,
 	EventEditorComponent,
-	CharacterWidgetComponent
+	CharacterWidgetComponent,
 ];
 
 const PRIVATE_COMPONENTS = [
@@ -59,7 +60,8 @@ const PRIVATE_COMPONENTS = [
 	],
 	providers: [
 		EventRegistryService,
-		EventHelperService
+		EventHelperService,
+		CharacterNamesService,
 	],
 	declarations: [COMPONENTS, PRIVATE_COMPONENTS],
 	entryComponents: [COMPONENTS, PRIVATE_COMPONENTS],

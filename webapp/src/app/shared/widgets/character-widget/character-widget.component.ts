@@ -1,5 +1,6 @@
 import { Component, OnInit , Input} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
+import {CharacterNamesService} from './character-names.service';
 
 @Component({
   selector: 'app-character-widget',
@@ -10,7 +11,8 @@ export class CharacterWidgetComponent extends AbstractWidget implements OnInit {
 
   /** @member {boolean} nested */
   @Input() nested: boolean = false;
-  constructor() { 
+
+  constructor(private namesService : CharacterNamesService) { 
     super();
   }
 
@@ -20,12 +22,10 @@ export class CharacterWidgetComponent extends AbstractWidget implements OnInit {
 
   /**
    * Returns all known character names. 
-   * @todo Implement class to manage character names.
-   * @todo Remove hardcoded example output.
    * @returns {string[]} Character names in the format of "typeOfCharacter.characterAlias"
    */
   getAllNames(): string[] {
-    return ["main.lea"];
+    return this.namesService.getAll();
   }
 
 }
