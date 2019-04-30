@@ -1,0 +1,16 @@
+<div *ngIf="nested">
+  <input list="characters2" [(ngModel)]="settings[key]" class="text" (change)="setSetting(key, $event.target.value)">
+
+  <datalist id="characters2">
+    <option *ngFor="let item of getAllNames()" [value]="item">
+  </datalist>
+</div>
+
+<div *ngIf="!nested" fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
+  <span class="property-name">{{key}}:</span>
+  <input list="characters" class="default-input" [(ngModel)]="settings[key]" (change)="setSetting(key, $event.target.value)">
+
+  <datalist id="characters">
+    <option *ngFor="let item of getAllNames()" [value]="item">
+  </datalist>
+</div>
