@@ -8,11 +8,10 @@ import {CharacterNamesService} from './character-names.service';
 	styleUrls: ['./character-widget.component.scss', '../widget.scss']
 })
 export class CharacterWidgetComponent extends AbstractWidget implements OnInit {
-
-	@Input() nested: boolean = false;
+	@Input() nested = false;
 	names: string[];
 
-  	constructor(private namesService : CharacterNamesService) { 
+  	constructor(private namesService: CharacterNamesService) { 
     	super();
   	}
 
