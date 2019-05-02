@@ -1,0 +1,10 @@
+<div fxLayout="row" class="property-container" matTooltip="Character to add">
+	<span class="property-name">{{key}}:</span>
+	<app-character-widget [(custom)]="settings[key]" class="default-input" key="person" [nested]="true">
+	</app-character-widget>
+</div>
+
+<div fxLayout="row" class="property-container" matTooltip="Character Expression to set it to">
+	<span class="property-name"> </span>
+	<input type="text" class="default-input"  [(ngModel)]="settings[key].expression" />
+</div>
