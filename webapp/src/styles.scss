@@ -37,6 +37,10 @@ body {
 	//transition: border 0.3s;
 }
 
+input[type=text].default-input, input:not([type]).default-input {
+	padding-left: 4px;
+}
+
 .small-input {
 	width: 60px;
 }

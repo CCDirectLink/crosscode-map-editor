@@ -56,6 +56,7 @@ import {OverlayModule} from './overlay/overlay.module';
 		MapSettingsComponent,
 		JsonEditorComponent,
 		FloatingWindowComponent,
+		OverlayModule,
 		KeepHtmlPipe,
 		SettingsComponent,
 	]
