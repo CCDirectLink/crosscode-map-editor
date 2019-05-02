@@ -1,20 +1,16 @@
-<div *ngIf="nested; else standAlone">
-	<input matInput	[matAutocomplete]="auto" [ngModel]="settings[key]" class="text" (change)="setSetting(key, $event.target.value)">
-	<mat-autocomplete #auto="matAutocomplete">
-    	<mat-option *ngFor="let item of names" [value]="item">
-        	<span> {{item}} </span>
-    	</mat-option>
-	</mat-autocomplete>
+<div *ngIf="nested">
+  <input list="characters2" [(ngModel)]="settings[key]" class="text" (change)="setSetting(key, $event.target.value)">
+
+  <datalist id="characters2">
+    <option *ngFor="let item of getAllNames()" [value]="item">
+  </datalist>
 </div>
 
-<ng-template #standAlone>
-	<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
-		<span class="property-name">{{key}}:</span>
-		<input matInput  [matAutocomplete]="auto" [ngModel]="settings[key]" class="text" (change)="setSetting(key, $event.target.value)">
-		<mat-autocomplete #auto="matAutocomplete">
-			<mat-option *ngFor="let item of names" [value]="item">
-				<span> {{item}} </span>
-			</mat-option>
-		</mat-autocomplete>
-	</div>
-</ng-template>
+<div *ngIf="!nested" fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
+  <span class="property-name">{{key}}:</span>
+  <input list="characters" class="default-input" [(ngModel)]="settings[key]" (change)="setSetting(key, $event.target.value)">
+
+  <datalist id="characters">
+    <option *ngFor="let item of getAllNames()" [value]="item">
+  </datalist>
+</div>

@@ -3,19 +3,29 @@ import {AbstractWidget} from '../abstract-widget';
 import {CharacterNamesService} from './character-names.service';
 
 @Component({
-  	selector: 'app-character-widget',
-  	templateUrl: './character-widget.component.html',
-  	styleUrls: ['./character-widget.component.scss', '../widget.scss']
+  selector: 'app-character-widget',
+  templateUrl: './character-widget.component.html',
+  styleUrls: ['./character-widget.component.scss', '../widget.scss']
 })
 export class CharacterWidgetComponent extends AbstractWidget implements OnInit {
-  	@Input() nested = false;
-  	names: string[];
-  	constructor(private namesService: CharacterNamesService) { 
-    	super();
-  	}
 
-  	ngOnInit() {
-    	super.ngOnInit();
-    	this.names = this.namesService.getAllNames();
-  	}
+  /** @member {boolean} nested */
+  @Input() nested: boolean = false;
+
+  constructor(private namesService : CharacterNamesService) { 
+    super();
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+  }
+
+  /**
+   * Returns all known character names. 
+   * @returns {string[]} Character names in the format of "typeOfCharacter.characterAlias"
+   */
+  getAllNames(): string[] {
+    return this.namesService.getAll();
+  }
+
 }
