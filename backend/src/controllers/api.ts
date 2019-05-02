@@ -1,7 +1,8 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import {Response, Request, NextFunction} from 'express';
-import {config} from '../config';
+import {config} from 'cc-map-editor-common/dist/config';
+import { listAllFiles } from 'cc-map-editor-common/dist/controllers/api';
 
 export const getAllFiles = (req: Request, res: Response) => {
 	res.json({
@@ -13,21 +14,3 @@ export const getAllFiles = (req: Request, res: Response) => {
 export const getAllTilesets = (req: Request, res: Response) => {
 	res.json(listAllFiles(path.resolve(config.pathToCrosscode, 'media/map/'), [], 'png'));
 };
-
-function listAllFiles(dir: string, filelist, ending: string): string[] {
-	const files = fs.readdirSync(dir);
-	filelist = filelist || [];
-	files.forEach(function (file) {
-		if (fs.statSync(path.resolve(dir, file)).isDirectory()) {
-			filelist = listAllFiles(path.resolve(dir, file), filelist, ending);
-		} else if (!ending || file.toLowerCase().endsWith(ending.toLowerCase())) {
-			let normalized = path.resolve(dir, file).split(path.normalize(config.pathToCrosscode))[1];
-			normalized = normalized.split('\\').join('/');
-			if (normalized.startsWith('/')) {
-				normalized = normalized.substr(1);
-			}
-			filelist.push(normalized);
-		}
-	});
-	return filelist;
-}

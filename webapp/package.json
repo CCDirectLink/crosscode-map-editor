@@ -50,6 +50,7 @@
 	},
 	"private": true,
 	"dependencies": {
+		"cc-map-editor-common": "../common",
 		"@angular/animations": "^7.0.4",
 		"@angular/cdk": "^7.1.0",
 		"@angular/common": "^7.0.3",
@@ -79,7 +80,7 @@
 		"@angular/compiler-cli": "^7.0.3",
 		"@angular/language-service": "^7.0.3",
 		"@types/jsoneditor": "^5.5.2",
-		"@types/node": "^6.0.90",
+		"@types/node": "^6.14.6",
 		"@types/nw.js": "^0.13.7",
 		"codelyzer": "~4.3.0",
 		"cpx": "^1.5.0",
