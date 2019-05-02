@@ -4,7 +4,7 @@ if (!!module['require']) {
     try {
         const electron = window['require']('electron');
         // Use electron require
-        result = electron.remote.require('fs');
+        result = electron.remote.require;
     } catch {
         // Regular nodejs
         result = module['require'];
