@@ -24,7 +24,8 @@ import {EventDetailComponent} from './event-widget/event-editor/detail/event-det
 import {EventAddComponent} from './event-widget/event-editor/add/event-add.component';
 import {EventWindowComponent} from './event-widget/event-window/event-window.component';
 import {CharacterWidgetComponent} from './character-widget/character-widget.component';
-import {CharacterNamesService } from './character-widget/character-names.service'; 
+import {CharacterNamesService} from './character-widget/character-names.service';
+import {PersonExpressionWidgetComponent} from './person-expression-widget/person-expression-widget.component'; 
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -38,6 +39,7 @@ const COMPONENTS = [
 	EventWidgetComponent,
 	EventEditorComponent,
 	CharacterWidgetComponent,
+	PersonExpressionWidgetComponent,
 ];
 
 const PRIVATE_COMPONENTS = [
