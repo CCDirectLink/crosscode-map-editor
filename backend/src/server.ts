@@ -3,7 +3,7 @@ import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
 import * as errorHandler from 'errorhandler';
 import * as cors from 'cors';
-import {config} from 'cc-map-editor-common/dist/config';
+import {config} from 'cc-map-editor-common/dist/main';
 
 // Controllers (route handlers).
 import * as apiController from './controllers/api';

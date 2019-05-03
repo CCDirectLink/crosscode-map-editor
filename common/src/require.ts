@@ -1,18 +1,17 @@
 let result: NodeRequireFunction | (() => null);
 
-if (typeof window !== 'undefined' && 
-	typeof navigator !== 'undefined' &&
-	navigator.userAgent.indexOf('Electron') > -1) { 
-
-	const electron = window['require']('electron');
-	// Use electron require
-	result = electron.remote.require;
-} else if (typeof process !== 'undefined' && !!module['require']) {
-	// Regular nodejs
-	result = module['require'];
+if (!!module['require']) {
+    try {
+        const electron = window['require']('electron');
+        // Use electron require
+        result = electron.remote.require;
+    } catch {
+        // Regular nodejs
+        result = module['require'];
+    }
 } else {
-	// Not a supported plattform. Return dummy
-	result = () => null;
+    // Not a supported plattform. Return dummy
+    result = () => null;
 }
 
 export const requireLocal = result;
