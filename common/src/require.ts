@@ -7,7 +7,7 @@ if (typeof window !== 'undefined' &&
 	const electron = window['require']('electron');
 	// Use electron require
 	result = electron.remote.require;
-} else if (typeof process !== 'undefined' && process.versions.node) {
+} else if (typeof process !== 'undefined' && !!module['require']) {
 	// Regular nodejs
 	result = module['require'];
 } else {
