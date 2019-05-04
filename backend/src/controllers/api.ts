@@ -1,9 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import {Response, Request, NextFunction} from 'express';
-import {config} from 'cc-map-editor-common/dist/config';
-import { listAllFiles } from 'cc-map-editor-common/dist/controllers/api';
-
+import {listAllFiles, config} from 'cc-map-editor-common';
 export const getAllFiles = (req: Request, res: Response) => {
 	res.json({
 		images: listAllFiles(path.resolve(config.pathToCrosscode, 'media/'), [], 'png'),
