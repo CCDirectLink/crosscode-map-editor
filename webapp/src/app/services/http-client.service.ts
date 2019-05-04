@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {Globals} from '../shared/globals';
 import {Remote, Dialog} from 'electron';
 import { FileInfos } from '../models/file-infos';
-import { listAllFiles } from 'cc-map-editor-common/dist/main';
+import { listAllFiles } from 'cc-map-editor-common';
 
 @Injectable()
 export class HttpClientService {
