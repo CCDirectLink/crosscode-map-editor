@@ -31,6 +31,10 @@ export class ToolbarComponent implements OnInit {
 		this.events.loadComplete.subscribe(isLoaded => this.loaded = isLoaded);
 	}
 
+	loadEmptyMap() {
+		this.mapLoader.loadEmptyMap();
+	}
+
 	loadMap(event) {
 		this.mapLoader.loadMap(event);
 	}
