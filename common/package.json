@@ -2,9 +2,10 @@
   "name": "cc-map-editor-common",
   "version": "0.0.1",
   "description": "",
-  "main": "main.js",
+  "main": "./dist/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "tslint": "tslint -c ./tslint.json -p tsconfig.json",
     "build": "tsc",
     "watch": "tsc -w"
   },
@@ -19,6 +20,8 @@
   },
   "homepage": "https://github.com/CCDirectLink/crosscode-map-editor#readme",
   "devDependencies": {
+    "@types/node": "^12.0.0",
+    "electron": "^5.0.1",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
   }

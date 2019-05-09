@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {Globals} from '../shared/globals';
 import {Remote, Dialog} from 'electron';
 import { FileInfos } from '../models/file-infos';
-import { listAllFiles } from 'cc-map-editor-common/dist/controllers/api';
+import { api } from 'cc-map-editor-common';
 
 @Injectable()
 export class HttpClientService {
@@ -48,12 +48,7 @@ export class HttpClientService {
 		}
 		return new Observable(obs => {
 			if (this.config && this.config.pathToCrosscode) {
-				const o = {
-					images: listAllFiles(this.path.resolve(this.config.pathToCrosscode, 'media/'), [], 'png'),
-					data: listAllFiles(this.path.resolve(this.config.pathToCrosscode, 'data/'), [], 'json')
-				} as FileInfos;
-				
-				obs.next(o);
+				obs.next(api.getAllFiles(this.config.pathToCrosscode) as FileInfos);
 				obs.complete();
 			} else {
 				console.warn('path to crosscode not found, opening file dialog');
@@ -68,7 +63,7 @@ export class HttpClientService {
 		}
 		return new Observable(obs => {
 			if (this.config && this.config.pathToCrosscode) {
-				obs.next(listAllFiles(this.path.resolve(this.config.pathToCrosscode, 'media/map/'), [], 'png'));
+				obs.next(api.getAllTilesets(this.config.pathToCrosscode));
 				obs.complete();
 			} else {
 				console.warn('path to crosscode not found, opening file dialog');
