@@ -3,10 +3,8 @@ import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
 import * as errorHandler from 'errorhandler';
 import * as cors from 'cors';
-import {config} from 'cc-map-editor-common';
-
-// Controllers (route handlers).
-import * as apiController from './controllers/api';
+import { config } from './config';
+import { api } from 'cc-map-editor-common';
 
 const app = express();
 
@@ -24,9 +22,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 /**
  * Primary app routes.
  */
-app.get('/api/allFiles', apiController.getAllFiles);
-
-app.get('/api/allTilesets', apiController.getAllTilesets);
+app.get('/api/allFiles', (_, res) => res.json(api.getAllFiles(config.pathToCrosscode)));
+app.get('/api/allTilesets', (_, res) => res.json(api.getAllTilesets(config.pathToCrosscode)));
 
 /**
  * Error Handler. Provides full stack - remove for production

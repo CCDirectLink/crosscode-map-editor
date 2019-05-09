@@ -1,8 +1,3 @@
-import * as Api from './controllers/api';
-import * as Config from './config';
+import * as API from './controllers/api';
 
-
-export let listAllFiles = (dir: string, filelist: any, ending: string): string[]  => {
-	return Api.listAllFiles(dir, filelist, ending);
-};
-export let config = Config.config;
+export const api = API;
