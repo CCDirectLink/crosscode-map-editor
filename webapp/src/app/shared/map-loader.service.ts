@@ -27,11 +27,7 @@ export class MapLoaderService {
 		reader.onload = (e: any) => {
 			try {
 				const map = JSON.parse(e.target.result);
-				if (!map.mapHeight) {
-					throw new Error('invalid map');
-				}
-				map.filename = file.name;
-				this._map.next(map);
+				this.loadRawMap(map);
 			} catch (e) {
 				console.error(e);
 				this.snackBar.open('Error: ' + e.message, undefined, {
@@ -42,6 +38,14 @@ export class MapLoaderService {
 		};
 
 		reader.readAsText(file);
+	}
+	
+	loadRawMap(map: CrossCodeMap, name?: string) {
+		if (!map.mapHeight) {
+			throw new Error('Invalid map');
+		}
+		map.filename = name || 'Untitled';
+		this._map.next(map);
 	}
 
 	get map(): Observable<CrossCodeMap> {
