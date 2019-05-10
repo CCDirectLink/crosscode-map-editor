@@ -27,6 +27,16 @@ After that move back to the `backend` folder and start the server with
 npm start
 ```
 
+### common
+move into the `common` folder and then install dependencies via `npm`
+```
+npm install
+```
+build the code with
+```
+npm run build
+```
+
 ### webapp
 move into the `webapp` folder and then install dependencies via `npm`
 ```

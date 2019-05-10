@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {Globals} from '../shared/globals';
 import {Remote, Dialog} from 'electron';
 import { FileInfos } from '../models/file-infos';
+import { api } from 'cc-map-editor-common';
 
 @Injectable()
 export class HttpClientService {
@@ -47,12 +48,7 @@ export class HttpClientService {
 		}
 		return new Observable(obs => {
 			if (this.config && this.config.pathToCrosscode) {
-				const o = {
-					images: this.listAllFiles(this.path.resolve(this.config.pathToCrosscode, 'media/'), [], 'png'),
-					data: this.listAllFiles(this.path.resolve(this.config.pathToCrosscode, 'data/'), [], 'json')
-				} as FileInfos;
-				
-				obs.next(o);
+				obs.next(api.getAllFiles(this.config.pathToCrosscode) as FileInfos);
 				obs.complete();
 			} else {
 				console.warn('path to crosscode not found, opening file dialog');
@@ -67,7 +63,7 @@ export class HttpClientService {
 		}
 		return new Observable(obs => {
 			if (this.config && this.config.pathToCrosscode) {
-				obs.next(this.listAllFiles(this.path.resolve(this.config.pathToCrosscode, 'media/map/'), [], 'png'));
+				obs.next(api.getAllTilesets(this.config.pathToCrosscode));
 				obs.complete();
 			} else {
 				console.warn('path to crosscode not found, opening file dialog');
@@ -88,25 +84,5 @@ export class HttpClientService {
 		this.fs.writeFileSync(this.configPath, JSON.stringify({pathToCrosscode: newPath[0]}, null, 2));
 		this.remote.app.relaunch();
 		this.remote.app.exit();
-	}
-	
-	private listAllFiles(dir: string, filelist: string[], ending: string): string[] {
-		const fs = this.fs;
-		const path = this.path;
-		const files = fs.readdirSync(dir);
-		filelist = filelist || [];
-		files.forEach(file => {
-			if (fs.statSync(path.resolve(dir, file)).isDirectory()) {
-				filelist = this.listAllFiles(path.resolve(dir, file), filelist, ending);
-			} else if (!ending || file.toLowerCase().endsWith(ending.toLowerCase())) {
-				let normalized = path.resolve(dir, file).split(path.normalize(this.config.pathToCrosscode))[1];
-				normalized = normalized.split('\\').join('/');
-				if (normalized.startsWith('/')) {
-					normalized = normalized.substr(1);
-				}
-				filelist.push(normalized);
-			}
-		});
-		return filelist;
 	}
 }
