@@ -15,10 +15,10 @@ If you just want to use the editor install the latest [Release](https://github.c
 
 ## Development
 For development you need to do in order:
-1. build common
-2. run backend and webapp
+1. build the `common` module
+2. run `backend` and `webapp`
 
-It will not work if you do not follow this order.
+Both `backend` and `webapp` depends on `common`. It will not work if you do not follow this order.
 
 ### common 
 
