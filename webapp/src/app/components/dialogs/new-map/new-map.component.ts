@@ -20,8 +20,8 @@ export class NewMapComponent implements OnInit {
 	ngOnInit() {
 	}
 
-	createDefaultMap() {
-		return {
+	createDefaultMap(): CrossCodeMap {
+		const defaultMap: CrossCodeMap = {
 			mapWidth: 0,
 			mapHeight: 0,
 			name: 'Untitled',
@@ -44,6 +44,8 @@ export class NewMapComponent implements OnInit {
 				y: 0
 			}
 		};
+
+		return defaultMap;
 	}
 	close() {
 		this.ref.close(this.map);
