@@ -55,6 +55,11 @@ export class TileSelectorComponent implements OnInit {
 			return;
 		}
 
+		if (!selectedLayer.details.tilesetName) {
+			this.display.scale.setGameSize(300 * window.devicePixelRatio, 0);
+			return;
+		}
+
 		// create tileset selector map
 		if (this.tileSelector) {
 			this.tileSelector.destroy();
