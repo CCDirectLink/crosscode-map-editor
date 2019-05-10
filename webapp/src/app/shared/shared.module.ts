@@ -4,6 +4,7 @@ import {HostDirective} from './host.directive';
 import {HttpClientService} from '../services/http-client.service';
 import {MapLoaderService} from './map-loader.service';
 import {MapSettingsComponent} from '../components/dialogs/map-settings/map-settings.component';
+import {NewMapComponent} from '../components/dialogs/new-map/new-map.component';
 import {FloatingWindowComponent} from '../components/floating-window/floating-window.component';
 import {JsonEditorComponent} from '../components/json-editor/json-editor.component';
 import {FormsModule} from '@angular/forms';
@@ -27,6 +28,7 @@ import {KeepHtmlPipe} from './keep-html.pipe';
 		HostDirective,
 		ModalDirective,
 		MapSettingsComponent,
+		NewMapComponent,
 		JsonEditorComponent,
 		FloatingWindowComponent,
 		OffsetMapComponent,
@@ -40,12 +42,14 @@ import {KeepHtmlPipe} from './keep-html.pipe';
 	entryComponents: [
 		JsonEditorComponent,
 		MapSettingsComponent,
+		NewMapComponent,
 		OffsetMapComponent,
 	],
 	exports: [
 		HostDirective,
 		ModalDirective,
 		MapSettingsComponent,
+		NewMapComponent,
 		JsonEditorComponent,
 		FloatingWindowComponent,
 		KeepHtmlPipe

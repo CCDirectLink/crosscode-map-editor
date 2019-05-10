@@ -21,6 +21,7 @@
 		<div>
 			<button *ngIf="map" mat-button (click)="openMapSettings()">Map Settings</button>
 			<button *ngIf="map" mat-button (click)="saveMap()">Save Map</button>
+			<button *ngIf="loaded" mat-button (click)="newMap()">New Map</button>
 			<button mat-button *ngIf="loaded; else loader" (click)="fileUpload.click()">Load Map</button>
 			<ng-template #loader>
 				<mat-spinner [diameter]="40" [strokeWidth]="5"></mat-spinner>

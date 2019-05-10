@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {MatDialog} from '@angular/material';
 import {MapSettingsComponent} from '../dialogs/map-settings/map-settings.component';
+import {NewMapComponent} from '../dialogs/new-map/new-map.component';
 import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {OffsetMapComponent} from '../dialogs/offset-map/offset-map.component';
@@ -49,6 +50,15 @@ export class ToolbarComponent implements OnInit {
 		}, 0);
 	}
 
+	newMap() {
+		const newMapDialogRef = this.dialog.open(NewMapComponent);
+		newMapDialogRef.afterClosed().subscribe((map) => {
+			if (map) {
+				this.mapLoader.loadRawMap(map);
+			}
+		});
+	}
+	
 	openMapSettings() {
 		this.dialog.open(MapSettingsComponent, {
 			data: this.map

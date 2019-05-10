@@ -1,0 +1,69 @@
+<div class="dialog-container" fxLayout="column">
+	<h1 class="mat-headline">New Map</h1>
+	<!--Map Size-->
+	<div fxLayout="row" fxFlex="0 0 auto">
+		<span fxFlexAlign="center" fxFlex="0 0 100px">Map Size:</span>
+		<span fxFlexAlign="center">width: </span>
+		<input type="number" class="default-input small-input" [(ngModel)]="map.mapWidth">
+		<span fxFlexAlign="center">height: </span>
+		<input type="number" class="default-input small-input" [(ngModel)]="map.mapHeight">
+	</div>
+	
+	<hr>
+	
+	<!--Levels-->
+	<div fxLayout="row" fxFlex="0 0 auto">
+		<span fxFlex="0 0 100px">Levels: </span>
+		<div fxLayout="column">
+			<div fxLayout="row" *ngFor="let level of map.levels; let i=index">
+				<span fxFlexAlign="center">Level {{i}}:</span>
+				<input class="default-input" [(ngModel)]="level.height">
+				<button mat-button (click)="map.levels.splice(i, 1)" tabindex="-1">Remove</button>
+			</div>
+			<div>
+				<button mat-button (click)="map.levels.push({height: 0})">Add Level</button>
+			</div>
+		</div>
+	</div>
+	
+	<!--Master Level-->
+	<hr>
+	<div fxLayout="row" fxFlex="0 0 auto">
+		<span fxFlexAlign="center">Master Level: </span>
+		<!--<input type="number" class="default-input small-input" [(ngModel)]="map.masterLevel">-->
+		<mat-form-field class="masterlevel-input">
+			<mat-select [(ngModel)]="map.masterLevel">
+				<mat-option *ngFor="let level of map.levels; let i=index" [value]="i">
+					{{i}}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+	</div>
+	<hr>
+	
+	<!--Attributes-->
+	<div fxLayout="column" fxFlex="0 0 auto">
+		<div fxLayout="row" class="attribute">
+			<span fxFlexAlign="center">cameraInBounds: </span>
+			<mat-checkbox class="material-input" color="primary"
+			              [(ngModel)]="map.attributes.cameraInBounds"></mat-checkbox>
+		</div>
+		
+		<div *ngFor="let prop of mapSettings | keyvalue" fxLayout="row" class="attribute">
+			<span fxFlex="0 0 100px" fxFlexAlign="center">{{prop.key}}: </span>
+			<select class="default-input select-input" [(ngModel)]="map.attributes[prop.key]">
+				<option *ngFor="let item of prop.value" [value]="item">
+					{{item}}
+				</option>
+			</select>
+		</div>
+	</div>
+
+	<div fxFlex="1 0 100px" fxLayoutAlign="end">
+		<div fxFlexAlign="end" class="action-button-row">
+			<button mat-button (click)="ref.close()">Cancel</button>
+			<button mat-button (click)="close()">Load</button>
+		</div>
+	</div>
+
+</div>
