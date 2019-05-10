@@ -14,7 +14,19 @@ A Map Editor for the game [CrossCode](http://www.cross-code.com/en/home), build 
 If you just want to use the editor install the latest [Release](https://github.com/CCDirectLink/crosscode-map-editor/releases/latest).
 
 ## Development
-For development you need to run the backend and the webapp
+For development you need to:
+- setup common
+- run backend and webapp
+
+### common
+move into the `common` folder and then install dependencies via `npm`
+```
+npm install
+```
+build the code with
+```
+npm run build
+```
 
 ### backend
 move into the `backend` folder and then install dependencies via `npm`
@@ -25,16 +37,6 @@ Open the file `src/config.ts` and change the path to your CrossCode assets folde
 After that move back to the `backend` folder and start the server with
 ```
 npm start
-```
-
-### common
-move into the `common` folder and then install dependencies via `npm`
-```
-npm install
-```
-build the code with
-```
-npm run build
 ```
 
 ### webapp
