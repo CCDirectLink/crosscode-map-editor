@@ -18,7 +18,7 @@ For development you need to do in order:
 1. build the `common` module
 2. run `backend` and `webapp`
 
-`common` is a shared module containing code both the `backend` and `webapp` use.<br>
+`common` is a shared module containing code both the `backend` and `webapp` use.
 
 ### common 
 
