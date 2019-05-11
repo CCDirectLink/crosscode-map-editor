@@ -1,3 +1,5 @@
+@import "~@angular/material/theming";
+
 .content-container {
 	padding: 16px;
 }
@@ -14,13 +16,18 @@
 	}
 }
 
-.validator {
+.icon-base {
+	margin-left: 8px;
+}
 
-	.success {
-		color: green;
-	}
+.icon-undefined {
+	color: mat-color($mat-blue, 500);
+}
 
-	.error {
-		color: red;
-	}
+.icon-valid {
+	color: mat-color($mat-green, 500);
+}
+
+.icon-invalid {
+	color: mat-color($mat-red, 500);
 }

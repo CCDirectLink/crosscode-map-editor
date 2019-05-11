@@ -12,6 +12,8 @@ import {MatSnackBar} from '@angular/material';
 export class SettingsComponent implements OnInit {
 	
 	folderFormControl = new FormControl();
+	icon = 'help_outline';
+	iconCss = 'icon-undefined';
 	
 	constructor(
 		private ref: OverlayRefControl,
@@ -22,6 +24,24 @@ export class SettingsComponent implements OnInit {
 	
 	ngOnInit() {
 		this.folderFormControl.setValue(this.electron.getAssetsPath());
+		this.folderFormControl.valueChanges.subscribe(() => this.resetIcon());
+		
+		this.check();
+	}
+	
+	private resetIcon() {
+		this.icon = 'help_outline';
+		this.iconCss = 'icon-undefined';
+	}
+	
+	private setIcon(valid: boolean) {
+		if (valid) {
+			this.icon = 'check';
+			this.iconCss = 'icon-valid';
+		} else {
+			this.icon = 'close';
+			this.iconCss = 'icon-invalid';
+		}
 	}
 	
 	select() {
@@ -33,7 +53,7 @@ export class SettingsComponent implements OnInit {
 	
 	check() {
 		const valid = this.electron.checkAssetsPath(this.folderFormControl.value);
-		console.log(valid);
+		this.setIcon(valid);
 		if (valid) {
 			this.folderFormControl.setErrors(null);
 		} else {
