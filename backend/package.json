@@ -33,6 +33,7 @@
     "testEnvironment": "node"
   },
   "dependencies": {
+	"cc-map-editor-common": "../common",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "errorhandler": "^1.4.3",

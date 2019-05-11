@@ -14,7 +14,22 @@ A Map Editor for the game [CrossCode](http://www.cross-code.com/en/home), build 
 If you just want to use the editor install the latest [Release](https://github.com/CCDirectLink/crosscode-map-editor/releases/latest).
 
 ## Development
-For development you need to run the backend and the webapp
+For development you need to do in order:
+1. build the `common` module
+2. run `backend` and `webapp`
+
+`common` is a shared module containing code both the `backend` and `webapp` use.
+
+### common 
+
+move into the `common` folder and then install dependencies via `npm`
+```
+npm install
+```
+build the code with 
+```
+npm run build
+```
 
 ### backend
 move into the `backend` folder and then install dependencies via `npm`

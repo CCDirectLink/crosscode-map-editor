@@ -4,6 +4,8 @@ import {Observable} from 'rxjs';
 import {Globals} from '../shared/globals';
 import {FileInfos} from '../models/file-infos';
 import {ElectronService} from './electron.service';
+import {FileInfos} from '../models/file-infos';
+import {api} from 'cc-map-editor-common';
 
 @Injectable()
 export class HttpClientService {
@@ -20,12 +22,7 @@ export class HttpClientService {
 			return this.http.get<FileInfos>(Globals.URL + 'api/allFiles');
 		}
 		return new Observable(obs => {
-			const o = {
-				images: this.listAllFiles(this.electron.path.resolve(this.electron.getAssetsPath(), 'media/'), [], 'png'),
-				data: this.listAllFiles(this.electron.path.resolve(this.electron.getAssetsPath(), 'data/'), [], 'json')
-			} as FileInfos;
-			
-			obs.next(o);
+			obs.next(api.getAllFiles(this.electron.path.resolve(this.electron.getAssetsPath()) as FileInfos);
 			obs.complete();
 		});
 	}
@@ -35,28 +32,8 @@ export class HttpClientService {
 			return this.http.get<string[]>(Globals.URL + 'api/allTilesets');
 		}
 		return new Observable(obs => {
-			obs.next(this.listAllFiles(this.electron.path.resolve(this.electron.getAssetsPath(), 'media/map/'), [], 'png'));
+			obs.next(api.getAllTilesets(this.electron.path.resolve(this.electron.getAssetsPath()));
 			obs.complete();
 		});
-	}
-	
-	private listAllFiles(dir: string, filelist: string[], ending: string): string[] {
-		const fs = this.electron.fs;
-		const path = this.electron.path;
-		const files = fs.readdirSync(dir);
-		filelist = filelist || [];
-		files.forEach(file => {
-			if (fs.statSync(path.resolve(dir, file)).isDirectory()) {
-				filelist = this.listAllFiles(path.resolve(dir, file), filelist, ending);
-			} else if (!ending || file.toLowerCase().endsWith(ending.toLowerCase())) {
-				let normalized = path.resolve(dir, file).split(path.normalize(this.electron.getAssetsPath()))[1];
-				normalized = normalized.split('\\').join('/');
-				if (normalized.startsWith('/')) {
-					normalized = normalized.substr(1);
-				}
-				filelist.push(normalized);
-			}
-		});
-		return filelist;
 	}
 }
