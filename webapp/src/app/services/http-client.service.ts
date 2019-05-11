@@ -27,16 +27,12 @@ export class HttpClientService {
 			this.configPath = this.path.join(this.remote.app.getPath('userData'), this.fileName);
 			
 			try {
-				this.config = JSON.parse(this.fs.readFileSync(this.configPath));
-				let p = this.config.pathToCrosscode;
-				if (p.endsWith('\\')) {
-					p = p.split('\\').join('/');
-				}
-				if (!p.endsWith('/')) {
-					p += '/';
-				}
-				Globals.URL = 'file:///' + p;
-				this.config.pathToCrosscode = p;
+				this.setPathToCrossCode();
+				this.normalizeCrossCodePath();
+				const ccPath: string = this.getPathToCrossCode();
+
+				Globals.URL = `file:///${ccPath}`;
+
 			} catch (e) {
 			}
 		}
@@ -47,12 +43,11 @@ export class HttpClientService {
 			return this.http.get<FileInfos>(Globals.URL + 'api/allFiles');
 		}
 		return new Observable(obs => {
-			if (this.config && this.config.pathToCrosscode) {
-				obs.next(api.getAllFiles(this.config.pathToCrosscode) as FileInfos);
+			const ccPath = this.getPathToCrossCode();
+
+			if (ccPath) {
+				obs.next(api.getAllFiles(ccPath) as FileInfos);
 				obs.complete();
-			} else {
-				console.warn('path to crosscode not found, opening file dialog');
-				this.selectCcFolder();
 			}
 		});
 	}
@@ -62,16 +57,40 @@ export class HttpClientService {
 			return this.http.get<string[]>(Globals.URL + 'api/allTilesets');
 		}
 		return new Observable(obs => {
-			if (this.config && this.config.pathToCrosscode) {
-				obs.next(api.getAllTilesets(this.config.pathToCrosscode));
+			const ccPath = this.getPathToCrossCode();
+			if (ccPath) {
+				obs.next(api.getAllTilesets(ccPath));
 				obs.complete();
-			} else {
-				console.warn('path to crosscode not found, opening file dialog');
-				this.selectCcFolder();
 			}
 		});
 	}
 	
+	private setPathToCrossCode(): void {
+
+		const ccConfig = JSON.parse(localStorage.getItem('config'));
+
+		if (!ccConfig || !ccConfig.pathToCrosscode) {
+			this.selectCcFolder();
+		}
+		this.config = ccConfig;
+	}
+
+	private normalizeCrossCodePath(): void {
+		let ccPath = this.config.pathToCrosscode;
+		if (ccPath.endsWith('\\')) {
+			ccPath = ccPath.split('\\').join('/');
+		}
+		if (!ccPath.endsWith('/')) {
+			ccPath += '/';
+		}
+		this.config.pathToCrosscode = ccPath;
+	}
+
+	getPathToCrossCode(): string {
+
+		return this.config.pathToCrosscode;
+	}
+
 	private selectCcFolder() {
 		
 		const dialog: Dialog = this.remote.dialog;
@@ -80,8 +99,9 @@ export class HttpClientService {
 			defaultPath: 'C:\\Program Files (x86)\\Steam\\steamapps\\common\\CrossCode\\assets',
 			properties: ['openDirectory']
 		});
-		
-		this.fs.writeFileSync(this.configPath, JSON.stringify({pathToCrosscode: newPath[0]}, null, 2));
+		if (newPath && newPath.length) {
+			localStorage.setItem('config', JSON.stringify({pathToCrosscode: newPath[0]}));
+		}
 		this.remote.app.relaunch();
 		this.remote.app.exit();
 	}
