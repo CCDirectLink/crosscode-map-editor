@@ -4,16 +4,14 @@
 	<div fxFlex fxLayoutAlign="start">
 		<button mat-button [matMenuTriggerFor]="menu">Edit</button>
 		<mat-menu #menu="matMenu">
+			<button mat-menu-item [matMenuTriggerFor]="tools">Tools</button>
 			<button *ngIf="isElectron" mat-menu-item (click)="showSettings()">Settings</button>
 		</mat-menu>
 		
-		<div *ngIf="map">
-			<button mat-button [matMenuTriggerFor]="menu">Tools</button>
-			<mat-menu #menu="matMenu">
-				<button mat-menu-item (click)="offsetMap()">Offset Map</button>
-				<button mat-menu-item (click)="generateHeights()">Generate Heights</button>
-			</mat-menu>
-		</div>
+		<mat-menu #tools="matMenu">
+			<button mat-menu-item (click)="offsetMap()" [disabled]="!map">Offset Map</button>
+			<button mat-menu-item (click)="generateHeights()" [disabled]="!map">Generate Heights</button>
+		</mat-menu>
 	</div>
 	
 	<div fxFlex>

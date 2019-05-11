@@ -5,14 +5,6 @@ import {Remote, Dialog} from 'electron';
 @Injectable()
 export class ElectronService {
 	
-	public readonly path;
-	public readonly fs;
-	
-	private config: { pathToCrosscode: string };
-	private readonly fileName = 'config.json';
-	private readonly remote: Remote;
-	private readonly configPath: string;
-	
 	constructor() {
 		if (!Globals.isElectron) {
 			return;
@@ -22,13 +14,17 @@ export class ElectronService {
 		this.remote = window.require('electron').remote;
 		this.fs = this.remote.require('fs');
 		this.path = this.remote.require('path');
-		this.configPath = this.path.join(this.remote.app.getPath('userData'), this.fileName);
 		
-		this.config = JSON.parse(this.fs.readFileSync(this.configPath));
-		const path = ElectronService.normalizePath(this.config.pathToCrosscode);
-		Globals.URL = 'file:///' + path;
-		this.config.pathToCrosscode = path;
+		this.assetsPath = localStorage.getItem(this.storageName);
+		this.updateURL();
 	}
+	
+	public readonly path;
+	public readonly fs;
+	
+	private storageName = 'assetsPath';
+	private assetsPath: string;
+	private readonly remote: Remote;
 	
 	private static normalizePath(p: string) {
 		if (p.endsWith('\\')) {
@@ -40,9 +36,13 @@ export class ElectronService {
 		return p;
 	}
 	
+	private updateURL() {
+		Globals.URL = 'file:///' + this.assetsPath;
+	}
+	
 	public relaunch() {
 		this.remote.app.relaunch();
-		this.remote.app.exit();
+		this.remote.app.quit();
 	}
 	
 	public checkAssetsPath(path: string): boolean {
@@ -53,10 +53,6 @@ export class ElectronService {
 			console.error(e);
 			return false;
 		}
-	}
-	
-	public getAssetsPath() {
-		return this.config.pathToCrosscode;
 	}
 	
 	public selectCcFolder(): string {
@@ -71,7 +67,13 @@ export class ElectronService {
 	}
 	
 	public saveAssetsPath(path: string) {
-		this.config.pathToCrosscode = path;
-		this.fs.writeFileSync(this.configPath, JSON.stringify(this.config, null, 2));
+		const normalized = ElectronService.normalizePath(path);
+		this.assetsPath = normalized;
+		localStorage.setItem(this.storageName, normalized);
+		this.updateURL();
+	}
+	
+	public getAssetsPath() {
+		return this.assetsPath;
 	}
 }
