@@ -1,29 +1,14 @@
 @import "theme";
 
-$primary: map-get($theme, primary);
 $accent: map-get($theme, accent);
 
-$btnWidth: 34px;
-$toolbarHeight: 54px;
-
 .container {
-	width: 60vw;
-	height: calc(94vh - 64px);
-	color: white;
-	background: mat-color($accent, 800);
-}
-
-.ng-draggable {
-	cursor: move;
+	height: 100%;
 }
 
 .toolbar {
 	padding-left: 16px;
-	background-color: mat-color(map-get($theme, background), app-bar);
-	height: $toolbarHeight;
-}
 
-.buttons {
 	& button {
 		margin: 0 8px;
 	}
@@ -61,9 +46,6 @@ $toolbarHeight: 54px;
 	margin: 0 10px;
 }
 
-.content-body {
-}
-
 .content-left {
 	margin: 10px;
 
@@ -84,13 +66,6 @@ $toolbarHeight: 54px;
 	}
 }
 
-.content-right {
-}
-
 .event-block {
 	margin: 10px;
 }
-
-.button-block {
-}
-

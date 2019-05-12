@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, Input} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, Input, isDevMode} from '@angular/core';
 import * as Phaser from 'phaser-ce';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {Subscription} from 'rxjs';
@@ -13,8 +13,8 @@ import {HttpClientService} from '../../services/http-client.service';
 import {StateHistoryService} from '../../shared/history/state-history.service';
 import {PhaserEventsService} from '../../shared/phaser/phaser-events.service';
 import {HeightMapGeneratorService} from '../../services/height-map-generator.service';
-import { FileInfos } from '../../models/file-infos';
-import { ISelectedTiles } from '../../models/tile-selector';
+import {FileInfos} from '../../models/file-infos';
+import {ISelectedTiles} from '../../models/tile-selector';
 
 @Component({
 	selector: 'app-phaser',
@@ -40,7 +40,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 			this.tileDrawer.select(value);
 		}
 	}
-
+	
 	constructor(private element: ElementRef,
 	            private mapLoader: MapLoaderService,
 	            private globalEvents: GlobalEventsService,
@@ -49,23 +49,26 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	            private http: HttpClientService,
 	            private heightGenerator: HeightMapGeneratorService) {
 	}
-
+	
 	
 	ngOnInit() {
 		this.http.getAllFiles().subscribe(res => {
-			this.game = new Phaser.Game(
-				screen.width * window.devicePixelRatio,
-				screen.height * window.devicePixelRatio,
-				Phaser.WEBGL_MULTI,
-				'content', {
+			this.game = new Phaser.Game({
+				width: window.innerWidth * window.devicePixelRatio,
+				height: window.innerHeight * window.devicePixelRatio - 64,
+				renderer: Phaser.AUTO,
+				parent: 'content',
+				state: {
 					create: () => this.create(),
 					update: () => this.update(),
 					render: () => this.render(),
 					preload: () => this.preload(res),
 				},
-				undefined,
-				false);
+				antialias: false,
+			});
 			Globals.game = this.game;
+		}, err => {
+			this.globalEvents.loadComplete.error(err);
 		});
 	}
 	
@@ -138,9 +141,9 @@ export class PhaserComponent implements OnInit, OnDestroy {
 		this.game.load.crossOrigin = 'anonymous';
 		
 		this.game.load.maxParallelDownloads = res.images.length;
-
+		
 		this.game.load.onLoadComplete.addOnce(() => {
-			this.globalEvents.loadComplete.next(true);
+			this.globalEvents.loadComplete.next();
 		});
 	}
 	
@@ -163,8 +166,10 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	}
 	
 	render() {
-		// expensive call, use only for debugging
-		// this.game.debug.text(this.game.time.fps.toString(), 2, 14, '#00ff00');
+		if (isDevMode()) {
+			// expensive call, use only for debugging
+			// this.game.debug.text(this.game.time.fps.toString(), 2, 14, '#00ff00');
+		}
 		
 		this.game.debug.geom(this.border, '#F00', false);
 	}

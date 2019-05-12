@@ -1,0 +1,28 @@
+<cc-overlay-panel title="Settings">
+	<ng-container ngProjectAs="content">
+		<div fxLayout="column" class="content-container">
+			<form fxLayout="row" class="option-row">
+				<mat-form-field fxFlex="auto">
+					<mat-label>Assets folder</mat-label>
+					<input matInput placeholder="C:\Program Files (x86)\Steam\steamapps\common\CrossCode\assets"
+					       [formControl]="folderFormControl">
+					<mat-hint>Path to CrossCode Assets folder</mat-hint>
+					<mat-error *ngIf="folderFormControl.hasError('invalid')">
+						Path to CrossCode Assets folder is invalid
+					</mat-error>
+				</mat-form-field>
+				<div class="actions-container" fxLayout="row">
+					<button mat-stroked-button (click)="select()">Select</button>
+					<button mat-stroked-button (click)="check()">
+						Check
+						<mat-icon [ngClass]="iconCss" class="icon-base">{{icon}}</mat-icon>
+					</button>
+				</div>
+			</form>
+		</div>
+	</ng-container>
+	<ng-container ngProjectAs="actions">
+		<button mat-stroked-button (click)="close()">Cancel</button>
+		<button mat-stroked-button (click)="save()">Save</button>
+	</ng-container>
+</cc-overlay-panel>

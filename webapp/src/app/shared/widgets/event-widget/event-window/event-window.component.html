@@ -1,19 +1,9 @@
-<div class="container mat-elevation-z8" ngDraggable [handle]="handle" fxLayout="column">
-	<div fxFlex="0 0 auto" #handle class="toolbar mat-elevation-z4 elevated-toolbar" fxLayout="column"
-	     fxLayoutAlign="center">
-		<h1 class="event-headline mat-headline">Event</h1>
-	</div>
-	<div class="content" fxFlex="auto" fxLayout="column">
-		
-		<!-- Event Editor -->
+<cc-overlay-panel title="Event">
+	<ng-container ngProjectAs="content">
 		<app-event-editor #eventEditor fxLayout="column" [eventData]="event"></app-event-editor>
-		
-		<!-- buttons -->
-		<div fxFlex="0 0 54px" fxLayout="row">
-			<div class="buttons" fxFlexAlign="center" fxLayoutAlign="end" fxFlex>
-				<button mat-stroked-button (click)="cancel()">Cancel</button>
-				<button mat-stroked-button (click)="save()">Save</button>
-			</div>
-		</div>
-	</div>
-</div>
+	</ng-container>
+	<ng-container ngProjectAs="actions">
+		<button mat-stroked-button (click)="cancel()">Cancel</button>
+		<button mat-stroked-button (click)="save()">Save</button>
+	</ng-container>
+</cc-overlay-panel>

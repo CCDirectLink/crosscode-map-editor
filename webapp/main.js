@@ -5,6 +5,7 @@ const windowStateKeeper = require('electron-window-state');
 const path = require('path');
 const url = require('url');
 const {autoUpdater} = require("electron-updater");
+const contextMenu = require('electron-context-menu');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -12,6 +13,12 @@ let win;
 const args = process.argv.slice(1);
 const dev = args.some(val => val === '--dev');
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
+
+// context menu
+
+contextMenu({
+	showInspectElement: true
+});
 
 function createWindow() {
 	
@@ -25,7 +32,10 @@ function createWindow() {
 		y: mainWindowState.y,
 		width: mainWindowState.width,
 		height: mainWindowState.height,
-		webPreferences: {webSecurity: false}
+		webPreferences: {
+			webSecurity: false,
+			nodeIntegration: true
+		}
 	});
 	
 	if (dev) {

@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from '@angular/core';
 
 @Component({
 	selector: 'app-floating-window',
@@ -15,6 +15,11 @@ export class FloatingWindowComponent implements OnInit {
 	@Input() top: string | number = 0;
 	@Input() right: string | number = 0;
 	
+	@Input() showClose = false;
+	@Input() showMin = true;
+	
+	@Output() close = new EventEmitter<void>();
+	
 	constructor() {
 	}
 	
@@ -27,6 +32,10 @@ export class FloatingWindowComponent implements OnInit {
 	
 	toggle() {
 		this.visible = !this.visible;
+	}
+	
+	onClose() {
+		this.close.emit();
 	}
 	
 }

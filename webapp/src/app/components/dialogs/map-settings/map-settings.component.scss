@@ -4,9 +4,8 @@
 $config: mat-typography-config();
 $color: map_get($theme, accent);
 
-.dialog-container {
-	width: 50vw;
-	height: 85vh;
+.content-container {
+	padding: 24px;
 }
 
 .masterlevel-input {
@@ -20,6 +19,7 @@ $color: map_get($theme, accent);
 
 .select-input {
 	height: 26px;
+
 	option {
 		background-color: mat-color($color, 800);
 	}
