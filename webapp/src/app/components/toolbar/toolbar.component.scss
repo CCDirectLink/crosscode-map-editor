@@ -1,3 +1,5 @@
+@import "~@angular/material/theming";
+
 .elevated-toolbar {
 	position: relative;
 	z-index: 2;
@@ -17,4 +19,8 @@ mat-spinner {
 	color: white;
 	z-index: 9999;
 	position: absolute;
+}
+
+.load-error{
+	color: mat-color($mat-red, 500);
 }

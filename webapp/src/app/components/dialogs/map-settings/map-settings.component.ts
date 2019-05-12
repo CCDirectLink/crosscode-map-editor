@@ -4,6 +4,7 @@ import {CrossCodeMap} from '../../../models/cross-code-map';
 import {MapLoaderService} from '../../../shared/map-loader.service';
 import {CCMap} from '../../../shared/phaser/tilemap/cc-map';
 import * as mapSettingsjson from '../../../../assets/map-settings.json';
+import {OverlayRefControl} from '../../../shared/overlay/overlay-ref-control';
 
 @Component({
 	selector: 'app-map-settings',
@@ -19,7 +20,10 @@ export class MapSettingsComponent {
 		attributes: {},
 	};
 	
-	constructor(private loader: MapLoaderService, public ref: MatDialogRef<MapSettingsComponent>) {
+	constructor(
+		private loader: MapLoaderService,
+		public ref: OverlayRefControl
+	) {
 		this.tileMap = loader.tileMap.getValue();
 		const tileMap = this.tileMap;
 		

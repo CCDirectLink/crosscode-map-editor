@@ -1,18 +1,19 @@
-<p *ngIf="!map" class="version caption">{{version}}</p>
+<p class="version caption">{{version}}</p>
 <mat-toolbar fxLayout="row" class="mat-elevation-z4 elevated-toolbar">
 	
-	<div>
-		<button mat-icon-button (click)="onMenuClick.emit($event)">
-			<mat-icon>menu</mat-icon>
-		</button>
-	</div>
-	<div *ngIf="map" fxFlex fxFlexOffset="40px">
-		<button mat-button [matMenuTriggerFor]="menu">Tools</button>
+	<div fxFlex fxLayoutAlign="start">
+		<button mat-button [matMenuTriggerFor]="menu">Edit</button>
 		<mat-menu #menu="matMenu">
-			<button mat-menu-item (click)="offsetMap()">Offset Map</button>
-			<button mat-menu-item (click)="generateHeights()">Generate Heights</button>
+			<button mat-menu-item [matMenuTriggerFor]="tools">Tools</button>
+			<button *ngIf="isElectron" mat-menu-item (click)="showSettings()">Settings</button>
+		</mat-menu>
+		
+		<mat-menu #tools="matMenu">
+			<button mat-menu-item (click)="offsetMap()" [disabled]="!map">Offset Map</button>
+			<button mat-menu-item (click)="generateHeights()" [disabled]="!map">Generate Heights</button>
 		</mat-menu>
 	</div>
+	
 	<div fxFlex>
 		<span class="mat-headline">{{map?.name}}</span>
 	</div>
@@ -23,7 +24,8 @@
 			<button *ngIf="map" mat-button (click)="saveMap()">Save Map</button>
 			<button mat-button *ngIf="loaded; else loader" (click)="fileUpload.click()">Load Map</button>
 			<ng-template #loader>
-				<mat-spinner [diameter]="40" [strokeWidth]="5"></mat-spinner>
+				<span class="load-error">{{error}}</span>
+				<mat-spinner *ngIf="!error" [diameter]="40" [strokeWidth]="5"></mat-spinner>
 			</ng-template>
 		</div>
 	</div>

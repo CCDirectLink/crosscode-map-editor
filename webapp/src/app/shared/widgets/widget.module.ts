@@ -4,7 +4,7 @@ import {JsonWidgetComponent} from './json-widget/json-widget.component';
 import {BooleanWidgetComponent} from './boolean-widget/boolean-widget.component';
 import {NumberWidgetComponent} from './number-widget/number-widget.component';
 import {StringWidgetComponent} from './string-widget/string-widget.component';
-import {MaterialModule} from '../../material.module';
+import {MaterialModule} from '../../external-modules/material.module';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {FlexLayoutModule} from '@angular/flex-layout';

@@ -1,0 +1,33 @@
+@import "~@angular/material/theming";
+
+.content-container {
+	padding: 16px;
+}
+
+.option-row {
+	align-items: center;
+}
+
+.actions-container {
+	align-items: center;
+
+	& button {
+		margin-left: 12px;
+	}
+}
+
+.icon-base {
+	margin-left: 8px;
+}
+
+.icon-undefined {
+	color: mat-color($mat-blue, 500);
+}
+
+.icon-valid {
+	color: mat-color($mat-green, 500);
+}
+
+.icon-invalid {
+	color: mat-color($mat-red, 500);
+}
