@@ -176,10 +176,7 @@ export class PhaserComponent implements OnInit, OnDestroy {
 	}
 	
 	private rescaleBorder() {
-		if (!this.tileMap.layers.length) {
-			return;
-		}
-		const s = this.tileMap.layers[0].details.tilesize * this.game.camera.scale.x;
+		const s = Globals.TILE_SIZE * this.game.camera.scale.x;
 		this.border.resize(this.tileMap.mapWidth * s, this.tileMap.mapHeight * s);
 	}
 }
