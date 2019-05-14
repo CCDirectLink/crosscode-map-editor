@@ -62,11 +62,11 @@ export class ToolbarComponent implements OnInit {
 	}
 
 	newMap() {
-		const newMapDialogRef = this.dialog.open(NewMapComponent);
-		newMapDialogRef.afterClosed().subscribe((map) => {
-			if (map) {
-				this.mapLoader.loadRawMap(map);
-			}
+		this.overlayService.open(NewMapComponent, {
+			positionStrategy: this.overlay.position().global()
+				.left('23vw')
+				.top('calc(64px + 6vh / 2)'),
+			hasBackdrop: true
 		});
 	}
   

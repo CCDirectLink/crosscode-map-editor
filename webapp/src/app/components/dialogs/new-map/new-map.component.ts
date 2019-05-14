@@ -1,8 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {CrossCodeMap} from '../../../models/cross-code-map';
-import { CCMap } from '../../../shared/phaser/tilemap/cc-map';
 import * as mapSettingsjson from '../../../../assets/map-settings.json';
+import {OverlayRefControl} from '../../../shared/overlay/overlay-ref-control';
+import {MapLoaderService} from '../../../shared/map-loader.service';
 
 @Component({
   selector: 'app-new-map',
@@ -12,7 +12,7 @@ import * as mapSettingsjson from '../../../../assets/map-settings.json';
 export class NewMapComponent implements OnInit {
 	map: CrossCodeMap;
 	mapSettings;
-	constructor(public ref: MatDialogRef<NewMapComponent>, @Inject(MAT_DIALOG_DATA) public data: CCMap) {
+	constructor(private mapLoader: MapLoaderService, private ref: OverlayRefControl)  {
 		this.map = this.createDefaultMap();
 		this.mapSettings = mapSettingsjson.default;
 	}
@@ -48,7 +48,8 @@ export class NewMapComponent implements OnInit {
 		return defaultMap;
 	}
 	close() {
-		this.ref.close(this.map);
+		this.mapLoader.loadRawMap(this.map);
+		this.ref.close();
 	}
 
 }
