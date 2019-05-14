@@ -101,6 +101,7 @@ export class LayersComponent implements OnInit {
 	
 	updateTilesetName(name) {
 		this.selectedLayer.updateTileset(name);
+		this.mapLoader.selectedLayer.next(this.selectedLayer);
 	}
 	
 	updateLevel(level) {
