@@ -38,6 +38,10 @@ export class MapSettingsComponent {
 		settings.attributes = tileMap.attributes;
 	}
 	
+	onSettingsChange({property, value}) {
+		this.settings[property] = value;
+	}
+
 	update() {
 		// TODO: add validation
 		const settings = this.settings;

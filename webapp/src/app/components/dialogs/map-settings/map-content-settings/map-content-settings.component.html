@@ -3,9 +3,9 @@
 	<div fxLayout="row" fxFlex="0 0 auto">
 		<span fxFlexAlign="center" fxFlex="0 0 100px">Map Size:</span>
 		<span fxFlexAlign="center">width: </span>
-		<input type="number" class="default-input small-input" [(ngModel)]="settings.mapWidth">
+		<input type="number" class="default-input small-input" min="1" [ngModel]="settings.mapWidth" (change)="onNumberChange($event, 'mapWidth')">
 		<span fxFlexAlign="center">height: </span>
-		<input type="number" class="default-input small-input" [(ngModel)]="settings.mapHeight">
+		<input type="number" class="default-input small-input" min="1" [ngModel]="settings.mapHeight" (change)="onNumberChange($event, 'mapHeight')">
 	</div>
 	
 	<hr>

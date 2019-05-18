@@ -1,6 +1,6 @@
 <cc-overlay-panel title="New Map">
 	<ng-container ngProjectAs="content">
-		<app-map-content-settings [(settings)]="map" [mapSettings]="mapSettings"></app-map-content-settings>
+		<app-map-content-settings [settings]="map" (onSettingsChange)="onSettingsChange($event)" [mapSettings]="mapSettings"></app-map-content-settings>
 	</ng-container>
 
 	<ng-container ngProjectAs="actions">
