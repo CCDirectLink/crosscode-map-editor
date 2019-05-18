@@ -19,6 +19,8 @@ import {KeepHtmlPipe} from './keep-html.pipe';
 import {SettingsComponent} from '../components/dialogs/settings/settings.component';
 import {OverlayModule} from './overlay/overlay.module';
 
+import { MapContentSettingsComponent } from '../components/dialogs/map-settings/map-content-settings/map-content-settings.component';
+
 @NgModule({
 	imports: [
 		CommonModule,
@@ -33,6 +35,7 @@ import {OverlayModule} from './overlay/overlay.module';
 		HostDirective,
 		ModalDirective,
 		MapSettingsComponent,
+		MapContentSettingsComponent,
 		NewMapComponent,
 		JsonEditorComponent,
 		FloatingWindowComponent,
@@ -49,6 +52,7 @@ import {OverlayModule} from './overlay/overlay.module';
 	entryComponents: [
 		JsonEditorComponent,
 		MapSettingsComponent,
+		MapContentSettingsComponent,
 		NewMapComponent,
 		OffsetMapComponent,
 		SettingsComponent,
@@ -57,6 +61,7 @@ import {OverlayModule} from './overlay/overlay.module';
 		HostDirective,
 		ModalDirective,
 		MapSettingsComponent,
+		MapContentSettingsComponent,
 		NewMapComponent,
 		JsonEditorComponent,
 		FloatingWindowComponent,
