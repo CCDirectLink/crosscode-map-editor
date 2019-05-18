@@ -31,6 +31,9 @@ export class MapSettingsComponent {
 			return;
 		}
 		const settings = this.settings;
+		
+		settings.name = tileMap.name;
+		
 		settings.mapWidth = tileMap.mapWidth;
 		settings.mapHeight = tileMap.mapHeight;
 		settings.levels = tileMap.levels;
@@ -46,6 +49,8 @@ export class MapSettingsComponent {
 		// TODO: add validation
 		const settings = this.settings;
 		const tileMap = this.tileMap;
+
+		tileMap.name = settings.name;
 		
 		tileMap.levels = settings.levels;
 		tileMap.masterLevel = settings.masterLevel;
