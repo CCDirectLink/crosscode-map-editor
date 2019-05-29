@@ -29,7 +29,9 @@ export class NewMapComponent implements OnInit {
 			mapWidth: 1,
 			mapHeight: 1,
 			name: 'Untitled',
-			levels: [],
+			levels: [{
+				height: 0
+			}],
 			masterLevel: 0,
 			entities: [],
 			layer: [],
