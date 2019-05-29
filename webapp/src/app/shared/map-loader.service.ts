@@ -28,6 +28,7 @@ export class MapLoaderService {
 			try {
 				const map = JSON.parse(e.target.result);
 				this.loadRawMap(map);
+				this.loadRawMap(map, file.name);
 			} catch (e) {
 				console.error(e);
 				this.snackBar.open('Error: ' + e.message, undefined, {
