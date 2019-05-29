@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 
+import * as mapSettingsjson from '../../../../../assets/map-settings.json';
+
 @Component({
   selector: 'app-map-content-settings',
   templateUrl: './map-content-settings.component.html',
@@ -7,8 +9,9 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 })
 export class MapContentSettingsComponent implements OnInit {
 	@Input() settings;
-	@Output() onSettingsChange = new EventEmitter<any>()
-	@Input() mapSettings;
+	@Output() onSettingsChange = new EventEmitter<any>();
+	mapSettings = mapSettingsjson.default;
+	
 	constructor() { }
 
 	ngOnInit() {

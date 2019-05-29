@@ -3,7 +3,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {CrossCodeMap} from '../../../models/cross-code-map';
 import {MapLoaderService} from '../../../shared/map-loader.service';
 import {CCMap} from '../../../shared/phaser/tilemap/cc-map';
-import * as mapSettingsjson from '../../../../assets/map-settings.json';
 import {OverlayRefControl} from '../../../shared/overlay/overlay-ref-control';
 
 @Component({
@@ -14,7 +13,6 @@ import {OverlayRefControl} from '../../../shared/overlay/overlay-ref-control';
 export class MapSettingsComponent {
 	
 	private tileMap: CCMap;
-	mapSettings = mapSettingsjson.default;
 	settings: CrossCodeMap = <any>{
 		levels: [{height: -32}, {height: 0}, {height: 32}, {height: 64}],
 		attributes: {},

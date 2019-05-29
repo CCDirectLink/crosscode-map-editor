@@ -1,6 +1,6 @@
 <cc-overlay-panel title="Map Settings">
 	<ng-container ngProjectAs="content">
-		<app-map-content-settings [settings]="settings" (onSettingsChange)="onSettingsChange($event)" [mapSettings]="mapSettings"></app-map-content-settings>
+		<app-map-content-settings [settings]="settings" (onSettingsChange)="onSettingsChange($event)"></app-map-content-settings>
 	</ng-container>
 	<ng-container ngProjectAs="actions">
 		<button mat-stroked-button (click)="ref.close()">Cancel</button>
