@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-
+import {CrossCodeMap} from '../../../../models/cross-code-map';
 import * as mapSettingsjson from '../../../../../assets/map-settings.json';
 
 @Component({
@@ -8,16 +8,18 @@ import * as mapSettingsjson from '../../../../../assets/map-settings.json';
   styleUrls: ['./map-content-settings.component.scss']
 })
 export class MapContentSettingsComponent implements OnInit {
-	@Input() settings;
-	@Output() onSettingsChange = new EventEmitter<any>();
+	@Input() settings: CrossCodeMap;
+	@Output() onSettingsChange = new EventEmitter<{
+		property: any,
+		value: any
+	}>();
 	mapSettings = mapSettingsjson.default;
 	
 	constructor() { }
 
-	ngOnInit() {
-	}
+	ngOnInit() {}
 
-	onNumberChange(event, property) {
+	onNumberChange(event, property): void {
 		const numElement = event.target;
 		if (numElement) {
 			const min = Number(numElement.min || -Infinity);
