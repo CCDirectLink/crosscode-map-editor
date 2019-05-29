@@ -49,7 +49,7 @@ export class MapSettingsComponent {
 		const tileMap = this.tileMap;
 
 		tileMap.name = settings.name;
-		
+		tileMap.filename = settings.name;
 		tileMap.levels = settings.levels;
 		tileMap.masterLevel = settings.masterLevel;
 		tileMap.attributes = settings.attributes;
