@@ -3,7 +3,7 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 @Component({
   selector: 'app-map-content-settings',
   templateUrl: './map-content-settings.component.html',
-  styleUrls: ['./map-content-settings.component.scss', '../map-settings.component.scss']
+  styleUrls: ['./map-content-settings.component.scss']
 })
 export class MapContentSettingsComponent implements OnInit {
 	@Input() settings;
