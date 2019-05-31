@@ -17,8 +17,15 @@ export class MapContentSettingsComponent implements OnInit {
 	
 	constructor() { }
 
-	ngOnInit() {}
-
+	ngOnInit() {
+		
+		if (this.settings.levels.length < 1) {
+			this.settings.levels.push({
+				height: 0
+			});
+		}
+	}
+	
 	onNumberChange(event, property): void {
 		const numElement = event.target;
 		if (numElement) {

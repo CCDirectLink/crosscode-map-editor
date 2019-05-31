@@ -24,7 +24,7 @@
 			<div fxLayout="row" *ngFor="let level of settings.levels; let i=index">
 				<span fxFlexAlign="center">Level {{i}}:</span>
 				<input class="default-input" [(ngModel)]="level.height">
-				<button mat-button (click)="settings.levels.splice(i, 1)" tabindex="-1">Remove</button>
+				<button mat-button *ngIf="settings.levels.length > 1" (click)="settings.levels.splice(i, 1)" tabindex="-1">Remove</button>
 			</div>
 			<div>
 				<button mat-button (click)="settings.levels.push({height: 0})">Add Level</button>
