@@ -26,11 +26,19 @@ export class MapContentSettingsComponent implements OnInit {
 			const max = Number(numElement.max || Infinity);
 			let value = Number(numElement.value);
 			
+			
+			if (isNaN(value)) {
+				value = min;
+			} else if (!Number.isInteger(value)) {
+				value = Math.round(value);
+			}
+			
 			if (value < min) {
 				value = min;
 			} else if (value > max) {
 				value = max;
 			}
+			
 			// Parent won't update field if same value
 			// force update value property
 			numElement.value = value;
