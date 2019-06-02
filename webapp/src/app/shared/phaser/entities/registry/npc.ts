@@ -97,6 +97,16 @@ export class NPC extends CCEntity {
 		return undefined;
 	}
 	
+	protected checkAndFixSettings(settings: any) {
+		if (!settings.npcStates) {
+			settings.npcStates = [];
+		}
+
+		if (!settings.characterName) {
+			settings.characterName = 'main.lea';
+		}
+	}
+	
 	protected async setupType(settings: any) {
 		
 		const charSettings: CharacterSettings = await Helper.getJsonPromise(this.getPath('data/characters/', settings.characterName));

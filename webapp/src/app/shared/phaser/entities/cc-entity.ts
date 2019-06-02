@@ -216,10 +216,13 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 	
 	// TODO: refactor
 	setSettings(settings: any) {
+		this.checkAndFixSettings(settings);
 		this.details.settings = settings;
 		this.updateType();
 	}
 	
+	protected checkAndFixSettings(settings: any) {}
+
 	setEnableInput(enable: boolean) {
 		if (!this.collisionImage) {
 			return;
