@@ -28,6 +28,11 @@ export class NpcStatesComponent implements OnInit {
 	}
 	
 	ngOnInit() {
+		if (this.states.length === 0) {
+			this.newPage();
+			this.index = 0;
+		}
+		
 		this.states.forEach(state => {
 			if (!state.position) {
 				state.position = {
