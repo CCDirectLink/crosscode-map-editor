@@ -12,7 +12,7 @@ $color: map_get($theme, accent);
 	margin-left: 16px;
 }
 
-.default-input {
+.default-input, .attribute-input {
 	margin-left: 16px;
 	margin-right: 16px;
 }
