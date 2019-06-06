@@ -17,14 +17,6 @@ $color: map_get($theme, accent);
 	margin-right: 16px;
 }
 
-.select-input {
-	height: 26px;
-
-	option {
-		background-color: mat-color($color, 800);
-	}
-}
-
 .material-input {
 	margin-left: 16px;
 	margin-right: 16px;

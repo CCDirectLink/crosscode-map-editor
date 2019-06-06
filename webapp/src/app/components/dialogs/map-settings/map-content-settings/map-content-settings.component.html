@@ -57,11 +57,13 @@
 		
 		<div *ngFor="let prop of mapSettings | keyvalue" fxLayout="row" class="attribute">
 			<span fxFlex="0 0 100px" fxFlexAlign="center">{{prop.key}}: </span>
-			<mat-select class="default-input select-input" [(ngModel)]="settings.attributes[prop.key]">
-				<mat-option *ngFor="let item of prop.value" [value]="item">
-					{{item}}
-				</mat-option>
-			</mat-select>
+			<mat-form-field>
+				<mat-select [(ngModel)]="settings.attributes[prop.key]">
+					<mat-option *ngFor="let item of prop.value" [value]="item">
+						{{item}}
+					</mat-option>
+				</mat-select>	
+			</mat-form-field>
 		</div>
 	</div>
 </div>
