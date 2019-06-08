@@ -5,6 +5,7 @@ import {HttpClientService} from '../services/http-client.service';
 import {ElectronService} from '../services/electron.service';
 import {MapLoaderService} from './map-loader.service';
 import {MapSettingsComponent} from '../components/dialogs/map-settings/map-settings.component';
+import {NewMapComponent} from '../components/dialogs/new-map/new-map.component';
 import {FloatingWindowComponent} from '../components/floating-window/floating-window.component';
 import {JsonEditorComponent} from '../components/json-editor/json-editor.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -17,6 +18,8 @@ import {ModalDirective} from './modal.directive';
 import {KeepHtmlPipe} from './keep-html.pipe';
 import {SettingsComponent} from '../components/dialogs/settings/settings.component';
 import {OverlayModule} from './overlay/overlay.module';
+
+import { MapContentSettingsComponent } from '../components/dialogs/map-settings/map-content-settings/map-content-settings.component';
 
 @NgModule({
 	imports: [
@@ -32,6 +35,8 @@ import {OverlayModule} from './overlay/overlay.module';
 		HostDirective,
 		ModalDirective,
 		MapSettingsComponent,
+		MapContentSettingsComponent,
+		NewMapComponent,
 		JsonEditorComponent,
 		FloatingWindowComponent,
 		OffsetMapComponent,
@@ -47,6 +52,8 @@ import {OverlayModule} from './overlay/overlay.module';
 	entryComponents: [
 		JsonEditorComponent,
 		MapSettingsComponent,
+		MapContentSettingsComponent,
+		NewMapComponent,
 		OffsetMapComponent,
 		SettingsComponent,
 	],
@@ -54,6 +61,8 @@ import {OverlayModule} from './overlay/overlay.module';
 		HostDirective,
 		ModalDirective,
 		MapSettingsComponent,
+		MapContentSettingsComponent,
+		NewMapComponent,
 		JsonEditorComponent,
 		FloatingWindowComponent,
 		OverlayModule,

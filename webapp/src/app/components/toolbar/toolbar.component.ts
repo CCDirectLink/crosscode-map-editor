@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {MatDialog} from '@angular/material';
 import {MapSettingsComponent} from '../dialogs/map-settings/map-settings.component';
+import {NewMapComponent} from '../dialogs/new-map/new-map.component';
 import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {OffsetMapComponent} from '../dialogs/offset-map/offset-map.component';
@@ -59,7 +60,16 @@ export class ToolbarComponent implements OnInit {
 			window.URL.revokeObjectURL(url);
 		}, 0);
 	}
-	
+
+	newMap() {
+		this.overlayService.open(NewMapComponent, {
+			positionStrategy: this.overlay.position().global()
+				.left('23vw')
+				.top('calc(64px + 6vh / 2)'),
+			hasBackdrop: true
+		});
+	}
+  
 	openMapSettings() {
 		this.overlayService.open(MapSettingsComponent, {
 			positionStrategy: this.overlay.position().global()

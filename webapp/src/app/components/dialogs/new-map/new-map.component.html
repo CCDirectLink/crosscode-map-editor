@@ -1,0 +1,12 @@
+<cc-overlay-panel title="New Map">
+	<ng-container ngProjectAs="content">
+		<app-map-content-settings [settings]="map" (onSettingsChange)="onSettingsChange($event)"></app-map-content-settings>
+	</ng-container>
+
+	<ng-container ngProjectAs="actions">
+		<div fxFlexAlign="end" class="action-button-row">
+			<button mat-button (click)="ref.close()">Cancel</button>
+			<button mat-button (click)="close()">Load</button>
+		</div>
+	</ng-container>
+</cc-overlay-panel>
