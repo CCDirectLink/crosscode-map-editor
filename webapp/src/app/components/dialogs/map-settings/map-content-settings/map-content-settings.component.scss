@@ -12,17 +12,9 @@ $color: map_get($theme, accent);
 	margin-left: 16px;
 }
 
-.default-input {
+.default-input, .attribute-input {
 	margin-left: 16px;
 	margin-right: 16px;
-}
-
-.select-input {
-	height: 26px;
-
-	option {
-		background-color: mat-color($color, 800);
-	}
 }
 
 .material-input {
@@ -33,6 +25,7 @@ $color: map_get($theme, accent);
 .attribute {
 	padding-bottom: 5px;
 	padding-top: 5px;
+	width: 40%;
 }
 
 .action-button-row {

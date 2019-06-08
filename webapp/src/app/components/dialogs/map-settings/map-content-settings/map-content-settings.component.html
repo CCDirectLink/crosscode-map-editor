@@ -48,20 +48,22 @@
 	<hr>
 	
 	<!--Attributes-->
-	<div fxLayout="column" fxFlex="0 0 auto">
-		<div fxLayout="row" class="attribute">
-			<span fxFlexAlign="center">cameraInBounds: </span>
+	<div fxLayout="row wrap" fxFlex="0 0 auto" flexLayoutAlign="space-evenly center" >
+		<div fxLayout="row" class="attribute" fxFlexAlign="center">
+			<span >cameraInBounds: </span>
 			<mat-checkbox class="material-input" color="primary"
 						  [(ngModel)]="settings.attributes.cameraInBounds"></mat-checkbox>
 		</div>
 		
-		<div *ngFor="let prop of mapSettings | keyvalue" fxLayout="row" class="attribute">
+		<div *ngFor="let prop of mapSettings | keyvalue" fxLayout="row" fxflex="40" class="attribute">
 			<span fxFlex="0 0 100px" fxFlexAlign="center">{{prop.key}}: </span>
-			<mat-select class="default-input select-input" [(ngModel)]="settings.attributes[prop.key]">
-				<mat-option *ngFor="let item of prop.value" [value]="item">
-					{{item}}
-				</mat-option>
-			</mat-select>
+			<mat-form-field class="attribute-input">
+				<mat-select [(ngModel)]="settings.attributes[prop.key]">
+					<mat-option *ngFor="let item of prop.value" [value]="item">
+						{{item}}
+					</mat-option>
+				</mat-select>	
+			</mat-form-field>
 		</div>
 	</div>
 </div>
