@@ -34,7 +34,7 @@ const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 	styleUrls: ['./event-add.component.scss']
 })
 export class EventAddComponent implements OnInit, AfterViewInit {
-	@ViewChild('filterInput') filterInput;
+	@ViewChild('filterInput', { static: false }) filterInput;
 	
 	@Output() getEventClass: EventEmitter<AbstractEvent<any>> = new EventEmitter<any>();
 	

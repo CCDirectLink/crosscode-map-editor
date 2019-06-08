@@ -14,7 +14,7 @@ import {Vec2WidgetComponent} from '../../shared/widgets/vec2-widget/vec2-widget.
 	styleUrls: ['./entities.component.scss']
 })
 export class EntitiesComponent implements OnInit {
-	@ViewChild(HostDirective) appHost: HostDirective;
+	@ViewChild(HostDirective, { static: false }) appHost: HostDirective;
 	entity: CCEntity;
 	map: CCMap;
 

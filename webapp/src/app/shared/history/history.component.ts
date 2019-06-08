@@ -9,7 +9,7 @@ import {HistoryState, StateHistoryService} from './state-history.service';
 })
 export class HistoryComponent implements OnInit {
 	
-	@ViewChild('listContainer') list: ElementRef;
+	@ViewChild('listContainer', { static: false }) list: ElementRef;
 	
 	states: HistoryState[] = [];
 	selected;

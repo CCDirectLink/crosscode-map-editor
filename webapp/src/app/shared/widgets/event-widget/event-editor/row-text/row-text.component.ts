@@ -24,7 +24,7 @@ import {EventAddComponent} from '../add/event-add.component';
 export class RowTextComponent {
 	private static clipboard;
 	
-	@ViewChild('elementRef') elementRef;
+	@ViewChild('elementRef', { static: false }) elementRef;
 	
 	@Input() text;
 	@Input() hideGreaterSign = false;

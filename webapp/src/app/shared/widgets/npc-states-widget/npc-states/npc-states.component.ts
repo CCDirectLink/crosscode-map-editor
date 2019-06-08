@@ -11,7 +11,7 @@ import {EventEditorComponent} from '../../event-widget/event-editor/editor/event
 })
 export class NpcStatesComponent implements OnInit {
 	
-	@ViewChild('eventEditor') eventEditor: EventEditorComponent;
+	@ViewChild('eventEditor', { static: false }) eventEditor: EventEditorComponent;
 	
 	@Input() states: NPCState[] = [];
 	@Output() exit: EventEmitter<NPCState[]> = new EventEmitter<NPCState[]>();
