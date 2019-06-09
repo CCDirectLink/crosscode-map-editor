@@ -7,8 +7,8 @@
     "tslint": "tslint -c ./tslint.json -p tsconfig.json",
     "build": "tsc && npm run tslint",
     "watch": "tsc -w",
-    "serve": "nodemon -e ts --exec \"npm run build && node dist/server.js\"",
-    "debug": "nodemon -e ts --exec \"npm run build && node --inspect dist/server.js\""
+    "serve": "nodemon -e ts --watch src --watch ../common --exec \"npm run build && node dist/server.js\"",
+    "debug": "nodemon -e ts --watch src --watch ../common --exec \"npm run build && node --inspect dist/server.js\""
   },
   "dependencies": {
     "cc-map-editor-common": "../common",
