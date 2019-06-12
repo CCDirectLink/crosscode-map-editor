@@ -33,4 +33,4 @@ deploy:
   file: webapp/dist/cc-map-editor*
   skip_cleanup: true
   on:
-    tag: true
+    tags: true
