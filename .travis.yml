@@ -16,6 +16,7 @@ install:
   - npm install
   - cd ../webapp
   - npm install
+  - cd ..
 
 script:
   - cd common && npm run build
