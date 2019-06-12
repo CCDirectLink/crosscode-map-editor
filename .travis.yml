@@ -12,8 +12,10 @@ cache:
     - common/node_modules
 
 install:
-  - cd common && npm install
-  - cd webapp && npm install
+  - cd common
+  - npm install
+  - cd ../webapp
+  - npm install
 
 script:
   - cd common && npm run build
