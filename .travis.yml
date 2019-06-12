@@ -1,26 +1,20 @@
-sudo: required
-dist: trusty
-
 language: node_js
-
-if: tag IS present
-
-before_install:
-  - cd webapp
+node_js:
+  "12"
 
 matrix:
   include:
     - os: linux
 
-node_js:
-  - "node"
-
 cache:
   directories:
-    - node_modules
+    - webapp/node_modules
+    - common/node_modules
 
 install:
-  - npm install
+  - cd common && npm install
+  - cd webapp && npm install
 
 script:
-  - npm run dist
+  - cd common && npm run build
+  - cd webapp && npm run dist
