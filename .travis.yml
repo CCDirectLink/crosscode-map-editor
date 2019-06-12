@@ -19,5 +19,8 @@ install:
   - cd ..
 
 script:
-  - cd common && npm run build
-  - cd webapp && npm run dist
+  - cd common 
+  - npm run build
+  - cd ../webapp
+  - npm run dist
+  - cd ..
