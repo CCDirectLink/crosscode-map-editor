@@ -11,7 +11,7 @@ import {MapLoaderService} from '../../../shared/map-loader.service';
 export class NewMapComponent implements OnInit {
 	map: CrossCodeMap;
 	
-	constructor(private mapLoader: MapLoaderService, private ref: OverlayRefControl)  {
+	constructor(private mapLoader: MapLoaderService, public ref: OverlayRefControl)  {
 		this.map = this.createDefaultMap();
 	}
 
