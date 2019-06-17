@@ -27,7 +27,6 @@ export class MapLoaderService {
 		reader.onload = (e: any) => {
 			try {
 				const map = JSON.parse(e.target.result);
-				this.loadRawMap(map);
 				this.loadRawMap(map, file.name);
 			} catch (e) {
 				console.error(e);
