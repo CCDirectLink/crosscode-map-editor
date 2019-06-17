@@ -41,6 +41,8 @@ deploy:
     - webapp/dist/cc-map-editor*.exe
     - webapp/dist/cc-map-editor*.dmg
     - webapp/dist/cc-map-editor*.zip
+    - webapp/dist/cc-map-editor*.yml
+    - webapp/dist/cc-map-editor*.blockmap
   skip_cleanup: true
   on:
     tags: true
