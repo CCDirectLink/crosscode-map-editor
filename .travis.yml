@@ -5,6 +5,8 @@ node_js:
 matrix:
   include:
     - os: linux
+    - os: windows
+      filter_secrets: false # INSECURE: Workaround for issue https://travis-ci.community/t/current-known-issues-please-read-this-before-posting-a-new-topic/264/10
   allow_failures:
     - os: windows
       filter_secrets: false # INSECURE: Workaround for issue https://travis-ci.community/t/current-known-issues-please-read-this-before-posting-a-new-topic/264/10
