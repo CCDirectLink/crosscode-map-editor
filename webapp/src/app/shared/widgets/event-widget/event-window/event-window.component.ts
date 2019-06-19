@@ -8,7 +8,7 @@ import {EventEditorComponent} from '../event-editor/editor/event-editor.componen
 })
 export class EventWindowComponent {
 	
-	@ViewChild('eventEditor') eventEditor: EventEditorComponent;
+	@ViewChild('eventEditor', { static: false }) eventEditor: EventEditorComponent;
 	
 	@Input() event;
 	@Output() exit = new EventEmitter();

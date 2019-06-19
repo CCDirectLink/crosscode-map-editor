@@ -9,7 +9,7 @@ import {Globals} from '../../shared/globals';
 	styleUrls: ['./json-editor.component.scss']
 })
 export class JsonEditorComponent implements AfterViewInit {
-	@ViewChild('editor') container: ElementRef;
+	@ViewChild('editor', { static: false }) container: ElementRef;
 	
 	private editor: JSONEditor;
 	private options: JSONEditorOptions;

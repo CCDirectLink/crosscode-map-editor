@@ -10,8 +10,8 @@ import {GlobalEventsService} from '../../../shared/global-events.service';
 	styleUrls: ['./add-entity-menu.component.scss']
 })
 export class AddEntityMenuComponent {
-	@ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
-	@ViewChild('filter') filter: ElementRef;
+	@ViewChild(MatMenuTrigger, { static: false }) trigger: MatMenuTrigger;
+	@ViewChild('filter', { static: false }) filter: ElementRef;
 
 	pos: Point = {x: 0, y: 0};
 	keys: string[];

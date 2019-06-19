@@ -3,53 +3,29 @@
   "version": "0.1.0",
   "description": "edit stuff",
   "scripts": {
-    "start": "npm run build && npm run watch",
-    "build": "npm run build-ts && npm run tslint && npm run copy-static-assets",
-    "serve": "nodemon dist/server.js",
-    "watch": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve\"",
-    "test": "jest --forceExit",
-    "build-ts": "tsc",
-    "watch-ts": "tsc -w",
+    "start": "npm run serve",
     "tslint": "tslint -c ./tslint.json -p tsconfig.json",
-    "copy-static-assets": "node copyStaticAssets.js",
-    "debug": "npm run build && npm run watch-debug",
-    "serve-debug": "nodemon --inspect dist/server.js",
-    "watch-debug": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
-  },
-  "jest": {
-    "globals": {
-      "__TS_CONFIG__": "tsconfig.json"
-    },
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "transform": {
-      "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
-    },
-    "testMatch": [
-      "**/test/**/*.test.(ts|js)"
-    ],
-    "testEnvironment": "node"
+    "build": "tsc && npm run tslint",
+    "watch": "tsc -w",
+    "serve": "nodemon -e ts --watch src --watch ../common --exec \"npm run build && node dist/server.js\"",
+    "debug": "nodemon -e ts --watch src --watch ../common --exec \"npm run build && node --inspect dist/server.js\""
   },
   "dependencies": {
     "cc-map-editor-common": "../common",
-    "body-parser": "^1.18.2",
-    "cors": "^2.8.4",
-    "errorhandler": "^1.4.3",
-    "express": "^4.16.3",
-    "morgan": "^1.9.0"
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "errorhandler": "^1.5.1",
+    "express": "^4.17.1",
+    "morgan": "^1.9.1"
   },
   "devDependencies": {
     "@types/body-parser": "^1.17.0",
     "@types/errorhandler": "0.0.32",
-    "@types/express": "^4.11.1",
+    "@types/express": "^4.17.0",
     "@types/morgan": "^1.7.35",
-    "@types/node": "9.6.7",
-    "concurrently": "^3.5.1",
-    "nodemon": "^1.17.3",
-    "shelljs": "^0.8.1",
-    "tslint": "^5.9.1",
-    "typescript": "^2.8.3"
+    "@types/node": "12.0.7",
+    "nodemon": "^1.19.1",
+    "tslint": "^5.17.0",
+    "typescript": "^3.5.1"
   }
 }

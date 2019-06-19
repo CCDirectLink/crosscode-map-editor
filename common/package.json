@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tslint": "tslint -c ./tslint.json -p tsconfig.json",
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "start": "npm run watch"
   },
   "repository": {
     "type": "git",
@@ -20,9 +21,9 @@
   },
   "homepage": "https://github.com/CCDirectLink/crosscode-map-editor#readme",
   "devDependencies": {
-    "@types/node": "^12.0.0",
-    "electron": "^5.0.1",
-    "tslint": "^5.16.0",
-    "typescript": "^3.4.5"
+    "@types/node": "^12.0.7",
+    "electron": "^5.0.3",
+    "tslint": "^5.17.0",
+    "typescript": "^3.5.1"
   }
 }
