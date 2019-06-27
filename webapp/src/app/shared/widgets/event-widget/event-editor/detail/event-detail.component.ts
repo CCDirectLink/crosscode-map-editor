@@ -32,7 +32,7 @@ const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 	styleUrls: ['./event-detail.component.scss']
 })
 export class EventDetailComponent implements OnInit {
-	@ViewChild(HostDirective, { static: false }) appHost: HostDirective;
+	@ViewChild(HostDirective, { static: true }) appHost: HostDirective;
 	
 	@Input() event: AbstractEvent<any>;
 	@Output() exit: EventEmitter<AbstractEvent<any>> = new EventEmitter<any>();
