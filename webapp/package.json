@@ -6,6 +6,7 @@
 	"main": "main.js",
 	"build": {
 		"appId": "CCDirectLink.crosscode.map.editor",
+		"artifactName": "${productName}-${version}.${ext}",
 		"files": [
 			"main.js",
 			"distAngular"
