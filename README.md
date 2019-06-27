@@ -26,9 +26,9 @@ move into the `common` folder and then install dependencies via `npm`
 ```
 npm install
 ```
-build the code with 
+build the code with
 ```
-npm run build
+npm start
 ```
 
 ### backend
