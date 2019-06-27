@@ -5,6 +5,6 @@ declare module '*.json' {
 
 declare namespace Phaser {
 	interface Input {
-		mouseWheel: Phaser.MouseWheel; //Workaround for missing typings
+		mouseWheel: Phaser.MouseWheel; // Workaround for missing typings
 	}
 }
