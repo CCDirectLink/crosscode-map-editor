@@ -6,6 +6,7 @@
 	"main": "main.js",
 	"build": {
 		"appId": "CCDirectLink.crosscode.map.editor",
+		"artifactName": "${productName}-${version}.${ext}",
 		"files": [
 			"main.js",
 			"distAngular"
@@ -42,7 +43,7 @@
 		"electron:dev": "electron . --dev",
 		"electron:prod": "electron .",
 		"builder:pack": "electron-builder --dir",
-		"builder:dist": "electron-builder",
+		"builder:dist": "electron-builder --publish never",
 		"postinstall": "electron-builder install-app-deps",
 		"package": "npm run postinstall && npm run build:prod && npm run builder:dist",
 		"dist": "npm run build:prod && npm run builder:dist",
