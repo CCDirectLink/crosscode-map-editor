@@ -72,7 +72,7 @@
 		"hammerjs": "^2.0.8",
 		"jsoneditor": "^5.33.0",
 		"node-sass": "^4.12.0",
-		"phaser-ce": "^2.13.2",
+		"phaser-ce": "2.13.2",
 		"rxjs": "^6.5.2",
 		"zone.js": "^0.9.1"
 	},
