@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({extended: true}));
  */
 app.get('/api/allFiles', (_, res) => res.json(api.getAllFiles(config.pathToCrosscode)));
 app.get('/api/allTilesets', (_, res) => res.json(api.getAllTilesets(config.pathToCrosscode)));
+app.get('/api/allMaps', (_, res) => res.json(api.getAllMaps(config.pathToCrosscode)));
 
 /**
  * Error Handler. Provides full stack - remove for production

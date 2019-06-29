@@ -37,4 +37,15 @@ export class HttpClientService {
 			obs.complete();
 		});
 	}
+	
+	getMaps(): Observable<string[]> {
+		if (!Globals.isElectron) {
+			return this.http.get<string[]>(Globals.URL + 'api/allMaps');
+		}
+		return new Observable(obs => {
+			const path = this.electron.getAssetsPath();
+			obs.next(api.getAllMaps(path));
+			obs.complete();
+		});
+	}
 }

@@ -37,3 +37,9 @@ export function getAllFiles(dir: string) {
 export function getAllTilesets(dir: string) {
 	return listAllFiles(path.resolve(dir, 'media/map/'), [], 'png', path.resolve(dir));
 }
+
+export function getAllMaps(dir: string) {
+	return listAllFiles(path.resolve(dir, 'data/maps/'), [], 'json', path.resolve(dir))
+		.map(p => p.substring('data/maps/'.length, p.length - '.json'.length))
+		.map(p => p.replace(/\//g, '.').replace(/\\/g, '.'));
+}
