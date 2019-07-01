@@ -1,9 +1,9 @@
-import * as Phaser from 'phaser-ce';
+import {Point} from './cross-code-map';
 
 export interface ISelectedTiles {
     tiles: {
         id: number;
-        offset: Phaser.Point;
+        offset: Point;
     }[];
-    size: Phaser.Point;
+    size: Point;
 }

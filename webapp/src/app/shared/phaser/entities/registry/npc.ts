@@ -165,24 +165,25 @@ export class NPC extends CCEntity {
 			
 			src = src.trim();
 		}
-		
-		this.anchor.set(0.5, 1);
-		this.entitySettings = <any>{
-			sheets: {
-				fix: [{
-					gfx: src,
-					x: width * offset.x + x,
-					y: height * offset.y + y,
-					offsetX: offset.offsetX || 0,
-					offsetY: offset.offsetY || 0,
-					w: width,
-					h: height,
-					flipX: offset.flipX || false,
-					flipY: offset.flipY || false
-				}]
-			},
-			baseSize: {x: 12, y: 12, z: 28}
-		};
+
+		// TODO:
+		// this.anchor.set(0.5, 1);
+		// this.entitySettings = <any>{
+		// 	sheets: {
+		// 		fix: [{
+		// 			gfx: src,
+		// 			x: width * offset.x + x,
+		// 			y: height * offset.y + y,
+		// 			offsetX: offset.offsetX || 0,
+		// 			offsetY: offset.offsetY || 0,
+		// 			w: width,
+		// 			h: height,
+		// 			flipX: offset.flipX || false,
+		// 			flipY: offset.flipY || false
+		// 		}]
+		// 	},
+		// 	baseSize: {x: 12, y: 12, z: 28}
+		// };
 		this.updateSettings();
 	}
 	

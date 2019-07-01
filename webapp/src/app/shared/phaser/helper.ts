@@ -13,9 +13,9 @@ export class Helper {
 			x = (<any>x).x;
 		}
 		const p: Point = {};
-		const cam = Globals.game.camera;
-		p.x = (<any>x + cam.x) / cam.scale.x;
-		p.y = (y + cam.y) / cam.scale.y;
+		const cam = Globals.scene.cameras.main;
+		p.x = (<any>x + cam.x) / cam.zoom;
+		p.y = (y + cam.y) / cam.zoom;
 		
 		return p;
 	}
@@ -23,9 +23,9 @@ export class Helper {
 	/** Transforms phaser world coordinates to actual world coordinates (see {@link screenToWorld}) */
 	public static phaserWorldtoWorld(p: Point): Point {
 		const out: Point = {};
-		const cam = Globals.game.camera;
-		out.x = p.x / cam.scale.x;
-		out.y = p.y / cam.scale.y;
+		const cam = Globals.scene.cameras.main;
+		out.x = p.x / cam.zoom;
+		out.y = p.y / cam.zoom;
 		return out;
 	}
 	
@@ -72,8 +72,8 @@ export class Helper {
 		return Math.min(Math.max(val, min), max);
 	}
 	
-	public static drawRect(context: CanvasRenderingContext2D, rect: Phaser.Rectangle, fillStyle, strokeStyle) {
-		const o = new Phaser.Rectangle(rect.x + 0.5, rect.y + 0.5, rect.width - 1, rect.height);
+	public static drawRect(context: CanvasRenderingContext2D, rect: Phaser.Geom.Rectangle, fillStyle, strokeStyle) {
+		const o = new Phaser.Geom.Rectangle(rect.x + 0.5, rect.y + 0.5, rect.width - 1, rect.height);
 		
 		context.fillStyle = fillStyle;
 		context.fillRect(o.x, o.y, o.width, o.height);
@@ -103,20 +103,21 @@ export class Helper {
 	}
 	
 	public static getJson(key: string, callback: (json) => void) {
-		const game = Globals.game;
-		
-		// get json from cache
-		if (game.cache.checkJSONKey(key)) {
-			return callback(game.cache.getJSON(key));
-		}
-		
-		// load json
-		game.load.json(key, Globals.URL + key + '.json');
-		game.load.onLoadComplete.addOnce(() => {
-			return callback(game.cache.getJSON(key));
-		});
-		game.load.crossOrigin = 'anonymous';
-		game.load.start();
+		// TODO
+		// const game = Globals.game;
+		//
+		// // get json from cache
+		// if (game.cache.checkJSONKey(key)) {
+		// 	return callback(game.cache.getJSON(key));
+		// }
+		//
+		// // load json
+		// game.load.json(key, Globals.URL + key + '.json');
+		// game.load.onLoadComplete.addOnce(() => {
+		// 	return callback(game.cache.getJSON(key));
+		// });
+		// game.load.crossOrigin = 'anonymous';
+		// game.load.start();
 	}
 	
 	public static getJsonPromise(key: string): any {

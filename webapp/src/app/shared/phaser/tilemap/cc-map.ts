@@ -18,9 +18,12 @@ export class CCMap {
 	attributes: Attributes;
 	screen: Point;
 	
+	private tileMap: Phaser.Tilemaps.Tilemap;
+	
 	private historySub: Subscription;
 	private offsetSub: Subscription;
-	private keyBinding: Phaser.SignalBinding;
+	// TODO
+	// private keyBinding: Phaser.SignalBinding;
 	
 	filename: string;
 	
@@ -36,7 +39,10 @@ export class CCMap {
 	
 	private inputLayers: MapLayer[];
 	
-	constructor(private game: Phaser.Game) {
+	constructor(
+		private game: Phaser.Game,
+		private scene: Phaser.Scene
+	) {
 		const stateHistory: StateHistoryService = game['StateHistoryService'];
 		this.historySub = stateHistory.selectedState.subscribe(container => {
 			if (!container || !container.state) {
@@ -49,21 +55,22 @@ export class CCMap {
 			}
 		});
 		
-		const undoKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
-		game.input.keyboard.removeKeyCapture(undoKey.keyCode);
-		this.keyBinding = undoKey.onDown.add(() => {
-			if (Helper.isInputFocused()) {
-				return;
-			}
-			if (game.input.keyboard.isDown(Phaser.KeyCode.CONTROL)) {
-				if (game.input.keyboard.isDown(Phaser.KeyCode.SHIFT)) {
-					stateHistory.redo();
-				} else {
-					stateHistory.undo();
-				}
-			}
-			
-		});
+		// TODO: move out of tilemap
+		// const undoKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
+		// game.input.keyboard.removeKeyCapture(undoKey.keyCode);
+		// this.keyBinding = undoKey.onDown.add(() => {
+		// 	if (Helper.isInputFocused()) {
+		// 		return;
+		// 	}
+		// 	if (game.input.keyboard.isDown(Phaser.KeyCode.CONTROL)) {
+		// 		if (game.input.keyboard.isDown(Phaser.KeyCode.SHIFT)) {
+		// 			stateHistory.redo();
+		// 		} else {
+		// 			stateHistory.undo();
+		// 		}
+		// 	}
+		//
+		// });
 		const globalEvents: GlobalEventsService = this.game['GlobalEventsService'];
 		this.offsetSub = globalEvents.offsetMap.subscribe(offset => this.offsetMap(offset));
 	}
@@ -71,11 +78,18 @@ export class CCMap {
 	destroy() {
 		this.historySub.unsubscribe();
 		this.offsetSub.unsubscribe();
-		this.keyBinding.detach();
+		// this.keyBinding.detach();
 	}
 	
 	loadMap(map: CrossCodeMap, skipInit = false) {
 		const game = this.game;
+		
+		this.tileMap = this.scene.make.tilemap({
+			width: map.mapWidth,
+			height: map.mapHeight,
+			tileHeight: Globals.TILE_SIZE,
+			tileWidth: Globals.TILE_SIZE
+		});
 		
 		this.props.forEach(prop => this[prop] = map[prop]);
 		this.filename = map.filename;
@@ -87,13 +101,10 @@ export class CCMap {
 		
 		this.layers = [];
 		
-		// load needed assets for sprite props
-		console.log(map.entities.length);
-		
 		// generate Map Layers
 		if (this.inputLayers) {
 			this.inputLayers.forEach(layer => {
-				const ccLayer = new CCMapLayer(game, layer);
+				const ccLayer = new CCMapLayer(this.tileMap, layer, this.scene);
 				this.layers.push(ccLayer);
 			});
 			

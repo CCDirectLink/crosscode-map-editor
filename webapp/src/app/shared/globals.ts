@@ -3,6 +3,7 @@ import {CCMap} from './phaser/tilemap/cc-map';
 export class Globals {
 	static isElectron = false;
 	static game: Phaser.Game;
+	static scene: Phaser.Scene;
 	static map: CCMap;
 	static TILE_SIZE = 16;
 	static URL = 'http://localhost:8080/';

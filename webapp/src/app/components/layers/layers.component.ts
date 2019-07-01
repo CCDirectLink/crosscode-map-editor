@@ -50,35 +50,36 @@ export class LayersComponent implements OnInit {
 	}
 	
 	addNewLayer(event) {
-		const map = this.tilemap;
-		const data = [];
-		for (let y = 0; y < map.mapHeight; y++) {
-			data[y] = [];
-			for (let x = 0; x < map.mapWidth; x++) {
-				data[y][x] = 0;
-			}
-		}
-		const layer = new CCMapLayer(Globals.game, {
-			type: 'Background',
-			name: this.newLayerName,
-			level: 0,
-			width: map.mapWidth,
-			height: map.mapHeight,
-			visible: 1,
-			tilesetName: '',
-			repeat: false,
-			distance: 1,
-			tilesize: Globals.TILE_SIZE,
-			moveSpeed: {x: 0, y: 0},
-			data: data,
-		});
-		console.log(layer);
-		map.addLayer(layer);
-		this.newLayerName = '';
-		this.stateHistory.saveState({
-			name: 'Layer added',
-			icon: 'add'
-		}, true);
+		// TODO:
+		// const map = this.tilemap;
+		// const data = [];
+		// for (let y = 0; y < map.mapHeight; y++) {
+		// 	data[y] = [];
+		// 	for (let x = 0; x < map.mapWidth; x++) {
+		// 		data[y][x] = 0;
+		// 	}
+		// }
+		// const layer = new CCMapLayer(Globals.scene, Globals.game, {
+		// 	type: 'Background',
+		// 	name: this.newLayerName,
+		// 	level: 0,
+		// 	width: map.mapWidth,
+		// 	height: map.mapHeight,
+		// 	visible: 1,
+		// 	tilesetName: '',
+		// 	repeat: false,
+		// 	distance: 1,
+		// 	tilesize: Globals.TILE_SIZE,
+		// 	moveSpeed: {x: 0, y: 0},
+		// 	data: data,
+		// });
+		// console.log(layer);
+		// map.addLayer(layer);
+		// this.newLayerName = '';
+		// this.stateHistory.saveState({
+		// 	name: 'Layer added',
+		// 	icon: 'add'
+		// }, true);
 	}
 	
 	deleteSelected() {
@@ -93,9 +94,10 @@ export class LayersComponent implements OnInit {
 	}
 	
 	selectLayer(layer: CCMapLayer) {
-		if (layer) {
-			layer.visible = true;
-		}
+		// TODO
+		// if (layer) {
+		// 	layer.visible = true;
+		// }
 		this.mapLoader.selectedLayer.next(layer);
 	}
 	
