@@ -1,20 +1,15 @@
-import {Component, ElementRef, Input, isDevMode, OnDestroy, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, OnInit} from '@angular/core';
 import {MapLoaderService} from '../../shared/map-loader.service';
-import {Subscription} from 'rxjs';
-import {EntityManager} from '../../shared/phaser/entities/entity-manager';
 import {GlobalEventsService} from '../../shared/global-events.service';
-import {EditorView} from '../../models/editor-view';
 import {Globals} from '../../shared/globals';
 import {HttpClientService} from '../../services/http-client.service';
 import {StateHistoryService} from '../../shared/history/state-history.service';
 import {PhaserEventsService} from '../../shared/phaser/phaser-events.service';
 import {HeightMapGeneratorService} from '../../services/height-map-generator.service';
-import {FileInfos} from '../../models/file-infos';
 import {ISelectedTiles} from '../../models/tile-selector';
 import * as Phaser from 'phaser';
 import {MainScene} from '../../shared/phaser/main-scene';
 import {TileDrawer} from '../../shared/phaser/tilemap/tile-drawer';
-import {Glob} from 'glob';
 
 @Component({
 	selector: 'app-phaser',
@@ -24,11 +19,6 @@ import {Glob} from 'glob';
 export class PhaserComponent implements OnInit {
 	// TODO
 	// tileMap: CCMap;
-	
-	// plugins
-	// private mapPan: MapPan;
-	// private tileDrawer: TileDrawer;
-	// private entityManager: EntityManager;
 	
 	@Input()
 	set selected(value: ISelectedTiles) {
@@ -62,10 +52,14 @@ export class PhaserComponent implements OnInit {
 				height: window.innerHeight * window.devicePixelRatio - 64,
 				type: Phaser.AUTO,
 				parent: 'content',
-				render: {
-					antialias: false,
-					roundPixels: true
+				scale: {
+					mode: Phaser.Scale.ScaleModes.NONE,
+					zoom: 1 / window.devicePixelRatio
 				},
+				render: {
+					pixelArt: true
+				},
+				zoom: 1,
 				scene: [scene, tileDrawer]
 			});
 			Globals.game = game;

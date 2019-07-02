@@ -8,6 +8,7 @@ import {FileInfos} from '../../models/file-infos';
 import {Globals} from '../globals';
 import {CCMap} from './tilemap/cc-map';
 import {Subscription} from 'rxjs';
+import {MapPan} from './map-pan';
 
 export class MainScene extends Phaser.Scene {
 	
@@ -48,10 +49,13 @@ export class MainScene extends Phaser.Scene {
 		game.scale.scaleMode = Phaser.Scale.ScaleModes.NONE;
 		
 		const scale = 1 / window.devicePixelRatio;
-		
+		console.log('pixel device ratio', window.devicePixelRatio);
 		const tileMap = new CCMap(game, this);
 		this.tileMap = tileMap;
 		Globals.map = this.tileMap;
+		
+		
+		
 		this.sub = Globals.mapLoaderService.map.subscribe((map) => {
 			if (map) {
 				tileMap.loadMap(map);
@@ -60,9 +64,13 @@ export class MainScene extends Phaser.Scene {
 		});
 		// Globals.updateMapBorder.subscribe(a => this.rescaleBorder());
 		
-		// plugins
-		// TODO: should be scenes instead of plugins
-		// this.mapPan = game.plugins.add(MapPan);
+		const pan = new MapPan(this, 'mapPan');
+		this.add.existing(pan);
+		
+		// setTimeout(() => {
+		// 	pan.setActive(false);
+		// }, 1000);
+		
 		// this.entityManager = game.plugins.add(EntityManager);
 		// this.entityManager.setGlobalEvents(this.globalEvents);
 		

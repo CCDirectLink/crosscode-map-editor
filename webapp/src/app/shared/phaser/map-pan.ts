@@ -1,80 +1,83 @@
-
 import {Point} from '../../models/cross-code-map';
 import {Helper} from './helper';
+import {Vec2} from './vec2';
+import {Globals} from '../globals';
 
-export class MapPan extends Phaser.Scene{
-	// TODO
-	// private button: Phaser.DeviceButton;
-	// private isScrolling = false;
-	// private startMouse: Point = {};
-	// private startCam: Point = {};
-	// private zoomKey: Phaser.Key;
-
-	constructor(game: Phaser.Game, parent: any) {
-		super({});
-		// super(game, parent);
-		// this.active = true;
-		// this.hasUpdate = true;
-		//
-		// this.button = game.input.activePointer.middleButton;
-		// this.button.onDown.add(() => this.onMouseDown());
-		// this.button.onUp.add(() => this.onMouseUp());
-		//
-		// this.zoomKey = game.input.keyboard.addKey(Phaser.Keyboard.ALT);
-		//
+export class MapPan extends Phaser.GameObjects.GameObject {
+	private isScrolling = false;
+	private startMouse: Point = {x: 0, y: 0};
+	private startCam: Point = {x: 0, y: 0};
+	
+	private zoomKey: Phaser.Input.Keyboard.Key;
+	
+	constructor(scene: Phaser.Scene, type: string) {
+		super(scene, type);
+		
+		this.zoomKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ALT);
 		// game.input.mouseWheel.callback = (v) => this.onMouseWheel(v);
+		scene.input.on('wheel', (
+			pointer: Phaser.Input.Pointer,
+			gameObjects: any,
+			deltaX: number,
+			deltaY: number,
+			deltaZ: number
+		) => this.onMouseWheel(deltaY));
+		scene.input.on('pointerdown', () => this.onMouseDown());
+		scene.input.on('pointerup', () => this.onMouseUp());
 	}
-
-	// private onMouseDown() {
-	// 	this.isScrolling = true;
-	// 	this.startMouse.x = this.game.input.x;
-	// 	this.startMouse.y = this.game.input.y;
-	//
-	// 	this.startCam.x = this.game.camera.x;
-	// 	this.startCam.y = this.game.camera.y;
-	// }
-	//
-	// private onMouseUp() {
-	// 	this.isScrolling = false;
-	// }
-	//
-	// private onMouseWheel(event) {
-	// 	if (!this.zoomKey.isDown) {
-	// 		return;
-	// 	}
-	//
-	// 	const cam = this.game.camera;
-	//
-	// 	const prevScale = cam.scale.x;
-	// 	let scale = event.deltaY > 0 ? 0.8 : 1.25;
-	// 	scale *= cam.scale.x;
-	// 	if (scale > 0.4 && scale < 8) {
-	// 		cam.scale.setTo(scale);
-	//
-	// 		// adjust position
-	// 		const mouseX = this.game.input.worldX / prevScale;
-	// 		const mouseY = this.game.input.worldY / prevScale;
-	// 		const multiplier = scale - prevScale;
-	//
-	// 		cam.x += mouseX * multiplier;
-	// 		cam.y += mouseY * multiplier;
-	// 	}
-	// 	this.game['PhaserEventsService'].updateMapBorder.next(true);
-	// }
-
-	update() {
-		// if (this.isScrolling) {
-		// 	// mouse
-		// 	const dx = this.game.input.x - this.startMouse.x;
-		// 	const dy = this.game.input.y - this.startMouse.y;
-		//
-		// 	// dx /= this.game.camera.scale.x;
-		// 	// dy /= this.game.camera.scale.y;
-		//
-		// 	this.game.camera.x = this.startCam.x - dx;
-		// 	this.game.camera.y = this.startCam.y - dy;
-		// }
+	
+	private onMouseDown() {
+		if (!this.active) {
+			return;
+		}
+		this.isScrolling = true;
+		console.log('on mouse down');
+		const cam = this.scene.cameras.main;
+		Vec2.assign(this.startMouse, this.scene.input.activePointer);
+		
+		this.startCam.x = cam.scrollX;
+		this.startCam.y = cam.scrollY;
 	}
-
-
+	
+	private onMouseUp() {
+		this.isScrolling = false;
+	}
+	
+	private onMouseWheel(delta: number) {
+		if (!this.zoomKey.isDown) {
+			return;
+		}
+		
+		const cam = this.scene.cameras.main;
+		
+		const prevScale = cam.zoom;
+		let zoom = delta > 0 ? 0.8 : 1.25;
+		zoom *= cam.zoom;
+		if (zoom > 0.4 && zoom < 8) {
+			cam.zoom = zoom;
+			console.log(cam.zoom);
+			
+			// TODO: adjust position
+			// const pointer = this.scene.input.activePointer;
+			// const mouseX = pointer.x / prevScale;
+			// const mouseY = pointer.y / prevScale;
+			// const multiplier = zoom - prevScale;
+			//
+			// cam.scrollX += mouseX * multiplier;
+			// cam.scrollY += mouseY * multiplier;
+		}
+		Globals.phaserEventsService.updateMapBorder.next(true);
+	}
+	
+	preUpdate() {
+		const pointer = this.scene.input.activePointer;
+		if (pointer.middleButtonDown() && this.isScrolling && this.active) {
+			const dx = pointer.x - this.startMouse.x;
+			const dy = pointer.y - this.startMouse.y;
+			
+			const cam = this.scene.cameras.main;
+			cam.scrollX = this.startCam.x - dx / cam.zoom;
+			cam.scrollY = this.startCam.y - dy / cam.zoom;
+		}
+	}
 }
