@@ -12,7 +12,8 @@ import {MapPan} from './map-pan';
 
 export class MainScene extends Phaser.Scene {
 	
-	private tileMap?: CCMap;
+	private readonly borderSize = 1;
+	
 	private border?: Phaser.GameObjects.Rectangle;
 	private sub?: Subscription;
 	
@@ -51,9 +52,7 @@ export class MainScene extends Phaser.Scene {
 		const scale = 1 / window.devicePixelRatio;
 		console.log('pixel device ratio', window.devicePixelRatio);
 		const tileMap = new CCMap(game, this);
-		this.tileMap = tileMap;
-		Globals.map = this.tileMap;
-		
+		Globals.map = tileMap;
 		
 		
 		this.sub = Globals.mapLoaderService.map.subscribe((map) => {
@@ -86,8 +85,6 @@ export class MainScene extends Phaser.Scene {
 		// 	}
 		// });
 		
-		this.add.circle(80, 80, 80, 0xff66ff);
-		this.border = this.add.rectangle();
 		// this.mapLoader.selectedLayer.subscribe(layer => this.tileDrawer.selectLayer(layer));
 		Globals.globalEventsService.currentView.next(EditorView.Layers);
 		
@@ -103,7 +100,15 @@ export class MainScene extends Phaser.Scene {
 	}
 	
 	private rescaleBorder() {
-		const s = Globals.TILE_SIZE * this.cameras.main.zoom;
-		// this.border.setSize(this.tileMap.mapWidth * s, this.tileMap.mapHeight * s);
+		const s = Globals.TILE_SIZE;
+		
+		if (this.border) {
+			this.border.destroy();
+		}
+		const map = Globals.map;
+		
+		this.border = this.add.rectangle(-this.borderSize, -this.borderSize, map.mapWidth * s + this.borderSize * 2, map.mapHeight * s + this.borderSize * 2);
+		this.border.setStrokeStyle(this.borderSize * 2, 0xfc4445, 1);
+		this.border.setOrigin(0, 0);
 	}
 }
