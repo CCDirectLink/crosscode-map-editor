@@ -5,12 +5,14 @@ import {Helper} from '../helper';
 export class CCMapLayer {
 	
 	public details: MapLayer;
-	public backgroundColor: { r: number, g: number, b: number, a: number };
 	
-	private tilesetSize: Point;
 	private layer: Phaser.Tilemaps.DynamicTilemapLayer;
 	
-	constructor(tilemap: Phaser.Tilemaps.Tilemap, details: MapLayer, scene: Phaser.Scene) {
+	constructor(
+		private tilemap: Phaser.Tilemaps.Tilemap,
+		details: MapLayer,
+		scene: Phaser.Scene
+	) {
 		if (typeof details.level === 'string') {
 			// possible levels
 			// 'first'
@@ -32,6 +34,7 @@ export class CCMapLayer {
 				}
 			}
 		}
+		// noinspection SuspiciousTypeOfGuard
 		if (typeof details.distance === 'string') {
 			details.distance = parseFloat(details.distance);
 		}
@@ -61,118 +64,8 @@ export class CCMapLayer {
 		this.layer.visible = val;
 	}
 	
-	renderAll() {
-		// const bitmap = this.bitmap;
-		// const tileset = this.tilesetImage;
-		// const details = this.details;
-		// const tileSize = details.tilesize;
-		//
-		// bitmap.clear();
-		// if (this.backgroundColor) {
-		// 	const bg = this.backgroundColor;
-		// 	const ctx = bitmap.context;
-		// 	ctx.fillStyle = `rgba(${bg.r}, ${bg.g}, ${bg.b}, ${bg.a}`;
-		// 	ctx.fillRect(0, 0, 99999, 99999);
-		// }
-		//
-		// for (let y = 0; y < details.data.length; y++) {
-		// 	for (let x = 0; x < details.data[y].length; x++) {
-		// 		const tile = details.data[y][x];
-		// 		if (tile === 0) {
-		// 			continue;
-		// 		}
-		// 		this.makeTile(tile);
-		// 		bitmap.draw(tileset, x * tileSize, y * tileSize, tileSize, tileSize);
-		// 	}
-		// }
-	}
-	
-	// checks bounds before drawing
-	updateTileChecked(x: number, y: number, tile: number) {
-		// if (x >= 0 && x < this.details.data[0].length) {
-		// 	if (y >= 0 && y < this.details.data.length) {
-		// 		this.details.data[y][x] = tile;
-		// 	}
-		// }
-	}
-	
-	drawTile(x: number, y: number, tile: number) {
-		// const bitmap = this.bitmap;
-		// const tileset = this.tilesetImage;
-		// const details = this.details;
-		// const tileSize = details.tilesize;
-		//
-		// const oldTile = details.data[y][x];
-		// if (oldTile === tile) {
-		// 	return;
-		// }
-		// details.data[y][x] = tile;
-		// const tileX = x * tileSize;
-		// const tileY = y * tileSize;
-		// bitmap.clear(tileX, tileY, tileSize, tileSize);
-		// if (tile !== 0) {
-		// 	this.makeTile(tile);
-		// 	bitmap.draw(tileset, tileX, tileY);
-		// }
-	}
-	
-	makeTile(index: number) {
-		// const tilesize = this.details.tilesize;
-		// const crop = this.tileCrop;
-		//
-		// const p = Helper.getTilePos(this.tilesetSize, index);
-		//
-		// crop.x = p.x * tilesize;
-		// crop.y = p.y * tilesize;
-		//
-		// this.tilesetImage.updateCrop();
-	}
-	
-	getTile(x: number, y: number) {
-		// let index = x + 1;
-		// index += y * this.tilesetSize.x;
-		// return index;
-	}
-	
-	clear() {
-		// this.bitmap.clear();
-		// this.details.data.forEach(arr => arr.fill(0));
-	}
-	
 	destroy() {
-		// if (this.bitmap) {
-		// 	this.bitmap.destroy();
-		// }
-		// if (this.tilesetImage) {
-		// 	this.tilesetImage.destroy();
-		// }
-		// super.destroy();
-	}
-	
-	resize(width: number, height: number, skipRender = false) {
-		// const data = this.details.data;
-		// data.length = height;
-		// for (let i = 0; i < data.length; i++) {
-		// 	if (!data[i]) {
-		// 		data[i] = new Array(width).fill(0);
-		// 	} else {
-		// 		if (width < this.details.width) {
-		// 			data[i].length = width;
-		// 		} else {
-		// 			while (data[i].length < width) {
-		// 				data[i].push(0);
-		// 			}
-		// 		}
-		// 	}
-		// }
-		//
-		// this.details.width = width;
-		// this.details.height = height;
-		//
-		// this.bitmap.resize(width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
-		// if (!skipRender) {
-		// 	this.renderAll();
-		// }
+		this.layer.destroy();
 	}
 	
 	offsetLayer(offset: Point, borderTiles = false, skipRender = false) {
@@ -203,19 +96,15 @@ export class CCMapLayer {
 	}
 	
 	updateTileset(tilesetname: string) {
-		// const details = this.details;
-		// details.tilesetName = tilesetname;
-		// if (details.tilesetName) {
-		// 	this.tilesetImage = this.game.make.image(0, 0, details.tilesetName);
-		// 	this.tilesetSize = Helper.getTilesetSize(this.game.cache.getImage(details.tilesetName));
-		//
-		// 	this.tileCrop = new Phaser.Rectangle(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
-		// 	this.tilesetImage.crop(this.tileCrop);
-		// }
-		// this.renderAll();
+		const details = this.details;
+		details.tilesetName = tilesetname;
+		if (details.tilesetName) {
+			const newTileset = this.tilemap.addTilesetImage(tilesetname);
+			this.layer.tileset = [newTileset];
+		}
 	}
 	
-	updateLevel(level) {
+	updateLevel(level: number) {
 		this.details.level = level;
 		let zIndex = this.details.level * 10;
 		if (isNaN(zIndex)) {

@@ -2,18 +2,18 @@ import {Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {CCEntity} from '../phaser/entities/cc-entity';
 
 export abstract class AbstractWidget implements OnInit, OnChanges {
-	@Input() key: string;
+	@Input() key!: string;
 	@Input() attribute: any;
-	@Input() entity: CCEntity;
-	@Input() custom: CCEntity;
+	@Input() entity?: CCEntity;
+	@Input() custom?: CCEntity;
 	
-	settings;
+	settings: any;
 	
 	ngOnInit() {
-		this.ngOnChanges(null);
+		this.ngOnChanges();
 	}
 	
-	ngOnChanges(changes: SimpleChanges): void {
+	ngOnChanges(changes?: SimpleChanges): void {
 		// TODO
 		// this.settings = this.custom || this.entity.details.settings;
 	}
@@ -28,7 +28,7 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 		}
 	}
 	
-	toInt(val) {
+	toInt(val: any): number {
 		return parseInt(val, 10);
 	}
 	

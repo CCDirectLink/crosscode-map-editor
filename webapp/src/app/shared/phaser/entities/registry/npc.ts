@@ -1,4 +1,4 @@
-import {CCEntity, ScaleSettings} from '../cc-entity';
+import {EntityAttributes, CCEntity, ScaleSettings} from '../cc-entity';
 import {Helper} from '../../helper';
 import {Point3} from '../../../../models/cross-code-map';
 
@@ -45,7 +45,7 @@ interface NamedSheet {
 
 export class NPC extends CCEntity {
 	
-	private attributes = {
+	private attributes: EntityAttributes = {
 		characterName: {
 			type: 'Character',
 			description: 'Character of NPC',
@@ -89,11 +89,11 @@ export class NPC extends CCEntity {
 		}
 	};
 	
-	public getAttributes() {
+	public getAttributes(): EntityAttributes {
 		return this.attributes;
 	}
 	
-	getScaleSettings(): ScaleSettings {
+	getScaleSettings(): ScaleSettings | undefined {
 		return undefined;
 	}
 	
@@ -102,7 +102,7 @@ export class NPC extends CCEntity {
 		const charSettings: CharacterSettings = await Helper.getJsonPromise(this.getPath('data/characters/', settings.characterName));
 		const state = settings.npcStates[0] || {};
 		const npc = this.NPCSimple;
-		let config = npc.sprites[state.config];
+		let config = (npc.sprites as any)[state.config];
 		if (!config) {
 			console.error('unknown npc config: [' + state.config + '], using default');
 			console.error('char settings', charSettings);
@@ -118,7 +118,11 @@ export class NPC extends CCEntity {
 		if (charSettings.animSheet) {
 			if (typeof charSettings.animSheet === 'string') {
 				// sheet is only reference
-				charSettings.animSheet = await Helper.getJsonPromise(this.getPath('data/animations/', charSettings.animSheet));
+				const animSheet = charSettings.animSheet;
+				charSettings.animSheet = await Helper.getJsonPromise(this.getPath('data/animations/', animSheet));
+				if (!charSettings.animSheet) {
+					throw new Error('no anim sheet found for: ' + animSheet);
+				}
 			}
 			if (charSettings.animSheet.sheet) {
 				// sheet exists, test how to get proper offset
@@ -142,7 +146,7 @@ export class NPC extends CCEntity {
 						if (!sub.SUB) {
 							continue;
 						}
-						if (sub.SUB.some(sheet => sheet.name === animKey)) {
+						if (sub.SUB.some((sheet: any) => sheet.name === animKey)) {
 							key = privateKey;
 							break;
 						}
@@ -154,18 +158,17 @@ export class NPC extends CCEntity {
 					key = Object.keys(sheets)[0];
 					console.warn('key not found, used [' + key + '] instead', charSettings);
 				}
-				sheet = sheets[key];
+				sheet = sheets[key as keyof typeof sheets]!;
 			}
-			
 			width = sheet.width || width;
 			height = sheet.height || height;
-			src = sheet.src || src;
+			src = sheet.src || src!;
 			x = sheet.offX || x;
 			y = sheet.offY || y;
 			
 			src = src.trim();
 		}
-
+		
 		// TODO:
 		// this.anchor.set(0.5, 1);
 		// this.entitySettings = <any>{
@@ -187,7 +190,7 @@ export class NPC extends CCEntity {
 		this.updateSettings();
 	}
 	
-	private getPath(prefix, path): string {
+	private getPath(prefix: string, path: string): string {
 		const split = path.split('.');
 		const name = split.splice(-1, 1)[0];
 		return prefix + split.join('/') + '/' + name;

@@ -1,15 +1,14 @@
-import {CCEntity, ScaleSettings} from '../cc-entity';
+import {EntityAttributes, CCEntity, ScaleSettings} from '../cc-entity';
 import {Helper} from '../../helper';
 import {PropDef} from './prop';
 import * as Phaser from 'phaser';
 
 export class ItemDestruct extends CCEntity {
 	
-	private attributes = {
+	private attributes: EntityAttributes = {
 		desType: {
 			type: 'String',
 			description: 'Type of destructible object',
-			options: null,
 			Yi: true
 		},
 		items: {
@@ -36,11 +35,11 @@ export class ItemDestruct extends CCEntity {
 		}
 	};
 	
-	public getAttributes() {
+	public getAttributes(): EntityAttributes {
 		return this.attributes;
 	}
 	
-	getScaleSettings(): ScaleSettings {
+	getScaleSettings(): ScaleSettings | undefined {
 		return undefined;
 	}
 	

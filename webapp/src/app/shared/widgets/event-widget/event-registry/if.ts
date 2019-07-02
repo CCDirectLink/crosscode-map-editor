@@ -1,6 +1,6 @@
 import {AbstractEvent, EventType} from './abstract-event';
 
-interface IfData extends EventType {
+export interface IfData extends EventType {
 	withElse: boolean;
 	condition: string;
 	thenStep: AbstractEvent<any>[];

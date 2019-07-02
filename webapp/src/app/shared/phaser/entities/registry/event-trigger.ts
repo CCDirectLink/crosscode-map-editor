@@ -1,8 +1,8 @@
-import {CCEntity, ScaleSettings} from '../cc-entity';
+import {EntityAttributes, CCEntity, ScaleSettings} from '../cc-entity';
 
 export class EventTrigger extends CCEntity {
 	
-	private attributes = {
+	private attributes: EntityAttributes = {
 		eventType: {
 			type: 'String',
 			description: 'Type of event. Cutscenes will stop the movement of the player and can\'t be executed in parallel. Auto Control events will take over the player\'s control.',
@@ -46,11 +46,11 @@ export class EventTrigger extends CCEntity {
 		}
 	};
 	
-	public getAttributes() {
+	public getAttributes(): EntityAttributes {
 		return this.attributes;
 	}
 	
-	getScaleSettings(): ScaleSettings {
+	getScaleSettings(): ScaleSettings | undefined {
 		return undefined;
 	}
 	

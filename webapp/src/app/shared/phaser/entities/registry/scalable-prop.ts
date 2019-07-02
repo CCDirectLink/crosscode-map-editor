@@ -1,4 +1,4 @@
-import {CCEntity, InputEvents, ScaleSettings} from '../cc-entity';
+import {EntityAttributes, CCEntity, InputEvents, ScaleSettings} from '../cc-entity';
 import {Point, Point3} from '../../../../models/cross-code-map';
 import {Helper} from '../../helper';
 
@@ -37,7 +37,7 @@ export interface ScalablePropDef {
 
 export class ScalableProp extends CCEntity {
 	
-	private attributes = {
+	private attributes: EntityAttributes = {
 		propConfig: {
 			type: 'ScalablePropConfig',
 			description: 'Type of Scalable Prop'
@@ -62,7 +62,7 @@ export class ScalableProp extends CCEntity {
 		},
 		blockNavMap: {
 			type: 'Boolean',
-			sta: 'If true, block path map and update when destroyed'
+			description: 'If true, block path map and update when destroyed'
 		},
 		hideCondition: {
 			type: 'VarCondition',
@@ -70,13 +70,13 @@ export class ScalableProp extends CCEntity {
 			R: true
 		}
 	};
-	private scaleSettings: ScaleSettings = {};
+	private scaleSettings?: ScaleSettings;
 	
-	public getAttributes() {
+	public getAttributes(): EntityAttributes {
 		return this.attributes;
 	}
 	
-	getScaleSettings(): ScaleSettings {
+	getScaleSettings(): ScaleSettings | undefined {
 		return this.scaleSettings;
 	}
 	

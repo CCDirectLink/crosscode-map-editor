@@ -17,10 +17,22 @@ export interface InputEvents {
 }
 
 export interface ScaleSettings {
-	scalableX?: boolean;
-	scalableY?: boolean;
-	baseSize?: Point;
-	scalableStep?: number;
+	scalableX: boolean;
+	scalableY: boolean;
+	baseSize: Point;
+	scalableStep: number;
+}
+
+export interface EntityAttributes {
+	[key: string]: AttributeValue;
+}
+
+export interface AttributeValue {
+	type: string;
+	description: string;
+	options?: { [key: string]: any };
+	
+	[key: string]: any;
 }
 
 export abstract class CCEntity extends Phaser.GameObjects.Image {
@@ -79,7 +91,7 @@ export abstract class CCEntity extends Phaser.GameObjects.Image {
 	// } = <any>{};
 	//
 	protected constructor(game: Phaser.Game, map: CCMap, x: number, y: number, inputEvents: InputEvents, typeName: string) {
-		super(null, 0, 0, '');
+		super(<any>null, 0, 0, '');
 		// super(game, 0, 0, null);
 		// this.setInputEvents(inputEvents);
 		// this.map = map;
@@ -306,14 +318,14 @@ export abstract class CCEntity extends Phaser.GameObjects.Image {
 		// 	settings: this.details.settings
 		// };
 		// return JSON.parse(JSON.stringify(out));
-		return null;
+		return <any>null;
 	}
 	
-	public abstract getScaleSettings(): ScaleSettings;
+	public abstract getScaleSettings(): ScaleSettings | undefined;
 	
-	public abstract getAttributes();
+	public abstract getAttributes(): EntityAttributes;
 	
-	protected abstract setupType(settings: any);
+	protected abstract setupType(settings: any): void;
 	
 	public updateType() {
 		// const settings = this.details.settings;
@@ -357,8 +369,8 @@ export abstract class CCEntity extends Phaser.GameObjects.Image {
 	// 	};
 	// }
 	
-	protected replaceJsonParams(jsonInstance, prop: any) {
-		Object.entries(jsonInstance).forEach(([key, value]) => {
+	protected replaceJsonParams(jsonInstance: any, prop: any) {
+		Object.entries(jsonInstance).forEach(([key, value]: [string, any]) => {
 			if (value['jsonPARAM']) {
 				jsonInstance[key] = prop[value['jsonPARAM']];
 				return;
@@ -398,7 +410,7 @@ export abstract class CCEntity extends Phaser.GameObjects.Image {
 		// const p = Helper.phaserWorldtoWorld(img.world);
 		// const rect = new Phaser.Geom.Rectangle(p.x, p.y, img.width, img.height);
 		// return rect;
-		return null;
+		return <any>null;
 	}
 	
 	private setEvents() {

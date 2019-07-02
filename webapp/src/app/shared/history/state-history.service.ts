@@ -7,15 +7,15 @@ import {Globals} from '../globals';
 export interface HistoryState {
 	icon: string;
 	name: string;
-	state?: string;
+	state: string;
 }
 
 @Injectable()
 export class StateHistoryService {
 	maxStates = 100;
 	
-	states: BehaviorSubject<HistoryState[]> = new BehaviorSubject([]);
-	selectedState: BehaviorSubject<{ state: HistoryState }> = new BehaviorSubject({state: null});
+	states = new BehaviorSubject<HistoryState[]>([]);
+	selectedState = new BehaviorSubject<{ state?: HistoryState }>({state: undefined});
 	
 	constructor() {
 	}
@@ -25,13 +25,21 @@ export class StateHistoryService {
 		this.states.next([state]);
 	}
 	
-	saveState(state: HistoryState, ignoreCheck = false) {
+	saveState(state: {
+		icon: string;
+		name: string;
+		state?: string;
+	}, ignoreCheck = false) {
 		
 		if (!state.state) {
 			const newState = Globals.map.exportMap();
 			const stateJson = JSON.stringify(newState);
 			if (!ignoreCheck) {
-				const curr = this.selectedState.getValue().state.state;
+				const val = this.selectedState.getValue();
+				let curr;
+				if (val.state) {
+					curr = val.state.state;
+				}
 				if (curr === stateJson) {
 					return;
 				}
@@ -41,20 +49,20 @@ export class StateHistoryService {
 		
 		const states = this.states.getValue();
 		const selected = this.selectedState.getValue();
-		const i = states.indexOf(selected.state);
-		selected.state = state;
+		const i = states.indexOf(selected.state as any);
+		selected.state = state as HistoryState;
 		states.length = i + 1;
 		if (states.length >= this.maxStates) {
 			states.shift();
 		}
-		states.push(state);
+		states.push(selected.state);
 		this.states.next(states);
 	}
 	
 	undo() {
 		const states = this.states.getValue();
 		const selected = this.selectedState.getValue();
-		let i = states.indexOf(selected.state);
+		let i = states.indexOf(selected.state as any);
 		if (i <= 0) {
 			return;
 		}
@@ -65,7 +73,7 @@ export class StateHistoryService {
 	redo() {
 		const states = this.states.getValue();
 		const selected = this.selectedState.getValue();
-		let i = states.indexOf(selected.state);
+		let i = states.indexOf(selected.state as any);
 		if (i === states.length - 1) {
 			return;
 		}

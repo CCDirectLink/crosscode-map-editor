@@ -11,16 +11,12 @@ import {Subscription} from 'rxjs';
 
 export class MainScene extends Phaser.Scene {
 	
-	private tileMap: CCMap;
-	private border: Phaser.GameObjects.Rectangle;
-	private sub: Subscription;
+	private tileMap?: CCMap;
+	private border?: Phaser.GameObjects.Rectangle;
+	private sub?: Subscription;
 	
 	constructor(
 		private res: FileInfos,
-		private stateHistory: StateHistoryService,
-		private mapLoader: MapLoaderService,
-		private phaserEventsService: PhaserEventsService,
-		private globalEvents: GlobalEventsService
 	) {
 		super({key: 'main'});
 	}
@@ -38,17 +34,11 @@ export class MainScene extends Phaser.Scene {
 		this.load.crossOrigin = 'anonymous';
 		
 		this.load.maxParallelDownloads = this.res.images.length;
-		this.load.once('complete', () => this.globalEvents.loadComplete.next());
+		this.load.once('complete', () => Globals.globalEventsService.loadComplete.next());
 	}
 	
 	create() {
 		const game = this.game;
-		
-		this.game['StateHistoryService'] = this.stateHistory;
-		this.game['MapLoaderService'] = this.mapLoader;
-		this.game['PhaserEventsService'] = this.phaserEventsService;
-		this.game['GlobalEventsService'] = this.globalEvents;
-		
 		
 		this.cameras.main.setBackgroundColor('#616161');
 		game.canvas.oncontextmenu = function (e) {
@@ -59,15 +49,16 @@ export class MainScene extends Phaser.Scene {
 		
 		const scale = 1 / window.devicePixelRatio;
 		
-		this.tileMap = new CCMap(game, this);
+		const tileMap = new CCMap(game, this);
+		this.tileMap = tileMap;
 		Globals.map = this.tileMap;
-		this.sub = this.mapLoader.map.subscribe((map) => {
+		this.sub = Globals.mapLoaderService.map.subscribe((map) => {
 			if (map) {
-				this.tileMap.loadMap(map);
+				tileMap.loadMap(map);
 				this.rescaleBorder();
 			}
 		});
-		this.phaserEventsService.updateMapBorder.subscribe(a => this.rescaleBorder());
+		// Globals.updateMapBorder.subscribe(a => this.rescaleBorder());
 		
 		// plugins
 		// TODO: should be scenes instead of plugins
@@ -90,13 +81,13 @@ export class MainScene extends Phaser.Scene {
 		this.add.circle(80, 80, 80, 0xff66ff);
 		this.border = this.add.rectangle();
 		// this.mapLoader.selectedLayer.subscribe(layer => this.tileDrawer.selectLayer(layer));
-		this.globalEvents.currentView.next(EditorView.Layers);
+		Globals.globalEventsService.currentView.next(EditorView.Layers);
 		
 		// TODO
 		// this.heightGenerator.init(game);
 	}
 	
-	destroy(){
+	destroy() {
 		console.log('destroy scene');
 		if (this.sub) {
 			this.sub.unsubscribe();

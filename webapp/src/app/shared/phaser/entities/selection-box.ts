@@ -5,7 +5,7 @@ import {CCEntity} from './cc-entity';
 export class SelectionBox {
 	
 	private active = false;
-	private start: Point;
+	private start: Point = {x: 0, y: 0};
 	private game: Phaser.Game;
 	// TODO
 	// private graphics: Phaser.Graphics;
@@ -71,7 +71,7 @@ export class SelectionBox {
 	
 	public onInputUp(): Set<CCEntity> {
 		if (!this.active) {
-			return;
+			return new Set<CCEntity>();
 		}
 		// TODO
 		// this.graphics.clear();

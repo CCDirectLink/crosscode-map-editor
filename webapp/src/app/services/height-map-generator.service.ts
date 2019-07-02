@@ -522,7 +522,7 @@ export class HeightMapGeneratorService {
 		// }
 		//
 		// return out;
-		return null;
+		return <any>null;
 	}
 	
 	private getTile(x: number, y: number, layer: CCMapLayer, oobValue: number): number {
@@ -534,7 +534,7 @@ export class HeightMapGeneratorService {
 	}
 	
 	// converts collision tiles into block tiles (for layers below master level)
-	private holeToBlock(tile): number {
+	private holeToBlock(tile: number): number {
 		const def = this.CollTiles;
 		switch (tile) {
 			case def.hole:
@@ -567,11 +567,11 @@ export class HeightMapGeneratorService {
 		// layer.updateTileChecked(x, y, layer.getTile(bgTile.x, bgTile.y));
 	}
 	
-	private isHole(tile): boolean {
+	private isHole(tile: number): boolean {
 		return tile < this.CollTiles.block_sw && tile !== this.CollTiles.block;
 	}
 	
-	private getAlternate(x, y) {
+	private getAlternate(x: number, y: number) {
 		return Math.abs((x + y) % 2);
 	}
 }

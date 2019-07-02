@@ -1,4 +1,4 @@
-import {CCEntity, InputEvents, ScaleSettings} from '../cc-entity';
+import {EntityAttributes, CCEntity, InputEvents, ScaleSettings} from '../cc-entity';
 import {Helper} from '../../helper';
 import {Fix} from '../../../../models/props';
 
@@ -30,7 +30,7 @@ export interface PropDef {
 
 export class Prop extends CCEntity {
 	
-	private attributes = {
+	private attributes: EntityAttributes = {
 		propType: {
 			type: 'PropType',
 			description: 'Type of prop'
@@ -81,11 +81,11 @@ export class Prop extends CCEntity {
 		}
 	};
 	
-	public getAttributes() {
+	public getAttributes(): EntityAttributes {
 		return this.attributes;
 	}
 	
-	getScaleSettings(): ScaleSettings {
+	getScaleSettings(): ScaleSettings | undefined {
 		return undefined;
 	}
 	

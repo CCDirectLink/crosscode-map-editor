@@ -6,16 +6,16 @@ import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
  * example usage:
  * ```html
  <cc-overlay-panel title="Panel Title">
-     <ng-container ngProjectAs="toolbar">
-         custom toolbar
-     </ng-container>
-     <ng-container ngProjectAs="content">
-         content...
-     </ng-container>
-     <ng-container ngProjectAs="actions">
-         <button mat-stroked-button (click)="cancel()">Cancel</button>
-         <button mat-stroked-button (click)="update()">Update</button>
-     </ng-container>
+ <ng-container ngProjectAs="toolbar">
+ custom toolbar
+ </ng-container>
+ <ng-container ngProjectAs="content">
+ content...
+ </ng-container>
+ <ng-container ngProjectAs="actions">
+ <button mat-stroked-button (click)="cancel()">Cancel</button>
+ <button mat-stroked-button (click)="update()">Update</button>
+ </ng-container>
  </cc-overlay-panel>
  * ```
  */
@@ -27,7 +27,7 @@ import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 })
 export class OverlayPanelComponent implements OnInit {
 	
-	@Input() title: string;
+	@Input() title = '';
 	
 	constructor() {
 	}

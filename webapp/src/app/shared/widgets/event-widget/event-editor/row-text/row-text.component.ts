@@ -22,23 +22,21 @@ import {EventAddComponent} from '../add/event-add.component';
 	styleUrls: ['./row-text.component.scss']
 })
 export class RowTextComponent {
-	private static clipboard;
+	private static clipboard: any;
 	
-	@ViewChild('elementRef', { static: false }) elementRef;
-	
-	@Input() text;
+	@Input() text?: string;
 	@Input() hideGreaterSign = false;
 	
-	@Input() data: AbstractEvent<any>;
+	@Input() data?: AbstractEvent<any>;
 	@Output() dataChange = new EventEmitter();
 	
-	@Input() parent: AbstractEvent<any>[];
+	@Input() parent!: AbstractEvent<any>[];
 	@Output() parentChange = new EventEmitter();
 	
 	@Output() dblClick = new EventEmitter();
 	@Output() click = new EventEmitter();
 	
-	private overlayRef: OverlayRefControl;
+	private overlayRef?: OverlayRefControl;
 	
 	constructor(private storage: EventHelperService,
 	            private overlayService: OverlayService,
@@ -70,12 +68,12 @@ export class RowTextComponent {
 		this.overlayRef = obj.ref;
 		
 		obj.instance.event = this.data;
-		obj.instance.exit.subscribe(v => {
-			this.overlayRef.close();
+		obj.instance.exit.subscribe((v: any) => {
+			obj.ref.close();
 			this.data = v;
-			this.data.update();
+			v.update();
 			this.dataChange.emit(v);
-		}, e => this.overlayRef.close());
+		}, () => obj.ref.close());
 		
 		return false;
 	}
@@ -95,12 +93,12 @@ export class RowTextComponent {
 		
 		this.overlayRef = obj.ref;
 		
-		obj.instance.getEventClass.subscribe(v => {
-			this.overlayRef.close();
+		obj.instance.getEventClass.subscribe((v: any) => {
+			obj.ref.close();
 			const index = this.getIndex();
 			this.parent.splice(index, 0, v);
 			this.parentChange.emit(this.parent);
-		}, e => this.overlayRef.close());
+		}, () => obj.ref.close());
 	}
 	
 	// region keys copy/paste/del
@@ -156,7 +154,7 @@ export class RowTextComponent {
 	// endregion
 	
 	private getIndex() {
-		const index = this.parent.indexOf(this.data);
+		const index = this.parent.indexOf(this.data as any);
 		return index === -1 ? this.parent.length : index;
 	}
 }

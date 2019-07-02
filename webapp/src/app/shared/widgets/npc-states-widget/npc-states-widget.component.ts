@@ -36,8 +36,8 @@ export interface NPCState {
 })
 export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, OnChanges, OnDestroy {
 	
-	npcStates: NPCState[];
-	private ref: OverlayRefControl;
+	npcStates: NPCState[] = [];
+	private ref?: OverlayRefControl;
 	
 	constructor(private overlayService: OverlayService,
 	            private overlay: Overlay) {
@@ -70,12 +70,12 @@ export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, 
 		
 		obj.instance.states = JSON.parse(JSON.stringify(this.npcStates));
 		
-		obj.instance.exit.subscribe(v => {
-			this.ref.close();
+		obj.instance.exit.subscribe((v: any) => {
+			obj.ref.close();
 			this.settings[this.key] = v;
 			this.npcStates = v;
 			this.updateType();
-		}, e => this.ref.close());
+		}, () => obj.ref.close());
 	}
 	
 	

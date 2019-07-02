@@ -5,26 +5,27 @@ import {Remote, Dialog} from 'electron';
 @Injectable()
 export class ElectronService {
 	
+	public readonly path: any;
+	public readonly fs: any;
+	
+	private storageName = 'assetsPath';
+	private assetsPath = '';
+	private remote?: Remote;
+	
 	constructor() {
 		if (!Globals.isElectron) {
 			return;
 		}
 		
 		// @ts-ignore
-		this.remote = window.require('electron').remote;
-		this.fs = this.remote.require('fs');
-		this.path = this.remote.require('path');
+		const remote = window.require('electron').remote;
+		this.remote = remote!;
+		this.fs = remote.require('fs');
+		this.path = remote.require('path');
 		
-		this.assetsPath = localStorage.getItem(this.storageName);
+		this.assetsPath = localStorage.getItem(this.storageName) || '';
 		this.updateURL();
 	}
-	
-	public readonly path;
-	public readonly fs;
-	
-	private storageName = 'assetsPath';
-	private assetsPath: string;
-	private readonly remote: Remote;
 	
 	private static normalizePath(p: string) {
 		if (p.endsWith('\\')) {
@@ -41,6 +42,9 @@ export class ElectronService {
 	}
 	
 	public relaunch() {
+		if (!this.remote) {
+			throw new Error('remote is not defined');
+		}
 		this.remote.app.relaunch();
 		this.remote.app.quit();
 	}
@@ -55,7 +59,10 @@ export class ElectronService {
 		}
 	}
 	
-	public selectCcFolder(): string {
+	public selectCcFolder(): string | undefined {
+		if (!this.remote) {
+			throw new Error('remote is not defined');
+		}
 		const dialog: Dialog = this.remote.dialog;
 		const newPath = dialog.showOpenDialog({
 			title: 'Select CrossCode assets folder',

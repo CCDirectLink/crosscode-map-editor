@@ -4,7 +4,7 @@ import {
 	Input,
 	ChangeDetectionStrategy, OnChanges
 } from '@angular/core';
-import {AbstractEvent} from '../../event-registry/abstract-event';
+import {AbstractEvent, EventType} from '../../event-registry/abstract-event';
 import {EventRegistryService} from '../../event-registry/event-registry.service';
 import {EventHelperService} from '../event-helper.service';
 
@@ -15,10 +15,9 @@ import {EventHelperService} from '../event-helper.service';
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventEditorComponent implements OnInit, OnChanges {
-	@Input() eventData = [];
+	@Input() eventData: any[] = [];
 	
-	workingData: AbstractEvent<any>[];
-	focusedElement;
+	workingData?: AbstractEvent<any>[];
 	
 	constructor(private helper: EventHelperService) {
 		helper.selectedEvent.subscribe(v => {
@@ -36,10 +35,6 @@ export class EventEditorComponent implements OnInit, OnChanges {
 	ngOnInit(): void {
 	}
 	
-	setFocusedElement(element) {
-		this.focusedElement = element;
-	}
-	
 	ngOnChanges() {
 		let cpy = JSON.parse(JSON.stringify(this.eventData));
 		if (!cpy.map) {
@@ -47,7 +42,7 @@ export class EventEditorComponent implements OnInit, OnChanges {
 			cpy = cpy.quest;
 		}
 		if (cpy.map) {
-			this.workingData = cpy.map(val => this.helper.getEventFromType(val));
+			this.workingData = cpy.map((val: EventType) => this.helper.getEventFromType(val));
 		} else {
 			this.workingData = [];
 		}

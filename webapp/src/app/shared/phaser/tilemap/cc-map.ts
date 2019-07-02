@@ -9,49 +9,40 @@ import {GlobalEventsService} from '../../global-events.service';
 import {PhaserEventsService} from '../phaser-events.service';
 
 export class CCMap {
-	name: string;
-	levels: { height: number }[];
-	mapWidth: number;
-	mapHeight: number;
-	masterLevel: number;
+	name = '';
+	levels: { height: number }[] = [];
+	mapWidth = 0;
+	mapHeight = 0;
+	masterLevel = 0;
 	layers: CCMapLayer[] = [];
-	attributes: Attributes;
-	screen: Point;
+	attributes: Attributes = <any>{};
+	screen: Point = {x: 0, y: 0};
 	
-	private tileMap: Phaser.Tilemaps.Tilemap;
+	private tileMap?: Phaser.Tilemaps.Tilemap;
 	
 	private historySub: Subscription;
 	private offsetSub: Subscription;
 	// TODO
 	// private keyBinding: Phaser.SignalBinding;
 	
-	filename: string;
+	filename = '';
 	
-	private props = [
-		'name',
-		'levels',
-		'mapWidth',
-		'mapHeight',
-		'masterLevel',
-		'attributes',
-		'screen',
-	];
-	
-	private inputLayers: MapLayer[];
+	private inputLayers?: MapLayer[];
 	
 	constructor(
 		private game: Phaser.Game,
 		private scene: Phaser.Scene
 	) {
-		const stateHistory: StateHistoryService = game['StateHistoryService'];
+		const stateHistory = Globals.stateHistoryService;
 		this.historySub = stateHistory.selectedState.subscribe(container => {
 			if (!container || !container.state) {
 				return;
 			}
-			const i = this.layers.indexOf(this.game['MapLoaderService'].selectedLayer.getValue());
+			const selectedLayer = Globals.mapLoaderService.selectedLayer;
+			const i = this.layers.indexOf(<any>selectedLayer.getValue());
 			this.loadMap(JSON.parse(container.state.state), true);
 			if (i >= 0 && this.layers.length > i) {
-				this.game['MapLoaderService'].selectedLayer.next(this.layers[i]);
+				selectedLayer.next(this.layers[i]);
 			}
 		});
 		
@@ -71,8 +62,7 @@ export class CCMap {
 		// 	}
 		//
 		// });
-		const globalEvents: GlobalEventsService = this.game['GlobalEventsService'];
-		this.offsetSub = globalEvents.offsetMap.subscribe(offset => this.offsetMap(offset));
+		this.offsetSub = Globals.globalEventsService.offsetMap.subscribe(offset => this.offsetMap(offset));
 	}
 	
 	destroy() {
@@ -84,14 +74,22 @@ export class CCMap {
 	loadMap(map: CrossCodeMap, skipInit = false) {
 		const game = this.game;
 		
-		this.tileMap = this.scene.make.tilemap({
+		const tileMap = this.scene.make.tilemap({
 			width: map.mapWidth,
 			height: map.mapHeight,
 			tileHeight: Globals.TILE_SIZE,
 			tileWidth: Globals.TILE_SIZE
 		});
 		
-		this.props.forEach(prop => this[prop] = map[prop]);
+		this.tileMap = tileMap;
+		
+		this.name = map.name;
+		this.levels = map.levels;
+		this.mapWidth = map.mapWidth;
+		this.mapHeight = map.mapHeight;
+		this.masterLevel = map.masterLevel;
+		this.attributes = map.attributes;
+		this.screen = map.screen;
 		this.filename = map.filename;
 		
 		this.inputLayers = map.layer;
@@ -104,52 +102,46 @@ export class CCMap {
 		// generate Map Layers
 		if (this.inputLayers) {
 			this.inputLayers.forEach(layer => {
-				const ccLayer = new CCMapLayer(this.tileMap, layer, this.scene);
+				const ccLayer = new CCMapLayer(tileMap, layer, this.scene);
 				this.layers.push(ccLayer);
 			});
 			
-			this.inputLayers = null;
+			this.inputLayers = undefined;
 		}
 		
 		// generate Map Entities
-		game.plugins.plugins.forEach(plugin => {
-			if (plugin instanceof EntityManager) {
-				(<EntityManager>plugin).initialize(this, map);
-			}
-		});
+		// game.plugins.plugins.forEach(plugin => {
+		// 	if (plugin instanceof EntityManager) {
+		// 		(<EntityManager>plugin).initialize(this, map);
+		// 	}
+		// });
 		
 		if (!skipInit) {
-			this.game['StateHistoryService'].init({
+			Globals.stateHistoryService.init({
 				name: 'load',
 				icon: 'insert_drive_file',
 				state: JSON.stringify(this.exportMap())
 			});
 		}
 		
-		this.game['MapLoaderService'].tileMap.next(this);
-		this.game['MapLoaderService'].selectedLayer.next(this.layers[0]);
+		Globals.mapLoaderService.tileMap.next(this);
+		Globals.mapLoaderService.selectedLayer.next(this.layers[0]);
 	}
 	
 	resize(width: number, height: number, skipRender = false) {
 		this.mapWidth = width;
 		this.mapHeight = height;
 		
-		this.layers.forEach(layer => layer.resize(width, height, skipRender));
-		const events: PhaserEventsService = this.game['PhaserEventsService'];
-		events.updateMapBorder.next(true);
+		// this.layers.forEach(layer => layer.resize(width, height, skipRender));
+		Globals.phaserEventsService.updateMapBorder.next(true);
 	}
 	
 	offsetMap(offset: Point, borderTiles = false, skipRender = false) {
 		this.layers.forEach(layer => layer.offsetLayer(offset, borderTiles, skipRender));
 	}
 	
-	renderAll() {
-		this.layers.forEach(layer => layer.renderAll());
-	}
-	
 	addLayer(layer: CCMapLayer) {
 		this.layers.push(layer);
-		layer.renderAll();
 	}
 	
 	removeLayer(layer: CCMapLayer) {
@@ -161,12 +153,19 @@ export class CCMap {
 	exportMap(): CrossCodeMap {
 		const out: CrossCodeMap = <any>{};
 		
-		this.props.forEach(prop => out[prop] = this[prop]);
-		this.game.plugins.plugins.forEach(plugin => {
-			if (plugin instanceof EntityManager) {
-				out.entities = (<EntityManager>plugin).exportEntities();
-			}
-		});
+		out.name = this.name;
+		out.levels = this.levels;
+		out.mapWidth = this.mapWidth;
+		out.mapHeight = this.mapHeight;
+		out.masterLevel = this.masterLevel;
+		out.attributes = this.attributes;
+		out.screen = this.screen;
+		
+		// this.game.plugins.plugins.forEach(plugin => {
+		// 	if (plugin instanceof EntityManager) {
+		// 		out.entities = (<EntityManager>plugin).exportEntities();
+		// 	}
+		// });
 		out.layer = [];
 		this.layers.forEach(l => out.layer.push(l.exportLayer()));
 		

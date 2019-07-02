@@ -42,7 +42,7 @@ export class EntityManager extends Phaser.Scene {
 	// // image to receive input behind the sprites
 	// private inputImg: Phaser.Image;
 	//
-	constructor(game: Phaser.Game, parent) {
+	constructor(game: Phaser.Game, parent: any) {
 		super({});
 		// super(game, parent);
 		// this.active = true;
@@ -176,7 +176,7 @@ export class EntityManager extends Phaser.Scene {
 		// ccEntity.level = entity.level;
 		// this.entities.push(ccEntity);
 		// return ccEntity;
-		return null;
+		return null as any;
 	}
 	
 	setGlobalEvents(globalEvents: GlobalEventsService) {
@@ -310,7 +310,7 @@ export class EntityManager extends Phaser.Scene {
 	}
 	
 	exportEntities(): MapEntity[] {
-		const out = [];
+		const out: MapEntity[] = [];
 		// this.entities.forEach(e => out.push(e.exportEntity()));
 		return out;
 	}

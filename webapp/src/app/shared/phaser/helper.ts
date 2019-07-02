@@ -9,20 +9,20 @@ export class Helper {
 	 */
 	public static screenToWorld(x: number | Point, y?: number): Point {
 		if (y === undefined) {
-			y = (<any>x).y;
-			x = (<any>x).x;
+			y = (x as Point).y;
+			x = (x as Point).x;
 		}
-		const p: Point = {};
+		const p: Point = {x: 0, y: 0};
 		const cam = Globals.scene.cameras.main;
-		p.x = (<any>x + cam.x) / cam.zoom;
-		p.y = (y + cam.y) / cam.zoom;
+		p.x = (x as number + cam.x) / cam.zoom;
+		p.y = (y as number + cam.y) / cam.zoom;
 		
 		return p;
 	}
 	
 	/** Transforms phaser world coordinates to actual world coordinates (see {@link screenToWorld}) */
 	public static phaserWorldtoWorld(p: Point): Point {
-		const out: Point = {};
+		const out: Point = {x: 0, y: 0};
 		const cam = Globals.scene.cameras.main;
 		out.x = p.x / cam.zoom;
 		out.y = p.y / cam.zoom;
@@ -30,7 +30,7 @@ export class Helper {
 	}
 	
 	public static worldToTile(x: number, y: number): Point {
-		const p: Point = {};
+		const p: Point = {x: 0, y: 0};
 		
 		p.x = Math.floor(x / Globals.TILE_SIZE);
 		p.y = Math.floor(y / Globals.TILE_SIZE);
@@ -68,11 +68,11 @@ export class Helper {
 		};
 	}
 	
-	public static clamp(val, min, max) {
+	public static clamp(val: number, min: number, max: number) {
 		return Math.min(Math.max(val, min), max);
 	}
 	
-	public static drawRect(context: CanvasRenderingContext2D, rect: Phaser.Geom.Rectangle, fillStyle, strokeStyle) {
+	public static drawRect(context: CanvasRenderingContext2D, rect: Phaser.Geom.Rectangle, fillStyle: string, strokeStyle: string) {
 		const o = new Phaser.Geom.Rectangle(rect.x + 0.5, rect.y + 0.5, rect.width - 1, rect.height);
 		
 		context.fillStyle = fillStyle;
@@ -83,7 +83,7 @@ export class Helper {
 		context.strokeRect(o.x, o.y, o.width, o.height);
 	}
 	
-	public static deepFind(key, obj) {
+	public static deepFind(key: string, obj: any) {
 		const paths = key.split('.');
 		let current = obj;
 		
@@ -98,11 +98,11 @@ export class Helper {
 	}
 	
 	/** copies obj via JSON.parse(JSON.stringify(obj)); */
-	public static copy(obj) {
+	public static copy(obj: any) {
 		return JSON.parse(JSON.stringify(obj));
 	}
 	
-	public static getJson(key: string, callback: (json) => void) {
+	public static getJson(key: string, callback: (json: any) => void) {
 		// TODO
 		// const game = Globals.game;
 		//
@@ -131,9 +131,12 @@ export class Helper {
 	 * false is returned, so the user can write everything into input fields
 	 * without messing up the map
 	 * */
-	public static isInputFocused() {
+	public static isInputFocused(): boolean {
 		if (Globals.disablePhaserInput) {
 			return true;
+		}
+		if (!document.activeElement) {
+			return false;
 		}
 		const tag = document.activeElement.tagName.toLowerCase();
 		

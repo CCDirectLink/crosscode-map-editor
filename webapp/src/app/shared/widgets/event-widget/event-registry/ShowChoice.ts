@@ -1,7 +1,8 @@
 import {AbstractEvent, EventType} from './abstract-event';
 import {Label, Person} from '../../../../models/events';
+import {EntityAttributes} from '../../../phaser/entities/cc-entity';
 
-interface ShowChoiceData extends EventType {
+export interface ShowChoiceData extends EventType {
 	0?: AbstractEvent<any>[];
 	1?: AbstractEvent<any>[];
 	2?: AbstractEvent<any>[];
@@ -16,7 +17,7 @@ interface ShowChoiceData extends EventType {
 }
 
 export class ShowChoice extends AbstractEvent<ShowChoiceData> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		person: {
 			type: 'PersonExpression',
 			description: 'Talking person'
@@ -39,7 +40,7 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 		}
 	};
 	
-	getAttributes() {
+	getAttributes(): EntityAttributes {
 		return this.attributes;
 	}
 	
@@ -53,7 +54,7 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 		this.data.options.forEach((option, index) => {
 			this.children[index] = {
 				title: this.getColoredString('Choice. ' + option.label.en_US, '#838383'),
-				events: this.data[index] || [],
+				events: this.data[index as keyof ShowChoiceData] as any || [],
 				hideGreaterSign: true
 			};
 		});
@@ -72,7 +73,7 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 			if (!child.events) {
 				console.error('wtf', this);
 			}
-			out[index] = child.events.map(v => v.export());
+			out[index as keyof ShowChoiceData] = child.events.map(v => v.export());
 		});
 		
 		return JSON.parse(JSON.stringify(out));

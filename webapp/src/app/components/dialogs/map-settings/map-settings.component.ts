@@ -12,7 +12,7 @@ import {OverlayRefControl} from '../../../shared/overlay/overlay-ref-control';
 })
 export class MapSettingsComponent {
 	
-	private tileMap: CCMap;
+	private readonly tileMap: CCMap;
 	settings: CrossCodeMap = <any>{
 		levels: [{height: -32}, {height: 0}, {height: 32}, {height: 64}],
 		attributes: {},
@@ -22,12 +22,14 @@ export class MapSettingsComponent {
 		private loader: MapLoaderService,
 		public ref: OverlayRefControl
 	) {
-		this.tileMap = loader.tileMap.getValue();
-		const tileMap = this.tileMap;
+		const tileMap = loader.tileMap.getValue();
 		
 		if (!tileMap) {
-			return;
+			throw new Error('tilemap not defined');
 		}
+		
+		this.tileMap = tileMap;
+		
 		const settings = this.settings;
 		
 		settings.name = tileMap.name;
@@ -39,15 +41,15 @@ export class MapSettingsComponent {
 		settings.attributes = tileMap.attributes;
 	}
 	
-	onSettingsChange({property, value}) {
-		this.settings[property] = value;
+	onSettingsChange(obj: { property: string, value: any }) {
+		this.settings[obj.property as keyof CrossCodeMap] = obj.value;
 	}
-
+	
 	update() {
 		// TODO: add validation
 		const settings = this.settings;
 		const tileMap = this.tileMap;
-
+		
 		tileMap.name = settings.name;
 		tileMap.filename = settings.name;
 		tileMap.levels = settings.levels;

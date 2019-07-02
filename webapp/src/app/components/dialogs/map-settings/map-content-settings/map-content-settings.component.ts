@@ -8,7 +8,7 @@ import * as mapSettingsjson from '../../../../../assets/map-settings.json';
   styleUrls: ['./map-content-settings.component.scss']
 })
 export class MapContentSettingsComponent implements OnInit {
-	@Input() settings: CrossCodeMap;
+	@Input() settings!: CrossCodeMap;
 	@Output() onSettingsChange = new EventEmitter<{
 		property: any,
 		value: any
@@ -26,7 +26,7 @@ export class MapContentSettingsComponent implements OnInit {
 		}
 	}
 	
-	onNumberChange(event, property): void {
+	onNumberChange(event: any, property: string): void {
 		const numElement = event.target;
 		if (numElement) {
 			const min = Number(numElement.min || -Infinity);

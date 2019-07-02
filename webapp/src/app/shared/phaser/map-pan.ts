@@ -10,7 +10,7 @@ export class MapPan extends Phaser.Scene{
 	// private startCam: Point = {};
 	// private zoomKey: Phaser.Key;
 
-	constructor(game: Phaser.Game, parent) {
+	constructor(game: Phaser.Game, parent: any) {
 		super({});
 		// super(game, parent);
 		// this.active = true;

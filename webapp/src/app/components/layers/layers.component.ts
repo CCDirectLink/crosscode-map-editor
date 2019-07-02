@@ -15,8 +15,8 @@ import {Globals} from '../../shared/globals';
 })
 export class LayersComponent implements OnInit {
 	
-	selectedLayer: CCMapLayer;
-	tilemap: CCMap;
+	selectedLayer?: CCMapLayer;
+	tilemap?: CCMap;
 	newLayerName = '';
 	
 	constructor(private mapLoader: MapLoaderService,
@@ -24,7 +24,7 @@ export class LayersComponent implements OnInit {
 	            events: GlobalEventsService) {
 		events.toggleVisibility.subscribe(() => {
 			if (this.selectedLayer) {
-				this.toggleVisibility({
+				this.toggleVisibility(<any>{
 					stopPropagation: () => {
 					}
 				}, this.selectedLayer);
@@ -41,7 +41,7 @@ export class LayersComponent implements OnInit {
 		return `${layer.details.name} (${layer.details.level})`;
 	}
 	
-	toggleVisibility(event, layer: CCMapLayer) {
+	toggleVisibility(event: Event, layer: CCMapLayer) {
 		event.stopPropagation();
 		layer.visible = !layer.visible;
 		if (layer.visible) {
@@ -49,7 +49,7 @@ export class LayersComponent implements OnInit {
 		}
 	}
 	
-	addNewLayer(event) {
+	addNewLayer(event: Event) {
 		// TODO:
 		// const map = this.tilemap;
 		// const data = [];
@@ -84,16 +84,22 @@ export class LayersComponent implements OnInit {
 	
 	deleteSelected() {
 		const layer = this.selectedLayer;
+		if (!layer) {
+			throw new Error('no layer selected');
+		}
+		if (!this.tilemap) {
+			throw new Error('no tilemap defined');
+		}
 		this.tilemap.removeLayer(layer);
 		this.stateHistory.saveState({
 			name: 'Layer deleted',
 			icon: 'delete'
 		}, true);
 		
-		this.selectLayer(null);
+		this.selectLayer(undefined);
 	}
 	
-	selectLayer(layer: CCMapLayer) {
+	selectLayer(layer?: CCMapLayer) {
 		// TODO
 		// if (layer) {
 		// 	layer.visible = true;
@@ -101,13 +107,18 @@ export class LayersComponent implements OnInit {
 		this.mapLoader.selectedLayer.next(layer);
 	}
 	
-	updateTilesetName(name) {
+	updateTilesetName(name: string) {
+		if (!this.selectedLayer) {
+			throw new Error('no layer selected');
+		}
 		this.selectedLayer.updateTileset(name);
 		this.mapLoader.selectedLayer.next(this.selectedLayer);
 	}
 	
-	updateLevel(level) {
-		console.log(level);
+	updateLevel(level: number) {
+		if (!this.selectedLayer) {
+			throw new Error('no layer selected');
+		}
 		this.selectedLayer.updateLevel(level);
 	}
 	
@@ -115,10 +126,13 @@ export class LayersComponent implements OnInit {
 		if (event.previousIndex === event.currentIndex) {
 			return;
 		}
+		if (!this.tilemap) {
+			throw new Error('tilemap not defined');
+		}
 		moveItemInArray(this.tilemap.layers, event.previousIndex, event.currentIndex);
 		this.stateHistory.saveState({
 			name: 'Layer moved',
-			icon: 'open_with'
+			icon: 'open_with',
 		}, true);
 	}
 	

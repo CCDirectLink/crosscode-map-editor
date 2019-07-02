@@ -14,6 +14,7 @@ import {ISelectedTiles} from '../../models/tile-selector';
 import * as Phaser from 'phaser';
 import {MainScene} from '../../shared/phaser/main-scene';
 import {TileDrawer} from '../../shared/phaser/tilemap/tile-drawer';
+import {Glob} from 'glob';
 
 @Component({
 	selector: 'app-phaser',
@@ -43,13 +44,18 @@ export class PhaserComponent implements OnInit {
 	            private stateHistory: StateHistoryService,
 	            private phaserEventsService: PhaserEventsService,
 	            private http: HttpClientService,
-	            private heightGenerator: HeightMapGeneratorService) {
+	            private heightGenerator: HeightMapGeneratorService
+	) {
+		Globals.stateHistoryService = stateHistory;
+		Globals.mapLoaderService = mapLoader;
+		Globals.phaserEventsService = phaserEventsService;
+		Globals.globalEventsService = globalEvents;
 	}
 	
 	
 	ngOnInit() {
 		this.http.getAllFiles().subscribe(res => {
-			const scene = new MainScene(res, this.stateHistory, this.mapLoader, this.phaserEventsService, this.globalEvents);
+			const scene = new MainScene(res);
 			const tileDrawer = new TileDrawer();
 			const game = new Phaser.Game({
 				width: window.innerWidth * window.devicePixelRatio,

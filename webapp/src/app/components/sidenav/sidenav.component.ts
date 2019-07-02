@@ -14,9 +14,9 @@ import {MatTabChangeEvent} from '@angular/material';
 })
 export class SidenavComponent implements OnInit {
 	
-	selectedLayer: CCMapLayer;
-	tilemap: CCMap;
-	currentView: EditorView;
+	selectedLayer?: CCMapLayer;
+	tilemap?: CCMap;
+	currentView?: EditorView;
 	editorViewEnum = EditorView;
 	
 	constructor(private mapLoader: MapLoaderService, private globalEvents: GlobalEventsService) {
