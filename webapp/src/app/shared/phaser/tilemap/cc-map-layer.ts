@@ -39,10 +39,10 @@ export class CCMapLayer {
 			details.distance = parseFloat(details.distance);
 		}
 		this.details = details;
+		this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), 'stub');
 		
-		tilemap.addTilesetImage(details.tilesetName);
-		this.layer = tilemap.createBlankDynamicLayer(details.name + Math.random(), details.tilesetName, 0, 0, details.width, details.height);
-		this.layer.putTilesAt(details.data.map(row => row.map(v => v - 1)), 0, 0, true);
+		this.updateTileset(details.tilesetName!);
+		this.updateLevel(this.details.level);
 		
 		const skip = 'Navigation Collision HeightMap'.split(' ');
 		// const skip = 'Navigation Background HeightMap'.split(' ');
@@ -51,9 +51,6 @@ export class CCMapLayer {
 				this.layer.visible = false;
 			}
 		});
-		
-		this.updateLevel(this.details.level);
-		this.updateTileset(details.tilesetName);
 	}
 	
 	get visible(): boolean {
@@ -62,6 +59,14 @@ export class CCMapLayer {
 	
 	set visible(val: boolean) {
 		this.layer.visible = val;
+	}
+	
+	get alpha(): number {
+		return this.layer.alpha;
+	}
+	
+	set alpha(val: number) {
+		this.layer.alpha = val;
 	}
 	
 	destroy() {
@@ -100,7 +105,12 @@ export class CCMapLayer {
 		details.tilesetName = tilesetname;
 		if (details.tilesetName) {
 			const newTileset = this.tilemap.addTilesetImage(tilesetname);
-			this.layer.tileset = [newTileset];
+			newTileset.firstgid = 1;
+			if (this.layer) {
+				this.layer.destroy();
+			}
+			this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), newTileset, 0, 0, details.width, details.height);
+			this.layer.putTilesAt(details.data, 0, 0, true);
 		}
 	}
 	
@@ -110,55 +120,28 @@ export class CCMapLayer {
 		if (isNaN(zIndex)) {
 			zIndex = 999;
 		}
-		this.layer.depth = this.details.level * 10;
+		if (this.layer) {
+			this.layer.depth = this.details.level * 10;
+		}
 	}
 	
-	fill(newTile: number, p: Point) {
-		// const data = this.details.data;
-		// const prev = data[p.y][p.x];
-		// if (newTile === prev) {
-		// 	return;
-		// }
-		//
-		// let toCheck: Point[] = [p];
-		// while (toCheck.length > 0) {
-		// 	const currP = toCheck.pop();
-		// 	const tile = data[currP.y][currP.x];
-		// 	if (tile === prev) {
-		// 		data[currP.y][currP.x] = newTile;
-		// 		toCheck = toCheck.concat(this.getNeighbours(currP));
-		// 	}
-		// }
-		//
-		// this.renderAll();
+	getPhaserLayer(): Phaser.Tilemaps.DynamicTilemapLayer {
+		return this.layer;
 	}
-	
-	// private getNeighbours(p: Point): Point[] {
-	// 	const out: Point[] = [];
-	//
-	// 	if (p.x > 0) {
-	// 		out.push({x: p.x - 1, y: p.y});
-	// 	}
-	// 	if (p.x < this.details.width - 1) {
-	// 		out.push({x: p.x + 1, y: p.y});
-	// 	}
-	// 	if (p.y > 0) {
-	// 		out.push({x: p.x, y: p.y - 1});
-	// 	}
-	// 	if (p.y < this.details.height - 1) {
-	// 		out.push({x: p.x, y: p.y + 1});
-	// 	}
-	//
-	// 	return out;
-	// }
 	
 	exportLayer(): MapLayer {
-		// const out: MapLayer = Object.assign({}, this.details);
-		// if (out.levelName) {
-		// 	out.level = out.levelName;
-		// 	out.levelName = undefined;
-		// }
-		// return out;
-		return <any>{};
+		const out: MapLayer = Object.assign({}, this.details);
+		if (out.levelName) {
+			out.level = out.levelName;
+			out.levelName = undefined;
+		}
+		out.data = [];
+		this.layer.getTilesWithin().forEach(tile => {
+			if (!out.data[tile.y]) {
+				out.data[tile.y] = [];
+			}
+			out.data[tile.y][tile.x] = tile.index;
+		});
+		return out;
 	}
 }

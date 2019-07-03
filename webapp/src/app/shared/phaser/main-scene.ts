@@ -9,6 +9,7 @@ import {Globals} from '../globals';
 import {CCMap} from './tilemap/cc-map';
 import {Subscription} from 'rxjs';
 import {MapPan} from './map-pan';
+import {TileDrawer} from './tilemap/tile-drawer';
 
 export class MainScene extends Phaser.Scene {
 	
@@ -61,14 +62,14 @@ export class MainScene extends Phaser.Scene {
 				this.rescaleBorder();
 			}
 		});
+		// TODO is now in phaserevents
 		// Globals.updateMapBorder.subscribe(a => this.rescaleBorder());
 		
 		const pan = new MapPan(this, 'mapPan');
 		this.add.existing(pan);
 		
-		// setTimeout(() => {
-		// 	pan.setActive(false);
-		// }, 1000);
+		const tileDrawer = new TileDrawer(this);
+		this.add.existing(tileDrawer);
 		
 		// this.entityManager = game.plugins.add(EntityManager);
 		// this.entityManager.setGlobalEvents(this.globalEvents);

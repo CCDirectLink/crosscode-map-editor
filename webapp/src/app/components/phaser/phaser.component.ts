@@ -6,7 +6,7 @@ import {HttpClientService} from '../../services/http-client.service';
 import {StateHistoryService} from '../../shared/history/state-history.service';
 import {PhaserEventsService} from '../../shared/phaser/phaser-events.service';
 import {HeightMapGeneratorService} from '../../services/height-map-generator.service';
-import {ISelectedTiles} from '../../models/tile-selector';
+import {SelectedTile} from '../../models/tile-selector';
 import * as Phaser from 'phaser';
 import {MainScene} from '../../shared/phaser/main-scene';
 import {TileDrawer} from '../../shared/phaser/tilemap/tile-drawer';
@@ -21,7 +21,7 @@ export class PhaserComponent implements OnInit {
 	// tileMap: CCMap;
 	
 	@Input()
-	set selected(value: ISelectedTiles) {
+	set selected(value: SelectedTile) {
 		// TODO
 		// if (this.tileDrawer) {
 		// 	this.tileDrawer.select(value);
@@ -46,7 +46,6 @@ export class PhaserComponent implements OnInit {
 	ngOnInit() {
 		this.http.getAllFiles().subscribe(res => {
 			const scene = new MainScene(res);
-			const tileDrawer = new TileDrawer();
 			const game = new Phaser.Game({
 				width: window.innerWidth * window.devicePixelRatio,
 				height: window.innerHeight * window.devicePixelRatio - 64,
@@ -60,7 +59,7 @@ export class PhaserComponent implements OnInit {
 					pixelArt: true
 				},
 				zoom: 1,
-				scene: [scene, tileDrawer]
+				scene: [scene]
 			});
 			Globals.game = game;
 			Globals.scene = scene;

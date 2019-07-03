@@ -6,7 +6,7 @@ import { MapLayer } from '../../models/cross-code-map';
 import { Globals } from '../../shared/globals';
 import { Helper } from '../../shared/phaser/helper';
 import { HttpClientService } from '../../services/http-client.service';
-import { ISelectedTiles } from '../../models/tile-selector';
+import { SelectedTile } from '../../models/tile-selector';
 
 
 @Component({
@@ -24,10 +24,10 @@ export class TileSelectorComponent implements OnInit {
 	//
 	// private selecting = false;
 	// private selectionStart: Phaser.Point;
-	// private selected: ISelectedTiles = { tiles: [], size: new Phaser.Point(1, 1) };
+	// private selected: SelectedTile = { tiles: [], size: new Phaser.Point(1, 1) };
 
 	@Output()
-	selectionChanged = new EventEmitter<ISelectedTiles>();
+	selectionChanged = new EventEmitter<SelectedTile>();
 	
 	constructor(
 		private mapLoader: MapLoaderService,

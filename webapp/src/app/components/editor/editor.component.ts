@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {NpcStatesComponent} from '../../shared/widgets/npc-states-widget/npc-states/npc-states.component';
 import {OverlayService} from '../../shared/overlay/overlay.service';
 import {Overlay} from '@angular/cdk/overlay';
-import { ISelectedTiles } from '../../models/tile-selector';
+import { SelectedTile } from '../../models/tile-selector';
 
 @Component({
 	selector: 'app-editor',
@@ -10,7 +10,7 @@ import { ISelectedTiles } from '../../models/tile-selector';
 	styleUrls: ['./editor.component.scss']
 })
 export class EditorComponent {
-	selected?: ISelectedTiles;
+	selected?: SelectedTile;
 
 	constructor(overlayService: OverlayService, overlay: Overlay) {
 		// const obj = overlayService.open(NpcStatesComponent, {
@@ -925,7 +925,7 @@ export class EditorComponent {
 		// }];
 	}
 	
-	selectionChanged(selected: ISelectedTiles) {
+	selectionChanged(selected: SelectedTile) {
 		this.selected = selected;
 	}
 }

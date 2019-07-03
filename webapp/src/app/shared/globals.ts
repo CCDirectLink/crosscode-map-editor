@@ -16,7 +16,6 @@ export class Globals {
 		enableGrid: false
 	};
 	static disablePhaserInput = false;
-	static zIndexUpdate = false;
 	
 	// TODO: remove them from global state
 	static stateHistoryService: StateHistoryService;
