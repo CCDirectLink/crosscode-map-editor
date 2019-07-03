@@ -10,10 +10,8 @@ $listItemHeight: 28px;
 	display: inline-block;
 	position: relative;
 	background-color: mat-color($accent, 800);
-	height: 100%;
-	width: 100%;
+	overflow: hidden;
 	max-height: 80vh;
-	overflow-y: auto;
 }
 
 .button-container {

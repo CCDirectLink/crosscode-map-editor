@@ -100,10 +100,9 @@ export class LayersComponent implements OnInit {
 	}
 	
 	selectLayer(layer?: CCMapLayer) {
-		// TODO
-		// if (layer) {
-		// 	layer.visible = true;
-		// }
+		if (layer) {
+			layer.visible = true;
+		}
 		this.mapLoader.selectedLayer.next(layer);
 	}
 	

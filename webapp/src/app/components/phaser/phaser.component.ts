@@ -20,14 +20,6 @@ export class PhaserComponent implements OnInit {
 	// TODO
 	// tileMap: CCMap;
 	
-	@Input()
-	set selected(value: SelectedTile) {
-		// TODO
-		// if (this.tileDrawer) {
-		// 	this.tileDrawer.select(value);
-		// }
-	}
-	
 	constructor(private element: ElementRef,
 	            private mapLoader: MapLoaderService,
 	            private globalEvents: GlobalEventsService,

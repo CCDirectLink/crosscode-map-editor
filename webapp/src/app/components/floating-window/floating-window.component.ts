@@ -10,8 +10,8 @@ export class FloatingWindowComponent implements OnInit {
 	@Input() visible = true;
 	@Input() title = 'no title';
 	
-	@Input() height = '20px';
-	@Input() width = '20px';
+	@Input() height = '';
+	@Input() width = '';
 	@Input() top: string | number = 0;
 	@Input() right: string | number = 0;
 	

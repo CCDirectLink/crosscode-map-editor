@@ -61,7 +61,8 @@ export class Helper {
 		return pos;
 	}
 	
-	public static getTilesetSize(img: HTMLImageElement): Point {
+	public static getTilesetSize(scene: Phaser.Scene, tileset: string): Point {
+		const img = scene.textures.get(tileset).source[0];
 		return {
 			x: Math.ceil(img.width / Globals.TILE_SIZE),
 			y: Math.ceil(img.height / Globals.TILE_SIZE)
@@ -70,6 +71,19 @@ export class Helper {
 	
 	public static clamp(val: number, min: number, max: number) {
 		return Math.min(Math.max(val, min), max);
+	}
+	
+	public static clampToBounds(layer: CCMapLayer, p: Point) {
+		p.x = Helper.clamp(p.x, 0, layer.details.width - 1);
+		p.y = Helper.clamp(p.y, 0, layer.details.height - 1);
+	}
+	
+	public static isInBounds(layer: CCMapLayer, p: Point): boolean {
+		return p.x >= 0 && p.y >= 0 && p.x < layer.details.width && p.y < layer.details.height;
+	}
+	
+	public static isInBoundsP(bounds: Point, p: Point): boolean {
+		return p.x >= 0 && p.y >= 0 && p.x < bounds.x && p.y < bounds.y;
 	}
 	
 	public static drawRect(context: CanvasRenderingContext2D, rect: Phaser.Geom.Rectangle, fillStyle: string, strokeStyle: string) {

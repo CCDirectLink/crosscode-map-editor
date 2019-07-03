@@ -17,15 +17,16 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 	
 	private previewTileMap: Phaser.Tilemaps.Tilemap;
 	private previewLayer?: Phaser.Tilemaps.DynamicTilemapLayer;
-	private sub: Subscription;
+	private subs: Subscription[] = [];
 	
 	private keyBindings: { event: string, fun: Function, emitter: Phaser.Events.EventEmitter }[] = [];
 	private rightClickStart?: Point;
 	private rightClickEnd?: Point;
 	private renderLayersTransparent = false;
-	private transparentKey: Phaser.Input.Keyboard.Key;
-	private visibilityKey: Phaser.Input.Keyboard.Key;
-	private fillKey: Phaser.Input.Keyboard.Key;
+	
+	private readonly transparentKey: Phaser.Input.Keyboard.Key;
+	private readonly visibilityKey: Phaser.Input.Keyboard.Key;
+	private readonly fillKey: Phaser.Input.Keyboard.Key;
 	
 	constructor(scene: Phaser.Scene) {
 		super(scene);
@@ -39,9 +40,7 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 		
 		this.resetSelectedTiles();
 		
-		this.previewTileMap = scene.add.tilemap('tileDrawerSelected', Globals.TILE_SIZE, Globals.TILE_SIZE);
-		
-		this.sub = Globals.mapLoaderService.selectedLayer.subscribe(layer => this.selectLayer(layer));
+		this.previewTileMap = scene.add.tilemap(undefined, Globals.TILE_SIZE, Globals.TILE_SIZE);
 		
 		this.setActive(true);
 	}
@@ -62,9 +61,23 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 		tileset.firstgid = 1;
 	}
 	
-	public select(selected: SelectedTile[]) {
+	private updateSelectedTiles(selected: SelectedTile[]) {
 		this.selectedTiles = selected;
 		this.renderPreview();
+		
+		let x = 0;
+		let y = 0;
+		selected.forEach(tile => {
+			const o = tile.offset;
+			if (o.x > x) {
+				x = o.x;
+			}
+			if (o.y > y) {
+				y = o.y;
+			}
+		});
+		
+		this.drawRect(x + 1, y + 1, 0, 0);
 	}
 	
 	
@@ -79,7 +92,7 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 		
 		// render selection border
 		if (this.rightClickStart) {
-			this.clampToBounds(this.layer, p);
+			Helper.clampToBounds(this.layer, p);
 			
 			if (this.rightClickEnd && this.rightClickEnd.x === p.x && this.rightClickEnd.y === p.y) {
 				// shortcut to avoid redrawing rectangle every frame
@@ -131,7 +144,7 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 				finalPos.x = p.x + tile.offset.x;
 				finalPos.y = p.y + tile.offset.y;
 				
-				if (this.isInBounds(this.layer!, finalPos)) {
+				if (Helper.isInBounds(this.layer!, finalPos)) {
 					this.layer!.getPhaserLayer().putTileAt(tile.id, finalPos.x, finalPos.y);
 				}
 			});
@@ -154,9 +167,16 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 			binding.emitter.removeListener(binding.event, binding.fun);
 		});
 		this.keyBindings = [];
+		this.subs.forEach(sub => sub.unsubscribe());
 	}
 	
 	private activate() {
+		const sub = Globals.mapLoaderService.selectedLayer.subscribe(layer => this.selectLayer(layer));
+		this.subs.push(sub);
+		
+		const sub2 = Globals.phaserEventsService.changeSelectedTiles.subscribe(tiles => this.updateSelectedTiles(tiles));
+		this.subs.push(sub2);
+		
 		this.keyBindings = [];
 		const pointerDown = (pointer: Phaser.Input.Pointer) => {
 			if (pointer.rightButtonDown()) {
@@ -235,7 +255,7 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 		// only start tile copy when cursor in bounds
 		const pointer = this.scene.input.activePointer;
 		const p = Helper.worldToTile(pointer.worldX, pointer.worldY);
-		if (!this.isInBounds(this.layer, p)) {
+		if (!Helper.isInBounds(this.layer, p)) {
 			return;
 		}
 		
@@ -318,15 +338,6 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 	
 	private resetSelectedTiles() {
 		this.selectedTiles = [{id: 0, offset: {x: 0, y: 0}}];
-	}
-	
-	private isInBounds(layer: CCMapLayer, p: Point): boolean {
-		return p.x >= 0 && p.y >= 0 && p.x < layer.details.width && p.y < layer.details.height;
-	}
-	
-	private clampToBounds(layer: CCMapLayer, p: Point) {
-		p.x = Helper.clamp(p.x, 0, layer.details.width - 1);
-		p.y = Helper.clamp(p.y, 0, layer.details.height - 1);
 	}
 	
 	private fill() {
