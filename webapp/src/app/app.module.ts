@@ -11,6 +11,7 @@ import {SidenavComponent} from './components/sidenav/sidenav.component';
 import {FormsModule} from '@angular/forms';
 import {LayersComponent} from './components/layers/layers.component';
 import {EntitiesComponent} from './components/entities/entities.component';
+import {LoadMapComponent} from './components/load-map/load-map.component';
 import {WidgetRegistryService} from './shared/widgets/widget-registry.service';
 import {HttpClientModule} from '@angular/common/http';
 import {SharedModule} from './shared/shared.module';
@@ -33,6 +34,7 @@ import {RouterModule} from '@angular/router';
 		SidenavComponent,
 		LayersComponent,
 		EntitiesComponent,
+		LoadMapComponent,
 		AddEntityMenuComponent,
 		TileSelectorComponent
 	],

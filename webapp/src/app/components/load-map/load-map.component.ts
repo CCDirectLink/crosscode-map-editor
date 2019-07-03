@@ -1,0 +1,113 @@
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {HostDirective} from '../../shared/host.directive';
+import { NestedTreeControl } from '@angular/cdk/tree';
+import { MatTreeNestedDataSource } from '@angular/material';
+import { HttpClientService } from '../../services/http-client.service';
+import { MapLoaderService } from '../../shared/map-loader.service';
+
+interface MapNode {
+	name: string;
+	path?: string;
+	children?: MapNode[];
+}
+
+@Component({
+	selector: 'app-load-map',
+	templateUrl: './load-map.component.html',
+	styleUrls: ['./load-map.component.scss']
+})
+export class LoadMapComponent {
+	treeControl = new NestedTreeControl<MapNode>(node => node.children);
+	mapsSource = new MatTreeNestedDataSource<MapNode>();
+
+	filter = '';
+	paths: string[] = [];
+
+	constructor(
+		private mapLoader: MapLoaderService,
+		private http: HttpClientService,
+	) {
+		this.mapsSource.data = [{
+			name: 'Load external'
+		}];
+
+		this.refresh();
+	}
+
+	refresh() {
+		this.http.getMaps().subscribe(paths => {
+			this.paths = paths;
+			this.update();
+		});
+	}
+
+	update() {
+		this.displayMaps(this.paths, this.filter);
+	}
+	
+	loadMap(event) {
+		this.mapLoader.loadMap(event);
+	}
+
+	load(name: string) {
+		this.mapLoader.loadMapByName(name);
+	}
+
+	hasChild(_: number, node: MapNode) {
+		return !!node.children && node.children.length > 0;
+	}
+
+	private displayMaps(paths: string[], filter: string) {
+		const data: MapNode[] = [{
+			name: 'Load external'
+		}];
+
+		filter = filter.toLowerCase();
+		paths = paths.filter(p => p.toLowerCase().includes(filter));
+
+		let lastPath = '';
+		let lastNode = data;
+		for (const path of paths) {
+			const node = this.resolve(data, path, lastNode, lastPath);
+			const name = path.substr(path.lastIndexOf('.') + 1);
+
+			node.push({name, path});
+
+			lastPath = path;
+			lastNode = node;
+		}
+		
+
+		this.mapsSource.data = data;
+	}
+
+	private resolve(data: MapNode[], path: string, lastNode: MapNode[], lastPath: string): MapNode[] {
+		if (path.substr(0, path.lastIndexOf('.')) === lastPath.substr(0, lastPath.lastIndexOf('.'))) {
+			return lastNode;
+		}
+
+		if (!path.includes('.')) {
+			return data;
+		}
+
+		let node = data;
+
+		const parts = path
+			.substr(0, path.lastIndexOf('.'))
+			.split('.');
+		for (const name of parts) {
+			const child = node.find(n => n.name === name);
+			if (child) {
+				node = child.children;
+			} else {
+				const newNode: MapNode = {
+					name: name,
+					children: [],
+				};
+				node.push(newNode);
+				node = newNode.children;
+			}
+		}
+		return node;
+	}
+}
