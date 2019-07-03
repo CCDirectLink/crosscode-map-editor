@@ -5,6 +5,7 @@ import {Globals} from '../shared/globals';
 import {ElectronService} from './electron.service';
 import {FileInfos} from '../models/file-infos';
 import {api} from 'cc-map-editor-common';
+import { CrossCodeMap } from '../models/cross-code-map';
 
 @Injectable()
 export class HttpClientService {
@@ -47,5 +48,9 @@ export class HttpClientService {
 			obs.next(api.getAllMaps(path));
 			obs.complete();
 		});
+	}
+
+	getMap(path: string): Observable<CrossCodeMap> {
+		return this.http.get<CrossCodeMap>(`${Globals.URL}data/maps/${path.replace(/\./g, '/')}.json`);
 	}
 }
