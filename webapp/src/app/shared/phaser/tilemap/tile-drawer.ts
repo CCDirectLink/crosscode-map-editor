@@ -206,6 +206,10 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 				return;
 			}
 			
+			if (!this.layer) {
+				return;
+			}
+			
 			Globals.stateHistoryService.saveState({
 				name: 'Tile Drawer',
 				icon: 'create',
