@@ -138,6 +138,7 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 		}
 		
 		// draw tiles (skip when tile selector is open)
+		// TODO: triggers even if cursor is not in the game;
 		if (this.layer && this.scene.input.activePointer.leftButtonDown()) {
 			const finalPos = {x: 0, y: 0};
 			this.selectedTiles.forEach(tile => {
