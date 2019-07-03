@@ -13,7 +13,7 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 	constructor(scene: Phaser.Scene, type: string) {
 		super(scene, type);
 		
-		this.zoomKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ALT);
+		this.zoomKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ALT, false);
 		// game.input.mouseWheel.callback = (v) => this.onMouseWheel(v);
 		scene.input.on('wheel', (
 			pointer: Phaser.Input.Pointer,
@@ -54,17 +54,19 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 		let zoom = delta > 0 ? 0.8 : 1.25;
 		zoom *= cam.zoom;
 		if (zoom > 0.4 && zoom < 8) {
-			cam.zoom = zoom;
-			console.log(cam.zoom);
 			
-			// TODO: adjust position
-			// const pointer = this.scene.input.activePointer;
-			// const mouseX = pointer.x / prevScale;
-			// const mouseY = pointer.y / prevScale;
-			// const multiplier = zoom - prevScale;
-			//
-			// cam.scrollX += mouseX * multiplier;
-			// cam.scrollY += mouseY * multiplier;
+			const pointer = this.scene.input.activePointer;
+			
+			const mouse = Vec2.createC(pointer.worldX, pointer.worldY);
+			const oldX = mouse.x;
+			const oldY = mouse.y;
+			cam.zoom = zoom;
+			
+			// @ts-ignore
+			cam.preRender(this.scene.scale.resolution);
+			cam.getWorldPoint(pointer.x, pointer.y, <any>mouse);
+			cam.scrollX += oldX - mouse.x;
+			cam.scrollY += oldY - mouse.y;
 		}
 		Globals.phaserEventsService.updateMapBorder.next(true);
 	}
