@@ -31,7 +31,6 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 			return;
 		}
 		this.isScrolling = true;
-		console.log('on mouse down');
 		const cam = this.scene.cameras.main;
 		Vec2.assign(this.startMouse, this.scene.input.activePointer);
 		

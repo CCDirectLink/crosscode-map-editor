@@ -80,6 +80,11 @@ export class TileSelectorScene extends Phaser.Scene {
 		this.rightClickStart = p;
 	}
 	
+	public resize() {
+		const size = this.scale.gameSize;
+		this.game.scale.resize(size.width, size.height);
+	}
+	
 	private onMouseUp() {
 		this.selectedTiles = [];
 		

@@ -26,6 +26,7 @@ import {TileSelectorScene} from './tile-selector.scene';
 })
 export class TileSelectorComponent implements OnInit {
 	private display?: Phaser.Game;
+	private scene?: TileSelectorScene;
 	
 	constructor(
 		private mapLoader: MapLoaderService,
@@ -33,7 +34,7 @@ export class TileSelectorComponent implements OnInit {
 	}
 	
 	ngOnInit() {
-		const scene = new TileSelectorScene();
+		this.scene = new TileSelectorScene();
 		this.display = new Phaser.Game({
 			width: 400 * window.devicePixelRatio,
 			height: 1200 * window.devicePixelRatio,
@@ -47,7 +48,15 @@ export class TileSelectorComponent implements OnInit {
 				pixelArt: true
 			},
 			zoom: 1,
-			scene: [scene]
+			scene: [this.scene]
 		});
+	}
+	
+	onDragEnd() {
+		if (!this.display || !this.scene) {
+			return;
+		}
+		
+		this.scene.resize();
 	}
 }
