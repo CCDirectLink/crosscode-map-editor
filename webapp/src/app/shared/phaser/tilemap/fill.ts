@@ -4,6 +4,9 @@ import {CCMapLayer} from './cc-map-layer';
 export class Filler {
 	public static fill(layer: CCMapLayer, newTile: number, p: Point) {
 		const phaserLayer = layer.getPhaserLayer();
+		if (!phaserLayer) {
+			return;
+		}
 		const prev = phaserLayer.getTileAt(p.x, p.y).index;
 		if (newTile === prev) {
 			return;

@@ -31,9 +31,9 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 	constructor(scene: Phaser.Scene) {
 		super(scene);
 		
-		this.fillKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
-		this.transparentKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
-		this.visibilityKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V);
+		this.fillKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F, false);
+		this.transparentKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R, false);
+		this.visibilityKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V, false);
 		
 		this.depth = 1000;
 		this.drawRect(1, 1);
@@ -138,15 +138,19 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 		}
 		
 		// draw tiles (skip when tile selector is open)
-		// TODO: triggers even if cursor is not in the game;
-		if (this.layer && this.scene.input.activePointer.leftButtonDown()) {
+		// trigger only when mouse is over canvas element (the renderer), avoids triggering when interacting with ui
+		if (pointer.leftButtonDown() && pointer.downElement.nodeName === 'CANVAS' && this.layer) {
 			const finalPos = {x: 0, y: 0};
 			this.selectedTiles.forEach(tile => {
 				finalPos.x = p.x + tile.offset.x;
 				finalPos.y = p.y + tile.offset.y;
 				
 				if (Helper.isInBounds(this.layer!, finalPos)) {
-					this.layer!.getPhaserLayer().putTileAt(tile.id, finalPos.x, finalPos.y);
+					const phaserLayer = this.layer!.getPhaserLayer();
+					if (!phaserLayer) {
+						return;
+					}
+					phaserLayer.putTileAt(tile.id, finalPos.x, finalPos.y);
 				}
 			});
 		}
@@ -177,6 +181,7 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 		
 		const sub2 = Globals.phaserEventsService.changeSelectedTiles.subscribe(tiles => this.updateSelectedTiles(tiles));
 		this.subs.push(sub2);
+		
 		
 		this.keyBindings = [];
 		const pointerDown = (pointer: Phaser.Input.Pointer) => {
@@ -287,7 +292,8 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 		this.selectedTiles = [];
 		
 		// cancel current selection when out of bounds
-		if (!this.rightClickStart || !this.rightClickEnd) {
+		const phaserLayer = this.layer.getPhaserLayer();
+		if (!this.rightClickStart || !this.rightClickEnd || !phaserLayer) {
 			this.drawRect(1, 1);
 			this.resetSelectedTiles();
 			this.renderPreview();
@@ -311,7 +317,7 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 		const width = bigger.x - smaller.x + 1;
 		const height = bigger.y - smaller.y + 1;
 		
-		const tilesWithin = this.layer!.getPhaserLayer().getTilesWithin(smaller.x, smaller.y, width, height);
+		const tilesWithin = phaserLayer.getTilesWithin(smaller.x, smaller.y, width, height);
 		
 		tilesWithin.forEach((tile: Phaser.Tilemaps.Tile) => {
 			this.selectedTiles.push({

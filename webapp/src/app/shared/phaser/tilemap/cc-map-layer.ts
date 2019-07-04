@@ -6,7 +6,7 @@ export class CCMapLayer {
 	
 	public details: MapLayer;
 	
-	private layer: Phaser.Tilemaps.DynamicTilemapLayer;
+	private layer?: Phaser.Tilemaps.DynamicTilemapLayer;
 	
 	constructor(
 		private tilemap: Phaser.Tilemaps.Tilemap,
@@ -48,29 +48,42 @@ export class CCMapLayer {
 		// const skip = 'Navigation Background HeightMap'.split(' ');
 		skip.forEach(type => {
 			if (type === details.type) {
-				this.layer.visible = false;
+				this.layer!.visible = false;
 			}
 		});
 	}
 	
 	get visible(): boolean {
+		if (!this.layer) {
+			return false;
+		}
 		return this.layer.visible;
 	}
 	
 	set visible(val: boolean) {
-		this.layer.visible = val;
+		if (this.layer) {
+			this.layer.visible = val;
+		}
 	}
 	
 	get alpha(): number {
+		if (!this.layer) {
+			return 1;
+		}
 		return this.layer.alpha;
 	}
 	
 	set alpha(val: number) {
-		this.layer.alpha = val;
+		if (this.layer) {
+			this.layer.alpha = val;
+		}
 	}
 	
 	destroy() {
-		this.layer.destroy();
+		if (this.layer) {
+			this.layer.destroy();
+			this.layer = undefined;
+		}
 	}
 	
 	offsetLayer(offset: Point, borderTiles = false, skipRender = false) {
@@ -104,11 +117,12 @@ export class CCMapLayer {
 		const details = this.details;
 		details.tilesetName = tilesetname;
 		if (details.tilesetName) {
-			const newTileset = this.tilemap.addTilesetImage(tilesetname);
-			newTileset.firstgid = 1;
 			if (this.layer) {
 				this.layer.destroy();
+				this.layer = undefined;
 			}
+			const newTileset = this.tilemap.addTilesetImage(tilesetname);
+			newTileset.firstgid = 1;
 			this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), newTileset, 0, 0, details.width, details.height);
 			this.layer.putTilesAt(details.data, 0, 0, true);
 		}
@@ -125,7 +139,7 @@ export class CCMapLayer {
 		}
 	}
 	
-	getPhaserLayer(): Phaser.Tilemaps.DynamicTilemapLayer {
+	getPhaserLayer(): Phaser.Tilemaps.DynamicTilemapLayer | undefined {
 		return this.layer;
 	}
 	
@@ -136,12 +150,14 @@ export class CCMapLayer {
 			out.levelName = undefined;
 		}
 		out.data = [];
-		this.layer.getTilesWithin().forEach(tile => {
-			if (!out.data[tile.y]) {
-				out.data[tile.y] = [];
-			}
-			out.data[tile.y][tile.x] = tile.index;
-		});
+		if (this.layer) {
+			this.layer.getTilesWithin().forEach(tile => {
+				if (!out.data[tile.y]) {
+					out.data[tile.y] = [];
+				}
+				out.data[tile.y][tile.x] = tile.index;
+			});
+		}
 		return out;
 	}
 }

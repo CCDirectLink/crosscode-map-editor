@@ -18,6 +18,8 @@ export class TileSelectorScene extends Phaser.Scene {
 	private rect?: Phaser.GameObjects.Rectangle;
 	private sub?: Subscription;
 	
+	private tilesetRendered = false;
+	
 	// TODO: copypaste - same is in tileDrawer, move somewhere else
 	private selectedTiles: SelectedTile[] = [];
 	private rightClickStart?: Point;
@@ -69,6 +71,9 @@ export class TileSelectorScene extends Phaser.Scene {
 	}
 	
 	private onMouseDown() {
+		if (!this.tilesetRendered) {
+			return;
+		}
 		
 		// only start tile copy when cursor in bounds
 		const pointer = this.input.activePointer;
@@ -86,6 +91,9 @@ export class TileSelectorScene extends Phaser.Scene {
 	}
 	
 	private onMouseUp() {
+		if (!this.tilesetRendered) {
+			return;
+		}
 		this.selectedTiles = [];
 		
 		// cancel current selection when out of bounds
@@ -176,11 +184,13 @@ export class TileSelectorScene extends Phaser.Scene {
 	}
 	
 	private drawTileset(selectedLayer: CCMapLayer) {
-		
 		if (this.load.isLoading()) {
 			this.load.once('complete', () => this.drawTileset(selectedLayer));
 			return;
 		}
+		
+		this.tilesetRendered = false;
+		this.drawRect(0, 0);
 		
 		if (!selectedLayer.details.tilesetName) {
 			if (this.tileMap) {
@@ -199,7 +209,7 @@ export class TileSelectorScene extends Phaser.Scene {
 		const tileset = this.tileMap.addTilesetImage('tileset', selectedLayer.details.tilesetName, Globals.TILE_SIZE, Globals.TILE_SIZE);
 		if (!tileset) {
 			this.load.image(selectedLayer.details.tilesetName, Globals.URL + selectedLayer.details.tilesetName);
-			this.load.once('complete', () => this.drawTileset(selectedLayer));
+			this.load.once('load', () => this.drawTileset(selectedLayer));
 			this.load.start();
 			return;
 		}
@@ -217,11 +227,17 @@ export class TileSelectorScene extends Phaser.Scene {
 		}
 		
 		layer.putTilesAt(data, 0, 0);
+		
+		
+		this.tilesetRendered = true;
 	}
 	
 	private drawRect(width: number, height: number, x = 0, y = 0) {
 		if (this.rect) {
 			this.rect.destroy();
+		}
+		if (!this.tilesetRendered) {
+			return;
 		}
 		this.rect = this.add.rectangle(x * Globals.TILE_SIZE, y * Globals.TILE_SIZE, width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
 		this.rect.setOrigin(0, 0);
