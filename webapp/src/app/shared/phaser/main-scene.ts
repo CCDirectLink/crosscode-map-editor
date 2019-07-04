@@ -10,6 +10,7 @@ import {CCMap} from './tilemap/cc-map';
 import {Subscription} from 'rxjs';
 import {MapPan} from './map-pan';
 import {TileDrawer} from './tilemap/tile-drawer';
+import {EntityManager} from './entities/entity-manager';
 
 export class MainScene extends Phaser.Scene {
 	
@@ -70,6 +71,23 @@ export class MainScene extends Phaser.Scene {
 		
 		const tileDrawer = new TileDrawer(this);
 		this.add.existing(tileDrawer);
+		
+		const entityManager = new EntityManager(this);
+		this.add.existing(entityManager);
+		
+		Globals.globalEventsService.currentView.subscribe(view => {
+			console.log('current view', view);
+			switch (view) {
+				case EditorView.Layers:
+					tileDrawer.setActive(true);
+					entityManager.setActive(false);
+					break;
+				case EditorView.Entities:
+					tileDrawer.setActive(false);
+					entityManager.setActive(true);
+					break;
+			}
+		});
 		
 		// this.entityManager = game.plugins.add(EntityManager);
 		// this.entityManager.setGlobalEvents(this.globalEvents);

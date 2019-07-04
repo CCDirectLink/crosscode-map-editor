@@ -1,22 +1,10 @@
-import {
-	Component,
-	ElementRef,
-	OnInit,
-	ViewChild,
-	ViewEncapsulation,
-	ChangeDetectorRef,
-	Output,
-	EventEmitter
-} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import * as Phaser from 'phaser';
 import {MapLoaderService} from '../../shared/map-loader.service';
-import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
-import {MapLayer} from '../../models/cross-code-map';
-import {Globals} from '../../shared/globals';
-import {Helper} from '../../shared/phaser/helper';
 import {HttpClientService} from '../../services/http-client.service';
-import {SelectedTile} from '../../models/tile-selector';
 import {TileSelectorScene} from './tile-selector.scene';
+import {GlobalEventsService} from '../../shared/global-events.service';
+import {EditorView} from '../../models/editor-view';
 
 
 @Component({
@@ -27,10 +15,12 @@ import {TileSelectorScene} from './tile-selector.scene';
 export class TileSelectorComponent implements OnInit {
 	private display?: Phaser.Game;
 	private scene?: TileSelectorScene;
+	hide = false;
 	
 	constructor(
 		private mapLoader: MapLoaderService,
-		private http: HttpClientService) {
+		private http: HttpClientService,
+		private globalEvents: GlobalEventsService) {
 	}
 	
 	ngOnInit() {
@@ -50,6 +40,8 @@ export class TileSelectorComponent implements OnInit {
 			zoom: 1,
 			scene: [this.scene]
 		});
+		
+		this.globalEvents.currentView.subscribe(view => this.hide = view !== EditorView.Layers);
 	}
 	
 	onDragEnd() {

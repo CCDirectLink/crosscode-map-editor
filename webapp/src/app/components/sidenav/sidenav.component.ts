@@ -14,12 +14,16 @@ import {MatTabChangeEvent} from '@angular/material';
 })
 export class SidenavComponent implements OnInit {
 	
+	activeTab = 0;
 	selectedLayer?: CCMapLayer;
 	tilemap?: CCMap;
 	currentView?: EditorView;
 	editorViewEnum = EditorView;
 	
-	constructor(private mapLoader: MapLoaderService, private globalEvents: GlobalEventsService) {
+	constructor(
+		private mapLoader: MapLoaderService,
+		private globalEvents: GlobalEventsService
+	) {
 	}
 	
 	ngOnInit() {
@@ -28,8 +32,21 @@ export class SidenavComponent implements OnInit {
 				this.selectedLayer = layer;
 			}
 		});
-		this.mapLoader.tileMap.subscribe(tilemap => this.tilemap = tilemap);
-		this.globalEvents.currentView.subscribe(view => this.currentView = view);
+		this.mapLoader.tileMap.subscribe(tilemap => {
+			this.tilemap = tilemap;
+			this.globalEvents.currentView.next(EditorView.Layers);
+		});
+		this.globalEvents.currentView.subscribe(view => {
+			this.currentView = view;
+			switch (view) {
+				case EditorView.Layers:
+					this.activeTab = 0;
+					break;
+				case EditorView.Entities:
+					this.activeTab = 1;
+					break;
+			}
+		});
 		
 	}
 	

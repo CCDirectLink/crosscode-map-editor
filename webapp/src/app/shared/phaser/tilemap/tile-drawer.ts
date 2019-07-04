@@ -7,56 +7,57 @@ import {SelectedTile} from '../../../models/tile-selector';
 import * as Phaser from 'phaser';
 import {Subscription} from 'rxjs';
 import {Filler} from './fill';
+import {BaseSystem} from '../BaseSystem';
 
-export class TileDrawer extends Phaser.GameObjects.Container {
+export class TileDrawer extends BaseSystem {
 	
 	private layer?: CCMapLayer;
 	private selectedTiles: SelectedTile[] = [];
 	
 	private rect?: Phaser.GameObjects.Rectangle;
 	
-	private previewTileMap: Phaser.Tilemaps.Tilemap;
+	private previewTileMap!: Phaser.Tilemaps.Tilemap;
 	private previewLayer?: Phaser.Tilemaps.DynamicTilemapLayer;
-	private subs: Subscription[] = [];
 	
-	private keyBindings: { event: string, fun: Function, emitter: Phaser.Events.EventEmitter }[] = [];
 	private rightClickStart?: Point;
 	private rightClickEnd?: Point;
 	private renderLayersTransparent = false;
 	
-	private readonly transparentKey: Phaser.Input.Keyboard.Key;
-	private readonly visibilityKey: Phaser.Input.Keyboard.Key;
-	private readonly fillKey: Phaser.Input.Keyboard.Key;
+	private container!: Phaser.GameObjects.Container;
+	
+	private transparentKey!: Phaser.Input.Keyboard.Key;
+	private visibilityKey!: Phaser.Input.Keyboard.Key;
+	private fillKey!: Phaser.Input.Keyboard.Key;
 	
 	constructor(scene: Phaser.Scene) {
-		super(scene);
+		super(scene, 'tileDrawer');
+	}
+	
+	protected init() {
+		this.fillKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F, false);
+		this.transparentKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R, false);
+		this.visibilityKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V, false);
 		
-		this.fillKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F, false);
-		this.transparentKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R, false);
-		this.visibilityKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V, false);
+		this.container = this.scene.add.container(0, 0);
+		this.container.depth = 1000;
 		
-		this.depth = 1000;
 		this.drawRect(1, 1);
 		
 		this.resetSelectedTiles();
 		
-		this.previewTileMap = scene.add.tilemap(undefined, Globals.TILE_SIZE, Globals.TILE_SIZE);
-		
-		this.setActive(true);
+		this.previewTileMap = this.scene.add.tilemap(undefined, Globals.TILE_SIZE, Globals.TILE_SIZE);
 	}
 	
-	
-	selectLayer(selectedLayer?: CCMapLayer) {
+	private selectLayer(selectedLayer?: CCMapLayer) {
 		this.layer = selectedLayer;
 		
 		this.setLayerAlpha();
 		
-		// hide when no layer selected or has no tileset
 		if (!selectedLayer || !selectedLayer.details.tilesetName) {
-			this.visible = false;
+			this.container.visible = false;
 			return;
 		}
-		this.visible = true;
+		this.container.visible = true;
 		const tileset = this.previewTileMap.addTilesetImage('only', selectedLayer.details.tilesetName);
 		tileset.firstgid = 1;
 	}
@@ -82,9 +83,9 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 	
 	
 	preUpdate() {
-		// // hide cursor when no map loaded
+		// hide cursor when no map loaded
 		if (!this.layer) {
-			this.visible = false;
+			this.container.visible = false;
 			return;
 		}
 		const pointer = this.scene.input.activePointer;
@@ -120,21 +121,22 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 		}
 		
 		// position tile drawer border to cursor
-		this.x = pointer.worldX;
-		this.y = pointer.worldY;
+		const container = this.container;
+		container.x = pointer.worldX;
+		container.y = pointer.worldY;
 		
-		if (this.x < 0) {
-			this.x -= Globals.TILE_SIZE;
+		if (container.x < 0) {
+			container.x -= Globals.TILE_SIZE;
 		}
-		if (this.y < 0) {
-			this.y -= Globals.TILE_SIZE;
+		if (container.y < 0) {
+			container.y -= Globals.TILE_SIZE;
 		}
 		
-		this.x -= this.x % Globals.TILE_SIZE;
-		this.y -= this.y % Globals.TILE_SIZE;
+		container.x -= container.x % Globals.TILE_SIZE;
+		container.y -= container.y % Globals.TILE_SIZE;
 		
 		if (this.previewLayer) {
-			Vec2.assign(this.previewLayer, this);
+			Vec2.assign(this.previewLayer, container);
 		}
 		
 		// draw tiles (skip when tile selector is open)
@@ -156,47 +158,36 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 		}
 	}
 	
-	setActive(value: boolean): this {
-		super.setActive(value);
-		
-		if (value) {
-			this.activate();
-		} else {
-			this.deactivate();
+	protected deactivate() {
+		this.container.visible = false;
+		if (this.previewLayer) {
+			this.previewLayer.visible = false;
 		}
-		return this;
 	}
 	
-	private deactivate() {
-		this.keyBindings.forEach(binding => {
-			binding.emitter.removeListener(binding.event, binding.fun);
-		});
-		this.keyBindings = [];
-		this.subs.forEach(sub => sub.unsubscribe());
-	}
-	
-	private activate() {
+	protected activate() {
+		if (this.previewLayer) {
+			this.previewLayer.visible = true;
+		}
 		const sub = Globals.mapLoaderService.selectedLayer.subscribe(layer => this.selectLayer(layer));
-		this.subs.push(sub);
+		this.addSubscription(sub);
 		
 		const sub2 = Globals.phaserEventsService.changeSelectedTiles.subscribe(tiles => this.updateSelectedTiles(tiles));
-		this.subs.push(sub2);
+		this.addSubscription(sub2);
 		
-		
-		this.keyBindings = [];
 		const pointerDown = (pointer: Phaser.Input.Pointer) => {
 			if (pointer.rightButtonDown()) {
 				this.onMouseRightDown();
 			}
 		};
-		this.keyBindings.push({event: 'pointerdown', fun: pointerDown, emitter: this.scene.input});
+		this.addKeybinding({event: 'pointerdown', fun: pointerDown, emitter: this.scene.input});
 		
 		const pointerUp = (pointer: Phaser.Input.Pointer) => {
 			if (pointer.rightButtonReleased()) {
 				this.onMouseRightUp();
 			}
 		};
-		this.keyBindings.push({event: 'pointerup', fun: pointerUp, emitter: this.scene.input});
+		this.addKeybinding({event: 'pointerup', fun: pointerUp, emitter: this.scene.input});
 		
 		
 		const fill = () => {
@@ -204,7 +195,7 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 				this.fill();
 			}
 		};
-		this.keyBindings.push({event: 'up', fun: fill, emitter: this.fillKey});
+		this.addKeybinding({event: 'up', fun: fill, emitter: this.fillKey});
 		
 		
 		const leftUp = (pointer: Phaser.Input.Pointer) => {
@@ -221,7 +212,7 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 				icon: 'create',
 			});
 		};
-		this.keyBindings.push({event: 'pointerup', fun: leftUp, emitter: this.scene.input});
+		this.addKeybinding({event: 'pointerup', fun: leftUp, emitter: this.scene.input});
 		
 		const transparent = () => {
 			if (!Helper.isInputFocused()) {
@@ -229,19 +220,14 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 				this.setLayerAlpha();
 			}
 		};
-		this.keyBindings.push({event: 'up', fun: transparent, emitter: this.transparentKey});
+		this.addKeybinding({event: 'up', fun: transparent, emitter: this.transparentKey});
 		
 		const visible = () => {
 			if (!Helper.isInputFocused()) {
 				Globals.globalEventsService.toggleVisibility.next();
 			}
 		};
-		this.keyBindings.push({event: 'up', fun: visible, emitter: this.visibilityKey});
-		
-		
-		this.keyBindings.forEach(binding => {
-			binding.emitter.addListener(binding.event, binding.fun);
-		});
+		this.addKeybinding({event: 'up', fun: visible, emitter: this.visibilityKey});
 	}
 	
 	private setLayerAlpha() {
@@ -282,7 +268,7 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 		this.rect.setOrigin(0, 0);
 		this.rect.setStrokeStyle(1, 0xffffff, 0.6);
 		
-		this.add(this.rect);
+		this.container.add(this.rect);
 	}
 	
 	private onMouseRightUp() {
@@ -339,7 +325,7 @@ export class TileDrawer extends Phaser.GameObjects.Container {
 		this.previewTileMap.removeAllLayers();
 		const layer = this.previewTileMap.createBlankDynamicLayer('layer', 'only', 0, 0, 40, 40);
 		this.previewLayer = layer;
-		layer.depth = this.depth - 1;
+		layer.depth = this.container.depth - 1;
 		layer.alpha = 0.6;
 		
 		this.selectedTiles.forEach(tile => {
