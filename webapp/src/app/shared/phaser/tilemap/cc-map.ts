@@ -18,6 +18,8 @@ export class CCMap {
 	attributes: Attributes = <any>{};
 	screen: Point = {x: 0, y: 0};
 	
+	loadedDetails?: CrossCodeMap;
+	
 	private tileMap?: Phaser.Tilemaps.Tilemap;
 	
 	private historySub: Subscription;
@@ -73,7 +75,7 @@ export class CCMap {
 	
 	loadMap(map: CrossCodeMap, skipInit = false) {
 		const game = this.game;
-		
+		this.loadedDetails = map;
 		const tileMap = this.scene.make.tilemap({
 			width: map.mapWidth,
 			height: map.mapHeight,

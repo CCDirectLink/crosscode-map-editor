@@ -14,18 +14,20 @@ export interface KeyBinding {
 	emitter: Phaser.Events.EventEmitter;
 }
 
-export abstract class BaseSystem extends Phaser.GameObjects.GameObject {
+export abstract class BaseObject extends Phaser.GameObjects.GameObject {
 	private subs: Subscription[] = [];
 	
 	private keyBindings: KeyBinding[] = [];
 	
-	protected constructor(scene: Phaser.Scene, type: string) {
+	protected constructor(scene: Phaser.Scene, type: string, active = true) {
 		super(scene, type);
-		
+		this.active = false;
 		this.init();
 		
-		this.active = true;
-		this.activate();
+		if (active) {
+			this.active = true;
+			this.activate();
+		}
 	}
 	
 	protected abstract init(): void;

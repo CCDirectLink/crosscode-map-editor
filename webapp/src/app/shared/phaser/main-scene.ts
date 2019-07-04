@@ -51,11 +51,8 @@ export class MainScene extends Phaser.Scene {
 		
 		game.scale.scaleMode = Phaser.Scale.ScaleModes.NONE;
 		
-		const scale = 1 / window.devicePixelRatio;
-		console.log('pixel device ratio', window.devicePixelRatio);
 		const tileMap = new CCMap(game, this);
 		Globals.map = tileMap;
-		
 		
 		this.sub = Globals.mapLoaderService.map.subscribe((map) => {
 			if (map) {
@@ -72,11 +69,10 @@ export class MainScene extends Phaser.Scene {
 		const tileDrawer = new TileDrawer(this);
 		this.add.existing(tileDrawer);
 		
-		const entityManager = new EntityManager(this);
+		const entityManager = new EntityManager(this, false);
 		this.add.existing(entityManager);
 		
 		Globals.globalEventsService.currentView.subscribe(view => {
-			console.log('current view', view);
 			switch (view) {
 				case EditorView.Layers:
 					tileDrawer.setActive(true);
@@ -88,21 +84,6 @@ export class MainScene extends Phaser.Scene {
 					break;
 			}
 		});
-		
-		// this.entityManager = game.plugins.add(EntityManager);
-		// this.entityManager.setGlobalEvents(this.globalEvents);
-		
-		// this.globalEvents.currentView.subscribe(view => {
-		// 	if (view === EditorView.Layers) {
-		// 		this.tileDrawer.activate();
-		// 		this.tileDrawer.selectLayer(this.mapLoader.selectedLayer.getValue(), this.tileMap);
-		// 		this.entityManager.deactivate();
-		// 	} else if (view === EditorView.Entities) {
-		// 		this.tileDrawer.selectLayer(null);
-		// 		this.tileDrawer.deactivate();
-		// 		this.entityManager.activate();
-		// 	}
-		// });
 		
 		// this.mapLoader.selectedLayer.subscribe(layer => this.tileDrawer.selectLayer(layer));
 		Globals.globalEventsService.currentView.next(EditorView.Layers);

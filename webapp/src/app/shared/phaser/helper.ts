@@ -1,6 +1,7 @@
 import {Point} from '../../models/cross-code-map';
 import {Globals} from '../globals';
 import {CCMapLayer} from './tilemap/cc-map-layer';
+import {Glob} from 'glob';
 
 export class Helper {
 	/**
@@ -117,21 +118,19 @@ export class Helper {
 	}
 	
 	public static getJson(key: string, callback: (json: any) => void) {
-		// TODO
-		// const game = Globals.game;
-		//
-		// // get json from cache
-		// if (game.cache.checkJSONKey(key)) {
-		// 	return callback(game.cache.getJSON(key));
-		// }
-		//
-		// // load json
-		// game.load.json(key, Globals.URL + key + '.json');
-		// game.load.onLoadComplete.addOnce(() => {
-		// 	return callback(game.cache.getJSON(key));
-		// });
-		// game.load.crossOrigin = 'anonymous';
-		// game.load.start();
+		const scene = Globals.scene;
+		
+		// get json from cache
+		if (scene.cache.json.has(key)) {
+			return callback(scene.cache.json.get(key));
+		}
+		
+		// load json
+		scene.load.json(key, Globals.URL + key + '.json');
+		scene.load.once('complete', () => {
+			return callback(scene.cache.json.get(key));
+		});
+		scene.load.start();
 	}
 	
 	public static getJsonPromise(key: string): any {

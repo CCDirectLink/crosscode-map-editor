@@ -7,9 +7,9 @@ import {SelectedTile} from '../../../models/tile-selector';
 import * as Phaser from 'phaser';
 import {Subscription} from 'rxjs';
 import {Filler} from './fill';
-import {BaseSystem} from '../BaseSystem';
+import {BaseObject} from '../BaseObject';
 
-export class TileDrawer extends BaseSystem {
+export class TileDrawer extends BaseObject {
 	
 	private layer?: CCMapLayer;
 	private selectedTiles: SelectedTile[] = [];

@@ -6,6 +6,7 @@ import * as Phaser from 'phaser';
 import {Vec2} from '../vec2';
 
 import {Globals} from '../../globals';
+import {BaseObject} from '../BaseObject';
 
 export interface InputEvents {
 	onLeftClick?: (entity: CCEntity, pointer: Phaser.Input.Pointer) => void;
@@ -35,17 +36,23 @@ export interface AttributeValue {
 	[key: string]: any;
 }
 
-export abstract class CCEntity extends Phaser.GameObjects.Image {
+interface ImageContainer extends Phaser.GameObjects.Container {
+	getAll: () => Phaser.GameObjects.Image[];
+}
+
+export abstract class CCEntity extends BaseObject {
 	
 	// TODO
-	// private map: CCMap;
+	private map: CCMap;
+	private levelOffset = 0;
+	private pos: Point;
+	
+	private container!: ImageContainer;
+	
 	// public group: SortableGroup;
 	// private levelOffsetGroup: SortableGroup;
-	// private boundingBoxOffsetGroup: SortableGroup;
 	// private text: Phaser.Text;
 	//
-	// // for all sprites
-	// private images: Phaser.Image[] = [];
 	//
 	// // input (is handled mostly by entity manager)
 	// private collisionBitmap: Phaser.BitmapData;
@@ -62,39 +69,39 @@ export abstract class CCEntity extends Phaser.GameObjects.Image {
 	// public startOffset: Point = {};
 	//
 	// zIndex: number;
-	// details: { level: { level: number, offset: number }, type: string, settings: any };
-	// entitySettings: {
-	// 	collType: string;
-	// 	baseSize: Point3;
-	// 	sheets: {
-	// 		fix: {
-	// 			gfx: string | Phaser.BitmapData;
-	// 			x: number;
-	// 			y: number;
-	// 			w: number;
-	// 			h: number;
-	// 			renderHeight?: number;
-	// 			offsetX?: number;
-	// 			offsetY?: number;
-	// 			flipX?: boolean;
-	// 			flipY?: boolean;
-	// 		}[],
-	// 		offset?: Point;
-	// 		renderMode?: string;
-	// 		singleColor?: boolean;
-	// 		flipX: boolean;
-	// 	}
-	// 	scalableX: boolean;
-	// 	scalableY: boolean;
-	// 	scalableStep: number;
-	// 	pivot: Point;
-	// } = <any>{};
-	//
-	protected constructor(game: Phaser.Game, map: CCMap, x: number, y: number, inputEvents: InputEvents, typeName: string) {
-		super(<any>null, 0, 0, '');
-		// super(game, 0, 0, null);
+	details: { level: { level: number, offset: number }, type: string, settings: any } = <any>{};
+	entitySettings: {
+		collType: string;
+		baseSize: Point3;
+		sheets: {
+			fix: {
+				gfx: any;
+				x: number;
+				y: number;
+				w: number;
+				h: number;
+				renderHeight?: number;
+				offsetX?: number;
+				offsetY?: number;
+				flipX?: boolean;
+				flipY?: boolean;
+			}[],
+			offset?: Point;
+			renderMode?: string;
+			singleColor?: boolean;
+			flipX: boolean;
+		}
+		scalableX: boolean;
+		scalableY: boolean;
+		scalableStep: number;
+		pivot: Point;
+	} = <any>{};
+	
+	protected constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, inputEvents: InputEvents, typeName: string) {
+		super(scene, typeName, true);
 		// this.setInputEvents(inputEvents);
-		// this.map = map;
+		this.map = map;
+		this.pos = {x: x, y: y};
 		// game.add.existing(this);
 		// this.details = <any>{
 		// 	type: typeName
@@ -136,102 +143,162 @@ export abstract class CCEntity extends Phaser.GameObjects.Image {
 		// this.setEvents();
 	}
 	
+	
+	protected init(): void {
+		this.container = <any>this.scene.add.container(0, 0);
+	}
+	
+	protected activate(): void {
+	}
+	
+	
+	protected deactivate(): void {
+	}
+	
+	
+	preUpdate(): void {
+		// super.update();
+		// this.leftClickOpts.timer += this.game.time.elapsed;
+		// if (this.isDragged) {
+		// 	const p = Helper.screenToWorld(this.game.input.mousePointer);
+		// 	this.group.x = Math.round(p.x - this.startOffset.x);
+		// 	this.group.y = Math.round(p.y - this.startOffset.y);
+		//
+		// 	const settings = Globals.entitySettings;
+		// 	if (settings.enableGrid) {
+		// 		const diffX = this.group.x % settings.gridSize;
+		// 		if (diffX * 2 < settings.gridSize) {
+		// 			this.group.x -= diffX;
+		// 		} else {
+		// 			this.group.x += settings.gridSize - diffX;
+		// 		}
+		//
+		// 		const diffY = this.group.y % settings.gridSize;
+		// 		if (diffY * 2 < settings.gridSize) {
+		// 			this.group.y -= diffY;
+		// 		} else {
+		// 			this.group.y += settings.gridSize - diffY;
+		// 		}
+		// 	}
+		// 	this.updateZIndex();
+		// }
+	}
+	
 	updateSettings() {
-		// const s = this.entitySettings;
-		// const settings = this.details.settings;
-		// const game = this.game;
-		//
-		// this.images.forEach(img => img.destroy());
-		// this.images = [];
-		//
-		// // bound box offset
-		// if (s.baseSize) {
-		// 	this.boundingBoxOffsetGroup.x = s.baseSize.x / 2;
-		// 	this.boundingBoxOffsetGroup.y = s.baseSize.y;
-		// }
-		//
-		// // setup sprite
-		// if (s.sheets && s.sheets.fix) {
-		// 	if (s.scalableX || s.scalableY) {
-		// 		// scalable
-		// 		const fix = s.sheets.fix[0];
-		// 		const width = settings.size.x;
-		// 		const height = (fix.renderHeight || s.baseSize.z) + settings.size.y;
-		//
-		// 		for (let x = 0; x < width; x += fix.w) {
-		// 			const imgWidth = Math.min(fix.w, width - x);
-		// 			for (let y = 0; y < height; y += fix.h) {
-		// 				const imgHeight = Math.min(fix.h, height - y);
-		// 				const img = game.add.image(x, -y + settings.size.y + s.baseSize.z, null, null, this.boundingBoxOffsetGroup);
-		// 				img.loadTexture(fix.gfx);
-		//
-		// 				img.crop(new Phaser.Rectangle(fix.x, fix.y, imgWidth, imgHeight));
-		// 				img.anchor.set(0, 1);
-		// 				this.images.push(img);
-		// 			}
-		// 		}
-		//
-		// 		this.boundingBoxOffsetGroup.x = 0;
-		// 		this.boundingBoxOffsetGroup.y = -s.baseSize.z;
-		// 	} else {
-		// 		// default
-		// 		s.sheets.fix.forEach(sheet => {
-		// 			const img = this.game.add.image(sheet.offsetX, sheet.offsetY, sheet.gfx, undefined, this.boundingBoxOffsetGroup);
-		// 			img.crop(new Phaser.Rectangle(sheet.x, sheet.y, sheet.w, sheet.h));
-		// 			img.anchor.set(0.5, 1);
-		// 			img.scale.set(sheet.flipX ? -1 : 1, sheet.flipY ? -1 : 1);
-		// 			this.images.push(img);
-		// 		});
-		//
-		// 		if (s.sheets.offset) {
-		// 			this.images.forEach(img => Vec2.add(img, s.sheets.offset));
-		// 		}
-		// 		if (s.sheets.flipX) {
-		// 			this.images.forEach(img => img.scale.x *= -1);
-		// 		}
-		// 	}
-		//
-		// 	if (s.sheets.renderMode === 'lighter') {
-		// 		this.images.forEach(img => img.blendMode = PIXI.blendModes.ADD);
-		// 	} else if (s.sheets.renderMode === 'source-over') {
-		// 		// TODO: no idea what that actually is
-		// 		console.warn('renderMode source-over found');
-		// 	}
-		// }
-		//
+		console.log('this', this);
+		const s = this.entitySettings;
+		const settings = this.details.settings;
+		
+		this.container.removeAll(true);
+		
+		// bound box offset
+		if (s.baseSize) {
+			this.container.x = s.baseSize.x / 2;
+			this.container.y = s.baseSize.y;
+		}
+		
+		// setup sprite
+		if (s.sheets && s.sheets.fix) {
+			if (s.scalableX || s.scalableY) {
+				// scalable
+				const fix = s.sheets.fix[0];
+				const width = settings.size.x;
+				const height = (fix.renderHeight || s.baseSize.z) + settings.size.y;
+				
+				for (let x = 0; x < width; x += fix.w) {
+					const imgWidth = Math.min(fix.w, width - x);
+					for (let y = 0; y < height; y += fix.h) {
+						const imgHeight = Math.min(fix.h, height - y);
+						const img = this.scene.add.image(x, -y + settings.size.y + s.baseSize.z, fix.gfx);
+						img.setCrop(fix.x, fix.y, imgWidth, imgHeight);
+						
+						// TODO: setOrigin, originX does not work
+						img.originX = 0;
+						img.originY = 1;
+						this.container.add(img);
+					}
+				}
+				
+				if (s.baseSize.z) {
+					this.container.x = 0;
+					this.container.y = -s.baseSize.z;
+				} else {
+					throw new Error('basesize.z not defined');
+				}
+				
+			} else {
+				// default
+				s.sheets.fix.forEach(sheet => {
+					const img = this.scene.add.image(sheet.offsetX || 0, (sheet.offsetY || 0) + this.levelOffset, sheet.gfx);
+					img.setOrigin(0, 0);
+					
+					// crop offset
+					img.x -= sheet.x;
+					img.y -= sheet.y;
+					
+					// origin offset x=0.5, y=1
+					img.x -= sheet.w / 2;
+					img.y -= sheet.h;
+					
+					
+					img.setCrop(sheet.x, sheet.y, sheet.w, sheet.h);
+					img.flipX = !!sheet.flipX;
+					img.flipY = !!sheet.flipY;
+					this.container.add(img);
+				});
+				
+				if (s.sheets.offset) {
+					this.container.getAll().forEach(img => Vec2.add(img, s.sheets.offset!));
+				}
+				if (s.sheets.flipX) {
+					this.container.getAll().forEach(img => img.flipX = !img.flipX);
+				}
+			}
+			
+			if (s.sheets.renderMode === 'lighter') {
+				this.container.getAll().forEach(img => img.blendMode = Phaser.BlendModes.ADD);
+			} else if (s.sheets.renderMode === 'source-over') {
+				// TODO: no idea what that actually is
+				console.warn('renderMode source-over found');
+			}
+		}
+		
+		this.container.x += this.pos.x;
+		this.container.y += this.pos.y;
+		
 		// this.drawBoundingBox();
 	}
 	
 	set level(level: any) {
-		// const details = this.details;
-		//
-		// if (typeof level === 'object') {
-		// 	details.level = level;
-		// } else {
-		// 	details.level = {
-		// 		level: level,
-		// 		offset: 0
-		// 	};
-		// }
-		//
-		// this.updateLevel();
+		const details = this.details;
+		
+		if (typeof level === 'object') {
+			details.level = level;
+		} else {
+			details.level = {
+				level: level,
+				offset: 0
+			};
+		}
+		
+		this.updateLevel();
 	}
 	
 	updateLevel() {
-		// this.updateZIndex();
-		// const level = this.map.levels[this.details.level.level];
-		// let height = 0;
-		// if (level) {
-		// 	height = level.height;
-		// }
-		// const offset = this.details.level.offset;
-		// this.levelOffsetGroup.y = -(height + offset);
+		this.updateZIndex();
+		const level = this.map.levels[this.details.level.level];
+		let height = 0;
+		if (level) {
+			height = level.height;
+		}
+		const offset = this.details.level.offset;
+		this.levelOffset = -(height + offset);
 	}
 	
 	// TODO: refactor
 	setSettings(settings: any) {
-		// this.details.settings = settings;
-		// this.updateType();
+		this.details.settings = settings;
+		this.updateType();
 	}
 	
 	setEnableInput(enable: boolean) {
@@ -266,47 +333,18 @@ export abstract class CCEntity extends Phaser.GameObjects.Image {
 		// super.destroy();
 	}
 	
-	update() {
-		// super.update();
-		// this.leftClickOpts.timer += this.game.time.elapsed;
-		// if (this.isDragged) {
-		// 	const p = Helper.screenToWorld(this.game.input.mousePointer);
-		// 	this.group.x = Math.round(p.x - this.startOffset.x);
-		// 	this.group.y = Math.round(p.y - this.startOffset.y);
-		//
-		// 	const settings = Globals.entitySettings;
-		// 	if (settings.enableGrid) {
-		// 		const diffX = this.group.x % settings.gridSize;
-		// 		if (diffX * 2 < settings.gridSize) {
-		// 			this.group.x -= diffX;
-		// 		} else {
-		// 			this.group.x += settings.gridSize - diffX;
-		// 		}
-		//
-		// 		const diffY = this.group.y % settings.gridSize;
-		// 		if (diffY * 2 < settings.gridSize) {
-		// 			this.group.y -= diffY;
-		// 		} else {
-		// 			this.group.y += settings.gridSize - diffY;
-		// 		}
-		// 	}
-		// 	this.updateZIndex();
-		// }
-	}
-	
 	updateZIndex() {
-		// let zIndex = this.details.level.level * 10 + 1;
-		//
-		// // TODO: hack to display OLPlatform over objects because right now Object Layer is always on level 10
-		// if (this.details.type === 'OLPlatform') {
-		// 	zIndex += 100;
-		// }
-		//
-		// // sort entities by y when on same level
-		// zIndex += this.group.y * 0.000001;
-		//
-		// this.group.zIndex = zIndex;
-		// Globals.zIndexUpdate = true;
+		let zIndex = this.details.level.level * 10 + 1;
+		
+		// TODO: hack to display OLPlatform over objects because right now Object Layer is always on level 10
+		if (this.details.type === 'OLPlatform') {
+			zIndex += 100;
+		}
+		
+		// sort entities by y when on same level
+		zIndex += this.pos.y * 0.000001;
+		
+		this.container.depth = zIndex;
 	}
 	
 	exportEntity(): MapEntity {
@@ -328,46 +366,47 @@ export abstract class CCEntity extends Phaser.GameObjects.Image {
 	protected abstract setupType(settings: any): void;
 	
 	public updateType() {
-		// const settings = this.details.settings;
-		// this.setupType(settings);
+		const settings = this.details.settings;
+		this.setupType(settings);
 	}
 	
 	public generateNoImageType(r?: number, g?: number, b?: number, a?: number) {
-		// const settings = this.details.settings;
-		//
-		// const baseSize = settings.size || {x: 16, y: 16};
-		// baseSize.z = settings.zHeight || settings.wallZHeight || 0;
-		//
-		// this.entitySettings = <any>{};
-		// this.entitySettings.baseSize = baseSize;
-		// const scaleSettings = this.getScaleSettings();
-		// if (scaleSettings && (scaleSettings.scalableX || scaleSettings.scalableY)) {
-		// 	this.entitySettings.scalableX = scaleSettings.scalableX;
-		// 	this.entitySettings.scalableY = scaleSettings.scalableY;
-		// } else {
-		// 	this.anchor.y = 1;
-		// 	this.anchor.x = 0.5;
-		// }
-		// this.generateSingleColorSheet(r || 155, g || 60, b || 40, a);
-		// this.updateSettings();
+		const settings = this.details.settings;
+		
+		const baseSize = settings.size || {x: 16, y: 16};
+		baseSize.z = settings.zHeight || settings.wallZHeight || 0;
+		
+		this.entitySettings = <any>{};
+		this.entitySettings.baseSize = baseSize;
+		const scaleSettings = this.getScaleSettings();
+		if (scaleSettings && (scaleSettings.scalableX || scaleSettings.scalableY)) {
+			this.entitySettings.scalableX = scaleSettings.scalableX;
+			this.entitySettings.scalableY = scaleSettings.scalableY;
+		} else {
+			// TODO: set proper origin for no image
+			// this.container.originX = 0.5;
+			// this.container.originY = 1;
+		}
+		this.generateSingleColorSheet(0xc06040, a);
+		this.updateSettings();
 	}
 	
-	// private generateSingleColorSheet(r: number, g: number, b: number, a?: number) {
-	// 	const size = this.entitySettings.baseSize;
-	// 	const singleColor = this.game.make.bitmapData(size.x, size.y);
-	// 	singleColor.fill(r, g, b, a || 0.5);
-	// 	this.entitySettings.sheets = {
-	// 		fix: [{
-	// 			gfx: singleColor,
-	// 			x: 0,
-	// 			y: 0,
-	// 			w: size.x,
-	// 			h: size.y,
-	// 		}],
-	// 		singleColor: true,
-	// 		flipX: false,
-	// 	};
-	// }
+	private generateSingleColorSheet(rgb: number, a?: number) {
+		// TODO: should generate image key not actual gameobject
+		const size = this.entitySettings.baseSize;
+		const rect = this.scene.add.rectangle(0, 0, size.x, size.y, rgb, a);
+		this.entitySettings.sheets = {
+			fix: [{
+				gfx: rect,
+				x: 0,
+				y: 0,
+				w: size.x,
+				h: size.y,
+			}],
+			singleColor: true,
+			flipX: false,
+		};
+	}
 	
 	protected replaceJsonParams(jsonInstance: any, prop: any) {
 		Object.entries(jsonInstance).forEach(([key, value]: [string, any]) => {
