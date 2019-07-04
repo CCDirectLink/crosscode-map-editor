@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, from} from 'rxjs';
 import {Globals} from '../shared/globals';
 import {ElectronService} from './electron.service';
 import {FileInfos} from '../models/file-infos';
@@ -21,33 +21,24 @@ export class HttpClientService {
 		if (!Globals.isElectron) {
 			return this.http.get<FileInfos>(Globals.URL + 'api/allFiles');
 		}
-		return new Observable(obs => {
-			const path = this.electron.getAssetsPath();
-			obs.next(api.getAllFiles(path) as FileInfos);
-			obs.complete();
-		});
+		const path = this.electron.getAssetsPath();
+		return from(api.getAllFiles(path) as Promise<FileInfos>);
 	}
 	
 	getAllTilesets(): Observable<string[]> {
 		if (!Globals.isElectron) {
 			return this.http.get<string[]>(Globals.URL + 'api/allTilesets');
 		}
-		return new Observable(obs => {
-			const path = this.electron.getAssetsPath();
-			obs.next(api.getAllTilesets(path));
-			obs.complete();
-		});
+		const path = this.electron.getAssetsPath();
+		return from(api.getAllTilesets(path));
 	}
 	
 	getMaps(): Observable<string[]> {
 		if (!Globals.isElectron) {
 			return this.http.get<string[]>(Globals.URL + 'api/allMaps');
 		}
-		return new Observable(obs => {
-			const path = this.electron.getAssetsPath();
-			obs.next(api.getAllMaps(path));
-			obs.complete();
-		});
+		const path = this.electron.getAssetsPath();
+		return from(api.getAllMaps(path));
 	}
 
 	getMap(path: string): Observable<CrossCodeMap> {
