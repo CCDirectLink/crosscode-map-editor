@@ -207,9 +207,6 @@ export abstract class CCEntity extends BaseObject {
 						sheet.gfx);
 					img.setOrigin(0, 0);
 					
-					// crop offset
-					img.x -= sheet.x;
-					img.y -= sheet.y;
 					
 					// origin offset x=0.5, y=1
 					img.x -= sheet.w / 2;
@@ -219,7 +216,24 @@ export abstract class CCEntity extends BaseObject {
 					img.x += boundBoxOffset.x;
 					img.y += boundBoxOffset.y;
 					
-					img.setCrop(sheet.x, sheet.y, sheet.w, sheet.h);
+					// flip crop offset
+					let cropX = sheet.x;
+					let cropY = sheet.y;
+					
+					if (sheet.flipX) {
+						cropX = img.displayWidth - sheet.x - sheet.w;
+					}
+					
+					// TODO: untested
+					if (sheet.flipY) {
+						cropY = img.displayWidth - sheet.y - sheet.h;
+					}
+					
+					// crop offset
+					img.x -= cropX;
+					img.y -= cropY;
+					
+					img.setCrop(cropX, cropY, sheet.w, sheet.h);
 					img.flipX = !!sheet.flipX;
 					img.flipY = !!sheet.flipY;
 					this.container.add(img);
@@ -385,7 +399,7 @@ export abstract class CCEntity extends BaseObject {
 			}
 		});
 	}
-
+	
 	public getBoundingBox(): Phaser.Geom.Rectangle {
 		if (!this.inputZone.input) {
 			console.warn('no bounding box for: ' + this.details.type);
