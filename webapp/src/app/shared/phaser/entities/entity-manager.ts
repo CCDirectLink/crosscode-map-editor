@@ -1,10 +1,7 @@
-import {CCEntity, InputEvents} from './cc-entity';
-import {Sortable} from '../../../models/sortable';
-import {Helper} from '../helper';
+import {CCEntity} from './cc-entity';
 import {CCMap} from '../tilemap/cc-map';
-import {CrossCodeMap, MapEntity} from '../../../models/cross-code-map';
+import {MapEntity, Point} from '../../../models/cross-code-map';
 import {Vec2} from '../vec2';
-import {GlobalEventsService} from '../../global-events.service';
 import {Globals} from '../../globals';
 import {SelectionBox} from './selection-box';
 import {EntityRegistry} from './registry/entity-registry';
@@ -22,7 +19,14 @@ export class EntityManager extends BaseObject {
 	private gridKey!: Phaser.Input.Keyboard.Key;
 	private visibilityKey!: Phaser.Input.Keyboard.Key;
 	
-	private inputEvents: InputEvents = {};
+	private leftClickOpts: {
+		timer: number;
+		pos: Point;
+	} = {
+		timer: 0,
+		pos: {x: 0, y: 0}
+	};
+	
 	private selectedEntities: CCEntity[] = [];
 	// private copyEntities: CCEntity[];
 	
@@ -99,6 +103,10 @@ export class EntityManager extends BaseObject {
 					return;
 				}
 				
+				this.leftClickOpts.timer = 0;
+				this.leftClickOpts.pos.x = pointer.worldX;
+				this.leftClickOpts.pos.y = pointer.worldY;
+				
 				console.log('game object doooooown', gameObject);
 				
 				let entity;
@@ -142,26 +150,32 @@ export class EntityManager extends BaseObject {
 					
 					if (this.gameObjectDown) {
 						this.gameObjectDown = false;
-						return;
+					} else {
+						const entities = this.selectionBox.onInputUp();
+						if (!this.multiSelectKey.isDown) {
+							this.selectEntity();
+						}
+						entities.forEach(entity => {
+							this.selectEntity(entity, true);
+						});
 					}
 					
-					const entities = this.selectionBox.onInputUp();
-					if (!this.multiSelectKey.isDown) {
-						this.selectEntity();
+					let entity;
+					if (gameObject.length > 0) {
+						entity = gameObject[0].getData('entity');
 					}
-					entities.forEach(entity => {
-						this.selectEntity(entity, true);
-					});
+					if (entity) {
+						const p = {x: pointer.worldX, y: pointer.worldY};
+						console.log('click check');
+						if (this.leftClickOpts.timer < 200 && Vec2.distance2(p, this.leftClickOpts.pos) < 10) {
+							console.log('click');
+							this.selectEntity(entity, this.multiSelectKey.isDown);
+						}
+					}
 				}
 			},
 			emitter: this.scene.input
 		});
-		
-		this.inputEvents.onLeftClick = (e) => {
-			console.log('mul', this.multiSelectKey.isDown);
-			this.selectEntity(e, this.multiSelectKey.isDown);
-		};
-		
 		
 		// TODO
 		// this.keyBindings.push(this.gridKey.onDown.add(() => {
@@ -207,6 +221,7 @@ export class EntityManager extends BaseObject {
 	}
 	
 	preUpdate(time: number, delta: number): void {
+		this.leftClickOpts.timer += delta;
 		this.selectionBox.update(this.entities);
 	}
 	
@@ -250,7 +265,7 @@ export class EntityManager extends BaseObject {
 	generateEntity(entity: MapEntity): CCEntity {
 		const entityClass = this.entityRegistry.getEntity(entity.type);
 		
-		const ccEntity = new entityClass(this.scene, this.map, entity.x, entity.y, this.inputEvents, entity.type);
+		const ccEntity = new entityClass(this.scene, this.map, entity.x, entity.y, entity.type);
 		ccEntity.setSettings(entity.settings);
 		ccEntity.level = entity.level;
 		this.entities.push(ccEntity);

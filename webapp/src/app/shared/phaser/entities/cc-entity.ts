@@ -8,12 +8,6 @@ import {Vec2} from '../vec2';
 import {Globals} from '../../globals';
 import {BaseObject} from '../BaseObject';
 
-export interface InputEvents {
-	onLeftClick?: (entity: CCEntity, pointer: Phaser.Input.Pointer) => void;
-	onInputDown?: (entity: CCEntity, pointer: Phaser.Input.Pointer) => void;
-	onInputUp?: (entity: CCEntity, pointer: Phaser.Input.Pointer) => void;
-}
-
 export interface ScaleSettings {
 	scalableX: boolean;
 	scalableY: boolean;
@@ -50,15 +44,7 @@ export abstract class CCEntity extends BaseObject {
 	private collisionImage!: Phaser.GameObjects.Graphics;
 	private inputZone!: Phaser.GameObjects.Zone;
 	
-	private inputEvents: InputEvents = {};
 	private selected = false;
-	private leftClickOpts: {
-		timer: number;
-		pos: Point;
-	} = {
-		timer: 0,
-		pos: {x: 0, y: 0}
-	};
 	
 	// drag
 	public isDragged = false;
@@ -93,10 +79,9 @@ export abstract class CCEntity extends BaseObject {
 		pivot: Point;
 	} = <any>{};
 	
-	protected constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, inputEvents: InputEvents, typeName: string) {
+	protected constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
 		super(scene, typeName, false);
 		scene.add.existing(this);
-		this.setInputEvents(inputEvents);
 		this.map = map;
 		this.container.x = Math.round(x);
 		this.container.y = Math.round(y);
@@ -122,19 +107,19 @@ export abstract class CCEntity extends BaseObject {
 		this.container.add(this.inputZone);
 		
 		
-		this.inputZone.on('pointerover', () => this.dispatchInputOver());
-		this.inputZone.on('pointerout', () => this.dispatchInputOut());
+		this.inputZone.on('pointerover', () => this.inputOver());
+		this.inputZone.on('pointerout', () => this.inputOut());
 	}
 	
 	
-	public dispatchInputOver() {
+	public inputOver() {
 		if (!this.selected) {
 			this.collisionImage.visible = true;
 			this.collisionImage.alpha = 0.35;
 		}
 	}
 	
-	public dispatchInputOut() {
+	public inputOut() {
 		if (!this.selected) {
 			this.collisionImage.visible = false;
 		}
@@ -142,16 +127,6 @@ export abstract class CCEntity extends BaseObject {
 	
 	protected activate(): void {
 		this.inputZone.setInteractive();
-		
-		const events = this.inputEvents;
-		const down = (pointer: Phaser.Input.Pointer) => {
-			events.onInputDown!(this, pointer);
-		};
-		this.addKeybinding({event: 'pointerdown', fun: down, emitter: this.inputZone});
-		const up = (pointer: Phaser.Input.Pointer) => {
-			events.onInputUp!(this, pointer);
-		};
-		this.addKeybinding({event: 'pointerup', fun: up, emitter: this.inputZone});
 	}
 	
 	
@@ -161,14 +136,10 @@ export abstract class CCEntity extends BaseObject {
 	
 	
 	preUpdate(time: number, delta: number): void {
-		this.leftClickOpts.timer += delta;
 		if (this.isDragged) {
 			const container = this.container;
 			const p = this.scene.input.activePointer;
 			container.x = Math.round(p.worldX - this.startOffset.x);
-			if (isNaN(container.x)) {
-				console.log('waawoid');
-			}
 			container.y = Math.round(p.worldY - this.startOffset.y);
 			
 			const settings = Globals.entitySettings;
@@ -414,35 +385,7 @@ export abstract class CCEntity extends BaseObject {
 			}
 		});
 	}
-	
-	private setInputEvents(inputEvents: InputEvents) {
-		const events = this.inputEvents;
-		const input = inputEvents;
-		events.onInputDown = (o, pointer) => {
-			if (pointer.leftButtonDown()) {
-				this.leftClickOpts.timer = 0;
-				this.leftClickOpts.pos.x = pointer.worldX;
-				this.leftClickOpts.pos.y = pointer.worldY;
-			}
-			if (input.onInputDown) {
-				input.onInputDown(this, pointer);
-			}
-		};
-		events.onInputUp = (o, pointer) => {
-			if (input.onInputUp) {
-				input.onInputUp(this, pointer);
-			}
-			console.log('try to left ');
-			const p = {x: pointer.worldX, y: pointer.worldY};
-			if (this.leftClickOpts.timer < 200 && Vec2.distance2(p, this.leftClickOpts.pos) < 10) {
-				if (input.onLeftClick) {
-					console.log('on left click');
-					input.onLeftClick(this, pointer);
-				}
-			}
-		};
-	}
-	
+
 	public getBoundingBox(): Phaser.Geom.Rectangle {
 		if (!this.inputZone.input) {
 			console.warn('no bounding box for: ' + this.details.type);

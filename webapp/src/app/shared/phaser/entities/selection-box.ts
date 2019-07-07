@@ -65,10 +65,10 @@ export class SelectionBox {
 		entities.forEach(e => {
 			// TODO
 			if (Phaser.Geom.Intersects.RectangleToRectangle(rect, e.getBoundingBox())) {
-				e.dispatchInputOver();
+				e.inputOver();
 				this.selectedEntities.add(e);
 			} else {
-				e.dispatchInputOut();
+				e.inputOut();
 				this.selectedEntities.delete(e);
 			}
 		});
