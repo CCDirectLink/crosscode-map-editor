@@ -14,8 +14,13 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 	}
 	
 	ngOnChanges(changes?: SimpleChanges): void {
-		// TODO
-		// this.settings = this.custom || this.entity.details.settings;
+		if (this.custom) {
+			this.settings = this.custom;
+		} else if (this.entity){
+			this.settings = this.entity.details.settings;
+		} else {
+			throw new Error('entity and custom settings not defined');
+		}
 	}
 	
 	setSetting(key: string, value: any, updateType = true, parse = false) {

@@ -35,7 +35,6 @@ export class EntitiesComponent implements OnInit {
 	}
 	
 	loadSettings(entity?: CCEntity) {
-		console.log(entity);
 		if (!this.appHost) {
 			return;
 		}

@@ -32,7 +32,7 @@ export abstract class BaseObject extends Phaser.GameObjects.GameObject {
 	
 	protected abstract init(): void;
 	
-	abstract preUpdate(): void;
+	abstract preUpdate(time: number, delta: number): void;
 	
 	protected abstract activate(): void;
 	

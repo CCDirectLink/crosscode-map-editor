@@ -10,12 +10,6 @@ import {SelectionBox} from './selection-box';
 import {EntityRegistry} from './registry/entity-registry';
 import {BaseObject} from '../BaseObject';
 
-enum MouseButtons {
-	Left,
-	Right,
-	Middle
-}
-
 export class EntityManager extends BaseObject {
 	
 	private map?: CCMap;
@@ -31,9 +25,10 @@ export class EntityManager extends BaseObject {
 	private inputEvents: InputEvents = {};
 	private selectedEntities: CCEntity[] = [];
 	// private copyEntities: CCEntity[];
-	// private globalEvents: GlobalEventsService;
 	
-	// private selectionBox: SelectionBox;
+	private gameObjectDown = false;
+	
+	private selectionBox!: SelectionBox;
 	
 	private entityRegistry: EntityRegistry = new EntityRegistry();
 	
@@ -51,7 +46,7 @@ export class EntityManager extends BaseObject {
 		this.gridKey = keyboard.addKey(keyCodes.G, false);
 		this.visibilityKey = keyboard.addKey(keyCodes.R, false);
 		
-		// this.selectionBox = new SelectionBox(this.game);
+		this.selectionBox = new SelectionBox(this.scene);
 		
 		Globals.mapLoaderService.tileMap.subscribe(map => {
 			console.log('map loadedddas' + map);
@@ -61,20 +56,17 @@ export class EntityManager extends BaseObject {
 	
 	
 	protected deactivate() {
-		// this.inputImg.inputEnabled = false;
-		// if (!this.map) {
-		// 	return;
-		// }
-		// this.selectEntity(null);
-		// this.entities.forEach(entity => {
-		// 	entity.setEnableInput(false);
-		// 	entity.setSelected(false);
-		// });
+		this.selectEntity();
+		this.entities.forEach(entity => {
+			entity.setActive(false);
+			entity.setSelected(false);
+		});
 	}
 	
 	protected activate() {
-		let buttonPressed: MouseButtons;
-		
+		this.entities.forEach(entity => {
+			entity.setActive(true);
+		});
 		const sub2 = Globals.globalEventsService.selectedEntity.subscribe(entity => {
 			this.selectedEntities.forEach(e => e.setSelected(false));
 			this.selectedEntities = [];
@@ -93,12 +85,8 @@ export class EntityManager extends BaseObject {
 			entity.level = this.map.masterLevel;
 			const e = this.generateEntity(entity);
 			
-			// level offset
-			// const offset = this.map.levels[e.details.level.level];
-			// e.y += offset.height;
-			
 			// entity manager is activated
-			e.setEnableInput(true);
+			e.setActive(true);
 			this.selectEntity(e);
 		});
 		this.addSubscription(sub3);
@@ -106,68 +94,76 @@ export class EntityManager extends BaseObject {
 		
 		this.addKeybinding({
 			event: 'pointerdown',
-			fun: (pointer: Phaser.Input.Pointer) => {
-				if (pointer.middleButtonDown()) {
-					buttonPressed = MouseButtons.Middle;
-				} else if (pointer.leftButtonDown()) {
-					buttonPressed = MouseButtons.Left;
-					// this.selectionBox.onInputDown(Helper.screenToWorld(pointer));
-				} else if (pointer.rightButtonDown()) {
-					buttonPressed = MouseButtons.Right;
+			fun: (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
+				if (!pointer.leftButtonDown()) {
+					return;
 				}
 				
+				console.log('game object doooooown', gameObject);
 				
-				console.log(buttonPressed);
+				let entity;
+				if (gameObject.length > 0) {
+					entity = gameObject[0].getData('entity') as CCEntity;
+				}
+				
+				if (entity) {
+					this.gameObjectDown = true;
+					
+					// to allow instant drag of a single entity
+					if (this.selectedEntities.indexOf(entity) < 0) {
+						if (!this.multiSelectKey.isDown) {
+							this.selectEntity(entity);
+						}
+					}
+					this.selectedEntities.forEach(entity => {
+						entity.startOffset.x = pointer.worldX - entity.container.x;
+						entity.startOffset.y = pointer.worldY - entity.container.y;
+						entity.isDragged = true;
+					});
+				} else {
+					this.selectionBox.onInputDown(pointer);
+				}
 			},
 			emitter: this.scene.input
 		});
 		
 		this.addKeybinding({
 			event: 'pointerup',
-			fun: (pointer: Phaser.Input.Pointer) => {
-				if (buttonPressed === MouseButtons.Right) {
-					// this.selectEntity(null);
+			fun: (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
+				console.log('pointer up', gameObject);
+				if (pointer.rightButtonReleased()) {
+					this.selectEntity();
+					// TODO
 					// this.showAddEntityMenu();
-				} else if (buttonPressed === MouseButtons.Left) {
-					// const entities = this.selectionBox.onInputUp();
-					// if (!this.multiSelectKey.isDown) {
-					// 	this.selectEntity(null, false);
-					// }
-					// entities.forEach(entity => {
-					// 	this.selectEntity(entity, true);
-					// });
+				} else if (pointer.leftButtonReleased()) {
+					this.selectedEntities.forEach(entity => {
+						entity.isDragged = false;
+					});
+					
+					if (this.gameObjectDown) {
+						this.gameObjectDown = false;
+						return;
+					}
+					
+					const entities = this.selectionBox.onInputUp();
+					if (!this.multiSelectKey.isDown) {
+						this.selectEntity();
+					}
+					entities.forEach(entity => {
+						this.selectEntity(entity, true);
+					});
 				}
 			},
 			emitter: this.scene.input
 		});
 		
-		//
-		// this.inputEvents.onLeftClick = (e, pointer) => {
-		// 	this.selectEntity(e, this.multiSelectKey.isDown);
-		// };
-		//
-		// this.inputEvents.onInputDown = (e, pointer) => {
-		// 	if (pointer.leftButton.isDown) {
-		// 		// to allow instant drag of a single entity
-		// 		if (this.selectedEntities.indexOf(e) < 0) {
-		// 			if (!this.multiSelectKey.isDown) {
-		// 				this.selectEntity(e);
-		// 			}
-		// 		}
-		// 		this.selectedEntities.forEach(entity => {
-		// 			entity.startOffset = Vec2.sub(Helper.screenToWorld(pointer), entity.group, true);
-		// 			entity.isDragged = true;
-		// 		});
-		// 	}
-		// };
-		// this.inputEvents.onInputUp = (e, pointer, isOver) => {
-		// 	this.selectedEntities.forEach(entity => {
-		// 		entity.isDragged = false;
-		// 	});
-		// };
-		// this.inputImg.inputEnabled = true;
-		// this.inputImg.input.priorityID = 1;
-		//
+		this.inputEvents.onLeftClick = (e) => {
+			console.log('mul', this.multiSelectKey.isDown);
+			this.selectEntity(e, this.multiSelectKey.isDown);
+		};
+		
+		
+		// TODO
 		// this.keyBindings.push(this.gridKey.onDown.add(() => {
 		// 	console.log('grid key down');
 		// 	console.log(Helper.isInputFocused());
@@ -208,17 +204,10 @@ export class EntityManager extends BaseObject {
 		// 		e.group.visible = !e.group.visible;
 		// 	});
 		// }));
-		//
-		// if (!this.map) {
-		// 	return;
-		// }
-		// this.entities.forEach(entity => {
-		// 	entity.setEnableInput(true);
-		// });
 	}
 	
-	preUpdate(): void {
-		// this.selectionBox.update(this.entities);
+	preUpdate(time: number, delta: number): void {
+		this.selectionBox.update(this.entities);
 	}
 	
 	/** generates all entities and adds proper input handling */
@@ -235,22 +224,27 @@ export class EntityManager extends BaseObject {
 	}
 	
 	
-	selectEntity(entity: CCEntity, multiple = false) {
-		// if (multiple) {
-		// 	const i = this.selectedEntities.indexOf(entity);
-		// 	if (i >= 0) {
-		// 		entity.setSelected(false);
-		// 		this.selectedEntities.splice(i, 1);
-		// 	} else {
-		// 		entity.setSelected(true);
-		// 		this.selectedEntities.push(entity);
-		// 	}
-		// 	if (this.selectedEntities.length === 1) {
-		// 		this.globalEvents.selectedEntity.next(entity);
-		// 	}
-		// } else if (this.selectedEntities[0] !== entity || this.selectedEntities.length !== 1) {
-		// 	this.globalEvents.selectedEntity.next(entity);
-		// }
+	selectEntity(entity?: CCEntity, multiple = false) {
+		if (multiple) {
+			if (!entity) {
+				throw new Error('select entity is undefined, but multiple is true');
+				
+			}
+			const i = this.selectedEntities.indexOf(entity as CCEntity);
+			if (i >= 0) {
+				entity.setSelected(false);
+				this.selectedEntities.splice(i, 1);
+			} else {
+				entity.setSelected(true);
+				this.selectedEntities.push(entity!);
+			}
+			
+			if (this.selectedEntities.length === 1) {
+				Globals.globalEventsService.selectedEntity.next(entity);
+			}
+		} else if (this.selectedEntities[0] !== entity || this.selectedEntities.length !== 1) {
+			Globals.globalEventsService.selectedEntity.next(entity);
+		}
 	}
 	
 	generateEntity(entity: MapEntity): CCEntity {
@@ -282,7 +276,7 @@ export class EntityManager extends BaseObject {
 		// 	Vec2.sub(entityDef, offset);
 		// 	Vec2.add(entityDef, mousePos);
 		// 	const newEntity = this.generateEntity(entityDef);
-		// 	newEntity.setEnableInput(true);
+		// 	newEntity.setActive(true);
 		// 	this.selectEntity(newEntity, this.copyEntities.length > 1);
 		// });
 		//
@@ -304,11 +298,11 @@ export class EntityManager extends BaseObject {
 		return out;
 	}
 	
-	// private showAddEntityMenu() {
-	// 	this.globalEvents.showAddEntityMenu.next({
-	// 		worldPos: Helper.screenToWorld(this.game.input.mousePointer),
-	// 		// TODO: remove definitions.json, use entity registry instead
-	// 		definitions: this.game.cache.getJSON('definitions.json', false)
-	// 	});
-	// }
+	private showAddEntityMenu() {
+		// this.globalEvents.showAddEntityMenu.next({
+		// 	worldPos: Helper.screenToWorld(this.game.input.mousePointer),
+		// 	// TODO: remove definitions.json, use entity registry instead
+		// 	definitions: this.game.cache.getJSON('definitions.json', false)
+		// });
+	}
 }

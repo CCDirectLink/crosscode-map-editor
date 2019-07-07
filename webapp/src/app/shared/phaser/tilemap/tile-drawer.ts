@@ -17,7 +17,7 @@ export class TileDrawer extends BaseObject {
 	private rect?: Phaser.GameObjects.Rectangle;
 	
 	private previewTileMap!: Phaser.Tilemaps.Tilemap;
-	private previewLayer?: Phaser.Tilemaps.DynamicTilemapLayer;
+	private previewLayer?: Phaser.Tilemaps.StaticTilemapLayer;
 	
 	private rightClickStart?: Point;
 	private rightClickEnd?: Point;
@@ -82,7 +82,7 @@ export class TileDrawer extends BaseObject {
 	}
 	
 	
-	preUpdate() {
+	preUpdate(time: number, delta: number): void {
 		// hide cursor when no map loaded
 		if (!this.layer) {
 			this.container.visible = false;
@@ -323,14 +323,19 @@ export class TileDrawer extends BaseObject {
 	
 	private renderPreview() {
 		this.previewTileMap.removeAllLayers();
+		console.log(this);
 		const layer = this.previewTileMap.createBlankDynamicLayer('layer', 'only', 0, 0, 40, 40);
-		this.previewLayer = layer;
-		layer.depth = this.container.depth - 1;
-		layer.alpha = 0.6;
 		
 		this.selectedTiles.forEach(tile => {
 			layer.putTileAt(tile.id, tile.offset.x, tile.offset.y);
 		});
+		
+		this.previewLayer = this.previewTileMap.convertLayerToStatic();
+		this.previewLayer.depth = this.container.depth - 1;
+		this.previewLayer.alpha = 0.6;
+		
+		// TODO: phaser bug fix, see https://github.com/photonstorm/phaser/issues/4642
+		this.previewTileMap.layers = [this.previewLayer.layer];
 	}
 	
 	private resetSelectedTiles() {

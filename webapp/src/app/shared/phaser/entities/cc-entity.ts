@@ -11,10 +11,7 @@ import {BaseObject} from '../BaseObject';
 export interface InputEvents {
 	onLeftClick?: (entity: CCEntity, pointer: Phaser.Input.Pointer) => void;
 	onInputDown?: (entity: CCEntity, pointer: Phaser.Input.Pointer) => void;
-	onInputUp?: (entity: CCEntity, pointer: Phaser.Input.Pointer, isOver: boolean) => void;
-	onDragStart?: (entity: CCEntity, pointer: Phaser.Input.Pointer, x: number, y: number) => void;
-	onDragUpdate?: (entity: CCEntity, pointer: Phaser.Input.Pointer, x: number, y: number, point: Point, fromStart: boolean) => void;
-	onDragStop?: (entity: CCEntity, pointer: Phaser.Input.Pointer) => void;
+	onInputUp?: (entity: CCEntity, pointer: Phaser.Input.Pointer) => void;
 }
 
 export interface ScaleSettings {
@@ -36,38 +33,37 @@ export interface AttributeValue {
 	[key: string]: any;
 }
 
-interface ImageContainer extends Phaser.GameObjects.Container {
-	getAll: () => Phaser.GameObjects.Image[];
-}
-
 export abstract class CCEntity extends BaseObject {
 	
 	// TODO
 	private map: CCMap;
 	private levelOffset = 0;
-	private pos: Point;
 	
-	private container!: ImageContainer;
+	public container!: Phaser.GameObjects.Container;
 	
-	// public group: SortableGroup;
-	// private levelOffsetGroup: SortableGroup;
 	// private text: Phaser.Text;
-	//
-	//
+	private images: Phaser.GameObjects.Image[] = [];
+	
+	
 	// // input (is handled mostly by entity manager)
 	// private collisionBitmap: Phaser.BitmapData;
-	// public collisionImage: Phaser.Image;
-	// private inputEvents: InputEvents = {};
-	// private selected = false;
-	// private leftClickOpts: {
-	// 	timer?: number;
-	// 	pos?: Point;
-	// } = {};
-	//
-	// // drag
-	// public isDragged = false;
-	// public startOffset: Point = {};
-	//
+	private collisionImage!: Phaser.GameObjects.Graphics;
+	private inputZone!: Phaser.GameObjects.Zone;
+	
+	private inputEvents: InputEvents = {};
+	private selected = false;
+	private leftClickOpts: {
+		timer: number;
+		pos: Point;
+	} = {
+		timer: 0,
+		pos: {x: 0, y: 0}
+	};
+	
+	// drag
+	public isDragged = false;
+	public startOffset: Point = {x: 0, y: 0};
+	
 	// zIndex: number;
 	details: { level: { level: number, offset: number }, type: string, settings: any } = <any>{};
 	entitySettings: {
@@ -98,103 +94,115 @@ export abstract class CCEntity extends BaseObject {
 	} = <any>{};
 	
 	protected constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, inputEvents: InputEvents, typeName: string) {
-		super(scene, typeName, true);
-		// this.setInputEvents(inputEvents);
+		super(scene, typeName, false);
+		scene.add.existing(this);
+		this.setInputEvents(inputEvents);
 		this.map = map;
-		this.pos = {x: x, y: y};
-		// game.add.existing(this);
-		// this.details = <any>{
-		// 	type: typeName
-		// };
-		//
-		// this.boundingBoxOffsetGroup = game.add.group();
-		// this.boundingBoxOffsetGroup.add(this);
-		//
-		// this.levelOffsetGroup = game.add.group();
-		// this.levelOffsetGroup.add(this.boundingBoxOffsetGroup);
-		//
-		// this.group = game.add.group();
-		// this.group.add(this.levelOffsetGroup);
-		//
-		// // actual coordinates of the entity
-		// this.group.x = Math.round(x);
-		// this.group.y = Math.round(y);
-		//
-		// const collImg = this.game.add.image();
-		// this.collisionImage = collImg;
-		//
-		// collImg.alpha = 0;
-		// this.levelOffsetGroup.add(collImg);
-		// collImg.inputEnabled = false;
-		//
-		// // handle hover input
-		// collImg.events.onInputOver.add(() => {
-		// 	if (!this.selected) {
-		// 		collImg.alpha = 0.35;
-		// 	}
-		// });
-		// collImg.events.onInputOut.add(() => {
-		// 	if (!this.selected) {
-		// 		collImg.alpha = 0;
-		// 	}
-		// });
-		//
-		// this.visible = false;
-		// this.setEvents();
+		this.container.x = Math.round(x);
+		this.container.y = Math.round(y);
+		this.details = <any>{
+			type: typeName
+		};
 	}
 	
 	
 	protected init(): void {
 		this.container = <any>this.scene.add.container(0, 0);
+		
+		const collImg = this.scene.add.graphics();
+		this.container.add(collImg);
+		this.collisionImage = collImg;
+		
+		collImg.alpha = 0.35;
+		collImg.setVisible(false);
+		
+		this.inputZone = this.scene.add.zone(0, 0, 50, 50);
+		this.inputZone.setOrigin(0);
+		this.inputZone.setData('entity', this);
+		this.container.add(this.inputZone);
+		
+		
+		this.inputZone.on('pointerover', () => this.dispatchInputOver());
+		this.inputZone.on('pointerout', () => this.dispatchInputOut());
+	}
+	
+	
+	public dispatchInputOver() {
+		if (!this.selected) {
+			this.collisionImage.visible = true;
+			this.collisionImage.alpha = 0.35;
+		}
+	}
+	
+	public dispatchInputOut() {
+		if (!this.selected) {
+			this.collisionImage.visible = false;
+		}
 	}
 	
 	protected activate(): void {
+		this.inputZone.setInteractive();
+		
+		const events = this.inputEvents;
+		const down = (pointer: Phaser.Input.Pointer) => {
+			events.onInputDown!(this, pointer);
+		};
+		this.addKeybinding({event: 'pointerdown', fun: down, emitter: this.inputZone});
+		const up = (pointer: Phaser.Input.Pointer) => {
+			events.onInputUp!(this, pointer);
+		};
+		this.addKeybinding({event: 'pointerup', fun: up, emitter: this.inputZone});
 	}
 	
 	
 	protected deactivate(): void {
+		this.inputZone.disableInteractive();
 	}
 	
 	
-	preUpdate(): void {
-		// super.update();
-		// this.leftClickOpts.timer += this.game.time.elapsed;
-		// if (this.isDragged) {
-		// 	const p = Helper.screenToWorld(this.game.input.mousePointer);
-		// 	this.group.x = Math.round(p.x - this.startOffset.x);
-		// 	this.group.y = Math.round(p.y - this.startOffset.y);
-		//
-		// 	const settings = Globals.entitySettings;
-		// 	if (settings.enableGrid) {
-		// 		const diffX = this.group.x % settings.gridSize;
-		// 		if (diffX * 2 < settings.gridSize) {
-		// 			this.group.x -= diffX;
-		// 		} else {
-		// 			this.group.x += settings.gridSize - diffX;
-		// 		}
-		//
-		// 		const diffY = this.group.y % settings.gridSize;
-		// 		if (diffY * 2 < settings.gridSize) {
-		// 			this.group.y -= diffY;
-		// 		} else {
-		// 			this.group.y += settings.gridSize - diffY;
-		// 		}
-		// 	}
-		// 	this.updateZIndex();
-		// }
+	preUpdate(time: number, delta: number): void {
+		this.leftClickOpts.timer += delta;
+		if (this.isDragged) {
+			const container = this.container;
+			const p = this.scene.input.activePointer;
+			container.x = Math.round(p.worldX - this.startOffset.x);
+			if (isNaN(container.x)) {
+				console.log('waawoid');
+			}
+			container.y = Math.round(p.worldY - this.startOffset.y);
+			
+			const settings = Globals.entitySettings;
+			if (settings.enableGrid) {
+				const diffX = container.x % settings.gridSize;
+				if (diffX * 2 < settings.gridSize) {
+					container.x -= diffX;
+				} else {
+					container.x += settings.gridSize - diffX;
+				}
+				
+				const diffY = container.y % settings.gridSize;
+				if (diffY * 2 < settings.gridSize) {
+					container.y -= diffY;
+				} else {
+					container.y += settings.gridSize - diffY;
+				}
+			}
+			this.updateZIndex();
+		}
 	}
 	
 	updateSettings() {
-		console.log('this', this);
 		const s = this.entitySettings;
 		const settings = this.details.settings;
 		
-		this.container.removeAll(true);
+		this.images.forEach(img => this.container.remove(img, true));
+		this.images = [];
 		
 		// bound box offset
+		const boundBoxOffset = {x: 0, y: 0};
 		if (s.baseSize) {
-			this.container.x = s.baseSize.x / 2;
-			this.container.y = s.baseSize.y;
+			boundBoxOffset.x = s.baseSize.x / 2;
+			boundBoxOffset.y = s.baseSize.y;
 		}
 		
 		// setup sprite
@@ -209,27 +217,23 @@ export abstract class CCEntity extends BaseObject {
 					const imgWidth = Math.min(fix.w, width - x);
 					for (let y = 0; y < height; y += fix.h) {
 						const imgHeight = Math.min(fix.h, height - y);
-						const img = this.scene.add.image(x, -y + settings.size.y + s.baseSize.z, fix.gfx);
+						const img = this.scene.add.image(x, -y + settings.size.y, fix.gfx);
 						img.setCrop(fix.x, fix.y, imgWidth, imgHeight);
 						
 						// TODO: setOrigin, originX does not work
 						img.originX = 0;
 						img.originY = 1;
 						this.container.add(img);
+						this.images.push(img);
 					}
 				}
-				
-				if (s.baseSize.z) {
-					this.container.x = 0;
-					this.container.y = -s.baseSize.z;
-				} else {
-					throw new Error('basesize.z not defined');
-				}
-				
 			} else {
 				// default
 				s.sheets.fix.forEach(sheet => {
-					const img = this.scene.add.image(sheet.offsetX || 0, (sheet.offsetY || 0) + this.levelOffset, sheet.gfx);
+					const img = this.scene.add.image(
+						sheet.offsetX || 0,
+						(sheet.offsetY || 0) + this.levelOffset,
+						sheet.gfx);
 					img.setOrigin(0, 0);
 					
 					// crop offset
@@ -240,33 +244,36 @@ export abstract class CCEntity extends BaseObject {
 					img.x -= sheet.w / 2;
 					img.y -= sheet.h;
 					
+					// bounding box offset
+					img.x += boundBoxOffset.x;
+					img.y += boundBoxOffset.y;
 					
 					img.setCrop(sheet.x, sheet.y, sheet.w, sheet.h);
 					img.flipX = !!sheet.flipX;
 					img.flipY = !!sheet.flipY;
 					this.container.add(img);
+					this.images.push(img);
 				});
 				
 				if (s.sheets.offset) {
-					this.container.getAll().forEach(img => Vec2.add(img, s.sheets.offset!));
+					this.images.forEach(img => Vec2.add(img, s.sheets.offset!));
 				}
 				if (s.sheets.flipX) {
-					this.container.getAll().forEach(img => img.flipX = !img.flipX);
+					this.images.forEach(img => img.flipX = !img.flipX);
 				}
 			}
 			
 			if (s.sheets.renderMode === 'lighter') {
-				this.container.getAll().forEach(img => img.blendMode = Phaser.BlendModes.ADD);
+				this.images.forEach(img => img.blendMode = Phaser.BlendModes.ADD);
 			} else if (s.sheets.renderMode === 'source-over') {
 				// TODO: no idea what that actually is
 				console.warn('renderMode source-over found');
 			}
 		}
 		
-		this.container.x += this.pos.x;
-		this.container.y += this.pos.y;
+		this.container.bringToTop(this.collisionImage);
 		
-		// this.drawBoundingBox();
+		this.drawBoundingBox();
 	}
 	
 	set level(level: any) {
@@ -293,6 +300,7 @@ export abstract class CCEntity extends BaseObject {
 		}
 		const offset = this.details.level.offset;
 		this.levelOffset = -(height + offset);
+		this.updateSettings();
 	}
 	
 	// TODO: refactor
@@ -301,36 +309,22 @@ export abstract class CCEntity extends BaseObject {
 		this.updateType();
 	}
 	
-	setEnableInput(enable: boolean) {
-		// if (!this.collisionImage) {
-		// 	return;
-		// }
-		// this.collisionImage.inputEnabled = enable;
-		// this.collisionImage.alpha = 0;
-		// this.collisionImage.visible = enable;
-		// if (enable) {
-		// 	this.collisionImage.input.priorityID = 10;
-		// }
-	}
-	
 	setSelected(selected: boolean) {
-		// this.selected = selected;
-		// if (this.collisionImage) {
-		// 	this.collisionImage.alpha = selected ? 0.6 : 0;
-		// }
+		this.selected = selected;
+		if (this.collisionImage) {
+			this.collisionImage.alpha = selected ? 0.6 : 0;
+		}
+		if (!selected) {
+			this.isDragged = false;
+		}
 	}
 	
 	destroy() {
-		// this.group.destroy();
-		// this.levelOffsetGroup.destroy();
-		// this.boundingBoxOffsetGroup.destroy();
-		// if (this.collisionBitmap) {
-		// 	this.collisionBitmap.destroy();
-		// }
+		super.destroy();
+		this.container.destroy();
 		// if (this.text) {
 		// 	this.text.destroy();
 		// }
-		// super.destroy();
 	}
 	
 	updateZIndex() {
@@ -342,12 +336,13 @@ export abstract class CCEntity extends BaseObject {
 		}
 		
 		// sort entities by y when on same level
-		zIndex += this.pos.y * 0.000001;
+		zIndex += this.container.y * 0.000001;
 		
 		this.container.depth = zIndex;
 	}
 	
 	exportEntity(): MapEntity {
+		// TODO
 		// const out = {
 		// 	type: this.details.type,
 		// 	x: this.group.x,
@@ -420,116 +415,115 @@ export abstract class CCEntity extends BaseObject {
 		});
 	}
 	
-	// private setInputEvents(inputEvents: InputEvents) {
-	// 	const events = this.inputEvents;
-	// 	const input = inputEvents;
-	// 	events.onInputDown = (o, pointer) => {
-	// 		if (pointer.leftButton.isDown) {
-	// 			this.leftClickOpts.timer = 0;
-	// 			this.leftClickOpts.pos = Vec2.create(pointer);
-	// 		}
-	// 		if (input.onInputDown) {
-	// 			input.onInputDown(this, pointer);
-	// 		}
-	// 	};
-	// 	events.onInputUp = (o, pointer, isOver) => {
-	// 		if (input.onInputUp) {
-	// 			input.onInputUp(this, pointer, isOver);
-	// 		}
-	// 		if (isOver && this.leftClickOpts.timer < 200 && Vec2.distance2(pointer, this.leftClickOpts.pos) < 10) {
-	// 			if (input.onLeftClick) {
-	// 				input.onLeftClick(this, pointer);
-	// 			}
-	// 		}
-	// 	};
-	// }
+	private setInputEvents(inputEvents: InputEvents) {
+		const events = this.inputEvents;
+		const input = inputEvents;
+		events.onInputDown = (o, pointer) => {
+			if (pointer.leftButtonDown()) {
+				this.leftClickOpts.timer = 0;
+				this.leftClickOpts.pos.x = pointer.worldX;
+				this.leftClickOpts.pos.y = pointer.worldY;
+			}
+			if (input.onInputDown) {
+				input.onInputDown(this, pointer);
+			}
+		};
+		events.onInputUp = (o, pointer) => {
+			if (input.onInputUp) {
+				input.onInputUp(this, pointer);
+			}
+			console.log('try to left ');
+			const p = {x: pointer.worldX, y: pointer.worldY};
+			if (this.leftClickOpts.timer < 200 && Vec2.distance2(p, this.leftClickOpts.pos) < 10) {
+				if (input.onLeftClick) {
+					console.log('on left click');
+					input.onLeftClick(this, pointer);
+				}
+			}
+		};
+	}
 	
 	public getBoundingBox(): Phaser.Geom.Rectangle {
-		// const img = this.collisionImage;
-		// const p = Helper.phaserWorldtoWorld(img.world);
-		// const rect = new Phaser.Geom.Rectangle(p.x, p.y, img.width, img.height);
-		// return rect;
-		return <any>null;
+		if (!this.inputZone.input) {
+			console.warn('no bounding box for: ' + this.details.type);
+			return new Phaser.Geom.Rectangle(0, 0, 0, 0);
+		}
+		const hitArea = this.inputZone.input.hitArea;
+		const box = new Phaser.Geom.Rectangle(
+			this.inputZone.x + this.container.x,
+			this.inputZone.y + this.container.y,
+			hitArea.width,
+			hitArea.height
+		);
+		return box;
 	}
 	
-	private setEvents() {
-		// if (!this.collisionImage) {
-		// 	return;
+	private drawBoundingBox() {
+		const s = this.entitySettings;
+		const collImg = this.collisionImage;
+		
+		collImg.clear();
+		
+		const size = Object.assign({}, this.details.settings.size || s.baseSize);
+		try {
+			size.x = Number(size.x);
+			size.y = Number(size.y);
+			size.z = Number(size.z || this.details.settings.zHeight || this.details.settings.wallZHeight || (s.baseSize ? s.baseSize.z || 0 : 0));
+		} catch (e) {
+			console.log(this);
+			console.error(e);
+		}
+		const inputArea = new Phaser.Geom.Rectangle(0, 0, size.x, size.y);
+		
+		const outline = 0;
+		const outlineAlpha = 1;
+		
+		const bottomRect = new Phaser.Geom.Rectangle(0, size.z, inputArea.width, inputArea.height - 1);
+		
+		// show middle and top part only if entity is not flat
+		if (size.z > 0) {
+			const middleRect = new Phaser.Geom.Rectangle(0, inputArea.height, inputArea.width, size.z - 1);
+			Helper.drawRect(collImg, middleRect, 0xff0707, 0.5, outline, outlineAlpha);
+			
+			const topRect = new Phaser.Geom.Rectangle(0, 0, inputArea.width, inputArea.height);
+			Helper.drawRect(collImg, topRect, 0xffff07, 1, outline, outlineAlpha);
+			
+			Helper.drawRect(collImg, bottomRect, 0xffff07, 0.1, outline, outlineAlpha);
+		} else {
+			Helper.drawRect(collImg, bottomRect, 0xffff07, 1, outline, outlineAlpha);
+		}
+		
+		collImg.x = inputArea.x;
+		collImg.y = inputArea.y - (size.z || 0) + this.levelOffset;
+		
+		const shape = new Phaser.Geom.Rectangle(0, 0, size.x, size.y + (size.z || 0));
+		
+		this.inputZone.x = collImg.x;
+		this.inputZone.y = collImg.y;
+		this.inputZone.setSize(shape.width, shape.height, true);
+		
+		// this.generateText(this.details.settings.name, size);
+	}
+	
+	private generateText(name: string, size: Point) {
+		// TODO
+		// if (name) {
+		// 	if (!this.text) {
+		// 		this.text = this.game.add.text(0, 0, '', {
+		// 			font: '400 18pt Roboto',
+		// 			fill: 'white',
+		// 			stroke: 'black',
+		// 			strokeThickness: 2
+		// 		}, this.levelOffsetGroup);
+		// 		this.text.scale.set(0.274);
+		// 		this.text.anchor.set(0.5, 0.5);
+		// 	}
+		// 	this.text.setText(name);
+		// 	this.text.position.set(size.x / 2, size.y / 2);
+		// } else if (this.text) {
+		// 	this.text.destroy();
+		// 	this.text = null;
 		// }
-		// Object.entries(this.inputEvents).forEach(([key, value]) => {
-		// 	if (!value) {
-		// 		return;
-		// 	}
-		// 	if (!this.collisionImage.events[key]) {
-		// 		return;
-		// 	}
-		// 	this.collisionImage.events[key].removeAll();
-		// 	this.collisionImage.events[key].add(value);
-		// });
+		
 	}
-	
-	// private drawBoundingBox() {
-	// 	const s = this.entitySettings;
-	//
-	// 	if (this.collisionBitmap) {
-	// 		this.collisionBitmap.destroy();
-	// 	}
-	// 	const size = Object.assign({}, this.details.settings.size || s.baseSize);
-	// 	try {
-	// 		size.x = Number(size.x);
-	// 		size.y = Number(size.y);
-	// 		size.z = Number(size.z || this.details.settings.zHeight || this.details.settings.wallZHeight || s.baseSize.z || 0);
-	// 	} catch (e) {
-	// 		console.log(this);
-	// 		console.error(e);
-	// 	}
-	// 	const inputArea = new Phaser.Rectangle(0, 0, size.x, size.y);
-	//
-	// 	this.collisionBitmap = this.game.make.bitmapData(inputArea.width, inputArea.height + size.z);
-	// 	const context = this.collisionBitmap.context;
-	// 	const outline = 'rgba(0,0,0,1)';
-	//
-	// 	const bottomRect = new Phaser.Rectangle(0, size.z, inputArea.width, inputArea.height - 1);
-	//
-	// 	// show middle and top part only if entity is not flat
-	// 	if (size.z > 0) {
-	// 		const middleRect = new Phaser.Rectangle(0, inputArea.height, inputArea.width, size.z - 1);
-	// 		Helper.drawRect(context, middleRect, 'rgba(255, 40, 40, 0.5)', outline);
-	//
-	// 		const topRect = new Phaser.Rectangle(0, 0, inputArea.width, inputArea.height);
-	// 		Helper.drawRect(context, topRect, 'rgba(255, 255, 40, 1)', outline);
-	//
-	// 		Helper.drawRect(context, bottomRect, 'rgba(255, 255, 40, 0.1)', outline);
-	// 	} else {
-	// 		Helper.drawRect(context, bottomRect, 'rgba(255, 255, 40, 1)', outline);
-	// 	}
-	//
-	// 	const collImg = this.collisionImage;
-	// 	collImg.x = inputArea.x;
-	// 	collImg.y = inputArea.y - (size.z || 0);
-	// 	collImg.loadTexture(this.collisionBitmap);
-	//
-	// 	this.generateText(this.details.settings.name, size);
-	// }
-	//
-	// private generateText(name: string, size: Point) {
-	// 	if (name) {
-	// 		if (!this.text) {
-	// 			this.text = this.game.add.text(0, 0, '', {
-	// 				font: '400 18pt Roboto',
-	// 				fill: 'white',
-	// 				stroke: 'black',
-	// 				strokeThickness: 2
-	// 			}, this.levelOffsetGroup);
-	// 			this.text.scale.set(0.274);
-	// 			this.text.anchor.set(0.5, 0.5);
-	// 		}
-	// 		this.text.setText(name);
-	// 		this.text.position.set(size.x / 2, size.y / 2);
-	// 	} else if (this.text) {
-	// 		this.text.destroy();
-	// 		this.text = null;
-	// 	}
-	//
-	// }
 }

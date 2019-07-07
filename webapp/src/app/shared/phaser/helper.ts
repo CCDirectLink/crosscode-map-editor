@@ -87,15 +87,14 @@ export class Helper {
 		return p.x >= 0 && p.y >= 0 && p.x < bounds.x && p.y < bounds.y;
 	}
 	
-	public static drawRect(context: CanvasRenderingContext2D, rect: Phaser.Geom.Rectangle, fillStyle: string, strokeStyle: string) {
+	public static drawRect(graphics: Phaser.GameObjects.Graphics, rect: Phaser.Geom.Rectangle, fillStyle: number, alpha: number, strokeStyle: number, strokeAlpha: number) {
 		const o = new Phaser.Geom.Rectangle(rect.x + 0.5, rect.y + 0.5, rect.width - 1, rect.height);
 		
-		context.fillStyle = fillStyle;
-		context.fillRect(o.x, o.y, o.width, o.height);
+		graphics.fillStyle(fillStyle, alpha);
+		graphics.fillRect(o.x, o.y, o.width, o.height);
 		
-		context.lineWidth = 1;
-		context.strokeStyle = strokeStyle;
-		context.strokeRect(o.x, o.y, o.width, o.height);
+		graphics.lineStyle(1, strokeStyle, strokeAlpha);
+		graphics.strokeRect(o.x, o.y, o.width, o.height);
 	}
 	
 	public static deepFind(key: string, obj: any) {

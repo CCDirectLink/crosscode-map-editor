@@ -6,24 +6,31 @@ export class SelectionBox {
 	
 	private active = false;
 	private start: Point = {x: 0, y: 0};
-	private game: Phaser.Game;
-	// TODO
-	// private graphics: Phaser.Graphics;
+	private scene: Phaser.Scene;
+	private graphics: Phaser.GameObjects.Graphics;
 	private selectedEntities: Set<CCEntity>;
 	
-	constructor(game: Phaser.Game) {
-		this.game = game;
+	constructor(scene: Phaser.Scene) {
+		this.scene = scene;
 		this.selectedEntities = new Set<CCEntity>();
-		// TODO
-		// const group: SortableGroup = game.add.group();
-		// group.zIndex = 10000;
-		
-		// this.graphics = game.add.graphics(0, 0, group);
+		this.graphics = scene.add.graphics({
+			fillStyle: {
+				color: 0x3335ed,
+				alpha: 0.3
+			},
+			lineStyle: {
+				width: 1,
+				color: 0x3335ed,
+				alpha: 0.8
+			}
+		});
+		this.graphics.depth = 1000;
 	}
 	
-	public onInputDown(pos: Point) {
+	public onInputDown(pointer: Phaser.Input.Pointer) {
 		this.active = true;
-		this.start = pos;
+		this.start.x = pointer.worldX;
+		this.start.y = pointer.worldY;
 		this.selectedEntities.clear();
 	}
 	
@@ -31,13 +38,14 @@ export class SelectionBox {
 		if (!this.active) {
 			return;
 		}
-		const pos = Helper.screenToWorld(this.game.input.mousePointer);
+		const posX = this.scene.input.activePointer.worldX;
+		const posY = this.scene.input.activePointer.worldY;
 		const start = this.start;
 		
 		let x1 = start.x;
 		let y1 = start.y;
-		let x2 = pos.x;
-		let y2 = pos.y;
+		let x2 = posX;
+		let y2 = posY;
 		if (x2 < x1) {
 			const tmp = x1;
 			x1 = x2;
@@ -49,32 +57,28 @@ export class SelectionBox {
 			y2 = tmp;
 		}
 		
-		// TODO
-		// const rect = new Phaser.Rectangle(x1, y1, x2 - x1, y2 - y1);
-		// this.graphics.clear();
-		// this.graphics.beginFill(0x3335ed, 0.3);
-		// this.graphics.lineStyle(1, 0x3335ed, 0.8);
-		// this.graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
-		// this.graphics.endFill();
-		//
-		// entities.forEach(e => {
-		// 	const events = e.collisionImage.events;
-		// 	if (rect.intersects(e.getBoundingBox(), 0)) {
-		// 		events.onInputOver.dispatch();
-		// 		this.selectedEntities.add(e);
-		// 	} else {
-		// 		events.onInputOut.dispatch();
-		// 		this.selectedEntities.delete(e);
-		// 	}
-		// });
+		const rect = new Phaser.Geom.Rectangle(x1, y1, x2 - x1, y2 - y1);
+		this.graphics.clear();
+		this.graphics.fillRect(rect.x, rect.y, rect.width, rect.height);
+		this.graphics.strokeRect(rect.x, rect.y, rect.width, rect.height);
+		
+		entities.forEach(e => {
+			// TODO
+			if (Phaser.Geom.Intersects.RectangleToRectangle(rect, e.getBoundingBox())) {
+				e.dispatchInputOver();
+				this.selectedEntities.add(e);
+			} else {
+				e.dispatchInputOut();
+				this.selectedEntities.delete(e);
+			}
+		});
 	}
 	
 	public onInputUp(): Set<CCEntity> {
 		if (!this.active) {
 			return new Set<CCEntity>();
 		}
-		// TODO
-		// this.graphics.clear();
+		this.graphics.clear();
 		this.active = false;
 		this.selectedEntities.forEach(e => {
 			// TODO
