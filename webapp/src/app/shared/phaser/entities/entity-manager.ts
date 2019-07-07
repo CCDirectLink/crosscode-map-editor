@@ -107,8 +107,6 @@ export class EntityManager extends BaseObject {
 				this.leftClickOpts.pos.x = pointer.worldX;
 				this.leftClickOpts.pos.y = pointer.worldY;
 				
-				console.log('game object doooooown', gameObject);
-				
 				let entity;
 				if (gameObject.length > 0) {
 					entity = gameObject[0].getData('entity') as CCEntity;
@@ -138,7 +136,6 @@ export class EntityManager extends BaseObject {
 		this.addKeybinding({
 			event: 'pointerup',
 			fun: (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
-				console.log('pointer up', gameObject);
 				if (pointer.rightButtonReleased()) {
 					this.selectEntity();
 					// TODO
@@ -165,6 +162,7 @@ export class EntityManager extends BaseObject {
 						entity = gameObject[0].getData('entity');
 					}
 					if (entity) {
+						console.log(entity);
 						const p = {x: pointer.worldX, y: pointer.worldY};
 						console.log('click check');
 						if (this.leftClickOpts.timer < 200 && Vec2.distance2(p, this.leftClickOpts.pos) < 10) {

@@ -1,4 +1,4 @@
-import {EntityAttributes, CCEntity, InputEvents, ScaleSettings} from '../cc-entity';
+import {EntityAttributes, CCEntity, ScaleSettings} from '../cc-entity';
 import {Point, Point3} from '../../../../models/cross-code-map';
 import {Helper} from '../../helper';
 
@@ -81,52 +81,51 @@ export class ScalableProp extends CCEntity {
 	}
 	
 	protected setupType(settings: any) {
-		// TODO:
-		// if (!settings.propConfig) {
-		// 	console.warn('scalable prop without prop config');
-		// 	return this.generateNoImageType();
-		// }
-		// Helper.getJson('data/scale-props/' + settings.propConfig.sheet, (sheet) => {
-		// 	let prop: ScalablePropDef = sheet.entries[settings.propConfig.name];
-		// 	if (!prop) {
-		// 		console.error('scale-prop not found: ' + settings.propConfig.name);
-		// 		return this.generateNoImageType();
-		// 	}
-		//
-		// 	this.entitySettings = <any>{};
-		// 	if (prop.jsonINSTANCE) {
-		// 		const jsonInstance = sheet.jsonTEMPLATES[prop.jsonINSTANCE];
-		// 		const p = jsonInstance.patterns;
-		// 		this.replaceJsonParams(jsonInstance, prop);
-		// 		prop = jsonInstance;
-		// 	}
-		//
-		// 	if (prop.gfx) {
-		// 		this.entitySettings.sheets = {
-		// 			fix: [{
-		// 				gfx: prop.gfx,
-		// 				x: prop.gfxBaseX + prop.patterns.x,
-		// 				y: prop.gfxBaseY + prop.patterns.y,
-		// 				w: prop.patterns.w,
-		// 				h: prop.patterns.h,
-		// 				renderHeight: prop.renderHeight
-		// 			}],
-		// 			renderMode: prop.renderMode,
-		// 			flipX: false,
-		// 		};
-		// 	}
-		//
-		// 	this.scaleSettings = {
-		// 		scalableX: prop.scalableX,
-		// 		scalableY: prop.scalableY,
-		// 		scalableStep: prop.scalableStep,
-		// 		baseSize: prop.baseSize
-		// 	};
-		//
-		// 	Object.assign(this.entitySettings, this.scaleSettings);
-		// 	this.entitySettings.collType = prop.collType;
-		// 	this.entitySettings.pivot = prop.pivot;
-		// 	this.updateSettings();
-		// });
+		if (!settings.propConfig) {
+			console.warn('scalable prop without prop config');
+			return this.generateNoImageType();
+		}
+		Helper.getJson('data/scale-props/' + settings.propConfig.sheet, (sheet) => {
+			let prop: ScalablePropDef = sheet.entries[settings.propConfig.name];
+			if (!prop) {
+				console.error('scale-prop not found: ' + settings.propConfig.name);
+				return this.generateNoImageType();
+			}
+
+			this.entitySettings = <any>{};
+			if (prop.jsonINSTANCE) {
+				const jsonInstance = sheet.jsonTEMPLATES[prop.jsonINSTANCE];
+				const p = jsonInstance.patterns;
+				this.replaceJsonParams(jsonInstance, prop);
+				prop = jsonInstance;
+			}
+
+			if (prop.gfx) {
+				this.entitySettings.sheets = {
+					fix: [{
+						gfx: prop.gfx,
+						x: prop.gfxBaseX + prop.patterns.x,
+						y: prop.gfxBaseY + prop.patterns.y,
+						w: prop.patterns.w,
+						h: prop.patterns.h,
+						renderHeight: prop.renderHeight
+					}],
+					renderMode: prop.renderMode,
+					flipX: false,
+				};
+			}
+
+			this.scaleSettings = {
+				scalableX: prop.scalableX,
+				scalableY: prop.scalableY,
+				scalableStep: prop.scalableStep,
+				baseSize: prop.baseSize
+			};
+
+			Object.assign(this.entitySettings, this.scaleSettings);
+			this.entitySettings.collType = prop.collType;
+			this.entitySettings.pivot = prop.pivot;
+			this.updateSettings();
+		});
 	}
 }

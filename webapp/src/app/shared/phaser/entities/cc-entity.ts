@@ -191,9 +191,18 @@ export abstract class CCEntity extends BaseObject {
 						const img = this.scene.add.image(x, -y + settings.size.y, fix.gfx);
 						img.setCrop(fix.x, fix.y, imgWidth, imgHeight);
 						
-						// TODO: setOrigin, originX does not work
-						img.originX = 0;
-						img.originY = 1;
+						img.setOrigin(0, 0);
+						
+						// level offset
+						img.y += this.levelOffset;
+						
+						// origin offset x=0, y=1
+						img.y -= imgHeight;
+						
+						// crop offset
+						img.x -= fix.x;
+						img.y -= fix.y;
+						
 						this.container.add(img);
 						this.images.push(img);
 					}
@@ -203,10 +212,12 @@ export abstract class CCEntity extends BaseObject {
 				s.sheets.fix.forEach(sheet => {
 					const img = this.scene.add.image(
 						sheet.offsetX || 0,
-						(sheet.offsetY || 0) + this.levelOffset,
+						sheet.offsetY || 0,
 						sheet.gfx);
 					img.setOrigin(0, 0);
 					
+					// level offset
+					img.y += this.levelOffset;
 					
 					// origin offset x=0.5, y=1
 					img.x -= sheet.w / 2;
