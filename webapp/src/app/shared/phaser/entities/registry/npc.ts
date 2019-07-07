@@ -119,9 +119,10 @@ export class NPC extends CCEntity {
 			if (typeof charSettings.animSheet === 'string') {
 				// sheet is only reference
 				const animSheet = charSettings.animSheet;
-				charSettings.animSheet = await Helper.getJsonPromise(this.getPath('data/animations/', animSheet));
+				const path = this.getPath('data/animations/', animSheet);
+				charSettings.animSheet = await Helper.getJsonPromise(path);
 				if (!charSettings.animSheet) {
-					throw new Error('no anim sheet found for: ' + animSheet);
+					throw new Error('no anim sheet found for: ' + animSheet + ' in path: ' + path);
 				}
 			}
 			if (charSettings.animSheet.sheet) {
@@ -169,24 +170,22 @@ export class NPC extends CCEntity {
 			src = src.trim();
 		}
 		
-		// TODO:
-		// this.anchor.set(0.5, 1);
-		// this.entitySettings = <any>{
-		// 	sheets: {
-		// 		fix: [{
-		// 			gfx: src,
-		// 			x: width * offset.x + x,
-		// 			y: height * offset.y + y,
-		// 			offsetX: offset.offsetX || 0,
-		// 			offsetY: offset.offsetY || 0,
-		// 			w: width,
-		// 			h: height,
-		// 			flipX: offset.flipX || false,
-		// 			flipY: offset.flipY || false
-		// 		}]
-		// 	},
-		// 	baseSize: {x: 12, y: 12, z: 28}
-		// };
+		this.entitySettings = <any>{
+			sheets: {
+				fix: [{
+					gfx: src,
+					x: width * offset.x + x,
+					y: height * offset.y + y,
+					offsetX: offset.offsetX || 0,
+					offsetY: offset.offsetY || 0,
+					w: width,
+					h: height,
+					flipX: offset.flipX || false,
+					flipY: offset.flipY || false
+				}]
+			},
+			baseSize: {x: 12, y: 12, z: 28}
+		};
 		this.updateSettings();
 	}
 	

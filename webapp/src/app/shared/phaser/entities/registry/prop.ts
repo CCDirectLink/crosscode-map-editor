@@ -1,4 +1,4 @@
-import {EntityAttributes, CCEntity, InputEvents, ScaleSettings} from '../cc-entity';
+import {EntityAttributes, CCEntity, ScaleSettings} from '../cc-entity';
 import {Helper} from '../../helper';
 import {Fix} from '../../../../models/props';
 
