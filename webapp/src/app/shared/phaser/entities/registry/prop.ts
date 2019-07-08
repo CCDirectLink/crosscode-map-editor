@@ -118,7 +118,7 @@ export class Prop extends CCEntity {
 				this.entitySettings.sheets.renderMode = prop.fix.renderMode;
 			} else {
 				console.log('sheet not found for prop: ' + prop.name);
-				return this.generateNoImageType(0, 255, 60);
+				return this.generateNoImageType(0x00ff3c);
 			}
 			this.entitySettings.baseSize = prop.size;
 			this.entitySettings.collType = prop.collType;

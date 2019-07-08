@@ -29,7 +29,7 @@ export class AddEntityMenuComponent {
 		this.events.showAddEntityMenu.subscribe(val => {
 			Vec2.assign(this.pos, this.mousePos);
 			this.worldPos = val.worldPos;
-			if (!this.keys) {
+			if (this.keys.length === 0) {
 				this.keys = Object.keys(val.definitions);
 			}
 			
@@ -68,6 +68,5 @@ export class AddEntityMenuComponent {
 			}
 			return key.toLowerCase().includes(search.toLowerCase());
 		});
-		console.log(this.filteredKeys);
 	}
 }

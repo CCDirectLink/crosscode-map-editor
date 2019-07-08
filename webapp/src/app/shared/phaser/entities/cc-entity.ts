@@ -101,8 +101,7 @@ export abstract class CCEntity extends BaseObject {
 		this.container.add(collImg);
 		this.collisionImage = collImg;
 		
-		collImg.alpha = 0.35;
-		collImg.setVisible(false);
+		collImg.alpha = 0;
 		
 		this.inputZone = this.scene.add.zone(0, 0, 50, 50);
 		this.inputZone.setOrigin(0);
@@ -117,14 +116,13 @@ export abstract class CCEntity extends BaseObject {
 	
 	public inputOver() {
 		if (!this.selected) {
-			this.collisionImage.visible = true;
 			this.collisionImage.alpha = 0.35;
 		}
 	}
 	
 	public inputOut() {
 		if (!this.selected) {
-			this.collisionImage.visible = false;
+			this.collisionImage.alpha = 0;
 		}
 	}
 	
@@ -353,15 +351,14 @@ export abstract class CCEntity extends BaseObject {
 	
 	exportEntity(): MapEntity {
 		// TODO
-		// const out = {
-		// 	type: this.details.type,
-		// 	x: this.group.x,
-		// 	y: this.group.y,
-		// 	level: this.details.level.offset ? this.details.level : this.details.level.level,
-		// 	settings: this.details.settings
-		// };
-		// return JSON.parse(JSON.stringify(out));
-		return <any>null;
+		const out = {
+			type: this.details.type,
+			x: this.container.x,
+			y: this.container.y,
+			level: this.details.level.offset ? this.details.level : this.details.level.level,
+			settings: this.details.settings
+		};
+		return JSON.parse(JSON.stringify(out));
 	}
 	
 	public abstract getScaleSettings(): ScaleSettings | undefined;

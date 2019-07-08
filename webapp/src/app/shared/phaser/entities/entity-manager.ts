@@ -6,6 +6,7 @@ import {Globals} from '../../globals';
 import {SelectionBox} from './selection-box';
 import {EntityRegistry} from './registry/entity-registry';
 import {BaseObject} from '../BaseObject';
+import {Helper} from '../helper';
 
 export class EntityManager extends BaseObject {
 	
@@ -28,7 +29,7 @@ export class EntityManager extends BaseObject {
 	};
 	
 	private selectedEntities: CCEntity[] = [];
-	// private copyEntities: CCEntity[];
+	private copyEntities: CCEntity[] = [];
 	
 	private gameObjectDown = false;
 	
@@ -138,8 +139,7 @@ export class EntityManager extends BaseObject {
 			fun: (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
 				if (pointer.rightButtonReleased()) {
 					this.selectEntity();
-					// TODO
-					// this.showAddEntityMenu();
+					this.showAddEntityMenu();
 				} else if (pointer.leftButtonReleased()) {
 					this.selectedEntities.forEach(entity => {
 						entity.isDragged = false;
@@ -175,47 +175,64 @@ export class EntityManager extends BaseObject {
 			emitter: this.scene.input
 		});
 		
-		// TODO
-		// this.keyBindings.push(this.gridKey.onDown.add(() => {
-		// 	console.log('grid key down');
-		// 	console.log(Helper.isInputFocused());
-		// 	if (Helper.isInputFocused()) {
-		// 		return;
-		// 	}
-		// 	Globals.entitySettings.enableGrid = !Globals.entitySettings.enableGrid;
-		// }));
-		// this.keyBindings.push(this.deleteKey.onDown.add(() => {
-		// 	if (Helper.isInputFocused()) {
-		// 		return;
-		// 	}
-		// 	this.deleteSelectedEntities();
-		// }));
-		// this.keyBindings.push(this.copyKey.onDown.add(() => {
-		// 	if (!this.game.input.keyboard.isDown(Phaser.Keyboard.CONTROL)) {
-		// 		return;
-		// 	}
-		// 	if (Helper.isInputFocused()) {
-		// 		return;
-		// 	}
-		// 	this.copy();
-		// }));
-		// this.keyBindings.push(this.pasteKey.onDown.add(() => {
-		// 	if (!this.game.input.keyboard.isDown(Phaser.Keyboard.CONTROL)) {
-		// 		return;
-		// 	}
-		// 	if (Helper.isInputFocused()) {
-		// 		return;
-		// 	}
-		// 	this.paste();
-		// }));
-		// this.keyBindings.push(this.visibilityKey.onDown.add(() => {
-		// 	if (Helper.isInputFocused()) {
-		// 		return;
-		// 	}
-		// 	this.entities.forEach(e => {
-		// 		e.group.visible = !e.group.visible;
-		// 	});
-		// }));
+		this.addKeybinding({
+			event: 'up',
+			emitter: this.gridKey,
+			fun: () => {
+				if (Helper.isInputFocused()) {
+					return;
+				}
+				Globals.entitySettings.enableGrid = !Globals.entitySettings.enableGrid;
+			}
+		});
+		
+		this.addKeybinding({
+			event: 'up',
+			emitter: this.deleteKey,
+			fun: () => {
+				if (Helper.isInputFocused()) {
+					return;
+				}
+				this.deleteSelectedEntities();
+			}
+		});
+		
+		this.addKeybinding({
+			event: 'up',
+			emitter: this.copyKey,
+			fun: (key: Phaser.Input.Keyboard.Key, event: KeyboardEvent) => {
+				if (Helper.isInputFocused() || !event.ctrlKey) {
+					return;
+				}
+				this.copy();
+			}
+		});
+		
+		this.addKeybinding({
+			event: 'up',
+			emitter: this.pasteKey,
+			fun: (key: Phaser.Input.Keyboard.Key, event: KeyboardEvent) => {
+				if (Helper.isInputFocused() || !event.ctrlKey) {
+					return;
+				}
+				this.paste();
+			}
+		});
+		
+		this.addKeybinding({
+			event: 'up',
+			emitter: this.visibilityKey,
+			fun: () => {
+				if (Helper.isInputFocused()) {
+					return;
+				}
+				this.entities.forEach(e => {
+					e.container.visible = !e.container.visible;
+				});
+			}
+		});
+		
+		
 	}
 	
 	preUpdate(time: number, delta: number): void {
@@ -271,38 +288,35 @@ export class EntityManager extends BaseObject {
 	}
 	
 	copy() {
-		// console.log(Helper.isInputFocused());
-		// this.copyEntities = this.selectedEntities.slice();
+		this.copyEntities = this.selectedEntities.slice();
 	}
 	
 	paste() {
-		// if (this.copyEntities.length === 0) {
-		// 	return;
-		// }
-		// const offset = Vec2.create(this.copyEntities[0].group);
-		// offset.y -= this.map.levels[this.copyEntities[0].details.level.level].height;
-		// const mousePos = Vec2.create(Helper.screenToWorld(this.game.input.mousePointer));
-		// this.selectEntity(null);
-		//
-		// this.copyEntities.forEach(e => {
-		// 	const entityDef = e.exportEntity();
-		// 	Vec2.sub(entityDef, offset);
-		// 	Vec2.add(entityDef, mousePos);
-		// 	const newEntity = this.generateEntity(entityDef);
-		// 	newEntity.setActive(true);
-		// 	this.selectEntity(newEntity, this.copyEntities.length > 1);
-		// });
-		//
-		// console.log(this.entities);
+		if (this.copyEntities.length === 0 || !this.map) {
+			return;
+		}
+		const offset = Vec2.create(this.copyEntities[0].container);
+		offset.y -= this.map.levels[this.copyEntities[0].details.level.level].height;
+		const mousePos = Helper.getPointerPos(this.scene.input.activePointer);
+		this.selectEntity();
+		
+		this.copyEntities.forEach(e => {
+			const entityDef = e.exportEntity();
+			Vec2.sub(entityDef, offset);
+			Vec2.add(entityDef, mousePos);
+			const newEntity = this.generateEntity(entityDef);
+			newEntity.setActive(true);
+			this.selectEntity(newEntity, this.copyEntities.length > 1);
+		});
 	}
 	
 	deleteSelectedEntities() {
-		// this.selectedEntities.forEach(e => {
-		// 	const i = this.entities.indexOf(e);
-		// 	this.entities.splice(i, 1);
-		// 	e.destroy();
-		// });
-		// this.selectEntity(null);
+		this.selectedEntities.forEach(e => {
+			const i = this.entities.indexOf(e);
+			this.entities.splice(i, 1);
+			e.destroy();
+		});
+		this.selectEntity();
 	}
 	
 	exportEntities(): MapEntity[] {
@@ -312,10 +326,11 @@ export class EntityManager extends BaseObject {
 	}
 	
 	private showAddEntityMenu() {
-		// this.globalEvents.showAddEntityMenu.next({
-		// 	worldPos: Helper.screenToWorld(this.game.input.mousePointer),
-		// 	// TODO: remove definitions.json, use entity registry instead
-		// 	definitions: this.game.cache.getJSON('definitions.json', false)
-		// });
+		
+		Globals.globalEventsService.showAddEntityMenu.next({
+			worldPos: Helper.getPointerPos(this.scene.input.activePointer),
+			// TODO: remove definitions.json, use entity registry instead
+			definitions: this.scene.cache.json.get('definitions.json')
+		});
 	}
 }

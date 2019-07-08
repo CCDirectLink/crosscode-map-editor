@@ -4,31 +4,6 @@ import {CCMapLayer} from './tilemap/cc-map-layer';
 import {Glob} from 'glob';
 
 export class Helper {
-	/**
-	 * Transforms screen coordinates to world coordinates.
-	 * Phaser already offers a way to get world coordinates but it's messed up when the camera scales
-	 */
-	public static screenToWorld(x: number | Point, y?: number): Point {
-		if (y === undefined) {
-			y = (x as Point).y;
-			x = (x as Point).x;
-		}
-		const p: Point = {x: 0, y: 0};
-		const cam = Globals.scene.cameras.main;
-		p.x = (x as number + cam.x) / cam.zoom;
-		p.y = (y as number + cam.y) / cam.zoom;
-		
-		return p;
-	}
-	
-	/** Transforms phaser world coordinates to actual world coordinates (see {@link screenToWorld}) */
-	public static phaserWorldtoWorld(p: Point): Point {
-		const out: Point = {x: 0, y: 0};
-		const cam = Globals.scene.cameras.main;
-		out.x = p.x / cam.zoom;
-		out.y = p.y / cam.zoom;
-		return out;
-	}
 	
 	public static worldToTile(x: number, y: number): Point {
 		const p: Point = {x: 0, y: 0};
@@ -39,27 +14,8 @@ export class Helper {
 		return p;
 	}
 	
-	public static screenToTile(x: number | Point, y?: number): Point {
-		let p = this.screenToWorld(x, y);
-		p = this.worldToTile(p.x, p.y);
-		return p;
-	}
-	
-	/** gets the position of the tile in the tilemap */
-	public static getTilePos(tilesetSize: Point, index: number): Point {
-		const tilesize = Globals.TILE_SIZE;
-		const pos = {x: 0, y: 0};
-		
-		pos.x = index % tilesetSize.x;
-		pos.y = Math.floor(index / tilesetSize.x);
-		
-		if (pos.x === 0) {
-			pos.x = tilesetSize.x;
-			pos.y--;
-		}
-		pos.x--;
-		
-		return pos;
+	public static getPointerPos(pointer: Phaser.Input.Pointer): Point {
+		return {x: pointer.worldX, y: pointer.worldY};
 	}
 	
 	public static getTilesetSize(scene: Phaser.Scene, tileset: string): Point {
@@ -95,20 +51,6 @@ export class Helper {
 		
 		graphics.lineStyle(1, strokeStyle, strokeAlpha);
 		graphics.strokeRect(o.x, o.y, o.width, o.height);
-	}
-	
-	public static deepFind(key: string, obj: any) {
-		const paths = key.split('.');
-		let current = obj;
-		
-		for (let i = 0; i < paths.length; ++i) {
-			if (current[paths[i]] === undefined || current[paths[i]] === null) {
-				return current[paths[i]];
-			} else {
-				current = current[paths[i]];
-			}
-		}
-		return current;
 	}
 	
 	/** copies obj via JSON.parse(JSON.stringify(obj)); */
