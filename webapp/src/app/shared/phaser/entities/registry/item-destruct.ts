@@ -11,6 +11,11 @@ export class ItemDestruct extends CCEntity {
 			description: 'Type of destructible object',
 			Yi: true
 		},
+		__GLOBAL__: {
+			type: 'String',
+			description: 'Global settings for destructible object',
+			Yi: true
+		},
 		items: {
 			type: 'ItemsDropRate',
 			description: 'Items dropped',
@@ -44,30 +49,28 @@ export class ItemDestruct extends CCEntity {
 	}
 	
 	protected setupType(settings: any) {
-		// TODO
-		// Helper.getJson('data/global-settings', (globalSettings) => {
-		// 	const destructibles = this.game.cache.getJSON('destructibles.json');
-		// 	let desType;
-		// 	if (settings.desType) {
-		// 		desType = settings.desType;
-		// 	} else {
-		// 		desType = globalSettings.ENTITY.ItemDestruct[settings.__GLOBAL__].desType;
-		// 	}
-		// 	const def = destructibles[desType];
-		// 	this.anchor.set(0.5, 1);
-		// 	this.entitySettings = <any>{
-		// 		sheets: {
-		// 			fix: [{
-		// 				gfx: def.Aa.sheet.src,
-		// 				x: def.Aa.sheet.offX,
-		// 				y: def.Aa.sheet.offY,
-		// 				w: def.Aa.sheet.width,
-		// 				h: def.Aa.sheet.height
-		// 			}]
-		// 		},
-		// 		baseSize: def.size
-		// 	};
-		// 	this.updateSettings();
-		// });
+		Helper.getJson('data/global-settings', (globalSettings) => {
+			const destructibles = this.scene.cache.json.get('destructibles.json');
+			let desType;
+			if (settings.desType) {
+				desType = settings.desType;
+			} else {
+				desType = globalSettings.ENTITY.ItemDestruct[settings.__GLOBAL__].desType;
+			}
+			const def = destructibles[desType];
+			this.entitySettings = <any>{
+				sheets: {
+					fix: [{
+						gfx: def.Aa.sheet.src,
+						x: def.Aa.sheet.offX,
+						y: def.Aa.sheet.offY,
+						w: def.Aa.sheet.width,
+						h: def.Aa.sheet.height
+					}]
+				},
+				baseSize: def.size
+			};
+			this.updateSettings();
+		});
 	}
 }

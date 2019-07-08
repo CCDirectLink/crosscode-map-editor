@@ -210,9 +210,13 @@ export abstract class CCEntity extends BaseObject {
 			} else {
 				// default
 				s.sheets.fix.forEach(sheet => {
+					sheet.x = sheet.x || 0;
+					sheet.y = sheet.y || 0;
+					sheet.offsetX = sheet.offsetX || 0;
+					sheet.offsetY = sheet.offsetY || 0;
 					const img = this.scene.add.image(
-						sheet.offsetX || 0,
-						sheet.offsetY || 0,
+						sheet.offsetX,
+						sheet.offsetY,
 						sheet.gfx);
 					img.setOrigin(0, 0);
 					
@@ -229,14 +233,13 @@ export abstract class CCEntity extends BaseObject {
 					
 					// flip crop offset
 					let cropX = sheet.x;
-					let cropY = sheet.y;
-					
 					if (sheet.flipX) {
 						cropX = img.displayWidth - sheet.x - sheet.w;
 					}
 					
-					// TODO: untested
+					let cropY = sheet.y;
 					if (sheet.flipY) {
+						// TODO: untested
 						cropY = img.displayWidth - sheet.y - sheet.h;
 					}
 					
