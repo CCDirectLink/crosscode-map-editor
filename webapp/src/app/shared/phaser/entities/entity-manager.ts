@@ -181,6 +181,7 @@ export class EntityManager extends BaseObject {
 			}
 		});
 		
+		// TODO: still triggers when npc editor is open
 		this.addKeybinding({
 			event: 'up',
 			emitter: this.deleteKey,

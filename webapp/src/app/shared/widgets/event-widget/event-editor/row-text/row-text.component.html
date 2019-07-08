@@ -6,8 +6,7 @@
 	<div *ngIf="text">
 		<span style="color: #b8b8b8" *ngIf="!hideGreaterSign">> </span>
 <!--		TODO: don't trust user content, could be <script> tag-->
-<!--		<span class="no-click" [innerHTML]="text | keepHtml"></span>-->
-		<span class="no-click" [innerHTML]="text"></span>
+		<span class="no-click" [innerHTML]="text | keepHtml"></span>
 	</div>
 	<ng-content></ng-content>
 </button>
