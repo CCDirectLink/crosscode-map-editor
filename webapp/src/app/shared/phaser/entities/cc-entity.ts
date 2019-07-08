@@ -531,8 +531,6 @@ export abstract class CCEntity extends BaseObject {
 				this.text = this.scene.add.text(0, 0, '', {
 					font: '400 18pt Roboto',
 					fill: 'white',
-					stroke: 'black',
-					strokeThickness: 2
 				});
 				this.text.setOrigin(0.5, 0.5);
 				this.text.setScale(0.3);
