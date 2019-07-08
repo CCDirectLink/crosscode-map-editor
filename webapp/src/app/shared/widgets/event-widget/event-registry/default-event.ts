@@ -2,8 +2,8 @@ import {AbstractEvent} from './abstract-event';
 import {EntityAttributes} from '../../../phaser/entities/cc-entity';
 
 export class DefaultEvent extends AbstractEvent<any> {
-	getAttributes(): EntityAttributes {
-		return {};
+	getAttributes(): EntityAttributes | undefined {
+		return undefined;
 	}
 	
 	update() {

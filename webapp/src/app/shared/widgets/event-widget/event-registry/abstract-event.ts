@@ -24,7 +24,7 @@ export abstract class AbstractEvent<T extends EventType> {
 		this.data = <any>data;
 	}
 	
-	public abstract getAttributes(): EntityAttributes;
+	public abstract getAttributes(): EntityAttributes | undefined;
 	
 	public abstract update(): void;
 	
