@@ -62,16 +62,19 @@ export abstract class CCEntity extends BaseObject {
 				y: number;
 				w: number;
 				h: number;
+				scaleX?: number;
+				scaleY?: number;
 				renderHeight?: number;
 				offsetX?: number;
 				offsetY?: number;
 				flipX?: boolean;
 				flipY?: boolean;
+				tint?: number;
+				alpha?: number;
 			}[],
 			offset?: Point;
 			renderMode?: string;
-			singleColor?: boolean;
-			flipX: boolean;
+			flipX?: boolean;
 		}
 		scalableX: boolean;
 		scalableY: boolean;
@@ -214,11 +217,19 @@ export abstract class CCEntity extends BaseObject {
 					sheet.y = sheet.y || 0;
 					sheet.offsetX = sheet.offsetX || 0;
 					sheet.offsetY = sheet.offsetY || 0;
-					const img = this.scene.add.image(
-						sheet.offsetX,
-						sheet.offsetY,
-						sheet.gfx);
+					
+					const img = this.scene.add.image(sheet.offsetX, sheet.offsetY, sheet.gfx);
 					img.setOrigin(0, 0);
+					
+					if (sheet.tint !== undefined) {
+						img.setTintFill(sheet.tint);
+					}
+					
+					img.alpha = sheet.alpha || 1;
+					
+					// scale, used for single color
+					img.scaleX = sheet.scaleX || 1;
+					img.scaleY = sheet.scaleY || 1;
 					
 					// level offset
 					img.y += this.levelOffset;
@@ -364,7 +375,7 @@ export abstract class CCEntity extends BaseObject {
 		this.setupType(settings);
 	}
 	
-	public generateNoImageType(r?: number, g?: number, b?: number, a?: number) {
+	public generateNoImageType(rgb = 0x800000, a = 0.5, rgbTop = 0xc06040, aTop = 0.5) {
 		const settings = this.details.settings;
 		
 		const baseSize = settings.size || {x: 16, y: 16};
@@ -376,30 +387,63 @@ export abstract class CCEntity extends BaseObject {
 		if (scaleSettings && (scaleSettings.scalableX || scaleSettings.scalableY)) {
 			this.entitySettings.scalableX = scaleSettings.scalableX;
 			this.entitySettings.scalableY = scaleSettings.scalableY;
-		} else {
-			// TODO: set proper origin for no image
-			// this.container.originX = 0.5;
-			// this.container.originY = 1;
 		}
-		this.generateSingleColorSheet(0xc06040, a);
+		
+		
+		this.generateSingleColorSheet(rgb, a, rgbTop, aTop);
 		this.updateSettings();
 	}
 	
-	private generateSingleColorSheet(rgb: number, a?: number) {
-		// TODO: should generate image key not actual gameobject
-		const size = this.entitySettings.baseSize;
-		const rect = this.scene.add.rectangle(0, 0, size.x, size.y, rgb, a);
-		this.entitySettings.sheets = {
-			fix: [{
-				gfx: rect,
-				x: 0,
-				y: 0,
-				w: size.x,
-				h: size.y,
-			}],
-			singleColor: true,
-			flipX: false,
-		};
+	private generateSingleColorSheet(rgb: number, a: number, rgbTop?: number, aTop?: number) {
+		const size = this.getActualSize();
+		
+		if (rgbTop === undefined) {
+			rgbTop = rgb;
+		}
+		if (aTop === undefined) {
+			aTop = a;
+		}
+		
+		if (!size.z) {
+			this.entitySettings.sheets = {
+				fix: [{
+					gfx: 'pixel',
+					x: 0,
+					y: 0,
+					w: size.x,
+					h: size.y,
+					scaleX: size.x,
+					scaleY: size.y,
+					tint: rgbTop,
+					alpha: a
+				}],
+			};
+		} else {
+			this.entitySettings.sheets = {
+				fix: [{
+					gfx: 'pixel',
+					x: 0,
+					y: 0,
+					w: size.x,
+					h: size.z,
+					scaleX: size.x,
+					scaleY: size.z,
+					tint: rgb,
+					alpha: a
+				}, {
+					gfx: 'pixel',
+					x: 0,
+					y: 0,
+					offsetY: -size.z,
+					w: size.x,
+					h: size.y,
+					scaleX: size.x,
+					scaleY: size.y,
+					tint: rgbTop,
+					alpha: aTop
+				}],
+			};
+		}
 	}
 	
 	protected replaceJsonParams(jsonInstance: any, prop: any) {
@@ -429,12 +473,8 @@ export abstract class CCEntity extends BaseObject {
 		return box;
 	}
 	
-	private drawBoundingBox() {
+	private getActualSize() {
 		const s = this.entitySettings;
-		const collImg = this.collisionImage;
-		
-		collImg.clear();
-		
 		const size = Object.assign({}, this.details.settings.size || s.baseSize);
 		try {
 			size.x = Number(size.x);
@@ -444,6 +484,17 @@ export abstract class CCEntity extends BaseObject {
 			console.log(this);
 			console.error(e);
 		}
+		
+		return size;
+	}
+	
+	private drawBoundingBox() {
+		const collImg = this.collisionImage;
+		
+		collImg.clear();
+		
+		const size = this.getActualSize();
+		
 		const inputArea = new Phaser.Geom.Rectangle(0, 0, size.x, size.y);
 		
 		const outline = 0;

@@ -33,11 +33,15 @@ export class MainScene extends Phaser.Scene {
 			this.load.image(img, Globals.URL + img);
 		});
 		
+		this.load.image('pixel', 'assets/pixel.png');
+		
 		this.load.json('definitions.json', 'assets/definitions.json');
 		this.load.json('destructibles.json', 'assets/destructibles.json');
 		this.load.crossOrigin = 'anonymous';
 		
-		this.load.maxParallelDownloads = this.res.images.length;
+		// this.load.on('progress', (val: number) => console.log(val));
+		
+		// this.load.maxParallelDownloads = this.res.images.length;
 		this.load.once('complete', () => Globals.globalEventsService.loadComplete.next());
 	}
 	
