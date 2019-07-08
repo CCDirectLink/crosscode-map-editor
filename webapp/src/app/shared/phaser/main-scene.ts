@@ -55,7 +55,9 @@ export class MainScene extends Phaser.Scene {
 		
 		game.scale.scaleMode = Phaser.Scale.ScaleModes.NONE;
 		
-		const tileMap = new CCMap(game, this);
+		const entityManager = new EntityManager(this, false);
+		
+		const tileMap = new CCMap(game, this, entityManager);
 		Globals.map = tileMap;
 		
 		this.sub = Globals.mapLoaderService.map.subscribe((map) => {
@@ -73,7 +75,6 @@ export class MainScene extends Phaser.Scene {
 		const tileDrawer = new TileDrawer(this);
 		this.add.existing(tileDrawer);
 		
-		const entityManager = new EntityManager(this, false);
 		this.add.existing(entityManager);
 		
 		Globals.globalEventsService.currentView.subscribe(view => {

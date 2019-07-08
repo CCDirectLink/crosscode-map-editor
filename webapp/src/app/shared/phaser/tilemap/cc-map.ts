@@ -18,14 +18,10 @@ export class CCMap {
 	attributes: Attributes = <any>{};
 	screen: Point = {x: 0, y: 0};
 	
-	loadedDetails?: CrossCodeMap;
-	
 	private tileMap?: Phaser.Tilemaps.Tilemap;
 	
 	private historySub: Subscription;
 	private offsetSub: Subscription;
-	// TODO
-	// private keyBinding: Phaser.SignalBinding;
 	
 	filename = '';
 	
@@ -33,7 +29,8 @@ export class CCMap {
 	
 	constructor(
 		private game: Phaser.Game,
-		private scene: Phaser.Scene
+		private scene: Phaser.Scene,
+		private entityManager: EntityManager
 	) {
 		const stateHistory = Globals.stateHistoryService;
 		this.historySub = stateHistory.selectedState.subscribe(container => {
@@ -70,12 +67,10 @@ export class CCMap {
 	destroy() {
 		this.historySub.unsubscribe();
 		this.offsetSub.unsubscribe();
-		// this.keyBinding.detach();
 	}
 	
 	loadMap(map: CrossCodeMap, skipInit = false) {
 		const game = this.game;
-		this.loadedDetails = map;
 		const tileMap = this.scene.make.tilemap({
 			width: map.mapWidth,
 			height: map.mapHeight,
@@ -111,12 +106,8 @@ export class CCMap {
 			this.inputLayers = undefined;
 		}
 		
-		// generate Map Entities
-		// game.plugins.plugins.forEach(plugin => {
-		// 	if (plugin instanceof EntityManager) {
-		// 		(<EntityManager>plugin).initialize(this, map);
-		// 	}
-		// });
+		// generate entities
+		this.entityManager.initialize(map);
 		
 		if (!skipInit) {
 			Globals.stateHistoryService.init({
@@ -163,11 +154,7 @@ export class CCMap {
 		out.attributes = this.attributes;
 		out.screen = this.screen;
 		
-		// this.game.plugins.plugins.forEach(plugin => {
-		// 	if (plugin instanceof EntityManager) {
-		// 		out.entities = (<EntityManager>plugin).exportEntities();
-		// 	}
-		// });
+		out.entities = this.entityManager.exportEntities();
 		out.layer = [];
 		this.layers.forEach(l => out.layer.push(l.exportLayer()));
 		

@@ -1,6 +1,6 @@
 import {CCEntity} from './cc-entity';
 import {CCMap} from '../tilemap/cc-map';
-import {MapEntity, Point} from '../../../models/cross-code-map';
+import {CrossCodeMap, MapEntity, Point} from '../../../models/cross-code-map';
 import {Vec2} from '../vec2';
 import {Globals} from '../../globals';
 import {SelectionBox} from './selection-box';
@@ -10,7 +10,7 @@ import {Helper} from '../helper';
 
 export class EntityManager extends BaseObject {
 	
-	private map?: CCMap;
+	private map?: CrossCodeMap;
 	private entities: CCEntity[] = [];
 	
 	private multiSelectKey!: Phaser.Input.Keyboard.Key;
@@ -52,11 +52,6 @@ export class EntityManager extends BaseObject {
 		this.visibilityKey = keyboard.addKey(keyCodes.R, false);
 		
 		this.selectionBox = new SelectionBox(this.scene);
-		
-		Globals.mapLoaderService.tileMap.subscribe(map => {
-			console.log('map loadedddas' + map);
-			this.initialize(map);
-		});
 	}
 	
 	
@@ -241,15 +236,15 @@ export class EntityManager extends BaseObject {
 	}
 	
 	/** generates all entities and adds proper input handling */
-	initialize(ccMap?: CCMap) {
-		this.map = ccMap;
+	initialize(map?: CrossCodeMap) {
+		this.map = map;
 		if (this.entities) {
 			this.entities.forEach(e => e.destroy());
 		}
 		this.entities = [];
 		
-		if (ccMap && ccMap.loadedDetails && ccMap.loadedDetails.entities) {
-			ccMap.loadedDetails.entities.forEach(entity => this.generateEntity(entity));
+		if (map && map.entities) {
+			map.entities.forEach(entity => this.generateEntity(entity));
 		}
 	}
 	
@@ -321,7 +316,7 @@ export class EntityManager extends BaseObject {
 	
 	exportEntities(): MapEntity[] {
 		const out: MapEntity[] = [];
-		// this.entities.forEach(e => out.push(e.exportEntity()));
+		this.entities.forEach(e => out.push(e.exportEntity()));
 		return out;
 	}
 	

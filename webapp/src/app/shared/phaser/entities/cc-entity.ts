@@ -35,12 +35,11 @@ export abstract class CCEntity extends BaseObject {
 	
 	public container!: Phaser.GameObjects.Container;
 	
-	// private text: Phaser.Text;
+	private text?: Phaser.GameObjects.Text;
 	private images: Phaser.GameObjects.Image[] = [];
 	
 	
 	// // input (is handled mostly by entity manager)
-	// private collisionBitmap: Phaser.BitmapData;
 	private collisionImage!: Phaser.GameObjects.Graphics;
 	private inputZone!: Phaser.GameObjects.Zone;
 	
@@ -280,6 +279,9 @@ export abstract class CCEntity extends BaseObject {
 		}
 		
 		this.container.bringToTop(this.collisionImage);
+		if (this.text) {
+			this.container.bringToTop(this.text);
+		}
 		
 		this.drawBoundingBox();
 	}
@@ -330,16 +332,16 @@ export abstract class CCEntity extends BaseObject {
 	destroy() {
 		super.destroy();
 		this.container.destroy();
-		// if (this.text) {
-		// 	this.text.destroy();
-		// }
+		if (this.text) {
+			this.text.destroy();
+		}
 	}
 	
 	updateZIndex() {
 		let zIndex = this.details.level.level * 10 + 1;
 		
 		// TODO: hack to display OLPlatform over objects because right now Object Layer is always on level 10
-		if (this.details.type === 'OLPlatform') {
+		if (this.details.type === 'OLPlatform' || this.details.type === 'ObjectLayerView') {
 			zIndex += 100;
 		}
 		
@@ -350,7 +352,6 @@ export abstract class CCEntity extends BaseObject {
 	}
 	
 	exportEntity(): MapEntity {
-		// TODO
 		const out = {
 			type: this.details.type,
 			x: this.container.x,
@@ -372,7 +373,7 @@ export abstract class CCEntity extends BaseObject {
 		this.setupType(settings);
 	}
 	
-	public generateNoImageType(rgb = 0x800000, a = 0.5, rgbTop = 0xc06040, aTop = 0.5) {
+	public generateNoImageType(rgbTop = 0xc06040, aTop = 0.5, rgb = 0x800000, a = 0.5) {
 		const settings = this.details.settings;
 		
 		const baseSize = settings.size || {x: 16, y: 16};
@@ -521,28 +522,28 @@ export abstract class CCEntity extends BaseObject {
 		this.inputZone.y = collImg.y;
 		this.inputZone.setSize(shape.width, shape.height, true);
 		
-		// this.generateText(this.details.settings.name, size);
+		this.generateText(this.details.settings.name, size);
 	}
 	
 	private generateText(name: string, size: Point) {
-		// TODO
-		// if (name) {
-		// 	if (!this.text) {
-		// 		this.text = this.game.add.text(0, 0, '', {
-		// 			font: '400 18pt Roboto',
-		// 			fill: 'white',
-		// 			stroke: 'black',
-		// 			strokeThickness: 2
-		// 		}, this.levelOffsetGroup);
-		// 		this.text.scale.set(0.274);
-		// 		this.text.anchor.set(0.5, 0.5);
-		// 	}
-		// 	this.text.setText(name);
-		// 	this.text.position.set(size.x / 2, size.y / 2);
-		// } else if (this.text) {
-		// 	this.text.destroy();
-		// 	this.text = null;
-		// }
+		if (name) {
+			if (!this.text) {
+				this.text = this.scene.add.text(0, 0, '', {
+					font: '400 18pt Roboto',
+					fill: 'white',
+					stroke: 'black',
+					strokeThickness: 2
+				});
+				this.text.setOrigin(0.5, 0.5);
+				this.text.setScale(0.3);
+				this.container.add(this.text);
+			}
+			this.text.setText(name);
+			this.text.setPosition(size.x / 2, size.y / 2 + this.levelOffset);
+		} else if (this.text) {
+			this.text.destroy();
+			this.text = undefined;
+		}
 		
 	}
 }
