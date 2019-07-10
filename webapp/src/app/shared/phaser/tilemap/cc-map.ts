@@ -99,7 +99,7 @@ export class CCMap {
 		// generate Map Layers
 		if (this.inputLayers) {
 			this.inputLayers.forEach(layer => {
-				const ccLayer = new CCMapLayer(tileMap, layer, this.scene);
+				const ccLayer = new CCMapLayer(this.scene, tileMap, layer);
 				this.layers.push(ccLayer);
 			});
 			
@@ -141,6 +141,10 @@ export class CCMap {
 		const index = this.layers.indexOf(layer);
 		this.layers.splice(index, 1);
 		layer.destroy();
+	}
+	
+	public getTilemap() {
+		return this.tileMap;
 	}
 	
 	exportMap(): CrossCodeMap {

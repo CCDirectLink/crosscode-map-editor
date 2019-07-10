@@ -16,7 +16,7 @@ import {Globals} from '../../shared/globals';
 export class LayersComponent implements OnInit {
 	
 	selectedLayer?: CCMapLayer;
-	tilemap?: CCMap;
+	map?: CCMap;
 	newLayerName = '';
 	
 	constructor(private mapLoader: MapLoaderService,
@@ -34,7 +34,7 @@ export class LayersComponent implements OnInit {
 	
 	ngOnInit() {
 		this.mapLoader.selectedLayer.subscribe(layer => this.selectedLayer = layer);
-		this.mapLoader.tileMap.subscribe(tilemap => this.tilemap = tilemap);
+		this.mapLoader.tileMap.subscribe(tilemap => this.map = tilemap);
 	}
 	
 	getDisplayName(layer: CCMapLayer): string {
@@ -50,36 +50,44 @@ export class LayersComponent implements OnInit {
 	}
 	
 	addNewLayer(event: Event) {
-		// TODO:
-		// const map = this.tilemap;
-		// const data = [];
-		// for (let y = 0; y < map.mapHeight; y++) {
-		// 	data[y] = [];
-		// 	for (let x = 0; x < map.mapWidth; x++) {
-		// 		data[y][x] = 0;
-		// 	}
-		// }
-		// const layer = new CCMapLayer(Globals.scene, Globals.game, {
-		// 	type: 'Background',
-		// 	name: this.newLayerName,
-		// 	level: 0,
-		// 	width: map.mapWidth,
-		// 	height: map.mapHeight,
-		// 	visible: 1,
-		// 	tilesetName: '',
-		// 	repeat: false,
-		// 	distance: 1,
-		// 	tilesize: Globals.TILE_SIZE,
-		// 	moveSpeed: {x: 0, y: 0},
-		// 	data: data,
-		// });
-		// console.log(layer);
-		// map.addLayer(layer);
-		// this.newLayerName = '';
-		// this.stateHistory.saveState({
-		// 	name: 'Layer added',
-		// 	icon: 'add'
-		// }, true);
+		if (!this.map) {
+			return;
+		}
+		const map = this.map;
+		const tilemap = map.getTilemap();
+		
+		if (!tilemap) {
+			return;
+		}
+		
+		const data: number[][] = [];
+		for (let y = 0; y < map.mapHeight; y++) {
+			data[y] = [];
+			for (let x = 0; x < map.mapWidth; x++) {
+				data[y][x] = 0;
+			}
+		}
+		const layer = new CCMapLayer(Globals.scene, tilemap, {
+			type: 'Background',
+			name: this.newLayerName,
+			level: 0,
+			width: map.mapWidth,
+			height: map.mapHeight,
+			visible: 1,
+			tilesetName: '',
+			repeat: false,
+			distance: 1,
+			tilesize: Globals.TILE_SIZE,
+			moveSpeed: {x: 0, y: 0},
+			data: data,
+		});
+		console.log(layer);
+		map.addLayer(layer);
+		this.newLayerName = '';
+		this.stateHistory.saveState({
+			name: 'Layer added',
+			icon: 'add'
+		}, true);
 	}
 	
 	deleteSelected() {
@@ -87,10 +95,10 @@ export class LayersComponent implements OnInit {
 		if (!layer) {
 			throw new Error('no layer selected');
 		}
-		if (!this.tilemap) {
+		if (!this.map) {
 			throw new Error('no tilemap defined');
 		}
-		this.tilemap.removeLayer(layer);
+		this.map.removeLayer(layer);
 		this.stateHistory.saveState({
 			name: 'Layer deleted',
 			icon: 'delete'
@@ -125,10 +133,10 @@ export class LayersComponent implements OnInit {
 		if (event.previousIndex === event.currentIndex) {
 			return;
 		}
-		if (!this.tilemap) {
+		if (!this.map) {
 			throw new Error('tilemap not defined');
 		}
-		moveItemInArray(this.tilemap.layers, event.previousIndex, event.currentIndex);
+		moveItemInArray(this.map.layers, event.previousIndex, event.currentIndex);
 		this.stateHistory.saveState({
 			name: 'Layer moved',
 			icon: 'open_with',

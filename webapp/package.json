@@ -35,6 +35,7 @@
 	"scripts": {
 		"ng": "ng",
 		"start": "ng serve",
+		"start:aot": "ng serve --aot",
 		"startNoLiveReload": "ng serve --live-reload false",
 		"build": "ng build",
 		"build:prod": "ng build --prod",

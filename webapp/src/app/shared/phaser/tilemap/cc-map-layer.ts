@@ -9,9 +9,9 @@ export class CCMapLayer {
 	private layer?: Phaser.Tilemaps.DynamicTilemapLayer;
 	
 	constructor(
+		scene: Phaser.Scene,
 		private tilemap: Phaser.Tilemaps.Tilemap,
 		details: MapLayer,
-		scene: Phaser.Scene
 	) {
 		if (typeof details.level === 'string') {
 			// possible levels

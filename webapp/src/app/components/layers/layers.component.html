@@ -1,6 +1,6 @@
 <div fxLayout="column" class="layers-tab-container">
 	<mat-nav-list fxFlex="1 1 auto" class="small-list dark-scrollbar" cdkDropList (cdkDropListDropped)="drop($event)">
-		<mat-list-item *ngFor="let layer of tilemap.layers" (click)="selectLayer(layer)"
+		<mat-list-item *ngFor="let layer of map?.layers" (click)="selectLayer(layer)"
 		               [ngClass]="{'layer-hidden': !layer.visible}" cdkDrag>
 			<div *cdkDragPreview></div>
 			<div class="item-selected-bg" [ngClass]="{'item-selected': layer === selectedLayer}"></div>
@@ -54,7 +54,7 @@
 					<mat-form-field>
 						<mat-select fxFlex [disabled]="!selectedLayer" class="list-item" floatPlaceholder="never"
 						            [ngModel]="selectedLayer?.details.level" (selectionChange)="updateLevel($event.value)">
-							<mat-option *ngFor="let level of tilemap?.levels; let i=index" [value]="i">{{i}}</mat-option>
+							<mat-option *ngFor="let level of map?.levels; let i=index" [value]="i">{{i}}</mat-option>
 						</mat-select>
 					</mat-form-field>
 				</mat-list-item>
