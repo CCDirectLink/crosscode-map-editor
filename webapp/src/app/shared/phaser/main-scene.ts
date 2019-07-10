@@ -66,8 +66,7 @@ export class MainScene extends Phaser.Scene {
 				this.rescaleBorder();
 			}
 		});
-		// TODO is now in phaserevents
-		// Globals.updateMapBorder.subscribe(a => this.rescaleBorder());
+		Globals.phaserEventsService.updateMapBorder.subscribe(() => this.rescaleBorder());
 		
 		const pan = new MapPan(this, 'mapPan');
 		this.add.existing(pan);

@@ -113,6 +113,33 @@ export class CCMapLayer {
 		// }
 	}
 	
+	resize(width: number, height: number, skipRender = false) {
+		if (!this.layer) {
+			return;
+		}
+		const details = this.details;
+		details.width = width;
+		details.height = height;
+		
+		
+		const newData: number[][] = [];
+		for (let y = 0; y < details.height; y++) {
+			newData[y] = [];
+			const old = details.data[y] || [];
+			for (let x = 0; x < details.width; x++) {
+				newData[y][x] = old[x] || 0;
+			}
+		}
+		details.data = newData;
+		const tilesetName = this.layer.tileset[0].name;
+		const visible = this.layer.visible;
+		this.layer.destroy();
+		
+		this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), tilesetName, 0, 0, details.width, details.height);
+		this.layer.putTilesAt(details.data, 0, 0, true);
+		this.layer.visible = visible;
+	}
+	
 	updateTileset(tilesetname: string) {
 		const details = this.details;
 		details.tilesetName = tilesetname;

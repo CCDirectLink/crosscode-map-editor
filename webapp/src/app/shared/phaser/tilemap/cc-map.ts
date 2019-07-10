@@ -125,7 +125,7 @@ export class CCMap {
 		this.mapWidth = width;
 		this.mapHeight = height;
 		
-		// this.layers.forEach(layer => layer.resize(width, height, skipRender));
+		this.layers.forEach(layer => layer.resize(width, height, skipRender));
 		Globals.phaserEventsService.updateMapBorder.next(true);
 	}
 	
