@@ -19,7 +19,7 @@ export class MapSettingsComponent {
 	};
 	
 	constructor(
-		private loader: MapLoaderService,
+		loader: MapLoaderService,
 		public ref: OverlayRefControl
 	) {
 		const tileMap = loader.tileMap.getValue();
