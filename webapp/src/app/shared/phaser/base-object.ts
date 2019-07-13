@@ -1,12 +1,5 @@
-import {CCMapLayer} from './tilemap/cc-map-layer';
-import {SelectedTile} from '../../models/tile-selector';
 import * as Phaser from 'phaser';
 import {Subscription} from 'rxjs';
-import {Point} from '../../models/cross-code-map';
-import {Globals} from '../globals';
-import {Helper} from './helper';
-import {Vec2} from './vec2';
-import {Filler} from './tilemap/fill';
 
 export interface KeyBinding {
 	event: string;

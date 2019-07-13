@@ -5,7 +5,7 @@ import * as Phaser from 'phaser';
 import {Vec2} from '../vec2';
 
 import {Globals} from '../../globals';
-import {BaseObject} from '../BaseObject';
+import {BaseObject} from '../base-object';
 
 export interface ScaleSettings {
 	scalableX: boolean;

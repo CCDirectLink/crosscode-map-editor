@@ -5,9 +5,8 @@ import {Point} from '../../../models/cross-code-map';
 import {Vec2} from '../vec2';
 import {SelectedTile} from '../../../models/tile-selector';
 import * as Phaser from 'phaser';
-import {Subscription} from 'rxjs';
 import {Filler} from './fill';
-import {BaseObject} from '../BaseObject';
+import {BaseObject} from '../base-object';
 
 export class TileDrawer extends BaseObject {
 	

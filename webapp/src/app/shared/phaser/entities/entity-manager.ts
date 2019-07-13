@@ -1,11 +1,10 @@
 import {CCEntity} from './cc-entity';
-import {CCMap} from '../tilemap/cc-map';
 import {CrossCodeMap, MapEntity, Point} from '../../../models/cross-code-map';
 import {Vec2} from '../vec2';
 import {Globals} from '../../globals';
 import {SelectionBox} from './selection-box';
 import {EntityRegistry} from './registry/entity-registry';
-import {BaseObject} from '../BaseObject';
+import {BaseObject} from '../base-object';
 import {Helper} from '../helper';
 
 export class EntityManager extends BaseObject {
