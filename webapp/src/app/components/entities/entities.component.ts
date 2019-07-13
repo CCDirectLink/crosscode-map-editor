@@ -49,7 +49,7 @@ export class EntitiesComponent implements OnInit {
 		
 		const def = entity.getScaleSettings();
 		if (def && (def.scalableX || def.scalableY)) {
-			const vec2Widget: Vec2WidgetComponent = <Vec2WidgetComponent>this.generateWidget(entity, 'size', <any>{type: 'Vec2'}, ref);
+			const vec2Widget: Vec2WidgetComponent = <Vec2WidgetComponent>this.generateWidget(entity, 'size', {type: 'Vec2', description: ''}, ref);
 			vec2Widget.enableX = def.scalableX;
 			vec2Widget.enableY = def.scalableY;
 			vec2Widget.step = def.scalableStep;
