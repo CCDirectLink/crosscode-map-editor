@@ -1,12 +1,12 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {AttributeValue, CCEntity} from '../../shared/phaser/entities/cc-entity';
-import {GlobalEventsService} from '../../shared/global-events.service';
-import {MapLoaderService} from '../../shared/map-loader.service';
 import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {HostDirective} from '../../shared/host.directive';
 import {AbstractWidget} from '../../shared/widgets/abstract-widget';
 import {WidgetRegistryService} from '../../shared/widgets/widget-registry.service';
 import {Vec2WidgetComponent} from '../../shared/widgets/vec2-widget/vec2-widget.component';
+import {GlobalEventsService} from '../../shared/global-events.service';
+import {MapLoaderService} from '../../shared/map-loader.service';
 
 @Component({
 	selector: 'app-entities',
@@ -18,10 +18,12 @@ export class EntitiesComponent implements OnInit {
 	entity?: CCEntity;
 	map?: CCMap;
 	
-	constructor(private events: GlobalEventsService,
-	            private loader: MapLoaderService,
-	            private componentFactoryResolver: ComponentFactoryResolver,
-	            private widgetRegistry: WidgetRegistryService) {
+	constructor(
+		private componentFactoryResolver: ComponentFactoryResolver,
+		private widgetRegistry: WidgetRegistryService,
+		events: GlobalEventsService,
+		loader: MapLoaderService
+	) {
 		events.selectedEntity.subscribe(e => {
 			// clear focus of input fields to enable phaser inputs again
 			(<HTMLElement>document.activeElement).blur();
