@@ -41,8 +41,8 @@ export class MapSettingsComponent {
 		settings.attributes = tileMap.attributes;
 	}
 	
-	onSettingsChange(obj: { property: string, value: any }) {
-		this.settings[obj.property as keyof CrossCodeMap] = obj.value;
+	onSettingsChange(obj: { property: keyof CrossCodeMap, value: any }) {
+		this.settings[obj.property] = obj.value;
 	}
 	
 	update() {
