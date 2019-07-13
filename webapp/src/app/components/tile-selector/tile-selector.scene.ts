@@ -1,15 +1,12 @@
 import * as Phaser from 'phaser';
-import {FileInfos} from '../../models/file-infos';
 import {Globals} from '../../shared/globals';
-import {Glob} from 'glob';
 import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
 import {Helper} from '../../shared/phaser/helper';
-import {MapLayer, Point} from '../../models/cross-code-map';
+import {Point} from '../../models/cross-code-map';
 import {MapPan} from '../../shared/phaser/map-pan';
 import {Subscription} from 'rxjs';
 import {SelectedTile} from '../../models/tile-selector';
 import {Vec2} from '../../shared/phaser/vec2';
-import {EventEmitter} from '@angular/core';
 
 export class TileSelectorScene extends Phaser.Scene {
 	

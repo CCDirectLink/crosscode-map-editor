@@ -1,7 +1,6 @@
 import {Point} from '../../models/cross-code-map';
 import {Globals} from '../globals';
 import {CCMapLayer} from './tilemap/cc-map-layer';
-import {Glob} from 'glob';
 
 export class Helper {
 	
