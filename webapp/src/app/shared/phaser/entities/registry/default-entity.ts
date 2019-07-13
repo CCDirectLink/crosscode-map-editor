@@ -1,12 +1,12 @@
-import {EntityAttributes, CCEntity, ScaleSettings} from '../cc-entity';
+import {CCEntity, EntityAttributes, ScaleSettings} from '../cc-entity';
 
 export class DefaultEntity extends CCEntity {
-	private settings: any;
+	private settings: any = {};
 	
 	getAttributes(): EntityAttributes {
 		const out: EntityAttributes = {};
 		Object.keys(this.settings).forEach(key => {
-			out[key as keyof EntityAttributes] = {
+			out[key] = {
 				type: 'Unknown',
 				description: ''
 			};
