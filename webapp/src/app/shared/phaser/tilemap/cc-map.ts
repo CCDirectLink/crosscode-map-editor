@@ -2,11 +2,7 @@ import {Attributes, CrossCodeMap, MapLayer, Point} from '../../../models/cross-c
 import {CCMapLayer} from './cc-map-layer';
 import {Globals} from '../../globals';
 import {EntityManager} from '../entities/entity-manager';
-import {Helper} from '../helper';
-import {StateHistoryService} from '../../history/state-history.service';
 import {Subscription} from 'rxjs';
-import {GlobalEventsService} from '../../global-events.service';
-import {PhaserEventsService} from '../phaser-events.service';
 
 export class CCMap {
 	name = '';
@@ -129,7 +125,7 @@ export class CCMap {
 		Globals.phaserEventsService.updateMapBorder.next(true);
 	}
 	
-	offsetMap(offset: Point, borderTiles = false, skipRender = false) {
+	offsetMap(offset: Point, borderTiles = false) {
 		this.layers.forEach(layer => layer.offsetLayer(offset, borderTiles));
 	}
 	
