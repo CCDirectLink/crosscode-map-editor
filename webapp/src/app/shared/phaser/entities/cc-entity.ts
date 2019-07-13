@@ -28,7 +28,6 @@ export interface AttributeValue {
 
 export abstract class CCEntity extends BaseObject {
 	
-	// TODO
 	private map: CCMap;
 	private levelOffset = 0;
 	
@@ -38,7 +37,7 @@ export abstract class CCEntity extends BaseObject {
 	private images: Phaser.GameObjects.Image[] = [];
 	
 	
-	// // input (is handled mostly by entity manager)
+	// input (is handled mostly by entity manager)
 	private collisionImage!: Phaser.GameObjects.Graphics;
 	private inputZone!: Phaser.GameObjects.Zone;
 	
