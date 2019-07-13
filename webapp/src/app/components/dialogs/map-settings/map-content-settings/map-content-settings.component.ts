@@ -26,8 +26,8 @@ export class MapContentSettingsComponent implements OnInit {
 		}
 	}
 	
-	onNumberChange(event: any, property: string): void {
-		const numElement = event.target;
+	onNumberChange(event: Event, property: string): void {
+		const numElement = event.target as HTMLInputElement;
 		if (numElement) {
 			const min = Number(numElement.min || -Infinity);
 			const max = Number(numElement.max || Infinity);
@@ -48,7 +48,7 @@ export class MapContentSettingsComponent implements OnInit {
 			
 			// Parent won't update field if same value
 			// force update value property
-			numElement.value = value;
+			numElement.value = value + '';
 
 			this.onSettingsChange.emit({
 				property,
