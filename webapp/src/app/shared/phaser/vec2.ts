@@ -2,13 +2,8 @@
 
 import {Point} from '../../models/cross-code-map';
 
-// @ts-ignore
 export class Vec2 {
 	
-	/**
-	 * @inline
-	 * @param otherVec
-	 */
 	public static create(otherVec?: Point) {
 		const res = <Point>{};
 		res.x = (otherVec && otherVec.x || 0);
@@ -16,11 +11,6 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param x
-	 * @param y
-	 */
 	public static createC(x?: number, y?: number) {
 		const res = <Point>{};
 		res.x = (x || 0);
@@ -28,35 +18,18 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param v2
-	 */
 	public static assign(v1: Point, v2: Point) {
 		v1.x = (v2.x || 0);
 		v1.y = (v2.y || 0);
 		return v1;
 	}
 	
-	/**
-	 * @inline
-	 * @param v
-	 * @param x
-	 * @param y
-	 */
 	public static assignC(v: Point, x?: number, y?: number) {
 		v.x = (x || 0);
 		v.y = (y || 0);
 		return v;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param v2
-	 * @param {boolean=} copy
-	 */
 	public static add(v1: Point, v2: Point, copy?: boolean) {
 		const res: any = copy || false ? {} : v1;
 		res.x = (v1.x || 0) + (v2.x || 0);
@@ -64,13 +37,6 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param x
-	 * @param y
-	 * @param {boolean=} copy
-	 */
 	public static addC(v1: Point, x?: number, y?: number, copy?: boolean) {
 		const res: any = copy || false ? {} : v1;
 		y = y === undefined || y === null ? x : y;
@@ -79,12 +45,6 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param v2
-	 * @param {boolean=} copy
-	 */
 	public static sub(v1: Point, v2: Point, copy?: boolean) {
 		const res: any = copy || false ? {} : v1;
 		res.x = (v1.x || 0) - (v2.x || 0);
@@ -92,13 +52,6 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param x
-	 * @param y
-	 * @param {boolean=} copy
-	 */
 	public static subC(v1: Point, x: number, y: number, copy?: boolean) {
 		const res: any = copy ? {} : v1;
 		y = y === undefined || y === null ? x : y;
@@ -107,12 +60,6 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param v2
-	 * @param {boolean=} copy
-	 */
 	public static mul(v1: Point, v2: Point, copy?: boolean) {
 		const res: any = copy || false ? {} : v1;
 		res.x = (v1.x || 0) * (v2.x || 0);
@@ -120,13 +67,6 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param x
-	 * @param y
-	 * @param {boolean=} copy
-	 */
 	public static mulC(v1: Point, x?: number, y?: number, copy?: boolean) {
 		const res: any = copy || false ? {} : v1;
 		y = y === undefined || y === null ? x : y;
@@ -135,12 +75,6 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param f
-	 * @param {boolean=} copy
-	 */
 	public static mulF(v1: Point, f: number, copy?: boolean) {
 		const res: any = copy || false ? {} : v1;
 		res.x = (v1.x || 0) * (f || 0);
@@ -148,12 +82,6 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param v2
-	 * @param {boolean=} copy
-	 */
 	public static div(v1: Point, v2: Point, copy?: boolean) {
 		const res: any = copy || false ? {} : v1;
 		res.x = (v1.x || 0) / (v2.x || 0);
@@ -161,13 +89,6 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param x
-	 * @param y
-	 * @param {boolean=} copy
-	 */
 	public static divC(v1: Point, x?: number, y?: number, copy?: boolean) {
 		const res: any = copy || false ? {} : v1;
 		y = y === undefined || y === null ? x : y;
@@ -176,30 +97,14 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param v2
-	 */
 	public static dot(v1: Point, v2: Point) {
 		return (v1.x || 0) * (v2.x || 0) + (v1.y || 0) * (v2.y || 0);
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param v2
-	 */
 	public static dotR(v1: Point, v2: Point) {
 		return -(v1.y || 0) * (v2.x || 0) + (v1.x || 0) * (v2.y || 0);
 	}
 	
-	/**
-	 * @inline
-	 * @param v
-	 * @param newLength
-	 * @param {boolean=} copy
-	 */
 	public static vlength(v: Point, newLength?: number, copy?: boolean) {
 		const oldLength = Math.sqrt((v.x || 0) * (v.x || 0) + (v.y || 0) * (v.y || 0));
 		if (newLength) {
@@ -209,13 +114,6 @@ export class Vec2 {
 		}
 	}
 	
-	/**
-	 * @inline
-	 * @param v
-	 * @param min
-	 * @param max
-	 * @param {boolean=} copy
-	 */
 	public static limit(v: Point, min: number, max: number, copy?: boolean) {
 		const length = Vec2.vlength(v);
 		if (length > max) {
@@ -227,19 +125,10 @@ export class Vec2 {
 		}
 	}
 	
-	/**
-	 * @inline
-	 * @param v
-	 * @param {boolean=} copy
-	 */
 	public static normalize(v: Point, copy?: boolean) {
 		return Vec2.vlength(v, 1, copy);
 	}
 	
-	/**
-	 * @inline
-	 * @param v
-	 */
 	public static clockangle(v: Point) {
 		let result = Math.acos(-(v.y || 0) / Vec2.vlength(v));
 		if (v.x < 0) {
@@ -248,22 +137,11 @@ export class Vec2 {
 		return result || 0;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param v2
-	 */
 	public static angle(v1: Point, v2: Point) {
 		const result = Math.acos(Vec2.dot(v1, v2) / (Vec2.vlength(v1) * Vec2.vlength(v2)));
 		return result || 0;
 	}
 	
-	/**
-	 * @inline
-	 * @param v
-	 * @param angle
-	 * @param {boolean=} copy
-	 */
 	public static rotate(v: Point, angle: number, copy?: boolean) {
 		const res: any = copy || false ? {} : v;
 		const x = v.x || 0;
@@ -272,11 +150,6 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param v
-	 * @param {boolean=} copy
-	 */
 	public static rotate90CW(v: Point, copy?: boolean) {
 		const res: any = copy || false ? {} : v;
 		const x = (v.x || 0);
@@ -285,11 +158,6 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param v
-	 * @param {boolean=} copy
-	 */
 	public static rotate90CCW(v: Point, copy?: boolean) {
 		const res: any = copy || false ? {} : v;
 		const x = (v.x || 0);
@@ -298,11 +166,6 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param v
-	 * @param {boolean=} copy
-	 */
 	public static flip(v: Point, copy?: boolean) {
 		const res: any = copy || false ? {} : v;
 		res.x = -v.x;
@@ -310,44 +173,22 @@ export class Vec2 {
 		return res;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param v2
-	 */
 	public static equal(v1: Point, v2: Point) {
 		return v1.x === v2.x && v1.y === v2.y;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param v2
-	 */
 	public static distance(v1: Point, v2: Point) {
 		const x = ((v1.x - v2.x) || 0);
 		const y = ((v1.y - v2.y) || 0);
 		return Math.sqrt(x * x + y * y);
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param v2
-	 */
 	public static distance2(v1: Point, v2: Point) {
 		const x = ((v1.x - v2.x) || 0);
 		const y = ((v1.y - v2.y) || 0);
 		return x * x + y * y;
 	}
 	
-	/**
-	 * @inline
-	 * @param v1
-	 * @param v2
-	 * @param i
-	 * @param {boolean=} copy
-	 */
 	public static lerp(v1: Point, v2: Point, i: number, copy?: boolean) {
 		const res: any = copy || false ? {} : v1;
 		res.x = (v1.x || 0) * (1 - i) + (v2.x || 0) * i;
