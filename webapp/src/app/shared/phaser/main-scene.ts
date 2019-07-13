@@ -26,9 +26,6 @@ export class MainScene extends Phaser.Scene {
 	}
 	
 	preload() {
-		// res.data.forEach(json => {
-		// 	this.game.load.json(json, Globals.URL + json);
-		// });
 		this.res.images.forEach(img => {
 			this.load.image(img, Globals.URL + img);
 		});
@@ -89,7 +86,6 @@ export class MainScene extends Phaser.Scene {
 			}
 		});
 		
-		// this.mapLoader.selectedLayer.subscribe(layer => this.tileDrawer.selectLayer(layer));
 		Globals.globalEventsService.currentView.next(EditorView.Layers);
 		
 		// TODO
