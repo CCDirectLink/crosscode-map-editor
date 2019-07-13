@@ -27,11 +27,11 @@ export class EntityRegistry {
 		this.entities[type] = entity;
 	}
 	
-	public getDefaultEntity(): new (...args: any) => CCEntity {
+	public getDefaultEntity(): new (...args: any[]) => CCEntity {
 		return this.defaultEntity;
 	}
 	
-	public getEntity(type: string): new (...args: any) => CCEntity {
+	public getEntity(type: string): new (...args: any[]) => CCEntity {
 		return this.entities[type] || this.defaultEntity;
 	}
 }
