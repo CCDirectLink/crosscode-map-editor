@@ -24,10 +24,10 @@ export class LayersComponent implements OnInit {
 	            events: GlobalEventsService) {
 		events.toggleVisibility.subscribe(() => {
 			if (this.selectedLayer) {
-				this.toggleVisibility(<any>{
+				this.toggleVisibility({
 					stopPropagation: () => {
 					}
-				}, this.selectedLayer);
+				} as Event, this.selectedLayer);
 			}
 		});
 	}
