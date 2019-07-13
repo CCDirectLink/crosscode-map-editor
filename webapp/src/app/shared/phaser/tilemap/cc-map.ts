@@ -39,7 +39,7 @@ export class CCMap {
 			}
 			const selectedLayer = Globals.mapLoaderService.selectedLayer;
 			const i = this.layers.indexOf(<any>selectedLayer.getValue());
-			this.loadMap(JSON.parse(container.state.state), true);
+			this.loadMap(JSON.parse(container.state.json), true);
 			if (i >= 0 && this.layers.length > i) {
 				selectedLayer.next(this.layers[i]);
 			}
@@ -113,7 +113,7 @@ export class CCMap {
 			Globals.stateHistoryService.init({
 				name: 'load',
 				icon: 'insert_drive_file',
-				state: JSON.stringify(this.exportMap())
+				json: JSON.stringify(this.exportMap())
 			});
 		}
 		

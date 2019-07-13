@@ -46,7 +46,7 @@ export class StateHistoryService {
 		
 		const states = this.states.getValue();
 		const selected = this.selectedState.getValue();
-		const i = states.indexOf(selected.state as any);
+		const i = states.indexOf(selected.state!);
 		selected.state = state as HistoryState;
 		states.length = i + 1;
 		if (states.length >= this.maxStates) {
@@ -59,7 +59,7 @@ export class StateHistoryService {
 	undo() {
 		const states = this.states.getValue();
 		const selected = this.selectedState.getValue();
-		let i = states.indexOf(selected.state as any);
+		let i = states.indexOf(selected.state!);
 		if (i <= 0) {
 			return;
 		}
@@ -70,7 +70,7 @@ export class StateHistoryService {
 	redo() {
 		const states = this.states.getValue();
 		const selected = this.selectedState.getValue();
-		let i = states.indexOf(selected.state as any);
+		let i = states.indexOf(selected.state!);
 		if (i === states.length - 1) {
 			return;
 		}
