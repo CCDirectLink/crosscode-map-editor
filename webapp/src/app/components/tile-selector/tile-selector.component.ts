@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import * as Phaser from 'phaser';
-import {MapLoaderService} from '../../shared/map-loader.service';
-import {HttpClientService} from '../../services/http-client.service';
 import {TileSelectorScene} from './tile-selector.scene';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {EditorView} from '../../models/editor-view';
@@ -18,9 +16,8 @@ export class TileSelectorComponent implements OnInit {
 	hide = false;
 	
 	constructor(
-		private mapLoader: MapLoaderService,
-		private http: HttpClientService,
-		private globalEvents: GlobalEventsService) {
+		private globalEvents: GlobalEventsService
+	) {
 	}
 	
 	ngOnInit() {
