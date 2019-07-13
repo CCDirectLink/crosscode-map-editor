@@ -1,17 +1,8 @@
-import {
-	ApplicationRef,
-	ChangeDetectionStrategy,
-	Component,
-	EventEmitter,
-	Input, NgZone,
-	Output,
-	ViewChild
-} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {EventHelperService} from '../event-helper.service';
 import {AbstractEvent} from '../../event-registry/abstract-event';
 import {OverlayService} from '../../../../overlay/overlay.service';
 import {Overlay} from '@angular/cdk/overlay';
-import {NpcStatesComponent} from '../../../npc-states-widget/npc-states/npc-states.component';
 import {EventDetailComponent} from '../detail/event-detail.component';
 import {OverlayRefControl} from '../../../../overlay/overlay-ref-control';
 import {EventAddComponent} from '../add/event-add.component';
@@ -68,7 +59,7 @@ export class RowTextComponent {
 		this.overlayRef = obj.ref;
 		
 		obj.instance.event = this.data;
-		obj.instance.exit.subscribe((v: any) => {
+		obj.instance.exit.subscribe((v: AbstractEvent<any>) => {
 			obj.ref.close();
 			this.data = v;
 			v.update();
@@ -93,7 +84,7 @@ export class RowTextComponent {
 		
 		this.overlayRef = obj.ref;
 		
-		obj.instance.getEventClass.subscribe((v: any) => {
+		obj.instance.getEventClass.subscribe((v: AbstractEvent<any>) => {
 			obj.ref.close();
 			const index = this.getIndex();
 			this.parent.splice(index, 0, v);
@@ -154,7 +145,7 @@ export class RowTextComponent {
 	// endregion
 	
 	private getIndex() {
-		const index = this.parent.indexOf(this.data as any);
+		const index = this.parent.indexOf(this.data!);
 		return index === -1 ? this.parent.length : index;
 	}
 }
