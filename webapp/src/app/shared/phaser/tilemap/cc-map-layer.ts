@@ -88,31 +88,31 @@ export class CCMapLayer {
 		}
 	}
 	
-	offsetLayer(offset: Point, borderTiles = false, skipRender = false) {
-		// const data = this.details.data;
-		// const newData: number[][] = JSON.parse(JSON.stringify(data));
-		//
-		// for (let y = 0; y < data.length; y++) {
-		// 	for (let x = 0; x < data[y].length; x++) {
-		// 		let newTile = 0;
-		// 		let row = data[y - offset.y];
-		// 		if (!row && borderTiles) {
-		// 			row = offset.y > 0 ? data[0] : data[data.length - 1];
-		// 		}
-		// 		if (row) {
-		// 			newTile = row[x - offset.x];
-		// 			if (borderTiles && newTile === undefined) {
-		// 				newTile = offset.x > 0 ? row[0] : row[row.length - 1];
-		// 			}
-		// 		}
-		// 		newData[y][x] = newTile || 0;
-		// 	}
-		// }
-		//
-		// this.details.data = newData;
-		// if (!skipRender) {
-		// 	this.renderAll();
-		// }
+	offsetLayer(offset: Point, borderTiles = false) {
+		const data = this.details.data;
+		const newData: number[][] = JSON.parse(JSON.stringify(data));
+
+		for (let y = 0; y < data.length; y++) {
+			for (let x = 0; x < data[y].length; x++) {
+				let newTile = 0;
+				let row = data[y - offset.y];
+				if (!row && borderTiles) {
+					row = offset.y > 0 ? data[0] : data[data.length - 1];
+				}
+				if (row) {
+					newTile = row[x - offset.x];
+					if (borderTiles && newTile === undefined) {
+						newTile = offset.x > 0 ? row[0] : row[row.length - 1];
+					}
+				}
+				newData[y][x] = newTile || 0;
+			}
+		}
+
+		this.details.data = newData;
+		if (this.layer) {
+			this.layer.putTilesAt(this.details.data, 0, 0, false);
+		}
 	}
 	
 	resize(width: number, height: number, skipRender = false) {
@@ -138,7 +138,7 @@ export class CCMapLayer {
 		this.layer.destroy();
 		
 		this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), tilesetName, 0, 0, details.width, details.height);
-		this.layer.putTilesAt(details.data, 0, 0, true);
+		this.layer.putTilesAt(details.data, 0, 0, false);
 		this.layer.visible = visible;
 	}
 	
@@ -156,7 +156,7 @@ export class CCMapLayer {
 			}
 			newTileset.firstgid = 1;
 			this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), newTileset, 0, 0, details.width, details.height);
-			this.layer.putTilesAt(details.data, 0, 0, true);
+			this.layer.putTilesAt(details.data, 0, 0, false);
 		}
 	}
 	
