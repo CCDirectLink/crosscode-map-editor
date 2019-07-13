@@ -1,5 +1,4 @@
 import {Point} from '../../../models/cross-code-map';
-import {Helper} from '../helper';
 import {CCEntity} from './cc-entity';
 
 export class SelectionBox {
@@ -80,10 +79,6 @@ export class SelectionBox {
 		}
 		this.graphics.clear();
 		this.active = false;
-		this.selectedEntities.forEach(e => {
-			// TODO
-			// e.collisionImage.events.onInputOut.dispatch();
-		});
 		return this.selectedEntities;
 	}
 }
