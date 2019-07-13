@@ -62,8 +62,8 @@ export class SelectionBox {
 		this.graphics.fillRect(rect.x, rect.y, rect.width, rect.height);
 		this.graphics.strokeRect(rect.x, rect.y, rect.width, rect.height);
 		
+		// TODO: super inefficient
 		entities.forEach(e => {
-			// TODO
 			if (Phaser.Geom.Intersects.RectangleToRectangle(rect, e.getBoundingBox())) {
 				e.inputOver();
 				this.selectedEntities.add(e);
