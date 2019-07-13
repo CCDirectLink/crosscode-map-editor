@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
 import {MatSnackBar} from '@angular/material';
-import {Observable, BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {CrossCodeMap} from '../models/cross-code-map';
 import {CCMap} from './phaser/tilemap/cc-map';
 import {CCMapLayer} from './phaser/tilemap/cc-map-layer';
-import {FileChangeEvent} from '@angular/compiler-cli/src/perform_watch';
 
 @Injectable()
 export class MapLoaderService {
@@ -16,8 +15,8 @@ export class MapLoaderService {
 	constructor(private snackBar: MatSnackBar) {
 	}
 	
-	loadMap(event: any) {
-		const files: FileList = event.target.files;
+	loadMap(event: Event) {
+		const files: FileList = (event.target as HTMLInputElement).files!;
 		if (files.length === 0) {
 			return;
 		}
