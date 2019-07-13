@@ -130,7 +130,7 @@ export class CCMap {
 	}
 	
 	offsetMap(offset: Point, borderTiles = false, skipRender = false) {
-		this.layers.forEach(layer => layer.offsetLayer(offset, borderTiles, skipRender));
+		this.layers.forEach(layer => layer.offsetLayer(offset, borderTiles));
 	}
 	
 	addLayer(layer: CCMapLayer) {
