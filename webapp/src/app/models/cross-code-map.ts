@@ -18,7 +18,7 @@ export interface Point {
 }
 
 export interface Point3 extends Point {
-	z?: number;
+	z: number;
 }
 
 export interface Attributes {
