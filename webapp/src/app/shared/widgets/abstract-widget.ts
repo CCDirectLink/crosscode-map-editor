@@ -33,7 +33,7 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 		}
 	}
 	
-	toInt(val: any): number {
+	toInt(val: string): number {
 		return parseInt(val, 10);
 	}
 	
