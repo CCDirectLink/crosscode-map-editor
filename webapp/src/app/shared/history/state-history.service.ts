@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {CrossCodeMap} from '../../models/cross-code-map';
-import {CCMap} from '../phaser/tilemap/cc-map';
 import {Globals} from '../globals';
 
 export interface HistoryStateContainer {
@@ -11,7 +9,7 @@ export interface HistoryStateContainer {
 export interface HistoryState {
 	icon: string;
 	name: string;
-	state: string;
+	json: string;
 }
 
 @Injectable()
@@ -32,23 +30,18 @@ export class StateHistoryService {
 	saveState(state: {
 		icon: string;
 		name: string;
-		state?: string;
+		json?: string;
 	}, ignoreCheck = false) {
-		
-		if (!state.state) {
+		if (!state.json) {
 			const newState = Globals.map.exportMap();
 			const stateJson = JSON.stringify(newState);
 			if (!ignoreCheck) {
 				const val = this.selectedState.getValue();
-				let curr;
-				if (val.state) {
-					curr = val.state.state;
-				}
-				if (curr === stateJson) {
+				if (val.state && val.state.json === stateJson) {
 					return;
 				}
 			}
-			state.state = stateJson;
+			state.json = stateJson;
 		}
 		
 		const states = this.states.getValue();
