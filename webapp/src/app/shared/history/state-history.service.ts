@@ -4,6 +4,10 @@ import {CrossCodeMap} from '../../models/cross-code-map';
 import {CCMap} from '../phaser/tilemap/cc-map';
 import {Globals} from '../globals';
 
+export interface HistoryStateContainer {
+	state?: HistoryState;
+}
+
 export interface HistoryState {
 	icon: string;
 	name: string;
@@ -15,7 +19,7 @@ export class StateHistoryService {
 	maxStates = 100;
 	
 	states = new BehaviorSubject<HistoryState[]>([]);
-	selectedState = new BehaviorSubject<{ state?: HistoryState }>({state: undefined});
+	selectedState = new BehaviorSubject<HistoryStateContainer>({state: undefined});
 	
 	constructor() {
 	}

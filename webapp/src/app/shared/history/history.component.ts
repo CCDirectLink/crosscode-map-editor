@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {HistoryState, StateHistoryService} from './state-history.service';
+import {HistoryState, HistoryStateContainer, StateHistoryService} from './state-history.service';
 
 @Component({
 	selector: 'app-history',
@@ -12,7 +12,7 @@ export class HistoryComponent implements OnInit {
 	@ViewChild('listContainer', {static: false}) list?: ElementRef;
 	
 	states: HistoryState[] = [];
-	selected?: { state?: HistoryState };
+	selected?: HistoryStateContainer;
 	selectedIndex = 0;
 	
 	constructor(
@@ -37,12 +37,12 @@ export class HistoryComponent implements OnInit {
 	ngOnInit() {
 	}
 	
-	updateSelected(container?: { state?: HistoryState }) {
+	updateSelected(container?: HistoryStateContainer) {
 		if (!container) {
 			return;
 		}
 		this.selected = container;
-		this.selectedIndex = this.states.indexOf(container.state as any);
+		this.selectedIndex = this.states.indexOf(container.state!);
 	}
 	
 	undo() {
