@@ -1,16 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Globals} from '../shared/globals';
-import {Remote, Dialog} from 'electron';
+import {Dialog, Remote} from 'electron';
+import * as nodeFs from 'fs';
 
 @Injectable()
 export class ElectronService {
 	
-	public readonly path: any;
-	public readonly fs: any;
+	private readonly fs?: typeof nodeFs;
 	
 	private storageName = 'assetsPath';
 	private assetsPath = '';
-	private remote?: Remote;
+	private readonly remote?: Remote;
 	
 	constructor() {
 		if (!Globals.isElectron) {
@@ -21,7 +21,6 @@ export class ElectronService {
 		const remote = window.require('electron').remote;
 		this.remote = remote!;
 		this.fs = remote.require('fs');
-		this.path = remote.require('path');
 		
 		this.assetsPath = localStorage.getItem(this.storageName) || '';
 		this.updateURL();
@@ -50,6 +49,9 @@ export class ElectronService {
 	}
 	
 	public checkAssetsPath(path: string): boolean {
+		if (!this.fs) {
+			return false;
+		}
 		try {
 			const files = this.fs.readdirSync(path);
 			return files.includes('data') && files.includes('media');
