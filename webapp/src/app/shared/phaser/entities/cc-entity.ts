@@ -92,7 +92,7 @@ export abstract class CCEntity extends BaseObject {
 	
 	
 	protected init(): void {
-		this.container = <any>this.scene.add.container(0, 0);
+		this.container = this.scene.add.container(0, 0);
 		
 		const collImg = this.scene.add.graphics();
 		this.container.add(collImg);
