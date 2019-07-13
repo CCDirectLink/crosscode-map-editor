@@ -48,7 +48,9 @@ export class CCMapLayer {
 		// const skip = 'Navigation Background HeightMap'.split(' ');
 		skip.forEach(type => {
 			if (type === details.type) {
-				this.layer!.visible = false;
+				if (this.layer) {
+					this.layer.visible = false;
+				}
 			}
 		});
 	}
@@ -149,6 +151,9 @@ export class CCMapLayer {
 				this.layer = undefined;
 			}
 			const newTileset = this.tilemap.addTilesetImage(tilesetname);
+			if (!newTileset) {
+				return;
+			}
 			newTileset.firstgid = 1;
 			this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), newTileset, 0, 0, details.width, details.height);
 			this.layer.putTilesAt(details.data, 0, 0, true);

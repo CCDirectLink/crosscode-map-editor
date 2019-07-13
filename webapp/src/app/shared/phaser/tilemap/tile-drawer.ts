@@ -59,7 +59,9 @@ export class TileDrawer extends BaseObject {
 		}
 		this.container.visible = true;
 		const tileset = this.previewTileMap.addTilesetImage('only', selectedLayer.details.tilesetName);
-		tileset.firstgid = 1;
+		if (tileset) {
+			tileset.firstgid = 1;
+		}
 	}
 	
 	private updateSelectedTiles(selected: SelectedTile[]) {
