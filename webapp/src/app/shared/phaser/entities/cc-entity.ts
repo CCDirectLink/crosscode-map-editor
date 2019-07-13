@@ -1,4 +1,3 @@
-import {Sortable} from '../../../models/sortable';
 import {CCMap} from '../tilemap/cc-map';
 import {MapEntity, Point, Point3} from '../../../models/cross-code-map';
 import {Helper} from '../helper';
