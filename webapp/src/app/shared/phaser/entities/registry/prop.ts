@@ -1,4 +1,4 @@
-import {CCEntity, InputEvents, ScaleSettings} from '../cc-entity';
+import {EntityAttributes, CCEntity, ScaleSettings} from '../cc-entity';
 import {Helper} from '../../helper';
 import {Fix} from '../../../../models/props';
 
@@ -30,7 +30,7 @@ export interface PropDef {
 
 export class Prop extends CCEntity {
 	
-	private attributes = {
+	private attributes: EntityAttributes = {
 		propType: {
 			type: 'PropType',
 			description: 'Type of prop'
@@ -81,11 +81,11 @@ export class Prop extends CCEntity {
 		}
 	};
 	
-	public getAttributes() {
+	public getAttributes(): EntityAttributes {
 		return this.attributes;
 	}
 	
-	getScaleSettings(): ScaleSettings {
+	getScaleSettings(): ScaleSettings | undefined {
 		return undefined;
 	}
 	
@@ -95,7 +95,7 @@ export class Prop extends CCEntity {
 			return this.generateNoImageType();
 		}
 		Helper.getJson('data/props/' + settings.propType.sheet, (sheet) => {
-			let prop: PropDef;
+			let prop: PropDef | undefined;
 			if (!sheet) {
 				console.warn('prop without sheet', settings);
 				return this.generateNoImageType();
@@ -111,22 +111,19 @@ export class Prop extends CCEntity {
 				console.error('prop not found: ' + settings.propType.name);
 				return this.generateNoImageType();
 			}
-			this.anchor.set(0.5, 1);
-			
+
 			this.entitySettings = <any>{sheets: {fix: []}};
 			if (prop.fix) {
 				this.entitySettings.sheets.fix[0] = prop.fix;
 				this.entitySettings.sheets.renderMode = prop.fix.renderMode;
 			} else {
 				console.log('sheet not found for prop: ' + prop.name);
-				console.log(this.group.x);
-				console.log(this.group.y);
-				return this.generateNoImageType(0, 255, 60);
+				return this.generateNoImageType(0x00ff3c);
 			}
 			this.entitySettings.baseSize = prop.size;
 			this.entitySettings.collType = prop.collType;
 			this.updateSettings();
 		});
-		
+
 	}
 }

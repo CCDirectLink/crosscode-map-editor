@@ -14,11 +14,11 @@
 			               (selectedIndexChange)="selectTab($event)"
 			               [selectedIndex]="index">
 				<mat-tab class="stretched-tabs" *ngFor="let state of states; let index = index"
-				         [label]="state.pageName && state.pageName.trim() ? state.pageName : (index + 1)">
+				         [label]="state.pageName && state.pageName.trim() ? state.pageName : ((index + 1) + '')">
 				</mat-tab>
 			</mat-tab-group>
 			
-			<div class="tab-content" fxLayout="column" fxFlex="auto">
+			<div class="tab-content" fxLayout="column" fxFlex="auto" *ngIf="currentState">
 				
 				<!-- condition -->
 				<div fxFlex="0 0 54px" fxLayout="row">

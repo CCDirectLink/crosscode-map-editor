@@ -28,11 +28,7 @@
 			    "src/styles"
 			  ]
 			},
-            "scripts": [
-              "node_modules/phaser-ce/build/custom/pixi.js",
-              "node_modules/phaser-ce/build/custom/p2.js",
-              "node_modules/phaser-ce/build/custom/phaser-split.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {
@@ -78,11 +74,7 @@
             "karmaConfig": "./karma.conf.js",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
-            "scripts": [
-              "node_modules/phaser-ce/build/custom/pixi.js",
-              "node_modules/phaser-ce/build/custom/p2.js",
-              "node_modules/phaser-ce/build/custom/phaser-split.js"
-            ],
+            "scripts": [],
             "styles": [
               "src/styles.scss"
             ],

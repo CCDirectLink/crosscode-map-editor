@@ -8,10 +8,10 @@ import {Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation} from 
 export class FloatingWindowComponent implements OnInit {
 	
 	@Input() visible = true;
-	@Input() title: string;
+	@Input() title = 'no title';
 	
-	@Input() height: string;
-	@Input() width: string;
+	@Input() height = '';
+	@Input() width = '';
 	@Input() top: string | number = 0;
 	@Input() right: string | number = 0;
 	
@@ -19,6 +19,7 @@ export class FloatingWindowComponent implements OnInit {
 	@Input() showMin = true;
 	
 	@Output() close = new EventEmitter<void>();
+	@Output() dragEnd = new EventEmitter<void>();
 	
 	constructor() {
 	}
@@ -26,8 +27,8 @@ export class FloatingWindowComponent implements OnInit {
 	ngOnInit() {
 	}
 	
-	onDragEnd($event) {
-		// console.log($event);
+	onDragEnd() {
+		this.dragEnd.emit();
 	}
 	
 	toggle() {

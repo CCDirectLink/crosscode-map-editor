@@ -9,9 +9,9 @@ import {CharacterNamesService} from './character-names.service';
 })
 export class CharacterWidgetComponent extends AbstractWidget implements OnInit {
 	@Input() nested = false;
-	names: string[];
+	names: string[] = [];
 
-  	constructor(private namesService: CharacterNamesService) { 
+  	constructor(private namesService: CharacterNamesService) {
     	super();
   	}
 

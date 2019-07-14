@@ -1,15 +1,19 @@
-import {CCEntity, ScaleSettings} from '../cc-entity';
+import {EntityAttributes, CCEntity, ScaleSettings} from '../cc-entity';
 import {Helper} from '../../helper';
 import {PropDef} from './prop';
-import * as Phaser from 'phaser-ce';
+import * as Phaser from 'phaser';
 
 export class ItemDestruct extends CCEntity {
 	
-	private attributes = {
+	private attributes: EntityAttributes = {
 		desType: {
 			type: 'String',
 			description: 'Type of destructible object',
-			options: null,
+			Yi: true
+		},
+		__GLOBAL__: {
+			type: 'String',
+			description: 'Global settings for destructible object',
 			Yi: true
 		},
 		items: {
@@ -36,17 +40,17 @@ export class ItemDestruct extends CCEntity {
 		}
 	};
 	
-	public getAttributes() {
+	public getAttributes(): EntityAttributes {
 		return this.attributes;
 	}
 	
-	getScaleSettings(): ScaleSettings {
+	getScaleSettings(): ScaleSettings | undefined {
 		return undefined;
 	}
 	
 	protected setupType(settings: any) {
 		Helper.getJson('data/global-settings', (globalSettings) => {
-			const destructibles = this.game.cache.getJSON('destructibles.json');
+			const destructibles = this.scene.cache.json.get('destructibles.json');
 			let desType;
 			if (settings.desType) {
 				desType = settings.desType;
@@ -54,7 +58,6 @@ export class ItemDestruct extends CCEntity {
 				desType = globalSettings.ENTITY.ItemDestruct[settings.__GLOBAL__].desType;
 			}
 			const def = destructibles[desType];
-			this.anchor.set(0.5, 1);
 			this.entitySettings = <any>{
 				sheets: {
 					fix: [{

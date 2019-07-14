@@ -1,22 +1,6 @@
-import {
-	AfterViewInit,
-	Component,
-	ComponentFactoryResolver, EventEmitter,
-	Input,
-	OnDestroy,
-	OnInit, Output,
-	ViewChild,
-	ViewContainerRef
-} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {AbstractEvent} from '../../event-registry/abstract-event';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {HostDirective} from '../../../../host.directive';
-import {CCEntity} from '../../../../phaser/entities/cc-entity';
-import {AbstractWidget} from '../../../abstract-widget';
-import {WidgetRegistryService} from '../../../widget-registry.service';
-import {NPCState} from '../../../npc-states-widget/npc-states-widget.component';
-import {JsonWidgetComponent} from '../../../json-widget/json-widget.component';
-import {EventHelperService} from '../event-helper.service';
 import {EventRegistryService} from '../../event-registry/event-registry.service';
 
 const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
@@ -34,14 +18,14 @@ const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 	styleUrls: ['./event-add.component.scss']
 })
 export class EventAddComponent implements OnInit, AfterViewInit {
-	@ViewChild('filterInput', { static: false }) filterInput;
+	@ViewChild('filterInput', {static: true}) filterInput!: ElementRef;
 	
 	@Output() getEventClass: EventEmitter<AbstractEvent<any>> = new EventEmitter<any>();
 	
 	events: string[];
-	eventsFiltered: string[];
+	eventsFiltered: string[] = [];
 	animState = 'enter';
-	_filterText: string;
+	_filterText?: string;
 	
 	constructor(private eventRegistry: EventRegistryService) {
 		this.events = Object.keys(this.eventRegistry.getAll());

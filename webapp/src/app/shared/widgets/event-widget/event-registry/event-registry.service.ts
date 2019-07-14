@@ -38,7 +38,7 @@ export class EventRegistryService {
 		this.register('WAIT', Wait);
 	}
 	
-	private setDefaultEvent(event) {
+	private setDefaultEvent(event: any) {
 		this.defaultEvent = event;
 	}
 	

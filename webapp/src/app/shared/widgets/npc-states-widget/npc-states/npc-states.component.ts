@@ -11,18 +11,18 @@ import {EventEditorComponent} from '../../event-widget/event-editor/editor/event
 })
 export class NpcStatesComponent implements OnInit {
 	
-	@ViewChild('eventEditor', { static: false }) eventEditor: EventEditorComponent;
+	@ViewChild('eventEditor', {static: false}) eventEditor?: EventEditorComponent;
 	
 	@Input() states: NPCState[] = [];
 	@Output() exit: EventEmitter<NPCState[]> = new EventEmitter<NPCState[]>();
-	currentState: NPCState;
+	currentState?: NPCState;
 	index = 0;
 	
 	props = settingsJson.default;
 	positionActive = false;
 	
 	// TODO: move to global events service
-	clipboard;
+	clipboard = '';
 	
 	constructor() {
 	}
@@ -45,14 +45,15 @@ export class NpcStatesComponent implements OnInit {
 	
 	selectTab(index: number) {
 		if (this.currentState) {
+			if (!this.eventEditor) {
+				throw new Error('event editor is not defined');
+			}
 			this.currentState.event = this.eventEditor.export();
 		}
 		this.currentState = this.states[index];
 		
-		if (!this.currentState) {
-			return;
-		}
-		this.positionActive = this.currentState.position.active;
+		const active = this.currentState && this.currentState.position && this.currentState.position.active;
+		this.positionActive = !!active;
 		this.index = index;
 	}
 	
@@ -80,6 +81,9 @@ export class NpcStatesComponent implements OnInit {
 		if (!this.currentState) {
 			return;
 		}
+		if (!this.eventEditor) {
+			throw new Error('event editor is not defined');
+		}
 		this.currentState.event = this.eventEditor.export();
 		this.clipboard = JSON.stringify(this.currentState);
 		console.log(JSON.parse(this.clipboard));
@@ -96,12 +100,15 @@ export class NpcStatesComponent implements OnInit {
 	}
 	
 	export() {
+		if (!this.eventEditor) {
+			throw new Error('event editor is not defined');
+		}
 		if (this.currentState) {
 			this.currentState.event = this.eventEditor.export();
 		}
 		const out = this.states;
 		out.forEach(state => {
-			if (state.position.active) {
+			if (state.position && state.position.active) {
 				state.position.active = undefined;
 			} else {
 				state.position = undefined;

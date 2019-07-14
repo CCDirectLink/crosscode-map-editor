@@ -1,29 +1,29 @@
 import {Injectable} from '@angular/core';
 import {MatSnackBar} from '@angular/material';
-import {Observable, BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {CrossCodeMap} from '../models/cross-code-map';
 import {CCMap} from './phaser/tilemap/cc-map';
 import {CCMapLayer} from './phaser/tilemap/cc-map-layer';
 
 @Injectable()
 export class MapLoaderService {
-
-	private _map: BehaviorSubject<CrossCodeMap> = new BehaviorSubject(null);
-	tileMap: BehaviorSubject<CCMap> = new BehaviorSubject(null);
-	selectedLayer: BehaviorSubject<CCMapLayer> = new BehaviorSubject(null);
-
+	
+	private _map = new BehaviorSubject<CrossCodeMap>(undefined as any);
+	tileMap = new BehaviorSubject<CCMap | undefined>(undefined);
+	selectedLayer = new BehaviorSubject<CCMapLayer | undefined>(undefined);
+	
 	constructor(private snackBar: MatSnackBar) {
 	}
-
-	loadMap(event) {
-		const files: FileList = event.target.files;
+	
+	loadMap(event: Event) {
+		const files: FileList = (event.target as HTMLInputElement).files!;
 		if (files.length === 0) {
 			return;
 		}
-
+		
 		const file = files[0];
 		const reader = new FileReader();
-
+		
 		reader.onload = (e: any) => {
 			try {
 				const map = JSON.parse(e.target.result);
@@ -36,7 +36,7 @@ export class MapLoaderService {
 				return;
 			}
 		};
-
+		
 		reader.readAsText(file);
 	}
 	
@@ -47,7 +47,7 @@ export class MapLoaderService {
 		map.filename = name || 'Untitled';
 		this._map.next(map);
 	}
-
+	
 	get map(): Observable<CrossCodeMap> {
 		return this._map.asObservable();
 	}

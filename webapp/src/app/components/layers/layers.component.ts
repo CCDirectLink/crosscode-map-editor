@@ -15,8 +15,8 @@ import {Globals} from '../../shared/globals';
 })
 export class LayersComponent implements OnInit {
 	
-	selectedLayer: CCMapLayer;
-	tilemap: CCMap;
+	selectedLayer?: CCMapLayer;
+	map?: CCMap;
 	newLayerName = '';
 	
 	constructor(private mapLoader: MapLoaderService,
@@ -27,21 +27,21 @@ export class LayersComponent implements OnInit {
 				this.toggleVisibility({
 					stopPropagation: () => {
 					}
-				}, this.selectedLayer);
+				} as Event, this.selectedLayer);
 			}
 		});
 	}
 	
 	ngOnInit() {
 		this.mapLoader.selectedLayer.subscribe(layer => this.selectedLayer = layer);
-		this.mapLoader.tileMap.subscribe(tilemap => this.tilemap = tilemap);
+		this.mapLoader.tileMap.subscribe(tilemap => this.map = tilemap);
 	}
 	
 	getDisplayName(layer: CCMapLayer): string {
 		return `${layer.details.name} (${layer.details.level})`;
 	}
 	
-	toggleVisibility(event, layer: CCMapLayer) {
+	toggleVisibility(event: Event, layer: CCMapLayer) {
 		event.stopPropagation();
 		layer.visible = !layer.visible;
 		if (layer.visible) {
@@ -49,16 +49,25 @@ export class LayersComponent implements OnInit {
 		}
 	}
 	
-	addNewLayer(event) {
-		const map = this.tilemap;
-		const data = [];
+	addNewLayer(event: Event) {
+		if (!this.map) {
+			return;
+		}
+		const map = this.map;
+		const tilemap = map.getTilemap();
+		
+		if (!tilemap) {
+			return;
+		}
+		
+		const data: number[][] = [];
 		for (let y = 0; y < map.mapHeight; y++) {
 			data[y] = [];
 			for (let x = 0; x < map.mapWidth; x++) {
 				data[y][x] = 0;
 			}
 		}
-		const layer = new CCMapLayer(Globals.game, {
+		const layer = new CCMapLayer(Globals.scene, tilemap, {
 			type: 'Background',
 			name: this.newLayerName,
 			level: 0,
@@ -83,29 +92,40 @@ export class LayersComponent implements OnInit {
 	
 	deleteSelected() {
 		const layer = this.selectedLayer;
-		this.tilemap.removeLayer(layer);
+		if (!layer) {
+			throw new Error('no layer selected');
+		}
+		if (!this.map) {
+			throw new Error('no tilemap defined');
+		}
+		this.map.removeLayer(layer);
 		this.stateHistory.saveState({
 			name: 'Layer deleted',
 			icon: 'delete'
 		}, true);
 		
-		this.selectLayer(null);
+		this.selectLayer(undefined);
 	}
 	
-	selectLayer(layer: CCMapLayer) {
+	selectLayer(layer?: CCMapLayer) {
 		if (layer) {
 			layer.visible = true;
 		}
 		this.mapLoader.selectedLayer.next(layer);
 	}
 	
-	updateTilesetName(name) {
+	updateTilesetName(name: string) {
+		if (!this.selectedLayer) {
+			throw new Error('no layer selected');
+		}
 		this.selectedLayer.updateTileset(name);
 		this.mapLoader.selectedLayer.next(this.selectedLayer);
 	}
 	
-	updateLevel(level) {
-		console.log(level);
+	updateLevel(level: number) {
+		if (!this.selectedLayer) {
+			throw new Error('no layer selected');
+		}
 		this.selectedLayer.updateLevel(level);
 	}
 	
@@ -113,10 +133,13 @@ export class LayersComponent implements OnInit {
 		if (event.previousIndex === event.currentIndex) {
 			return;
 		}
-		moveItemInArray(this.tilemap.layers, event.previousIndex, event.currentIndex);
+		if (!this.map) {
+			throw new Error('tilemap not defined');
+		}
+		moveItemInArray(this.map.layers, event.previousIndex, event.currentIndex);
 		this.stateHistory.saveState({
 			name: 'Layer moved',
-			icon: 'open_with'
+			icon: 'open_with',
 		}, true);
 	}
 	

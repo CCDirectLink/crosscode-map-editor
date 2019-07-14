@@ -14,8 +14,7 @@ import {Globals} from '../../globals';
 })
 export class EventWidgetComponent extends AbstractWidget {
 	
-	@Input() displayName;
-	private ref: OverlayRefControl;
+	private ref?: OverlayRefControl;
 	
 	constructor(private overlayService: OverlayService,
 	            private overlay: Overlay) {
@@ -37,14 +36,16 @@ export class EventWidgetComponent extends AbstractWidget {
 		
 		obj.instance.event = this.settings[this.key];
 		
-		obj.instance.exit.subscribe(v => {
+		obj.instance.exit.subscribe((v: any) => {
 			this.close();
 			this.settings[this.key] = v;
 			this.updateType();
-		}, e => this.close());
+		}, () => this.close());
 	}
 	
 	private close() {
-		this.ref.close();
+		if (this.ref) {
+			this.ref.close();
+		}
 	}
 }

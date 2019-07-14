@@ -1,19 +1,19 @@
 import {
 	Component,
-	ComponentFactoryResolver, EventEmitter,
+	ComponentFactoryResolver,
+	EventEmitter,
 	Input,
-	OnDestroy,
-	OnInit, Output,
+	OnInit,
+	Output,
 	ViewChild,
 	ViewContainerRef
 } from '@angular/core';
 import {AbstractEvent} from '../../event-registry/abstract-event';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {HostDirective} from '../../../../host.directive';
-import {CCEntity} from '../../../../phaser/entities/cc-entity';
+import {AttributeValue} from '../../../../phaser/entities/cc-entity';
 import {AbstractWidget} from '../../../abstract-widget';
 import {WidgetRegistryService} from '../../../widget-registry.service';
-import {NPCState} from '../../../npc-states-widget/npc-states-widget.component';
 import {JsonWidgetComponent} from '../../../json-widget/json-widget.component';
 import {EventHelperService} from '../event-helper.service';
 
@@ -32,15 +32,15 @@ const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 	styleUrls: ['./event-detail.component.scss']
 })
 export class EventDetailComponent implements OnInit {
-	@ViewChild(HostDirective, { static: true }) appHost: HostDirective;
+	@ViewChild(HostDirective, {static: true}) appHost!: HostDirective;
 	
-	@Input() event: AbstractEvent<any>;
+	@Input() event!: AbstractEvent<any>;
 	@Output() exit: EventEmitter<AbstractEvent<any>> = new EventEmitter<any>();
 	
 	animState = 'enter';
-	newData;
-	unknownObj;
-	warning;
+	newData: any;
+	unknownObj?: { data: any };
+	warning = false;
 	
 	constructor(private componentFactoryResolver: ComponentFactoryResolver,
 	            private widgetRegistry: WidgetRegistryService,
@@ -48,7 +48,6 @@ export class EventDetailComponent implements OnInit {
 	}
 	
 	ngOnInit(): void {
-		console.log(this.event);
 		this.loadSettings();
 	}
 	
@@ -78,12 +77,15 @@ export class EventDetailComponent implements OnInit {
 		} else {
 			this.warning = true;
 			this.unknownObj = {data: this.newData};
-			const instance: JsonWidgetComponent = <any>this.generateWidget(this.unknownObj, 'data', {}, ref);
+			const instance = this.generateWidget(this.unknownObj, 'data', {
+				type: '',
+				description: ''
+			}, ref) as JsonWidgetComponent;
 			instance.noPropName = true;
 		}
 	}
 	
-	private generateWidget(data, key: string, val, ref: ViewContainerRef) {
+	private generateWidget(data: any, key: string, val: AttributeValue, ref: ViewContainerRef) {
 		const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.widgetRegistry.getWidget(val.type));
 		const componentRef = ref.createComponent(componentFactory);
 		const instance = <AbstractWidget>componentRef.instance;

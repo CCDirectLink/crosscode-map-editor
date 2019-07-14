@@ -1,28 +1,35 @@
 import {Point} from '../../../models/cross-code-map';
-import {Helper} from '../helper';
-import {SortableGroup} from '../../../models/sortable';
 import {CCEntity} from './cc-entity';
 
 export class SelectionBox {
 	
 	private active = false;
-	private start: Point;
-	private game: Phaser.Game;
-	private graphics: Phaser.Graphics;
+	private start: Point = {x: 0, y: 0};
+	private scene: Phaser.Scene;
+	private graphics: Phaser.GameObjects.Graphics;
 	private selectedEntities: Set<CCEntity>;
 	
-	constructor(game: Phaser.Game) {
-		this.game = game;
+	constructor(scene: Phaser.Scene) {
+		this.scene = scene;
 		this.selectedEntities = new Set<CCEntity>();
-		const group: SortableGroup = game.add.group();
-		group.zIndex = 10000;
-		
-		this.graphics = game.add.graphics(0, 0, group);
+		this.graphics = scene.add.graphics({
+			fillStyle: {
+				color: 0x3335ed,
+				alpha: 0.3
+			},
+			lineStyle: {
+				width: 1,
+				color: 0x3335ed,
+				alpha: 0.8
+			}
+		});
+		this.graphics.depth = 1000;
 	}
 	
-	public onInputDown(pos: Point) {
+	public onInputDown(pointer: Phaser.Input.Pointer) {
 		this.active = true;
-		this.start = pos;
+		this.start.x = pointer.worldX;
+		this.start.y = pointer.worldY;
 		this.selectedEntities.clear();
 	}
 	
@@ -30,13 +37,14 @@ export class SelectionBox {
 		if (!this.active) {
 			return;
 		}
-		const pos = Helper.screenToWorld(this.game.input.mousePointer);
+		const posX = this.scene.input.activePointer.worldX;
+		const posY = this.scene.input.activePointer.worldY;
 		const start = this.start;
 		
 		let x1 = start.x;
 		let y1 = start.y;
-		let x2 = pos.x;
-		let y2 = pos.y;
+		let x2 = posX;
+		let y2 = posY;
 		if (x2 < x1) {
 			const tmp = x1;
 			x1 = x2;
@@ -48,20 +56,18 @@ export class SelectionBox {
 			y2 = tmp;
 		}
 		
-		const rect = new Phaser.Rectangle(x1, y1, x2 - x1, y2 - y1);
+		const rect = new Phaser.Geom.Rectangle(x1, y1, x2 - x1, y2 - y1);
 		this.graphics.clear();
-		this.graphics.beginFill(0x3335ed, 0.3);
-		this.graphics.lineStyle(1, 0x3335ed, 0.8);
-		this.graphics.drawRect(rect.x, rect.y, rect.width, rect.height);
-		this.graphics.endFill();
+		this.graphics.fillRect(rect.x, rect.y, rect.width, rect.height);
+		this.graphics.strokeRect(rect.x, rect.y, rect.width, rect.height);
 		
+		// TODO: super inefficient
 		entities.forEach(e => {
-			const events = e.collisionImage.events;
-			if (rect.intersects(e.getBoundingBox(), 0)) {
-				events.onInputOver.dispatch();
+			if (Phaser.Geom.Intersects.RectangleToRectangle(rect, e.getBoundingBox())) {
+				e.inputOver();
 				this.selectedEntities.add(e);
 			} else {
-				events.onInputOut.dispatch();
+				e.inputOut();
 				this.selectedEntities.delete(e);
 			}
 		});
@@ -69,13 +75,10 @@ export class SelectionBox {
 	
 	public onInputUp(): Set<CCEntity> {
 		if (!this.active) {
-			return;
+			return new Set<CCEntity>();
 		}
 		this.graphics.clear();
 		this.active = false;
-		this.selectedEntities.forEach(e => {
-			e.collisionImage.events.onInputOut.dispatch();
-		});
 		return this.selectedEntities;
 	}
 }
