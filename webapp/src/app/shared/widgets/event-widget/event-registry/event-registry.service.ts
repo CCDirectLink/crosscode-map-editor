@@ -14,6 +14,7 @@ import {SetCameraZoom} from './set-camera-zoom';
 import {Wait} from './wait';
 import {SetCameraPos} from './set-camera-pos';
 import {SetCameraBetween} from './set-camera-between';
+import {Label} from './label';
 
 @Injectable()
 export class EventRegistryService {
@@ -36,6 +37,7 @@ export class EventRegistryService {
 		this.register('SET_CAMERA_POS', SetCameraPos);
 		this.register('SET_CAMERA_BETWEEN', SetCameraBetween);
 		this.register('WAIT', Wait);
+		this.register('LABEL', Label);
 	}
 	
 	private setDefaultEvent(event: any) {
