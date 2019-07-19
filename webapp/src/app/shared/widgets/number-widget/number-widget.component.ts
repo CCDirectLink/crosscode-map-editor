@@ -7,8 +7,16 @@ import {AbstractWidget} from '../abstract-widget';
 	styleUrls: ['./number-widget.component.scss', '../widget.scss']
 })
 export class NumberWidgetComponent extends AbstractWidget {
+	isFloat: boolean = false;
+
 	constructor() {
 		super();
 	}
+	
+	ngOnInit() {
+		super.ngOnInit();
+		const attr = this.attribute;
+		this.isFloat = attr && attr.float;
 
+	}
 }
