@@ -9,7 +9,7 @@ import {AbstractWidget} from '../abstract-widget';
 export class StringWidgetComponent extends AbstractWidget implements OnInit {
 	
 	keys: string[] = [];
-	
+	valueType: string = "value";
 	constructor() {
 		super();
 	}
@@ -20,5 +20,9 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 		if (attr && attr.options) {
 			this.keys = Object.keys(attr.options);
 		}
+	}
+
+	onContextMenu() {
+		alert('Context menu clicked.');
 	}
 }
