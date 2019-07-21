@@ -1,18 +1,30 @@
+<!-- https://stackoverflow.com/questions/51971873/insert-a-template-to-child-component-in-angular-6 -->
 <div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
-	<label [for]="key" class="property-name">{{key}} <span *ngIf="!attribute?.options">({{valueType}})</span>:</label>
-	<div class="mat-select-container" *ngIf="attribute?.options; else defaultInput">
-		<mat-select [id]="key"
+	<label [for]="key" class="property-name">{{key}}<span>&nbsp;({{valueType}})</span>:</label>
+	<span *ngIf="valueType === 'value'" fxFlex="1 1 calc(50%)">
+		<div class="mat-select-container" 
+			 fxFlex="1 1 calc(50%)" 
+			 *ngIf="attribute?.options; else defaultInput">
+			<mat-select [id]="key"
+						[ngModel]="settings[key]"
+						(selectionChange)="setSetting(key, $event.value)">
+				<mat-option *ngFor="let option of keys" [value]="option">
+					{{ option }}
+				</mat-option>
+			</mat-select>
+		</div>
+		<ng-template #defaultInput>
+			<input fxFlex="1 1 auto" (contextmenu)="oncontextmenu()" class="default-input"
+					[id]="key"
 					[ngModel]="settings[key]"
-					(selectionChange)="setSetting(key, $event.value)">
-			<mat-option *ngFor="let option of keys" [value]="option">
-				{{ option }}
-			</mat-option>
-		</mat-select>
+					(input)="setSetting(key, $event.target.value)">
+		</ng-template>
+	</span>
+	<div *ngIf="valueType !== 'value'" fxFlex="1 1 calc(50%)">
+		<input class="default-input"
+			fxFlex="1 1 calc(100%)"
+			[id]="key"		
+			[ngModel]="settings[key][valueType]"
+			(input)="setSetting(key, $event.target.value)">
 	</div>
-	<ng-template #defaultInput>
-		<input (contextmenu)="onContextMenu()" class="default-input"
-				[id]="key"
-				[ngModel]="settings[key]"
-				(input)="setSetting(key, $event.target.value)">
-	</ng-template>
 </div>
