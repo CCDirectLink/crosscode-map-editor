@@ -1,7 +1,9 @@
 <h2 class="mat-title">Load map</h2>
-<mat-form-field>
-	<input matInput type="text" placeholder="Filter" [(ngModel)]="filter" (ngModelChange)="update()"/>
-</mat-form-field>
+<div class="filter" fxLayout="column">
+	<mat-form-field>
+		<input matInput type="text" placeholder="Filter" [(ngModel)]="filter" (ngModelChange)="update()"/>
+	</mat-form-field>
+</div>
 <input #fileUpload type="file" (change)="loadMap($event)" accept=".json"/>
 <mat-tree [dataSource]="mapsSource" [treeControl]="treeControl" class="mapTree">
 	<mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle (click)="node.path ? load(node.path) : fileUpload.click()">
