@@ -21,7 +21,7 @@
 				</button>
 				{{node.name}}
 			</div>
-			<ul [class.mapTree-invisible]="!treeControl.isExpanded(node)">
+			<ul *ngIf="treeControl.isExpanded(node)">
 				<ng-container matTreeNodeOutlet></ng-container>
 			</ul>
 		</li>

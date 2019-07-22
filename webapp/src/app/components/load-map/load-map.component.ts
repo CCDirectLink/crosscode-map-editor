@@ -30,8 +30,6 @@ export class LoadMapComponent {
 		this.mapsSource.data = [{
 			name: 'Load external'
 		}];
-
-		this.refresh();
 	}
 
 	refresh() {
