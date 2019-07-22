@@ -43,7 +43,7 @@ export class LoadMapComponent {
 		this.displayMaps(this.paths, this.filter);
 	}
 	
-	loadMap(event) {
+	loadMap(event: Event) {
 		this.mapLoader.loadMap(event);
 	}
 
@@ -95,15 +95,16 @@ export class LoadMapComponent {
 			.split('.');
 		for (const name of parts) {
 			const child = node.find(n => n.name === name);
-			if (child) {
+			if (child && child.children) {
 				node = child.children;
 			} else {
+				const children: MapNode[] = [];
 				const newNode: MapNode = {
 					name: name,
-					children: [],
+					children: children,
 				};
 				node.push(newNode);
-				node = newNode.children;
+				node = children;
 			}
 		}
 		return node;
