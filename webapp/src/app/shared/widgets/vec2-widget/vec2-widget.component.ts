@@ -13,13 +13,13 @@ export class Vec2WidgetComponent extends AbstractWidget {
 	@Input() minSize: Point = {x: -9999, y: -9999};
 	@Input() enableX = true;
 	@Input() enableY = true;
-	@Input() displayName;
+	@Input() displayName = '';
 	
 	constructor() {
 		super();
 	}
 	
-	setVal(key, val) {
+	setVal(key: keyof Point, val: number) {
 		val -= val % this.step;
 		const setting = this.settings[this.key];
 		setting[key] = Math.max(val, this.minSize[key]);

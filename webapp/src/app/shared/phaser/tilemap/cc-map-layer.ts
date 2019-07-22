@@ -1,23 +1,18 @@
 import {MapLayer, Point} from '../../../models/cross-code-map';
-import * as Phaser from 'phaser-ce';
-import {Sortable} from '../../../models/sortable';
+import * as Phaser from 'phaser';
 import {Helper} from '../helper';
-import {Globals} from '../../globals';
 
-export class CCMapLayer extends Phaser.Image implements Sortable {
+export class CCMapLayer {
 	
 	public details: MapLayer;
-	public backgroundColor: { r: number, g: number, b: number, a: number };
 	
-	private bitmap: Phaser.BitmapData;
-	private tilesetImage: Phaser.Image;
-	private tileCrop: Phaser.Rectangle;
-	private tilesetSize: Point;
-	zIndex: number;
+	private layer?: Phaser.Tilemaps.DynamicTilemapLayer;
 	
-	constructor(game: Phaser.Game, details: MapLayer) {
-		super(game, 0, 0, '');
-		// this.backgroundColor = {r: 255, g: 128, b: 0, a: 1};
+	constructor(
+		scene: Phaser.Scene,
+		private tilemap: Phaser.Tilemaps.Tilemap,
+		details: MapLayer,
+	) {
 		if (typeof details.level === 'string') {
 			// possible levels
 			// 'first'
@@ -39,142 +34,64 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 				}
 			}
 		}
+		// noinspection SuspiciousTypeOfGuard
 		if (typeof details.distance === 'string') {
 			details.distance = parseFloat(details.distance);
 		}
 		this.details = details;
-		this.bitmap = game.make.bitmapData(details.width * details.tilesize, details.height * details.tilesize);
-		this.loadTexture(this.bitmap);
-		game.add.existing(this);
+		this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), 'stub');
+		
+		this.updateTileset(details.tilesetName!);
+		this.updateLevel(this.details.level);
 		
 		const skip = 'Navigation Collision HeightMap'.split(' ');
 		// const skip = 'Navigation Background HeightMap'.split(' ');
 		skip.forEach(type => {
 			if (type === details.type) {
-				this.visible = false;
+				if (this.layer) {
+					this.layer.visible = false;
+				}
 			}
 		});
-		
-		this.updateLevel(this.details.level);
-		this.updateTileset(details.tilesetName);
 	}
 	
-	renderAll() {
-		const bitmap = this.bitmap;
-		const tileset = this.tilesetImage;
-		const details = this.details;
-		const tileSize = details.tilesize;
-		
-		bitmap.clear();
-		if (this.backgroundColor) {
-			const bg = this.backgroundColor;
-			bitmap.fill(bg.r, bg.g, bg.b, bg.a);
+	get visible(): boolean {
+		if (!this.layer) {
+			return false;
 		}
-		
-		for (let y = 0; y < details.data.length; y++) {
-			for (let x = 0; x < details.data[y].length; x++) {
-				const tile = details.data[y][x];
-				if (tile === 0) {
-					continue;
-				}
-				this.makeTile(tile);
-				bitmap.draw(tileset, x * tileSize, y * tileSize, tileSize, tileSize);
-			}
+		return this.layer.visible;
+	}
+	
+	set visible(val: boolean) {
+		if (this.layer) {
+			this.layer.visible = val;
 		}
 	}
 	
-	// checks bounds before drawing
-	updateTileChecked(x: number, y: number, tile: number) {
-		if (x >= 0 && x < this.details.data[0].length) {
-			if (y >= 0 && y < this.details.data.length) {
-				this.details.data[y][x] = tile;
-			}
+	get alpha(): number {
+		if (!this.layer) {
+			return 1;
 		}
+		return this.layer.alpha;
 	}
 	
-	drawTile(x: number, y: number, tile: number) {
-		const bitmap = this.bitmap;
-		const tileset = this.tilesetImage;
-		const details = this.details;
-		const tileSize = details.tilesize;
-		
-		const oldTile = details.data[y][x];
-		if (oldTile === tile) {
-			return;
+	set alpha(val: number) {
+		if (this.layer) {
+			this.layer.alpha = val;
 		}
-		details.data[y][x] = tile;
-		const tileX = x * tileSize;
-		const tileY = y * tileSize;
-		bitmap.clear(tileX, tileY, tileSize, tileSize);
-		if (tile !== 0) {
-			this.makeTile(tile);
-			bitmap.draw(tileset, tileX, tileY);
-		}
-	}
-	
-	makeTile(index: number) {
-		const tilesize = this.details.tilesize;
-		const crop = this.tileCrop;
-		
-		const p = Helper.getTilePos(this.tilesetSize, index);
-		
-		crop.x = p.x * tilesize;
-		crop.y = p.y * tilesize;
-		
-		this.tilesetImage.updateCrop();
-	}
-	
-	getTile(x: number, y: number) {
-		let index = x + 1;
-		index += y * this.tilesetSize.x;
-		return index;
-	}
-	
-	clear() {
-		this.bitmap.clear();
-		this.details.data.forEach(arr => arr.fill(0));
 	}
 	
 	destroy() {
-		if (this.bitmap) {
-			this.bitmap.destroy();
-		}
-		if (this.tilesetImage) {
-			this.tilesetImage.destroy();
-		}
-		super.destroy();
-	}
-	
-	resize(width: number, height: number, skipRender = false) {
-		const data = this.details.data;
-		data.length = height;
-		for (let i = 0; i < data.length; i++) {
-			if (!data[i]) {
-				data[i] = new Array(width).fill(0);
-			} else {
-				if (width < this.details.width) {
-					data[i].length = width;
-				} else {
-					while (data[i].length < width) {
-						data[i].push(0);
-					}
-				}
-			}
-		}
-		
-		this.details.width = width;
-		this.details.height = height;
-		
-		this.bitmap.resize(width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
-		if (!skipRender) {
-			this.renderAll();
+		if (this.layer) {
+			this.layer.destroy();
+			this.layer = undefined;
 		}
 	}
 	
-	offsetLayer(offset: Point, borderTiles = false, skipRender = false) {
+	offsetLayer(offset: Point, borderTiles = false) {
 		const data = this.details.data;
 		const newData: number[][] = JSON.parse(JSON.stringify(data));
-		
+
 		for (let y = 0; y < data.length; y++) {
 			for (let x = 0; x < data[y].length; x++) {
 				let newTile = 0;
@@ -191,79 +108,87 @@ export class CCMapLayer extends Phaser.Image implements Sortable {
 				newData[y][x] = newTile || 0;
 			}
 		}
-		
+
 		this.details.data = newData;
-		if (!skipRender) {
-			this.renderAll();
+		if (this.layer) {
+			this.layer.putTilesAt(this.details.data, 0, 0, false);
 		}
+	}
+	
+	resize(width: number, height: number, skipRender = false) {
+		if (!this.layer) {
+			return;
+		}
+		const details = this.details;
+		details.width = width;
+		details.height = height;
+		
+		
+		const newData: number[][] = [];
+		for (let y = 0; y < details.height; y++) {
+			newData[y] = [];
+			const old = details.data[y] || [];
+			for (let x = 0; x < details.width; x++) {
+				newData[y][x] = old[x] || 0;
+			}
+		}
+		details.data = newData;
+		const tilesetName = this.layer.tileset[0].name;
+		const visible = this.layer.visible;
+		this.layer.destroy();
+		
+		this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), tilesetName, 0, 0, details.width, details.height);
+		this.layer.putTilesAt(details.data, 0, 0, false);
+		this.layer.visible = visible;
 	}
 	
 	updateTileset(tilesetname: string) {
 		const details = this.details;
 		details.tilesetName = tilesetname;
 		if (details.tilesetName) {
-			this.tilesetImage = this.game.make.image(0, 0, details.tilesetName);
-			this.tilesetSize = Helper.getTilesetSize(this.game.cache.getImage(details.tilesetName));
-			
-			this.tileCrop = new Phaser.Rectangle(0, 0, Globals.TILE_SIZE, Globals.TILE_SIZE);
-			this.tilesetImage.crop(this.tileCrop);
-		}
-		this.renderAll();
-	}
-	
-	updateLevel(level) {
-		this.details.level = level;
-		this.zIndex = this.details.level * 10;
-		if (isNaN(this.zIndex)) {
-			this.zIndex = 999;
-		}
-		Globals.zIndexUpdate = true;
-	}
-	
-	fill(newTile: number, p: Point) {
-		const data = this.details.data;
-		const prev = data[p.y][p.x];
-		if (newTile === prev) {
-			return;
-		}
-		
-		let toCheck: Point[] = [p];
-		while (toCheck.length > 0) {
-			const currP = toCheck.pop();
-			const tile = data[currP.y][currP.x];
-			if (tile === prev) {
-				data[currP.y][currP.x] = newTile;
-				toCheck = toCheck.concat(this.getNeighbours(currP));
+			if (this.layer) {
+				this.layer.destroy();
+				this.layer = undefined;
 			}
+			const newTileset = this.tilemap.addTilesetImage(tilesetname);
+			if (!newTileset) {
+				return;
+			}
+			newTileset.firstgid = 1;
+			this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), newTileset, 0, 0, details.width, details.height);
+			this.layer.putTilesAt(details.data, 0, 0, false);
 		}
-		
-		this.renderAll();
 	}
 	
-	private getNeighbours(p: Point): Point[] {
-		const out: Point[] = [];
-		
-		if (p.x > 0) {
-			out.push({x: p.x - 1, y: p.y});
+	updateLevel(level: number) {
+		this.details.level = level;
+		let zIndex = this.details.level * 10;
+		if (isNaN(zIndex)) {
+			zIndex = 999;
 		}
-		if (p.x < this.details.width - 1) {
-			out.push({x: p.x + 1, y: p.y});
+		if (this.layer) {
+			this.layer.depth = this.details.level * 10;
 		}
-		if (p.y > 0) {
-			out.push({x: p.x, y: p.y - 1});
-		}
-		if (p.y < this.details.height - 1) {
-			out.push({x: p.x, y: p.y + 1});
-		}
-		
-		return out;
 	}
 	
-	exportLayer() {
+	getPhaserLayer(): Phaser.Tilemaps.DynamicTilemapLayer | undefined {
+		return this.layer;
+	}
+	
+	exportLayer(): MapLayer {
 		const out: MapLayer = Object.assign({}, this.details);
 		if (out.levelName) {
 			out.level = out.levelName;
 			out.levelName = undefined;
+		}
+		out.data = [];
+		if (this.layer) {
+			this.layer.getTilesWithin().forEach(tile => {
+				if (!out.data[tile.y]) {
+					out.data[tile.y] = [];
+				}
+				out.data[tile.y][tile.x] = tile.index;
+			});
 		}
 		return out;
 	}

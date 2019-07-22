@@ -8,17 +8,17 @@ export interface CrossCodeMap {
 	layer: MapLayer[];
 	attributes: Attributes;
 	screen: Point;
-
-	filename?: string;
+	
+	filename: string;
 }
 
 export interface Point {
-	x?: number;
-	y?: number;
+	x: number;
+	y: number;
 }
 
 export interface Point3 extends Point {
-	z?: number;
+	z: number;
 }
 
 export interface Attributes {

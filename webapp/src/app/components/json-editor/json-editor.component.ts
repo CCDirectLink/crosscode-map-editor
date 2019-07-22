@@ -9,15 +9,15 @@ import {Globals} from '../../shared/globals';
 	styleUrls: ['./json-editor.component.scss']
 })
 export class JsonEditorComponent implements AfterViewInit {
-	@ViewChild('editor', { static: false }) container: ElementRef;
+	@ViewChild('editor', {static: false}) container?: ElementRef;
 	
-	private editor: JSONEditor;
-	private options: JSONEditorOptions;
-	data;
+	private editor?: JSONEditor;
+	private options: JSONEditorOptions = {};
+	data: any;
 	private key: string;
 	json = JSON;
 	
-	constructor(@Optional() @Inject(MAT_DIALOG_DATA) data,
+	constructor(@Optional() @Inject(MAT_DIALOG_DATA) data: { key: string, val: any },
 	            public ref: MatDialogRef<JsonEditorComponent>) {
 		this.data = data.val;
 		this.key = data.key;
@@ -30,15 +30,24 @@ export class JsonEditorComponent implements AfterViewInit {
 		Globals.disablePhaserInput = true;
 		this.options = {};
 		this.options.onChange = () => {
+			if (!this.editor) {
+				throw new Error('no editor defined');
+			}
 			this.data = this.editor.get();
 		};
+		if (!this.container) {
+			throw new Error('could not find html element "editor"');
+		}
 		this.editor = new JSONEditor(this.container.nativeElement, this.options);
 		this.editor.set(this.data);
 		this.editor.setName(this.key);
 		this.editor.expandAll();
 	}
 	
-	setJson(val) {
+	setJson(val: string) {
+		if (!this.editor) {
+			throw new Error('no editor defined');
+		}
 		this.data = JSON.parse(val);
 		this.editor.set(this.data);
 		this.editor.expandAll();

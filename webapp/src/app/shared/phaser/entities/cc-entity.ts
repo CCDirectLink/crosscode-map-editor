@@ -1,75 +1,77 @@
-import {Sortable, SortableGroup} from '../../../models/sortable';
 import {CCMap} from '../tilemap/cc-map';
 import {MapEntity, Point, Point3} from '../../../models/cross-code-map';
 import {Helper} from '../helper';
-import * as Phaser from 'phaser-ce';
+import * as Phaser from 'phaser';
 import {Vec2} from '../vec2';
 
 import {Globals} from '../../globals';
-
-export interface InputEvents {
-	onLeftClick?: (entity: CCEntity, pointer: Phaser.Pointer) => void;
-	onInputDown?: (entity: CCEntity, pointer: Phaser.Pointer) => void;
-	onInputUp?: (entity: CCEntity, pointer: Phaser.Pointer, isOver: boolean) => void;
-	onDragStart?: (entity: CCEntity, pointer: Phaser.Pointer, x: number, y: number) => void;
-	onDragUpdate?: (entity: CCEntity, pointer: Phaser.Pointer, x: number, y: number, point: Point, fromStart: boolean) => void;
-	onDragStop?: (entity: CCEntity, pointer: Phaser.Pointer) => void;
-}
+import {BaseObject} from '../base-object';
 
 export interface ScaleSettings {
-	scalableX?: boolean;
-	scalableY?: boolean;
-	baseSize?: Point;
-	scalableStep?: number;
+	scalableX: boolean;
+	scalableY: boolean;
+	baseSize: Point;
+	scalableStep: number;
 }
 
-export abstract class CCEntity extends Phaser.Image implements Sortable {
+export interface EntityAttributes {
+	[key: string]: AttributeValue;
+}
+
+export interface AttributeValue {
+	type: string;
+	description: string;
+	options?: { [key: string]: any };
+	
+	[key: string]: any;
+}
+
+export abstract class CCEntity extends BaseObject {
 	
 	private map: CCMap;
-	public group: SortableGroup;
-	private levelOffsetGroup: SortableGroup;
-	private boundingBoxOffsetGroup: SortableGroup;
-	private text: Phaser.Text;
+	private levelOffset = 0;
 	
-	// for all sprites
-	private images: Phaser.Image[] = [];
+	public container!: Phaser.GameObjects.Container;
+	
+	private text?: Phaser.GameObjects.Text;
+	private images: Phaser.GameObjects.Image[] = [];
+	
 	
 	// input (is handled mostly by entity manager)
-	private collisionBitmap: Phaser.BitmapData;
-	public collisionImage: Phaser.Image;
-	private inputEvents: InputEvents = {};
+	private collisionImage!: Phaser.GameObjects.Graphics;
+	private inputZone!: Phaser.GameObjects.Zone;
+	
 	private selected = false;
-	private leftClickOpts: {
-		timer?: number;
-		pos?: Point;
-	} = {};
 	
 	// drag
 	public isDragged = false;
-	public startOffset: Point = {};
+	public startOffset: Point = {x: 0, y: 0};
 	
-	zIndex: number;
-	details: { level: { level: number, offset: number }, type: string, settings: any };
+	// zIndex: number;
+	details: { level: { level: number, offset: number }, type: string, settings: any } = <any>{};
 	entitySettings: {
 		collType: string;
 		baseSize: Point3;
 		sheets: {
 			fix: {
-				gfx: string | Phaser.BitmapData;
+				gfx: any;
 				x: number;
 				y: number;
 				w: number;
 				h: number;
+				scaleX?: number;
+				scaleY?: number;
 				renderHeight?: number;
 				offsetX?: number;
 				offsetY?: number;
 				flipX?: boolean;
 				flipY?: boolean;
+				tint?: number;
+				alpha?: number;
 			}[],
 			offset?: Point;
 			renderMode?: string;
-			singleColor?: boolean;
-			flipX: boolean;
+			flipX?: boolean;
 		}
 		scalableX: boolean;
 		scalableY: boolean;
@@ -77,63 +79,99 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		pivot: Point;
 	} = <any>{};
 	
-	protected constructor(game: Phaser.Game, map: CCMap, x: number, y: number, inputEvents: InputEvents, typeName: string) {
-		super(game, 0, 0, null);
-		this.setInputEvents(inputEvents);
+	protected constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
+		super(scene, typeName, false);
+		scene.add.existing(this);
 		this.map = map;
-		game.add.existing(this);
+		this.container.x = Math.round(x);
+		this.container.y = Math.round(y);
 		this.details = <any>{
 			type: typeName
 		};
+	}
+	
+	
+	protected init(): void {
+		this.container = this.scene.add.container(0, 0);
 		
-		this.boundingBoxOffsetGroup = game.add.group();
-		this.boundingBoxOffsetGroup.add(this);
-		
-		this.levelOffsetGroup = game.add.group();
-		this.levelOffsetGroup.add(this.boundingBoxOffsetGroup);
-		
-		this.group = game.add.group();
-		this.group.add(this.levelOffsetGroup);
-		
-		// actual coordinates of the entity
-		this.group.x = Math.round(x);
-		this.group.y = Math.round(y);
-		
-		const collImg = this.game.add.image();
+		const collImg = this.scene.add.graphics();
+		this.container.add(collImg);
 		this.collisionImage = collImg;
 		
 		collImg.alpha = 0;
-		this.levelOffsetGroup.add(collImg);
-		collImg.inputEnabled = false;
 		
-		// handle hover input
-		collImg.events.onInputOver.add(() => {
-			if (!this.selected) {
-				collImg.alpha = 0.35;
-			}
-		});
-		collImg.events.onInputOut.add(() => {
-			if (!this.selected) {
-				collImg.alpha = 0;
-			}
-		});
+		this.inputZone = this.scene.add.zone(0, 0, 50, 50);
+		this.inputZone.setOrigin(0);
+		this.inputZone.setData('entity', this);
+		this.container.add(this.inputZone);
 		
-		this.visible = false;
-		this.setEvents();
+		
+		this.inputZone.on('pointerover', () => this.inputOver());
+		this.inputZone.on('pointerout', () => this.inputOut());
+	}
+	
+	
+	public inputOver() {
+		if (!this.selected) {
+			this.collisionImage.alpha = 0.35;
+		}
+	}
+	
+	public inputOut() {
+		if (!this.selected) {
+			this.collisionImage.alpha = 0;
+		}
+	}
+	
+	protected activate(): void {
+		this.inputZone.setInteractive();
+	}
+	
+	
+	protected deactivate(): void {
+		this.inputZone.disableInteractive();
+	}
+	
+	
+	preUpdate(time: number, delta: number): void {
+		if (this.isDragged) {
+			const container = this.container;
+			const p = this.scene.input.activePointer;
+			container.x = Math.round(p.worldX - this.startOffset.x);
+			container.y = Math.round(p.worldY - this.startOffset.y);
+			
+			const settings = Globals.entitySettings;
+			if (settings.enableGrid) {
+				const diffX = container.x % settings.gridSize;
+				if (diffX * 2 < settings.gridSize) {
+					container.x -= diffX;
+				} else {
+					container.x += settings.gridSize - diffX;
+				}
+				
+				const diffY = container.y % settings.gridSize;
+				if (diffY * 2 < settings.gridSize) {
+					container.y -= diffY;
+				} else {
+					container.y += settings.gridSize - diffY;
+				}
+			}
+			this.updateZIndex();
+		}
 	}
 	
 	updateSettings() {
 		const s = this.entitySettings;
 		const settings = this.details.settings;
-		const game = this.game;
 		
-		this.images.forEach(img => img.destroy());
+		this.images.forEach(img => this.container.remove(img, true));
 		this.images = [];
 		
 		// bound box offset
+		const boundBoxOffset = {x: 0, y: 0};
 		if (s.baseSize) {
-			this.boundingBoxOffsetGroup.x = s.baseSize.x / 2;
-			this.boundingBoxOffsetGroup.y = s.baseSize.y;
+			boundBoxOffset.x = s.baseSize.x / 2;
+			boundBoxOffset.y = s.baseSize.y;
 		}
 		
 		// setup sprite
@@ -148,41 +186,99 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 					const imgWidth = Math.min(fix.w, width - x);
 					for (let y = 0; y < height; y += fix.h) {
 						const imgHeight = Math.min(fix.h, height - y);
-						const img = game.add.image(x, -y + settings.size.y + s.baseSize.z, null, null, this.boundingBoxOffsetGroup);
-						img.loadTexture(fix.gfx);
+						const img = this.scene.add.image(x, -y + settings.size.y, fix.gfx);
+						img.setCrop(fix.x, fix.y, imgWidth, imgHeight);
 						
-						img.crop(new Phaser.Rectangle(fix.x, fix.y, imgWidth, imgHeight));
-						img.anchor.set(0, 1);
+						img.setOrigin(0, 0);
+						
+						// level offset
+						img.y += this.levelOffset;
+						
+						// origin offset x=0, y=1
+						img.y -= imgHeight;
+						
+						// crop offset
+						img.x -= fix.x;
+						img.y -= fix.y;
+						
+						this.container.add(img);
 						this.images.push(img);
 					}
 				}
-				
-				this.boundingBoxOffsetGroup.x = 0;
-				this.boundingBoxOffsetGroup.y = -s.baseSize.z;
 			} else {
 				// default
 				s.sheets.fix.forEach(sheet => {
-					const img = this.game.add.image(sheet.offsetX, sheet.offsetY, sheet.gfx, undefined, this.boundingBoxOffsetGroup);
-					img.crop(new Phaser.Rectangle(sheet.x, sheet.y, sheet.w, sheet.h));
-					img.anchor.set(0.5, 1);
-					img.scale.set(sheet.flipX ? -1 : 1, sheet.flipY ? -1 : 1);
+					sheet.x = sheet.x || 0;
+					sheet.y = sheet.y || 0;
+					sheet.offsetX = sheet.offsetX || 0;
+					sheet.offsetY = sheet.offsetY || 0;
+					
+					const img = this.scene.add.image(sheet.offsetX, sheet.offsetY, sheet.gfx);
+					img.setOrigin(0, 0);
+					
+					if (sheet.tint !== undefined) {
+						img.setTintFill(sheet.tint);
+					}
+					
+					img.alpha = sheet.alpha || 1;
+					
+					// scale, used for single color
+					img.scaleX = sheet.scaleX || 1;
+					img.scaleY = sheet.scaleY || 1;
+					
+					// level offset
+					img.y += this.levelOffset;
+					
+					// origin offset x=0.5, y=1
+					img.x -= sheet.w / 2;
+					img.y -= sheet.h;
+					
+					// bounding box offset
+					img.x += boundBoxOffset.x;
+					img.y += boundBoxOffset.y;
+					
+					// flip crop offset
+					let cropX = sheet.x;
+					if (sheet.flipX) {
+						cropX = img.displayWidth - sheet.x - sheet.w;
+					}
+					
+					let cropY = sheet.y;
+					if (sheet.flipY) {
+						// TODO: untested
+						cropY = img.displayWidth - sheet.y - sheet.h;
+					}
+					
+					// crop offset
+					img.x -= cropX;
+					img.y -= cropY;
+					
+					img.setCrop(cropX, cropY, sheet.w, sheet.h);
+					img.flipX = !!sheet.flipX;
+					img.flipY = !!sheet.flipY;
+					this.container.add(img);
 					this.images.push(img);
 				});
 				
 				if (s.sheets.offset) {
-					this.images.forEach(img => Vec2.add(img, s.sheets.offset));
+					this.images.forEach(img => Vec2.add(img, s.sheets.offset!));
 				}
 				if (s.sheets.flipX) {
-					this.images.forEach(img => img.scale.x *= -1);
+					this.images.forEach(img => img.flipX = !img.flipX);
 				}
 			}
 			
 			if (s.sheets.renderMode === 'lighter') {
-				this.images.forEach(img => img.blendMode = PIXI.blendModes.ADD);
+				this.images.forEach(img => img.blendMode = Phaser.BlendModes.ADD);
 			} else if (s.sheets.renderMode === 'source-over') {
 				// TODO: no idea what that actually is
 				console.warn('renderMode source-over found');
 			}
+		}
+		
+		this.container.bringToTop(this.collisionImage);
+		if (this.text) {
+			this.container.bringToTop(this.text);
 		}
 		
 		this.drawBoundingBox();
@@ -211,7 +307,8 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 			height = level.height;
 		}
 		const offset = this.details.level.offset;
-		this.levelOffsetGroup.y = -(height + offset);
+		this.levelOffset = -(height + offset);
+		this.updateSettings();
 	}
 	
 	// TODO: refactor
@@ -220,63 +317,21 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		this.updateType();
 	}
 	
-	setEnableInput(enable: boolean) {
-		if (!this.collisionImage) {
-			return;
-		}
-		this.collisionImage.inputEnabled = enable;
-		this.collisionImage.alpha = 0;
-		this.collisionImage.visible = enable;
-		if (enable) {
-			this.collisionImage.input.priorityID = 10;
-		}
-	}
-	
 	setSelected(selected: boolean) {
 		this.selected = selected;
 		if (this.collisionImage) {
 			this.collisionImage.alpha = selected ? 0.6 : 0;
 		}
+		if (!selected) {
+			this.isDragged = false;
+		}
 	}
 	
 	destroy() {
-		this.group.destroy();
-		this.levelOffsetGroup.destroy();
-		this.boundingBoxOffsetGroup.destroy();
-		if (this.collisionBitmap) {
-			this.collisionBitmap.destroy();
-		}
+		super.destroy();
+		this.container.destroy();
 		if (this.text) {
 			this.text.destroy();
-		}
-		super.destroy();
-	}
-	
-	update() {
-		super.update();
-		this.leftClickOpts.timer += this.game.time.elapsed;
-		if (this.isDragged) {
-			const p = Helper.screenToWorld(this.game.input.mousePointer);
-			this.group.x = Math.round(p.x - this.startOffset.x);
-			this.group.y = Math.round(p.y - this.startOffset.y);
-			
-			const settings = Globals.entitySettings;
-			if (settings.enableGrid) {
-				const diffX = this.group.x % settings.gridSize;
-				if (diffX * 2 < settings.gridSize) {
-					this.group.x -= diffX;
-				} else {
-					this.group.x += settings.gridSize - diffX;
-				}
-				
-				const diffY = this.group.y % settings.gridSize;
-				if (diffY * 2 < settings.gridSize) {
-					this.group.y -= diffY;
-				} else {
-					this.group.y += settings.gridSize - diffY;
-				}
-			}
-			this.updateZIndex();
 		}
 	}
 	
@@ -284,40 +339,39 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		let zIndex = this.details.level.level * 10 + 1;
 		
 		// TODO: hack to display OLPlatform over objects because right now Object Layer is always on level 10
-		if (this.details.type === 'OLPlatform') {
+		if (this.details.type === 'OLPlatform' || this.details.type === 'ObjectLayerView') {
 			zIndex += 100;
 		}
 		
 		// sort entities by y when on same level
-		zIndex += this.group.y * 0.000001;
+		zIndex += this.container.y * 0.000001;
 		
-		this.group.zIndex = zIndex;
-		Globals.zIndexUpdate = true;
+		this.container.depth = zIndex;
 	}
 	
 	exportEntity(): MapEntity {
 		const out = {
 			type: this.details.type,
-			x: this.group.x,
-			y: this.group.y,
+			x: this.container.x,
+			y: this.container.y,
 			level: this.details.level.offset ? this.details.level : this.details.level.level,
 			settings: this.details.settings
 		};
 		return JSON.parse(JSON.stringify(out));
 	}
 	
-	public abstract getScaleSettings(): ScaleSettings;
+	public abstract getScaleSettings(): ScaleSettings | undefined;
 	
-	public abstract getAttributes();
+	public abstract getAttributes(): EntityAttributes;
 	
-	protected abstract setupType(settings: any);
+	protected abstract setupType(settings: any): void;
 	
 	public updateType() {
 		const settings = this.details.settings;
 		this.setupType(settings);
 	}
 	
-	public generateNoImageType(r?: number, g?: number, b?: number, a?: number) {
+	public generateNoImageType(rgbTop = 0xc06040, aTop = 0.5, rgb = 0x800000, a = 0.5) {
 		const settings = this.details.settings;
 		
 		const baseSize = settings.size || {x: 16, y: 16};
@@ -329,33 +383,67 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		if (scaleSettings && (scaleSettings.scalableX || scaleSettings.scalableY)) {
 			this.entitySettings.scalableX = scaleSettings.scalableX;
 			this.entitySettings.scalableY = scaleSettings.scalableY;
-		} else {
-			this.anchor.y = 1;
-			this.anchor.x = 0.5;
 		}
-		this.generateSingleColorSheet(r || 155, g || 60, b || 40, a);
+		
+		
+		this.generateSingleColorSheet(rgb, a, rgbTop, aTop);
 		this.updateSettings();
 	}
 	
-	private generateSingleColorSheet(r: number, g: number, b: number, a?: number) {
-		const size = this.entitySettings.baseSize;
-		const singleColor = this.game.make.bitmapData(size.x, size.y);
-		singleColor.fill(r, g, b, a || 0.5);
-		this.entitySettings.sheets = {
-			fix: [{
-				gfx: singleColor,
-				x: 0,
-				y: 0,
-				w: size.x,
-				h: size.y,
-			}],
-			singleColor: true,
-			flipX: false,
-		};
+	private generateSingleColorSheet(rgb: number, a: number, rgbTop?: number, aTop?: number) {
+		const size = this.getActualSize();
+		
+		if (rgbTop === undefined) {
+			rgbTop = rgb;
+		}
+		if (aTop === undefined) {
+			aTop = a;
+		}
+		
+		if (!size.z) {
+			this.entitySettings.sheets = {
+				fix: [{
+					gfx: 'pixel',
+					x: 0,
+					y: 0,
+					w: size.x,
+					h: size.y,
+					scaleX: size.x,
+					scaleY: size.y,
+					tint: rgbTop,
+					alpha: a
+				}],
+			};
+		} else {
+			this.entitySettings.sheets = {
+				fix: [{
+					gfx: 'pixel',
+					x: 0,
+					y: 0,
+					w: size.x,
+					h: size.z,
+					scaleX: size.x,
+					scaleY: size.z,
+					tint: rgb,
+					alpha: a
+				}, {
+					gfx: 'pixel',
+					x: 0,
+					y: 0,
+					offsetY: -size.z,
+					w: size.x,
+					h: size.y,
+					scaleX: size.x,
+					scaleY: size.y,
+					tint: rgbTop,
+					alpha: aTop
+				}],
+			};
+		}
 	}
 	
-	protected replaceJsonParams(jsonInstance, prop: any) {
-		Object.entries(jsonInstance).forEach(([key, value]) => {
+	protected replaceJsonParams(jsonInstance: any, prop: any) {
+		Object.entries(jsonInstance).forEach(([key, value]: [string, any]) => {
 			if (value['jsonPARAM']) {
 				jsonInstance[key] = prop[value['jsonPARAM']];
 				return;
@@ -366,93 +454,71 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 		});
 	}
 	
-	private setInputEvents(inputEvents: InputEvents) {
-		const events = this.inputEvents;
-		const input = inputEvents;
-		events.onInputDown = (o, pointer) => {
-			if (pointer.leftButton.isDown) {
-				this.leftClickOpts.timer = 0;
-				this.leftClickOpts.pos = Vec2.create(pointer);
-			}
-			if (input.onInputDown) {
-				input.onInputDown(this, pointer);
-			}
-		};
-		events.onInputUp = (o, pointer, isOver) => {
-			if (input.onInputUp) {
-				input.onInputUp(this, pointer, isOver);
-			}
-			if (isOver && this.leftClickOpts.timer < 200 && Vec2.distance2(pointer, this.leftClickOpts.pos) < 10) {
-				if (input.onLeftClick) {
-					input.onLeftClick(this, pointer);
-				}
-			}
-		};
-	}
-	
-	public getBoundingBox(): Phaser.Rectangle {
-		const img = this.collisionImage;
-		const p = Helper.phaserWorldtoWorld(img.world);
-		const rect = new Phaser.Rectangle(p.x, p.y, img.width, img.height);
-		return rect;
-	}
-	
-	private setEvents() {
-		if (!this.collisionImage) {
-			return;
+	public getBoundingBox(): Phaser.Geom.Rectangle {
+		if (!this.inputZone.input) {
+			console.warn('no bounding box for: ' + this.details.type);
+			return new Phaser.Geom.Rectangle(0, 0, 0, 0);
 		}
-		Object.entries(this.inputEvents).forEach(([key, value]) => {
-			if (!value) {
-				return;
-			}
-			if (!this.collisionImage.events[key]) {
-				return;
-			}
-			this.collisionImage.events[key].removeAll();
-			this.collisionImage.events[key].add(value);
-		});
+		const hitArea = this.inputZone.input.hitArea;
+		const box = new Phaser.Geom.Rectangle(
+			this.inputZone.x + this.container.x,
+			this.inputZone.y + this.container.y,
+			hitArea.width,
+			hitArea.height
+		);
+		return box;
 	}
 	
-	private drawBoundingBox() {
+	private getActualSize() {
 		const s = this.entitySettings;
-		
-		if (this.collisionBitmap) {
-			this.collisionBitmap.destroy();
-		}
 		const size = Object.assign({}, this.details.settings.size || s.baseSize);
 		try {
 			size.x = Number(size.x);
 			size.y = Number(size.y);
-			size.z = Number(size.z || this.details.settings.zHeight || this.details.settings.wallZHeight || s.baseSize.z || 0);
+			size.z = Number(size.z || this.details.settings.zHeight || this.details.settings.wallZHeight || (s.baseSize ? s.baseSize.z || 0 : 0));
 		} catch (e) {
 			console.log(this);
 			console.error(e);
 		}
-		const inputArea = new Phaser.Rectangle(0, 0, size.x, size.y);
 		
-		this.collisionBitmap = this.game.make.bitmapData(inputArea.width, inputArea.height + size.z);
-		const context = this.collisionBitmap.context;
-		const outline = 'rgba(0,0,0,1)';
+		return size;
+	}
+	
+	private drawBoundingBox() {
+		const collImg = this.collisionImage;
 		
-		const bottomRect = new Phaser.Rectangle(0, size.z, inputArea.width, inputArea.height - 1);
+		collImg.clear();
+		
+		const size = this.getActualSize();
+		
+		const inputArea = new Phaser.Geom.Rectangle(0, 0, size.x, size.y);
+		
+		const outline = 0;
+		const outlineAlpha = 1;
+		
+		const bottomRect = new Phaser.Geom.Rectangle(0, size.z, inputArea.width, inputArea.height - 1);
 		
 		// show middle and top part only if entity is not flat
 		if (size.z > 0) {
-			const middleRect = new Phaser.Rectangle(0, inputArea.height, inputArea.width, size.z - 1);
-			Helper.drawRect(context, middleRect, 'rgba(255, 40, 40, 0.5)', outline);
+			const middleRect = new Phaser.Geom.Rectangle(0, inputArea.height, inputArea.width, size.z - 1);
+			Helper.drawRect(collImg, middleRect, 0xff0707, 0.5, outline, outlineAlpha);
 			
-			const topRect = new Phaser.Rectangle(0, 0, inputArea.width, inputArea.height);
-			Helper.drawRect(context, topRect, 'rgba(255, 255, 40, 1)', outline);
+			const topRect = new Phaser.Geom.Rectangle(0, 0, inputArea.width, inputArea.height);
+			Helper.drawRect(collImg, topRect, 0xffff07, 1, outline, outlineAlpha);
 			
-			Helper.drawRect(context, bottomRect, 'rgba(255, 255, 40, 0.1)', outline);
+			Helper.drawRect(collImg, bottomRect, 0xffff07, 0.1, outline, outlineAlpha);
 		} else {
-			Helper.drawRect(context, bottomRect, 'rgba(255, 255, 40, 1)', outline);
+			Helper.drawRect(collImg, bottomRect, 0xffff07, 1, outline, outlineAlpha);
 		}
 		
-		const collImg = this.collisionImage;
 		collImg.x = inputArea.x;
-		collImg.y = inputArea.y - (size.z || 0);
-		collImg.loadTexture(this.collisionBitmap);
+		collImg.y = inputArea.y - (size.z || 0) + this.levelOffset;
+		
+		const shape = new Phaser.Geom.Rectangle(0, 0, size.x, size.y + (size.z || 0));
+		
+		this.inputZone.x = collImg.x;
+		this.inputZone.y = collImg.y;
+		this.inputZone.setSize(shape.width, shape.height, true);
 		
 		this.generateText(this.details.settings.name, size);
 	}
@@ -460,20 +526,19 @@ export abstract class CCEntity extends Phaser.Image implements Sortable {
 	private generateText(name: string, size: Point) {
 		if (name) {
 			if (!this.text) {
-				this.text = this.game.add.text(0, 0, '', {
+				this.text = this.scene.add.text(0, 0, '', {
 					font: '400 18pt Roboto',
 					fill: 'white',
-					stroke: 'black',
-					strokeThickness: 2
-				}, this.levelOffsetGroup);
-				this.text.scale.set(0.274);
-				this.text.anchor.set(0.5, 0.5);
+				});
+				this.text.setOrigin(0.5, 0.5);
+				this.text.setScale(0.3);
+				this.container.add(this.text);
 			}
 			this.text.setText(name);
-			this.text.position.set(size.x / 2, size.y / 2);
+			this.text.setPosition(size.x / 2, size.y / 2 + this.levelOffset);
 		} else if (this.text) {
 			this.text.destroy();
-			this.text = null;
+			this.text = undefined;
 		}
 		
 	}

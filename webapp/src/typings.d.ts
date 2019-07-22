@@ -3,8 +3,4 @@ declare module '*.json' {
 	export default value;
 }
 
-declare namespace Phaser {
-	interface Input {
-		mouseWheel: Phaser.MouseWheel; // Workaround for missing typings
-	}
-}
+declare interface ActiveXObject {}

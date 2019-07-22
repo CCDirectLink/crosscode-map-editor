@@ -1,9 +1,16 @@
 import {Injectable} from '@angular/core';
 import {Globals} from '../shared/globals';
-import {Remote, Dialog} from 'electron';
+import {Dialog, Remote} from 'electron';
+import * as nodeFs from 'fs';
 
 @Injectable()
 export class ElectronService {
+	
+	private readonly fs?: typeof nodeFs;
+	
+	private storageName = 'assetsPath';
+	private assetsPath = '';
+	private readonly remote?: Remote;
 	
 	constructor() {
 		if (!Globals.isElectron) {
@@ -11,20 +18,13 @@ export class ElectronService {
 		}
 		
 		// @ts-ignore
-		this.remote = window.require('electron').remote;
-		this.fs = this.remote.require('fs');
-		this.path = this.remote.require('path');
+		const remote = window.require('electron').remote;
+		this.remote = remote!;
+		this.fs = remote.require('fs');
 		
-		this.assetsPath = localStorage.getItem(this.storageName);
+		this.assetsPath = localStorage.getItem(this.storageName) || '';
 		this.updateURL();
 	}
-	
-	public readonly path;
-	public readonly fs;
-	
-	private storageName = 'assetsPath';
-	private assetsPath: string;
-	private readonly remote: Remote;
 	
 	private static normalizePath(p: string) {
 		if (p.endsWith('\\')) {
@@ -41,11 +41,17 @@ export class ElectronService {
 	}
 	
 	public relaunch() {
+		if (!this.remote) {
+			throw new Error('remote is not defined');
+		}
 		this.remote.app.relaunch();
 		this.remote.app.quit();
 	}
 	
 	public checkAssetsPath(path: string): boolean {
+		if (!this.fs) {
+			return false;
+		}
 		try {
 			const files = this.fs.readdirSync(path);
 			return files.includes('data') && files.includes('media');
@@ -55,7 +61,10 @@ export class ElectronService {
 		}
 	}
 	
-	public selectCcFolder(): string {
+	public selectCcFolder(): string | undefined {
+		if (!this.remote) {
+			throw new Error('remote is not defined');
+		}
 		const dialog: Dialog = this.remote.dialog;
 		const newPath = dialog.showOpenDialog({
 			title: 'Select CrossCode assets folder',

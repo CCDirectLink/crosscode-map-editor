@@ -7,14 +7,14 @@ import {MapEntity, Point} from '../models/cross-code-map';
 @Injectable()
 export class GlobalEventsService {
 
-	currentView: BehaviorSubject<EditorView> = new BehaviorSubject(null);
-	selectedEntity: BehaviorSubject<CCEntity> = new BehaviorSubject(null);
-	showAddEntityMenu: Subject<{ worldPos: Point, definitions: any }> = new Subject();
-	generateNewEntity: Subject<MapEntity> = new Subject();
-	loadComplete: Subject<void> = new Subject();
-	generateHeights: Subject<void> = new Subject();
-	offsetMap: Subject<Point> = new Subject();
-	toggleVisibility: Subject<void> = new Subject();
+	currentView = new BehaviorSubject<EditorView | undefined>(undefined);
+	selectedEntity = new BehaviorSubject<CCEntity | undefined>(undefined);
+	generateNewEntity = new Subject<MapEntity>();
+	loadComplete = new Subject<void>();
+	generateHeights = new Subject<void>();
+	offsetMap = new Subject<Point>();
+	toggleVisibility = new Subject<void>();
+	showAddEntityMenu = new Subject<{ worldPos: Point, definitions: any }>();
 
 	constructor() {
 	}

@@ -1,20 +1,18 @@
-<mat-sidenav-container class="outer-container">
-	<mat-sidenav #sidenavLoadMap class="dark-scrollbar">
+<div fxLayout="column" class="outer-container">
+	<mat-sidenav #sidenavLoadMap>
 		<app-load-map #loadmap></app-load-map>
 	</mat-sidenav>
-	<mat-sidenav-content fxLayout="column">
-		<app-toolbar (loadMapToggled)="loadMapToggled()"></app-toolbar>
-		<mat-sidenav-container fxFlex>
-			<mat-sidenav disableClose #sidenav mode="side" opened="true" class="mat-primary">
-				<app-sidenav></app-sidenav>
-			</mat-sidenav>
-			
-			<div class="green outer-container no-scroll">
-				<app-phaser [selected]="selected"></app-phaser>
-			</div>
-			<app-history></app-history>
-			<app-tile-selector (selectionChanged)="selectionChanged($event)"></app-tile-selector>
-		</mat-sidenav-container>
-		<app-add-entity-menu></app-add-entity-menu>
-	</mat-sidenav-content>
-</mat-sidenav-container>
+	<app-toolbar (loadMapToggled)="loadMapToggled()"></app-toolbar>
+	<mat-sidenav-container fxFlex>
+		<mat-sidenav disableClose #sidenav mode="side" opened="true" class="mat-primary">
+			<app-sidenav></app-sidenav>
+		</mat-sidenav>
+		
+		<div class="green outer-container no-scroll">
+			<app-phaser></app-phaser>
+		</div>
+		<app-history></app-history>
+		<app-tile-selector></app-tile-selector>
+	</mat-sidenav-container>
+	<app-add-entity-menu></app-add-entity-menu>
+</div>

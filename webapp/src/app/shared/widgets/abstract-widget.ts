@@ -2,19 +2,25 @@ import {Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {CCEntity} from '../phaser/entities/cc-entity';
 
 export abstract class AbstractWidget implements OnInit, OnChanges {
-	@Input() key: string;
+	@Input() key!: string;
 	@Input() attribute: any;
-	@Input() entity: CCEntity;
-	@Input() custom: CCEntity;
+	@Input() entity?: CCEntity;
+	@Input() custom?: CCEntity;
 	
-	settings;
+	settings: any;
 	
 	ngOnInit() {
-		this.ngOnChanges(null);
+		this.ngOnChanges();
 	}
 	
-	ngOnChanges(changes: SimpleChanges): void {
-		this.settings = this.custom || this.entity.details.settings;
+	ngOnChanges(changes?: SimpleChanges): void {
+		if (this.custom) {
+			this.settings = this.custom;
+		} else if (this.entity) {
+			this.settings = this.entity.details.settings;
+		} else {
+			throw new Error('entity and custom settings not defined');
+		}
 	}
 	
 	setSetting(key: string, value: any, updateType = true, parse = false) {
@@ -27,7 +33,7 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 		}
 	}
 	
-	toInt(val) {
+	toInt(val: string): number {
 		return parseInt(val, 10);
 	}
 	

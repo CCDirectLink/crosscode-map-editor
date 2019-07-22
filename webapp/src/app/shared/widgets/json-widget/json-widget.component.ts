@@ -11,7 +11,7 @@ import {MatDialog} from '@angular/material';
 export class JsonWidgetComponent extends AbstractWidget {
 	
 	@Input() noPropName = false;
-	private timer;
+	private timer = -1;
 	json = JSON;
 	
 	constructor(private dialog: MatDialog) {
@@ -33,11 +33,11 @@ export class JsonWidgetComponent extends AbstractWidget {
 		});
 	}
 	
-	setCustomSetting(key, value) {
-		if (this.timer !== undefined) {
+	setCustomSetting(key: string, value: any) {
+		if (this.timer >= 0) {
 			clearTimeout(this.timer);
 		}
-		this.timer = setTimeout(() => {
+		this.timer = window.setTimeout(() => {
 			value = JSON.parse(value);
 			this.settings[key] = value;
 			this.updateType();

@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
-import {HistoryState, StateHistoryService} from './state-history.service';
+import {HistoryState, HistoryStateContainer, StateHistoryService} from './state-history.service';
 
 @Component({
 	selector: 'app-history',
@@ -9,20 +9,22 @@ import {HistoryState, StateHistoryService} from './state-history.service';
 })
 export class HistoryComponent implements OnInit {
 	
-	@ViewChild('listContainer', { static: false }) list: ElementRef;
+	@ViewChild('listContainer', {static: false}) list?: ElementRef;
 	
 	states: HistoryState[] = [];
-	selected;
-	selectedIndex;
+	selected?: HistoryStateContainer;
+	selectedIndex = 0;
 	
-	constructor(private stateHistory: StateHistoryService) {
+	constructor(
+		private stateHistory: StateHistoryService
+	) {
 		stateHistory.states.subscribe(states => {
 			this.states = states;
 			this.updateSelected(this.selected);
-			if (!this.list) {
-				return;
-			}
 			setTimeout(() => {
+				if (!this.list) {
+					return;
+				}
 				const el = this.list.nativeElement;
 				el.scrollTop = el.scrollHeight * 2;
 			}, 0);
@@ -35,12 +37,12 @@ export class HistoryComponent implements OnInit {
 	ngOnInit() {
 	}
 	
-	updateSelected(container) {
+	updateSelected(container?: HistoryStateContainer) {
 		if (!container) {
 			return;
 		}
 		this.selected = container;
-		this.selectedIndex = this.states.indexOf(container.state);
+		this.selectedIndex = this.states.indexOf(container.state!);
 	}
 	
 	undo() {
@@ -51,7 +53,7 @@ export class HistoryComponent implements OnInit {
 		this.stateHistory.redo();
 	}
 	
-	selectState(state) {
+	selectState(state: HistoryState) {
 		this.stateHistory.selectedState.next({state: state});
 	}
 	

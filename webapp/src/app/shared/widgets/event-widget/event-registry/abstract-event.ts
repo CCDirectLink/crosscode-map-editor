@@ -1,3 +1,5 @@
+import {EntityAttributes} from '../../../phaser/entities/cc-entity';
+
 export interface EventType {
 	type: string;
 }
@@ -22,15 +24,15 @@ export abstract class AbstractEvent<T extends EventType> {
 		this.data = <any>data;
 	}
 	
-	public abstract getAttributes(): { [key: string]: any };
+	public abstract getAttributes(): EntityAttributes | undefined;
 	
-	public abstract update();
+	public abstract update(): void;
 	
 	public export(): T {
 		return JSON.parse(JSON.stringify(this.data));
 	}
 	
-	protected combineStrings(...values): string {
+	protected combineStrings(...values: string[]): string {
 		return values.join(' ');
 	}
 	
@@ -44,7 +46,7 @@ export abstract class AbstractEvent<T extends EventType> {
 	
 	protected getPropString(key: string, value?: any): string {
 		if (!value) {
-			value = this.data[key];
+			value = this.data[key as keyof T];
 		}
 		const attr = this.getAttributes();
 		if (attr && attr[key]) {
@@ -60,7 +62,7 @@ export abstract class AbstractEvent<T extends EventType> {
 		return `<span style="color: #858585">${key}</span>: ${value}`;
 	}
 	
-	protected getVec2String(x, y): string {
+	protected getVec2String(x: number, y: number): string {
 		return `(${x}, ${y})`;
 	}
 	

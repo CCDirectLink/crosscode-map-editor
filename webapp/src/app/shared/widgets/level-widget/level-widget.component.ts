@@ -1,6 +1,6 @@
 import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
-import {Point} from '../../../models/cross-code-map';
+import {CrossCodeMap, Point} from '../../../models/cross-code-map';
 import {MapLoaderService} from '../../map-loader.service';
 import {Subscription} from 'rxjs';
 
@@ -11,8 +11,8 @@ import {Subscription} from 'rxjs';
 })
 export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDestroy, OnChanges {
 	
-	@Input() displayName;
-	map;
+	@Input() displayName = '';
+	map?: CrossCodeMap;
 	private subscription: Subscription;
 	
 	constructor(private maploader: MapLoaderService) {
@@ -26,12 +26,16 @@ export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDe
 	
 	setLevel(level: number) {
 		this.settings[this.key].level = Number(level);
-		this.entity.updateLevel();
+		if (this.entity) {
+			this.entity.updateLevel();
+		}
 	}
 	
 	setOffset(offset: number) {
 		this.settings[this.key].offset = Number(offset);
-		this.entity.updateLevel();
+		if (this.entity) {
+			this.entity.updateLevel();
+		}
 	}
 	
 }

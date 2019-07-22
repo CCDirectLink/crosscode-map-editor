@@ -12,6 +12,7 @@ import {NpcStatesComponent} from '../../shared/widgets/npc-states-widget/npc-sta
 import {Overlay} from '@angular/cdk/overlay';
 import {SettingsComponent} from '../dialogs/settings/settings.component';
 import {Globals} from '../../shared/globals';
+import {FileChangeEvent} from '@angular/compiler-cli/src/perform_watch';
 
 @Component({
 	selector: 'app-toolbar',
@@ -21,9 +22,9 @@ import {Globals} from '../../shared/globals';
 export class ToolbarComponent implements OnInit {
 	
 	isElectron = Globals.isElectron;
-	map: CCMap;
-	loaded: boolean;
-	error: string;
+	map?: CCMap;
+	loaded = false;
+	error = '';
 	version = environment.version;
 
 	@Output()
@@ -47,6 +48,10 @@ export class ToolbarComponent implements OnInit {
 	}
 	
 	saveMap() {
+		if (!this.map) {
+			throw new Error('no map loaded');
+		}
+		
 		const file = new Blob([JSON.stringify(this.map.exportMap(), null, 2)], {type: 'application/json'});
 		const a = document.createElement('a'),
 			url = URL.createObjectURL(file);
@@ -59,7 +64,7 @@ export class ToolbarComponent implements OnInit {
 			window.URL.revokeObjectURL(url);
 		}, 0);
 	}
-
+	
 	newMap() {
 		this.overlayService.open(NewMapComponent, {
 			positionStrategy: this.overlay.position().global()
@@ -68,7 +73,7 @@ export class ToolbarComponent implements OnInit {
 			hasBackdrop: true
 		});
 	}
-  
+	
 	openMapSettings() {
 		this.overlayService.open(MapSettingsComponent, {
 			positionStrategy: this.overlay.position().global()
