@@ -3,7 +3,7 @@ import {AbstractEvent, EventType} from './abstract-event';
 
 export interface LabelData extends EventType {
 	name: string;
-};
+}
 
 export class Label extends AbstractEvent<LabelData> {
 	private attributes = {
@@ -11,7 +11,7 @@ export class Label extends AbstractEvent<LabelData> {
 			type: 'String',
 			description: 'Name to reference this label by.'
 		}
-	}
+	};
 	
 	getAttributes() {
 		return this.attributes;
