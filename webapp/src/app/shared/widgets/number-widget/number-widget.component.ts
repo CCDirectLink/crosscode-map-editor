@@ -6,8 +6,8 @@ import {AbstractWidget} from '../abstract-widget';
 	templateUrl: './number-widget.component.html',
 	styleUrls: ['./number-widget.component.scss', '../widget.scss']
 })
-export class NumberWidgetComponent extends AbstractWidget {
-	isFloat: boolean = false;
+export class NumberWidgetComponent extends AbstractWidget implements OnInit {
+	isFloat = false;
 
 	constructor() {
 		super();
