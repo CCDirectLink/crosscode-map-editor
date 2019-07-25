@@ -3,7 +3,7 @@ import {AbstractEvent, EventType} from './abstract-event';
 
 export interface GotoLabelData extends EventType {
 	name: string;
-};
+}
 
 export class GotoLabel extends AbstractEvent<GotoLabelData> {
 	private attributes = {
@@ -11,7 +11,7 @@ export class GotoLabel extends AbstractEvent<GotoLabelData> {
 			type: 'String',
 			description: 'Label to goto.'
 		}
-	}
+	};
 	
 	getAttributes() {
 		return this.attributes;
