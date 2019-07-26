@@ -1,4 +1,12 @@
-<h2 class="mat-title">Load map</h2>
+<mat-toolbar fxLayout="row">
+	<div fxFlex>
+		<span class="mat-headline">Load map</span>
+	</div>
+	<div fxFlex fxLayoutAlign="end">
+		<button mat-icon-button (click)="close()"><mat-icon class="mat-icon">close</mat-icon></button>
+	</div>
+</mat-toolbar>
+
 <div class="filter" fxLayout="column">
 	<mat-form-field>
 		<input matInput type="text" placeholder="Filter" [(ngModel)]="filter" (ngModelChange)="update()"/>

@@ -1,7 +1,6 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {HostDirective} from '../../shared/host.directive';
+import { Component, Input } from '@angular/core';
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { MatTreeNestedDataSource } from '@angular/material';
+import { MatTreeNestedDataSource, MatSidenav } from '@angular/material';
 import { HttpClientService } from '../../services/http-client.service';
 import { MapLoaderService } from '../../shared/map-loader.service';
 
@@ -17,6 +16,9 @@ interface MapNode {
 	styleUrls: ['./load-map.component.scss']
 })
 export class LoadMapComponent {
+	@Input()
+	sidenav!: MatSidenav;
+
 	treeControl = new NestedTreeControl<MapNode>(node => node.children);
 	mapsSource = new MatTreeNestedDataSource<MapNode>();
 
@@ -53,6 +55,10 @@ export class LoadMapComponent {
 
 	hasChild(_: number, node: MapNode) {
 		return !!node.children && node.children.length > 0;
+	}
+
+	close() {
+		return this.sidenav.close();
 	}
 
 	private displayMaps(paths: string[], filter: string) {
