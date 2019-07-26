@@ -33,14 +33,6 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 		}
 	}
 	
-	toInt(val: string): number {
-		return parseInt(val, 10);
-	}
-	
-	toFloat(val: string): number {
-		return parseFloat(val);
-	}
-
 	updateSettings() {
 		if (this.entity) {
 			this.entity.updateSettings();

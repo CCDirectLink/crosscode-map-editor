@@ -6,14 +6,12 @@
 	       [step]="step"
 	       [min]="minSize.x"
 	       [disabled]="!enableX"
-	       [ngModel]="settings[key].x"
-	       (input)="setVal('x', toInt($event.target.value))">
+	       [(ngModel)]="settings[key].x">
 	
 	<label [for]="key + '.y'" class="property-name-small">Y:</label>
 	<input [id]="key + '.y'" type="number" class="default-input small-input"
 	       [step]="step"
 	       [min]="minSize.x"
 	       [disabled]="!enableY"
-	       [ngModel]="settings[key].y"
-	       (input)="setVal('y', toInt($event.target.value))">
+	       [(ngModel)]="settings[key].y">
 </div>
