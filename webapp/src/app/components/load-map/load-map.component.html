@@ -21,7 +21,7 @@
 				<button mat-icon-button disabled>
 					<mat-icon class="mat-icon">edit</mat-icon>
 				</button>
-				{{node.name}}
+				<a [innerHTML]="highlight(node.name)"></a>
 			</button>
 		</li>
 	</mat-tree-node>
@@ -33,7 +33,7 @@
 					<button mat-icon-button [attr.aria-label]="'toggle ' + node.name">
 						<mat-icon class="mat-icon-rtl-mirror">{{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}</mat-icon>
 					</button>
-					{{node.name}}
+					<a [innerHTML]="highlight(node.name)"></a>
 				</div>
 			</button>
 			<ul *ngIf="treeControl.isExpanded(node)">

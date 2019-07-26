@@ -63,6 +63,15 @@ export class LoadMapComponent {
 		return this.sidenav.close();
 	}
 
+	highlight(text: string) {
+		text = this.encodeHTML(text);
+		if (this.filter.length === 0) {
+			return text;
+		}
+
+		return text.split(this.filter).join(`<span class="highlight">${this.filter}</span>`); // Replace all;
+	}
+
 	private displayMaps(paths: string[]) {
 		const data: MapNode[] = [];
 
@@ -151,5 +160,9 @@ export class LoadMapComponent {
 			child.displayed = true;
 			this.displayChildren(child);
 		}
+	}
+
+	private encodeHTML(text: string) {
+		return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') ;
 	}
 }

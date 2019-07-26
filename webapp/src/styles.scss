@@ -110,8 +110,3 @@ button {
 input[type="file"] {
 	display: none;
 }
-
-// For some reason this only works in here. Should be in src/app/components/load-map/load-map.component.scss
-.mapTree li > .mat-button > .mat-button-wrapper {
-	float: left;
-}

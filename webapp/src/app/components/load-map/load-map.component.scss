@@ -2,6 +2,7 @@
 
 $config: mat-typography-config();
 
+
 .mapTree ul,
 .mapTree li {
   margin-top: 0;
@@ -15,11 +16,14 @@ $config: mat-typography-config();
 	width: 100%;
 }
 
-.mapTree li > .mat-button > .mat-button-wrapper {
-	height: 300px;
-	background-color: red;
+.mapTree li > .mat-button /deep/ .mat-button-wrapper {
+	float: left;
 }
 
 .filter {
 	padding: 16px;
+}
+
+:host /deep/ .highlight {
+    background: #513E32;
 }
