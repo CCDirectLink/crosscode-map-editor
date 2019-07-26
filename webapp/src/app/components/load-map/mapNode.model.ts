@@ -6,5 +6,4 @@ export interface MapNode {
 	displayed: boolean;
 	path?: string;
 	children?: MapNode[];
-	expanded?: boolean;
 }

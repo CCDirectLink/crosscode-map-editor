@@ -44,6 +44,7 @@ export class LoadMapComponent {
 		for (const node of this.root.children) {
 			this.filterNode(node, this.filter);
 		}
+		this.mapsSource.data = [];
 		this.mapsSource.data = this.virtualRoot.children || [];
 	}
 	
@@ -119,7 +120,6 @@ export class LoadMapComponent {
 					name: name,
 					children: children,
 					displayed: true,
-					expanded: false,
 				};
 				node.push(newNode);
 				node = children;
