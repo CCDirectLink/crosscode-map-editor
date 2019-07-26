@@ -26,6 +26,10 @@ body {
 	@include angular-material-theme($theme)
 }
 
+.theme .mat-drawer-backdrop.mat-drawer-shown {
+	background: rgba(0, 0, 0, 0.32);
+}
+
 .default-input {
 	$font-type: subheading-1;
 	font-family: mat-font-family($config);
