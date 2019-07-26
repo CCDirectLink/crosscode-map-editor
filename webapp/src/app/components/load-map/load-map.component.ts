@@ -3,12 +3,9 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource, MatSidenav } from '@angular/material';
 import { HttpClientService } from '../../services/http-client.service';
 import { MapLoaderService } from '../../shared/map-loader.service';
+import { MapNode } from './mapNode.model';
+import { VirtualMapNode } from './virtualMapNode.model';
 
-interface MapNode {
-	name: string;
-	path?: string;
-	children?: MapNode[];
-}
 
 @Component({
 	selector: 'app-load-map',
@@ -19,11 +16,12 @@ export class LoadMapComponent {
 	@Input()
 	sidenav!: MatSidenav;
 
-	treeControl = new NestedTreeControl<MapNode>(node => node.children);
-	mapsSource = new MatTreeNestedDataSource<MapNode>();
+	treeControl = new NestedTreeControl<VirtualMapNode>(node => node.children);
+	mapsSource = new MatTreeNestedDataSource<VirtualMapNode>();
 
+	root: MapNode = {name: 'root', displayed: true, children: []}; // The root itself is never displayed. It is used as a datasource for virtualRoot.
+	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering. 
 	filter = '';
-	paths: string[] = [];
 
 	constructor(
 		private mapLoader: MapLoaderService,
@@ -34,13 +32,19 @@ export class LoadMapComponent {
 
 	refresh() {
 		this.http.getMaps().subscribe(paths => {
-			this.paths = paths;
-			this.update();
+			this.displayMaps(paths);
 		});
 	}
 
 	update() {
-		this.displayMaps(this.paths, this.filter);
+		if (!this.root.children) {
+			throw new Error('Unreachable');
+		}
+
+		for (const node of this.root.children) {
+			this.filterNode(node, this.filter);
+		}
+		this.mapsSource.data = this.virtualRoot.children || [];
 	}
 	
 	loadMap(event: Event) {
@@ -51,19 +55,16 @@ export class LoadMapComponent {
 		this.mapLoader.loadMapByName(name);
 	}
 
-	hasChild(_: number, node: MapNode) {
-		return !!node.children && node.children.length > 0;
+	hasChild(_: number, node: VirtualMapNode) {
+		return node.children !== undefined;
 	}
 
 	close() {
 		return this.sidenav.close();
 	}
 
-	private displayMaps(paths: string[], filter: string) {
+	private displayMaps(paths: string[]) {
 		const data: MapNode[] = [];
-
-		filter = filter.toLowerCase();
-		paths = paths.filter(p => p.toLowerCase().includes(filter));
 
 		let lastPath = '';
 		let lastNode = data;
@@ -71,14 +72,18 @@ export class LoadMapComponent {
 			const node = this.resolve(data, path, lastNode, lastPath);
 			const name = path.substr(path.lastIndexOf('.') + 1);
 
-			node.push({name, path});
+			node.push({name, path, displayed: true});
 
 			lastPath = path;
 			lastNode = node;
 		}
 		
 
-		this.mapsSource.data = data;
+		if (!this.root.children) {
+			throw new Error('Unreachable');
+		}
+		this.root.children = data;
+		this.mapsSource.data = this.virtualRoot.children || [];
 	}
 
 	private resolve(data: MapNode[], path: string, lastNode: MapNode[], lastPath: string): MapNode[] {
@@ -104,11 +109,47 @@ export class LoadMapComponent {
 				const newNode: MapNode = {
 					name: name,
 					children: children,
+					displayed: true,
+					expanded: false,
 				};
 				node.push(newNode);
 				node = children;
 			}
 		}
 		return node;
+	}
+
+	private filterNode(node: MapNode, filter: string): boolean {
+		if (node.name.includes(filter)) {
+			node.displayed = true;
+			this.displayChildren(node);
+			return true;
+		}
+
+		if (!node.children) {
+			node.displayed = false;
+			return false;
+		}
+
+		let displayed = false;
+		for (const child of node.children) {
+			if (this.filterNode(child, filter)) {
+				displayed = true;
+			}
+		}
+
+		node.displayed = displayed;
+		return displayed;
+	}
+
+	private displayChildren(node: MapNode) {
+		if (!node.children) {
+			return;
+		}
+
+		for (const child of node.children) {
+			child.displayed = true;
+			this.displayChildren(child);
+		}
 	}
 }
