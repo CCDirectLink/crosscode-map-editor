@@ -13,7 +13,8 @@ $config: mat-typography-config();
 
 .mapTree li > .mat-button {
 	text-transform: none;
-	width: 100%;
+  width: 100%;
+  min-height: 48px;
 }
 
 .mapTree li > .mat-button /deep/ .mat-button-wrapper {
