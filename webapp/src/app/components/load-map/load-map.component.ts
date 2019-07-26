@@ -29,9 +29,7 @@ export class LoadMapComponent {
 		private mapLoader: MapLoaderService,
 		private http: HttpClientService,
 	) {
-		this.mapsSource.data = [{
-			name: 'Load external'
-		}];
+		this.mapsSource.data = [];
 	}
 
 	refresh() {
@@ -62,9 +60,7 @@ export class LoadMapComponent {
 	}
 
 	private displayMaps(paths: string[], filter: string) {
-		const data: MapNode[] = [{
-			name: 'Load external'
-		}];
+		const data: MapNode[] = [];
 
 		filter = filter.toLowerCase();
 		paths = paths.filter(p => p.toLowerCase().includes(filter));
