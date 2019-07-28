@@ -5,16 +5,16 @@ $config: mat-typography-config();
 
 .mapTree ul,
 .mapTree li {
-  margin-top: 0;
-  margin-bottom: 0;
-  padding-left: 16px;
-  list-style-type: none;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-left: 16px;
+	list-style-type: none;
 }
 
 .mapTree li > .mat-button {
 	text-transform: none;
-  width: 100%;
-  min-height: 48px;
+	width: 100%;
+	min-height: 48px;
 }
 
 .mapTree li > .mat-button /deep/ .mat-button-wrapper {
@@ -22,9 +22,17 @@ $config: mat-typography-config();
 }
 
 .filter {
-	padding: 16px;
+	padding: 16px 16px 0;
+}
+
+.sidenav {
+	height: 100%;
+}
+
+.map-list {
+	overflow-y: auto;
 }
 
 :host /deep/ .highlight {
-  color: #69bdfc;
+	color: #69bdfc;
 }
