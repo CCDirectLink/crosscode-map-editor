@@ -11,7 +11,7 @@ export class NumberWidgetComponent extends AbstractWidget implements OnInit {
 
 	private lastValidValue = '0';
 	
-	setSettings(key: string, event : any) {
+	setSettings(key: string, event: any) {
 		
 
 		let value = event.target.value;
