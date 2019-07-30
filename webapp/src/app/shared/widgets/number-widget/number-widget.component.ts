@@ -29,7 +29,7 @@ export class NumberWidgetComponent extends AbstractWidget implements OnInit {
 		// while parseFloat converts "" to NaN
 		const num = Number(value);
 
-		this.oldValue = num.toString();
+		this.lastValidValue = num.toString();
 
 		this.input.nativeElement.value = num.toString();
 
