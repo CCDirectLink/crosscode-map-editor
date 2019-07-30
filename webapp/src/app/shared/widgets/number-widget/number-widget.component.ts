@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild, ElementRef} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 
 @Component({
@@ -7,16 +7,32 @@ import {AbstractWidget} from '../abstract-widget';
 	styleUrls: ['./number-widget.component.scss', '../widget.scss']
 })
 export class NumberWidgetComponent extends AbstractWidget implements OnInit {
-	isFloat = false;
+	@ViewChild('numberInput', {static: true}) input!: ElementRef;
 
-	constructor() {
-		super();
-	}
+	private lastValidValue = '0';
 	
-	ngOnInit() {
-		super.ngOnInit();
-		const attr = this.attribute;
-		this.isFloat = attr && attr.float;
+	setSettings(key: string, event : any) {
+		
 
+		let value = event.target.value;
+		
+		if (event.data) {
+			if (event.data.length > value.length) {
+				// input property sets
+				// the value to "" when it
+				// has an invalid input
+				value = this.lastValidValue;	
+			}
+		}
+
+		// Number converts "" to 0
+		// while parseFloat converts "" to NaN
+		const num = Number(value);
+
+		this.oldValue = num.toString();
+
+		this.input.nativeElement.value = num.toString();
+
+		super.setSetting(key, num);
 	}
 }
