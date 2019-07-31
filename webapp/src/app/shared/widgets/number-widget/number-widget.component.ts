@@ -7,8 +7,6 @@ import {AbstractWidget} from '../abstract-widget';
 	styleUrls: ['./number-widget.component.scss', '../widget.scss']
 })
 export class NumberWidgetComponent extends AbstractWidget implements OnInit {
-	@ViewChild('numberInput', {static: true}) input!: ElementRef;
-
 
 	setSettings(key: string, value: string) {
 		
