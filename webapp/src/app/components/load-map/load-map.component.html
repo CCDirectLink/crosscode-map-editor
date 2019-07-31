@@ -27,11 +27,7 @@
 			               (click)="node.path ? load(node.path) : fileUpload.click()">
 				<li class="mat-tree-node">
 					<button mat-button>
-						<div class="mat-icon-button">
-							<span class="mat-button-wrapper">
-								<mat-icon class="mat-icon">edit</mat-icon>
-							</span>
-						</div>
+						<mat-icon class="icon mat-icon">edit</mat-icon>
 						<a [innerHTML]="highlight(node.name)"></a>
 					</button>
 				</li>
