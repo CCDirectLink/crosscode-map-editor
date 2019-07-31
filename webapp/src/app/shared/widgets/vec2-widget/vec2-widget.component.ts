@@ -20,7 +20,7 @@ export class Vec2WidgetComponent extends AbstractWidget {
 	}
 
 	toInt(value: string) {
-		return parseInt(value);
+		return parseInt(value, 10);
 	}
 	
 	setVal(key: keyof Point, val: number) {

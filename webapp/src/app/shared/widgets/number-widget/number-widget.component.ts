@@ -13,7 +13,7 @@ export class NumberWidgetComponent extends AbstractWidget implements OnInit {
 	setSettings(key: string, value: string) {
 		
 
-		let num = parseFloat(value);
+		const num = parseFloat(value);
 		
 		if (isNaN(num)) {
 			// throw warning
