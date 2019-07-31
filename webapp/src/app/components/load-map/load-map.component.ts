@@ -3,7 +3,7 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource, MatSidenav } from '@angular/material';
 import { HttpClientService } from '../../services/http-client.service';
 import { MapLoaderService } from '../../shared/map-loader.service';
-import { MapNode } from './mapNode.model';
+import { MapNode, MapNodeRoot } from './mapNode.model';
 import { VirtualMapNode } from './virtualMapNode.model';
 
 
@@ -19,7 +19,7 @@ export class LoadMapComponent {
 	treeControl = new NestedTreeControl<VirtualMapNode>(node => node.children);
 	mapsSource = new MatTreeNestedDataSource<VirtualMapNode>();
 
-	root: MapNode = {name: 'root', displayed: true, children: []}; // The root itself is never displayed. It is used as a datasource for virtualRoot.
+	root: MapNodeRoot = {name: 'root', displayed: true, children: []}; // The root itself is never displayed. It is used as a datasource for virtualRoot.
 	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering. 
 	filter = '';
 
@@ -37,10 +37,6 @@ export class LoadMapComponent {
 	}
 
 	update() {
-		if (!this.root.children) {
-			throw new Error('Unreachable');
-		}
-
 		for (const node of this.root.children) {
 			this.filterNode(node, this.filter);
 		}

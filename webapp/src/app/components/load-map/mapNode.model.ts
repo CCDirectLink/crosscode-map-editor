@@ -7,3 +7,7 @@ export interface MapNode {
 	path?: string;
 	children?: MapNode[];
 }
+
+export interface MapNodeRoot extends MapNode {
+	children: MapNode[];
+}
