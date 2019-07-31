@@ -19,7 +19,7 @@ export class EditorComponent {
 	constructor() {
 	}
 
-	loadMapToggled() {
+	loadMapClicked() {
 		this.sidenavLoadMap.toggle();
 		this.loadmap.refresh();
 	}

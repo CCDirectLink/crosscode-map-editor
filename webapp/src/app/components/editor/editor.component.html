@@ -4,7 +4,7 @@
 			<app-load-map #loadmap [sidenav]="sidenavLoadMap"></app-load-map>
 		</mat-sidenav>
 		<mat-sidenav-content>
-			<app-toolbar (loadMapToggled)="loadMapToggled()"></app-toolbar>
+			<app-toolbar (loadMapClicked)="loadMapClicked()"></app-toolbar>
 			<mat-sidenav-container>
 				<mat-sidenav disableClose #sidenav mode="side" opened="true" class="mat-primary">
 					<app-sidenav></app-sidenav>

@@ -13,7 +13,7 @@
 			<button mat-menu-item (click)="generateHeights()" [disabled]="!map">Generate Heights</button>
 		</mat-menu>
 
-		<button mat-button *ngIf="loaded" (click)="loadMapToggled.emit()">Load Map</button> <!-- (click)="fileUpload.click()" -->
+		<button mat-button *ngIf="loaded" (click)="loadMapClicked.emit()">Load Map</button> <!-- (click)="fileUpload.click()" -->
 	</div>
 	
 	<div fxFlex>

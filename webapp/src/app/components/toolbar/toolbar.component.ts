@@ -28,7 +28,7 @@ export class ToolbarComponent implements OnInit {
 	version = environment.version;
 
 	@Output()
-	public loadMapToggled = new EventEmitter<void>(false);
+	public loadMapClicked = new EventEmitter<void>(false);
 	
 	constructor(private mapLoader: MapLoaderService,
 	            private events: GlobalEventsService,
