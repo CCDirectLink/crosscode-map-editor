@@ -31,8 +31,8 @@ export class VirtualMapNode {
         }
 
         return this.original.children
-            .filter((n): boolean => n.displayed)
-            .map((n): VirtualMapNode => this.resolve(n));
+            .filter(n => n.displayed)
+            .map(n => this.resolve(n));
     }
 
     private resolve(node: MapNode): VirtualMapNode {
