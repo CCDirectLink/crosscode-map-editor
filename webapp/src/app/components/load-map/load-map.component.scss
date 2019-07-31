@@ -21,7 +21,7 @@ $config: mat-typography-config();
 	min-height: 48px;
 }
 
-.mapTree li > .mat-button /deep/ .mat-button-wrapper {
+.mapTree li > .mat-button ::ng-deep .mat-button-wrapper {
 	float: left;
 }
 
@@ -37,6 +37,6 @@ $config: mat-typography-config();
 	overflow-y: auto;
 }
 
-:host /deep/ .highlight {
+:host ::ng-deep .highlight {
 	color: #69bdfc;
 }
