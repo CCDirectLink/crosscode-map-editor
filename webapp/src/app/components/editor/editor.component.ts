@@ -13,6 +13,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 export class EditorComponent {
 	@ViewChild('loadmap', {static: true})
 	loadmap!: LoadMapComponent;
+	
 	@ViewChild('sidenavLoadMap', {static: true})
 	sidenavLoadMap!: MatSidenav;
 
