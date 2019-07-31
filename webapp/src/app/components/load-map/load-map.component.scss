@@ -15,14 +15,11 @@ $config: mat-typography-config();
 	list-style-type: none;
 }
 
-.mapTree li > .mat-button {
+.mapTree-button {
+	text-align: left;
 	text-transform: none;
 	width: 100%;
 	min-height: 48px;
-}
-
-.mapTree li > .mat-button ::ng-deep .mat-button-wrapper {
-	float: left;
 }
 
 .filter {
