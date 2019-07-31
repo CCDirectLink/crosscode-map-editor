@@ -37,6 +37,10 @@ $config: mat-typography-config();
 	overflow-y: auto;
 }
 
+.hidden {
+	display: none;
+}
+
 :host ::ng-deep .highlight {
 	color: #69bdfc;
 }
