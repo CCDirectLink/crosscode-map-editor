@@ -9,29 +9,17 @@ import {AbstractWidget} from '../abstract-widget';
 export class NumberWidgetComponent extends AbstractWidget implements OnInit {
 	@ViewChild('numberInput', {static: true}) input!: ElementRef;
 
-	private lastValidValue = '0';
-	
-	setSettings(key: string, event: any) {
+
+	setSettings(key: string, value: string) {
 		
 
-		let value = event.target.value;
+		let num = parseFloat(value);
 		
-		if (event.data) {
-			if (event.data.length > value.length) {
-				// input property sets
-				// the value to "" when it
-				// has an invalid input
-				value = this.lastValidValue;	
-			}
+		if (isNaN(num)) {
+			// throw warning
+			console.warn(`Input ${value} is not a valid number.`);
+			return;
 		}
-
-		// Number converts "" to 0
-		// while parseFloat converts "" to NaN
-		const num = Number(value);
-
-		this.lastValidValue = num.toString();
-
-		this.input.nativeElement.value = num.toString();
 
 		super.setSetting(key, num);
 	}
