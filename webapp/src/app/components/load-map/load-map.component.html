@@ -6,10 +6,10 @@
 			</div>
 			<div fxFlex fxLayoutAlign="end">
 				<button mat-icon-button (click)="fileUpload.click()">
-					<mat-icon class="mat-icon">open_in_new</mat-icon>
+					<mat-icon>open_in_new</mat-icon>
 				</button>
 				<button mat-icon-button (click)="close()">
-					<mat-icon class="mat-icon">close</mat-icon>
+					<mat-icon>close</mat-icon>
 				</button>
 			</div>
 		</mat-toolbar>
@@ -26,7 +26,7 @@
 			<mat-tree-node *matTreeNodeDef="let node">
 				<li class="mat-tree-node">
 					<button mat-button class="mapTree-button" (click)="node.path ? load(node.path) : fileUpload.click()">
-						<mat-icon class="icon mat-icon">edit</mat-icon>
+						<mat-icon class="icon">edit</mat-icon>
 						<a [innerHTML]="highlight(node.name)"></a>
 					</button>
 				</li>
