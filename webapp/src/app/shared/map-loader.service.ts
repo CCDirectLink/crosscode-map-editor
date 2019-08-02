@@ -4,6 +4,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {CrossCodeMap} from '../models/cross-code-map';
 import {CCMap} from './phaser/tilemap/cc-map';
 import {CCMapLayer} from './phaser/tilemap/cc-map-layer';
+import { HttpClientService } from '../services/http-client.service';
 
 @Injectable()
 export class MapLoaderService {
@@ -12,7 +13,10 @@ export class MapLoaderService {
 	tileMap = new BehaviorSubject<CCMap | undefined>(undefined);
 	selectedLayer = new BehaviorSubject<CCMapLayer | undefined>(undefined);
 	
-	constructor(private snackBar: MatSnackBar) {
+	constructor(
+		private snackBar: MatSnackBar,
+		private http: HttpClientService,
+		) {
 	}
 	
 	loadMap(event: Event) {
@@ -47,7 +51,13 @@ export class MapLoaderService {
 		map.filename = name || 'Untitled';
 		this._map.next(map);
 	}
-	
+
+	loadMapByName(name: string) {
+		this.http.getMap(name).subscribe(map => {
+			this.loadRawMap(map, name);
+		});
+	}
+
 	get map(): Observable<CrossCodeMap> {
 		return this._map.asObservable();
 	}

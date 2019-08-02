@@ -22,8 +22,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 /**
  * Primary app routes.
  */
-app.get('/api/allFiles', (_, res) => res.json(api.getAllFiles(config.pathToCrosscode)));
-app.get('/api/allTilesets', (_, res) => res.json(api.getAllTilesets(config.pathToCrosscode)));
+app.get('/api/allFiles', async (_, res) => res.json(await api.getAllFiles(config.pathToCrosscode)));
+app.get('/api/allTilesets', async (_, res) => res.json(await api.getAllTilesets(config.pathToCrosscode)));
+app.get('/api/allMaps', async (_, res) => res.json(await api.getAllMaps(config.pathToCrosscode)));
 
 /**
  * Error Handler. Provides full stack - remove for production

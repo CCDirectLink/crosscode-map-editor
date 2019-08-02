@@ -1,0 +1,50 @@
+<div fxLayout="column" class="sidenav">
+	<div fxFlex="0 0 auto">
+		<mat-toolbar fxLayout="row">
+			<div fxFlex>
+				<span class="mat-headline">Load map</span>
+			</div>
+			<div fxFlex fxLayoutAlign="end">
+				<button mat-icon-button (click)="fileUpload.click()">
+					<mat-icon>open_in_new</mat-icon>
+				</button>
+				<button mat-icon-button (click)="close()">
+					<mat-icon>close</mat-icon>
+				</button>
+			</div>
+		</mat-toolbar>
+		
+		<div class="filter" fxLayout="column">
+			<mat-form-field>
+				<input matInput type="text" placeholder="Filter" [(ngModel)]="filter" (ngModelChange)="update()"/>
+			</mat-form-field>
+		</div>
+		<input #fileUpload type="file" class="hidden" (change)="loadMap($event)" accept=".json"/>
+	</div>
+	<div fxFlex class="map-list dark-scrollbar">
+		<mat-tree [dataSource]="mapsSource" [treeControl]="treeControl" class="mapTree">
+			<mat-tree-node *matTreeNodeDef="let node">
+				<li class="mat-tree-node">
+					<button mat-button class="mapTree-button" (click)="node.path ? load(node.path) : fileUpload.click()">
+						<mat-icon class="icon">edit</mat-icon>
+						<a [innerHTML]="highlight(node.name)"></a>
+					</button>
+				</li>
+			</mat-tree-node>
+			
+			<mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+				<li>
+					<button mat-button class="mapTree-button" matTreeNodeToggle>
+						<mat-icon class="icon mat-icon-rtl-mirror">
+							{{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+						</mat-icon>
+						<a [innerHTML]="highlight(node.name)"></a>
+					</button>
+					<ul *ngIf="treeControl.isExpanded(node)">
+						<ng-container matTreeNodeOutlet></ng-container>
+					</ul>
+				</li>
+			</mat-nested-tree-node>
+		</mat-tree>
+	</div>
+</div>

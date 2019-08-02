@@ -1,0 +1,43 @@
+@import "~@angular/material/theming";
+
+$config: mat-typography-config();
+
+.icon {
+    display: inline-block;
+    margin-right: 16px;
+}
+
+.mapTree ul,
+.mapTree li {
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-left: 16px;
+	list-style-type: none;
+}
+
+.mapTree-button {
+	text-align: left;
+	text-transform: none;
+	width: 100%;
+	min-height: 48px;
+}
+
+.filter {
+	padding: 16px 16px 0;
+}
+
+.sidenav {
+	height: 100%;
+}
+
+.map-list {
+	overflow-y: auto;
+}
+
+.hidden {
+	display: none;
+}
+
+:host ::ng-deep .highlight {
+	color: #69bdfc;
+}

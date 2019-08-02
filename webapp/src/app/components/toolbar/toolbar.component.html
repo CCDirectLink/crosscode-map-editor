@@ -12,18 +12,18 @@
 			<button mat-menu-item (click)="offsetMap()" [disabled]="!map">Offset Map</button>
 			<button mat-menu-item (click)="generateHeights()" [disabled]="!map">Generate Heights</button>
 		</mat-menu>
+
+		<button mat-button *ngIf="loaded" (click)="loadMapClicked.emit()">Load Map</button> <!-- (click)="fileUpload.click()" -->
 	</div>
 	
 	<div fxFlex>
 		<span class="mat-headline">{{map?.name}}</span>
 	</div>
 	<div fxFlex fxLayoutAlign="end">
-		<input #fileUpload type="file" (change)="loadMap($event)" accept=".json"/>
 		<div>
 			<button *ngIf="map" mat-button (click)="openMapSettings()">Map Settings</button>
 			<button *ngIf="map" mat-button (click)="saveMap()">Save Map</button>
-			<button *ngIf="loaded" mat-button (click)="newMap()">New Map</button>
-			<button mat-button *ngIf="loaded; else loader" (click)="fileUpload.click()">Load Map</button>
+			<button *ngIf="loaded; else loader" mat-button (click)="newMap()">New Map</button>
 			<ng-template #loader>
 				<span class="load-error">{{error}}</span>
 				<mat-spinner *ngIf="!error" [diameter]="40" [strokeWidth]="5"></mat-spinner>

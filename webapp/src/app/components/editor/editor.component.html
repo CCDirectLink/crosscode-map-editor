@@ -1,15 +1,23 @@
-<div fxLayout="column" class="outer-container">
-	<app-toolbar></app-toolbar>
-	<mat-sidenav-container fxFlex>
-		<mat-sidenav disableClose #sidenav mode="side" opened="true" class="mat-primary">
-			<app-sidenav></app-sidenav>
+<div class="outer-container">
+	<mat-sidenav-container>
+		<mat-sidenav #sidenavLoadMap [autoFocus]="false">
+			<app-load-map #loadmap [sidenav]="sidenavLoadMap"></app-load-map>
 		</mat-sidenav>
-		
-		<div class="green outer-container no-scroll">
-			<app-phaser></app-phaser>
-		</div>
-		<app-history></app-history>
-		<app-tile-selector></app-tile-selector>
+		<mat-sidenav-content>
+			<app-toolbar (loadMapClicked)="loadMapClicked()"></app-toolbar>
+			<mat-sidenav-container>
+				<mat-sidenav disableClose #sidenav mode="side" opened="true" class="mat-primary">
+					<app-sidenav></app-sidenav>
+				</mat-sidenav>
+				<mat-sidenav-content>
+					<div class="green outer-container no-scroll">
+						<app-phaser></app-phaser>
+					</div>
+					<app-history></app-history>
+					<app-tile-selector></app-tile-selector>
+				</mat-sidenav-content>
+			</mat-sidenav-container>
+			<app-add-entity-menu></app-add-entity-menu>
+		</mat-sidenav-content>
 	</mat-sidenav-container>
-	<app-add-entity-menu></app-add-entity-menu>
 </div>

@@ -4,6 +4,10 @@
 	background-color: #9f7a1e;
 }
 
+.outer-container mat-sidenav-container {
+	height: 100%;
+}
+
 .no-scroll {
 	overflow-x: hidden;
 	overflow-y: hidden;

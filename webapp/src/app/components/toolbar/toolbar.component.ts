@@ -26,6 +26,9 @@ export class ToolbarComponent implements OnInit {
 	loaded = false;
 	error = '';
 	version = environment.version;
+
+	@Output()
+	public loadMapClicked = new EventEmitter<void>(false);
 	
 	constructor(private mapLoader: MapLoaderService,
 	            private events: GlobalEventsService,
@@ -42,10 +45,6 @@ export class ToolbarComponent implements OnInit {
 			() => this.loaded = true,
 			err => this.error = 'Error: could not load CrossCode assets. Update path in edit/settings'
 		);
-	}
-	
-	loadMap(event: any) {
-		this.mapLoader.loadMap(event);
 	}
 	
 	saveMap() {
