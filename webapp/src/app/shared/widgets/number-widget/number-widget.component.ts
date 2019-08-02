@@ -8,7 +8,7 @@ import {AbstractWidget} from '../abstract-widget';
 })
 export class NumberWidgetComponent extends AbstractWidget implements OnInit {
 
-	setSettings(key: string, value: string) {
+	setSetting(key: string, value: string) {
 		
 
 		const num = parseFloat(value);
