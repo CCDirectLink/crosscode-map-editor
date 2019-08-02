@@ -33,6 +33,7 @@ export class LoadMapComponent {
 	refresh() {
 		this.http.getMaps().subscribe(paths => {
 			this.displayMaps(paths);
+			this.update();
 		});
 	}
 
@@ -84,12 +85,7 @@ export class LoadMapComponent {
 			lastNode = node;
 		}
 		
-
-		if (!this.root.children) {
-			throw new Error('Unreachable');
-		}
 		this.root.children = data;
-		this.mapsSource.data = this.virtualRoot.children || [];
 	}
 
 	private resolve(data: MapNode[], path: string, lastNode: MapNode[], lastPath: string): MapNode[] {
