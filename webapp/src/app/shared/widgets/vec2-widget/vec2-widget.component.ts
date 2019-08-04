@@ -18,6 +18,10 @@ export class Vec2WidgetComponent extends AbstractWidget {
 	constructor() {
 		super();
 	}
+
+	toInt(value: string) {
+		return parseInt(value, 10);
+	}
 	
 	setVal(key: keyof Point, val: number) {
 		val -= val % this.step;
