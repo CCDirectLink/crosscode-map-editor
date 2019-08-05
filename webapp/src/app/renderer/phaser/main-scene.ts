@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import {EditorView} from '../../models/editor-view';
 import {StateHistoryService} from '../../history/state-history.service';
-import {MapLoaderService} from '../map-loader.service';
+import {LoaderService} from '../../services/loader.service';
 import {PhaserEventsService} from './phaser-events.service';
 import {GlobalEventsService} from '../global-events.service';
 import {FileInfos} from '../../models/file-infos';

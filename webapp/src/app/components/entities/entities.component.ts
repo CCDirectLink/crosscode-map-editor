@@ -6,7 +6,7 @@ import {AbstractWidget} from '../../renderer/widgets/abstract-widget';
 import {WidgetRegistryService} from '../../renderer/widgets/widget-registry.service';
 import {Vec2WidgetComponent} from '../../renderer/widgets/vec2-widget/vec2-widget.component';
 import {GlobalEventsService} from '../../renderer/global-events.service';
-import {MapLoaderService} from '../../renderer/map-loader.service';
+import {LoaderService} from '../../services/loader.service';
 
 @Component({
 	selector: 'app-entities',
@@ -22,7 +22,7 @@ export class EntitiesComponent implements OnInit {
 		private componentFactoryResolver: ComponentFactoryResolver,
 		private widgetRegistry: WidgetRegistryService,
 		events: GlobalEventsService,
-		loader: MapLoaderService
+		loader: LoaderService
 	) {
 		events.selectedEntity.subscribe(e => {
 			// clear focus of input fields to enable phaser inputs again

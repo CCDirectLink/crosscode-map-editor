@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {MapLoaderService} from '../../renderer/map-loader.service';
+import {LoaderService} from '../../services/loader.service';
 import {CCMap} from '../../renderer/phaser/tilemap/cc-map';
 import {CCMapLayer} from '../../renderer/phaser/tilemap/cc-map-layer';
 import {EditorView} from '../../models/editor-view';
@@ -21,7 +21,7 @@ export class SidenavComponent implements OnInit {
 	editorViewEnum = EditorView;
 	
 	constructor(
-		private mapLoader: MapLoaderService,
+		private mapLoader: LoaderService,
 		private globalEvents: GlobalEventsService
 	) {
 	}

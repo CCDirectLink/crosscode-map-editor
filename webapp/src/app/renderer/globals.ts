@@ -1,6 +1,6 @@
 import {CCMap} from './phaser/tilemap/cc-map';
 import {StateHistoryService} from '../history/state-history.service';
-import {MapLoaderService} from './map-loader.service';
+import {LoaderService} from '../services/loader.service';
 import {GlobalEventsService} from './global-events.service';
 import {PhaserEventsService} from './phaser/phaser-events.service';
 
@@ -19,7 +19,7 @@ export class Globals {
 	
 	// TODO: remove them from global state
 	static stateHistoryService: StateHistoryService;
-	static mapLoaderService: MapLoaderService;
+	static mapLoaderService: LoaderService;
 	static globalEventsService: GlobalEventsService;
 	static phaserEventsService: PhaserEventsService;
 }

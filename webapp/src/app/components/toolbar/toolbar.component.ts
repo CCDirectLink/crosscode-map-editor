@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {MapLoaderService} from '../../renderer/map-loader.service';
+import {LoaderService} from '../../services/loader.service';
 import {MatDialog} from '@angular/material';
 import {MapSettingsComponent} from '../dialogs/map-settings/map-settings.component';
 import {NewMapComponent} from '../dialogs/new-map/new-map.component';
@@ -30,7 +30,7 @@ export class ToolbarComponent implements OnInit {
 	@Output()
 	public loadMapClicked = new EventEmitter<void>(false);
 	
-	constructor(private mapLoader: MapLoaderService,
+	constructor(private mapLoader: LoaderService,
 	            private events: GlobalEventsService,
 	            private dialog: MatDialog,
 	            private overlayService: OverlayService,

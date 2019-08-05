@@ -3,7 +3,7 @@ import {GlobalEventsService} from './global-events.service';
 import {HostDirective} from './host.directive';
 import {HttpService} from '../services/http.service';
 import {ElectronService} from '../services/electron.service';
-import {MapLoaderService} from './map-loader.service';
+import {LoaderService} from '../services/loader.service';
 import {MapSettingsComponent} from '../components/dialogs/map-settings/map-settings.component';
 import {NewMapComponent} from '../components/dialogs/new-map/new-map.component';
 import {FloatingWindowComponent} from '../components/floating-window/floating-window.component';
@@ -46,7 +46,7 @@ import { MapContentSettingsComponent } from '../components/dialogs/map-settings/
 	providers: [
 		HttpService,
 		ElectronService,
-		MapLoaderService,
+		LoaderService,
 		GlobalEventsService,
 	],
 	entryComponents: [

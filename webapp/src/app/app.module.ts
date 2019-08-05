@@ -26,6 +26,7 @@ import { TileSelectorComponent } from './components/tile-selector/tile-selector.
 import {RouterModule} from '@angular/router';
 import { HttpService } from './services/http.service';
 import { CommonService } from './services/common.service';
+import { LoaderService } from './services/loader.service';
 
 @NgModule({
 	declarations: [
@@ -58,6 +59,7 @@ import { CommonService } from './services/common.service';
 		StateHistoryService,
 		HttpService,
 		CommonService,
+		LoaderService,
 	],
 	bootstrap: [AppComponent]
 })

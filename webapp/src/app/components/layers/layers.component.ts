@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {CCMap} from '../../renderer/phaser/tilemap/cc-map';
 import {CCMapLayer} from '../../renderer/phaser/tilemap/cc-map-layer';
-import {MapLoaderService} from '../../renderer/map-loader.service';
+import {LoaderService} from '../../services/loader.service';
 import {GlobalEventsService} from '../../renderer/global-events.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {StateHistoryService} from '../../history/state-history.service';
@@ -19,7 +19,7 @@ export class LayersComponent implements OnInit {
 	map?: CCMap;
 	newLayerName = '';
 	
-	constructor(private mapLoader: MapLoaderService,
+	constructor(private mapLoader: LoaderService,
 	            private stateHistory: StateHistoryService,
 	            events: GlobalEventsService) {
 		events.toggleVisibility.subscribe(() => {

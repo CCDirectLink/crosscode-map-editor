@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { MatTreeNestedDataSource, MatSidenav } from '@angular/material';
-import { MapLoaderService } from '../../renderer/map-loader.service';
+import { MatTreeNestedDataSource, MatSidenav, MatSnackBar } from '@angular/material';
+import { LoaderService } from '../../services/loader.service';
 import { MapNode, MapNodeRoot } from './mapNode.model';
 import { VirtualMapNode } from './virtualMapNode.model';
 import { CommonService } from '../../services/common.service';
@@ -24,8 +24,9 @@ export class LoadMapComponent {
 	filter = '';
 
 	constructor(
-		private mapLoader: MapLoaderService,
+		private mapLoader: LoaderService,
 		private common: CommonService,
+		private snackBar: MatSnackBar,
 	) {
 		this.mapsSource.data = [];
 	}
@@ -46,7 +47,28 @@ export class LoadMapComponent {
 	}
 	
 	loadMap(event: Event) {
-		this.mapLoader.loadMap(event);
+		const files: FileList = (event.target as HTMLInputElement).files!;
+		if (files.length === 0) {
+			return;
+		}
+		
+		const file = files[0];
+		const reader = new FileReader();
+		
+		reader.onload = (e: any) => {
+			try {
+				const map = JSON.parse(e.target.result);
+				this.mapLoader.loadRawMap(map, file.name);
+			} catch (e) {
+				console.error(e);
+				this.snackBar.open('Error: ' + e.message, undefined, {
+					duration: 2500
+				});
+				return;
+			}
+		};
+		
+		reader.readAsText(file);
 	}
 
 	load(name: string) {

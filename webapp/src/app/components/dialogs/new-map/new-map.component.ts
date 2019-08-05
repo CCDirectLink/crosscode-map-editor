@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CrossCodeMap} from '../../../models/cross-code-map';
 import {OverlayRefControl} from '../../../overlay/overlay-ref-control';
-import {MapLoaderService} from '../../../renderer/map-loader.service';
+import {LoaderService} from '../../../services/loader.service';
 
 @Component({
 	selector: 'app-new-map',
@@ -11,7 +11,7 @@ import {MapLoaderService} from '../../../renderer/map-loader.service';
 export class NewMapComponent implements OnInit {
 	map: CrossCodeMap;
 	
-	constructor(private mapLoader: MapLoaderService, public ref: OverlayRefControl) {
+	constructor(private mapLoader: LoaderService, public ref: OverlayRefControl) {
 		this.map = this.createDefaultMap();
 	}
 	

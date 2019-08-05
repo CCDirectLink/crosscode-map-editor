@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {MapLoaderService} from '../../renderer/map-loader.service';
+import {LoaderService} from '../../services/loader.service';
 import {GlobalEventsService} from '../../renderer/global-events.service';
 import {Globals} from '../../renderer/globals';
 import {HttpService} from '../../services/http.service';
@@ -18,7 +18,7 @@ import { CommonService } from '../../services/common.service';
 export class PhaserComponent implements OnInit {
 	
 	constructor(private element: ElementRef,
-	            private mapLoader: MapLoaderService,
+	            private mapLoader: LoaderService,
 	            private globalEvents: GlobalEventsService,
 	            private stateHistory: StateHistoryService,
 	            private phaserEventsService: PhaserEventsService,
