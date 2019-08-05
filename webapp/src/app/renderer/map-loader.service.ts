@@ -4,7 +4,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {CrossCodeMap} from '../models/cross-code-map';
 import {CCMap} from './phaser/tilemap/cc-map';
 import {CCMapLayer} from './phaser/tilemap/cc-map-layer';
-import { HttpClientService } from '../services/http-client.service';
+import { HttpService } from '../services/http.service';
 
 @Injectable()
 export class MapLoaderService {
@@ -15,7 +15,7 @@ export class MapLoaderService {
 	
 	constructor(
 		private snackBar: MatSnackBar,
-		private http: HttpClientService,
+		private http: HttpService,
 		) {
 	}
 	

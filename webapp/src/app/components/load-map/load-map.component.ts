@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource, MatSidenav } from '@angular/material';
-import { HttpClientService } from '../../services/http-client.service';
 import { MapLoaderService } from '../../renderer/map-loader.service';
 import { MapNode, MapNodeRoot } from './mapNode.model';
 import { VirtualMapNode } from './virtualMapNode.model';
+import { CommonService } from '../../services/common.service';
 
 
 @Component({
@@ -25,13 +25,13 @@ export class LoadMapComponent {
 
 	constructor(
 		private mapLoader: MapLoaderService,
-		private http: HttpClientService,
+		private common: CommonService,
 	) {
 		this.mapsSource.data = [];
 	}
 
 	refresh() {
-		this.http.getMaps().subscribe(paths => {
+		this.common.getMaps().subscribe(paths => {
 			this.displayMaps(paths);
 			this.update();
 		});

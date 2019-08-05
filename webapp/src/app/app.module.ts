@@ -24,6 +24,8 @@ import {EditorComponent} from './components/editor/editor.component';
 import {AddEntityMenuComponent} from './components/editor/add-entity-menu/add-entity-menu.component';
 import { TileSelectorComponent } from './components/tile-selector/tile-selector.component';
 import {RouterModule} from '@angular/router';
+import { HttpService } from './services/http.service';
+import { CommonService } from './services/common.service';
 
 @NgModule({
 	declarations: [
@@ -54,6 +56,8 @@ import {RouterModule} from '@angular/router';
 	providers: [
 		WidgetRegistryService,
 		StateHistoryService,
+		HttpService,
+		CommonService,
 	],
 	bootstrap: [AppComponent]
 })

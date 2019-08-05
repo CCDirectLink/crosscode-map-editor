@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {GlobalEventsService} from './global-events.service';
 import {HostDirective} from './host.directive';
-import {HttpClientService} from '../services/http-client.service';
+import {HttpService} from '../services/http.service';
 import {ElectronService} from '../services/electron.service';
 import {MapLoaderService} from './map-loader.service';
 import {MapSettingsComponent} from '../components/dialogs/map-settings/map-settings.component';
@@ -44,7 +44,7 @@ import { MapContentSettingsComponent } from '../components/dialogs/map-settings/
 		SettingsComponent,
 	],
 	providers: [
-		HttpClientService,
+		HttpService,
 		ElectronService,
 		MapLoaderService,
 		GlobalEventsService,

@@ -2,12 +2,13 @@ import {Component, ElementRef, OnInit} from '@angular/core';
 import {MapLoaderService} from '../../renderer/map-loader.service';
 import {GlobalEventsService} from '../../renderer/global-events.service';
 import {Globals} from '../../renderer/globals';
-import {HttpClientService} from '../../services/http-client.service';
+import {HttpService} from '../../services/http.service';
 import {StateHistoryService} from '../../history/state-history.service';
 import {PhaserEventsService} from '../../renderer/phaser/phaser-events.service';
 import {HeightMapGeneratorService} from '../../services/height-map-generator.service';
 import * as Phaser from 'phaser';
 import {MainScene} from '../../renderer/phaser/main-scene';
+import { CommonService } from '../../services/common.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -21,7 +22,7 @@ export class PhaserComponent implements OnInit {
 	            private globalEvents: GlobalEventsService,
 	            private stateHistory: StateHistoryService,
 	            private phaserEventsService: PhaserEventsService,
-	            private http: HttpClientService,
+	            private common: CommonService,
 	            private heightGenerator: HeightMapGeneratorService
 	) {
 		Globals.stateHistoryService = stateHistory;
@@ -32,7 +33,7 @@ export class PhaserComponent implements OnInit {
 	
 	
 	ngOnInit() {
-		this.http.getAllFiles().subscribe(res => {
+		this.common.getAllFiles().subscribe(res => {
 			const scene = new MainScene(res);
 			const game = new Phaser.Game({
 				width: window.innerWidth * window.devicePixelRatio,
