@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource, MatSidenav } from '@angular/material';
 import { HttpClientService } from '../../services/http-client.service';
-import { MapLoaderService } from '../../shared/map-loader.service';
+import { MapLoaderService } from '../../renderer/map-loader.service';
 import { MapNode, MapNodeRoot } from './mapNode.model';
 import { VirtualMapNode } from './virtualMapNode.model';
 

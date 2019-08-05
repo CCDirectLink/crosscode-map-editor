@@ -1,9 +1,9 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {MapLoaderService} from '../../shared/map-loader.service';
-import {CCMap} from '../../shared/phaser/tilemap/cc-map';
-import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
+import {MapLoaderService} from '../../renderer/map-loader.service';
+import {CCMap} from '../../renderer/phaser/tilemap/cc-map';
+import {CCMapLayer} from '../../renderer/phaser/tilemap/cc-map-layer';
 import {EditorView} from '../../models/editor-view';
-import {GlobalEventsService} from '../../shared/global-events.service';
+import {GlobalEventsService} from '../../renderer/global-events.service';
 import {MatTabChangeEvent} from '@angular/material';
 
 @Component({

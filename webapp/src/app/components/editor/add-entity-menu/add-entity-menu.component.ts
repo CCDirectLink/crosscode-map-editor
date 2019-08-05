@@ -1,8 +1,8 @@
 import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {MatMenuTrigger} from '@angular/material';
 import {MapEntity, Point} from '../../../models/cross-code-map';
-import {Vec2} from '../../../shared/phaser/vec2';
-import {GlobalEventsService} from '../../../shared/global-events.service';
+import {Vec2} from '../../../renderer/phaser/vec2';
+import {GlobalEventsService} from '../../../renderer/global-events.service';
 
 @Component({
 	selector: 'app-add-entity-menu',

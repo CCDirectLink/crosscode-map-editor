@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {MapLoaderService} from '../../../shared/map-loader.service';
+import {MapLoaderService} from '../../../renderer/map-loader.service';
 import {MatDialogRef} from '@angular/material';
 import {Point} from '../../../models/cross-code-map';
-import {GlobalEventsService} from '../../../shared/global-events.service';
+import {GlobalEventsService} from '../../../renderer/global-events.service';
 
 @Component({
 	selector: 'app-offset-map',

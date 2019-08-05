@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Inject, Input, OnInit, Optional, ViewChild} from '@angular/core';
 import JSONEditor, {JSONEditorOptions} from 'jsoneditor';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {Globals} from '../../shared/globals';
+import {Globals} from '../../renderer/globals';
 
 @Component({
 	selector: 'app-json-editor',

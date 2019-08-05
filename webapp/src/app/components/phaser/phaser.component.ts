@@ -1,13 +1,13 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
-import {MapLoaderService} from '../../shared/map-loader.service';
-import {GlobalEventsService} from '../../shared/global-events.service';
-import {Globals} from '../../shared/globals';
+import {MapLoaderService} from '../../renderer/map-loader.service';
+import {GlobalEventsService} from '../../renderer/global-events.service';
+import {Globals} from '../../renderer/globals';
 import {HttpClientService} from '../../services/http-client.service';
 import {StateHistoryService} from '../../history/state-history.service';
-import {PhaserEventsService} from '../../shared/phaser/phaser-events.service';
+import {PhaserEventsService} from '../../renderer/phaser/phaser-events.service';
 import {HeightMapGeneratorService} from '../../services/height-map-generator.service';
 import * as Phaser from 'phaser';
-import {MainScene} from '../../shared/phaser/main-scene';
+import {MainScene} from '../../renderer/phaser/main-scene';
 
 @Component({
 	selector: 'app-phaser',

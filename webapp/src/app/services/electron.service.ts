@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Globals} from '../shared/globals';
+import {Globals} from '../renderer/globals';
 import {Dialog, Remote} from 'electron';
 import * as nodeFs from 'fs';
 

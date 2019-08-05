@@ -1,17 +1,17 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {MapLoaderService} from '../../shared/map-loader.service';
+import {MapLoaderService} from '../../renderer/map-loader.service';
 import {MatDialog} from '@angular/material';
 import {MapSettingsComponent} from '../dialogs/map-settings/map-settings.component';
 import {NewMapComponent} from '../dialogs/new-map/new-map.component';
-import {CCMap} from '../../shared/phaser/tilemap/cc-map';
-import {GlobalEventsService} from '../../shared/global-events.service';
+import {CCMap} from '../../renderer/phaser/tilemap/cc-map';
+import {GlobalEventsService} from '../../renderer/global-events.service';
 import {OffsetMapComponent} from '../dialogs/offset-map/offset-map.component';
 import {environment} from '../../../environments/environment';
 import {OverlayService} from '../../overlay/overlay.service';
-import {NpcStatesComponent} from '../../shared/widgets/npc-states-widget/npc-states/npc-states.component';
+import {NpcStatesComponent} from '../../renderer/widgets/npc-states-widget/npc-states/npc-states.component';
 import {Overlay} from '@angular/cdk/overlay';
 import {SettingsComponent} from '../dialogs/settings/settings.component';
-import {Globals} from '../../shared/globals';
+import {Globals} from '../../renderer/globals';
 import {FileChangeEvent} from '@angular/compiler-cli/src/perform_watch';
 
 @Component({

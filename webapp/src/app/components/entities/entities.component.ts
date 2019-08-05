@@ -1,12 +1,12 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {AttributeValue, CCEntity} from '../../shared/phaser/entities/cc-entity';
-import {CCMap} from '../../shared/phaser/tilemap/cc-map';
-import {HostDirective} from '../../shared/host.directive';
-import {AbstractWidget} from '../../shared/widgets/abstract-widget';
-import {WidgetRegistryService} from '../../shared/widgets/widget-registry.service';
-import {Vec2WidgetComponent} from '../../shared/widgets/vec2-widget/vec2-widget.component';
-import {GlobalEventsService} from '../../shared/global-events.service';
-import {MapLoaderService} from '../../shared/map-loader.service';
+import {AttributeValue, CCEntity} from '../../renderer/phaser/entities/cc-entity';
+import {CCMap} from '../../renderer/phaser/tilemap/cc-map';
+import {HostDirective} from '../../renderer/host.directive';
+import {AbstractWidget} from '../../renderer/widgets/abstract-widget';
+import {WidgetRegistryService} from '../../renderer/widgets/widget-registry.service';
+import {Vec2WidgetComponent} from '../../renderer/widgets/vec2-widget/vec2-widget.component';
+import {GlobalEventsService} from '../../renderer/global-events.service';
+import {MapLoaderService} from '../../renderer/map-loader.service';
 
 @Component({
 	selector: 'app-entities',

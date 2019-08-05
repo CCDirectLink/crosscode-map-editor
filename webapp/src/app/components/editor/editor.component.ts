@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
-import {NpcStatesComponent} from '../../shared/widgets/npc-states-widget/npc-states/npc-states.component';
+import {NpcStatesComponent} from '../../renderer/widgets/npc-states-widget/npc-states/npc-states.component';
 import {OverlayService} from '../../overlay/overlay.service';
 import {Overlay} from '@angular/cdk/overlay';
 import { LoadMapComponent } from '../load-map/load-map.component';

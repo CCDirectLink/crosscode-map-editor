@@ -3,7 +3,7 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
 import {AppModule} from './app/app.module';
 import {environment} from './environments/environment';
-import {Globals} from './app/shared/globals';
+import {Globals} from './app/renderer/globals';
 
 import 'hammerjs';
 

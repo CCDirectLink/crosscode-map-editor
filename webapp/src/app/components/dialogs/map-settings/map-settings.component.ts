@@ -1,8 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
 import {CrossCodeMap} from '../../../models/cross-code-map';
-import {MapLoaderService} from '../../../shared/map-loader.service';
-import {CCMap} from '../../../shared/phaser/tilemap/cc-map';
+import {MapLoaderService} from '../../../renderer/map-loader.service';
+import {CCMap} from '../../../renderer/phaser/tilemap/cc-map';
 import {OverlayRefControl} from '../../../overlay/overlay-ref-control';
 
 @Component({

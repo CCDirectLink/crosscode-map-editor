@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import * as Phaser from 'phaser';
 import {TileSelectorScene} from './tile-selector.scene';
-import {GlobalEventsService} from '../../shared/global-events.service';
+import {GlobalEventsService} from '../../renderer/global-events.service';
 import {EditorView} from '../../models/editor-view';
 
 
