@@ -4,3 +4,7 @@ declare module '*.json' {
 }
 
 declare interface ActiveXObject {}
+
+declare interface Window {
+	require?: NodeRequireFunction;
+}

@@ -1,45 +1,29 @@
-import {Injectable} from '@angular/core';
-import {Globals} from '../renderer/globals';
-import {Dialog, Remote} from 'electron';
+import { Injectable } from '@angular/core';
+import { Globals } from '../renderer/globals';
+import { Dialog, Remote } from 'electron';
 import * as nodeFs from 'fs';
 
 @Injectable()
 export class ElectronService {
-	
 	private readonly fs?: typeof nodeFs;
-	
+
 	private storageName = 'assetsPath';
 	private assetsPath = '';
 	private readonly remote?: Remote;
-	
+
 	constructor() {
-		if (!Globals.isElectron) {
+		if (!Globals.isElectron || !window.require) {
 			return;
 		}
-		
-		// @ts-ignore
-		const remote = window.require('electron').remote;
-		this.remote = remote!;
-		this.fs = remote.require('fs');
-		
+
+		this.remote = window.require('electron').remote;
+		this.fs = this.remote.require('fs');
+
 		this.assetsPath = localStorage.getItem(this.storageName) || '';
 		this.updateURL();
 	}
-	
-	private static normalizePath(p: string) {
-		if (p.endsWith('\\')) {
-			p = p.split('\\').join('/');
-		}
-		if (!p.endsWith('/')) {
-			p += '/';
-		}
-		return p;
-	}
-	
-	private updateURL() {
-		Globals.URL = 'file:///' + this.assetsPath;
-	}
-	
+
+
 	public relaunch() {
 		if (!this.remote) {
 			throw new Error('remote is not defined');
@@ -47,7 +31,7 @@ export class ElectronService {
 		this.remote.app.relaunch();
 		this.remote.app.quit();
 	}
-	
+
 	public checkAssetsPath(path: string): boolean {
 		if (!this.fs) {
 			return false;
@@ -60,7 +44,7 @@ export class ElectronService {
 			return false;
 		}
 	}
-	
+
 	public selectCcFolder(): string | undefined {
 		if (!this.remote) {
 			throw new Error('remote is not defined');
@@ -71,18 +55,33 @@ export class ElectronService {
 			defaultPath: 'C:\\Program Files (x86)\\Steam\\steamapps\\common\\CrossCode\\assets',
 			properties: ['openDirectory']
 		});
-		
+
 		return newPath ? newPath[0] : undefined;
 	}
-	
+
 	public saveAssetsPath(path: string) {
-		const normalized = ElectronService.normalizePath(path);
+		const normalized = this.normalizePath(path);
 		this.assetsPath = normalized;
 		localStorage.setItem(this.storageName, normalized);
 		this.updateURL();
 	}
-	
+
 	public getAssetsPath() {
 		return this.assetsPath;
+	}
+	
+
+	private normalizePath(p: string) {
+		if (p.endsWith('\\')) {
+			p = p.split('\\').join('/');
+		}
+		if (!p.endsWith('/')) {
+			p += '/';
+		}
+		return p;
+	}
+
+	private updateURL() {
+		Globals.URL = 'file:///' + this.assetsPath;
 	}
 }
