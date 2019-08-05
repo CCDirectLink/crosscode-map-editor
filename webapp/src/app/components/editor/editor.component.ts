@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {NpcStatesComponent} from '../../shared/widgets/npc-states-widget/npc-states/npc-states.component';
-import {OverlayService} from '../../shared/overlay/overlay.service';
+import {OverlayService} from '../../overlay/overlay.service';
 import {Overlay} from '@angular/cdk/overlay';
 import { LoadMapComponent } from '../load-map/load-map.component';
 import { MatSidenav } from '@angular/material/sidenav';

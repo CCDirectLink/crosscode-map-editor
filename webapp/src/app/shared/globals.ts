@@ -1,5 +1,5 @@
 import {CCMap} from './phaser/tilemap/cc-map';
-import {StateHistoryService} from './history/state-history.service';
+import {StateHistoryService} from '../history/state-history.service';
 import {MapLoaderService} from './map-loader.service';
 import {GlobalEventsService} from './global-events.service';
 import {PhaserEventsService} from './phaser/phaser-events.service';

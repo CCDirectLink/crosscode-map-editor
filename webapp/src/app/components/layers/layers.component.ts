@@ -4,7 +4,7 @@ import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {StateHistoryService} from '../../shared/history/state-history.service';
+import {StateHistoryService} from '../../history/state-history.service';
 import {Globals} from '../../shared/globals';
 
 @Component({

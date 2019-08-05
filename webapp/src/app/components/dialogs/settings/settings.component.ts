@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {OverlayRefControl} from '../../../shared/overlay/overlay-ref-control';
+import {OverlayRefControl} from '../../../overlay/overlay-ref-control';
 import {ElectronService} from '../../../services/electron.service';
 import {FormControl} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';

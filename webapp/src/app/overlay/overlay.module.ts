@@ -5,7 +5,7 @@ import {
 } from './overlay-panel/overlay-panel.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {AngularDraggableModule} from 'angular2-draggable';
-import {MaterialModule} from '../../external-modules/material.module';
+import {MaterialModule} from '../external-modules/material.module';
 
 const EXPORTS = [
 	OverlayPanelComponent,

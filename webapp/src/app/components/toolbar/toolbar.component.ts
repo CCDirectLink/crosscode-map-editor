@@ -7,7 +7,7 @@ import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {OffsetMapComponent} from '../dialogs/offset-map/offset-map.component';
 import {environment} from '../../../environments/environment';
-import {OverlayService} from '../../shared/overlay/overlay.service';
+import {OverlayService} from '../../overlay/overlay.service';
 import {NpcStatesComponent} from '../../shared/widgets/npc-states-widget/npc-states/npc-states.component';
 import {Overlay} from '@angular/cdk/overlay';
 import {SettingsComponent} from '../dialogs/settings/settings.component';

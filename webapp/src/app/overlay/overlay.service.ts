@@ -2,7 +2,7 @@ import {Injectable, Injector} from '@angular/core';
 import {ComponentType, Overlay, OverlayConfig} from '@angular/cdk/overlay';
 import {ComponentPortal, PortalInjector} from '@angular/cdk/portal';
 import {OverlayRefControl} from './overlay-ref-control';
-import {Globals} from '../globals';
+import {Globals} from '../shared/globals';
 import {OverlayModule} from './overlay.module';
 
 interface CustomOverlayConfig extends OverlayConfig {

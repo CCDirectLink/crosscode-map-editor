@@ -1,8 +1,8 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 import {NpcStatesComponent} from '../npc-states-widget/npc-states/npc-states.component';
-import {OverlayRefControl} from '../../overlay/overlay-ref-control';
-import {OverlayService} from '../../overlay/overlay.service';
+import {OverlayRefControl} from '../../../overlay/overlay-ref-control';
+import {OverlayService} from '../../../overlay/overlay.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {EventWindowComponent} from './event-window/event-window.component';
 import {Globals} from '../../globals';

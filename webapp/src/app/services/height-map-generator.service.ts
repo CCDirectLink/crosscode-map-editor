@@ -8,7 +8,7 @@ import {CCMap} from '../shared/phaser/tilemap/cc-map';
 import {Vec2} from '../shared/phaser/vec2';
 import {Helper} from '../shared/phaser/helper';
 import {MatSnackBar} from '@angular/material';
-import {StateHistoryService} from '../shared/history/state-history.service';
+import {StateHistoryService} from '../history/state-history.service';
 
 interface Dir {
 	n: number;

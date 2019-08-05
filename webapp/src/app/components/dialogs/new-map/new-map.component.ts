@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CrossCodeMap} from '../../../models/cross-code-map';
-import {OverlayRefControl} from '../../../shared/overlay/overlay-ref-control';
+import {OverlayRefControl} from '../../../overlay/overlay-ref-control';
 import {MapLoaderService} from '../../../shared/map-loader.service';
 
 @Component({

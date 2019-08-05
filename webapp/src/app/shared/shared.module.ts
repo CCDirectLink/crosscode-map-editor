@@ -17,7 +17,7 @@ import {OffsetMapComponent} from '../components/dialogs/offset-map/offset-map.co
 import {ModalDirective} from './modal.directive';
 import {KeepHtmlPipe} from './keep-html.pipe';
 import {SettingsComponent} from '../components/dialogs/settings/settings.component';
-import {OverlayModule} from './overlay/overlay.module';
+import {OverlayModule} from '../overlay/overlay.module';
 
 import { MapContentSettingsComponent } from '../components/dialogs/map-settings/map-content-settings/map-content-settings.component';
 

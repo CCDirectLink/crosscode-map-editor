@@ -1,10 +1,10 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {EventHelperService} from '../event-helper.service';
 import {AbstractEvent} from '../../event-registry/abstract-event';
-import {OverlayService} from '../../../../overlay/overlay.service';
+import {OverlayService} from '../../../../../overlay/overlay.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {EventDetailComponent} from '../detail/event-detail.component';
-import {OverlayRefControl} from '../../../../overlay/overlay-ref-control';
+import {OverlayRefControl} from '../../../../../overlay/overlay-ref-control';
 import {EventAddComponent} from '../add/event-add.component';
 
 @Component({

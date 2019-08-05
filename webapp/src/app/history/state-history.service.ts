@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {Globals} from '../globals';
+import {Globals} from '../shared/globals';
 
 export interface HistoryStateContainer {
 	state?: HistoryState;

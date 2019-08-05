@@ -3,7 +3,7 @@ import {MapLoaderService} from '../../shared/map-loader.service';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {Globals} from '../../shared/globals';
 import {HttpClientService} from '../../services/http-client.service';
-import {StateHistoryService} from '../../shared/history/state-history.service';
+import {StateHistoryService} from '../../history/state-history.service';
 import {PhaserEventsService} from '../../shared/phaser/phaser-events.service';
 import {HeightMapGeneratorService} from '../../services/height-map-generator.service';
 import * as Phaser from 'phaser';
