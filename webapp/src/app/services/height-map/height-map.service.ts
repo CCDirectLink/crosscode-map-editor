@@ -47,7 +47,6 @@ interface TileData {
 export class HeightMapService {
 	private data: (TileData | null)[][] = [];
 	private lastData: (TileData | null)[][] = [];
-	private minLayer = 0; // never used? probably misspelled minLevel
 	private minLevel = 0;
 	private maxLevel = 0;
 	private width = 0;
@@ -63,8 +62,10 @@ export class HeightMapService {
 	}
 	
 	public init() {
-		this.events.generateHeights.subscribe(() => this.generateHeights(true));
+		this.events.generateHeights.subscribe(forceAll => this.generateHeights(forceAll));
 		this.mapLoader.tileMap.subscribe(map => this.onMapLoad(map));
+		
+		// TODO: add shortcuts for generation
 	}
 	
 	private onMapLoad(inputMap?: CCMap) {
@@ -99,7 +100,7 @@ export class HeightMapService {
 		this.stateHistory.saveState({
 			name: 'Height Generation',
 			icon: 'landscape'
-		}, true);
+		});
 	}
 	
 	_storeTileData(tiles: number[][]) {
