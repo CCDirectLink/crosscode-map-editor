@@ -28,14 +28,6 @@ export class GfxMapper {
 		if (mappingSettings.mappingType) {
 			result.mapping = GFX_MAPS[mappingSettings.mappingType];
 		}
-		// TODO: there is no blockTypes in mapSettings. Use blockedTypes?
-		// if (mappingSettings.blockTypes) {
-		// 	result.blockedTypes = [];
-		// 	let i = mappingSettings['blockedTypes'].length;
-		// 	while (i--) {
-		// 		result.blockedTypes.push(GFX_TYPE[mappingSettings['blockedTypes'][i]]);
-		// 	}
-		// }
 		return result;
 	}
 	
@@ -84,20 +76,10 @@ export class GfxMapper {
 	}
 	
 	isFill(gfxType: GFX_TYPE, terrain?: number) {
-		if (gfxType === GFX_TYPE.FILL) {
-			return true;
-		}
-		if (!terrain) {
-			return false;
-		}
-		const t = this.terrains[terrain - 1];
-		
-		if (t.blockedTypes) {
-			return t.blockedTypes.indexOf(gfxType) !== -1;
-		} else {
-			return this.base.blockedTypes && this.base.blockedTypes.indexOf(gfxType) !== -1;
-		}
-		
+		return gfxType === GFX_TYPE.FILL ||
+			(terrain && this.terrains[terrain - 1].blockedTypes ?
+				this.terrains[terrain - 1].blockedTypes!.indexOf(gfxType) !== -1 :
+				this.base.blockedTypes && this.base.blockedTypes.indexOf(gfxType) !== -1);
 	}
 	
 	getGfx(gfxType: GFX_TYPE, x: number, y: number, subType: keyof GfxMaps | null, terrain: number, terrainBorder: number = -1, wallProps?: { start: number, end: number }) {
