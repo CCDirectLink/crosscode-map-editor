@@ -5,9 +5,9 @@ import {Globals} from '../../shared/globals';
 import {HttpClientService} from '../../services/http-client.service';
 import {StateHistoryService} from '../../shared/history/state-history.service';
 import {PhaserEventsService} from '../../shared/phaser/phaser-events.service';
-import {HeightMapGeneratorService} from '../../services/height-map-generator.service';
 import * as Phaser from 'phaser';
 import {MainScene} from '../../shared/phaser/main-scene';
+import {HeightMapService} from '../../services/height-map/height-map.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -21,8 +21,8 @@ export class PhaserComponent implements OnInit {
 	            private globalEvents: GlobalEventsService,
 	            private stateHistory: StateHistoryService,
 	            private phaserEventsService: PhaserEventsService,
-	            private http: HttpClientService,
-	            private heightGenerator: HeightMapGeneratorService
+	            private heightMap: HeightMapService,
+	            private http: HttpClientService
 	) {
 		Globals.stateHistoryService = stateHistory;
 		Globals.mapLoaderService = mapLoader;
@@ -32,6 +32,7 @@ export class PhaserComponent implements OnInit {
 	
 	
 	ngOnInit() {
+		this.heightMap.init();
 		this.http.getAllFiles().subscribe(res => {
 			const scene = new MainScene(res);
 			const game = new Phaser.Game({
