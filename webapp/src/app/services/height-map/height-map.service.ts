@@ -286,13 +286,16 @@ export class HeightMapService {
 					
 				} else if (wallLink
 					&& !wallLink.toMaster
-					&& (entry.lowerLevel <= levelIdx || (doShadow && levelIdx === masterLevelIdx)) && entry.level > levelIdx) {
-					const doChasm = (!wallLink.shadowOnly && gfxMapper.hasChasm() && entry.lowerLevel === -1 && levelIdx < masterLevelIdx);
+					&& (entry.lowerLevel <= levelIdx || (doShadow && levelIdx === masterLevelIdx))
+					&& entry.level > levelIdx) {
 					
+					const doChasm = (!wallLink.shadowOnly && gfxMapper.hasChasm() && entry.lowerLevel === -1 && levelIdx < masterLevelIdx);
 					let actualYHeight = yHeight;
-					let yStart = 0, doShadowWall = false;
-					const chasmHeight = gfxMapper.getChasmHeight(entry.terrain),
-						chasmPadding = gfxMapper.getChasmTileAdd(entry.terrain);
+					let yStart = 0;
+					let doShadowWall = false;
+					const chasmHeight = gfxMapper.getChasmHeight(entry.terrain);
+					const chasmPadding = gfxMapper.getChasmTileAdd(entry.terrain);
+					
 					if (doChasm) {
 						yStart = this._getLevelDistance(levelIdx, masterLevelIdx, layer) - chasmHeight - chasmPadding;
 					} else if (doShadow && levelIdx === masterLevelIdx) {
@@ -305,7 +308,7 @@ export class HeightMapService {
 						continue;
 					}
 					
-					const terrain = entry.lowerLevel === -1 ? entry.terrain : entry.lowerTerrain;
+					const terrain = entry.lowerLevel === -1 || gfxMapper.isWallTerrainFromTop(entry.lowerTerrain, entry.terrain) ? entry.terrain : entry.lowerTerrain;
 					
 					if (doShadow && levelIdx > masterLevelIdx) {
 						const newTile = gfxMapper.getGfx(GFX_TYPE.INVISIBLE_WALL, x, y - yOff, SUB_TYPE.SHADOW, terrain);

@@ -82,6 +82,12 @@ export class GfxMapper {
 				this.base.blockedTypes && this.base.blockedTypes.indexOf(gfxType) !== -1);
 	}
 	
+	isWallTerrainFromTop(lower: number, upper: number) {
+		const lowerTerrain = lower && this.terrains[lower - 1] || this.base;
+		const upperTerrain = upper && this.terrains[upper - 1] || this.base;
+		return (upperTerrain && upperTerrain.wallTerrainPrio || 0) > (lowerTerrain && lowerTerrain.wallTerrainPrio || 0);
+	}
+	
 	getGfx(gfxType: GFX_TYPE, x: number, y: number, subType: keyof GfxMaps | null, terrain: number, terrainBorder: number = -1, wallProps?: { start: number, end: number }) {
 		if (terrain && !this.terrains[terrain - 1]) {
 			terrain = 0;
