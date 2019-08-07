@@ -99,7 +99,7 @@ export class NPC extends CCEntity {
 	
 	protected async setupType(settings: any) {
 		
-		const charSettings: CharacterSettings = await Helper.getJsonPromise(this.getPath('data/characters/', settings.characterName));
+		const charSettings: CharacterSettings = await Helper.getJsonPromise(this.getPath('data/characters/', settings.characterName), this.settingsService, this.scene);
 		const state = settings.npcStates[0] || {};
 		const npc = this.NPCSimple;
 		let config = (npc.sprites as any)[state.config];
@@ -120,7 +120,7 @@ export class NPC extends CCEntity {
 				// sheet is only reference
 				const animSheet = charSettings.animSheet;
 				const path = this.getPath('data/animations/', animSheet);
-				charSettings.animSheet = await Helper.getJsonPromise(path);
+				charSettings.animSheet = await Helper.getJsonPromise(path, this.settingsService, this.scene);
 				if (!charSettings.animSheet) {
 					throw new Error('no anim sheet found for: ' + animSheet + ' in path: ' + path);
 				}

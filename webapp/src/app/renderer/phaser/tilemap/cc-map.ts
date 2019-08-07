@@ -1,8 +1,11 @@
 import {Attributes, CrossCodeMap, MapLayer, Point} from '../../../models/cross-code-map';
 import {CCMapLayer} from './cc-map-layer';
-import {Globals} from '../../globals';
 import {EntityManager} from '../entities/entity-manager';
 import {Subscription} from 'rxjs';
+import { SettingsService } from '../../../services/settings.service';
+import { StateHistoryService } from '../../../history/state-history.service';
+import { LoaderService } from '../../../services/loader.service';
+import { EventService } from '../../../services/event.service';
 
 export class CCMap {
 	name = '';
@@ -26,14 +29,17 @@ export class CCMap {
 	constructor(
 		private game: Phaser.Game,
 		private scene: Phaser.Scene,
-		private entityManager: EntityManager
+		private entityManager: EntityManager,
+		private settings: SettingsService,
+		private loader: LoaderService,
+		private events: EventService,
+		private stateHistory: StateHistoryService,
 	) {
-		const stateHistory = Globals.stateHistoryService;
 		this.historySub = stateHistory.selectedState.subscribe(container => {
 			if (!container || !container.state) {
 				return;
 			}
-			const selectedLayer = Globals.mapLoaderService.selectedLayer;
+			const selectedLayer = this.loader.selectedLayer;
 			const i = this.layers.indexOf(<any>selectedLayer.getValue());
 			this.loadMap(JSON.parse(container.state.json), true);
 			if (i >= 0 && this.layers.length > i) {
@@ -57,7 +63,7 @@ export class CCMap {
 		// 	}
 		//
 		// });
-		this.offsetSub = Globals.globalEventsService.offsetMap.subscribe(offset => this.offsetMap(offset));
+		this.offsetSub = events.offsetMap.subscribe(offset => this.offsetMap(offset));
 	}
 	
 	destroy() {
@@ -70,8 +76,8 @@ export class CCMap {
 		const tileMap = this.scene.make.tilemap({
 			width: map.mapWidth,
 			height: map.mapHeight,
-			tileHeight: Globals.TILE_SIZE,
-			tileWidth: Globals.TILE_SIZE
+			tileHeight: this.settings.TILE_SIZE,
+			tileWidth: this.settings.TILE_SIZE
 		});
 		
 		this.tileMap = tileMap;
@@ -106,15 +112,15 @@ export class CCMap {
 		this.entityManager.initialize(map);
 		
 		if (!skipInit) {
-			Globals.stateHistoryService.init({
+			this.stateHistory.init({
 				name: 'load',
 				icon: 'insert_drive_file',
 				json: JSON.stringify(this.exportMap())
 			});
 		}
 		
-		Globals.mapLoaderService.tileMap.next(this);
-		Globals.mapLoaderService.selectedLayer.next(this.layers[0]);
+		this.loader.tileMap.next(this);
+		this.loader.selectedLayer.next(this.layers[0]);
 	}
 	
 	resize(width: number, height: number, skipRender = false) {
@@ -122,7 +128,7 @@ export class CCMap {
 		this.mapHeight = height;
 		
 		this.layers.forEach(layer => layer.resize(width, height, skipRender));
-		Globals.phaserEventsService.updateMapBorder.next(true);
+		this.events.updateMapBorder.next(true);
 	}
 	
 	offsetMap(offset: Point, borderTiles = false) {

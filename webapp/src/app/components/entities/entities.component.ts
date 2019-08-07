@@ -5,8 +5,8 @@ import {HostDirective} from '../../renderer/host.directive';
 import {AbstractWidget} from '../../renderer/widgets/abstract-widget';
 import {WidgetRegistryService} from '../../renderer/widgets/widget-registry.service';
 import {Vec2WidgetComponent} from '../../renderer/widgets/vec2-widget/vec2-widget.component';
-import {GlobalEventsService} from '../../renderer/global-events.service';
 import {LoaderService} from '../../services/loader.service';
+import { EventService } from '../../services/event.service';
 
 @Component({
 	selector: 'app-entities',
@@ -21,7 +21,7 @@ export class EntitiesComponent implements OnInit {
 	constructor(
 		private componentFactoryResolver: ComponentFactoryResolver,
 		private widgetRegistry: WidgetRegistryService,
-		events: GlobalEventsService,
+		events: EventService,
 		loader: LoaderService
 	) {
 		events.selectedEntity.subscribe(e => {

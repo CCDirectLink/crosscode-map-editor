@@ -4,8 +4,8 @@ import {Helper} from '../helper';
 import * as Phaser from 'phaser';
 import {Vec2} from '../vec2';
 
-import {Globals} from '../../globals';
 import {BaseObject} from '../base-object';
+import { SettingsService } from '../../../services/settings.service';
 
 export interface ScaleSettings {
 	scalableX: boolean;
@@ -79,7 +79,9 @@ export abstract class CCEntity extends BaseObject {
 		pivot: Point;
 	} = <any>{};
 	
-	protected constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
+	protected constructor(
+		protected readonly settingsService: SettingsService,
+		scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
 		super(scene, typeName, false);
 		scene.add.existing(this);
 		this.map = map;
@@ -140,7 +142,7 @@ export abstract class CCEntity extends BaseObject {
 			container.x = Math.round(p.worldX - this.startOffset.x);
 			container.y = Math.round(p.worldY - this.startOffset.y);
 			
-			const settings = Globals.entitySettings;
+			const settings = this.settingsService.entitySettings;
 			if (settings.enableGrid) {
 				const diffX = container.x % settings.gridSize;
 				if (diffX * 2 < settings.gridSize) {

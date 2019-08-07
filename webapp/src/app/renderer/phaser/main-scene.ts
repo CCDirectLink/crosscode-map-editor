@@ -3,14 +3,14 @@ import {EditorView} from '../../models/editor-view';
 import {StateHistoryService} from '../../history/state-history.service';
 import {LoaderService} from '../../services/loader.service';
 import {PhaserEventsService} from './phaser-events.service';
-import {GlobalEventsService} from '../global-events.service';
 import {FileInfos} from '../../models/file-infos';
-import {Globals} from '../globals';
 import {CCMap} from './tilemap/cc-map';
 import {Subscription} from 'rxjs';
 import {MapPan} from './map-pan';
 import {TileDrawer} from './tilemap/tile-drawer';
 import {EntityManager} from './entities/entity-manager';
+import { SettingsService } from '../../services/settings.service';
+import { EventService } from '../../services/event.service';
 
 export class MainScene extends Phaser.Scene {
 	
@@ -21,13 +21,17 @@ export class MainScene extends Phaser.Scene {
 	
 	constructor(
 		private res: FileInfos,
+		private readonly settings: SettingsService,
+		private readonly eventsService: EventService,
+		private readonly loader: LoaderService,
+		private readonly stateHistory: StateHistoryService,
 	) {
 		super({key: 'main'});
 	}
 	
 	preload() {
 		this.res.images.forEach(img => {
-			this.load.image(img, Globals.URL + img);
+			this.load.image(img, this.settings.URL + img);
 		});
 		
 		this.load.image('pixel', 'assets/pixel.png');
@@ -39,7 +43,7 @@ export class MainScene extends Phaser.Scene {
 		// this.load.on('progress', (val: number) => console.log(val));
 		
 		// this.load.maxParallelDownloads = this.res.images.length;
-		this.load.once('complete', () => Globals.globalEventsService.loadComplete.next());
+		this.load.once('complete', () => this.eventsService.loadComplete.next());
 	}
 	
 	create() {
@@ -52,28 +56,28 @@ export class MainScene extends Phaser.Scene {
 		
 		game.scale.scaleMode = Phaser.Scale.ScaleModes.NONE;
 		
-		const entityManager = new EntityManager(this, false);
+		const entityManager = new EntityManager(this.eventsService, this.settings, this, false);
 		
-		const tileMap = new CCMap(game, this, entityManager);
-		Globals.map = tileMap;
+		const tileMap = new CCMap(game, this, entityManager, this.settings, this.loader, this.eventsService, this.stateHistory);
+		this.settings.map = tileMap;
 		
-		this.sub = Globals.mapLoaderService.map.subscribe((map) => {
+		this.sub = this.loader.map.subscribe((map) => {
 			if (map) {
 				tileMap.loadMap(map);
 				this.rescaleBorder();
 			}
 		});
-		Globals.phaserEventsService.updateMapBorder.subscribe(() => this.rescaleBorder());
+		this.eventsService.updateMapBorder.subscribe(() => this.rescaleBorder());
 		
-		const pan = new MapPan(this, 'mapPan');
+		const pan = new MapPan(this.eventsService, this, 'mapPan');
 		this.add.existing(pan);
 		
-		const tileDrawer = new TileDrawer(this);
+		const tileDrawer = new TileDrawer(this.settings, this.loader, this.eventsService, this.stateHistory, this);
 		this.add.existing(tileDrawer);
 		
 		this.add.existing(entityManager);
 		
-		Globals.globalEventsService.currentView.subscribe(view => {
+		this.eventsService.currentView.subscribe(view => {
 			switch (view) {
 				case EditorView.Layers:
 					tileDrawer.setActive(true);
@@ -86,7 +90,7 @@ export class MainScene extends Phaser.Scene {
 			}
 		});
 		
-		Globals.globalEventsService.currentView.next(EditorView.Layers);
+		this.eventsService.currentView.next(EditorView.Layers);
 		
 		// TODO
 		// this.heightGenerator.init(game);
@@ -100,12 +104,12 @@ export class MainScene extends Phaser.Scene {
 	}
 	
 	private rescaleBorder() {
-		const s = Globals.TILE_SIZE;
+		const s = this.settings.TILE_SIZE;
 		
 		if (this.border) {
 			this.border.destroy();
 		}
-		const map = Globals.map;
+		const map = this.settings.map;
 		
 		this.border = this.add.rectangle(-this.borderSize, -this.borderSize, map.mapWidth * s + this.borderSize * 2, map.mapHeight * s + this.borderSize * 2);
 		this.border.setStrokeStyle(this.borderSize * 2, 0xfc4445, 1);

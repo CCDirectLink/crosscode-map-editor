@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Inject, Input, OnInit, Optional, ViewChild} from '@angular/core';
 import JSONEditor, {JSONEditorOptions} from 'jsoneditor';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
-import {Globals} from '../../renderer/globals';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
 	selector: 'app-json-editor',
@@ -18,16 +18,17 @@ export class JsonEditorComponent implements AfterViewInit {
 	json = JSON;
 	
 	constructor(@Optional() @Inject(MAT_DIALOG_DATA) data: { key: string, val: any },
+				private readonly settings: SettingsService,
 	            public ref: MatDialogRef<JsonEditorComponent>) {
 		this.data = data.val;
 		this.key = data.key;
 		ref.afterClosed().subscribe(() => {
-			Globals.disablePhaserInput = false;
+			this.settings.disablePhaserInput = false;
 		});
 	}
 	
 	ngAfterViewInit() {
-		Globals.disablePhaserInput = true;
+		this.settings.disablePhaserInput = true;
 		this.options = {};
 		this.options.onChange = () => {
 			if (!this.editor) {

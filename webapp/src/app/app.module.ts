@@ -27,6 +27,8 @@ import {RouterModule} from '@angular/router';
 import { HttpService } from './services/http.service';
 import { CommonService } from './services/common.service';
 import { LoaderService } from './services/loader.service';
+import { EventService } from './services/event.service';
+import { SettingsService } from './services/settings.service';
 
 @NgModule({
 	declarations: [
@@ -60,6 +62,8 @@ import { LoaderService } from './services/loader.service';
 		HttpService,
 		CommonService,
 		LoaderService,
+		EventService,
+		SettingsService,
 	],
 	bootstrap: [AppComponent]
 })

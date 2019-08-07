@@ -5,13 +5,16 @@ import { HttpService } from './http.service';
 import { CCMap } from '../renderer/phaser/tilemap/cc-map';
 import { CCMapLayer } from '../renderer/phaser/tilemap/cc-map-layer';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class LoaderService {
-	public readonly map = new Observable<CrossCodeMap>(sub => this.mapSubscriber = sub);
+	private mapSubject = new BehaviorSubject<CrossCodeMap | undefined>(undefined);
+
+	public readonly map = this.mapSubject.asObservable();
 	public readonly tileMap = new BehaviorSubject<CCMap | undefined>(undefined);
 	public readonly selectedLayer = new BehaviorSubject<CCMapLayer | undefined>(undefined);
 
-	private mapSubscriber!: Subscriber<CrossCodeMap>;
 
 	public constructor(
 		private http: HttpService,
@@ -25,9 +28,9 @@ export class LoaderService {
 
 	public loadRawMap(map: CrossCodeMap, name?: string) {
 		if (!map.mapHeight) {
-			this.mapSubscriber.error(new Error('Invalid map'));
+			this.mapSubject.error(new Error('Invalid map'));
 		}
 		map.filename = name || 'Untitled';
-		this.mapSubscriber.next(map);
+		this.mapSubject.next(map);
 	}
 }

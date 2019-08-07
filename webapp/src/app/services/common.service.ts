@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Globals } from '../renderer/globals';
 import { ElectronService } from './electron.service';
 import { FileInfos } from '../models/file-infos';
 import { api } from 'cc-map-editor-common';
+import { SettingsService } from './settings.service';
 
 @Injectable()
 export class CommonService {
     public constructor(
-        private http: HttpClient,
-        private electron: ElectronService) {
+        private readonly http: HttpClient,
+        private readonly electron: ElectronService,
+        private readonly settings: SettingsService,
+        ) {
     }
 
 
@@ -28,8 +30,8 @@ export class CommonService {
 
 
     private commonOrApi<T>(api: (path: string) => Promise<T>, url: string): Observable<T> {
-        if (!Globals.isElectron) {
-            return this.http.get<T>(Globals.URL + url);
+        if (!this.settings.isElectron) {
+            return this.http.get<T>(this.settings.URL + url);
         }
         const path = this.electron.getAssetsPath();
         return this.toObservable(api(path));

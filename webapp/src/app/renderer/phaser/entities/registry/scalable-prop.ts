@@ -126,6 +126,6 @@ export class ScalableProp extends CCEntity {
 			this.entitySettings.collType = prop.collType;
 			this.entitySettings.pivot = prop.pivot;
 			this.updateSettings();
-		});
+		}, this.settingsService, this.scene);
 	}
 }

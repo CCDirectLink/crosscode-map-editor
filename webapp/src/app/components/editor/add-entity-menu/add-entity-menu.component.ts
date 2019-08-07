@@ -2,7 +2,7 @@ import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {MatMenuTrigger} from '@angular/material';
 import {MapEntity, Point} from '../../../models/cross-code-map';
 import {Vec2} from '../../../renderer/phaser/vec2';
-import {GlobalEventsService} from '../../../renderer/global-events.service';
+import { EventService } from '../../../services/event.service';
 
 @Component({
 	selector: 'app-add-entity-menu',
@@ -21,7 +21,9 @@ export class AddEntityMenuComponent {
 	private worldPos: Point = {x: 0, y: 0};
 	private mousePos: Point = {x: 0, y: 0};
 	
-	constructor(private events: GlobalEventsService) {
+	constructor(
+		private events: EventService,
+		) {
 		document.onmousemove = e => {
 			this.mousePos.x = e.pageX;
 			this.mousePos.y = e.pageY;

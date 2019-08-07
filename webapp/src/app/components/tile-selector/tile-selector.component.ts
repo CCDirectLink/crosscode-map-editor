@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import * as Phaser from 'phaser';
 import {TileSelectorScene} from './tile-selector.scene';
-import {GlobalEventsService} from '../../renderer/global-events.service';
 import {EditorView} from '../../models/editor-view';
+import { EventService } from '../../services/event.service';
+import { SettingsService } from '../../services/settings.service';
+import { LoaderService } from '../../services/loader.service';
 
 
 @Component({
@@ -16,12 +18,14 @@ export class TileSelectorComponent implements OnInit {
 	hide = false;
 	
 	constructor(
-		private globalEvents: GlobalEventsService
+		private readonly settings: SettingsService,
+		private readonly loader: LoaderService,
+		private readonly events: EventService,
 	) {
 	}
 	
 	ngOnInit() {
-		this.scene = new TileSelectorScene();
+		this.scene = new TileSelectorScene(this.settings, this.loader, this.events);
 		this.display = new Phaser.Game({
 			width: 400 * window.devicePixelRatio,
 			height: 1200 * window.devicePixelRatio,
@@ -38,7 +42,7 @@ export class TileSelectorComponent implements OnInit {
 			scene: [this.scene]
 		});
 		
-		this.globalEvents.currentView.subscribe(view => this.hide = view !== EditorView.Layers);
+		this.events.currentView.subscribe(view => this.hide = view !== EditorView.Layers);
 	}
 	
 	onDragEnd() {

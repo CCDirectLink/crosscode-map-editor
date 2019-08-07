@@ -123,7 +123,7 @@ export class Prop extends CCEntity {
 			this.entitySettings.baseSize = prop.size;
 			this.entitySettings.collType = prop.collType;
 			this.updateSettings();
-		});
+		}, this.settingsService, this.scene);
 
 	}
 }

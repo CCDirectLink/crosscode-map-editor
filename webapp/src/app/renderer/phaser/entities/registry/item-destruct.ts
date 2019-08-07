@@ -1,10 +1,12 @@
-import {EntityAttributes, CCEntity, ScaleSettings} from '../cc-entity';
-import {Helper} from '../../helper';
-import {PropDef} from './prop';
+import { EntityAttributes, CCEntity, ScaleSettings } from '../cc-entity';
+import { Helper } from '../../helper';
+import { PropDef } from './prop';
 import * as Phaser from 'phaser';
+import { SettingsService } from '../../../../services/settings.service';
+import { CCMap } from '../../tilemap/cc-map';
 
 export class ItemDestruct extends CCEntity {
-	
+
 	private attributes: EntityAttributes = {
 		desType: {
 			type: 'String',
@@ -39,15 +41,15 @@ export class ItemDestruct extends CCEntity {
 			Yi: true
 		}
 	};
-	
+
 	public getAttributes(): EntityAttributes {
 		return this.attributes;
 	}
-	
+
 	getScaleSettings(): ScaleSettings | undefined {
 		return undefined;
 	}
-	
+
 	protected setupType(settings: any) {
 		Helper.getJson('data/global-settings', (globalSettings) => {
 			const destructibles = this.scene.cache.json.get('destructibles.json');
@@ -71,6 +73,6 @@ export class ItemDestruct extends CCEntity {
 				baseSize: def.size
 			};
 			this.updateSettings();
-		});
+		}, this.settingsService, this.scene);
 	}
 }

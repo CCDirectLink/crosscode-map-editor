@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
-import {Globals} from '../renderer/globals';
+import { SettingsService } from '../services/settings.service';
 
 export interface HistoryStateContainer {
 	state?: HistoryState;
@@ -19,7 +19,9 @@ export class StateHistoryService {
 	states = new BehaviorSubject<HistoryState[]>([]);
 	selectedState = new BehaviorSubject<HistoryStateContainer>({state: undefined});
 	
-	constructor() {
+	constructor(
+		private readonly settings: SettingsService,
+	) {
 	}
 	
 	init(state: HistoryState) {
@@ -33,7 +35,7 @@ export class StateHistoryService {
 		json?: string;
 	}, ignoreCheck = false) {
 		if (!state.json) {
-			const newState = Globals.map.exportMap();
+			const newState = this.settings.map.exportMap();
 			const stateJson = JSON.stringify(newState);
 			if (!ignoreCheck) {
 				const val = this.selectedState.getValue();

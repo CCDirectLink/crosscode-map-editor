@@ -2,10 +2,10 @@ import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {CCMap} from '../../renderer/phaser/tilemap/cc-map';
 import {CCMapLayer} from '../../renderer/phaser/tilemap/cc-map-layer';
 import {LoaderService} from '../../services/loader.service';
-import {GlobalEventsService} from '../../renderer/global-events.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {StateHistoryService} from '../../history/state-history.service';
-import {Globals} from '../../renderer/globals';
+import { EventService } from '../../services/event.service';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
 	selector: 'app-layers',
@@ -20,8 +20,9 @@ export class LayersComponent implements OnInit {
 	newLayerName = '';
 	
 	constructor(private mapLoader: LoaderService,
-	            private stateHistory: StateHistoryService,
-	            events: GlobalEventsService) {
+				private stateHistory: StateHistoryService,
+				private settings: SettingsService,
+	            events: EventService) {
 		events.toggleVisibility.subscribe(() => {
 			if (this.selectedLayer) {
 				this.toggleVisibility({
@@ -67,7 +68,7 @@ export class LayersComponent implements OnInit {
 				data[y][x] = 0;
 			}
 		}
-		const layer = new CCMapLayer(Globals.scene, tilemap, {
+		const layer = new CCMapLayer(this.settings.scene, tilemap, {
 			type: 'Background',
 			name: this.newLayerName,
 			level: 0,
@@ -77,7 +78,7 @@ export class LayersComponent implements OnInit {
 			tilesetName: '',
 			repeat: false,
 			distance: 1,
-			tilesize: Globals.TILE_SIZE,
+			tilesize: this.settings.TILE_SIZE,
 			moveSpeed: {x: 0, y: 0},
 			data: data,
 		});

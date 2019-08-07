@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {LoaderService} from '../../../services/loader.service';
 import {MatDialogRef} from '@angular/material';
 import {Point} from '../../../models/cross-code-map';
-import {GlobalEventsService} from '../../../renderer/global-events.service';
+import { EventService } from '../../../services/event.service';
 
 @Component({
 	selector: 'app-offset-map',
@@ -13,7 +13,7 @@ export class OffsetMapComponent {
 	
 	offset: Point;
 	
-	constructor(private events: GlobalEventsService, public ref: MatDialogRef<OffsetMapComponent>) {
+	constructor(private events: EventService, public ref: MatDialogRef<OffsetMapComponent>) {
 		this.offset = {x: 0, y: 0};
 	}
 	

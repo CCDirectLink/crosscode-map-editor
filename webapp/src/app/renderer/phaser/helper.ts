@@ -1,14 +1,14 @@
 import {Point} from '../../models/cross-code-map';
-import {Globals} from '../globals';
+import {SettingsService} from '../../services/settings.service';
 import {CCMapLayer} from './tilemap/cc-map-layer';
 
 export class Helper {
 	
-	public static worldToTile(x: number, y: number): Point {
+	public static worldToTile(x: number, y: number, settings: SettingsService): Point {
 		const p: Point = {x: 0, y: 0};
 		
-		p.x = Math.floor(x / Globals.TILE_SIZE);
-		p.y = Math.floor(y / Globals.TILE_SIZE);
+		p.x = Math.floor(x / settings.TILE_SIZE);
+		p.y = Math.floor(y / settings.TILE_SIZE);
 		
 		return p;
 	}
@@ -17,11 +17,11 @@ export class Helper {
 		return {x: pointer.worldX, y: pointer.worldY};
 	}
 	
-	public static getTilesetSize(scene: Phaser.Scene, tileset: string): Point {
+	public static getTilesetSize(scene: Phaser.Scene, tileset: string, settings: SettingsService): Point {
 		const img = scene.textures.get(tileset).source[0];
 		return {
-			x: Math.ceil(img.width / Globals.TILE_SIZE),
-			y: Math.ceil(img.height / Globals.TILE_SIZE)
+			x: Math.ceil(img.width / settings.TILE_SIZE),
+			y: Math.ceil(img.height / settings.TILE_SIZE)
 		};
 	}
 	
@@ -57,25 +57,23 @@ export class Helper {
 		return JSON.parse(JSON.stringify(obj));
 	}
 	
-	public static getJson(key: string, callback: (json: any) => void) {
-		const scene = Globals.scene;
-		
+	public static getJson(key: string, callback: (json: any) => void, settings: SettingsService, scene: Phaser.Scene) {
 		// get json from cache
 		if (scene.cache.json.has(key)) {
 			return callback(scene.cache.json.get(key));
 		}
 		
 		// load json
-		scene.load.json(key, Globals.URL + key + '.json');
+		scene.load.json(key, settings.URL + key + '.json');
 		scene.load.once('complete', () => {
 			return callback(scene.cache.json.get(key));
 		});
 		scene.load.start();
 	}
 	
-	public static getJsonPromise(key: string): any {
+	public static getJsonPromise(key: string, settings: SettingsService, scene: Phaser.Scene): any {
 		return new Promise(resolve => {
-			this.getJson(key, json => resolve(json));
+			this.getJson(key, json => resolve(json), settings, scene);
 		});
 	}
 	
@@ -84,8 +82,10 @@ export class Helper {
 	 * false is returned, so the user can write everything into input fields
 	 * without messing up the map
 	 * */
-	public static isInputFocused(): boolean {
-		if (Globals.disablePhaserInput) {
+	public static isInputFocused(
+		settings: SettingsService
+	): boolean {
+		if (settings.disablePhaserInput) {
 			return true;
 		}
 		if (!document.activeElement) {

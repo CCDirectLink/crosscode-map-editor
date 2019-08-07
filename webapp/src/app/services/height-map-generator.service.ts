@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
 import {SharedModule} from '../renderer/shared.module';
-import {GlobalEventsService} from '../renderer/global-events.service';
-import {Globals} from '../renderer/globals';
 import {CCMapLayer} from '../renderer/phaser/tilemap/cc-map-layer';
 import {Point} from '../models/cross-code-map';
 import {CCMap} from '../renderer/phaser/tilemap/cc-map';
@@ -82,8 +80,7 @@ export class HeightMapGeneratorService {
 	
 	private tilesetConfig: { [s: string]: TilesetConfig } = {};
 	
-	constructor(private events: GlobalEventsService,
-	            private snackbar: MatSnackBar,
+	constructor(private snackbar: MatSnackBar,
 	            private stateHistory: StateHistoryService) {
 		this.tilesetConfig['media/map/autumn-outside.png'] = {
 			tileCountX: 32,

@@ -1,5 +1,4 @@
 import {CCMapLayer} from './cc-map-layer';
-import {Globals} from '../../globals';
 import {Helper} from '../helper';
 import {Point} from '../../../models/cross-code-map';
 import {Vec2} from '../vec2';
@@ -7,6 +6,10 @@ import {SelectedTile} from '../../../models/tile-selector';
 import * as Phaser from 'phaser';
 import {Filler} from './fill';
 import {BaseObject} from '../base-object';
+import { SettingsService } from '../../../services/settings.service';
+import { LoaderService } from '../../../services/loader.service';
+import { StateHistoryService } from '../../../history/state-history.service';
+import { EventService } from '../../../services/event.service';
 
 export class TileDrawer extends BaseObject {
 	
@@ -28,8 +31,18 @@ export class TileDrawer extends BaseObject {
 	private visibilityKey!: Phaser.Input.Keyboard.Key;
 	private fillKey!: Phaser.Input.Keyboard.Key;
 	
-	constructor(scene: Phaser.Scene) {
+	constructor(
+		private readonly settings: SettingsService,
+		private readonly loader: LoaderService,
+		private readonly events: EventService,
+		private readonly stateHistory: StateHistoryService,
+		scene: Phaser.Scene) {
 		super(scene, 'tileDrawer');
+
+		this.postInit();
+		if (this.active) {
+			this.activate();
+		}
 	}
 	
 	protected init() {
@@ -40,11 +53,14 @@ export class TileDrawer extends BaseObject {
 		this.container = this.scene.add.container(0, 0);
 		this.container.depth = 1000;
 		
+	}
+
+	private postInit() {
 		this.drawRect(1, 1);
 		
 		this.resetSelectedTiles();
 		
-		this.previewTileMap = this.scene.add.tilemap(undefined, Globals.TILE_SIZE, Globals.TILE_SIZE);
+		this.previewTileMap = this.scene.add.tilemap(undefined, this.settings.TILE_SIZE, this.settings.TILE_SIZE);
 	}
 	
 	private selectLayer(selectedLayer?: CCMapLayer) {
@@ -90,7 +106,7 @@ export class TileDrawer extends BaseObject {
 			return;
 		}
 		const pointer = this.scene.input.activePointer;
-		const p = Helper.worldToTile(pointer.worldX, pointer.worldY);
+		const p = Helper.worldToTile(pointer.worldX, pointer.worldY, this.settings);
 		
 		// render selection border
 		if (this.rightClickStart) {
@@ -107,13 +123,13 @@ export class TileDrawer extends BaseObject {
 			if (diff.x >= 0) {
 				diff.x++;
 			} else {
-				start.x = Globals.TILE_SIZE;
+				start.x = this.settings.TILE_SIZE;
 				diff.x--;
 			}
 			if (diff.y >= 0) {
 				diff.y++;
 			} else {
-				start.y = Globals.TILE_SIZE;
+				start.y = this.settings.TILE_SIZE;
 				diff.y--;
 			}
 			
@@ -127,14 +143,14 @@ export class TileDrawer extends BaseObject {
 		container.y = pointer.worldY;
 		
 		if (container.x < 0) {
-			container.x -= Globals.TILE_SIZE;
+			container.x -= this.settings.TILE_SIZE;
 		}
 		if (container.y < 0) {
-			container.y -= Globals.TILE_SIZE;
+			container.y -= this.settings.TILE_SIZE;
 		}
 		
-		container.x -= container.x % Globals.TILE_SIZE;
-		container.y -= container.y % Globals.TILE_SIZE;
+		container.x -= container.x % this.settings.TILE_SIZE;
+		container.y -= container.y % this.settings.TILE_SIZE;
 		
 		if (this.previewLayer) {
 			Vec2.assign(this.previewLayer, container);
@@ -167,13 +183,18 @@ export class TileDrawer extends BaseObject {
 	}
 	
 	protected activate() {
+		//Check if constructor has run
+		if (!this.loader) {
+			return;
+		}
+
 		if (this.previewLayer) {
 			this.previewLayer.visible = true;
 		}
-		const sub = Globals.mapLoaderService.selectedLayer.subscribe(layer => this.selectLayer(layer));
+		const sub = this.loader.selectedLayer.subscribe(layer => this.selectLayer(layer));
 		this.addSubscription(sub);
 		
-		const sub2 = Globals.phaserEventsService.changeSelectedTiles.subscribe(tiles => this.updateSelectedTiles(tiles));
+		const sub2 = this.events.changeSelectedTiles.subscribe(tiles => this.updateSelectedTiles(tiles));
 		this.addSubscription(sub2);
 		
 		const pointerDown = (pointer: Phaser.Input.Pointer) => {
@@ -192,7 +213,7 @@ export class TileDrawer extends BaseObject {
 		
 		
 		const fill = () => {
-			if (!Helper.isInputFocused()) {
+			if (!Helper.isInputFocused(this.settings)) {
 				this.fill();
 			}
 		};
@@ -208,7 +229,7 @@ export class TileDrawer extends BaseObject {
 				return;
 			}
 			
-			Globals.stateHistoryService.saveState({
+			this.stateHistory.saveState({
 				name: 'Tile Drawer',
 				icon: 'create',
 			});
@@ -216,7 +237,7 @@ export class TileDrawer extends BaseObject {
 		this.addKeybinding({event: 'pointerup', fun: leftUp, emitter: this.scene.input});
 		
 		const transparent = () => {
-			if (!Helper.isInputFocused()) {
+			if (!Helper.isInputFocused(this.settings)) {
 				this.renderLayersTransparent = !this.renderLayersTransparent;
 				this.setLayerAlpha();
 			}
@@ -224,15 +245,15 @@ export class TileDrawer extends BaseObject {
 		this.addKeybinding({event: 'up', fun: transparent, emitter: this.transparentKey});
 		
 		const visible = () => {
-			if (!Helper.isInputFocused()) {
-				Globals.globalEventsService.toggleVisibility.next();
+			if (!Helper.isInputFocused(this.settings)) {
+				this.events.toggleVisibility.next();
 			}
 		};
 		this.addKeybinding({event: 'up', fun: visible, emitter: this.visibilityKey});
 	}
 	
 	private setLayerAlpha() {
-		const map = Globals.map;
+		const map = this.settings.map;
 		if (map) {
 			map.layers.forEach(layer => {
 				layer.alpha = this.renderLayersTransparent ? 0.5 : 1;
@@ -251,7 +272,7 @@ export class TileDrawer extends BaseObject {
 		
 		// only start tile copy when cursor in bounds
 		const pointer = this.scene.input.activePointer;
-		const p = Helper.worldToTile(pointer.worldX, pointer.worldY);
+		const p = Helper.worldToTile(pointer.worldX, pointer.worldY, this.settings);
 		if (!Helper.isInBounds(this.layer, p)) {
 			return;
 		}
@@ -265,7 +286,7 @@ export class TileDrawer extends BaseObject {
 		if (this.rect) {
 			this.rect.destroy();
 		}
-		this.rect = this.scene.add.rectangle(x, y, width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
+		this.rect = this.scene.add.rectangle(x, y, width * this.settings.TILE_SIZE, height * this.settings.TILE_SIZE);
 		this.rect.setOrigin(0, 0);
 		this.rect.setStrokeStyle(1, 0xffffff, 0.6);
 		
@@ -349,7 +370,7 @@ export class TileDrawer extends BaseObject {
 		}
 		
 		const pointer = this.scene.input.activePointer;
-		const p = Helper.worldToTile(pointer.worldX, pointer.worldY);
+		const p = Helper.worldToTile(pointer.worldX, pointer.worldY, this.settings);
 		
 		if (this.selectedTiles.length > 0) {
 			Filler.fill(this.layer, this.selectedTiles[0].id, p);

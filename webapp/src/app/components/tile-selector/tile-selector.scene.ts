@@ -1,5 +1,4 @@
 import * as Phaser from 'phaser';
-import {Globals} from '../../renderer/globals';
 import {CCMapLayer} from '../../renderer/phaser/tilemap/cc-map-layer';
 import {Helper} from '../../renderer/phaser/helper';
 import {Point} from '../../models/cross-code-map';
@@ -7,6 +6,9 @@ import {MapPan} from '../../renderer/phaser/map-pan';
 import {Subscription} from 'rxjs';
 import {SelectedTile} from '../../models/tile-selector';
 import {Vec2} from '../../renderer/phaser/vec2';
+import { LoaderService } from '../../services/loader.service';
+import { SettingsService } from '../../services/settings.service';
+import { EventService } from '../../services/event.service';
 
 export class TileSelectorScene extends Phaser.Scene {
 	
@@ -25,7 +27,11 @@ export class TileSelectorScene extends Phaser.Scene {
 	private keyBindings: { event: string, fun: Function }[] = [];
 	private tilesetSize: Point = {x: 0, y: 0};
 	
-	constructor() {
+	constructor(
+		private readonly settings: SettingsService,
+		private readonly loader: LoaderService,
+		private readonly eventsService: EventService,
+	) {
 		super({key: 'main'});
 	}
 	
@@ -36,16 +42,16 @@ export class TileSelectorScene extends Phaser.Scene {
 			e.preventDefault();
 		};
 		
-		this.sub = Globals.mapLoaderService.selectedLayer.subscribe((layer) => {
+		this.sub = this.loader.selectedLayer.subscribe((layer) => {
 			if (layer) {
 				this.drawTileset(layer);
 			}
 		});
 		
-		const pan = new MapPan(this, 'mapPan');
+		const pan = new MapPan(this.eventsService, this, 'mapPan');
 		this.add.existing(pan);
 		
-		this.tileMap = this.add.tilemap(undefined, Globals.TILE_SIZE, Globals.TILE_SIZE);
+		this.tileMap = this.add.tilemap(undefined, this.settings.TILE_SIZE, this.settings.TILE_SIZE);
 		
 		this.keyBindings = [];
 		const pointerDown = (pointer: Phaser.Input.Pointer) => {
@@ -74,7 +80,7 @@ export class TileSelectorScene extends Phaser.Scene {
 		
 		// only start tile copy when cursor in bounds
 		const pointer = this.input.activePointer;
-		const p = Helper.worldToTile(pointer.worldX, pointer.worldY);
+		const p = Helper.worldToTile(pointer.worldX, pointer.worldY, this.settings);
 		if (!Helper.isInBoundsP(this.tilesetSize, p)) {
 			return;
 		}
@@ -131,7 +137,7 @@ export class TileSelectorScene extends Phaser.Scene {
 		this.rightClickStart = undefined;
 		this.rightClickEnd = undefined;
 		
-		Globals.phaserEventsService.changeSelectedTiles.next(this.selectedTiles);
+		this.eventsService.changeSelectedTiles.next(this.selectedTiles);
 	}
 	
 	destroy() {
@@ -147,7 +153,7 @@ export class TileSelectorScene extends Phaser.Scene {
 	
 	update(time: number, delta: number): void {
 		const pointer = this.input.activePointer;
-		const p = Helper.worldToTile(pointer.worldX, pointer.worldY);
+		const p = Helper.worldToTile(pointer.worldX, pointer.worldY, this.settings);
 		
 		// render selection border
 		if (this.rightClickStart) {
@@ -200,12 +206,12 @@ export class TileSelectorScene extends Phaser.Scene {
 			return;
 		}
 		
-		const tilesetSize = Helper.getTilesetSize(this, selectedLayer.details.tilesetName);
+		const tilesetSize = Helper.getTilesetSize(this, selectedLayer.details.tilesetName, this.settings);
 		this.tilesetSize = tilesetSize;
 		this.tileMap.removeAllLayers();
-		const tileset = this.tileMap.addTilesetImage('tileset', selectedLayer.details.tilesetName, Globals.TILE_SIZE, Globals.TILE_SIZE);
+		const tileset = this.tileMap.addTilesetImage('tileset', selectedLayer.details.tilesetName, this.settings.TILE_SIZE, this.settings.TILE_SIZE);
 		if (!tileset) {
-			this.load.image(selectedLayer.details.tilesetName, Globals.URL + selectedLayer.details.tilesetName);
+			this.load.image(selectedLayer.details.tilesetName, this.settings.URL + selectedLayer.details.tilesetName);
 			this.load.once('load', () => this.drawTileset(selectedLayer));
 			this.load.start();
 			return;
@@ -236,7 +242,7 @@ export class TileSelectorScene extends Phaser.Scene {
 		if (!this.tilesetRendered) {
 			return;
 		}
-		this.rect = this.add.rectangle(x * Globals.TILE_SIZE, y * Globals.TILE_SIZE, width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
+		this.rect = this.add.rectangle(x * this.settings.TILE_SIZE, y * this.settings.TILE_SIZE, width * this.settings.TILE_SIZE, height * this.settings.TILE_SIZE);
 		this.rect.setOrigin(0, 0);
 		this.rect.setStrokeStyle(1, 0xffffff, 0.6);
 	}

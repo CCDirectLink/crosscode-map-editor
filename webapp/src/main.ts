@@ -3,7 +3,6 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 
 import {AppModule} from './app/app.module';
 import {environment} from './environments/environment';
-import {Globals} from './app/renderer/globals';
 
 import 'hammerjs';
 
@@ -11,10 +10,10 @@ if (environment.production) {
 	enableProdMode();
 }
 
-// @ts-ignore
+let isElectron = false;
 if (typeof process !== 'undefined' && typeof process.versions === 'object' && !!process.versions.electron) {
-	Globals.isElectron = true;
+	isElectron = true;
 }
-console.log('is electron: ', Globals.isElectron);
+console.log('is electron: ', isElectron);
 
 platformBrowserDynamic().bootstrapModule(AppModule);

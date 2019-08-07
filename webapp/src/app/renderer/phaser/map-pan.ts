@@ -1,7 +1,7 @@
 import {Point} from '../../models/cross-code-map';
 import {Helper} from './helper';
 import {Vec2} from './vec2';
-import {Globals} from '../globals';
+import { EventService } from '../../services/event.service';
 
 export class MapPan extends Phaser.GameObjects.GameObject {
 	private isScrolling = false;
@@ -10,7 +10,9 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 	
 	private zoomKey: Phaser.Input.Keyboard.Key;
 	
-	constructor(scene: Phaser.Scene, type: string) {
+	constructor(
+		private readonly events: EventService,
+		scene: Phaser.Scene, type: string) {
 		super(scene, type);
 		
 		this.zoomKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ALT, false);
@@ -67,7 +69,7 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 			cam.scrollX += oldX - mouse.x;
 			cam.scrollY += oldY - mouse.y;
 		}
-		Globals.phaserEventsService.updateMapBorder.next(true);
+		this.events.updateMapBorder.next(true);
 	}
 	
 	preUpdate() {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Globals } from '../renderer/globals';
 import { Dialog, Remote } from 'electron';
 import * as nodeFs from 'fs';
+import { SettingsService } from './settings.service';
 
 @Injectable()
 export class ElectronService {
@@ -11,8 +11,10 @@ export class ElectronService {
 	private assetsPath = '';
 	private readonly remote?: Remote;
 
-	constructor() {
-		if (!Globals.isElectron || !window.require) {
+	constructor(
+		private readonly settings: SettingsService
+	) {
+		if (!settings.isElectron || !window.require) {
 			return;
 		}
 
@@ -82,6 +84,6 @@ export class ElectronService {
 	}
 
 	private updateURL() {
-		Globals.URL = 'file:///' + this.assetsPath;
+		this.settings.URL = 'file:///' + this.assetsPath;
 	}
 }

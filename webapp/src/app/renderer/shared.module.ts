@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {GlobalEventsService} from './global-events.service';
 import {HostDirective} from './host.directive';
 import {HttpService} from '../services/http.service';
 import {ElectronService} from '../services/electron.service';
@@ -47,7 +46,6 @@ import { MapContentSettingsComponent } from '../components/dialogs/map-settings/
 		HttpService,
 		ElectronService,
 		LoaderService,
-		GlobalEventsService,
 	],
 	entryComponents: [
 		JsonEditorComponent,

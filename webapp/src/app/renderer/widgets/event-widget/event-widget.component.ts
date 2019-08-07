@@ -5,7 +5,6 @@ import {OverlayRefControl} from '../../../overlay/overlay-ref-control';
 import {OverlayService} from '../../../overlay/overlay.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {EventWindowComponent} from './event-window/event-window.component';
-import {Globals} from '../../globals';
 
 @Component({
 	selector: 'app-event-widget',

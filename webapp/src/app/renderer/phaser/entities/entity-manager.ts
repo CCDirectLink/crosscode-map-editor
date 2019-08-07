@@ -1,11 +1,13 @@
 import {CCEntity} from './cc-entity';
 import {CrossCodeMap, MapEntity, Point} from '../../../models/cross-code-map';
 import {Vec2} from '../vec2';
-import {Globals} from '../../globals';
 import {SelectionBox} from './selection-box';
 import {EntityRegistry} from './registry/entity-registry';
 import {BaseObject} from '../base-object';
 import {Helper} from '../helper';
+import { SettingsService } from '../../../services/settings.service';
+import { settings } from 'cluster';
+import { EventService } from '../../../services/event.service';
 
 export class EntityManager extends BaseObject {
 	
@@ -36,7 +38,10 @@ export class EntityManager extends BaseObject {
 	
 	private entityRegistry: EntityRegistry = new EntityRegistry();
 	
-	constructor(scene: Phaser.Scene, active = true) {
+	constructor(
+		private readonly events: EventService,
+		private readonly settings: SettingsService,
+		scene: Phaser.Scene, active = true) {
 		super(scene, 'entityManager', active);
 	}
 	
@@ -66,7 +71,7 @@ export class EntityManager extends BaseObject {
 		this.entities.forEach(entity => {
 			entity.setActive(true);
 		});
-		const sub2 = Globals.globalEventsService.selectedEntity.subscribe(entity => {
+		const sub2 = this.events.selectedEntity.subscribe(entity => {
 			this.selectedEntities.forEach(e => e.setSelected(false));
 			this.selectedEntities = [];
 			if (entity) {
@@ -76,7 +81,7 @@ export class EntityManager extends BaseObject {
 		});
 		this.addSubscription(sub2);
 		
-		const sub3 = Globals.globalEventsService.generateNewEntity.subscribe(entity => {
+		const sub3 = this.events.generateNewEntity.subscribe(entity => {
 			if (!this.map) {
 				return;
 			}
@@ -173,10 +178,10 @@ export class EntityManager extends BaseObject {
 			event: 'up',
 			emitter: this.gridKey,
 			fun: () => {
-				if (Helper.isInputFocused()) {
+				if (Helper.isInputFocused(this.settings)) {
 					return;
 				}
-				Globals.entitySettings.enableGrid = !Globals.entitySettings.enableGrid;
+				this.settings.entitySettings.enableGrid = !this.settings.entitySettings.enableGrid;
 			}
 		});
 		
@@ -185,7 +190,7 @@ export class EntityManager extends BaseObject {
 			event: 'up',
 			emitter: this.deleteKey,
 			fun: () => {
-				if (Helper.isInputFocused()) {
+				if (Helper.isInputFocused(this.settings)) {
 					return;
 				}
 				this.deleteSelectedEntities();
@@ -196,7 +201,7 @@ export class EntityManager extends BaseObject {
 			event: 'up',
 			emitter: this.copyKey,
 			fun: (key: Phaser.Input.Keyboard.Key, event: KeyboardEvent) => {
-				if (Helper.isInputFocused() || !event.ctrlKey) {
+				if (Helper.isInputFocused(this.settings) || !event.ctrlKey) {
 					return;
 				}
 				this.copy();
@@ -207,7 +212,7 @@ export class EntityManager extends BaseObject {
 			event: 'up',
 			emitter: this.pasteKey,
 			fun: (key: Phaser.Input.Keyboard.Key, event: KeyboardEvent) => {
-				if (Helper.isInputFocused() || !event.ctrlKey) {
+				if (Helper.isInputFocused(this.settings) || !event.ctrlKey) {
 					return;
 				}
 				this.paste();
@@ -218,7 +223,7 @@ export class EntityManager extends BaseObject {
 			event: 'up',
 			emitter: this.visibilityKey,
 			fun: () => {
-				if (Helper.isInputFocused()) {
+				if (Helper.isInputFocused(this.settings)) {
 					return;
 				}
 				this.entities.forEach(e => {
@@ -265,17 +270,17 @@ export class EntityManager extends BaseObject {
 			}
 			
 			if (this.selectedEntities.length === 1) {
-				Globals.globalEventsService.selectedEntity.next(entity);
+				this.events.selectedEntity.next(entity);
 			}
 		} else if (this.selectedEntities[0] !== entity || this.selectedEntities.length !== 1) {
-			Globals.globalEventsService.selectedEntity.next(entity);
+			this.events.selectedEntity.next(entity);
 		}
 	}
 	
 	generateEntity(entity: MapEntity): CCEntity {
 		const entityClass = this.entityRegistry.getEntity(entity.type);
 		
-		const ccEntity = new entityClass(this.scene, this.map, entity.x, entity.y, entity.type);
+		const ccEntity = new entityClass(this.settings, this.scene, this.map, entity.x, entity.y, entity.type);
 		ccEntity.setSettings(entity.settings);
 		ccEntity.level = entity.level;
 		this.entities.push(ccEntity);
@@ -322,7 +327,7 @@ export class EntityManager extends BaseObject {
 	
 	private showAddEntityMenu() {
 		
-		Globals.globalEventsService.showAddEntityMenu.next({
+		this.events.showAddEntityMenu.next({
 			worldPos: Helper.getPointerPos(this.scene.input.activePointer),
 			// TODO: remove definitions.json, use entity registry instead
 			definitions: this.scene.cache.json.get('definitions.json')

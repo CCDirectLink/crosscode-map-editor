@@ -1,14 +1,14 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
-import {LoaderService} from '../../services/loader.service';
-import {GlobalEventsService} from '../../renderer/global-events.service';
-import {Globals} from '../../renderer/globals';
-import {HttpService} from '../../services/http.service';
-import {StateHistoryService} from '../../history/state-history.service';
-import {PhaserEventsService} from '../../renderer/phaser/phaser-events.service';
-import {HeightMapGeneratorService} from '../../services/height-map-generator.service';
+import { Component, ElementRef, OnInit } from '@angular/core';
+import { LoaderService } from '../../services/loader.service';
+import { HttpService } from '../../services/http.service';
+import { StateHistoryService } from '../../history/state-history.service';
+import { PhaserEventsService } from '../../renderer/phaser/phaser-events.service';
+import { HeightMapGeneratorService } from '../../services/height-map-generator.service';
 import * as Phaser from 'phaser';
-import {MainScene} from '../../renderer/phaser/main-scene';
+import { MainScene } from '../../renderer/phaser/main-scene';
 import { CommonService } from '../../services/common.service';
+import { EventService } from '../../services/event.service';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -16,25 +16,20 @@ import { CommonService } from '../../services/common.service';
 	styleUrls: ['./phaser.component.scss']
 })
 export class PhaserComponent implements OnInit {
-	
-	constructor(private element: ElementRef,
-	            private mapLoader: LoaderService,
-	            private globalEvents: GlobalEventsService,
-	            private stateHistory: StateHistoryService,
-	            private phaserEventsService: PhaserEventsService,
-	            private common: CommonService,
-	            private heightGenerator: HeightMapGeneratorService
+
+	constructor(
+		private readonly events: EventService,
+		private readonly common: CommonService,
+		private readonly settings: SettingsService,
+		private readonly loader: LoaderService,
+		private readonly stateHistory: StateHistoryService,
 	) {
-		Globals.stateHistoryService = stateHistory;
-		Globals.mapLoaderService = mapLoader;
-		Globals.phaserEventsService = phaserEventsService;
-		Globals.globalEventsService = globalEvents;
 	}
-	
-	
+
+
 	ngOnInit() {
 		this.common.getAllFiles().subscribe(res => {
-			const scene = new MainScene(res);
+			const scene = new MainScene(res, this.settings, this.events, this.loader, this.stateHistory);
 			const game = new Phaser.Game({
 				width: window.innerWidth * window.devicePixelRatio,
 				height: window.innerHeight * window.devicePixelRatio - 64,
@@ -50,10 +45,9 @@ export class PhaserComponent implements OnInit {
 				zoom: 1,
 				scene: [scene]
 			});
-			Globals.game = game;
-			Globals.scene = scene;
+			this.settings.scene = scene;
 		}, err => {
-			this.globalEvents.loadComplete.error(err);
+			this.events.loadComplete.error(err);
 		});
 	}
 }
