@@ -1,53 +1,28 @@
-import {MapLayer, Point} from '../../../models/cross-code-map';
+import {MapLayer, Point, MapLayerLevel} from '../../../models/cross-code-map';
 import * as Phaser from 'phaser';
-import {Helper} from '../helper';
 
 export class CCMapLayer {
-	
-	public details: MapLayer;
-	
 	private layer?: Phaser.Tilemaps.DynamicTilemapLayer;
 	
 	constructor(
 		scene: Phaser.Scene,
 		private tilemap: Phaser.Tilemaps.Tilemap,
-		details: MapLayer,
+		public readonly data: MapLayer,
 	) {
-		if (typeof details.level === 'string') {
-			// possible levels
-			// 'first'
-			// 'last'
-			// 'light'
-			// 'postlight'
-			// 'object1'
-			// 'object2'
-			// 'object3'
-			if (!isNaN(<any>details.level)) {
-				details.level = parseInt(details.level, 10);
-			} else {
-				details.levelName = details.level;
-				if (details.level.startsWith('first')) {
-					details.level = 0;
-				} else {
-					// TODO: get actual max level;
-					details.level = 10;
-				}
-			}
-		}
 		// noinspection SuspiciousTypeOfGuard
-		if (typeof details.distance === 'string') {
-			details.distance = parseFloat(details.distance);
+		if (typeof data.distance === 'string') {
+			data.distance = parseFloat(data.distance);
 		}
-		this.details = details;
-		this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), 'stub');
+		this.data = data;
+		this.layer = this.tilemap.createBlankDynamicLayer(data.name + Math.random(), 'stub');
 		
-		this.updateTileset(details.tilesetName!);
-		this.updateLevel(this.details.level);
+		this.updateTileset(data.tilesetName!);
+		this.updateLevel(this.level);
 		
 		const skip = 'Navigation Collision HeightMap'.split(' ');
 		// const skip = 'Navigation Background HeightMap'.split(' ');
 		skip.forEach(type => {
-			if (type === details.type) {
+			if (type === data.type) {
 				if (this.layer) {
 					this.layer.visible = false;
 				}
@@ -80,6 +55,22 @@ export class CCMapLayer {
 			this.layer.alpha = val;
 		}
 	}
+
+	get level(): number {
+		if (typeof this.data.level === 'string') {
+			if (!isNaN(Number(this.data.level))) {
+				return parseInt(this.data.level, 10);
+			} else {
+				this.data.levelName = this.data.level;
+				if (this.data.level.startsWith('first')) {
+					return 0;
+				} else {
+					return 10;
+				}
+			}
+		}
+		return this.data.level;
+	}
 	
 	destroy() {
 		if (this.layer) {
@@ -89,7 +80,7 @@ export class CCMapLayer {
 	}
 	
 	offsetLayer(offset: Point, borderTiles = false) {
-		const data = this.details.data;
+		const data = this.data.data;
 		const newData: number[][] = JSON.parse(JSON.stringify(data));
 
 		for (let y = 0; y < data.length; y++) {
@@ -109,9 +100,9 @@ export class CCMapLayer {
 			}
 		}
 
-		this.details.data = newData;
+		this.data.data = newData;
 		if (this.layer) {
-			this.layer.putTilesAt(this.details.data, 0, 0, false);
+			this.layer.putTilesAt(this.data.data, 0, 0, false);
 		}
 	}
 	
@@ -119,7 +110,7 @@ export class CCMapLayer {
 		if (!this.layer) {
 			return;
 		}
-		const details = this.details;
+		const details = this.data;
 		details.width = width;
 		details.height = height;
 		
@@ -143,7 +134,7 @@ export class CCMapLayer {
 	}
 	
 	updateTileset(tilesetname: string) {
-		const details = this.details;
+		const details = this.data;
 		details.tilesetName = tilesetname;
 		if (details.tilesetName) {
 			if (this.layer) {
@@ -161,13 +152,13 @@ export class CCMapLayer {
 	}
 	
 	updateLevel(level: number) {
-		this.details.level = level;
-		let zIndex = this.details.level * 10;
+		this.data.level = level;
+		let zIndex = this.data.level * 10;
 		if (isNaN(zIndex)) {
 			zIndex = 999;
 		}
 		if (this.layer) {
-			this.layer.depth = this.details.level * 10;
+			this.layer.depth = this.data.level * 10;
 		}
 	}
 	
@@ -176,9 +167,9 @@ export class CCMapLayer {
 	}
 	
 	exportLayer(): MapLayer {
-		const out: MapLayer = Object.assign({}, this.details);
+		const out: MapLayer = Object.assign({}, this.data);
 		if (out.levelName) {
-			out.level = out.levelName;
+			out.level = out.levelName as MapLayerLevel;
 			out.levelName = undefined;
 		}
 		out.data = [];

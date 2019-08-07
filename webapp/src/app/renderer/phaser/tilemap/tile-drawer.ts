@@ -68,12 +68,12 @@ export class TileDrawer extends BaseObject {
 		
 		this.setLayerAlpha();
 		
-		if (!selectedLayer || !selectedLayer.details.tilesetName) {
+		if (!selectedLayer || !selectedLayer.data.tilesetName) {
 			this.container.visible = false;
 			return;
 		}
 		this.container.visible = true;
-		const tileset = this.previewTileMap.addTilesetImage('only', selectedLayer.details.tilesetName);
+		const tileset = this.previewTileMap.addTilesetImage('only', selectedLayer.data.tilesetName);
 		if (tileset) {
 			tileset.firstgid = 1;
 		}

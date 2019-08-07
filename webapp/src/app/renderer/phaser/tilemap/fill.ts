@@ -29,13 +29,13 @@ export class Filler {
 		if (p.x > 0) {
 			out.push({x: p.x - 1, y: p.y});
 		}
-		if (p.x < layer.details.width - 1) {
+		if (p.x < layer.data.width - 1) {
 			out.push({x: p.x + 1, y: p.y});
 		}
 		if (p.y > 0) {
 			out.push({x: p.x, y: p.y - 1});
 		}
-		if (p.y < layer.details.height - 1) {
+		if (p.y < layer.data.height - 1) {
 			out.push({x: p.x, y: p.y + 1});
 		}
 		

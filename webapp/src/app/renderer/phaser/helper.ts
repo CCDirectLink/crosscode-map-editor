@@ -30,12 +30,12 @@ export class Helper {
 	}
 	
 	public static clampToBounds(layer: CCMapLayer, p: Point) {
-		p.x = Helper.clamp(p.x, 0, layer.details.width - 1);
-		p.y = Helper.clamp(p.y, 0, layer.details.height - 1);
+		p.x = Helper.clamp(p.x, 0, layer.data.width - 1);
+		p.y = Helper.clamp(p.y, 0, layer.data.height - 1);
 	}
 	
 	public static isInBounds(layer: CCMapLayer, p: Point): boolean {
-		return p.x >= 0 && p.y >= 0 && p.x < layer.details.width && p.y < layer.details.height;
+		return p.x >= 0 && p.y >= 0 && p.x < layer.data.width && p.y < layer.data.height;
 	}
 	
 	public static isInBoundsP(bounds: Point, p: Point): boolean {

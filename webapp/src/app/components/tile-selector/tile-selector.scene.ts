@@ -195,7 +195,7 @@ export class TileSelectorScene extends Phaser.Scene {
 		this.tilesetRendered = false;
 		this.drawRect(0, 0);
 		
-		if (!selectedLayer.details.tilesetName) {
+		if (!selectedLayer.data.tilesetName) {
 			if (this.tileMap) {
 				this.tileMap.removeAllLayers();
 			}
@@ -206,12 +206,12 @@ export class TileSelectorScene extends Phaser.Scene {
 			return;
 		}
 		
-		const tilesetSize = Helper.getTilesetSize(this, selectedLayer.details.tilesetName, this.settings);
+		const tilesetSize = Helper.getTilesetSize(this, selectedLayer.data.tilesetName, this.settings);
 		this.tilesetSize = tilesetSize;
 		this.tileMap.removeAllLayers();
-		const tileset = this.tileMap.addTilesetImage('tileset', selectedLayer.details.tilesetName, this.settings.TILE_SIZE, this.settings.TILE_SIZE);
+		const tileset = this.tileMap.addTilesetImage('tileset', selectedLayer.data.tilesetName, this.settings.TILE_SIZE, this.settings.TILE_SIZE);
 		if (!tileset) {
-			this.load.image(selectedLayer.details.tilesetName, this.settings.URL + selectedLayer.details.tilesetName);
+			this.load.image(selectedLayer.data.tilesetName, this.settings.URL + selectedLayer.data.tilesetName);
 			this.load.once('load', () => this.drawTileset(selectedLayer));
 			this.load.start();
 			return;

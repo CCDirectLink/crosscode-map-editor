@@ -1,3 +1,5 @@
+export type MapLayerLevel = number | 'first' | 'last' | 'light' | 'postlight' | 'object1' | 'object2' | 'object3';
+
 export interface CrossCodeMap {
 	name: string;
 	levels: { height: number }[];
@@ -44,7 +46,7 @@ export interface MapLayer {
 	id?: number;
 	type: string;
 	name: string;
-	level: any;
+	level: MapLayerLevel;
 	levelName?: string;
 	width: number;
 	height: number;
