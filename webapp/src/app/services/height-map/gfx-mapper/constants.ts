@@ -25,10 +25,11 @@ export interface GfxMaps {
 	chasmTileAdd: number;
 }
 
-export type GfxMap = {
-	[key in GFX_TYPE]: number[][]
-} & {
-	offset?: Point;
+type GfxBaseMap = { [key in GFX_TYPE]: number[][]; } & {
+	offset?: Point
+};
+
+export type GfxMap = GfxBaseMap & {
 	wallYVariance?: {
 		[key in GFX_TYPE]: {
 			loop: number[];
@@ -38,21 +39,15 @@ export type GfxMap = {
 	}
 };
 
-export type GfxMapChasm = {
-	[key in GFX_TYPE]: number[][]
-} & {
-	offset?: Point;
+export type GfxMapChasm = GfxBaseMap & {
 	wallYVariance?: {
 		[key in GFX_TYPE]: {
 			start: number[];
 		}
-		
 	}
 };
 
-export const GFX_MAPS: {
-	[key: string]: GfxMaps
-} = {};
+export const GFX_MAPS: { [key: string]: GfxMaps } = {};
 
 let map: GfxMaps = {
 	BASE: <any>{},

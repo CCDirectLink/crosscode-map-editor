@@ -14,16 +14,16 @@ export class GfxMapper {
 	
 	constructor(settings: ChipsetConfig) {
 		this.tileCountX = settings['tileCountX'];
-		this.base = this._copySettings(settings['base']);
+		this.base = this.copySettings(settings['base']);
 		if (settings['terrains']) {
 			for (let i = 0; i < settings['terrains'].length; ++i) {
-				this.terrains[i] = this._copySettings(settings['terrains'][i]);
+				this.terrains[i] = this.copySettings(settings['terrains'][i]);
 			}
 		}
 		
 	}
 	
-	_copySettings(mappingSettings: ChipsetBase) {
+	private copySettings(mappingSettings: ChipsetBase) {
 		const result: ChipsetMapping = JSON.parse(JSON.stringify(mappingSettings));
 		if (mappingSettings.mappingType) {
 			result.mapping = GFX_MAPS[mappingSettings.mappingType];
@@ -31,7 +31,7 @@ export class GfxMapper {
 		return result;
 	}
 	
-	_getMappingMain(terrain: number): ChipsetMapping {
+	private getMappingMain(terrain: number): ChipsetMapping {
 		if (terrain && this.terrains[terrain - 1]) {
 			const terrainEntry = this.terrains[terrain - 1];
 			if (terrainEntry.mapping) {
@@ -45,12 +45,12 @@ export class GfxMapper {
 	}
 	
 	hasShadowSide(terrain: number) {
-		const mapping = this._getMappingMain(terrain);
+		const mapping = this.getMappingMain(terrain);
 		return mapping.mapping.hasShadowSide;
 	}
 	
 	getChasmHeight(terrain: number) {
-		const mapping = this._getMappingMain(terrain);
+		const mapping = this.getMappingMain(terrain);
 		let minHeight = 1;
 		if (mapping.mapping['CHASM'].wallYVariance) {
 			minHeight = mapping.mapping['CHASM'].wallYVariance[GFX_TYPE.WALL_SOUTH].start.length;
@@ -59,7 +59,7 @@ export class GfxMapper {
 	}
 	
 	getChasmTileAdd(terrain: number) {
-		const mapping = this._getMappingMain(terrain);
+		const mapping = this.getMappingMain(terrain);
 		return mapping.mapping.chasmTileAdd || 0;
 	}
 	
@@ -153,14 +153,14 @@ export class GfxMapper {
 		
 		if (this.isFill(gfxType)) {
 			if (ground) {
-				return this._getTile(ground.x, ground.y);
+				return this.getTile(ground.x, ground.y);
 			}
 			
 			if (tiles) {
 				if (!cliff) {
 					throw new Error('cliff should be defined by now');
 				}
-				return this._getMappingTile(cliff, tiles, x, y, offY);
+				return this.getMappingTile(cliff, tiles, x, y, offY);
 			}
 			return 0;
 		}
@@ -186,20 +186,20 @@ export class GfxMapper {
 		if (!cliff) {
 			throw new Error('cliff should be defined by now (end)');
 		}
-		return this._getMappingTile(cliff, tiles, x, y, offY);
+		return this.getMappingTile(cliff, tiles, x, y, offY);
 	}
 	
-	_getMappingTile(base: Point, mapping: number[][], x: number, y: number, deltaY?: number) {
-		const variation = (mapping.length > 1 && this._getVariation(x, y));
+	private getMappingTile(base: Point, mapping: number[][], x: number, y: number, deltaY?: number) {
+		const variation = (mapping.length > 1 && this.getVariation(x, y));
 		const coords = (variation ? mapping[1] : mapping[0]);
-		return this._getTile(base.x + coords[0], base.y + coords[1] + (deltaY || 0));
+		return this.getTile(base.x + coords[0], base.y + coords[1] + (deltaY || 0));
 	}
 	
-	_getTile(x: number, y: number) {
+	private getTile(x: number, y: number) {
 		return y * this.tileCountX + x + 1;
 	}
 	
-	_getVariation(x: number, y: number) {
+	private getVariation(x: number, y: number) {
 		return (x + y) % 2;
 	}
 	

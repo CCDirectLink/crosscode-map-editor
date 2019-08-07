@@ -26,10 +26,6 @@ import {MapLoaderService} from '../../shared/map-loader.service';
 import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {StateHistoryService} from '../../shared/history/state-history.service';
 
-interface InputMap {
-	data: number[][];
-}
-
 interface TileData {
 	level: number;
 	fill: FILL_TYPE;
@@ -77,9 +73,9 @@ export class HeightMapService {
 			console.warn(`current map [${inputMap.name}] has no height map`);
 			return;
 		}
-		this._storeTileData(heightmap.exportLayer().data);
-		this._convertRoundTiles();
-		this._setGfxType();
+		this.storeTileData(heightmap.exportLayer().data);
+		this.convertRoundTiles();
+		this.setGfxType();
 		this.lastData = this.data;
 		this.data = [];
 	}
@@ -91,10 +87,10 @@ export class HeightMapService {
 			console.warn(`cannot generate heights, current map [${map.name}] has no height map`);
 			return;
 		}
-		this._storeTileData(heightmap.exportLayer().data);
-		this._convertRoundTiles();
-		this._setGfxType();
-		this._applyOnLayers(forceAll);
+		this.storeTileData(heightmap.exportLayer().data);
+		this.convertRoundTiles();
+		this.setGfxType();
+		this.applyOnLayers(forceAll);
 		this.lastData = this.data;
 		
 		this.stateHistory.saveState({
@@ -103,7 +99,7 @@ export class HeightMapService {
 		});
 	}
 	
-	_storeTileData(tiles: number[][]) {
+	private storeTileData(tiles: number[][]) {
 		this.data = [];
 		const width = tiles[0].length, height = tiles.length;
 		this.minLevel = 1000;
@@ -138,7 +134,7 @@ export class HeightMapService {
 		}
 	}
 	
-	_convertRoundTiles() {
+	private convertRoundTiles() {
 		for (let level = this.maxLevel; level >= this.minLevel; level--) {
 			for (let y = 0; y < this.height; ++y) {
 				for (let x = 0; x < this.width; ++x) {
@@ -152,13 +148,13 @@ export class HeightMapService {
 					if (entry.fill !== FILL_TYPE.ROUND) {
 						continue;
 					}
-					entry.fill = this._getRoundTileReplace(x, y, entry.level);
+					entry.fill = this.getRoundTileReplace(x, y, entry.level);
 				}
 			}
 		}
 	}
 	
-	_setGfxType() {
+	private setGfxType() {
 		for (let y = 0; y < this.height; ++y) {
 			for (let x = 0; x < this.width; ++x) {
 				const entry = this.data[y][x];
@@ -166,15 +162,15 @@ export class HeightMapService {
 					continue;
 				}
 				if (entry.fill === FILL_TYPE.SQUARE) {
-					this._setSquareGfx(x, y, entry);
+					this.setSquareGfx(x, y, entry);
 				} else {
-					this._setDiagonalGfx(x, y, entry);
+					this.setDiagonalGfx(x, y, entry);
 				}
 			}
 		}
 	}
 	
-	_applyOnLayers(forceAll: boolean) {
+	private applyOnLayers(forceAll: boolean) {
 		const layers = Globals.map.layers;
 		const len = layers.length;
 		let lastLevel = -1;
@@ -190,14 +186,14 @@ export class HeightMapService {
 			}
 			if (details.type === 'Background' && CHIPSET_CONFIG[details.tilesetName] && lastLevel !== details.level) {
 				lastLevel = details.level;
-				this._applyOnBackground(layer, forceAll);
+				this.applyOnBackground(layer, forceAll);
 			} else if (details.type === 'Collision') {
-				this._applyOnCollision(layer, forceAll);
+				this.applyOnCollision(layer, forceAll);
 			}
 		}
 	}
 	
-	_getLevelHeight(levelIdx: number, layer: CCMapLayer) {
+	private getLevelHeight(levelIdx: number, layer: CCMapLayer) {
 		if (levelIdx < 1) {
 			levelIdx = 1;
 		}
@@ -210,11 +206,11 @@ export class HeightMapService {
 		return (maxLevel.height / Globals.TILE_SIZE) + (levelIdx - levels.length) * 2;
 	}
 	
-	_getLevelDistance(levelStart: number, levelEnd: number, layer: CCMapLayer) {
-		return this._getLevelHeight(levelEnd, layer) - this._getLevelHeight(levelStart, layer);
+	private getLevelDistance(levelStart: number, levelEnd: number, layer: CCMapLayer) {
+		return this.getLevelHeight(levelEnd, layer) - this.getLevelHeight(levelStart, layer);
 	}
 	
-	_applyOnBackground(layer: CCMapLayer, forceAll: boolean) {
+	private applyOnBackground(layer: CCMapLayer, forceAll: boolean) {
 		const config = CHIPSET_CONFIG[layer.details.tilesetName];
 		if (!config) {
 			return;
@@ -253,7 +249,7 @@ export class HeightMapService {
 				}
 				
 				if (entry.level === levelIdx) {
-					if (!forceAll && !this._hasTileAreaChanged(x, y)) {
+					if (!forceAll && !this.hasTileAreaChanged(x, y)) {
 						continue;
 					}
 					
@@ -264,25 +260,25 @@ export class HeightMapService {
 						subType = SUB_TYPE.CHASM_FLOOR;
 					}
 					const newTile = gfxMapper.getGfx(entry.gfx, x, y - yOff, subType, entry.terrain, entry.terrainBorder);
-					this._setLayerTile(layer, x, y - yOff, newTile, autoTileList);
+					this.setLayerTile(layer, x, y - yOff, newTile, autoTileList);
 				} else if (wallLink && wallLink.toMaster && masterLevelIdx <= levelIdx && levelIdx < entry.lowerLevel) {
 					const actualYHeight = yHeight;
 					const deltaY = wallLink.deltaY || 0;
-					if (!forceAll && !this._hasTileLineChanged(x, y, actualYHeight)) {
+					if (!forceAll && !this.hasTileLineChanged(x, y, actualYHeight)) {
 						continue;
 					}
-					c_wallProps.start = this._getLevelDistance(masterLevelIdx, levelIdx, layer);
-					c_wallProps.end = this._getLevelDistance(levelIdx, entry.lowerLevel, layer) - 1;
+					c_wallProps.start = this.getLevelDistance(masterLevelIdx, levelIdx, layer);
+					c_wallProps.end = this.getLevelDistance(levelIdx, entry.lowerLevel, layer) - 1;
 					for (let yAdd = 0; yAdd < actualYHeight; ++yAdd) {
 						const gfxType = yAdd === 0 && masterLevelIdx === levelIdx ? wallLink.base : wallLink.wall;
 						const newTile = gfxMapper.getGfx(gfxType, x, y - yOff - yAdd + deltaY, SUB_TYPE.BACK_WALL, entry.lowerTerrain, -1, c_wallProps);
-						this._setLayerTile(layer, x, y - yOff - yAdd + deltaY, newTile, autoTileList);
+						this.setLayerTile(layer, x, y - yOff - yAdd + deltaY, newTile, autoTileList);
 						c_wallProps.start++;
 						c_wallProps.end--;
 					}
 					if (deltaY) {
 						const newTile = gfxMapper.getGfx(GFX_TYPE.FILL, x, y - yOff, SUB_TYPE.SHADOW, entry.lowerTerrain);
-						this._setLayerTile(layer, x, y - yOff, newTile, autoTileList);
+						this.setLayerTile(layer, x, y - yOff, newTile, autoTileList);
 					}
 					
 				} else if (wallLink
@@ -298,14 +294,14 @@ export class HeightMapService {
 					const chasmPadding = gfxMapper.getChasmTileAdd(entry.terrain);
 					
 					if (doChasm) {
-						yStart = this._getLevelDistance(levelIdx, masterLevelIdx, layer) - chasmHeight - chasmPadding;
+						yStart = this.getLevelDistance(levelIdx, masterLevelIdx, layer) - chasmHeight - chasmPadding;
 					} else if (doShadow && levelIdx === masterLevelIdx) {
-						actualYHeight = this._getLevelDistance(levelIdx, entry.level, layer);
+						actualYHeight = this.getLevelDistance(levelIdx, entry.level, layer);
 						doShadowWall = true;
-						yStart = this._getLevelDistance(levelIdx, entry.lowerLevel, layer);
+						yStart = this.getLevelDistance(levelIdx, entry.lowerLevel, layer);
 					}
 					
-					if (!forceAll && !this._hasTileLineChanged(x, y, actualYHeight)) {
+					if (!forceAll && !this.hasTileLineChanged(x, y, actualYHeight)) {
 						continue;
 					}
 					
@@ -313,12 +309,12 @@ export class HeightMapService {
 					
 					if (doShadow && levelIdx > masterLevelIdx) {
 						const newTile = gfxMapper.getGfx(GFX_TYPE.INVISIBLE_WALL, x, y - yOff, SUB_TYPE.SHADOW, terrain);
-						this._setLayerTile(layer, x, y - yOff, newTile, autoTileList);
+						this.setLayerTile(layer, x, y - yOff, newTile, autoTileList);
 						continue;
 					}
 					
-					c_wallProps.start = this._getLevelDistance(entry.lowerLevel, levelIdx, layer);
-					c_wallProps.end = this._getLevelDistance(levelIdx, entry.level, layer) - 1 - yStart;
+					c_wallProps.start = this.getLevelDistance(entry.lowerLevel, levelIdx, layer);
+					c_wallProps.end = this.getLevelDistance(levelIdx, entry.level, layer) - 1 - yStart;
 					if (doChasm) {
 						c_wallProps.start = Math.max(-yStart, 0);
 					}
@@ -335,7 +331,7 @@ export class HeightMapService {
 							if (doShadow) {
 								newTile = gfxMapper.getGfx(GFX_TYPE.FILL, x, y - yOff, SUB_TYPE.SHADOW, entry.lowerTerrain);
 							}
-							this._setLayerTile(layer, x, y - yOff - yAdd, newTile, autoTileList);
+							this.setLayerTile(layer, x, y - yOff - yAdd, newTile, autoTileList);
 							continue;
 						}
 						if (yAdd === 0 && entry.lowerLevel === levelIdx) {
@@ -365,17 +361,17 @@ export class HeightMapService {
 						}
 						if (gfxType) {
 							const newTile = gfxMapper.getGfx(gfxType, x, y - yOff - yAdd, subType, terrain, -1, c_wallProps);
-							this._setLayerTile(layer, x, y - yOff - yAdd, newTile, autoTileList);
+							this.setLayerTile(layer, x, y - yOff - yAdd, newTile, autoTileList);
 						}
 						c_wallProps.start++;
 						c_wallProps.end--;
 					}
 					if (wallLink.wall && doShadowWall) {
 						const newTile = gfxMapper.getGfx(entry.gfx, x, y - yOff - actualYHeight, SUB_TYPE.SHADOW, terrain);
-						this._setLayerTile(layer, x, y - yOff - actualYHeight, newTile, autoTileList);
+						this.setLayerTile(layer, x, y - yOff - actualYHeight, newTile, autoTileList);
 					}
 				} else if (entry.lowerLevel === levelIdx) {
-					if (!forceAll && !this._hasTileChanged(x, y)) {
+					if (!forceAll && !this.hasTileChanged(x, y)) {
 						continue;
 					}
 					let newTile;
@@ -398,9 +394,9 @@ export class HeightMapService {
 					} else {
 						newTile = gfxMapper.getGfx(GFX_TYPE.FILL, x, y - yOff, null, entry.lowerTerrain);
 					}
-					this._setLayerTile(layer, x, y - yOff, newTile, autoTileList);
+					this.setLayerTile(layer, x, y - yOff, newTile, autoTileList);
 				} else {
-					if (!forceAll && !this._hasTileLineShadowChanged(x, y, layer)) {
+					if (!forceAll && !this.hasTileLineShadowChanged(x, y, layer)) {
 						continue;
 					}
 					let newTile = 0;
@@ -412,7 +408,7 @@ export class HeightMapService {
 							newTile = gfxMapper.getGfx(GFX_TYPE.FILL, x, y - yOff, SUB_TYPE.SHADOW, entry.lowerTerrain);
 						}
 					}
-					this._setLayerTile(layer, x, y - yOff, newTile, autoTileList);
+					this.setLayerTile(layer, x, y - yOff, newTile, autoTileList);
 				}
 			}
 		}
@@ -420,7 +416,7 @@ export class HeightMapService {
 		// ig.game.autoTiles.resolveAutoTileList(autoTileList, layer, ig.editor.undo);
 	}
 	
-	_applyOnCollision(layer: CCMapLayer, forceAll: boolean) {
+	private applyOnCollision(layer: CCMapLayer, forceAll: boolean) {
 		const details = layer.details;
 		const levels = Globals.map.levels;
 		const currentLevel = levels[details.level];
@@ -431,7 +427,7 @@ export class HeightMapService {
 		const smallerMaster = (details.level < Globals.map.masterLevel);
 		for (let y = 0; y < this.height; ++y) {
 			for (let x = 0; x < this.width; ++x) {
-				if (!forceAll && !this._hasTileChanged(x, y)) {
+				if (!forceAll && !this.hasTileChanged(x, y)) {
 					continue;
 				}
 				const entry = this.data[y][x];
@@ -458,41 +454,41 @@ export class HeightMapService {
 						newTile = HOLE_MAP[entry.fill];
 					}
 				}
-				this._setLayerTile(layer, x, y - yOff, newTile);
+				this.setLayerTile(layer, x, y - yOff, newTile);
 			}
 		}
 	}
 	
-	_hasTileAreaChanged(x: number, y: number) {
-		if (this._hasTileChanged(x, y)) {
+	private hasTileAreaChanged(x: number, y: number) {
+		if (this.hasTileChanged(x, y)) {
 			return true;
 		}
 		let i = CHECK_ITERATE.length;
 		while (i--) {
 			const check = CHECK_DIR[CHECK_ITERATE[i]];
-			if (this._hasTileChanged(x + check.dx, y + check.dy)) {
+			if (this.hasTileChanged(x + check.dx, y + check.dy)) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	_hasTileLineChanged(x: number, y: number, yAdd: number) {
+	private hasTileLineChanged(x: number, y: number, yAdd: number) {
 		let i = yAdd + 1;
 		while (i--) {
-			if (this._hasTileChanged(x, y - i)) {
+			if (this.hasTileChanged(x, y - i)) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
-	_hasTileLineShadowChanged(x: number, y: number, layer: CCMapLayer) {
+	private hasTileLineShadowChanged(x: number, y: number, layer: CCMapLayer) {
 		const ySub = 10;
 		let i = ySub + 1;
 		const levels = Globals.map.levels;
 		while (i--) {
-			if (this._hasTileChanged(x, y + i)) {
+			if (this.hasTileChanged(x, y + i)) {
 				if (!i) {
 					return true;
 				}
@@ -501,7 +497,7 @@ export class HeightMapService {
 					throw new Error('entry should be defined. x: ' + x + ' y: ' + (y + 1));
 				}
 				if (entry.level > levels.length) {
-					let height = this._getLevelDistance(Globals.map.masterLevel + 1, levels.length, layer);
+					let height = this.getLevelDistance(Globals.map.masterLevel + 1, levels.length, layer);
 					const delta = entry.level - levels.length;
 					height += delta * 2;
 					if (i <= height) {
@@ -513,7 +509,7 @@ export class HeightMapService {
 		return false;
 	}
 	
-	_hasTileChanged(x: number, y: number) {
+	private hasTileChanged(x: number, y: number) {
 		if (!this.lastData) {
 			return true;
 		}
@@ -532,7 +528,7 @@ export class HeightMapService {
 	}
 	
 	// TODO: autotilelist
-	_setLayerTile(layer: CCMapLayer, x: number, y: number, tileValue: number, autoTileList?: never[]) {
+	private setLayerTile(layer: CCMapLayer, x: number, y: number, tileValue: number, autoTileList?: never[]) {
 		if (y < 0 || y >= this.height) {
 			return;
 		}
@@ -551,11 +547,12 @@ export class HeightMapService {
 		}
 	}
 	
-	_getRoundTileReplace(x: number, y: number, level: number) {
-		const n = this._getOtherLevel(x, y, level, CHECK_DIR.NORTH),
-			e = this._getOtherLevel(x, y, level, CHECK_DIR.EAST),
-			w = this._getOtherLevel(x, y, level, CHECK_DIR.WEST),
-			s = this._getOtherLevel(x, y, level, CHECK_DIR.SOUTH);
+	// TODO: use for autotiles
+	private getRoundTileReplace(x: number, y: number, level: number) {
+		const n = this.getOtherLevel(x, y, level, CHECK_DIR.NORTH),
+			e = this.getOtherLevel(x, y, level, CHECK_DIR.EAST),
+			w = this.getOtherLevel(x, y, level, CHECK_DIR.WEST),
+			s = this.getOtherLevel(x, y, level, CHECK_DIR.SOUTH);
 		if (n && e && (!s || s >= n) && (!w || w >= n) && n === e) {
 			return FILL_TYPE.NORTHEAST;
 		} else if ((!n || n >= e) && e && s && (!w || w >= e) && e === s) {
@@ -569,18 +566,18 @@ export class HeightMapService {
 		}
 	}
 	
-	_setSquareGfx(x: number, y: number, entry: TileData) {
+	private setSquareGfx(x: number, y: number, entry: TileData) {
 		const level = entry.level;
 		entry.gfx = <any>null;
 		for (let i = 0; i < SQUARE_CORNER_CHECK.length; ++i) {
 			const sqrCheck = SQUARE_CORNER_CHECK[i];
 			const check1 = CHECK_DIR[sqrCheck.dir1], check2 = CHECK_DIR[sqrCheck.dir2];
-			const otherLevel1 = this._getOtherLevel(x, y, level, check1);
-			const otherLevel2 = this._getOtherLevel(x, y, level, check2);
+			const otherLevel1 = this.getOtherLevel(x, y, level, check1);
+			const otherLevel2 = this.getOtherLevel(x, y, level, check2);
 			// TODO: check if level should be compared to undefined, because "0" is true in an if
 			if (otherLevel1 && otherLevel2 && otherLevel1 < level && otherLevel2 < level) {
 				entry.lowerLevel = otherLevel1;
-				entry.lowerTerrain = this._getTerrain(x, y, check1) || 0;
+				entry.lowerTerrain = this.getTerrain(x, y, check1) || 0;
 				entry.gfx = sqrCheck.gfx;
 				entry.terrainBorder = -1;
 				return;
@@ -589,12 +586,12 @@ export class HeightMapService {
 		
 		for (let i = 0; i < CHECK_ITERATE.length; ++i) {
 			const check = CHECK_DIR[CHECK_ITERATE[i]];
-			const otherLevel = this._getOtherLevel(x, y, level, check);
+			const otherLevel = this.getOtherLevel(x, y, level, check);
 			if (otherLevel && otherLevel < level) {
 				entry.lowerLevel = otherLevel;
-				entry.lowerTerrain = this._getTerrain(x, y, check) || 0;
+				entry.lowerTerrain = this.getTerrain(x, y, check) || 0;
 				entry.gfx = check.gfx;
-				entry.terrainBorder = this._getTerrainBorder(x, y, check, entry.terrain, level);
+				entry.terrainBorder = this.getTerrainBorder(x, y, check, entry.terrain, level);
 				return;
 			}
 		}
@@ -603,14 +600,14 @@ export class HeightMapService {
 		}
 	}
 	
-	_setDiagonalGfx(x: number, y: number, entry: TileData) {
+	private setDiagonalGfx(x: number, y: number, entry: TileData) {
 		const checks = SECOND_LEVEL_CHECK[entry.fill];
 		let i = checks.length;
 		
 		const nLevels = [], nTerrains = [];
 		while (i--) {
-			nLevels[i] = this._getOtherLevel(x, y, entry.level, checks[i]);
-			nTerrains[i] = this._getTerrain(x, y, checks[i]) || 0;
+			nLevels[i] = this.getOtherLevel(x, y, entry.level, checks[i]);
+			nTerrains[i] = this.getTerrain(x, y, checks[i]) || 0;
 		}
 		let lowerLevel, lowerTerrain;
 		if (nLevels[0] !== nLevels[2]) {
@@ -649,7 +646,7 @@ export class HeightMapService {
 		entry.gfx = DIAG_GFX[entry.fill];
 	}
 	
-	_getOtherLevel(x: number, y: number, level: number, dir: CheckDir) {
+	private getOtherLevel(x: number, y: number, level: number, dir: CheckDir) {
 		y += dir.dy;
 		x += dir.dx;
 		const entry = this.data[y] && this.data[y][x];
@@ -667,7 +664,7 @@ export class HeightMapService {
 		}
 	}
 	
-	_getTerrain(x: number, y: number, dir: CheckDir) {
+	private getTerrain(x: number, y: number, dir: CheckDir) {
 		y += dir.dy;
 		x += dir.dx;
 		const entry = this.data[y] && this.data[y][x];
@@ -677,7 +674,7 @@ export class HeightMapService {
 		return entry.terrain;
 	}
 	
-	_getOtherTerrain(x: number, y: number, dir: { dx: number, dy: number }, level: number) {
+	private getOtherTerrain(x: number, y: number, dir: { dx: number, dy: number }, level: number) {
 		y += dir.dy;
 		x += dir.dx;
 		const entry = this.data[y] && this.data[y][x];
@@ -690,7 +687,7 @@ export class HeightMapService {
 		return entry.terrain;
 	}
 	
-	_getTerrainBorder(x: number, y: number, dir: CheckDir, terrain: number, level: number) {
+	private getTerrainBorder(x: number, y: number, dir: CheckDir, terrain: number, level: number) {
 		if (!terrain) {
 			return -1;
 		}
@@ -700,7 +697,7 @@ export class HeightMapService {
 		let i = dir.terrainBorder.length;
 		while (i--) {
 			const check = dir.terrainBorder[i];
-			const otherTerrain = this._getOtherTerrain(x, y, check, level);
+			const otherTerrain = this.getOtherTerrain(x, y, check, level);
 			if (otherTerrain === false) {
 				continue;
 			}
