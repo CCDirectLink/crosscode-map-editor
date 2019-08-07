@@ -5,7 +5,6 @@ export class CCMapLayer {
 	private layer?: Phaser.Tilemaps.DynamicTilemapLayer;
 	
 	constructor(
-		scene: Phaser.Scene,
 		private tilemap: Phaser.Tilemaps.Tilemap,
 		public readonly data: MapLayer,
 	) {
@@ -28,6 +27,12 @@ export class CCMapLayer {
 				}
 			}
 		});
+	}
+	public async loadDefinitions(): Promise<void> {
+	}
+	
+	public get images(): string[] {
+		return [];
 	}
 	
 	get visible(): boolean {

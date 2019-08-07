@@ -21,8 +21,7 @@ export class EntitiesComponent implements OnInit {
 	constructor(
 		private componentFactoryResolver: ComponentFactoryResolver,
 		private widgetRegistry: WidgetRegistryService,
-		events: EventService,
-		loader: LoaderService
+		events: EventService
 	) {
 		events.selectedEntity.subscribe(e => {
 			// clear focus of input fields to enable phaser inputs again
@@ -30,7 +29,7 @@ export class EntitiesComponent implements OnInit {
 			this.entity = e;
 			this.loadSettings(e);
 		});
-		loader.tileMap.subscribe(map => this.map = map);
+		events.tileMap.subscribe(map => this.map = map);
 	}
 	
 	ngOnInit() {

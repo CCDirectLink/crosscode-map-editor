@@ -4,6 +4,8 @@ import { EditorView } from '../models/editor-view';
 import { CCEntity } from '../renderer/phaser/entities/cc-entity';
 import { MapEntity, Point } from '../models/cross-code-map';
 import { SelectedTile } from '../models/tile-selector';
+import { CCMap } from '../renderer/phaser/tilemap/cc-map';
+import { CCMapLayer } from '../renderer/phaser/tilemap/cc-map-layer';
 
 @Injectable({
     providedIn: 'root'
@@ -22,4 +24,7 @@ export class EventService {
     
 	public readonly changeSelectedTiles = new Subject<SelectedTile[]>();
 	public readonly updateMapBorder = new Subject<boolean>();
+	
+	public readonly tileMap = new BehaviorSubject<CCMap | undefined>(undefined);
+	public readonly selectedLayer = new BehaviorSubject<CCMapLayer | undefined>(undefined);
 }

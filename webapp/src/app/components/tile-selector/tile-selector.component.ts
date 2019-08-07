@@ -25,7 +25,7 @@ export class TileSelectorComponent implements OnInit {
 	}
 	
 	ngOnInit() {
-		this.scene = new TileSelectorScene(this.settings, this.loader, this.events);
+		this.scene = new TileSelectorScene(this.settings, this.events);
 		this.display = new Phaser.Game({
 			width: 400 * window.devicePixelRatio,
 			height: 1200 * window.devicePixelRatio,

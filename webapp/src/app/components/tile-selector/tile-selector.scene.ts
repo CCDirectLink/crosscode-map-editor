@@ -6,7 +6,6 @@ import {MapPan} from '../../renderer/phaser/map-pan';
 import {Subscription} from 'rxjs';
 import {SelectedTile} from '../../models/tile-selector';
 import {Vec2} from '../../renderer/phaser/vec2';
-import { LoaderService } from '../../services/loader.service';
 import { SettingsService } from '../../services/settings.service';
 import { EventService } from '../../services/event.service';
 
@@ -29,7 +28,6 @@ export class TileSelectorScene extends Phaser.Scene {
 	
 	constructor(
 		private readonly settings: SettingsService,
-		private readonly loader: LoaderService,
 		private readonly eventsService: EventService,
 	) {
 		super({key: 'main'});
@@ -42,7 +40,7 @@ export class TileSelectorScene extends Phaser.Scene {
 			e.preventDefault();
 		};
 		
-		this.sub = this.loader.selectedLayer.subscribe((layer) => {
+		this.sub = this.eventsService.selectedLayer.subscribe((layer) => {
 			if (layer) {
 				this.drawTileset(layer);
 			}

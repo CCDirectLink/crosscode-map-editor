@@ -29,7 +29,7 @@ export class ToolbarComponent implements OnInit {
 	@Output()
 	public loadMapClicked = new EventEmitter<void>(false);
 
-	constructor(private mapLoader: LoaderService,
+	constructor(
 		private events: EventService,
 		private dialog: MatDialog,
 		private overlayService: OverlayService,
@@ -38,7 +38,7 @@ export class ToolbarComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.mapLoader.tileMap.subscribe(map => {
+		this.events.tileMap.subscribe(map => {
 			this.map = map;
 		});
 		this.events.loadComplete.subscribe(
@@ -52,11 +52,11 @@ export class ToolbarComponent implements OnInit {
 			throw new Error('no map loaded');
 		}
 
-		const file = new Blob([JSON.stringify(this.map.exportMap(), null, 2)], { type: 'application/json' });
+		const file = new Blob([JSON.stringify(this.map.data, null, 2)], { type: 'application/json' });
 		const a = document.createElement('a'),
 			url = URL.createObjectURL(file);
 		a.href = url;
-		a.download = this.map.filename;
+		a.download = this.map.data.filename;
 		document.body.appendChild(a);
 		a.click();
 		setTimeout(function () {

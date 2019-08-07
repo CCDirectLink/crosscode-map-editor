@@ -191,7 +191,7 @@ export class TileDrawer extends BaseObject {
 		if (this.previewLayer) {
 			this.previewLayer.visible = true;
 		}
-		const sub = this.loader.selectedLayer.subscribe(layer => this.selectLayer(layer));
+		const sub = this.events.selectedLayer.subscribe(layer => this.selectLayer(layer));
 		this.addSubscription(sub);
 		
 		const sub2 = this.events.changeSelectedTiles.subscribe(tiles => this.updateSelectedTiles(tiles));

@@ -10,6 +10,7 @@ import {TileDrawer} from './tilemap/tile-drawer';
 import {EntityManager} from './entities/entity-manager';
 import { SettingsService } from '../../services/settings.service';
 import { EventService } from '../../services/event.service';
+import { CrossCodeMap } from '../../models/cross-code-map';
 
 export class MainScene extends Phaser.Scene {
 	
@@ -57,7 +58,7 @@ export class MainScene extends Phaser.Scene {
 		
 		const entityManager = new EntityManager(this.eventsService, this.settings, this, false);
 		
-		const tileMap = new CCMap(game, this, entityManager, this.settings, this.loader, this.eventsService, this.stateHistory);
+		const tileMap = new CCMap({} as CrossCodeMap, this, entityManager, this.settings, this.eventsService);
 		this.settings.map = tileMap;
 		
 		this.sub = this.loader.map.subscribe((map) => {

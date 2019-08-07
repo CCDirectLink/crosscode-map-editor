@@ -4,6 +4,7 @@ import {CrossCodeMap} from '../../../models/cross-code-map';
 import {LoaderService} from '../../../services/loader.service';
 import {CCMap} from '../../../renderer/phaser/tilemap/cc-map';
 import {OverlayRefControl} from '../../../overlay/overlay-ref-control';
+import { EventService } from '../../../services/event.service';
 
 @Component({
 	selector: 'app-map-settings',
@@ -19,10 +20,10 @@ export class MapSettingsComponent {
 	};
 	
 	constructor(
-		loader: LoaderService,
+		events: EventService,
 		public ref: OverlayRefControl
 	) {
-		const tileMap = loader.tileMap.getValue();
+		const tileMap = events.tileMap.getValue();
 		
 		if (!tileMap) {
 			throw new Error('tilemap not defined');

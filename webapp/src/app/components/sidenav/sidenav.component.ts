@@ -27,12 +27,12 @@ export class SidenavComponent implements OnInit {
 	}
 	
 	ngOnInit() {
-		this.mapLoader.selectedLayer.subscribe(layer => {
+		this.events.selectedLayer.subscribe(layer => {
 			if (layer) {
 				this.selectedLayer = layer;
 			}
 		});
-		this.mapLoader.tileMap.subscribe(tilemap => {
+		this.events.tileMap.subscribe(tilemap => {
 			this.tilemap = tilemap;
 			this.events.currentView.next(EditorView.Layers);
 		});

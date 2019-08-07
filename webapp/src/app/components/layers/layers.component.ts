@@ -1,7 +1,6 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {CCMap} from '../../renderer/phaser/tilemap/cc-map';
 import {CCMapLayer} from '../../renderer/phaser/tilemap/cc-map-layer';
-import {LoaderService} from '../../services/loader.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {StateHistoryService} from '../../history/state-history.service';
 import { EventService } from '../../services/event.service';
@@ -19,10 +18,9 @@ export class LayersComponent implements OnInit {
 	map?: CCMap;
 	newLayerName = '';
 	
-	constructor(private mapLoader: LoaderService,
+	constructor(private events: EventService,
 				private stateHistory: StateHistoryService,
-				private settings: SettingsService,
-	            events: EventService) {
+				private settings: SettingsService) {
 		events.toggleVisibility.subscribe(() => {
 			if (this.selectedLayer) {
 				this.toggleVisibility({
@@ -34,8 +32,8 @@ export class LayersComponent implements OnInit {
 	}
 	
 	ngOnInit() {
-		this.mapLoader.selectedLayer.subscribe(layer => this.selectedLayer = layer);
-		this.mapLoader.tileMap.subscribe(tilemap => this.map = tilemap);
+		this.events.selectedLayer.subscribe(layer => this.selectedLayer = layer);
+		this.events.tileMap.subscribe(tilemap => this.map = tilemap);
 	}
 	
 	getDisplayName(layer: CCMapLayer): string {
@@ -55,7 +53,7 @@ export class LayersComponent implements OnInit {
 			return;
 		}
 		const map = this.map;
-		const tilemap = map.getTilemap();
+		const tilemap = map.tilemap;
 		
 		if (!tilemap) {
 			return;
@@ -68,7 +66,7 @@ export class LayersComponent implements OnInit {
 				data[y][x] = 0;
 			}
 		}
-		const layer = new CCMapLayer(this.settings.scene, tilemap, {
+		const layer = new CCMapLayer(tilemap, {
 			type: 'Background',
 			name: this.newLayerName,
 			level: 0,
@@ -112,7 +110,7 @@ export class LayersComponent implements OnInit {
 		if (layer) {
 			layer.visible = true;
 		}
-		this.mapLoader.selectedLayer.next(layer);
+		this.events.selectedLayer.next(layer);
 	}
 	
 	updateTilesetName(name: string) {
@@ -120,7 +118,7 @@ export class LayersComponent implements OnInit {
 			throw new Error('no layer selected');
 		}
 		this.selectedLayer.updateTileset(name);
-		this.mapLoader.selectedLayer.next(this.selectedLayer);
+		this.events.selectedLayer.next(this.selectedLayer);
 	}
 	
 	updateLevel(level: number) {

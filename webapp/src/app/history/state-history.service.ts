@@ -35,7 +35,7 @@ export class StateHistoryService {
 		json?: string;
 	}, ignoreCheck = false) {
 		if (!state.json) {
-			const newState = this.settings.map.exportMap();
+			const newState = this.settings.map.data;
 			const stateJson = JSON.stringify(newState);
 			if (!ignoreCheck) {
 				const val = this.selectedState.getValue();
