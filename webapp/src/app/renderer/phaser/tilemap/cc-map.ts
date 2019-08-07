@@ -8,14 +8,9 @@ import { LoaderService } from '../../../services/loader.service';
 import { EventService } from '../../../services/event.service';
 
 export class CCMap {
-	name = '';
-	levels: { height: number }[] = [];
-	mapWidth = 0;
-	mapHeight = 0;
-	masterLevel = 0;
+	public readonly data!: CrossCodeMap;
+
 	layers: CCMapLayer[] = [];
-	attributes: Attributes = <any>{};
-	screen: Point = {x: 0, y: 0};
 	
 	private tileMap?: Phaser.Tilemaps.Tilemap;
 	
@@ -82,13 +77,6 @@ export class CCMap {
 		
 		this.tileMap = tileMap;
 		
-		this.name = map.name;
-		this.levels = map.levels;
-		this.mapWidth = map.mapWidth;
-		this.mapHeight = map.mapHeight;
-		this.masterLevel = map.masterLevel;
-		this.attributes = map.attributes;
-		this.screen = map.screen;
 		this.filename = map.filename;
 		
 		this.inputLayers = map.layer;
@@ -124,8 +112,8 @@ export class CCMap {
 	}
 	
 	resize(width: number, height: number, skipRender = false) {
-		this.mapWidth = width;
-		this.mapHeight = height;
+		this.data.mapWidth = width;
+		this.data.mapHeight = height;
 		
 		this.layers.forEach(layer => layer.resize(width, height, skipRender));
 		this.events.updateMapBorder.next(true);
@@ -150,15 +138,7 @@ export class CCMap {
 	}
 	
 	exportMap(): CrossCodeMap {
-		const out: CrossCodeMap = <any>{};
-		
-		out.name = this.name;
-		out.levels = this.levels;
-		out.mapWidth = this.mapWidth;
-		out.mapHeight = this.mapHeight;
-		out.masterLevel = this.masterLevel;
-		out.attributes = this.attributes;
-		out.screen = this.screen;
+		const out: CrossCodeMap = this.data;
 		
 		out.entities = this.entityManager.exportEntities();
 		out.layer = [];

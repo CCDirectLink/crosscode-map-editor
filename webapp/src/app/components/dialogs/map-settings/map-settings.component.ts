@@ -32,13 +32,13 @@ export class MapSettingsComponent {
 		
 		const settings = this.settings;
 		
-		settings.name = tileMap.name;
+		settings.name = tileMap.data.name;
 		
-		settings.mapWidth = tileMap.mapWidth;
-		settings.mapHeight = tileMap.mapHeight;
-		settings.levels = tileMap.levels;
-		settings.masterLevel = tileMap.masterLevel;
-		settings.attributes = tileMap.attributes;
+		settings.mapWidth = tileMap.data.mapWidth;
+		settings.mapHeight = tileMap.data.mapHeight;
+		settings.levels = tileMap.data.levels;
+		settings.masterLevel = tileMap.data.masterLevel;
+		settings.attributes = tileMap.data.attributes;
 	}
 	
 	onSettingsChange(obj: { property: keyof CrossCodeMap, value: any }) {
@@ -50,11 +50,11 @@ export class MapSettingsComponent {
 		const settings = this.settings;
 		const tileMap = this.tileMap;
 		
-		tileMap.name = settings.name;
-		tileMap.filename = settings.name;
-		tileMap.levels = settings.levels;
-		tileMap.masterLevel = settings.masterLevel;
-		tileMap.attributes = settings.attributes;
+		tileMap.data.name = settings.name;
+		tileMap.data.filename = settings.name;
+		tileMap.data.levels = settings.levels;
+		tileMap.data.masterLevel = settings.masterLevel;
+		tileMap.data.attributes = settings.attributes;
 		
 		tileMap.resize(settings.mapWidth, settings.mapHeight);
 		

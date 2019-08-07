@@ -62,9 +62,9 @@ export class LayersComponent implements OnInit {
 		}
 		
 		const data: number[][] = [];
-		for (let y = 0; y < map.mapHeight; y++) {
+		for (let y = 0; y < map.data.mapHeight; y++) {
 			data[y] = [];
-			for (let x = 0; x < map.mapWidth; x++) {
+			for (let x = 0; x < map.data.mapWidth; x++) {
 				data[y][x] = 0;
 			}
 		}
@@ -72,8 +72,8 @@ export class LayersComponent implements OnInit {
 			type: 'Background',
 			name: this.newLayerName,
 			level: 0,
-			width: map.mapWidth,
-			height: map.mapHeight,
+			width: map.data.mapWidth,
+			height: map.data.mapHeight,
 			visible: 1,
 			tilesetName: '',
 			repeat: false,

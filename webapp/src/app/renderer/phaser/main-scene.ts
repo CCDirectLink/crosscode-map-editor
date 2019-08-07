@@ -110,7 +110,7 @@ export class MainScene extends Phaser.Scene {
 		}
 		const map = this.settings.map;
 		
-		this.border = this.add.rectangle(-this.borderSize, -this.borderSize, map.mapWidth * s + this.borderSize * 2, map.mapHeight * s + this.borderSize * 2);
+		this.border = this.add.rectangle(-this.borderSize, -this.borderSize, map.data.mapWidth * s + this.borderSize * 2, map.data.mapHeight * s + this.borderSize * 2);
 		this.border.setStrokeStyle(this.borderSize * 2, 0xfc4445, 1);
 		this.border.setOrigin(0, 0);
 	}

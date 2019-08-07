@@ -303,7 +303,7 @@ export abstract class CCEntity extends BaseObject {
 	
 	updateLevel() {
 		this.updateZIndex();
-		const level = this.map.levels[this.details.level.level];
+		const level = this.map.data.levels[this.details.level.level];
 		let height = 0;
 		if (level) {
 			height = level.height;
