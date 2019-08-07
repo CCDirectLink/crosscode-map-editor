@@ -2,7 +2,6 @@ import { Component, ElementRef, OnInit } from '@angular/core';
 import { LoaderService } from '../../services/loader.service';
 import { HttpService } from '../../services/http.service';
 import { StateHistoryService } from '../../history/state-history.service';
-import { PhaserEventsService } from '../../renderer/phaser/phaser-events.service';
 import { HeightMapGeneratorService } from '../../services/height-map-generator.service';
 import * as Phaser from 'phaser';
 import { MainScene } from '../../renderer/phaser/main-scene';

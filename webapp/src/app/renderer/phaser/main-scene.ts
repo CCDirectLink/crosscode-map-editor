@@ -2,7 +2,6 @@ import * as Phaser from 'phaser';
 import {EditorView} from '../../models/editor-view';
 import {StateHistoryService} from '../../history/state-history.service';
 import {LoaderService} from '../../services/loader.service';
-import {PhaserEventsService} from './phaser-events.service';
 import {FileInfos} from '../../models/file-infos';
 import {CCMap} from './tilemap/cc-map';
 import {Subscription} from 'rxjs';
