@@ -29,6 +29,7 @@ import { CommonService } from './services/common.service';
 import { LoaderService } from './services/loader.service';
 import { EventService } from './services/event.service';
 import { SettingsService } from './services/settings.service';
+import { ElectronService } from './services/electron.service';
 
 @NgModule({
 	declarations: [
@@ -64,6 +65,7 @@ import { SettingsService } from './services/settings.service';
 		LoaderService,
 		EventService,
 		SettingsService,
+		ElectronService,
 	],
 	bootstrap: [AppComponent]
 })

@@ -42,11 +42,6 @@ import { MapContentSettingsComponent } from '../components/dialogs/map-settings/
 		KeepHtmlPipe,
 		SettingsComponent,
 	],
-	providers: [
-		HttpService,
-		ElectronService,
-		LoaderService,
-	],
 	entryComponents: [
 		JsonEditorComponent,
 		MapSettingsComponent,
