@@ -35,6 +35,20 @@ AUTOTILE_CONFIG['media/map/bergen-trail.png'] = [{
 	cliff: {x: 12, y: 4}
 }];
 
+AUTOTILE_CONFIG['media/map/jungle.png'] = [{
+	key: '',
+	tileCountX: 32,
+	type: AutotileType.EXTENDED, // TODO: jungle tiles are larger than extended
+	base: {x: 6, y: 0},
+	cliff: {x: 18, y: 4}
+}, {
+	key: '',
+	tileCountX: 32,
+	type: AutotileType.EXTENDED,
+	base: {x: 20, y: 0},
+	cliff: {x: 18, y: 4}
+}];
+
 
 for (const key of Object.keys(AUTOTILE_CONFIG)) {
 	AUTOTILE_CONFIG[key]!.forEach(config => config.key = key);
