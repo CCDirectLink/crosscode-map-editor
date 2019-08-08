@@ -25,6 +25,14 @@ export class Helper {
 		};
 	}
 	
+	public static indexToPoint(index: number, tileCountX: number): Point {
+		index -= 1;
+		return {
+			x: index % tileCountX,
+			y: Math.floor(index / tileCountX)
+		};
+	}
+	
 	public static clamp(val: number, min: number, max: number) {
 		return Math.min(Math.max(val, min), max);
 	}

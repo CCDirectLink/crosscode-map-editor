@@ -8,6 +8,7 @@ import {PhaserEventsService} from '../../shared/phaser/phaser-events.service';
 import * as Phaser from 'phaser';
 import {MainScene} from '../../shared/phaser/main-scene';
 import {HeightMapService} from '../../services/height-map/height-map.service';
+import {AutotileService} from '../../services/autotile/autotile.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -22,12 +23,14 @@ export class PhaserComponent implements OnInit {
 	            private stateHistory: StateHistoryService,
 	            private phaserEventsService: PhaserEventsService,
 	            private heightMap: HeightMapService,
-	            private http: HttpClientService
+	            private http: HttpClientService,
+	            autotile: AutotileService
 	) {
 		Globals.stateHistoryService = stateHistory;
 		Globals.mapLoaderService = mapLoader;
 		Globals.phaserEventsService = phaserEventsService;
 		Globals.globalEventsService = globalEvents;
+		Globals.autotileService = autotile;
 	}
 	
 	

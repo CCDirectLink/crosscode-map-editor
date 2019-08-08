@@ -44,9 +44,9 @@ export class ToolbarComponent implements OnInit {
 			err => this.error = 'Error: could not load CrossCode assets. Update path in edit/settings'
 		);
 		
-		// this.events.loadComplete.subscribe(() => {
-		// 	this.mapLoader.loadMapByName('jungle/path-01-entrance');
-		// });
+		this.events.loadComplete.subscribe(() => {
+			this.mapLoader.loadMapByName('bergen-trail/test');
+		});
 	}
 	
 	saveMap() {
