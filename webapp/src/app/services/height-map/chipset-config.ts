@@ -1,5 +1,5 @@
 import {Point} from '../../models/cross-code-map';
-import {GFX_TYPE} from './constants';
+import {GFX_TYPE} from './heightmap.constants';
 
 export interface ChipsetConfig {
 	tileCountX: number;
@@ -11,9 +11,9 @@ export interface ChipsetConfig {
 export interface ChipsetBase {
 	ground: Point;
 	cliff: Point;
+	cliffAlt?: Point;
 	mappingType?: string;
 	blockedTypes?: GFX_TYPE[];
-	cliffAlt?: Point;
 	chasmOnly?: boolean;
 	border?: boolean;
 	shadow?: Point;

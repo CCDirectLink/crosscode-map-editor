@@ -1,3 +1,4 @@
+
 export interface WallLink {
 	wall: GFX_TYPE;
 	base: GFX_TYPE;

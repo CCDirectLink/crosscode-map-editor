@@ -1,4 +1,4 @@
-import {FILL_TYPE, GFX_TYPE} from '../constants';
+import {FILL_TYPE, GFX_TYPE} from '../heightmap.constants';
 import {Point} from '../../../models/cross-code-map';
 
 export interface GfxMaps {

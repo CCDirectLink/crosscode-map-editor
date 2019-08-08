@@ -17,11 +17,11 @@ import {
 	SUB_TYPE,
 	WALL_LINK,
 	WallLink
-} from './constants';
+} from './heightmap.constants';
 import {CHIPSET_CONFIG} from './chipset-config';
 import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
 import {GfxMapper} from './gfx-mapper/gfx-mapper';
-import {BACK_WALL_MAP, BLOCK_MAP, HOLE_BLOCK_MAP, HOLE_MAP} from './gfx-mapper/constants';
+import {BACK_WALL_MAP, BLOCK_MAP, HOLE_BLOCK_MAP, HOLE_MAP} from './gfx-mapper/gfx-mapper.constants';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {StateHistoryService} from '../../shared/history/state-history.service';

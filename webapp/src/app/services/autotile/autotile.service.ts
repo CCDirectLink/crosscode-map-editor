@@ -1,15 +1,15 @@
 import {Injectable} from '@angular/core';
 import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
-import {AutotileConfigService} from './autotile-config.service';
+import {GfxMapper} from './gfx-mapper';
 import {Point} from '../../models/cross-code-map';
-import {CHECK_DIR, CHECK_ITERATE, CheckDir} from '../height-map/constants';
+import {CHECK_DIR, CHECK_ITERATE, CheckDir} from '../height-map/heightmap.constants';
 import {AutotileConfig} from './autotile-config';
-import {FillType} from './constants';
+import {FillType} from './autotile.constants';
 
 interface TileData {
 	pos: Point;
 	update: boolean;
-	fill: keyof FillType;
+	fill: keyof FillType | undefined;
 }
 
 @Injectable({
@@ -17,13 +17,13 @@ interface TileData {
 })
 export class AutotileService {
 	
-	constructor(
-		private autotilConfig: AutotileConfigService
-	) {
+	private gfxMapper = new GfxMapper();
+	
+	constructor() {
 	}
 	
-	public drawTile(layer: CCMapLayer, x: number, y: number, tile: number) {
-		const config = this.autotilConfig.getAutotileConfig(layer.details.tilesetName, tile);
+	public drawTile(layer: CCMapLayer, x: number, y: number, tile: number, checkCliff = true) {
+		const config = this.gfxMapper.getAutotileConfig(layer.details.tilesetName, tile, checkCliff);
 		if (!config) {
 			return tile;
 		}
@@ -32,21 +32,24 @@ export class AutotileService {
 			fill: 'XXXX',
 			update: true
 		};
-		
-		
+		if (!config.isCliff) {
+			this.drawSingleTile(layer, config.config, tileData);
+		}
 		const tilesToUpdate = CHECK_ITERATE
-			.map(v => this.getOther(config, layer, tileData, CHECK_DIR[v]))
+			.map(v => this.getOther(config.config, layer, tileData, CHECK_DIR[v]))
 			.filter(tile => tile.update);
-		
-		tilesToUpdate.push(tileData);
 		
 		for (const tileData of tilesToUpdate) {
 			tileData.fill = 'XXXX';
-			this.drawSingleTile(layer, config, tileData);
+			this.drawSingleTile(layer, config.config, tileData);
+		}
+		
+		if (!config.isCliff) {
+			tilesToUpdate.push(tileData);
 		}
 		
 		for (const tileData of tilesToUpdate) {
-			this.updateTile(config, layer, tileData);
+			this.updateTile(config.config, layer, tileData);
 		}
 		
 	}
@@ -92,14 +95,14 @@ export class AutotileService {
 	}
 	
 	private checkAt(tile: TileData, index: number) {
-		return tile.fill.charAt(index) === 'X';
+		return tile.fill && tile.fill.charAt(index) === 'X';
 	}
 	
 	private drawSingleTile(layer: CCMapLayer, config: AutotileConfig, tile: TileData) {
 		if (!tile.fill) {
 			return;
 		}
-		const index = this.autotilConfig.getGfx(tile.fill, config);
+		const index = this.gfxMapper.getGfx(tile.fill, config);
 		layer.getPhaserLayer()!.putTileAt(index, tile.pos.x, tile.pos.y, false);
 	}
 	
@@ -119,14 +122,20 @@ export class AutotileService {
 			out.update = false;
 			return out;
 		}
+		const index = layer.getPhaserLayer()!.getTileAt(newPos.x, newPos.y, true).index;
+		if (index === 0) {
+			out.fill = 'XXXX';
+			out.update = false;
+			return out;
+		}
 		
 		out.update = true;
-		const index = layer.getPhaserLayer()!.getTileAt(newPos.x, newPos.y, true).index;
-		const fill = this.autotilConfig.getFillType(config, index);
+		const fill = this.gfxMapper.getFillType(config, index);
 		if (fill) {
 			out.fill = fill;
 		} else {
 			out.update = false;
+			out.fill = this.gfxMapper.getFillType(config, index, true) || out.fill;
 		}
 		
 		return out;
