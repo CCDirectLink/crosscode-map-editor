@@ -1,0 +1,58 @@
+[
+	{
+		"map": "media/map/bergen-trail.png",
+		"tileCountX": 32,
+		"autotiles": [
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 1,
+					"y": 0
+				},
+				"cliff": {
+					"x": 6,
+					"y": 4
+				}
+			},
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 1,
+					"y": 2
+				},
+				"cliff": {
+					"x": 12,
+					"y": 4
+				}
+			}
+		]
+	},
+	{
+		"map": "media/map/jungle.png",
+		"tileCountX": 32,
+		"autotiles": [
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 6,
+					"y": 0
+				},
+				"cliff": {
+					"x": 18,
+					"y": 4
+				}
+			},
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 20,
+					"y": 0
+				},
+				"cliff": {
+					"x": 18,
+					"y": 4
+				}
+			}
+		]
+	}
+]

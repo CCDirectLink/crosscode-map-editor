@@ -3,8 +3,7 @@ import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
 import {GfxMapper} from './gfx-mapper';
 import {Point} from '../../models/cross-code-map';
 import {CHECK_DIR, CHECK_ITERATE, CheckDir} from '../height-map/heightmap.constants';
-import {AutotileConfig} from './autotile-config';
-import {FillType} from './autotile.constants';
+import {AutotileConfig, FillType} from './autotile.constants';
 
 interface TileData {
 	pos: Point;

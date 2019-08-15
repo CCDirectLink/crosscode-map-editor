@@ -1,5 +1,20 @@
 import {Point} from '../../models/cross-code-map';
-import {AutotileType} from './autotile-config';
+
+export enum AutotileType {
+	/** 8x2 */
+	DEFAULT = 8,
+	
+	/** 10x2 */
+	LARGE = 10
+}
+
+export interface AutotileConfig {
+	tileCountX: number;
+	type: AutotileType;
+	base: Point;
+	cliff: Point;
+	key: string;
+}
 
 /**
  * naming is clock wise: top left, top right, bottom right, bottom left.
@@ -56,7 +71,7 @@ export const FILL_TYPE: {
 } = <any>{};
 
 FILL_TYPE[AutotileType.DEFAULT] = fillTypeDefault;
-FILL_TYPE[AutotileType.EXTENDED] = fillTypeExtended;
+FILL_TYPE[AutotileType.LARGE] = fillTypeExtended;
 
 const empty: FillType = {
 	XXXX: [],
