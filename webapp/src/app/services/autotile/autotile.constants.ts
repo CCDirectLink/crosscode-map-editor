@@ -12,7 +12,7 @@ export interface AutotileConfig {
 	tileCountX: number;
 	type: AutotileType;
 	base: Point;
-	cliff: Point;
+	cliff?: Point;
 	key: string;
 }
 

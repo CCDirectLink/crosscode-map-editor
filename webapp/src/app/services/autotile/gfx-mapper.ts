@@ -108,11 +108,22 @@ export class GfxMapper {
 		if (!cliff) {
 			return this.getFill(pos, config.base, this.mapping[config.type]);
 		}
-		const tilesetBase = TILESET_CONFIG[config.key].base;
+		const tilesetConfig = TILESET_CONFIG[config.key];
+		let tilesetBase;
+		if (tilesetConfig && tilesetConfig.base) {
+			tilesetBase = tilesetConfig.base;
+		}
 		
-		return this.getFill(pos, config.cliff, this.cliffBorderMapping)
-			|| this.getFill(pos, tilesetBase.cliff, this.cliffMapping)
-			|| this.getFill(pos, tilesetBase.cliffAlt, this.cliffAltMapping);
+		const fill = this.getFill(pos, config.cliff, this.cliffBorderMapping);
+		
+		if (fill) {
+			return fill;
+		} else if (tilesetBase) {
+			return this.getFill(pos, tilesetBase.cliff, this.cliffMapping) || this.getFill(pos, tilesetBase.cliffAlt, this.cliffAltMapping);
+		}
+		
+		
+		return undefined;
 	}
 	
 	private getFill(pos: Point, offset: Point | undefined, mapping: Map<number, keyof FillType>) {
