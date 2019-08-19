@@ -1,6 +1,27 @@
 import {FILL_TYPE, GFX_TYPE} from '../heightmap.constants';
 import {Point} from '../../../models/cross-code-map';
 
+export interface ChipsetConfig {
+	tileCountX: number;
+	base: ChipsetBase;
+	terrains?: ChipsetBase[];
+	mappingType?: string;
+}
+
+export interface ChipsetBase {
+	ground: Point;
+	cliff: Point;
+	cliffAlt?: Point;
+	mappingType?: string;
+	blockedTypes?: GFX_TYPE[];
+	chasmOnly?: boolean;
+	border?: boolean;
+	shadow?: Point;
+	baseTerrain?: number;
+	overrideWallBase?: boolean;
+	wallTerrainPrio?: number;
+}
+
 export interface GfxMaps {
 	BASE: GfxMap;
 	ALT: GfxMap;

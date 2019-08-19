@@ -18,14 +18,16 @@ import {
 	WALL_LINK,
 	WallLink
 } from './heightmap.constants';
-import {CHIPSET_CONFIG} from './chipset-config';
 import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
 import {GfxMapper} from './gfx-mapper/gfx-mapper';
-import {BACK_WALL_MAP, BLOCK_MAP, HOLE_BLOCK_MAP, HOLE_MAP} from './gfx-mapper/gfx-mapper.constants';
+import {BACK_WALL_MAP, BLOCK_MAP, ChipsetConfig, HOLE_BLOCK_MAP, HOLE_MAP} from './gfx-mapper/gfx-mapper.constants';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {StateHistoryService} from '../../shared/history/state-history.service';
 import {AutotileService} from '../autotile/autotile.service';
+import tilesets from '../../../assets/tilesets.json';
+
+const TILESET_CONFIG: { [key: string]: ChipsetConfig } = tilesets;
 
 interface TileData {
 	level: number;
@@ -186,7 +188,7 @@ export class HeightMapService {
 			if (details.distance !== 1) {
 				continue;
 			}
-			if (details.type === 'Background' && CHIPSET_CONFIG[details.tilesetName] && lastLevel !== details.level) {
+			if (details.type === 'Background' && TILESET_CONFIG[details.tilesetName] && lastLevel !== details.level) {
 				lastLevel = details.level;
 				this.applyOnBackground(layer, forceAll);
 			} else if (details.type === 'Collision') {
@@ -213,7 +215,7 @@ export class HeightMapService {
 	}
 	
 	private applyOnBackground(layer: CCMapLayer, forceAll: boolean) {
-		const config = CHIPSET_CONFIG[layer.details.tilesetName];
+		const config = TILESET_CONFIG[layer.details.tilesetName];
 		if (!config) {
 			return;
 		}

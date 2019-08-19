@@ -1,5 +1,4 @@
-import {GFX_MAPS, GfxMap, GfxMaps} from './gfx-mapper.constants';
-import {ChipsetBase, ChipsetConfig} from '../chipset-config';
+import {ChipsetBase, ChipsetConfig, GFX_MAPS, GfxMap, GfxMaps} from './gfx-mapper.constants';
 import {GFX_TYPE} from '../heightmap.constants';
 import {Point} from '../../../models/cross-code-map';
 

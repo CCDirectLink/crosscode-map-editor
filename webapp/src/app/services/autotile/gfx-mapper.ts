@@ -10,9 +10,13 @@ import {
 import {Point} from '../../models/cross-code-map';
 import {Helper} from '../../shared/phaser/helper';
 import {Vec2} from '../../shared/phaser/vec2';
-import {CHIPSET_CONFIG} from '../height-map/chipset-config';
+import {ChipsetConfig} from '../height-map/gfx-mapper/gfx-mapper.constants';
 
 import autotilesJson from '../../../assets/autotiles.json';
+
+import tilesets from '../../../assets/tilesets.json';
+
+const TILESET_CONFIG: { [key: string]: ChipsetConfig } = tilesets;
 
 interface JsonType {
 	map: string;
@@ -30,16 +34,22 @@ export class GfxMapper {
 		[key: string]: AutotileConfig[] | undefined
 	} = {};
 	
-	private mapping = new Map<number, keyof FillType>();
+	private mapping: { [key in AutotileType]: Map<number, keyof FillType> } = <any>{};
 	private cliffBorderMapping = new Map<number, keyof FillType>();
 	private cliffMapping = new Map<number, keyof FillType>();
 	private cliffAltMapping = new Map<number, keyof FillType>();
 	
 	constructor() {
 		this.generateAutotileConfig();
-		const fillType: FillType = FILL_TYPE[AutotileType.LARGE];
 		
-		this.generateMapping(this.mapping, fillType);
+		const enumVals = Object.values(AutotileType).filter(v => !isNaN(v));
+		
+		for (const type of enumVals as AutotileType[]) {
+			const map = new Map<number, keyof FillType>();
+			this.mapping[type] = map;
+			this.generateMapping(map, FILL_TYPE[type]);
+		}
+		
 		this.generateMapping(this.cliffBorderMapping, FILL_TYPE_CLIFF_BORDER);
 		this.generateMapping(this.cliffMapping, FILL_TYPE_CLIFF);
 		this.generateMapping(this.cliffAltMapping, FILL_TYPE_CLIFF_ALT);
@@ -89,7 +99,7 @@ export class GfxMapper {
 		}
 		for (const config of configs) {
 			const pos = Helper.indexToPoint(tile, config.tileCountX);
-			if (this.getFill(pos, config.base, this.mapping)) {
+			if (this.getFill(pos, config.base, this.mapping[config.type])) {
 				return {config: config, isCliff: false};
 			}
 			if (checkCliffs && this.getFill(pos, config.cliff, this.cliffBorderMapping)) {
@@ -104,9 +114,9 @@ export class GfxMapper {
 		const pos = Helper.indexToPoint(tile, config.tileCountX);
 		
 		if (!cliff) {
-			return this.getFill(pos, config.base, this.mapping);
+			return this.getFill(pos, config.base, this.mapping[config.type]);
 		}
-		const tilesetBase = CHIPSET_CONFIG[config.key].base;
+		const tilesetBase = TILESET_CONFIG[config.key].base;
 		
 		return this.getFill(pos, config.cliff, this.cliffBorderMapping)
 			|| this.getFill(pos, tilesetBase.cliff, this.cliffMapping)
