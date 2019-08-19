@@ -123,6 +123,7 @@ export class CCMapLayer {
 		details.width = width;
 		details.height = height;
 		
+		this.extractLayerData(details);
 		
 		const newData: number[][] = [];
 		for (let y = 0; y < details.height; y++) {
@@ -182,14 +183,18 @@ export class CCMapLayer {
 			out.levelName = undefined;
 		}
 		out.data = [];
+		this.extractLayerData(out);
+		return out;
+	}
+
+	private extractLayerData(layer: MapLayer): void {
 		if (this.layer) {
 			this.layer.getTilesWithin().forEach(tile => {
-				if (!out.data[tile.y]) {
-					out.data[tile.y] = [];
+				if (!layer.data[tile.y]) {
+					layer.data[tile.y] = [];
 				}
-				out.data[tile.y][tile.x] = tile.index;
+				layer.data[tile.y][tile.x] = tile.index;
 			});
 		}
-		return out;
 	}
 }
