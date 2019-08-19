@@ -1,9 +1,9 @@
 import {MapLayer, Point} from '../../../models/cross-code-map';
 import * as Phaser from 'phaser';
-import {Helper} from '../helper';
 
 export class CCMapLayer {
 	
+	// TODO: don't use details.data, it's not updated and only used for import/export. Use getPhaserLayer() instead to get tile information
 	public details: MapLayer;
 	
 	private layer?: Phaser.Tilemaps.DynamicTilemapLayer;
@@ -91,7 +91,7 @@ export class CCMapLayer {
 	offsetLayer(offset: Point, borderTiles = false) {
 		const data = this.details.data;
 		const newData: number[][] = JSON.parse(JSON.stringify(data));
-
+		
 		for (let y = 0; y < data.length; y++) {
 			for (let x = 0; x < data[y].length; x++) {
 				let newTile = 0;
@@ -108,7 +108,7 @@ export class CCMapLayer {
 				newData[y][x] = newTile || 0;
 			}
 		}
-
+		
 		this.details.data = newData;
 		if (this.layer) {
 			this.layer.putTilesAt(this.details.data, 0, 0, false);

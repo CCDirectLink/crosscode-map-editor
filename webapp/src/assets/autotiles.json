@@ -1,0 +1,319 @@
+[
+	{
+		"map": "media/map/autumn-outside.png",
+		"tileCountX": 32,
+		"autotiles": [
+			{
+				"type": "MEGA_LARGE",
+				"base": {
+					"x": 0,
+					"y": 1
+				}
+			}
+		]
+	},
+	{
+		"map": "media/map/bergen-trail.png",
+		"tileCountX": 32,
+		"autotiles": [
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 1,
+					"y": 0
+				},
+				"cliff": {
+					"x": 6,
+					"y": 4
+				}
+			},
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 1,
+					"y": 2
+				},
+				"cliff": {
+					"x": 12,
+					"y": 4
+				}
+			}
+		]
+	},
+	{
+		"map": "media/map/jungle.png",
+		"tileCountX": 32,
+		"autotiles": [
+			{
+				"type": "MEGA_LARGE",
+				"base": {
+					"x": 6,
+					"y": 0
+				},
+				"cliff": {
+					"x": 18,
+					"y": 4
+				}
+			},
+			{
+				"type": "SUPER_LARGE",
+				"base": {
+					"x": 20,
+					"y": 0
+				},
+				"cliff": {
+					"x": 18,
+					"y": 4
+				}
+			}
+		]
+	},
+	{
+		"map": "media/map/arid.png",
+		"tileCountX": 32,
+		"autotiles": [
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 1,
+					"y": 0
+				},
+				"cliff": {
+					"x": 6,
+					"y": 4
+				}
+			},
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 11,
+					"y": 0
+				}
+			}
+		]
+	},
+	{
+		"map": "media/map/arid-interior.png",
+		"tileCountX": 32,
+		"autotiles": [
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 1,
+					"y": 0
+				}
+			},
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 11,
+					"y": 0
+				}
+			}
+		]
+	},
+	{
+		"map": "media/map/cave.png",
+		"tileCountX": 32,
+		"autotiles": [
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 0,
+					"y": 1
+				}
+			},
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 8,
+					"y": 1
+				},
+				"cliff": {
+					"x": 18,
+					"y": 4
+				}
+			},
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 18,
+					"y": 1
+				}
+			}
+		]
+	},
+	{
+		"map": "media/map/forest.png",
+		"tileCountX": 32,
+		"autotiles": [
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 1,
+					"y": 0
+				}
+			},
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 11,
+					"y": 0
+				}
+			},
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 21,
+					"y": 0
+				}
+			},
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 9,
+					"y": 2
+				}
+			}
+		]
+	},
+	{
+		"map": "media/map/heat-area.png",
+		"tileCountX": 32,
+		"autotiles": [
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 1,
+					"y": 0
+				},
+				"cliff": {
+					"x": 12,
+					"y": 4
+				}
+			},
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 1,
+					"y": 2
+				},
+				"cliff": {
+					"x": 18,
+					"y": 4
+				}
+			},
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 11,
+					"y": 0
+				},
+				"cliff": {
+					"x": 6,
+					"y": 4
+				}
+			},
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 11,
+					"y": 2
+				},
+				"cliff": {
+					"x": 24,
+					"y": 4
+				}
+			},
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 21,
+					"y": 0
+				}
+			},
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 21,
+					"y": 2
+				}
+			}
+		]
+	},
+	{
+		"map": "media/map/heat-dng.png",
+		"tileCountX": 32,
+		"autotiles": [
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 1,
+					"y": 0
+				}
+			},
+			{
+				"type": "LARGE",
+				"base": {
+					"x": 1,
+					"y": 2
+				}
+			},
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 9,
+					"y": 0
+				}
+			},
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 17,
+					"y": 0
+				}
+			}
+		]
+	},
+	{
+		"map": "media/map/cold-dng.png",
+		"tileCountX": 32,
+		"autotiles": [
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 0,
+					"y": 1
+				}
+			},
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 12,
+					"y": 0
+				}
+			},
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 12,
+					"y": 2
+				}
+			},
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 20,
+					"y": 0
+				}
+			},
+			{
+				"type": "DEFAULT",
+				"base": {
+					"x": 20,
+					"y": 2
+				}
+			}
+		]
+	}
+]

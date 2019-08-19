@@ -10,7 +10,8 @@
 		
 		<mat-menu #tools="matMenu">
 			<button mat-menu-item (click)="offsetMap()" [disabled]="!map">Offset Map</button>
-			<button mat-menu-item (click)="generateHeights()" [disabled]="!map">Generate Heights</button>
+			<button mat-menu-item (click)="generateHeights(true)" [disabled]="!map">Generate Heights FULL (ctrl + shift + h)</button>
+			<button mat-menu-item (click)="generateHeights(false)" [disabled]="!map">Generate Heights (ctrl + h)</button>
 		</mat-menu>
 
 		<button mat-button *ngIf="loaded" (click)="loadMapClicked.emit()">Load Map</button> <!-- (click)="fileUpload.click()" -->

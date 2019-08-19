@@ -62,7 +62,7 @@ input[type=text].default-input, input:not([type]).default-input {
 }
 
 button {
-	text-transform: uppercase;
+	//text-transform: uppercase;
 
 	&:disabled {
 		color: rgba(255, 255, 255, 0.5);

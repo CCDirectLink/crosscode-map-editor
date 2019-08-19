@@ -8,11 +8,9 @@ import {GlobalEventsService} from '../../shared/global-events.service';
 import {OffsetMapComponent} from '../dialogs/offset-map/offset-map.component';
 import {environment} from '../../../environments/environment';
 import {OverlayService} from '../../shared/overlay/overlay.service';
-import {NpcStatesComponent} from '../../shared/widgets/npc-states-widget/npc-states/npc-states.component';
 import {Overlay} from '@angular/cdk/overlay';
 import {SettingsComponent} from '../dialogs/settings/settings.component';
 import {Globals} from '../../shared/globals';
-import {FileChangeEvent} from '@angular/compiler-cli/src/perform_watch';
 
 @Component({
 	selector: 'app-toolbar',
@@ -26,7 +24,7 @@ export class ToolbarComponent implements OnInit {
 	loaded = false;
 	error = '';
 	version = environment.version;
-
+	
 	@Output()
 	public loadMapClicked = new EventEmitter<void>(false);
 	
@@ -45,6 +43,10 @@ export class ToolbarComponent implements OnInit {
 			() => this.loaded = true,
 			err => this.error = 'Error: could not load CrossCode assets. Update path in edit/settings'
 		);
+		
+		// this.events.loadComplete.subscribe(() => {
+		// 	this.mapLoader.loadMapByName('bergen-trail/test');
+		// });
 	}
 	
 	saveMap() {
@@ -83,8 +85,8 @@ export class ToolbarComponent implements OnInit {
 		});
 	}
 	
-	generateHeights() {
-		this.events.generateHeights.next();
+	generateHeights(forceAll: boolean) {
+		this.events.generateHeights.next(forceAll);
 	}
 	
 	offsetMap() {

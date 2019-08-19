@@ -26,7 +26,9 @@ export class TileDrawer extends BaseObject {
 	
 	private transparentKey!: Phaser.Input.Keyboard.Key;
 	private visibilityKey!: Phaser.Input.Keyboard.Key;
+	private shiftKey!: Phaser.Input.Keyboard.Key;
 	private fillKey!: Phaser.Input.Keyboard.Key;
+	private lastDraw: Point = {x: -1, y: -1};
 	
 	constructor(scene: Phaser.Scene) {
 		super(scene, 'tileDrawer');
@@ -36,6 +38,7 @@ export class TileDrawer extends BaseObject {
 		this.fillKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F, false);
 		this.transparentKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R, false);
 		this.visibilityKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V, false);
+		this.shiftKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT, false);
 		
 		this.container = this.scene.add.container(0, 0);
 		this.container.depth = 1000;
@@ -140,22 +143,34 @@ export class TileDrawer extends BaseObject {
 			Vec2.assign(this.previewLayer, container);
 		}
 		
-		// draw tiles (skip when tile selector is open)
+		// draw tiles
 		// trigger only when mouse is over canvas element (the renderer), avoids triggering when interacting with ui
 		if (pointer.leftButtonDown() && pointer.downElement.nodeName === 'CANVAS' && this.layer) {
 			const finalPos = {x: 0, y: 0};
-			this.selectedTiles.forEach(tile => {
+			
+			// skip drawing if last frame was the same
+			if (this.lastDraw.x === p.x && this.lastDraw.y === p.y) {
+				return;
+			}
+			Vec2.assign(this.lastDraw, p);
+			
+			for (const tile of this.selectedTiles) {
 				finalPos.x = p.x + tile.offset.x;
 				finalPos.y = p.y + tile.offset.y;
 				
-				if (Helper.isInBounds(this.layer!, finalPos)) {
-					const phaserLayer = this.layer!.getPhaserLayer();
+				if (Helper.isInBounds(this.layer, finalPos)) {
+					const phaserLayer = this.layer.getPhaserLayer();
 					if (!phaserLayer) {
 						return;
 					}
-					phaserLayer.putTileAt(tile.id, finalPos.x, finalPos.y);
+					
+					phaserLayer.putTileAt(tile.id, finalPos.x, finalPos.y, false);
+					
+					if (!this.shiftKey.isDown) {
+						Globals.autotileService.drawTile(this.layer, finalPos.x, finalPos.y, tile.id);
+					}
 				}
-			});
+			}
 		}
 	}
 	
@@ -323,12 +338,15 @@ export class TileDrawer extends BaseObject {
 	}
 	
 	private renderPreview() {
+		
+		// reset last draw when selected tiles change
+		this.lastDraw.x = -1;
 		this.previewTileMap.removeAllLayers();
-		console.log(this);
+		console.log(this.selectedTiles[0].id);
 		const layer = this.previewTileMap.createBlankDynamicLayer('layer', 'only', 0, 0, 40, 40);
 		
 		this.selectedTiles.forEach(tile => {
-			layer.putTileAt(tile.id, tile.offset.x, tile.offset.y);
+			layer.putTileAt(tile.id, tile.offset.x, tile.offset.y, false);
 		});
 		
 		this.previewLayer = this.previewTileMap.convertLayerToStatic();

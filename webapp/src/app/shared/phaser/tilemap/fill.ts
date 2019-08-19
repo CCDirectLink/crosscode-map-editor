@@ -17,7 +17,7 @@ export class Filler {
 			const currP = toCheck.pop()!;
 			const tile = phaserLayer.getTileAt(currP.x, currP.y);
 			if (tile.index === prev) {
-				phaserLayer.putTileAt(newTile, currP.x, currP.y);
+				phaserLayer.putTileAt(newTile, currP.x, currP.y, false);
 				toCheck = toCheck.concat(this.getNeighbours(currP, layer));
 			}
 		}
