@@ -22,7 +22,7 @@ interface JsonType {
 	map: string;
 	tileCountX: number;
 	autotiles: {
-		type: 'DEFAULT' | 'LARGE';
+		type: keyof typeof AutotileType;
 		base: Point;
 		cliff: Point;
 	}[];
@@ -63,15 +63,7 @@ export class GfxMapper {
 			this.AUTOTILE_CONFIG[config.map] = arr;
 			
 			for (const autotile of config.autotiles) {
-				let type;
-				switch (autotile.type) {
-					case 'LARGE':
-						type = AutotileType.LARGE;
-						break;
-					default:
-						type = AutotileType.DEFAULT;
-						break;
-				}
+				const type = AutotileType[autotile.type];
 				const newConfig: AutotileConfig = {
 					key: config.map,
 					tileCountX: config.tileCountX,

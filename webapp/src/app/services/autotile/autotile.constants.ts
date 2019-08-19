@@ -1,11 +1,11 @@
 import {Point} from '../../models/cross-code-map';
 
+/** value is width, height is always 2 */
 export enum AutotileType {
-	/** 8x2 */
 	DEFAULT = 8,
-	
-	/** 10x2 */
-	LARGE = 10
+	LARGE = 10,
+	SUPER_LARGE = 12,
+	MEGA_LARGE = 14
 }
 
 export interface AutotileConfig {
@@ -41,6 +41,10 @@ export interface FillType {
 	XOOO: Point[];
 }
 
+export const FILL_TYPE: {
+	[key in AutotileType]: FillType
+} = <any>{};
+
 const fillTypeDefault: FillType = {
 	XXXX: [{x: 0, y: 0}],
 	OXXX: [{x: 1, y: 0}],
@@ -59,19 +63,28 @@ const fillTypeDefault: FillType = {
 	OXOO: [{x: 6, y: 1}],
 	XOOO: [{x: 7, y: 1}],
 };
-
-const fillTypeExtended: FillType = JSON.parse(JSON.stringify(fillTypeDefault));
-fillTypeExtended.OOXX.push({x: 8, y: 0});
-fillTypeExtended.OXXO.push({x: 9, y: 0});
-fillTypeExtended.XXOO.push({x: 8, y: 1});
-fillTypeExtended.XOOX.push({x: 9, y: 1});
-
-export const FILL_TYPE: {
-	[key in AutotileType]: FillType
-} = <any>{};
-
 FILL_TYPE[AutotileType.DEFAULT] = fillTypeDefault;
-FILL_TYPE[AutotileType.LARGE] = fillTypeExtended;
+
+const fillTypeLarge: FillType = JSON.parse(JSON.stringify(fillTypeDefault));
+fillTypeLarge.OOXX.push({x: 8, y: 0});
+fillTypeLarge.OXXO.push({x: 9, y: 0});
+fillTypeLarge.XXOO.push({x: 8, y: 1});
+fillTypeLarge.XOOX.push({x: 9, y: 1});
+FILL_TYPE[AutotileType.LARGE] = fillTypeLarge;
+
+const fillTypeSuperLarge: FillType = JSON.parse(JSON.stringify(fillTypeLarge));
+fillTypeSuperLarge.OOXO.push({x: 10, y: 0});
+fillTypeSuperLarge.OOOX.push({x: 11, y: 0});
+fillTypeSuperLarge.OXOO.push({x: 10, y: 1});
+fillTypeSuperLarge.XOOO.push({x: 11, y: 1});
+FILL_TYPE[AutotileType.SUPER_LARGE] = fillTypeSuperLarge;
+
+const fillTypeMegaLarge: FillType = JSON.parse(JSON.stringify(fillTypeSuperLarge));
+fillTypeMegaLarge.OOXX.push({x: 12, y: 0});
+fillTypeMegaLarge.OXXO.push({x: 13, y: 0});
+fillTypeMegaLarge.XXOO.push({x: 12, y: 1});
+fillTypeMegaLarge.XOOX.push({x: 13, y: 1});
+FILL_TYPE[AutotileType.MEGA_LARGE] = fillTypeMegaLarge;
 
 const empty: FillType = {
 	XXXX: [],
