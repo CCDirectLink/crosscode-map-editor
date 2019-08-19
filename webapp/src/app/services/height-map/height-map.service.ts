@@ -26,6 +26,8 @@ import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {StateHistoryService} from '../../shared/history/state-history.service';
 import {AutotileService} from '../autotile/autotile.service';
 import tilesets from '../../../assets/tilesets.json';
+import {EventManager} from '@angular/platform-browser';
+import {Helper} from '../../shared/phaser/helper';
 
 const TILESET_CONFIG: { [key: string]: ChipsetConfig } = tilesets;
 
@@ -57,8 +59,19 @@ export class HeightMapService {
 		private events: GlobalEventsService,
 		private mapLoader: MapLoaderService,
 		private stateHistory: StateHistoryService,
-		private autotile: AutotileService
+		private autotile: AutotileService,
+		eventManager: EventManager
 	) {
+		
+		eventManager.addEventListener(document as any, 'keydown', (event: KeyboardEvent) => {
+			if (Helper.isInputFocused()) {
+				return;
+			}
+			if (event.ctrlKey && event.code === 'KeyH') {
+				event.preventDefault();
+				this.generateHeights(event.shiftKey);
+			}
+		});
 	}
 	
 	public init() {
