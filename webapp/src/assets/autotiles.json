@@ -176,7 +176,8 @@
 				}
 			}
 		]
-	},{
+	},
+	{
 		"map": "media/map/heat-area.png",
 		"tileCountX": 32,
 		"autotiles": [
