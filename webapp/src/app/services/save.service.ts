@@ -2,6 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClientService} from './http-client.service';
 import {CCMap} from '../shared/phaser/tilemap/cc-map';
 import {MatSnackBar} from '@angular/material';
+import {Helper} from '../shared/phaser/helper';
+import {EventManager} from '@angular/platform-browser';
+import {MapLoaderService} from '../shared/map-loader.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -10,8 +13,28 @@ export class SaveService {
 	
 	constructor(
 		private http: HttpClientService,
-		private snackbar: MatSnackBar
+		private snackbar: MatSnackBar,
+		mapLoader: MapLoaderService,
+		eventManager: EventManager
 	) {
+		eventManager.addEventListener(document as any, 'keydown', (event: KeyboardEvent) => {
+			if (Helper.isInputFocused()) {
+				return;
+			}
+			
+			if (event.ctrlKey && event.code === 'KeyS') {
+				event.preventDefault();
+				const map = mapLoader.tileMap.getValue();
+				if (!map) {
+					return;
+				}
+				if (event.shiftKey) {
+					this.saveMapAs(map);
+				} else {
+					this.saveMap(map);
+				}
+			}
+		});
 	}
 	
 	saveMap(map: CCMap) {
@@ -21,7 +44,7 @@ export class SaveService {
 		}
 		this.http.saveFile(map.path, JSON.stringify(map.exportMap())).subscribe(msg => {
 			console.log(msg);
-			this.snackbar.open(msg as string, 'ok', {duration: 3000});
+			this.snackbar.open('successfully saved map', 'ok', {duration: 3000});
 		}, err => {
 			console.error(err);
 			this.snackbar.open('failed to save map', 'ok');
