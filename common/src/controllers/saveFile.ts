@@ -2,7 +2,6 @@ import {requireLocal} from '../require';
 
 import * as nodefs from 'fs';
 import * as nodepath from 'path';
-import * as nodeutil from 'util';
 
 const fs: typeof nodefs = requireLocal('fs');
 const path: typeof nodepath = requireLocal('path');
