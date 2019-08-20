@@ -4,7 +4,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {CrossCodeMap} from '../models/cross-code-map';
 import {CCMap} from './phaser/tilemap/cc-map';
 import {CCMapLayer} from './phaser/tilemap/cc-map-layer';
-import { HttpClientService } from '../services/http-client.service';
+import {HttpClientService} from '../services/http-client.service';
 
 @Injectable()
 export class MapLoaderService {
@@ -16,7 +16,7 @@ export class MapLoaderService {
 	constructor(
 		private snackBar: MatSnackBar,
 		private http: HttpClientService,
-		) {
+	) {
 	}
 	
 	loadMap(event: Event) {
@@ -44,20 +44,23 @@ export class MapLoaderService {
 		reader.readAsText(file);
 	}
 	
-	loadRawMap(map: CrossCodeMap, name?: string) {
+	loadRawMap(map: CrossCodeMap, name?: string, path?: string) {
 		if (!map.mapHeight) {
 			throw new Error('Invalid map');
 		}
-		map.filename = name || 'Untitled';
+		map.filename = name;
+		map.path = path;
 		this._map.next(map);
 	}
-
+	
 	loadMapByName(name: string) {
-		this.http.getMap(name).subscribe(map => {
-			this.loadRawMap(map, name);
+		const path = `data/maps/${name.replace(/\./g, '/')}.json`;
+		
+		this.http.getAssetsFile<CrossCodeMap>(path).subscribe(map => {
+			this.loadRawMap(map, name, path);
 		});
 	}
-
+	
 	get map(): Observable<CrossCodeMap> {
 		return this._map.asObservable();
 	}
