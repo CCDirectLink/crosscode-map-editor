@@ -32,6 +32,9 @@
 			]
 		}
 	},
+	"browserslist": [
+		"Electron >= 4"
+	],
 	"scripts": {
 		"ng": "ng",
 		"start": "ng serve",
