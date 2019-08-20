@@ -45,8 +45,12 @@ export class HttpClientService {
 	}
 	
 	saveFile(path: string, content: any) {
-		// TODO: add electron
-		return this.http.post(Globals.URL + 'api/saveFile', {path: path, content: content});
+		const file = {path: path, content: content};
+		if (!Globals.isElectron) {
+			return this.http.post(Globals.URL + 'api/saveFile', file);
+		}
+		
+		return this.toObservable(api.saveFile(this.electron.getAssetsPath(), file));
 	}
 	
 	private toObservable<T>(promise: Promise<T>): Observable<T> {
