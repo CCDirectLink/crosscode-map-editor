@@ -14,7 +14,8 @@
 			<button mat-menu-item (click)="generateHeights(false)" [disabled]="!map">Generate Heights (ctrl + h)</button>
 		</mat-menu>
 
-		<button mat-button *ngIf="loaded" (click)="loadMapClicked.emit()">Load Map</button> <!-- (click)="fileUpload.click()" -->
+		<button mat-button *ngIf="loaded" (click)="loadMapClicked.emit()">Load Map</button>
+		<button mat-button *ngIf="map" (click)="openInCrossCode()">Open in crosscode</button>
 	</div>
 	
 	<div fxFlex>

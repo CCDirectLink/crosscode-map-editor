@@ -11,6 +11,7 @@ import {OverlayService} from '../../shared/overlay/overlay.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {SettingsComponent} from '../dialogs/settings/settings.component';
 import {Globals} from '../../shared/globals';
+import { ElectronService } from '../../services/electron.service';
 
 @Component({
 	selector: 'app-toolbar',
@@ -32,7 +33,8 @@ export class ToolbarComponent implements OnInit {
 	            private events: GlobalEventsService,
 	            private dialog: MatDialog,
 	            private overlayService: OverlayService,
-	            private overlay: Overlay) {
+				private overlay: Overlay,
+				private electron: ElectronService) {
 	}
 	
 	ngOnInit() {
@@ -102,5 +104,17 @@ export class ToolbarComponent implements OnInit {
 				.top('calc(64px + 6vh / 2)'),
 			hasBackdrop: true
 		});
+	}
+
+	openInCrossCode() {
+		if (!this.map) {
+			return;
+		}
+
+		if (this.isElectron) {
+			this.electron.startCrossCode('LOAD_LEVEL_ON_GAME_START=' + this.map.filename);
+		} else {
+			window.open('http://localhost:8081/ccloader/index.html?LOAD_LEVEL_ON_GAME_START=' + this.map.filename, '_blank');
+		}
 	}
 }

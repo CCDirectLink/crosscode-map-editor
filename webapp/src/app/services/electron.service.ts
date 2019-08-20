@@ -2,11 +2,13 @@ import {Injectable} from '@angular/core';
 import {Globals} from '../shared/globals';
 import {Dialog, Remote} from 'electron';
 import * as nodeFs from 'fs';
+import * as child_process from 'child_process';
 
 @Injectable()
 export class ElectronService {
 	
 	private readonly fs?: typeof nodeFs;
+	private readonly childProcess?: typeof child_process;
 	
 	private storageName = 'assetsPath';
 	private assetsPath = '';
@@ -21,6 +23,7 @@ export class ElectronService {
 		const remote = window.require('electron').remote;
 		this.remote = remote!;
 		this.fs = remote.require('fs');
+		this.childProcess = remote.require('child_process');
 		
 		this.assetsPath = localStorage.getItem(this.storageName) || '';
 		this.updateURL();
@@ -84,5 +87,13 @@ export class ElectronService {
 	
 	public getAssetsPath() {
 		return this.assetsPath;
+	}
+
+	public startCrossCode(...args: string[]) {
+		if (!this.childProcess) {
+			return;
+		}
+
+		this.childProcess.spawn(this.assetsPath + '/../crosscode.exe', args);
 	}
 }
