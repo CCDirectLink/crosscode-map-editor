@@ -1,4 +1,4 @@
-import {EntityAttributes, CCEntity, ScaleSettings} from '../cc-entity';
+import {CCEntity, EntityAttributes, ScaleSettings} from '../cc-entity';
 import {Helper} from '../../helper';
 import {Point3} from '../../../../models/cross-code-map';
 
@@ -99,7 +99,12 @@ export class NPC extends CCEntity {
 	
 	protected async setupType(settings: any) {
 		
-		const charSettings: CharacterSettings = await Helper.getJsonPromise(this.getPath('data/characters/', settings.characterName));
+		const charSettings: CharacterSettings | undefined = await Helper.getJsonPromise(this.getPath('data/characters/', settings.characterName));
+		if (!charSettings) {
+			console.warn(`no char settings found for character name: [${settings.characterName}]`);
+			this.generateNoImageType();
+			return;
+		}
 		const state = settings.npcStates[0] || {};
 		const npc = this.NPCSimple;
 		let config = (npc.sprites as any)[state.config];
@@ -116,6 +121,7 @@ export class NPC extends CCEntity {
 		let x = charSettings.x || 0;
 		let y = charSettings.y || 0;
 		if (charSettings.animSheet) {
+			// noinspection SuspiciousTypeOfGuard
 			if (typeof charSettings.animSheet === 'string') {
 				// sheet is only reference
 				const animSheet = charSettings.animSheet;
@@ -189,7 +195,10 @@ export class NPC extends CCEntity {
 		this.updateSettings();
 	}
 	
-	private getPath(prefix: string, path: string): string {
+	private getPath(prefix: string, path?: string): string {
+		if (!path) {
+			path = '';
+		}
 		const split = path.split('.');
 		const name = split.splice(-1, 1)[0];
 		return prefix + split.join('/') + '/' + name;

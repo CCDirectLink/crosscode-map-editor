@@ -76,13 +76,13 @@ export class EntityManager extends BaseObject {
 		});
 		this.addSubscription(sub2);
 		
-		const sub3 = Globals.globalEventsService.generateNewEntity.subscribe(entity => {
+		const sub3 = Globals.globalEventsService.generateNewEntity.subscribe(async entity => {
 			if (!this.map) {
 				return;
 			}
 			// TODO: better generate level from collision tiles
 			entity.level = this.map.masterLevel;
-			const e = this.generateEntity(entity);
+			const e = await this.generateEntity(entity);
 			
 			// entity manager is activated
 			e.setActive(true);
@@ -272,12 +272,13 @@ export class EntityManager extends BaseObject {
 		}
 	}
 	
-	generateEntity(entity: MapEntity): CCEntity {
+	async generateEntity(entity: MapEntity): Promise<CCEntity> {
 		const entityClass = this.entityRegistry.getEntity(entity.type);
 		
 		const ccEntity = new entityClass(this.scene, this.map, entity.x, entity.y, entity.type);
-		ccEntity.setSettings(entity.settings);
+		await ccEntity.setSettings(entity.settings);
 		ccEntity.level = entity.level;
+		ccEntity.setActive(false);
 		this.entities.push(ccEntity);
 		return ccEntity;
 	}
@@ -295,11 +296,11 @@ export class EntityManager extends BaseObject {
 		const mousePos = Helper.getPointerPos(this.scene.input.activePointer);
 		this.selectEntity();
 		
-		this.copyEntities.forEach(e => {
+		this.copyEntities.forEach(async e => {
 			const entityDef = e.exportEntity();
 			Vec2.sub(entityDef, offset);
 			Vec2.add(entityDef, mousePos);
-			const newEntity = this.generateEntity(entityDef);
+			const newEntity = await this.generateEntity(entityDef);
 			newEntity.setActive(true);
 			this.selectEntity(newEntity, this.copyEntities.length > 1);
 		});

@@ -80,11 +80,12 @@ export class ScalableProp extends CCEntity {
 		return this.scaleSettings;
 	}
 	
-	protected setupType(settings: any) {
+	protected async setupType(settings: any) {
 		if (!settings.propConfig) {
 			console.warn('scalable prop without prop config');
 			return this.generateNoImageType();
 		}
+		// TODO: use await
 		Helper.getJson('data/scale-props/' + settings.propConfig.sheet, (sheet) => {
 			let prop: ScalablePropDef = sheet.entries[settings.propConfig.name];
 			if (!prop) {

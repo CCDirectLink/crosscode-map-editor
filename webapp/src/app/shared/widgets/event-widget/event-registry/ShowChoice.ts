@@ -73,7 +73,8 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 			if (!child.events) {
 				console.error('wtf', this);
 			}
-			out[index as keyof ShowChoiceData] = child.events.map(v => v.export());
+			// @ts-ignore
+			out[index] = child.events.map(v => v.export());
 		});
 		
 		return JSON.parse(JSON.stringify(out));

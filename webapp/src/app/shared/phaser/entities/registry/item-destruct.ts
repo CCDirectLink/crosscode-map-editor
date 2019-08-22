@@ -48,7 +48,8 @@ export class ItemDestruct extends CCEntity {
 		return undefined;
 	}
 	
-	protected setupType(settings: any) {
+	protected async setupType(settings: any) {
+		// TODO: use await
 		Helper.getJson('data/global-settings', (globalSettings) => {
 			const destructibles = this.scene.cache.json.get('destructibles.json');
 			let desType;

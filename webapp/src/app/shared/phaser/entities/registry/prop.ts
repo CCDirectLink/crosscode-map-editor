@@ -89,11 +89,12 @@ export class Prop extends CCEntity {
 		return undefined;
 	}
 	
-	protected setupType(settings: any) {
+	protected async setupType(settings: any) {
 		if (!settings.propType) {
 			console.warn('prop without prop type');
 			return this.generateNoImageType();
 		}
+		// TODO: use await
 		Helper.getJson('data/props/' + settings.propType.sheet, (sheet) => {
 			let prop: PropDef | undefined;
 			if (!sheet) {
