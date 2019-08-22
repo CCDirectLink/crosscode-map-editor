@@ -1,6 +1,9 @@
 <div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
 	<span class="property-name">{{key}}:</span>
-	<input  [matAutocomplete]="auto" [ngModel]="settings[key]" class="default-input" (change)="setSetting(key, $event.target.value)">
+	<input class="default-input"
+		   [matAutocomplete]="auto"
+		   [ngModel]="settings[key]"
+		   (ngModelChange)="setSetting(key, $event)">
 	<mat-autocomplete #auto="matAutocomplete">
 		<mat-option *ngFor="let item of names" [value]="item">
 			<span> {{item}} </span>
