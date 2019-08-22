@@ -5,6 +5,8 @@ import {CrossCodeMap} from '../models/cross-code-map';
 import {CCMap} from './phaser/tilemap/cc-map';
 import {CCMapLayer} from './phaser/tilemap/cc-map-layer';
 import {HttpClientService} from '../services/http-client.service';
+import {Globals} from './globals';
+import {ElectronService} from '../services/electron.service';
 
 @Injectable()
 export class MapLoaderService {
@@ -16,6 +18,7 @@ export class MapLoaderService {
 	constructor(
 		private snackBar: MatSnackBar,
 		private http: HttpClientService,
+		private electron: ElectronService
 	) {
 	}
 	
@@ -31,7 +34,11 @@ export class MapLoaderService {
 		reader.onload = (e: any) => {
 			try {
 				const map = JSON.parse(e.target.result);
-				this.loadRawMap(map, file.name);
+				let path: string | undefined;
+				if (file.path && Globals.isElectron) {
+					path = file.path.split(this.electron.getAssetsPath())[1];
+				}
+				this.loadRawMap(map, file.name, path);
 			} catch (e) {
 				console.error(e);
 				this.snackBar.open('Error: ' + e.message, undefined, {
