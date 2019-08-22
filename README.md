@@ -7,8 +7,8 @@ A Map Editor for the game [CrossCode](http://www.cross-code.com/en/home), build 
 
 ![editor](https://user-images.githubusercontent.com/9483499/29732155-acc24a46-89e7-11e7-9500-7fd1066a01a0.png)
 
-## Features
-- automatic height map generation https://youtu.be/hHkvK48lvr0
+## Changelog
+[Learn about the latest improvements](CHANGELOG.md).
 
 ## Getting started
 If you just want to use the editor install the latest [Release](https://github.com/CCDirectLink/crosscode-map-editor/releases/latest).
