@@ -372,6 +372,10 @@ export abstract class CCEntity extends BaseObject {
 		this.setActive(true);
 	}
 	
+	public generateErrorImage() {
+		this.generateNoImageType(0xFF0000, 1);
+	}
+	
 	public generateNoImageType(rgbTop = 0xc06040, aTop = 0.5, rgb = 0x800000, a = 0.5) {
 		const settings = this.details.settings;
 		

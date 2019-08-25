@@ -1,4 +1,4 @@
-import {EntityAttributes, CCEntity, ScaleSettings} from '../cc-entity';
+import {CCEntity, EntityAttributes, ScaleSettings} from '../cc-entity';
 import {Helper} from '../../helper';
 import {Fix} from '../../../../models/props';
 
@@ -92,39 +92,36 @@ export class Prop extends CCEntity {
 	protected async setupType(settings: any) {
 		if (!settings.propType) {
 			console.warn('prop without prop type');
-			return this.generateNoImageType();
+			return this.generateErrorImage();
 		}
-		// TODO: use await
-		Helper.getJson('data/props/' + settings.propType.sheet, (sheet) => {
-			let prop: PropDef | undefined;
-			if (!sheet) {
-				console.warn('prop without sheet', settings);
-				return this.generateNoImageType();
+		const sheet = await Helper.getJsonPromise('data/props/' + settings.propType.sheet);
+		let prop: PropDef | undefined;
+		if (!sheet) {
+			console.warn('prop without sheet', settings);
+			return this.generateErrorImage();
+		}
+		for (let i = 0; i < sheet.props.length; i++) {
+			const p = sheet.props[i];
+			if (settings.propType.name === p.name) {
+				prop = p;
+				break;
 			}
-			for (let i = 0; i < sheet.props.length; i++) {
-				const p = sheet.props[i];
-				if (settings.propType.name === p.name) {
-					prop = p;
-					break;
-				}
-			}
-			if (!prop) {
-				console.error('prop not found: ' + settings.propType.name);
-				return this.generateNoImageType();
-			}
-
-			this.entitySettings = <any>{sheets: {fix: []}};
-			if (prop.fix) {
-				this.entitySettings.sheets.fix[0] = prop.fix;
-				this.entitySettings.sheets.renderMode = prop.fix.renderMode;
-			} else {
-				console.log('sheet not found for prop: ' + prop.name);
-				return this.generateNoImageType(0x00ff3c);
-			}
-			this.entitySettings.baseSize = prop.size;
-			this.entitySettings.collType = prop.collType;
-			this.updateSettings();
-		});
-
+		}
+		if (!prop) {
+			console.error('prop not found: ' + settings.propType.name);
+			return this.generateErrorImage();
+		}
+		
+		this.entitySettings = <any>{sheets: {fix: []}};
+		if (prop.fix) {
+			this.entitySettings.sheets.fix[0] = prop.fix;
+			this.entitySettings.sheets.renderMode = prop.fix.renderMode;
+		} else {
+			console.log('sheet not found for prop: ' + prop.name);
+			return this.generateErrorImage();
+		}
+		this.entitySettings.baseSize = prop.size;
+		this.entitySettings.collType = prop.collType;
+		this.updateSettings();
 	}
 }
