@@ -3,10 +3,8 @@ import {Label, Person} from '../../../../models/events';
 import {EntityAttributes} from '../../../phaser/entities/cc-entity';
 
 export interface ShowChoiceData extends EventType {
-	0?: AbstractEvent<any>[];
-	1?: AbstractEvent<any>[];
-	2?: AbstractEvent<any>[];
-	3?: AbstractEvent<any>[];
+	[key: number]: AbstractEvent<any>[];
+	
 	person: Person;
 	options: {
 		label: Label;
@@ -54,7 +52,7 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 		this.data.options.forEach((option, index) => {
 			this.children[index] = {
 				title: this.getColoredString('Choice. ' + option.label.en_US, '#838383'),
-				events: this.data[index as keyof ShowChoiceData] as AbstractEvent<any>[] || [],
+				events: this.data[index] || [],
 				hideGreaterSign: true
 			};
 		});
@@ -73,7 +71,6 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 			if (!child.events) {
 				console.error('wtf', this);
 			}
-			// @ts-ignore
 			out[index] = child.events.map(v => v.export());
 		});
 		

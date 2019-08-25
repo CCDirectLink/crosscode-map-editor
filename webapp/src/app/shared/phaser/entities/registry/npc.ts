@@ -121,6 +121,7 @@ export class NPC extends CCEntity {
 		let x = charSettings.x || 0;
 		let y = charSettings.y || 0;
 		if (charSettings.animSheet) {
+			// TODO: refactor: https://github.com/CCDirectLink/crosscode-map-editor/pull/80#discussion_r317308048
 			// noinspection SuspiciousTypeOfGuard
 			if (typeof charSettings.animSheet === 'string') {
 				// sheet is only reference
