@@ -6,6 +6,8 @@ import * as nodepath from 'path';
 const fs: typeof nodefs = requireLocal('fs');
 const path: typeof nodepath = requireLocal('path');
 
+export { saveFile } from './saveFile';
+
 async function listAllFiles(dir: string, filelist: string[], ending: string, root?: string): Promise<string[]> {
 	if (root === undefined) {
 		root = dir;
@@ -23,7 +25,7 @@ async function listAllFiles(dir: string, filelist: string[], ending: string, roo
 /**
  * Searches a file or directory in the given base directory for the specified files and stores it in filelist.
  * CAUTION: Stores data in input variable (filelist)
- * 
+ *
  * @param file 		File or directory to inspect
  * @param dir 		Parent directory of the file
  * @param filelist 	The list of found files

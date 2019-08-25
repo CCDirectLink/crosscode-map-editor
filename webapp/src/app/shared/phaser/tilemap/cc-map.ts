@@ -20,6 +20,7 @@ export class CCMap {
 	private offsetSub: Subscription;
 	
 	filename = '';
+	path?: string;
 	
 	private inputLayers?: MapLayer[];
 	
@@ -83,7 +84,8 @@ export class CCMap {
 		this.masterLevel = map.masterLevel;
 		this.attributes = map.attributes;
 		this.screen = map.screen;
-		this.filename = map.filename;
+		this.filename = map.filename || 'untitled';
+		this.path = map.path;
 		
 		this.inputLayers = map.layer;
 		
@@ -153,6 +155,9 @@ export class CCMap {
 		out.masterLevel = this.masterLevel;
 		out.attributes = this.attributes;
 		out.screen = this.screen;
+		
+		out.path = this.path;
+		out.filename = this.filename;
 		
 		out.entities = this.entityManager.exportEntities();
 		out.layer = [];
