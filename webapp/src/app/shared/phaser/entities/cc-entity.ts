@@ -412,7 +412,7 @@ export abstract class CCEntity extends BaseObject {
 					scaleX: size.x,
 					scaleY: size.y,
 					tint: rgbTop,
-					alpha: a
+					alpha: aTop
 				}],
 			};
 		} else {
