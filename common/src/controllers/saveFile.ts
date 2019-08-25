@@ -8,5 +8,5 @@ export async function saveFile(assetsPath: string, file: { content: string, path
 	
 	const path = assetsPath + file.path;
 	await fs.promises.writeFile(assetsPath + file.path, file.content);
-	return 'successfully saved file to "' + assetsPath + file.path + '"';
+	return 'successfully saved file to "' + path + '"';
 }
