@@ -156,6 +156,9 @@ export class CCMap {
 		out.attributes = this.attributes;
 		out.screen = this.screen;
 		
+		out.path = this.path;
+		out.filename = this.filename;
+		
 		out.entities = this.entityManager.exportEntities();
 		out.layer = [];
 		this.layers.forEach(l => out.layer.push(l.exportLayer()));

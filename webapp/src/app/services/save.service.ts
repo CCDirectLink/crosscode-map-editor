@@ -42,8 +42,7 @@ export class SaveService {
 			console.error('map has no path :/');
 			return this.saveMapAs(map);
 		}
-		const content = JSON.stringify(map.exportMap());
-		this.http.saveFile(map.path, content).subscribe(msg => {
+		this.http.saveFile(map.path, this.generateMapJson(map)).subscribe(msg => {
 			console.log(msg);
 			this.snackbar.open('successfully saved map', 'ok', {duration: 3000});
 		}, err => {
@@ -53,7 +52,7 @@ export class SaveService {
 	}
 	
 	saveMapAs(map: CCMap) {
-		const file = new Blob([JSON.stringify(map.exportMap())], {type: 'application/json'});
+		const file = new Blob([this.generateMapJson(map)], {type: 'application/json'});
 		const a = document.createElement('a'),
 			url = URL.createObjectURL(file);
 		a.href = url;
@@ -64,5 +63,12 @@ export class SaveService {
 			document.body.removeChild(a);
 			window.URL.revokeObjectURL(url);
 		}, 0);
+	}
+	
+	private generateMapJson(map: CCMap) {
+		const out = map.exportMap();
+		out.path = undefined;
+		out.filename = undefined;
+		return JSON.stringify(out);
 	}
 }
