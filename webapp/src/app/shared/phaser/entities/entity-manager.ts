@@ -236,15 +236,19 @@ export class EntityManager extends BaseObject {
 	}
 	
 	/** generates all entities and adds proper input handling */
-	initialize(map?: CrossCodeMap) {
+	async initialize(map?: CrossCodeMap) {
 		this.map = map;
 		if (this.entities) {
 			this.entities.forEach(e => e.destroy());
 		}
 		this.entities = [];
 		
-		if (map && map.entities) {
-			map.entities.forEach(entity => this.generateEntity(entity));
+		if (!map || !map.entities) {
+			return;
+		}
+		
+		for (const entity of map.entities) {
+			await this.generateEntity(entity);
 		}
 	}
 	

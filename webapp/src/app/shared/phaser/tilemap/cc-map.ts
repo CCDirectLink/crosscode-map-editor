@@ -65,8 +65,7 @@ export class CCMap {
 		this.offsetSub.unsubscribe();
 	}
 	
-	loadMap(map: CrossCodeMap, skipInit = false) {
-		const game = this.game;
+	async loadMap(map: CrossCodeMap, skipInit = false) {
 		const tileMap = this.scene.make.tilemap({
 			width: map.mapWidth,
 			height: map.mapHeight,
@@ -103,7 +102,7 @@ export class CCMap {
 		}
 		
 		// generate entities
-		this.entityManager.initialize(map);
+		await this.entityManager.initialize(map);
 		
 		if (!skipInit) {
 			Globals.stateHistoryService.init({
@@ -153,7 +152,7 @@ export class CCMap {
 		out.masterLevel = this.masterLevel;
 		out.attributes = this.attributes;
 		out.screen = this.screen;
-		
+		console.log('exportMap');
 		out.entities = this.entityManager.exportEntities();
 		out.layer = [];
 		this.layers.forEach(l => out.layer.push(l.exportLayer()));
