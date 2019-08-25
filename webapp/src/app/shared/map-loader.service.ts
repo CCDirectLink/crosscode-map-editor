@@ -7,6 +7,7 @@ import {CCMapLayer} from './phaser/tilemap/cc-map-layer';
 import {HttpClientService} from '../services/http-client.service';
 import {Globals} from './globals';
 import {ElectronService} from '../services/electron.service';
+import {BasePath, FileExtension, PathResolver} from './path-resolver';
 
 @Injectable()
 export class MapLoaderService {
@@ -61,7 +62,7 @@ export class MapLoaderService {
 	}
 	
 	loadMapByName(name: string) {
-		const path = `data/maps/${name.replace(/\./g, '/')}.json`;
+		const path = PathResolver.convertToPath(BasePath.MAPS, name, FileExtension.JSON);
 		
 		this.http.getAssetsFile<CrossCodeMap>(path).subscribe(map => {
 			this.loadRawMap(map, name, path);
