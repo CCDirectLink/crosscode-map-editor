@@ -16,6 +16,6 @@ export class PathResolver {
 	 * @param extension
 	 */
 	public static convertToPath(base: BasePath, name: string, extension: FileExtension) {
-		return base + name.replace(/\\./g, '/') + extension;
+		return base + name.replace(/\./g, '/') + extension;
 	}
 }
