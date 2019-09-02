@@ -9,7 +9,8 @@ export interface CrossCodeMap {
 	attributes: Attributes;
 	screen: Point;
 	
-	filename: string;
+	filename?: string;
+	path?: string;
 }
 
 export interface Point {

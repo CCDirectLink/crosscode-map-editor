@@ -11,6 +11,7 @@ import {OverlayService} from '../../shared/overlay/overlay.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {SettingsComponent} from '../dialogs/settings/settings.component';
 import {Globals} from '../../shared/globals';
+import {SaveService} from '../../services/save.service';
 
 @Component({
 	selector: 'app-toolbar',
@@ -32,7 +33,9 @@ export class ToolbarComponent implements OnInit {
 	            private events: GlobalEventsService,
 	            private dialog: MatDialog,
 	            private overlayService: OverlayService,
-	            private overlay: Overlay) {
+	            private overlay: Overlay,
+	            private save: SaveService
+	) {
 	}
 	
 	ngOnInit() {
@@ -49,22 +52,16 @@ export class ToolbarComponent implements OnInit {
 		// });
 	}
 	
-	saveMap() {
+	saveMap(saveAs: boolean) {
 		if (!this.map) {
 			throw new Error('no map loaded');
 		}
 		
-		const file = new Blob([JSON.stringify(this.map.exportMap(), null, 2)], {type: 'application/json'});
-		const a = document.createElement('a'),
-			url = URL.createObjectURL(file);
-		a.href = url;
-		a.download = this.map.filename;
-		document.body.appendChild(a);
-		a.click();
-		setTimeout(function () {
-			document.body.removeChild(a);
-			window.URL.revokeObjectURL(url);
-		}, 0);
+		if (saveAs) {
+			this.save.saveMapAs(this.map);
+		} else {
+			this.save.saveMap(this.map);
+		}
 	}
 	
 	newMap() {
