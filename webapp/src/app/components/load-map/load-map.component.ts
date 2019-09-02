@@ -20,7 +20,7 @@ export class LoadMapComponent {
 	mapsSource = new MatTreeNestedDataSource<VirtualMapNode>();
 
 	root: MapNodeRoot = {name: 'root', displayed: true, children: []}; // The root itself is never displayed. It is used as a datasource for virtualRoot.
-	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering. 
+	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering.
 	filter = '';
 
 	constructor(
@@ -59,15 +59,6 @@ export class LoadMapComponent {
 
 	close() {
 		return this.sidenav.close();
-	}
-
-	highlight(text: string) {
-		text = this.encodeHTML(text);
-		if (this.filter.length === 0) {
-			return text;
-		}
-
-		return text.split(this.filter).join(`<span class="highlight">${this.filter}</span>`); // Replace all;
 	}
 
 	private displayMaps(paths: string[]) {
@@ -152,9 +143,5 @@ export class LoadMapComponent {
 			child.displayed = true;
 			this.displayChildren(child);
 		}
-	}
-
-	private encodeHTML(text: string) {
-		return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;') ;
 	}
 }
