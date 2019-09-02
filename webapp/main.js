@@ -48,18 +48,23 @@ function openWindow() {
 			win.webContents.openDevTools();
 		} else {
 			console.log('prod');
-			const indexPath = url.format({
+			/*const indexPath = url.format({
 				pathname: path.join(__dirname, 'distAngular', 'index.html'),
 				protocol: 'file',
 				slashes: true
 			});
 			console.log('path', indexPath);
-			win.loadURL(indexPath);
+			win.loadURL(indexPath);*/
 			
-			const log = require("electron-log");
+			/*const log = require("electron-log");
 			log.transports.file.level = "debug";
-			autoUpdater.logger = log;
-			autoUpdater.checkForUpdatesAndNotify();
+			autoUpdater.logger = log;*/
+			autoUpdater.autoDownload = false;
+			autoUpdater.autoInstallOnAppQuit = false;
+			console.log('Current Version', autoUpdater.currentVersion);
+			autoUpdater.checkForUpdates().then((updateResults) => {
+				console.log('Update results', updateResults);
+			});
 			// win.webContents.openDevTools();
 			// win.setMenu(null);
 		}
