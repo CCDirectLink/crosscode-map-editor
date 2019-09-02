@@ -1,9 +1,9 @@
 import {Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {CCEntity} from '../phaser/entities/cc-entity';
+import {AttributeValue, CCEntity} from '../phaser/entities/cc-entity';
 
 export abstract class AbstractWidget implements OnInit, OnChanges {
 	@Input() key!: string;
-	@Input() attribute: any;
+	@Input() attribute!: AttributeValue;
 	@Input() entity?: CCEntity;
 	@Input() custom?: CCEntity;
 	

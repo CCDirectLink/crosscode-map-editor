@@ -1,0 +1,7231 @@
+{
+	"SELECT_RANDOM": {
+		"attributes": {
+			"options": {
+				"type": "RandomDistribution",
+				"noLabel": true,
+				"description": "RandomDistribution"
+			}
+		}
+	},
+	"LABEL": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of the label"
+			}
+		}
+	},
+	"GOTO_LABEL": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Label to move to."
+			}
+		}
+	},
+	"GOTO_LABEL_WHILE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Label to move to."
+			},
+			"condition": {
+				"type": "VarCondition",
+				"description": "Condition to jump to the label"
+			}
+		}
+	},
+	"WAIT": {
+		"attributes": {
+			"time": {
+				"type": "NumberExpression",
+				"description": "Time to wait in seconds"
+			},
+			"ignoreSlowDown": {
+				"type": "Boolean",
+				"description": "Ignore slow down rate on wait"
+			}
+		}
+	},
+	"WAIT_RANDOM": {
+		"attributes": {
+			"minTime": {
+				"type": "NumberExpression",
+				"description": "Minimum time to wait"
+			},
+			"maxTime": {
+				"type": "NumberExpression",
+				"description": "Maximum time to wait"
+			},
+			"ignoreSlowDown": {
+				"type": "Boolean",
+				"description": "Ignore slow down rate on wait"
+			}
+		}
+	},
+	"WAIT_UNTIL_TRUE": {
+		"attributes": {
+			"condition": {
+				"type": "VarCondition",
+				"description": "Condition to evaluate to true to continue"
+			},
+			"maxTime": {
+				"type": "NumberExpression",
+				"optional": true,
+				"description": "If defined: maximal wait this time"
+			}
+		}
+	},
+	"WAIT_UNTIL_ACTION_DONE": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"visualize": true,
+				"context": "Entity",
+				"description": "Entity to move"
+			}
+		}
+	},
+	"STOP_SKIP_MODE": {
+		"attributes": {}
+	},
+	"SET_ENTITY_STATIC_TIME": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be changed"
+			},
+			"value": {
+				"type": "Boolean",
+				"description": "true: Entity ignores world speed slow down. false: entity is slowed down."
+			},
+			"global": {
+				"type": "Boolean",
+				"description": "If true, set static time globally"
+			}
+		}
+	},
+	"SET_ENTITY_POS": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be changed"
+			},
+			"position": {
+				"type": "Vec3",
+				"pointSelect": true,
+				"description": "New position of entity"
+			}
+		}
+	},
+	"SET_ENTITY_POS_TO_ENTITY": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be placed"
+			},
+			"refEntity": {
+				"type": "Entity",
+				"description": "Entity used to determine position"
+			},
+			"offset": {
+				"type": "Offset",
+				"description": "Offset to entity position"
+			}
+		}
+	},
+	"SET_ENTITY_ON_TOP_OTHER": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be changed"
+			},
+			"groundEntity": {
+				"type": "Entity",
+				"description": "Entity the first entity should stand on"
+			}
+		}
+	},
+	"ADJUST_ENTITY_POS": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be changed"
+			},
+			"offset": {
+				"type": "Vec3",
+				"rawZValue": true,
+				"description": "Offset applied to entity position "
+			}
+		}
+	},
+	"HIDE_ENTITY": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be hidden"
+			},
+			"skipEffects": {
+				"type": "Boolean",
+				"description": "If true: Skip effects when showing entity"
+			}
+		}
+	},
+	"SHOW_ENTITY": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be shown"
+			},
+			"skipEffects": {
+				"type": "Boolean",
+				"description": "If true: Skip effects when showing entity"
+			}
+		}
+	},
+	"SHOW_ANIMATION": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"context": "Entity",
+				"description": "Entity to be changed"
+			},
+			"anim": {
+				"type": "EntityAnim",
+				"description": "Name of the new animation"
+			},
+			"reset": {
+				"type": "Boolean",
+				"description": "Reset current animation state"
+			},
+			"followUp": {
+				"type": "EntityAnim",
+				"optional": true,
+				"description": "Aninmation that follows the set animation"
+			}
+		}
+	},
+	"SHOW_EXTERN_ANIM": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be changed"
+			},
+			"anim": {
+				"type": "Animation",
+				"description": "Animation to play"
+			},
+			"followUp": {
+				"type": "Animation",
+				"optional": true,
+				"description": "Animation to play after this animation"
+			}
+		}
+	},
+	"CLEAR_ANIMATION": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be changed"
+			}
+		}
+	},
+	"DO_ACTION": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"visualize": true,
+				"context": "Entity",
+				"description": "Entity to move"
+			},
+			"action": {
+				"type": "Action",
+				"rec_visualize": [
+					"LABEL",
+					"GOTO_LABEL",
+					"SELECT_RANDOM",
+					"RESET_ACTOR",
+					"WAIT",
+					"WAIT_UNTIL",
+					"WAIT_RANDOM",
+					"IF",
+					"WAIT_UNTIL_ON_GROUND",
+					"WAIT_UNTIL_PLAYER_ON_TOP",
+					"MOVE_FORWARD",
+					"SLIDE_OUT",
+					"MOVE_BACKWARD",
+					"MOVE_TO_ENTITY_DISTANCE",
+					"MOVE_TO_ENTITY_CLOSEST_OFFSET",
+					"MOVE_TO_POINT",
+					"SYNC_ACTION_WITH_ENTITY",
+					"SET_Z_VEL",
+					"SET_FLOAT_HEIGHT",
+					"SET_FLOAT_PARAMS",
+					"SET_FLY_HEIGHT",
+					"SET_FLY_KEEP_HEIGHT",
+					"FORCE_FLY_HEIGHT",
+					"WAIT_UNTIL_Z_DISTANCE",
+					"WAIT_UNTIL_Z_ZENITH",
+					"STOP_Z_ZENITH",
+					"FLY_TO_POINT",
+					"MOVE_TO_DIR",
+					"MOVE_TO_LINE",
+					"MOVE_RANDOM",
+					"SET_WALK_ANIMS",
+					"STOP_XY",
+					"JUMP",
+					"JUMP_TO_POINT",
+					"SET_GROUND_CONNECTED",
+					"SET_JUMPING",
+					"SET_Z_GRAVITY_FACTOR",
+					"SET_SIZE",
+					"SET_SPEED",
+					"SET_RELATIVE_SPEED",
+					"SET_ACCEL_SPEED",
+					"SET_STATIC_TIME",
+					"DETACH_TIME_PARENT",
+					"SET_WEIGHT",
+					"SET_FRICTION",
+					"SET_AIR_FRICTION",
+					"SET_TERRAIN_FRICTION_IGNORE",
+					"SET_SHADOW",
+					"SET_Z_BOUNCINESS",
+					"SET_BOUNCINESS",
+					"SET_FACE_FIX",
+					"SET_FACE",
+					"SET_CLOSEST_FACE",
+					"SET_FACE_TO_VEL",
+					"ROTATE_FACE",
+					"SET_FACE_TO_DIR",
+					"SET_FACE_TO_ENTITY",
+					"SET_COLL_TYPE",
+					"SET_COLL_SHAPE",
+					"SET_SLIP_THROUGH",
+					"SHOW_ANIMATION",
+					"WAIT_UNTIL_ANIM_LOOP_END",
+					"SHOW_PART_ANIMATION",
+					"SHOW_RANDOM_ANIMATION",
+					"SHOW_EXTERN_ANIM",
+					"CLEAR_ANIMATION",
+					"SET_COLL_SIZE",
+					"CHANGE_VAR_NUMBER",
+					"SET_RANDOM_VAR_NUMBER",
+					"CHANGE_VAR_BOOL",
+					"CHANGE_VAR_STRING",
+					"CHANGE_VAR_LANG",
+					"SET_ATTRIB_VEC2",
+					"SET_ATTRIB_BOOL",
+					"SET_ATTRIB_STRING",
+					"SET_ATTRIB_NUMBER",
+					"SET_ATTRIB_NUMBER_RANDOM",
+					"SET_ATTRIB_FACE",
+					"SET_ATTRIB_POS",
+					"PLAY_SOUND",
+					"STOP_SOUNDS",
+					"PLAY_RANDOM_SOUND",
+					"HIDE",
+					"HIDE_OTHER",
+					"SET_POS",
+					"ROUND_POSITION",
+					"ADD_Z_POS_DELTA",
+					"TELEPORT_TO_ATTRIB_POS",
+					"INTERPOLATE_POSITION",
+					"Z_INTERPOLATE",
+					"DO_ATTRIB_ACTION",
+					"ADD_ANIM_MOD",
+					"REMOVE_ANIM_MOD",
+					"FOCUS_CAMERA",
+					"RESET_CAMERA",
+					"SET_CAMERA_ZOOM",
+					"RUMBLE_SCREEN",
+					"ADD_SLOW_MOTION",
+					"CLEAR_SLOW_MOTION",
+					"SHOW_EFFECT",
+					"CLEAR_EFFECTS",
+					"ADD_DARKNESS",
+					"CLEAR_DARKNESS",
+					"NAVIGATE_TO_TARGET",
+					"NAVIGATE_ESCAPE_TARGET",
+					"NAVIGATE_SIDEWAYS_TARGET",
+					"NAVIGATE_TO_ENTITY",
+					"NAVIGATE_ESCAPE_ENTITY",
+					"NAVIGATE_DODGE",
+					"NAVIGATE_TO_POINT",
+					"DO_NAVIGATION",
+					"CANCEL_IF_NAVIGATION_FAILED",
+					"SET_ATTRIB_CLOSE_TARGET_POS",
+					"SET_ATTRIB_NAV_TARGET_POS",
+					"ENTER_DOOR",
+					"SET_ZOOM_BLUR",
+					"FADE_OUT_ZOOM_BLUR",
+					"ADD_TEMP_INFLUENCE",
+					"CLEAR_TEMP_INFLUENCE",
+					"SHOW_AR_MSG",
+					"CLEAR_AR_MSG",
+					"SET_SOUNDTYPE",
+					"CHANGE_STAT_MAP_NUMBER",
+					"CIRCLE_ENTITY",
+					"FACE_TO_TARGET",
+					"UNLOCK_ENEMY",
+					"FACE_TO_TARGET_OFFSET",
+					"FACE_TO_TARGET_SPEED",
+					"FACE_ALIGN",
+					"SHOW_THROW_FX",
+					"COMBAT_ART_CHARGE",
+					"MOVE_TO_DISTANCE",
+					"MOVE_TO_PINPOINT",
+					"SET_ATTRIB_CLOSEST_ENTITY",
+					"MOVE_TO_ATTRIB_ENTITY",
+					"SET_COMBATANT_PARTY",
+					"JUMP_TO_TARGET",
+					"JUMP_TARGET_MOVEMENT",
+					"SET_MISSILE_SPEED",
+					"ESCAPE_FROM_TARGET",
+					"CIRCLE_TARGET",
+					"STICK_TO_TARGET",
+					"STICKY_CIRCLE_AROUND",
+					"SET_CIRCLE_AROUND_POS",
+					"TACKLE",
+					"CIRCLE_ATTACK",
+					"COMBAT_SWEEP",
+					"SET_TARGET_Z_VEL",
+					"PUSH_PULL_FORCE",
+					"SET_INVINCIBLE",
+					"MOD_GENERIC_PROXY",
+					"CONNECT_PROXY_TO_TARGET",
+					"DISCONNECT_PROXY_FROM_TARGET",
+					"SET_ELEMENT_FILTER",
+					"DODGE_FREE_LINE",
+					"ENABLE_REACTION",
+					"SET_SPIKE_DAMAGE",
+					"DISABLE_REACTION",
+					"SET_DAMAGE_FACTOR",
+					"SET_HIT_STABLE",
+					"SET_DAMAGE_CEILING",
+					"CLEAR_DAMAGE_CEILING",
+					"SET_ENEMY_STATE",
+					"SHOOT_PROXY",
+					"SET_HIT_PROXY",
+					"SET_PROXY_OWNER_TO_POS",
+					"CLEAR_HIT_PROXY",
+					"SHOOT_PROXY_RANGE",
+					"SHOOT_PROXY_GRID",
+					"STOP_REPEATING_FORCE",
+					"UNSTICK_STICKING_PROXIES",
+					"REMOVE_PROXIES",
+					"FANCY_AIM",
+					"WAIT_UNTIL_PLAYER_ACTION",
+					"SHARE_PROXY_TEMP_TARGET",
+					"WAIT_UNTIL_PROXIES_DONE",
+					"WAIT_UNTIL_COMBAT_TRUE",
+					"WAIT_UNTIL_TRAP_OVER",
+					"WAIT_UNTIL_TARGET_DEFEATED",
+					"SPAWN_BURSTS",
+					"DIRECT_HIT",
+					"CLEAR_STUN_LOCKED",
+					"REGEN_HP",
+					"HEAL_STATUS",
+					"CLEAR_STATUS_BAR",
+					"SET_ENEMY_STATUS_VISIBILITY",
+					"SET_HP_CRITICAL",
+					"REDUCE_HP",
+					"SET_HIT_IGNORE",
+					"WAIT_UNTIL_GUARDED",
+					"ABSORB_BLOCKED_DAMAGE",
+					"ABSORB_DAMAGE",
+					"ABSORB_DAMAGE_VIA_SUM",
+					"CONSUME_SP",
+					"SET_FREE_LINE_CMD",
+					"ADD_SHIELD",
+					"REMOVE_SHIELD",
+					"SPAWN_ASSAULT",
+					"SHOW_COMBAT_MSG",
+					"ADD_TARGET_STUN_LOCK",
+					"THROW_ENERGY_DROPS",
+					"THROW_GENERIC_DROP",
+					"NAVIGATE_TO_SPAWN_POINT",
+					"DO_DAMAGE_MOVEMENT",
+					"COMBAT_IF",
+					"CHANGE_COLLAB_VAR",
+					"SET_COLLAB_BREAK_TYPE",
+					"ASSIGN_COLLAB_POINTS",
+					"SET_ATTRIB_TARGET_VALUE",
+					"SET_COLLAB_ENTITY",
+					"STORE_IN_COLLAB_PARTNER",
+					"CONNECT_HP_TO_STORED_ENEMIES",
+					"CONNECT_HP_TO_TYPES_ENEMIES",
+					"UPDATE_RESPAWN_POINT",
+					"SEND_ENEMY_MSG",
+					"RESET_TRACKER",
+					"RESET_FREQUENCY",
+					"RELEASE_STORED_ENEMIES",
+					"REASSIGN_TARGET",
+					"DESTROY_DESTRUCTIBLES",
+					"SPAWN_ENEMIES",
+					"SPAWN_ENEMY_CLOSEBY",
+					"KILL_ENEMIES",
+					"SELF_DESTRUCT",
+					"SET_TEMP_TARGET",
+					"SET_ATTRIB_TARGET_ENTITY",
+					"SET_CLOSE_TEMP_TARGET",
+					"SET_OWNER_REPLACE_TARGET",
+					"SET_POI_TEMP_TARGET",
+					"SET_PROXY_TEMP_TARGET",
+					"REDUCE_PROXY_HP",
+					"CLEAR_TEMP_TARGET",
+					"CLEAR_PREV_HIT",
+					"CLEAR_TARGET",
+					"DETOUR_COMPRESSOR_THREAT",
+					"ADD_ACTION_BUFF",
+					"MOD_ACTION_BUFF_PARAM",
+					"SET_ATTRIB_POS_COMBAT",
+					"CHANGE_ENEMY_ANNOTATION",
+					"DO_ENEMY_ACTION",
+					"DO_ENEMY_ACTION_INLINE",
+					"SET_AGGRESSION",
+					"SET_ENEMY_ELEMENT_MODE",
+					"SHOW_DREAM_MSG",
+					"RESET_NPC",
+					"APPLY_NPC_CONFIG",
+					"SHOOT_PROXY_PLAYER",
+					"SET_PLAYER_ACTION_BLOCK",
+					"SET_PLAYER_ANIM_SHEET",
+					"CLEAR_PLAYER_ANIM_SHEET",
+					"SET_PLAYER_INVINCIBLE",
+					"PLAYER_ADJUST_FACE",
+					"PLAYER_ADJUST_MOVE_DIR",
+					"PLAYER_MOVE_TO_DIR",
+					"ADD_PLAYER_CAMERA_TARGET",
+					"REMOVE_PLAYER_CAMERA_TARGET",
+					"ADD_PLAYER_SHIELD",
+					"START_ITEM_CONSUME",
+					"SHOW_FOOD_ICON",
+					"CHANGE_FOOD_ICON",
+					"CONSUME_ITEM",
+					"OPEN_CHEST",
+					"ALIGN_PUSH_PULL_POS",
+					"DO_WAVE_TELEPORT",
+					"THROW_BOMB",
+					"RAIN_BOMB",
+					"SHOOT_BUBBLE",
+					"SET_ELEMENT_POLE_TIMER",
+					"PLACE_WAVE_TELEPORT",
+					"PLACE_TESLA_COIL",
+					"PLACE_ELEMENT_SHIELD",
+					"WAIT_UNTIL_ELEMENT_SHIELD_USED",
+					"STOP_PLAYER_ELEMENT_SHIELD",
+					"DO_PLATFORM_SHOCKWAVE",
+					"SET_PARTY_TEMP_TARGET",
+					"CONSUME_PARTY_SANDWICH"
+				],
+				"description": "The action to perform"
+			},
+			"repeating": {
+				"type": "Boolean",
+				"description": "Repeat Action"
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "Wait until action is finished"
+			},
+			"keepState": {
+				"type": "Boolean",
+				"description": "Don't reset entity state after action"
+			},
+			"immediately": {
+				"type": "Boolean",
+				"description": "If true: execute action immediately not interrupting currently running action. Will only execute steps without wait duration."
+			}
+		}
+	},
+	"TELEPORT": {
+		"attributes": {
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"description": "Map to be teleported to"
+			},
+			"marker": {
+				"type": "Marker",
+				"description": "Marker on Map to be teleported to"
+			}
+		}
+	},
+	"IF": {
+		"attributes": {
+			"condition": {
+				"type": "VarCondition",
+				"description": "Condition for IF statement"
+			},
+			"withElse": {
+				"type": "Boolean",
+				"noLabel": true,
+				"description": "With else case."
+			}
+		}
+	},
+	"CHANGE_VAR_NUMBER": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to change"
+			},
+			"changeType": {
+				"type": "String",
+				"description": "Type of modification",
+				"options": {
+					"set": 1,
+					"add": 1,
+					"sub": 1,
+					"mul": 1,
+					"div": 1,
+					"mod": 1
+				}
+			},
+			"value": {
+				"type": "NumberExpression",
+				"description": "Value to modify with"
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"optional": true,
+				"description": "Change Var from within this map. Will replace map. prefix"
+			}
+		}
+	},
+	"SET_RANDOM_VAR_NUMBER": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"withActor": true,
+				"description": "Variable to change"
+			},
+			"min": {
+				"type": "Integer",
+				"description": "Start value"
+			},
+			"max": {
+				"type": "Integer",
+				"description": "End value"
+			}
+		}
+	},
+	"ROUND_VAR_NUMBER": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"withActor": true,
+				"description": "Variable to round"
+			},
+			"roundType": {
+				"type": "String",
+				"description": "Type of round",
+				"options": {
+					"round": 1,
+					"floor": 1,
+					"ceil": 1
+				}
+			},
+			"digits": {
+				"type": "Integer",
+				"description": "Number of decimals to round to, 0 for whole number"
+			}
+		}
+	},
+	"SET_VAR_TIME": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to store current timestamp in milliseconds"
+			}
+		}
+	},
+	"CHANGE_VAR_VEC2": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to change"
+			},
+			"changeType": {
+				"type": "String",
+				"description": "Type of modification",
+				"options": {
+					"set": 1,
+					"add": 1,
+					"sub": 1,
+					"mul": 1,
+					"div": 1
+				}
+			},
+			"value": {
+				"type": "Vec2Expression",
+				"description": "Value to modify with"
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"optional": true,
+				"description": "Change Var from within this map. Will replace map. prefix"
+			}
+		}
+	},
+	"CHANGE_VAR_VEC3": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to change"
+			},
+			"changeType": {
+				"type": "String",
+				"description": "Type of modification",
+				"options": {
+					"set": 1,
+					"add": 1,
+					"sub": 1,
+					"mul": 1,
+					"div": 1
+				}
+			},
+			"value": {
+				"type": "Vec3Expression",
+				"description": "Value to modify with"
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"optional": true,
+				"description": "Change Var from within this map. Will replace map. prefix"
+			}
+		}
+	},
+	"CHANGE_VAR_BOOL": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to change"
+			},
+			"changeType": {
+				"type": "String",
+				"description": "Type of modification",
+				"options": {
+					"set": 1,
+					"and": 1,
+					"or": 1,
+					"xor": 1
+				}
+			},
+			"value": {
+				"type": "BooleanExpression",
+				"description": "Value to modify with"
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"optional": true,
+				"description": "Change Var from within this map. Will replace map. prefix"
+			}
+		}
+	},
+	"CLEAR_TEMP_STORAGE": {
+		"attributes": {}
+	},
+	"CHANGE_VAR_STRING": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to change"
+			},
+			"changeType": {
+				"type": "String",
+				"description": "Type of modification",
+				"options": {
+					"set": 1,
+					"append": 1,
+					"prepend": 2
+				}
+			},
+			"value": {
+				"type": "StringExpression",
+				"description": "Value to modify with"
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"optional": true,
+				"description": "Change Var from within this map. Will replace map. prefix"
+			}
+		}
+	},
+	"CHANGE_VAR_LANG": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to change"
+			},
+			"changeType": {
+				"type": "String",
+				"description": "Type of modification",
+				"options": {
+					"set": 1,
+					"append": 1
+				}
+			},
+			"value": {
+				"type": "LangLabel",
+				"description": "Value to modify with"
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"optional": true,
+				"description": "Change Var from within this map. Will replace map. prefix"
+			}
+		}
+	},
+	"SET_ATTRIB_VEC2": {
+		"attributes": {
+			"actor": {
+				"type": "Actor",
+				"description": "Actor to change"
+			},
+			"name": {
+				"type": "String",
+				"description": "Name of enemy attribute to set"
+			},
+			"value": {
+				"type": "Vec2Expression",
+				"pointSelect": true,
+				"description": "Vec2 value to be set"
+			}
+		}
+	},
+	"SET_ATTRIB_VEC3": {
+		"attributes": {
+			"actor": {
+				"type": "Actor",
+				"description": "Actor to change"
+			},
+			"name": {
+				"type": "String",
+				"description": "Name of actor attribute to set"
+			},
+			"value": {
+				"type": "Vec3Expression",
+				"pointSelect": true,
+				"description": "Vec3 value to be set"
+			}
+		}
+	},
+	"SET_ATTRIB_STRING": {
+		"attributes": {
+			"actor": {
+				"type": "Actor",
+				"description": "Actor to change"
+			},
+			"name": {
+				"type": "String",
+				"description": "Name of enemy attribute to set"
+			},
+			"value": {
+				"type": "StringExpression",
+				"description": "String value to be set"
+			}
+		}
+	},
+	"PLAY_SOUND": {
+		"attributes": {
+			"sound": {
+				"type": "SoundT",
+				"description": "URL of sound."
+			},
+			"volume": {
+				"type": "Number",
+				"default": 1,
+				"description": "The volume. Value between 0 and 1."
+			},
+			"variance": {
+				"type": "Number",
+				"optional": true,
+				"description": "Variance of sound source"
+			},
+			"position": {
+				"type": "Vec2",
+				"pointSelect": true,
+				"optional": true,
+				"description": "The position to play the sound at."
+			},
+			"name": {
+				"type": "String",
+				"description": "A name for the sound, is only valid if loop is true."
+			},
+			"loop": {
+				"type": "Boolean",
+				"description": "True if the sound should loop. <i>EXPERIMENTAL!</i>"
+			},
+			"offset": {
+				"type": "Number",
+				"description": "Offset to start the sound at. <i>EXPERIMENTAL!</i>"
+			},
+			"startTime": {
+				"type": "Number",
+				"description": "Time to wait before playing the sound. <i>EXPERIMENTAL!</i>"
+			},
+			"speed": {
+				"type": "Number",
+				"optional": true,
+				"description": "Playback speed. 1=default speed. 0.5=half speed."
+			}
+		}
+	},
+	"STOP_SOUND": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "The of the sound to stop"
+			}
+		}
+	},
+	"SET_MOVING_LAYER_STOP": {
+		"attributes": {
+			"stopped": {
+				"type": "Boolean",
+				"description": "If true: stop moving layers"
+			}
+		}
+	},
+	"CONSOLE_LOG": {
+		"attributes": {
+			"text": {
+				"type": "String",
+				"description": "The text to display on the console. "
+			},
+			"consoleType": {
+				"type": "String",
+				"description": "The type of the console log.",
+				"options": {
+					"LOG": 0,
+					"WARN": 0,
+					"DEBUG": 0
+				}
+			}
+		}
+	},
+	"PLAY_BGM": {
+		"attributes": {
+			"bgm": {
+				"type": "String",
+				"description": "Background Music to play",
+				"options": {
+					"silence": null,
+					"tutorial": {
+						"path": "media/bgm/muCargohold.mp3",
+						"loopEnd": 124.364,
+						"volume": 0.5,
+						"introPath": "media/bgm/muCargohold-i.mp3",
+						"introEnd": 3.272
+					},
+					"intro": {
+						"path": "media/bgm/muAwakened.mp3",
+						"loopEnd": 130.068,
+						"volume": 0.5
+					},
+					"short": {
+						"path": "media/bgm/short.mp3",
+						"loopEnd": 5,
+						"volume": 0.5
+					},
+					"tutorial-battle": {
+						"path": "media/bgm/muBattle1.mp3",
+						"loopEnd": 61.736,
+						"volume": 0.5,
+						"introPath": "media/bgm/muBattle1-i.mp3",
+						"introEnd": 0.385
+					},
+					"challenge": {
+						"path": "media/bgm/muChallenge1.mp3",
+						"loopEnd": 89.6,
+						"volume": 0.5,
+						"introPath": "media/bgm/muChallenge1-i.mp3",
+						"introEnd": 2.8
+					},
+					"title": {
+						"path": "media/bgm/muTitle.mp3",
+						"loopEnd": 36.099,
+						"volume": 0.5
+					},
+					"cargoship-exterior": {
+						"path": "media/bgm/muSolar.mp3",
+						"loopEnd": 93.658,
+						"volume": 0.5
+					},
+					"lolfanfare": {
+						"path": "media/bgm/lolfanfare.mp3",
+						"loopEnd": 5.8,
+						"volume": 0.5
+					},
+					"landmark": {
+						"path": "media/sound/hud/landmark-discovery.mp3",
+						"loopEnd": 3,
+						"volume": 0.5
+					},
+					"ability-got": {
+						"path": "media/bgm/ability-got.mp3",
+						"loopEnd": 1.5,
+						"volume": 0.5
+					},
+					"exposition": {
+						"path": "media/bgm/muCrossworlds.mp3",
+						"loopEnd": 83.173,
+						"volume": 0.5
+					},
+					"designer": {
+						"path": "media/bgm/muAvatar.mp3",
+						"loopEnd": 72,
+						"volume": 0.5,
+						"introPath": "media/bgm/muAvatar-i.mp3",
+						"introEnd": 6
+					},
+					"challenge2": {
+						"path": "media/bgm/muChallenge2.mp3",
+						"loopEnd": 65.581,
+						"volume": 0.5,
+						"introPath": "media/bgm/muChallenge2-i.mp3",
+						"introEnd": 5.581
+					},
+					"puzzle-pg": {
+						"path": "media/bgm/puzzle-bgm.mp3",
+						"loopEnd": 81,
+						"volume": 0.5
+					},
+					"bossbattle1": {
+						"path": "media/bgm/muBossbattle.mp3",
+						"loopEnd": 59.823,
+						"volume": 0.5,
+						"introPath": "media/bgm/muBossbattle-i.mp3",
+						"introEnd": 11.823
+					},
+					"escape": {
+						"path": "media/bgm/muEscape.mp3",
+						"loopEnd": 55,
+						"volume": 0.5,
+						"introPath": "media/bgm/muEscape-i.mp3",
+						"introEnd": 2.666
+					},
+					"crosscounter": {
+						"path": "media/bgm/muCrosscounter.mp3",
+						"loopEnd": 42.352,
+						"volume": 0.5,
+						"introPath": "media/bgm/muCrosscounter-i.mp3",
+						"introEnd": 8.823
+					},
+					"oldHideout1": {
+						"path": "media/bgm/muMysterious.mp3",
+						"loopEnd": 42.666,
+						"volume": 0.5
+					},
+					"oldHideoutBattle": {
+						"path": "media/bgm/muFiercebattle.mp3",
+						"loopEnd": 57.6,
+						"volume": 0.5,
+						"introPath": "media/bgm/muFiercebattle-i.mp3",
+						"introEnd": 2.742
+					},
+					"oldHideoutEnding": {
+						"path": "media/bgm/muDistantfuture.mp3",
+						"loopEnd": 27,
+						"volume": 0.5
+					},
+					"autumnsRise": {
+						"path": "media/bgm/muAutumnsrise.mp3",
+						"loopEnd": 151.117,
+						"volume": 0.5
+					},
+					"fieldBattle": {
+						"path": "media/bgm/muBattle2.mp3",
+						"loopEnd": 122.482,
+						"volume": 0.5
+					},
+					"rhombusDungeon": {
+						"path": "media/bgm/muRhombusdungeon.mp3",
+						"loopEnd": 60,
+						"volume": 0.5
+					},
+					"rookieHarbor": {
+						"path": "media/bgm/muRookie.mp3",
+						"loopEnd": 61.832,
+						"volume": 0.5
+					},
+					"firstScholars": {
+						"path": "media/bgm/muFirstscholars.mp3",
+						"loopEnd": 84.857,
+						"volume": 0.5
+					},
+					"bergenTrail": {
+						"path": "media/bgm/muBergentrail.mp3",
+						"loopEnd": 81,
+						"volume": 0.5,
+						"introPath": "media/bgm/muBergentrail-i.mp3",
+						"introEnd": 8
+					},
+					"rhombusSquare": {
+						"path": "media/bgm/muNewcomer.mp3",
+						"loopEnd": 64.477,
+						"volume": 0.5
+					},
+					"apolloTheme": {
+						"path": "media/bgm/muApollo.mp3",
+						"loopEnd": 44.689,
+						"volume": 0.5,
+						"introPath": "media/bgm/muApollo-i.mp3",
+						"introEnd": 10.758
+					},
+					"coldDungeon": {
+						"path": "media/bgm/muTemplemine.mp3",
+						"loopEnd": 83.076,
+						"volume": 0.5
+					},
+					"bergenVillage": {
+						"path": "media/bgm/muBergenvillage.mp3",
+						"loopEnd": 98.331,
+						"volume": 0.5
+					},
+					"heatArea": {
+						"path": "media/bgm/muMaroonvalley.mp3",
+						"loopEnd": 90.666,
+						"volume": 0.5
+					},
+					"heatVillage": {
+						"path": "media/bgm/muBakiikum.mp3",
+						"loopEnd": 104.873,
+						"volume": 0.5
+					},
+					"heatDungeon": {
+						"path": "media/bgm/muTemplevalley.mp3",
+						"loopEnd": 110.608,
+						"volume": 0.5
+					},
+					"shockDungeon": {
+						"path": "media/bgm/muTemplethunder.mp3",
+						"loopEnd": 119.999,
+						"volume": 0.5
+					},
+					"waveDungeon": {
+						"path": "media/bgm/muTemplelake.mp3",
+						"loopEnd": 130.487,
+						"volume": 0.5
+					},
+					"treeDungeon": {
+						"path": "media/bgm/muTempletree.mp3",
+						"loopEnd": 110.769,
+						"volume": 0.5
+					},
+					"jungle": {
+						"path": "media/bgm/muGarden.mp3",
+						"loopEnd": 112,
+						"volume": 0.5
+					},
+					"emilie": {
+						"path": "media/bgm/muValse.mp3",
+						"loopEnd": 62.905,
+						"volume": 0.5,
+						"introPath": "media/bgm/muValse-i.mp3",
+						"introEnd": 2.167
+					},
+					"basinKeep": {
+						"path": "media/bgm/muBasinkeep.mp3",
+						"loopEnd": 102.893,
+						"volume": 0.5
+					},
+					"casual": {
+						"path": "media/bgm/muTravel.mp3",
+						"loopEnd": 60,
+						"volume": 0.5
+					},
+					"briefing": {
+						"path": "media/bgm/muBriefing.mp3",
+						"loopEnd": 79.592,
+						"volume": 0.5
+					},
+					"ponder": {
+						"path": "media/bgm/muImprovising.mp3",
+						"loopEnd": 100.285,
+						"volume": 0.5
+					},
+					"lea": {
+						"path": "media/bgm/muLea.mp3",
+						"loopEnd": 122.465,
+						"volume": 0.5
+					},
+					"dreamsequence-intro": {
+						"path": "media/bgm/muDream1.mp3",
+						"loopEnd": 19.672,
+						"volume": 0.5
+					},
+					"dreamsequence": {
+						"path": "media/bgm/muDream3.mp3",
+						"loopEnd": 137.704,
+						"volume": 0.5,
+						"introPath": "media/bgm/muDream2.mp3",
+						"introEnd": 19.672
+					},
+					"sorrow": {
+						"path": "media/bgm/muShock.mp3",
+						"loopEnd": 87.887,
+						"volume": 0.5,
+						"introPath": "media/bgm/muShock-i.mp3",
+						"introEnd": 39.718
+					},
+					"raidTheme": {
+						"path": "media/bgm/muRaid.mp3",
+						"loopEnd": 229.5,
+						"volume": 0.5,
+						"introPath": "media/bgm/muRaid-i.mp3",
+						"introEnd": 12.614
+					},
+					"forestField": {
+						"path": "media/bgm/muSapphireridge.mp3",
+						"loopEnd": 105.404,
+						"volume": 0.5,
+						"introPath": "media/bgm/muSapphireridge-i.mp3",
+						"introEnd": 9.792
+					},
+					"designerBoss1": {
+						"path": "media/bgm/muBlueavatar.mp3",
+						"loopEnd": 127.059,
+						"volume": 0.6,
+						"introPath": "media/bgm/muBlueavatar-i.mp3",
+						"introEnd": 25.038
+					},
+					"waiting": {
+						"path": "media/bgm/muImprisoned.mp3",
+						"loopEnd": 108.845,
+						"volume": 0.5
+					},
+					"aridField": {
+						"path": "media/bgm/muVermillion.mp3",
+						"loopEnd": 133.686,
+						"volume": 0.5
+					},
+					"aridBattle": {
+						"path": "media/bgm/muBattle3.mp3",
+						"loopEnd": 104.728,
+						"volume": 0.5,
+						"introPath": "media/bgm/muBattle3-i.mp3",
+						"introEnd": 0.74
+					},
+					"shizukaConfrontation": {
+						"path": "media/bgm/muConfrontation.mp3",
+						"loopEnd": 43.522,
+						"volume": 0.5,
+						"introPath": "media/bgm/muConfrontation-i.mp3",
+						"introEnd": 183.238
+					},
+					"evoDungeon1": {
+						"path": "media/bgm/muVermillionDungeon.mp3",
+						"loopEnd": 80.842,
+						"volume": 0.5
+					},
+					"evoDungeon2": {
+						"path": "media/bgm/muVermillionDungeon2.mp3",
+						"loopEnd": 91.579,
+						"volume": 0.5,
+						"introPath": "media/bgm/muVermillionDungeon2-i.mp3",
+						"introEnd": 1.578
+					},
+					"evoEscape": {
+						"path": "media/bgm/muEscape2.mp3",
+						"loopEnd": 93.563,
+						"volume": 0.5,
+						"introPath": "media/bgm/muEscape2-i.mp3",
+						"introEnd": 9.376
+					},
+					"sergeyExposition": {
+						"path": "media/bgm/muPastevents.mp3",
+						"loopEnd": 123.887,
+						"volume": 0.5
+					},
+					"schneiderTour": {
+						"path": "media/bgm/muImprovising.mp3",
+						"loopEnd": 100.285,
+						"volume": 0.5
+					},
+					"infiltration": {
+						"path": "media/bgm/muInfiltration.mp3",
+						"loopEnd": 113.777,
+						"volume": 0.5
+					},
+					"sadness": {
+						"path": "media/bgm/muSadtheme.mp3",
+						"loopEnd": 106.751,
+						"volume": 0.5
+					},
+					"oldHideout2": {
+						"path": "media/bgm/muOldhideout.mp3",
+						"loopEnd": 119.365,
+						"volume": 0.5
+					},
+					"trueIntentions": {
+						"path": "media/bgm/muTrueintention.mp3",
+						"loopEnd": 164.383,
+						"volume": 0.5,
+						"introPath": "media/bgm/muTrueintention-i.mp3",
+						"introEnd": 0
+					},
+					"rhombusSquare2": {
+						"path": "media/bgm/muRhombussquare.mp3",
+						"loopEnd": 124.956,
+						"volume": 0.5,
+						"introPath": "media/bgm/muRhombussquare-i.mp3",
+						"introEnd": 10.06
+					},
+					"autumnsFall": {
+						"path": "media/bgm/muAutumnsfall.mp3",
+						"loopEnd": 132.954,
+						"volume": 0.5
+					},
+					"snailBattle1": {
+						"path": "media/bgm/muExponential.mp3",
+						"loopEnd": 50.261,
+						"volume": 0.6,
+						"introPath": "media/bgm/muExponential-i.mp3",
+						"introEnd": 5.34
+					},
+					"snailBattle2": {
+						"path": "media/bgm/muExponentialpart2.mp3",
+						"loopEnd": 130.68,
+						"volume": 0.6,
+						"introPath": "media/bgm/muExponentialpart2-i.mp3",
+						"introEnd": 2.513
+					},
+					"lastDungeon": {
+						"path": "media/bgm/muVermillionDungeon3.mp3",
+						"loopEnd": 164.359,
+						"volume": 0.5
+					},
+					"shizuka": {
+						"path": "media/bgm/muShizuka.mp3",
+						"loopEnd": 86.069,
+						"volume": 0.5,
+						"introPath": "media/bgm/muShizuka-i.mp3",
+						"introEnd": 15.967
+					},
+					"finalBoss": {
+						"path": "media/bgm/muUltimate.mp3",
+						"loopEnd": 264.334,
+						"volume": 0.6,
+						"introPath": "media/bgm/muUltimate-i.mp3",
+						"introEnd": 32.792
+					},
+					"credits": {
+						"introPath": "media/bgm/muEnding.mp3",
+						"introEnd": 244,
+						"path": "media/bgm/muLea.mp3",
+						"loopEnd": 122.465,
+						"volume": 0.5
+					},
+					"arena": {
+						"introPath": "media/bgm/muArena-i.mp3",
+						"introEnd": 1.237,
+						"path": "media/bgm/muArena.mp3",
+						"loopEnd": 98.969,
+						"volume": 0.5
+					},
+					"s-rank": {
+						"introPath": "media/bgm/muSrank-i.mp3",
+						"introEnd": 16,
+						"path": "media/bgm/muSrank.mp3",
+						"loopEnd": 157.333,
+						"volume": 0.5
+					},
+					"bossRush": {
+						"introPath": "media/bgm/muBossrush-i.mp3",
+						"introEnd": 1.434,
+						"path": "media/bgm/muBossrush.mp3",
+						"loopEnd": 154.182,
+						"volume": 0.5
+					},
+					"glitchArea": {
+						"introPath": "media/bgm/muGlitch-i.mp3",
+						"introEnd": 30.629,
+						"path": "media/bgm/muGlitch.mp3",
+						"loopEnd": 82.137,
+						"volume": 0.5
+					}
+				}
+			},
+			"volume": {
+				"type": "Number",
+				"description": "Volume of music (0 = silent, 1 = max volume)"
+			},
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			}
+		}
+	},
+	"PAUSE_BGM": {
+		"attributes": {
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			}
+		}
+	},
+	"RESUME_BGM": {
+		"attributes": {
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			}
+		}
+	},
+	"PUSH_BGM": {
+		"attributes": {
+			"bgm": {
+				"type": "String",
+				"description": "Background Music to play",
+				"options": {
+					"silence": null,
+					"tutorial": {
+						"path": "media/bgm/muCargohold.mp3",
+						"loopEnd": 124.364,
+						"volume": 0.5,
+						"introPath": "media/bgm/muCargohold-i.mp3",
+						"introEnd": 3.272
+					},
+					"intro": {
+						"path": "media/bgm/muAwakened.mp3",
+						"loopEnd": 130.068,
+						"volume": 0.5
+					},
+					"short": {
+						"path": "media/bgm/short.mp3",
+						"loopEnd": 5,
+						"volume": 0.5
+					},
+					"tutorial-battle": {
+						"path": "media/bgm/muBattle1.mp3",
+						"loopEnd": 61.736,
+						"volume": 0.5,
+						"introPath": "media/bgm/muBattle1-i.mp3",
+						"introEnd": 0.385
+					},
+					"challenge": {
+						"path": "media/bgm/muChallenge1.mp3",
+						"loopEnd": 89.6,
+						"volume": 0.5,
+						"introPath": "media/bgm/muChallenge1-i.mp3",
+						"introEnd": 2.8
+					},
+					"title": {
+						"path": "media/bgm/muTitle.mp3",
+						"loopEnd": 36.099,
+						"volume": 0.5
+					},
+					"cargoship-exterior": {
+						"path": "media/bgm/muSolar.mp3",
+						"loopEnd": 93.658,
+						"volume": 0.5
+					},
+					"lolfanfare": {
+						"path": "media/bgm/lolfanfare.mp3",
+						"loopEnd": 5.8,
+						"volume": 0.5
+					},
+					"landmark": {
+						"path": "media/sound/hud/landmark-discovery.mp3",
+						"loopEnd": 3,
+						"volume": 0.5
+					},
+					"ability-got": {
+						"path": "media/bgm/ability-got.mp3",
+						"loopEnd": 1.5,
+						"volume": 0.5
+					},
+					"exposition": {
+						"path": "media/bgm/muCrossworlds.mp3",
+						"loopEnd": 83.173,
+						"volume": 0.5
+					},
+					"designer": {
+						"path": "media/bgm/muAvatar.mp3",
+						"loopEnd": 72,
+						"volume": 0.5,
+						"introPath": "media/bgm/muAvatar-i.mp3",
+						"introEnd": 6
+					},
+					"challenge2": {
+						"path": "media/bgm/muChallenge2.mp3",
+						"loopEnd": 65.581,
+						"volume": 0.5,
+						"introPath": "media/bgm/muChallenge2-i.mp3",
+						"introEnd": 5.581
+					},
+					"puzzle-pg": {
+						"path": "media/bgm/puzzle-bgm.mp3",
+						"loopEnd": 81,
+						"volume": 0.5
+					},
+					"bossbattle1": {
+						"path": "media/bgm/muBossbattle.mp3",
+						"loopEnd": 59.823,
+						"volume": 0.5,
+						"introPath": "media/bgm/muBossbattle-i.mp3",
+						"introEnd": 11.823
+					},
+					"escape": {
+						"path": "media/bgm/muEscape.mp3",
+						"loopEnd": 55,
+						"volume": 0.5,
+						"introPath": "media/bgm/muEscape-i.mp3",
+						"introEnd": 2.666
+					},
+					"crosscounter": {
+						"path": "media/bgm/muCrosscounter.mp3",
+						"loopEnd": 42.352,
+						"volume": 0.5,
+						"introPath": "media/bgm/muCrosscounter-i.mp3",
+						"introEnd": 8.823
+					},
+					"oldHideout1": {
+						"path": "media/bgm/muMysterious.mp3",
+						"loopEnd": 42.666,
+						"volume": 0.5
+					},
+					"oldHideoutBattle": {
+						"path": "media/bgm/muFiercebattle.mp3",
+						"loopEnd": 57.6,
+						"volume": 0.5,
+						"introPath": "media/bgm/muFiercebattle-i.mp3",
+						"introEnd": 2.742
+					},
+					"oldHideoutEnding": {
+						"path": "media/bgm/muDistantfuture.mp3",
+						"loopEnd": 27,
+						"volume": 0.5
+					},
+					"autumnsRise": {
+						"path": "media/bgm/muAutumnsrise.mp3",
+						"loopEnd": 151.117,
+						"volume": 0.5
+					},
+					"fieldBattle": {
+						"path": "media/bgm/muBattle2.mp3",
+						"loopEnd": 122.482,
+						"volume": 0.5
+					},
+					"rhombusDungeon": {
+						"path": "media/bgm/muRhombusdungeon.mp3",
+						"loopEnd": 60,
+						"volume": 0.5
+					},
+					"rookieHarbor": {
+						"path": "media/bgm/muRookie.mp3",
+						"loopEnd": 61.832,
+						"volume": 0.5
+					},
+					"firstScholars": {
+						"path": "media/bgm/muFirstscholars.mp3",
+						"loopEnd": 84.857,
+						"volume": 0.5
+					},
+					"bergenTrail": {
+						"path": "media/bgm/muBergentrail.mp3",
+						"loopEnd": 81,
+						"volume": 0.5,
+						"introPath": "media/bgm/muBergentrail-i.mp3",
+						"introEnd": 8
+					},
+					"rhombusSquare": {
+						"path": "media/bgm/muNewcomer.mp3",
+						"loopEnd": 64.477,
+						"volume": 0.5
+					},
+					"apolloTheme": {
+						"path": "media/bgm/muApollo.mp3",
+						"loopEnd": 44.689,
+						"volume": 0.5,
+						"introPath": "media/bgm/muApollo-i.mp3",
+						"introEnd": 10.758
+					},
+					"coldDungeon": {
+						"path": "media/bgm/muTemplemine.mp3",
+						"loopEnd": 83.076,
+						"volume": 0.5
+					},
+					"bergenVillage": {
+						"path": "media/bgm/muBergenvillage.mp3",
+						"loopEnd": 98.331,
+						"volume": 0.5
+					},
+					"heatArea": {
+						"path": "media/bgm/muMaroonvalley.mp3",
+						"loopEnd": 90.666,
+						"volume": 0.5
+					},
+					"heatVillage": {
+						"path": "media/bgm/muBakiikum.mp3",
+						"loopEnd": 104.873,
+						"volume": 0.5
+					},
+					"heatDungeon": {
+						"path": "media/bgm/muTemplevalley.mp3",
+						"loopEnd": 110.608,
+						"volume": 0.5
+					},
+					"shockDungeon": {
+						"path": "media/bgm/muTemplethunder.mp3",
+						"loopEnd": 119.999,
+						"volume": 0.5
+					},
+					"waveDungeon": {
+						"path": "media/bgm/muTemplelake.mp3",
+						"loopEnd": 130.487,
+						"volume": 0.5
+					},
+					"treeDungeon": {
+						"path": "media/bgm/muTempletree.mp3",
+						"loopEnd": 110.769,
+						"volume": 0.5
+					},
+					"jungle": {
+						"path": "media/bgm/muGarden.mp3",
+						"loopEnd": 112,
+						"volume": 0.5
+					},
+					"emilie": {
+						"path": "media/bgm/muValse.mp3",
+						"loopEnd": 62.905,
+						"volume": 0.5,
+						"introPath": "media/bgm/muValse-i.mp3",
+						"introEnd": 2.167
+					},
+					"basinKeep": {
+						"path": "media/bgm/muBasinkeep.mp3",
+						"loopEnd": 102.893,
+						"volume": 0.5
+					},
+					"casual": {
+						"path": "media/bgm/muTravel.mp3",
+						"loopEnd": 60,
+						"volume": 0.5
+					},
+					"briefing": {
+						"path": "media/bgm/muBriefing.mp3",
+						"loopEnd": 79.592,
+						"volume": 0.5
+					},
+					"ponder": {
+						"path": "media/bgm/muImprovising.mp3",
+						"loopEnd": 100.285,
+						"volume": 0.5
+					},
+					"lea": {
+						"path": "media/bgm/muLea.mp3",
+						"loopEnd": 122.465,
+						"volume": 0.5
+					},
+					"dreamsequence-intro": {
+						"path": "media/bgm/muDream1.mp3",
+						"loopEnd": 19.672,
+						"volume": 0.5
+					},
+					"dreamsequence": {
+						"path": "media/bgm/muDream3.mp3",
+						"loopEnd": 137.704,
+						"volume": 0.5,
+						"introPath": "media/bgm/muDream2.mp3",
+						"introEnd": 19.672
+					},
+					"sorrow": {
+						"path": "media/bgm/muShock.mp3",
+						"loopEnd": 87.887,
+						"volume": 0.5,
+						"introPath": "media/bgm/muShock-i.mp3",
+						"introEnd": 39.718
+					},
+					"raidTheme": {
+						"path": "media/bgm/muRaid.mp3",
+						"loopEnd": 229.5,
+						"volume": 0.5,
+						"introPath": "media/bgm/muRaid-i.mp3",
+						"introEnd": 12.614
+					},
+					"forestField": {
+						"path": "media/bgm/muSapphireridge.mp3",
+						"loopEnd": 105.404,
+						"volume": 0.5,
+						"introPath": "media/bgm/muSapphireridge-i.mp3",
+						"introEnd": 9.792
+					},
+					"designerBoss1": {
+						"path": "media/bgm/muBlueavatar.mp3",
+						"loopEnd": 127.059,
+						"volume": 0.6,
+						"introPath": "media/bgm/muBlueavatar-i.mp3",
+						"introEnd": 25.038
+					},
+					"waiting": {
+						"path": "media/bgm/muImprisoned.mp3",
+						"loopEnd": 108.845,
+						"volume": 0.5
+					},
+					"aridField": {
+						"path": "media/bgm/muVermillion.mp3",
+						"loopEnd": 133.686,
+						"volume": 0.5
+					},
+					"aridBattle": {
+						"path": "media/bgm/muBattle3.mp3",
+						"loopEnd": 104.728,
+						"volume": 0.5,
+						"introPath": "media/bgm/muBattle3-i.mp3",
+						"introEnd": 0.74
+					},
+					"shizukaConfrontation": {
+						"path": "media/bgm/muConfrontation.mp3",
+						"loopEnd": 43.522,
+						"volume": 0.5,
+						"introPath": "media/bgm/muConfrontation-i.mp3",
+						"introEnd": 183.238
+					},
+					"evoDungeon1": {
+						"path": "media/bgm/muVermillionDungeon.mp3",
+						"loopEnd": 80.842,
+						"volume": 0.5
+					},
+					"evoDungeon2": {
+						"path": "media/bgm/muVermillionDungeon2.mp3",
+						"loopEnd": 91.579,
+						"volume": 0.5,
+						"introPath": "media/bgm/muVermillionDungeon2-i.mp3",
+						"introEnd": 1.578
+					},
+					"evoEscape": {
+						"path": "media/bgm/muEscape2.mp3",
+						"loopEnd": 93.563,
+						"volume": 0.5,
+						"introPath": "media/bgm/muEscape2-i.mp3",
+						"introEnd": 9.376
+					},
+					"sergeyExposition": {
+						"path": "media/bgm/muPastevents.mp3",
+						"loopEnd": 123.887,
+						"volume": 0.5
+					},
+					"schneiderTour": {
+						"path": "media/bgm/muImprovising.mp3",
+						"loopEnd": 100.285,
+						"volume": 0.5
+					},
+					"infiltration": {
+						"path": "media/bgm/muInfiltration.mp3",
+						"loopEnd": 113.777,
+						"volume": 0.5
+					},
+					"sadness": {
+						"path": "media/bgm/muSadtheme.mp3",
+						"loopEnd": 106.751,
+						"volume": 0.5
+					},
+					"oldHideout2": {
+						"path": "media/bgm/muOldhideout.mp3",
+						"loopEnd": 119.365,
+						"volume": 0.5
+					},
+					"trueIntentions": {
+						"path": "media/bgm/muTrueintention.mp3",
+						"loopEnd": 164.383,
+						"volume": 0.5,
+						"introPath": "media/bgm/muTrueintention-i.mp3",
+						"introEnd": 0
+					},
+					"rhombusSquare2": {
+						"path": "media/bgm/muRhombussquare.mp3",
+						"loopEnd": 124.956,
+						"volume": 0.5,
+						"introPath": "media/bgm/muRhombussquare-i.mp3",
+						"introEnd": 10.06
+					},
+					"autumnsFall": {
+						"path": "media/bgm/muAutumnsfall.mp3",
+						"loopEnd": 132.954,
+						"volume": 0.5
+					},
+					"snailBattle1": {
+						"path": "media/bgm/muExponential.mp3",
+						"loopEnd": 50.261,
+						"volume": 0.6,
+						"introPath": "media/bgm/muExponential-i.mp3",
+						"introEnd": 5.34
+					},
+					"snailBattle2": {
+						"path": "media/bgm/muExponentialpart2.mp3",
+						"loopEnd": 130.68,
+						"volume": 0.6,
+						"introPath": "media/bgm/muExponentialpart2-i.mp3",
+						"introEnd": 2.513
+					},
+					"lastDungeon": {
+						"path": "media/bgm/muVermillionDungeon3.mp3",
+						"loopEnd": 164.359,
+						"volume": 0.5
+					},
+					"shizuka": {
+						"path": "media/bgm/muShizuka.mp3",
+						"loopEnd": 86.069,
+						"volume": 0.5,
+						"introPath": "media/bgm/muShizuka-i.mp3",
+						"introEnd": 15.967
+					},
+					"finalBoss": {
+						"path": "media/bgm/muUltimate.mp3",
+						"loopEnd": 264.334,
+						"volume": 0.6,
+						"introPath": "media/bgm/muUltimate-i.mp3",
+						"introEnd": 32.792
+					},
+					"credits": {
+						"introPath": "media/bgm/muEnding.mp3",
+						"introEnd": 244,
+						"path": "media/bgm/muLea.mp3",
+						"loopEnd": 122.465,
+						"volume": 0.5
+					},
+					"arena": {
+						"introPath": "media/bgm/muArena-i.mp3",
+						"introEnd": 1.237,
+						"path": "media/bgm/muArena.mp3",
+						"loopEnd": 98.969,
+						"volume": 0.5
+					},
+					"s-rank": {
+						"introPath": "media/bgm/muSrank-i.mp3",
+						"introEnd": 16,
+						"path": "media/bgm/muSrank.mp3",
+						"loopEnd": 157.333,
+						"volume": 0.5
+					},
+					"bossRush": {
+						"introPath": "media/bgm/muBossrush-i.mp3",
+						"introEnd": 1.434,
+						"path": "media/bgm/muBossrush.mp3",
+						"loopEnd": 154.182,
+						"volume": 0.5
+					},
+					"glitchArea": {
+						"introPath": "media/bgm/muGlitch-i.mp3",
+						"introEnd": 30.629,
+						"path": "media/bgm/muGlitch.mp3",
+						"loopEnd": 82.137,
+						"volume": 0.5
+					}
+				}
+			},
+			"volume": {
+				"type": "Number",
+				"description": "Volume of music (0 = silent, 1 = max volume)"
+			},
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			}
+		}
+	},
+	"POP_BGM": {
+		"attributes": {
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			}
+		}
+	},
+	"PLAY_IN_BETWEEN_BGM": {
+		"attributes": {
+			"bgm": {
+				"type": "String",
+				"description": "Background Music to play only once",
+				"options": {
+					"silence": null,
+					"tutorial": {
+						"path": "media/bgm/muCargohold.mp3",
+						"loopEnd": 124.364,
+						"volume": 0.5,
+						"introPath": "media/bgm/muCargohold-i.mp3",
+						"introEnd": 3.272
+					},
+					"intro": {
+						"path": "media/bgm/muAwakened.mp3",
+						"loopEnd": 130.068,
+						"volume": 0.5
+					},
+					"short": {
+						"path": "media/bgm/short.mp3",
+						"loopEnd": 5,
+						"volume": 0.5
+					},
+					"tutorial-battle": {
+						"path": "media/bgm/muBattle1.mp3",
+						"loopEnd": 61.736,
+						"volume": 0.5,
+						"introPath": "media/bgm/muBattle1-i.mp3",
+						"introEnd": 0.385
+					},
+					"challenge": {
+						"path": "media/bgm/muChallenge1.mp3",
+						"loopEnd": 89.6,
+						"volume": 0.5,
+						"introPath": "media/bgm/muChallenge1-i.mp3",
+						"introEnd": 2.8
+					},
+					"title": {
+						"path": "media/bgm/muTitle.mp3",
+						"loopEnd": 36.099,
+						"volume": 0.5
+					},
+					"cargoship-exterior": {
+						"path": "media/bgm/muSolar.mp3",
+						"loopEnd": 93.658,
+						"volume": 0.5
+					},
+					"lolfanfare": {
+						"path": "media/bgm/lolfanfare.mp3",
+						"loopEnd": 5.8,
+						"volume": 0.5
+					},
+					"landmark": {
+						"path": "media/sound/hud/landmark-discovery.mp3",
+						"loopEnd": 3,
+						"volume": 0.5
+					},
+					"ability-got": {
+						"path": "media/bgm/ability-got.mp3",
+						"loopEnd": 1.5,
+						"volume": 0.5
+					},
+					"exposition": {
+						"path": "media/bgm/muCrossworlds.mp3",
+						"loopEnd": 83.173,
+						"volume": 0.5
+					},
+					"designer": {
+						"path": "media/bgm/muAvatar.mp3",
+						"loopEnd": 72,
+						"volume": 0.5,
+						"introPath": "media/bgm/muAvatar-i.mp3",
+						"introEnd": 6
+					},
+					"challenge2": {
+						"path": "media/bgm/muChallenge2.mp3",
+						"loopEnd": 65.581,
+						"volume": 0.5,
+						"introPath": "media/bgm/muChallenge2-i.mp3",
+						"introEnd": 5.581
+					},
+					"puzzle-pg": {
+						"path": "media/bgm/puzzle-bgm.mp3",
+						"loopEnd": 81,
+						"volume": 0.5
+					},
+					"bossbattle1": {
+						"path": "media/bgm/muBossbattle.mp3",
+						"loopEnd": 59.823,
+						"volume": 0.5,
+						"introPath": "media/bgm/muBossbattle-i.mp3",
+						"introEnd": 11.823
+					},
+					"escape": {
+						"path": "media/bgm/muEscape.mp3",
+						"loopEnd": 55,
+						"volume": 0.5,
+						"introPath": "media/bgm/muEscape-i.mp3",
+						"introEnd": 2.666
+					},
+					"crosscounter": {
+						"path": "media/bgm/muCrosscounter.mp3",
+						"loopEnd": 42.352,
+						"volume": 0.5,
+						"introPath": "media/bgm/muCrosscounter-i.mp3",
+						"introEnd": 8.823
+					},
+					"oldHideout1": {
+						"path": "media/bgm/muMysterious.mp3",
+						"loopEnd": 42.666,
+						"volume": 0.5
+					},
+					"oldHideoutBattle": {
+						"path": "media/bgm/muFiercebattle.mp3",
+						"loopEnd": 57.6,
+						"volume": 0.5,
+						"introPath": "media/bgm/muFiercebattle-i.mp3",
+						"introEnd": 2.742
+					},
+					"oldHideoutEnding": {
+						"path": "media/bgm/muDistantfuture.mp3",
+						"loopEnd": 27,
+						"volume": 0.5
+					},
+					"autumnsRise": {
+						"path": "media/bgm/muAutumnsrise.mp3",
+						"loopEnd": 151.117,
+						"volume": 0.5
+					},
+					"fieldBattle": {
+						"path": "media/bgm/muBattle2.mp3",
+						"loopEnd": 122.482,
+						"volume": 0.5
+					},
+					"rhombusDungeon": {
+						"path": "media/bgm/muRhombusdungeon.mp3",
+						"loopEnd": 60,
+						"volume": 0.5
+					},
+					"rookieHarbor": {
+						"path": "media/bgm/muRookie.mp3",
+						"loopEnd": 61.832,
+						"volume": 0.5
+					},
+					"firstScholars": {
+						"path": "media/bgm/muFirstscholars.mp3",
+						"loopEnd": 84.857,
+						"volume": 0.5
+					},
+					"bergenTrail": {
+						"path": "media/bgm/muBergentrail.mp3",
+						"loopEnd": 81,
+						"volume": 0.5,
+						"introPath": "media/bgm/muBergentrail-i.mp3",
+						"introEnd": 8
+					},
+					"rhombusSquare": {
+						"path": "media/bgm/muNewcomer.mp3",
+						"loopEnd": 64.477,
+						"volume": 0.5
+					},
+					"apolloTheme": {
+						"path": "media/bgm/muApollo.mp3",
+						"loopEnd": 44.689,
+						"volume": 0.5,
+						"introPath": "media/bgm/muApollo-i.mp3",
+						"introEnd": 10.758
+					},
+					"coldDungeon": {
+						"path": "media/bgm/muTemplemine.mp3",
+						"loopEnd": 83.076,
+						"volume": 0.5
+					},
+					"bergenVillage": {
+						"path": "media/bgm/muBergenvillage.mp3",
+						"loopEnd": 98.331,
+						"volume": 0.5
+					},
+					"heatArea": {
+						"path": "media/bgm/muMaroonvalley.mp3",
+						"loopEnd": 90.666,
+						"volume": 0.5
+					},
+					"heatVillage": {
+						"path": "media/bgm/muBakiikum.mp3",
+						"loopEnd": 104.873,
+						"volume": 0.5
+					},
+					"heatDungeon": {
+						"path": "media/bgm/muTemplevalley.mp3",
+						"loopEnd": 110.608,
+						"volume": 0.5
+					},
+					"shockDungeon": {
+						"path": "media/bgm/muTemplethunder.mp3",
+						"loopEnd": 119.999,
+						"volume": 0.5
+					},
+					"waveDungeon": {
+						"path": "media/bgm/muTemplelake.mp3",
+						"loopEnd": 130.487,
+						"volume": 0.5
+					},
+					"treeDungeon": {
+						"path": "media/bgm/muTempletree.mp3",
+						"loopEnd": 110.769,
+						"volume": 0.5
+					},
+					"jungle": {
+						"path": "media/bgm/muGarden.mp3",
+						"loopEnd": 112,
+						"volume": 0.5
+					},
+					"emilie": {
+						"path": "media/bgm/muValse.mp3",
+						"loopEnd": 62.905,
+						"volume": 0.5,
+						"introPath": "media/bgm/muValse-i.mp3",
+						"introEnd": 2.167
+					},
+					"basinKeep": {
+						"path": "media/bgm/muBasinkeep.mp3",
+						"loopEnd": 102.893,
+						"volume": 0.5
+					},
+					"casual": {
+						"path": "media/bgm/muTravel.mp3",
+						"loopEnd": 60,
+						"volume": 0.5
+					},
+					"briefing": {
+						"path": "media/bgm/muBriefing.mp3",
+						"loopEnd": 79.592,
+						"volume": 0.5
+					},
+					"ponder": {
+						"path": "media/bgm/muImprovising.mp3",
+						"loopEnd": 100.285,
+						"volume": 0.5
+					},
+					"lea": {
+						"path": "media/bgm/muLea.mp3",
+						"loopEnd": 122.465,
+						"volume": 0.5
+					},
+					"dreamsequence-intro": {
+						"path": "media/bgm/muDream1.mp3",
+						"loopEnd": 19.672,
+						"volume": 0.5
+					},
+					"dreamsequence": {
+						"path": "media/bgm/muDream3.mp3",
+						"loopEnd": 137.704,
+						"volume": 0.5,
+						"introPath": "media/bgm/muDream2.mp3",
+						"introEnd": 19.672
+					},
+					"sorrow": {
+						"path": "media/bgm/muShock.mp3",
+						"loopEnd": 87.887,
+						"volume": 0.5,
+						"introPath": "media/bgm/muShock-i.mp3",
+						"introEnd": 39.718
+					},
+					"raidTheme": {
+						"path": "media/bgm/muRaid.mp3",
+						"loopEnd": 229.5,
+						"volume": 0.5,
+						"introPath": "media/bgm/muRaid-i.mp3",
+						"introEnd": 12.614
+					},
+					"forestField": {
+						"path": "media/bgm/muSapphireridge.mp3",
+						"loopEnd": 105.404,
+						"volume": 0.5,
+						"introPath": "media/bgm/muSapphireridge-i.mp3",
+						"introEnd": 9.792
+					},
+					"designerBoss1": {
+						"path": "media/bgm/muBlueavatar.mp3",
+						"loopEnd": 127.059,
+						"volume": 0.6,
+						"introPath": "media/bgm/muBlueavatar-i.mp3",
+						"introEnd": 25.038
+					},
+					"waiting": {
+						"path": "media/bgm/muImprisoned.mp3",
+						"loopEnd": 108.845,
+						"volume": 0.5
+					},
+					"aridField": {
+						"path": "media/bgm/muVermillion.mp3",
+						"loopEnd": 133.686,
+						"volume": 0.5
+					},
+					"aridBattle": {
+						"path": "media/bgm/muBattle3.mp3",
+						"loopEnd": 104.728,
+						"volume": 0.5,
+						"introPath": "media/bgm/muBattle3-i.mp3",
+						"introEnd": 0.74
+					},
+					"shizukaConfrontation": {
+						"path": "media/bgm/muConfrontation.mp3",
+						"loopEnd": 43.522,
+						"volume": 0.5,
+						"introPath": "media/bgm/muConfrontation-i.mp3",
+						"introEnd": 183.238
+					},
+					"evoDungeon1": {
+						"path": "media/bgm/muVermillionDungeon.mp3",
+						"loopEnd": 80.842,
+						"volume": 0.5
+					},
+					"evoDungeon2": {
+						"path": "media/bgm/muVermillionDungeon2.mp3",
+						"loopEnd": 91.579,
+						"volume": 0.5,
+						"introPath": "media/bgm/muVermillionDungeon2-i.mp3",
+						"introEnd": 1.578
+					},
+					"evoEscape": {
+						"path": "media/bgm/muEscape2.mp3",
+						"loopEnd": 93.563,
+						"volume": 0.5,
+						"introPath": "media/bgm/muEscape2-i.mp3",
+						"introEnd": 9.376
+					},
+					"sergeyExposition": {
+						"path": "media/bgm/muPastevents.mp3",
+						"loopEnd": 123.887,
+						"volume": 0.5
+					},
+					"schneiderTour": {
+						"path": "media/bgm/muImprovising.mp3",
+						"loopEnd": 100.285,
+						"volume": 0.5
+					},
+					"infiltration": {
+						"path": "media/bgm/muInfiltration.mp3",
+						"loopEnd": 113.777,
+						"volume": 0.5
+					},
+					"sadness": {
+						"path": "media/bgm/muSadtheme.mp3",
+						"loopEnd": 106.751,
+						"volume": 0.5
+					},
+					"oldHideout2": {
+						"path": "media/bgm/muOldhideout.mp3",
+						"loopEnd": 119.365,
+						"volume": 0.5
+					},
+					"trueIntentions": {
+						"path": "media/bgm/muTrueintention.mp3",
+						"loopEnd": 164.383,
+						"volume": 0.5,
+						"introPath": "media/bgm/muTrueintention-i.mp3",
+						"introEnd": 0
+					},
+					"rhombusSquare2": {
+						"path": "media/bgm/muRhombussquare.mp3",
+						"loopEnd": 124.956,
+						"volume": 0.5,
+						"introPath": "media/bgm/muRhombussquare-i.mp3",
+						"introEnd": 10.06
+					},
+					"autumnsFall": {
+						"path": "media/bgm/muAutumnsfall.mp3",
+						"loopEnd": 132.954,
+						"volume": 0.5
+					},
+					"snailBattle1": {
+						"path": "media/bgm/muExponential.mp3",
+						"loopEnd": 50.261,
+						"volume": 0.6,
+						"introPath": "media/bgm/muExponential-i.mp3",
+						"introEnd": 5.34
+					},
+					"snailBattle2": {
+						"path": "media/bgm/muExponentialpart2.mp3",
+						"loopEnd": 130.68,
+						"volume": 0.6,
+						"introPath": "media/bgm/muExponentialpart2-i.mp3",
+						"introEnd": 2.513
+					},
+					"lastDungeon": {
+						"path": "media/bgm/muVermillionDungeon3.mp3",
+						"loopEnd": 164.359,
+						"volume": 0.5
+					},
+					"shizuka": {
+						"path": "media/bgm/muShizuka.mp3",
+						"loopEnd": 86.069,
+						"volume": 0.5,
+						"introPath": "media/bgm/muShizuka-i.mp3",
+						"introEnd": 15.967
+					},
+					"finalBoss": {
+						"path": "media/bgm/muUltimate.mp3",
+						"loopEnd": 264.334,
+						"volume": 0.6,
+						"introPath": "media/bgm/muUltimate-i.mp3",
+						"introEnd": 32.792
+					},
+					"credits": {
+						"introPath": "media/bgm/muEnding.mp3",
+						"introEnd": 244,
+						"path": "media/bgm/muLea.mp3",
+						"loopEnd": 122.465,
+						"volume": 0.5
+					},
+					"arena": {
+						"introPath": "media/bgm/muArena-i.mp3",
+						"introEnd": 1.237,
+						"path": "media/bgm/muArena.mp3",
+						"loopEnd": 98.969,
+						"volume": 0.5
+					},
+					"s-rank": {
+						"introPath": "media/bgm/muSrank-i.mp3",
+						"introEnd": 16,
+						"path": "media/bgm/muSrank.mp3",
+						"loopEnd": 157.333,
+						"volume": 0.5
+					},
+					"bossRush": {
+						"introPath": "media/bgm/muBossrush-i.mp3",
+						"introEnd": 1.434,
+						"path": "media/bgm/muBossrush.mp3",
+						"loopEnd": 154.182,
+						"volume": 0.5
+					},
+					"glitchArea": {
+						"introPath": "media/bgm/muGlitch-i.mp3",
+						"introEnd": 30.629,
+						"path": "media/bgm/muGlitch.mp3",
+						"loopEnd": 82.137,
+						"volume": 0.5
+					}
+				}
+			},
+			"volume": {
+				"type": "Number",
+				"description": "Volume of music (0 = silent, 1 = max volume)"
+			},
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			}
+		}
+	},
+	"SET_DEFAULT_BGM": {
+		"attributes": {
+			"defaultBgm": {
+				"type": "String",
+				"description": "Default BGM",
+				"options": {
+					"cargoShipIntro": {
+						"field": {
+							"track": "intro",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"cargoShip": {
+						"field": {
+							"track": "tutorial",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"cargoChallenge": {
+						"field": {
+							"track": "tutorial",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"cargoShipExterior": {
+						"field": {
+							"track": "cargoship-exterior",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"puzzle": {
+						"field": {
+							"track": "rhombusDungeon",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"hideout": {
+						"field": {
+							"track": "oldHideout1",
+							"volume": 1
+						},
+						"battle": {
+							"track": "oldHideoutBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"hideout2": {
+						"field": {
+							"track": "oldHideout2",
+							"volume": 1
+						},
+						"battle": {
+							"track": "oldHideoutBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"forest": {
+						"field": {
+							"track": "forestField",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"autumn": {
+						"field": {
+							"track": "autumnsRise",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"autumnsFall": {
+						"field": {
+							"track": "autumnsFall",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"rookieHarbor": {
+						"field": {
+							"track": "rookieHarbor",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"firstScholars": {
+						"field": {
+							"track": "firstScholars",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"bergenTrail": {
+						"field": {
+							"track": "bergenTrail",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"bergenVillage": {
+						"field": {
+							"track": "bergenVillage",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"heatArea": {
+						"field": {
+							"track": "heatArea",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"rhombusSquare": {
+						"field": {
+							"track": "rhombusSquare",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"rhombusSquare2": {
+						"field": {
+							"track": "rhombusSquare2",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"rhombusSquareArena": {
+						"field": {
+							"track": "arena",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"crossCentral": {
+						"field": {
+							"track": "intro",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"coldDungeon": {
+						"field": {
+							"track": "coldDungeon",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"heatVillage": {
+						"field": {
+							"track": "heatVillage",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"heatGlitch": {
+						"field": {
+							"track": "glitchArea",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"heatDungeonOutside": {
+						"field": {
+							"track": null,
+							"volume": 0.3
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"silence": {
+						"field": {
+							"track": null,
+							"volume": 0.3
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"silenceCombat": {
+						"field": {
+							"track": null,
+							"volume": 0.3
+						},
+						"battle": {
+							"track": null,
+							"volume": 1
+						}
+					},
+					"heatDungeon": {
+						"field": {
+							"track": "heatDungeon",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"jungle": {
+						"field": {
+							"track": "jungle",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"basinKeep": {
+						"field": {
+							"track": "basinKeep",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"shockDungeon": {
+						"field": {
+							"track": "shockDungeon",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"waveDungeon": {
+						"field": {
+							"track": "waveDungeon",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"treeDungeon": {
+						"field": {
+							"track": "treeDungeon",
+							"volume": 1
+						},
+						"battle": {
+							"track": "tutorial-battle",
+							"volume": 1
+						},
+						"rankBattle": {
+							"track": "fieldBattle",
+							"volume": 1
+						},
+						"sRankBattle": {
+							"track": "s-rank",
+							"volume": 1
+						}
+					},
+					"arid": {
+						"field": {
+							"track": "aridField",
+							"volume": 1
+						},
+						"battle": {
+							"track": "aridBattle",
+							"volume": 1
+						}
+					},
+					"aridDng": {
+						"field": {
+							"track": "evoDungeon1",
+							"volume": 1
+						},
+						"battle": {
+							"track": "aridBattle",
+							"volume": 1
+						}
+					},
+					"lastDng": {
+						"field": {
+							"track": "lastDungeon",
+							"volume": 1
+						},
+						"battle": {
+							"track": "aridBattle",
+							"volume": 1
+						}
+					}
+				}
+			},
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			}
+		}
+	},
+	"RESUME_DEFAULT_BGM": {
+		"attributes": {
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			},
+			"delayed": {
+				"type": "Boolean",
+				"description": "Resume default BGM later when changing map or after anything changes about the music"
+			}
+		}
+	},
+	"CALL_EVENT_FROM_SHEET": {
+		"attributes": {
+			"eventCall": {
+				"type": "EventSheetCall",
+				"popup": true,
+				"description": "The event to be called"
+			}
+		}
+	},
+	"SET_CAMERA_TARGET": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to focus camera on"
+			},
+			"offsetX": {
+				"type": "Number",
+				"description": "x offset to target entity"
+			},
+			"offsetY": {
+				"type": "Number",
+				"description": "y offset to target entity"
+			},
+			"speed": {
+				"type": "String",
+				"description": "Speed of camera movement",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			},
+			"transition": {
+				"type": "String",
+				"description": "Transition type",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0
+				}
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "Wait until camera movement is done"
+			},
+			"waitSkip": {
+				"type": "Number",
+				"description": "The amount of seconds to skip waiting before target is reached."
+			},
+			"zoom": {
+				"type": "Number",
+				"default": 1,
+				"description": "Zoom Value. 1=default, 2=twice pixel size"
+			},
+			"name": {
+				"type": "String",
+				"optional": true,
+				"description": "If set, camera target will remain even after event is done and can only be removed explictly via its name."
+			},
+			"lockZ": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "if true, do not move change cam if entity moves along Z axis."
+			}
+		}
+	},
+	"SET_CAMERA_POS": {
+		"attributes": {
+			"pos": {
+				"type": "Vec2",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "Position to focus camera on"
+			},
+			"speed": {
+				"type": "String",
+				"description": "Speed of camera movement",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			},
+			"transition": {
+				"type": "String",
+				"description": "Transition type",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0
+				}
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "Wait until camera movement is done"
+			},
+			"waitSkip": {
+				"type": "Number",
+				"description": "The amount of seconds to skip waiting before target is reached."
+			},
+			"zoom": {
+				"type": "Number",
+				"default": 1,
+				"description": "Zoom Value. 1=default, 2=twice pixel size"
+			},
+			"name": {
+				"type": "String",
+				"optional": true,
+				"description": "If set, camera target will remain even after event is done and can only be removed explictly via its name."
+			}
+		}
+	},
+	"SET_CAMERA_BETWEEN": {
+		"attributes": {
+			"entity1": {
+				"type": "Entity",
+				"description": "First entity"
+			},
+			"entity2": {
+				"type": "Entity",
+				"description": "Second entity"
+			},
+			"speed": {
+				"type": "String",
+				"description": "Speed of camera movement",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			},
+			"transition": {
+				"type": "String",
+				"description": "Transition type",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0
+				}
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "Wait until camera movement is done"
+			},
+			"waitSkip": {
+				"type": "Number",
+				"description": "The amount of seconds to skip waiting before target is reached."
+			},
+			"zoom": {
+				"type": "Number",
+				"default": 1,
+				"description": "Zoom Value. 1=default, 2=twice pixel size"
+			},
+			"name": {
+				"type": "String",
+				"optional": true,
+				"description": "If set, camera target will remain even after event is done and can only be removed explictly via its name."
+			}
+		}
+	},
+	"RESET_CAMERA": {
+		"attributes": {
+			"speed": {
+				"type": "String",
+				"description": "Speed of camera movement",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			},
+			"transition": {
+				"type": "String",
+				"description": "Transition type",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0
+				}
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "Wait until camera movement is done"
+			},
+			"waitSkip": {
+				"type": "Number",
+				"description": "The amount of seconds to skip waiting before target is reached."
+			},
+			"name": {
+				"type": "String",
+				"optional": true,
+				"description": "If defined: only remove camera target of given name"
+			}
+		}
+	},
+	"UNDO_CAMERA": {
+		"attributes": {
+			"speed": {
+				"type": "String",
+				"description": "Speed of camera movement",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			},
+			"transition": {
+				"type": "String",
+				"description": "Transition type",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0
+				}
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "Wait until camera movement is done"
+			},
+			"waitSkip": {
+				"type": "Number",
+				"description": "The amount of seconds to skip waiting before target is reached."
+			}
+		}
+	},
+	"SET_CAMERA_ZOOM": {
+		"attributes": {
+			"zoom": {
+				"type": "Number",
+				"default": 1,
+				"description": "Zoom Value. 1=default, 2=twice pixel size"
+			},
+			"duration": {
+				"type": "Number",
+				"description": "Duration of zoom transition"
+			},
+			"transition": {
+				"type": "String",
+				"description": "Transition type",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0
+				}
+			}
+		}
+	},
+	"RUMBLE_SCREEN": {
+		"attributes": {
+			"rumbleType": {
+				"type": "String",
+				"description": "Type of rumble",
+				"options": {
+					"RANDOM": 0,
+					"HORIZONTAL": 0,
+					"VERTICAL": 0
+				}
+			},
+			"name": {
+				"type": "String",
+				"description": "Name of the rumble. Can be ignored for anonymous rumble effects."
+			},
+			"duration": {
+				"type": "Number",
+				"description": "The time the rumble will take. -1 for continues effect"
+			},
+			"power": {
+				"type": "String",
+				"description": "Power of the rumble.",
+				"options": {
+					"WEAKESTEST": 0,
+					"WEAKEST": 0,
+					"WEAKER": 0,
+					"WEAK": 0,
+					"MEDIUM": 0,
+					"STRONG": 0,
+					"STRONGER": 0,
+					"STRONGEST": 0,
+					"MEGA": 0
+				}
+			},
+			"speed": {
+				"type": "String",
+				"description": "Speed of a single rumble.",
+				"options": {
+					"SLOWEST": 0,
+					"SLOWER": 0,
+					"SLOW": 0,
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0
+				}
+			},
+			"fade": {
+				"type": "Boolean",
+				"description": "Rumble effect gets weaker towards the passed time."
+			}
+		}
+	},
+	"RUMBLE_STOP_CONTINUES": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of the rumble to stop. Must be given!"
+			}
+		}
+	},
+	"ADD_SLOW_MOTION": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of the slow motion effect. Used this to remove the effect later on"
+			},
+			"factor": {
+				"type": "Number",
+				"description": "How much to slow down the time. 0.5 = half the speed"
+			},
+			"time": {
+				"type": "Number",
+				"description": "Transition time for slow motion"
+			}
+		}
+	},
+	"CLEAR_SLOW_MOTION": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of slow motion to be removed"
+			},
+			"time": {
+				"type": "Number",
+				"description": "Transition time for slow motion removal"
+			}
+		}
+	},
+	"SHOW_EFFECT": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to apply effect on"
+			},
+			"effect": {
+				"type": "Effect",
+				"description": "Effect to play"
+			},
+			"duration": {
+				"type": "Number",
+				"description": "Amount of time to play animation.<br /> 0 = actual lenght of animation, -1 = forever until stopped."
+			},
+			"offset": {
+				"type": "Offset",
+				"description": "Offset to entity position"
+			},
+			"align": {
+				"type": "String",
+				"description": "Alignment of Animation relative to target",
+				"options": {
+					"BOTTOM": 0,
+					"CENTER": 0,
+					"TOP": 0,
+					"FACE": 0,
+					"BASE": 0,
+					"WALL_HIT": 0,
+					"FACE_BASE": 0
+				}
+			},
+			"group": {
+				"type": "String",
+				"description": "A string identifying the effect. Optional. Name can be used with CLEAR_EFFECT to clear only certain effects"
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "Wait until effect is over"
+			},
+			"waitSkip": {
+				"type": "Number",
+				"description": "The amount of seconds to skip waiting before effect is over"
+			},
+			"target2": {
+				"type": "Entity",
+				"optional": true,
+				"description": "Alternative target for homing particles"
+			},
+			"target2Offset": {
+				"type": "Offset",
+				"optional": true,
+				"description": "Offset to entity position"
+			},
+			"target2Align": {
+				"type": "String",
+				"optional": true,
+				"description": "Alignment of Animation relative to target",
+				"options": {
+					"BOTTOM": 0,
+					"CENTER": 0,
+					"TOP": 0,
+					"FACE": 0,
+					"BASE": 0,
+					"WALL_HIT": 0,
+					"FACE_BASE": 0
+				}
+			},
+			"ignoreSlowMo": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: ignore slow motion for this effect"
+			}
+		}
+	},
+	"CLEAR_EFFECTS": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to clear effects from"
+			},
+			"group": {
+				"type": "String",
+				"optional": true,
+				"description": "if provided: only clear effects attached under specified group"
+			}
+		}
+	},
+	"ADD_GUI": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"optional": true,
+				"description": "Name to identify GUI for subsequent modifications (e.g. removal)"
+			},
+			"guiInfo": {
+				"type": "GUI",
+				"popup": true,
+				"description": "Type and Settings of GUI to spawn"
+			}
+		}
+	},
+	"REMOVE_GUI": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of GUI to be removed"
+			}
+		}
+	},
+	"CHANGE_GUI_STATE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name to identify GUI for subsequent modifications (e.g. removal)"
+			},
+			"guiState": {
+				"type": "GUIState",
+				"description": "Transition to change to"
+			},
+			"immediate": {
+				"type": "Boolean",
+				"description": "If true: skip transition"
+			},
+			"remove": {
+				"type": "Boolean",
+				"description": "Remove GUI after transition"
+			}
+		}
+	},
+	"SHOW_IMAGE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of image"
+			},
+			"image": {
+				"type": "TileSheet",
+				"popup": true,
+				"description": "Image to be displayed"
+			},
+			"guiState": {
+				"type": "GuiState",
+				"popup": true,
+				"description": "Initial State of image"
+			},
+			"alignX": {
+				"type": "String",
+				"description": "X alignment",
+				"options": {
+					"LEFT": 0,
+					"RIGHT": 0,
+					"CENTER": 0
+				}
+			},
+			"alignY": {
+				"type": "String",
+				"description": "Y alignment",
+				"options": {
+					"TOP": 0,
+					"BOTTOM": 0,
+					"CENTER": 0
+				}
+			},
+			"renderMode": {
+				"type": "String",
+				"optional": true,
+				"description": "Render Mode if Image",
+				"options": {
+					"source-over": 0,
+					"lighter": 0
+				}
+			},
+			"overGui": {
+				"type": "Boolean",
+				"description": "If true, display image above game hud (e.g. cut scene bars, portraits)"
+			}
+		}
+	},
+	"MOVE_IMAGE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of image"
+			},
+			"guiState": {
+				"type": "GuiState",
+				"popup": true,
+				"description": "Initial State of image"
+			},
+			"time": {
+				"type": "Number",
+				"description": "Transition time"
+			},
+			"keySpline": {
+				"type": "String",
+				"description": "Key spline for transition",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0
+				}
+			},
+			"removeAfterwards": {
+				"type": "Boolean",
+				"description": "True if image should be removed after transition"
+			}
+		}
+	},
+	"REMOVE_IMAGE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of image to be removed"
+			}
+		}
+	},
+	"NUDGE_PROP": {
+		"attributes": {
+			"prop": {
+				"type": "Entity",
+				"filterClass": "Prop",
+				"visualize": true,
+				"description": "Prop Entity"
+			},
+			"playSound": {
+				"type": "Boolean",
+				"description": "True if the nudge sound should be played"
+			}
+		}
+	},
+	"OPEN_DOOR": {
+		"attributes": {
+			"door": {
+				"type": "Entity",
+				"description": "Door Entity to enter"
+			}
+		}
+	},
+	"CLOSE_DOOR": {
+		"attributes": {
+			"door": {
+				"type": "Entity",
+				"description": "Door Entity to close"
+			}
+		}
+	},
+	"SHOW_MAP_IMAGE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of image"
+			},
+			"tileSheet": {
+				"type": "TileSheet",
+				"popup": true,
+				"description": "Image to be displayed"
+			},
+			"position": {
+				"type": "Vec3",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "Point where to spawn image"
+			},
+			"guiSprite": {
+				"type": "Boolean",
+				"description": "If true: Show sprite as GUI Sprite"
+			},
+			"size": {
+				"type": "Offset",
+				"optional": true,
+				"description": "Optional: Size of entity. If not specified will match image dimensions to x and z size, y always 0"
+			}
+		}
+	},
+	"REMOVE_MAP_IMAGE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of image"
+			}
+		}
+	},
+	"SET_OVERLAY": {
+		"attributes": {
+			"color": {
+				"type": "Color",
+				"description": "Color of overlay"
+			},
+			"alpha": {
+				"type": "Number",
+				"description": "Alpha of overlay, range [0,1]. 0 = transparent"
+			},
+			"time": {
+				"type": "Number",
+				"description": "Transition time to new overlay color and alpha"
+			},
+			"lighter": {
+				"type": "Boolean",
+				"description": "Apply color in lighter mode"
+			},
+			"overMessage": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: show overlay above messages"
+			}
+		}
+	},
+	"SET_OVERLAY_CORNER": {
+		"attributes": {
+			"color": {
+				"type": "String",
+				"description": "Color of corner",
+				"options": {
+					"WHITE": 0,
+					"RED": 0,
+					"BLACK": 0
+				}
+			},
+			"alpha": {
+				"type": "Number",
+				"description": "Alpha of corner, range [0,1]. 0 = transparent"
+			},
+			"time": {
+				"type": "Number",
+				"description": "Transition time to new alpha value"
+			},
+			"blinkAlpha": {
+				"type": "Number",
+				"optional": true,
+				"description": "If specified: alterate between alpha and blinkAlpha"
+			}
+		}
+	},
+	"START_DREAM_FX": {
+		"attributes": {
+			"centerColor": {
+				"type": "Color",
+				"description": "Color of center"
+			},
+			"borderColor": {
+				"type": "Color",
+				"description": "Color of border"
+			},
+			"circleSize": {
+				"type": "Number",
+				"description": "Size of visible circle in center. 1=fullSize"
+			},
+			"transition": {
+				"type": "Boolean",
+				"description": "If true, slowly fade in effects"
+			}
+		}
+	},
+	"CLEAR_DREAM_FX": {
+		"attributes": {}
+	},
+	"SET_DREAM_FX_COLORS": {
+		"attributes": {
+			"centerColor": {
+				"type": "Color",
+				"description": "Color of center"
+			},
+			"borderColor": {
+				"type": "Color",
+				"description": "Color of border"
+			},
+			"duration": {
+				"type": "Number",
+				"description": "Duration of transition"
+			}
+		}
+	},
+	"SET_DREAM_FX_CIRCLE_SIZE": {
+		"attributes": {
+			"circleSize": {
+				"type": "Number",
+				"description": "Size of visible circle in center. 1=fullSize"
+			},
+			"duration": {
+				"type": "Number",
+				"description": "Duration of transition"
+			}
+		}
+	},
+	"SHOW_PARALLAX": {
+		"attributes": {
+			"parallax": {
+				"type": "String",
+				"description": "Parallax to show",
+				"options": "parallax"
+			}
+		}
+	},
+	"SET_SCREEN_BLUR": {
+		"attributes": {
+			"alpha": {
+				"type": "Number",
+				"default": 0.5,
+				"description": "Alpha of Screen blur. The lower, the stronger the effect"
+			}
+		}
+	},
+	"CLEAR_SCREEN_BLUR": {
+		"attributes": {}
+	},
+	"SET_ZOOM_BLUR": {
+		"attributes": {
+			"zoomType": {
+				"type": "String",
+				"description": "Type of Zoom Blur effect",
+				"options": {
+					"LIGHTER": 0,
+					"LIGHT": 0,
+					"MEDIUM": 0,
+					"SLOW_INTENSE": 0,
+					"STATIC_LIGHT": 0
+				}
+			},
+			"fadeIn": {
+				"type": "Number",
+				"default": 0.2,
+				"description": "Time in seconds for effect to fade in"
+			},
+			"duration": {
+				"type": "Number",
+				"default": 1,
+				"description": "Time of effect. -1 = run forever"
+			},
+			"fadeOut": {
+				"type": "Number",
+				"default": 0.2,
+				"description": "Time in seconds for effect to fade out"
+			},
+			"name": {
+				"type": "String",
+				"optional": true,
+				"description": "Name of zoom blur. Can be used to fadeOut permanent zoom blurs"
+			},
+			"target": {
+				"type": "Entity",
+				"optional": true,
+				"description": "Target on which to focus zoom blur"
+			}
+		}
+	},
+	"FADE_OUT_ZOOM_BLUR": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of zoom blur to be faded out"
+			},
+			"fadeOut": {
+				"type": "Number",
+				"default": 0.2,
+				"description": "Time in seconds for effect to fade out"
+			}
+		}
+	},
+	"SET_ENV_PARTICLES": {
+		"attributes": {
+			"particleType": {
+				"type": "String",
+				"description": "Type of Env Particles",
+				"options": {
+					"WHITE_DUST": 0,
+					"DARK_DUST": 0,
+					"LEAVES": 0,
+					"GREEN_LEAVES": 0,
+					"JUNGLE_LEAVES": 0,
+					"BLUE_SQUARES": 0,
+					"RED_SQUARES": 0,
+					"SNOW_FLAKES": 0,
+					"COLD_CRYSTALS": 0,
+					"SAND_OUTSIDE": 0,
+					"SANDSTORM": 0,
+					"SAND": 0,
+					"COAL_SPARKS": 0,
+					"COAL_SPARKS_FAST": 0,
+					"INFESTED_DUST": 0,
+					"WAVE_DUST": 0,
+					"SPOOKY_DUST": 0,
+					"ARID_DUST_1": 0,
+					"ARID_DUST_FAST": 0,
+					"ARID_DUST_ELEVATOR_UP": 0,
+					"ARID_DUST_ELEVATOR_DOWN": 0,
+					"RHOMBUS": 0,
+					"HACKING": 0,
+					"STARS": 0
+				}
+			},
+			"quantity": {
+				"type": "NumberExpression",
+				"default": 10,
+				"description": "Quantity of particles (average number of visible particles)"
+			},
+			"immediately": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: make change immediate"
+			}
+		}
+	},
+	"CLEAR_ENV_PARTICLES": {
+		"attributes": {
+			"particleType": {
+				"type": "String",
+				"description": "Type of Env Particles",
+				"options": {
+					"WHITE_DUST": 0,
+					"DARK_DUST": 0,
+					"LEAVES": 0,
+					"GREEN_LEAVES": 0,
+					"JUNGLE_LEAVES": 0,
+					"BLUE_SQUARES": 0,
+					"RED_SQUARES": 0,
+					"SNOW_FLAKES": 0,
+					"COLD_CRYSTALS": 0,
+					"SAND_OUTSIDE": 0,
+					"SANDSTORM": 0,
+					"SAND": 0,
+					"COAL_SPARKS": 0,
+					"COAL_SPARKS_FAST": 0,
+					"INFESTED_DUST": 0,
+					"WAVE_DUST": 0,
+					"SPOOKY_DUST": 0,
+					"ARID_DUST_1": 0,
+					"ARID_DUST_FAST": 0,
+					"ARID_DUST_ELEVATOR_UP": 0,
+					"ARID_DUST_ELEVATOR_DOWN": 0,
+					"RHOMBUS": 0,
+					"HACKING": 0,
+					"STARS": 0
+				}
+			},
+			"immediately": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: make change immediate"
+			}
+		}
+	},
+	"SET_WEATHER": {
+		"attributes": {
+			"weather": {
+				"type": "String",
+				"description": "Type of Weather",
+				"options": {
+					"NONE": 0,
+					"CARGO_HOLD": 0,
+					"type": 0,
+					"quantity": 0,
+					"DUSTY": 0,
+					"CLOUDY": 0,
+					"BEFORE_RAIN": 0,
+					"RAINY_WEAK": 0,
+					"RAINY_MEDIUM": 0,
+					"RAINY_STRONG": 0,
+					"ROOKIE_HARBOR": 0,
+					"ROOKIE_HARBOR_INNER": 0,
+					"EXPO_SPACE": 0,
+					"AUTUMN": 0,
+					"AUTUMN_RAIN_WEAK": 0,
+					"AUTUMN_RAIN_MEDIUM": 0,
+					"OLD_HIDEOUT_OUTSIDE": 0,
+					"OLD_HIDEOUT_OUTSIDE_ALT": 0,
+					"OLD_HIDEOUT_INNER": 0,
+					"OLD_HIDEOUT_OFFICE": 0,
+					"RHOMBUS_DNG_TOP": 0,
+					"RHOMBUS_DUNGEON": 0,
+					"CAVE": 0,
+					"CAVE_BERGEN": 0,
+					"BERGEN_SUNNY": 0,
+					"BERGEN_SNOW_START": 0,
+					"BERGEN_SNOW": 0,
+					"BERGEN_INNER": 0,
+					"COLD_DUNGEON": 0,
+					"COLD_DUNGEON_DARK": 0,
+					"COLD_DUNGEON_POST_BOSS": 0,
+					"HEAT_DUSTY": 0,
+					"HEAT_PARALLAX": 0,
+					"HEAT_SANDSTORM": 0,
+					"HEAT_SANDSTORM_LIGHT": 0,
+					"HEAT_GREEN": 0,
+					"HEAT_VILLAGE_INNER": 0,
+					"HEAT_VILLAGE_INNER_DUSTY": 0,
+					"HEAT_DUNGEON": 0,
+					"HEAT_DUNGEON_MIDBOSS": 0,
+					"HEAT_DUNGEON_COAL": 0,
+					"HEAT_DUNGEON_BOSS": 0,
+					"DREAM": 0,
+					"UNKNOWN_INNER": 0,
+					"OFFICE": 0,
+					"LOBBY": 0,
+					"LOBBY_DARK": 0,
+					"FLAT": 0,
+					"FLAT_DARK": 0,
+					"JUNGLE_SUNNY": 0,
+					"JUNGLE_RAINY_LIGHT": 0,
+					"JUNGLE_RAINY": 0,
+					"JUNGLE_INFESTED_PRE": 0,
+					"JUNGLE_INFESTED": 0,
+					"CAVE_INFESTED": 0,
+					"JUNGLE_CITY_PRE": 0,
+					"JUNGLE_CITY": 0,
+					"JUNGLE_CITY_INNER": 0,
+					"JUNGLE_WAVE_TEMPLE": 0,
+					"WAVE_DNG_INNER": 0,
+					"WAVE_DNG_INNER_FISH": 0,
+					"SHOCK_DNG_INNER": 0,
+					"TREE_DNG_INNER": 0,
+					"TREE_INNER": 0,
+					"TREE_INNER_INFESTED": 0,
+					"TREE_DNG_INNER_WAVE": 0,
+					"TREE_DNG_INNER_SHOCK": 0,
+					"SPOOKY_INNER": 0,
+					"CAVE_FOREST": 0,
+					"CAVE_ARID": 0,
+					"CAVE_ARID_CLOSER": 0,
+					"ARID_OUTSIDE": 0,
+					"ARID_INSIDE": 0,
+					"ARID_ELEVATOR_UP": 0,
+					"ARID_ELEVATOR_DOWN": 0,
+					"ARID_BOSS": 0,
+					"ARID_END_SCENE": 0,
+					"ARID_BETWEEN": 0,
+					"ARID_DNG_OUTSIDE": 0,
+					"SAPPHIRE_RIDGE": 0,
+					"SAPPHIRE_RIDGE_BUILDING": 0,
+					"SAPPHIRE_RIDGE_INNER": 0,
+					"FLASHBACK_OFFICE": 0,
+					"FLASHBACK_HIDEOUT": 0,
+					"FLASHBACK_HIDEOUT_INNER": 0,
+					"FLASHBACK_ARID": 0,
+					"FLASHBACK_DIAGRAM": 0,
+					"TREE_SPACE": 0,
+					"RHOMBUS_SQUARE": 0,
+					"RHOMBUS_SQUARE_INNER": 0,
+					"FINAL_BOSS": 0,
+					"GAUTHAM_ROOM": 0
+				}
+			},
+			"immediately": {
+				"type": "Boolean",
+				"description": "If true, change weather immediately with no transition"
+			}
+		}
+	},
+	"RESTORE_WEATHER_PARTICLES": {
+		"attributes": {
+			"immediately": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: make change immediate"
+			}
+		}
+	},
+	"SET_MAP_SOUNDS": {
+		"attributes": {
+			"mapSounds": {
+				"type": "String",
+				"withNull": true,
+				"description": "Type of Map Sounds",
+				"options": {
+					"CARGO_SHIP_OUTSIDE": 0,
+					"CARGO_SHIP_OUTSIDE_RAIN": 0,
+					"CARGO_SHIP_INSIDE": 0,
+					"STRONG_RAIN": 0,
+					"LIGHT_WIND": 0,
+					"CARGO_SHIP_AMBIENT_A": 0,
+					"CARGO_SHIP_AMBIENT_B": 0,
+					"CARGO_SHIP_AMBIENT_C": 0,
+					"CARGO_SHIP_AMBIENT_D": 0,
+					"CARGO_SHIP_AMBIENT_E": 0,
+					"CARGO_SHIP_AMBIENT_F": 0,
+					"CARGO_SHIP_AMBIENT_G": 0,
+					"CARGO_SHIP_AMBIENT_H": 0,
+					"HIDEOUT_AMBIENT": 0,
+					"HIDEOUT_INNER_AMBIENT": 0,
+					"SAPPHIRE_RIDGE_AMBIENT": 0,
+					"HIDEOUT_OFFICE_AMBIENT": 0,
+					"CROSS_CENTRAL_INNER": 0,
+					"NEWCOMERS_BRIDGE": 0,
+					"BERGEN_TRAIL_WIND": 0,
+					"BERGEN_TRAIL_WIND_SUBTLE": 0,
+					"ROOKIE_HARBOR_TELEPORTER": 0,
+					"ROOKIE_HARBOR_OCEAN": 0,
+					"CROWD": 0,
+					"ROOKIE_HARBOR_CROWD": 0,
+					"HEAT_AREA_DESERT": 0,
+					"HEAT_AREA_WIND": 0,
+					"HEAT_AREA_OASIS": 0,
+					"CAVE": 0,
+					"CAVE_WATER_DROPS": 0,
+					"HEAT_DUNGEON_OUTSIDE": 0,
+					"DREAM": 0,
+					"JUNGLE": 0,
+					"JUNGLE_INFESTED": 0,
+					"JUNGLE_CITY_INNER": 0,
+					"JUNGLE_CITY_OUTER": 0,
+					"COLD_DUNGEON": 0,
+					"HEAT_DUNGEON": 0,
+					"HEAT_DUNGEON_WATER": 0,
+					"SHOCK_DUNGEON": 0,
+					"WAVE_DUNGEON": 0,
+					"TREE_DUNGEON": 0,
+					"SPOOKY_INNER": 0,
+					"ARID_OUTSIDE": 0,
+					"ARID_INSIDE": 0,
+					"SERIOUS_AMBIENT": 0
+				}
+			}
+		}
+	},
+	"ADD_TIMER": {
+		"attributes": {
+			"name": {
+				"type": "Timer",
+				"description": "Name of the timer to access it. Must be unique"
+			},
+			"mode": {
+				"type": "Select",
+				"description": "Mode the timer should use",
+				"options": {
+					"COUNTER": 0,
+					"COUNTDOWN": 0
+				}
+			},
+			"millis": {
+				"type": "Boolean",
+				"default": true,
+				"description": "Set false if millis should be shown"
+			},
+			"gui": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "True if a gui should be added to the top-right"
+			},
+			"duration": {
+				"type": "NumberExpression",
+				"optional": true,
+				"description": "Time in seconds the timer should update. Only applicable for COUNTDOWN mode."
+			},
+			"area": {
+				"type": "String",
+				"optional": true,
+				"description": "Only update timer when inside this area.",
+				"options": "areas"
+			},
+			"temp": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "True if the timer should be deleted once a map has been switched"
+			},
+			"quest": {
+				"type": "QuestResetSelect",
+				"optional": true,
+				"description": "If the timer hits the duration on COUNTDOWN mode or your leave the map and the temp property is set to true."
+			},
+			"assist": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: scale time with puzzle speed assist parameter"
+			}
+		}
+	},
+	"REMOVE_TIMER": {
+		"attributes": {
+			"name": {
+				"type": "Timer",
+				"description": "Name of the timer to remove."
+			}
+		}
+	},
+	"RESET_TIMER": {
+		"attributes": {
+			"name": {
+				"type": "Timer",
+				"description": "Name of the timer to access it. Must be unique"
+			},
+			"mode": {
+				"type": "Select",
+				"optional": true,
+				"description": "New timer mode"
+			},
+			"duration": {
+				"type": "Number",
+				"optional": true,
+				"description": "New duration time if any. Only valid when timer is COUNTDOWN"
+			}
+		}
+	},
+	"PAUSE_TIMER": {
+		"attributes": {
+			"name": {
+				"type": "Timer",
+				"description": "Name of the timer to pause."
+			}
+		}
+	},
+	"RESUME_TIMER": {
+		"attributes": {
+			"name": {
+				"type": "Timer",
+				"description": "Name of the timer to pause."
+			}
+		}
+	},
+	"ENABLED_STATS": {
+		"attributes": {}
+	},
+	"DISABLE_STATS": {
+		"attributes": {}
+	},
+	"UNLOCK_TROPHY": {
+		"attributes": {
+			"trophy": {
+				"type": "TrophySelect",
+				"description": "The Trophy to unlock, if already unlocked, nothing will happen."
+			}
+		}
+	},
+	"ADD_STAT_MAP_NUMBER": {
+		"attributes": {
+			"map": {
+				"type": "String",
+				"description": "The map of the stat."
+			},
+			"stat": {
+				"type": "String",
+				"description": "The stat name"
+			},
+			"value": {
+				"type": "Number",
+				"description": "The number to add"
+			}
+		}
+	},
+	"SET_STAT_MAP_NUMBER": {
+		"attributes": {
+			"map": {
+				"type": "String",
+				"description": "The map of the stat."
+			},
+			"stat": {
+				"type": "String",
+				"description": "The stat name"
+			},
+			"value": {
+				"type": "NumberExpression",
+				"description": "The number to add"
+			}
+		}
+	},
+	"START_AUTO_CTRL": {
+		"attributes": {}
+	},
+	"END_AUTO_CTRL": {
+		"attributes": {}
+	},
+	"SET_AUTO_CTRL_MOUSE": {
+		"attributes": {
+			"pos": {
+				"type": "Vec2",
+				"description": "Position of mouse in screen pixels. 0,0 = top left"
+			},
+			"duration": {
+				"type": "Number",
+				"description": "Duration to move mouse to this position"
+			}
+		}
+	},
+	"SET_AUTO_CTRL_STICK": {
+		"attributes": {
+			"stick": {
+				"type": "String",
+				"description": "Type of Stick",
+				"options": {
+					"left": 0,
+					"right": 0
+				}
+			},
+			"value": {
+				"type": "Vec2",
+				"description": "Type of value for the axis"
+			},
+			"duration": {
+				"type": "Number",
+				"description": "Time in seconds to hold the stick in that direction. If 0 = hold forever."
+			}
+		}
+	},
+	"SET_AUTO_CTRL_ACTION": {
+		"attributes": {
+			"action": {
+				"type": "String",
+				"description": "Kind of action",
+				"options": {
+					"menu": 0,
+					"quickmenu": 0,
+					"menuConfirm": 0,
+					"menuBack": 0,
+					"menuDown": 0,
+					"menuUp": 0,
+					"menuLeft": 0,
+					"menuRight": 0,
+					"rightPressed": 0,
+					"menuHotkeyHelp": 0,
+					"menuHotkeyHelp2": 0,
+					"menuHotkeyHelp3": 0,
+					"menuCircleLeft": 0,
+					"menuCircleRight": 0,
+					"questCircleLeft": 0,
+					"questCircleRight": 0,
+					"heatMode": 0,
+					"coldMode": 0,
+					"shockMode": 0,
+					"waveMode": 0,
+					"moveDirX": 0,
+					"moveDirY": 0,
+					"aiming": 0,
+					"thrown": 0,
+					"charge": 0,
+					"melee": 0,
+					"dashing": 0,
+					"guarding": 0
+				}
+			},
+			"value": {
+				"type": "Number",
+				"default": 1,
+				"description": "Value for action. 1 usually makes sense"
+			},
+			"hold": {
+				"type": "Boolean",
+				"description": "True if action should be hold"
+			},
+			"deviceFilter": {
+				"type": "String",
+				"withNull": true,
+				"description": "Only do action for a specific device",
+				"options": {
+					"MOUSE": 0,
+					"GAMEPAD": 0
+				}
+			}
+		}
+	},
+	"CLEAR_AUTO_CTRL_ACTION": {
+		"attributes": {
+			"action": {
+				"type": "String",
+				"description": "Kind of action",
+				"options": {
+					"menu": 0,
+					"quickmenu": 0,
+					"menuConfirm": 0,
+					"menuBack": 0,
+					"menuDown": 0,
+					"menuUp": 0,
+					"menuLeft": 0,
+					"menuRight": 0,
+					"rightPressed": 0,
+					"menuHotkeyHelp": 0,
+					"menuHotkeyHelp2": 0,
+					"menuHotkeyHelp3": 0,
+					"menuCircleLeft": 0,
+					"menuCircleRight": 0,
+					"questCircleLeft": 0,
+					"questCircleRight": 0,
+					"heatMode": 0,
+					"coldMode": 0,
+					"shockMode": 0,
+					"waveMode": 0,
+					"moveDirX": 0,
+					"moveDirY": 0,
+					"aiming": 0,
+					"thrown": 0,
+					"charge": 0,
+					"melee": 0,
+					"dashing": 0,
+					"guarding": 0
+				}
+			},
+			"deviceFilter": {
+				"type": "String",
+				"filter": [
+					"MOUSE",
+					"GAMEPAD"
+				],
+				"withNull": true,
+				"description": "Only do action for a specific device"
+			}
+		}
+	},
+	"STOP_TIMER": {
+		"attributes": {
+			"hide": {
+				"type": "Boolean",
+				"description": "True if the timer should be hidden and removed."
+			}
+		}
+	},
+	"SHOW_AR_MSG": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to show AR Message on"
+			},
+			"text": {
+				"type": "LangLabel",
+				"description": "AR Text to display"
+			},
+			"time": {
+				"type": "NumberExpression",
+				"description": "Time in seconds the message should be visible. 0 = forever"
+			},
+			"mode": {
+				"type": "String",
+				"description": "Mode of AR display.",
+				"options": {
+					"NO_LINE": 0,
+					"LINE_FILL": 0,
+					"LINE_EMPTY": 0
+				}
+			},
+			"color": {
+				"type": "String",
+				"description": "Color of AR display.",
+				"options": {
+					"GREEN": 0,
+					"RED": 0
+				}
+			},
+			"hideOutsideOfScreen": {
+				"type": "Boolean",
+				"description": "If defined: don't show offscreen-msg"
+			},
+			"partName": {
+				"type": "String",
+				"optional": true,
+				"description": "If provided: Show AR display to sub part of entity"
+			}
+		}
+	},
+	"CLEAR_AR_MSG": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to show AR Message on"
+			}
+		}
+	},
+	"SET_TELEPORT_COLOR": {
+		"attributes": {
+			"color": {
+				"type": "Color",
+				"description": "Color of overlay"
+			},
+			"lighter": {
+				"type": "Boolean",
+				"description": "Apply color in lighter mode"
+			}
+		}
+	},
+	"SET_TELEPORT_TIME": {
+		"attributes": {
+			"fadeIn": {
+				"type": "Number",
+				"description": "Color fade in time in seconds"
+			},
+			"fadeOut": {
+				"type": "Number",
+				"description": "Color fade out time in seconds"
+			}
+		}
+	},
+	"LOAD": {
+		"attributes": {}
+	},
+	"SAVE": {
+		"attributes": {
+			"marker": {
+				"type": "Entity",
+				"optional": true,
+				"description": "Marker to place entity at"
+			}
+		}
+	},
+	"GOTO_TITLE": {
+		"attributes": {}
+	},
+	"ADD_MONEY": {
+		"attributes": {
+			"amount": {
+				"type": "Number",
+				"default": 0,
+				"description": "Amount to add"
+			}
+		}
+	},
+	"REMOVE_MONEY": {
+		"attributes": {
+			"amount": {
+				"type": "Number",
+				"default": 0,
+				"description": "Amount to remove"
+			}
+		}
+	},
+	"DROP_ITEM_ENTITY": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "the entity to spawn the drop from"
+			},
+			"item": {
+				"type": "Item",
+				"description": "The item to spawn."
+			},
+			"amount": {
+				"type": "Number",
+				"default": 1,
+				"description": "Amount of the given item. 0 = 1."
+			}
+		}
+	},
+	"GIVE_ITEM": {
+		"attributes": {
+			"item": {
+				"type": "Item",
+				"description": "The item to spawn."
+			},
+			"amount": {
+				"type": "NumberExpression",
+				"default": 1,
+				"description": "Amount of the given item. 0 = 1."
+			},
+			"skip": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if the side gui should hide the obtained item"
+			}
+		}
+	},
+	"REMOVE_ITEM": {
+		"attributes": {
+			"item": {
+				"type": "Item",
+				"description": "The item to spawn."
+			},
+			"amount": {
+				"type": "NumberExpression",
+				"default": 1,
+				"description": "Amount of the given item. 0 = 1."
+			},
+			"unequip": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "If true, unequip the item, if it is equipped"
+			}
+		}
+	},
+	"SET_VAR_ENTITY_STAT": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to store stat"
+			},
+			"entity": {
+				"type": "Entity",
+				"description": "Entity of which to fetch stat"
+			},
+			"stat": {
+				"type": "String",
+				"description": "Type of Stat",
+				"options": {
+					"BOTTOM_POS": 0,
+					"JUMPING": 0,
+					"SIZE": 0,
+					"VELOCITY": 0
+				}
+			}
+		}
+	},
+	"SPAWN_ENEMY": {
+		"attributes": {
+			"position": {
+				"type": "Vec3",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "Point to navigate to"
+			},
+			"enemyInfo": {
+				"type": "EnemyType",
+				"popup": true,
+				"description": "Enemy information"
+			},
+			"targetPlayer": {
+				"type": "Boolean",
+				"description": "If true, automatically target player"
+			},
+			"name": {
+				"type": "StringExpression",
+				"optional": true,
+				"description": "Name of the enemy to access via action"
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for Enemy to spawn and despawn"
+			},
+			"startAction": {
+				"type": "Action",
+				"rec_visualize": [
+					"LABEL",
+					"GOTO_LABEL",
+					"SELECT_RANDOM",
+					"RESET_ACTOR",
+					"WAIT",
+					"WAIT_UNTIL",
+					"WAIT_RANDOM",
+					"IF",
+					"WAIT_UNTIL_ON_GROUND",
+					"WAIT_UNTIL_PLAYER_ON_TOP",
+					"MOVE_FORWARD",
+					"SLIDE_OUT",
+					"MOVE_BACKWARD",
+					"MOVE_TO_ENTITY_DISTANCE",
+					"MOVE_TO_ENTITY_CLOSEST_OFFSET",
+					"MOVE_TO_POINT",
+					"SYNC_ACTION_WITH_ENTITY",
+					"SET_Z_VEL",
+					"SET_FLOAT_HEIGHT",
+					"SET_FLOAT_PARAMS",
+					"SET_FLY_HEIGHT",
+					"SET_FLY_KEEP_HEIGHT",
+					"FORCE_FLY_HEIGHT",
+					"WAIT_UNTIL_Z_DISTANCE",
+					"WAIT_UNTIL_Z_ZENITH",
+					"STOP_Z_ZENITH",
+					"FLY_TO_POINT",
+					"MOVE_TO_DIR",
+					"MOVE_TO_LINE",
+					"MOVE_RANDOM",
+					"SET_WALK_ANIMS",
+					"STOP_XY",
+					"JUMP",
+					"JUMP_TO_POINT",
+					"SET_GROUND_CONNECTED",
+					"SET_JUMPING",
+					"SET_Z_GRAVITY_FACTOR",
+					"SET_SIZE",
+					"SET_SPEED",
+					"SET_RELATIVE_SPEED",
+					"SET_ACCEL_SPEED",
+					"SET_STATIC_TIME",
+					"DETACH_TIME_PARENT",
+					"SET_WEIGHT",
+					"SET_FRICTION",
+					"SET_AIR_FRICTION",
+					"SET_TERRAIN_FRICTION_IGNORE",
+					"SET_SHADOW",
+					"SET_Z_BOUNCINESS",
+					"SET_BOUNCINESS",
+					"SET_FACE_FIX",
+					"SET_FACE",
+					"SET_CLOSEST_FACE",
+					"SET_FACE_TO_VEL",
+					"ROTATE_FACE",
+					"SET_FACE_TO_DIR",
+					"SET_FACE_TO_ENTITY",
+					"SET_COLL_TYPE",
+					"SET_COLL_SHAPE",
+					"SET_SLIP_THROUGH",
+					"SHOW_ANIMATION",
+					"WAIT_UNTIL_ANIM_LOOP_END",
+					"SHOW_PART_ANIMATION",
+					"SHOW_RANDOM_ANIMATION",
+					"SHOW_EXTERN_ANIM",
+					"CLEAR_ANIMATION",
+					"SET_COLL_SIZE",
+					"CHANGE_VAR_NUMBER",
+					"SET_RANDOM_VAR_NUMBER",
+					"CHANGE_VAR_BOOL",
+					"CHANGE_VAR_STRING",
+					"CHANGE_VAR_LANG",
+					"SET_ATTRIB_VEC2",
+					"SET_ATTRIB_BOOL",
+					"SET_ATTRIB_STRING",
+					"SET_ATTRIB_NUMBER",
+					"SET_ATTRIB_NUMBER_RANDOM",
+					"SET_ATTRIB_FACE",
+					"SET_ATTRIB_POS",
+					"PLAY_SOUND",
+					"STOP_SOUNDS",
+					"PLAY_RANDOM_SOUND",
+					"HIDE",
+					"HIDE_OTHER",
+					"SET_POS",
+					"ROUND_POSITION",
+					"ADD_Z_POS_DELTA",
+					"TELEPORT_TO_ATTRIB_POS",
+					"INTERPOLATE_POSITION",
+					"Z_INTERPOLATE",
+					"DO_ATTRIB_ACTION",
+					"ADD_ANIM_MOD",
+					"REMOVE_ANIM_MOD",
+					"FOCUS_CAMERA",
+					"RESET_CAMERA",
+					"SET_CAMERA_ZOOM",
+					"RUMBLE_SCREEN",
+					"ADD_SLOW_MOTION",
+					"CLEAR_SLOW_MOTION",
+					"SHOW_EFFECT",
+					"CLEAR_EFFECTS",
+					"ADD_DARKNESS",
+					"CLEAR_DARKNESS",
+					"NAVIGATE_TO_TARGET",
+					"NAVIGATE_ESCAPE_TARGET",
+					"NAVIGATE_SIDEWAYS_TARGET",
+					"NAVIGATE_TO_ENTITY",
+					"NAVIGATE_ESCAPE_ENTITY",
+					"NAVIGATE_DODGE",
+					"NAVIGATE_TO_POINT",
+					"DO_NAVIGATION",
+					"CANCEL_IF_NAVIGATION_FAILED",
+					"SET_ATTRIB_CLOSE_TARGET_POS",
+					"SET_ATTRIB_NAV_TARGET_POS",
+					"ENTER_DOOR",
+					"SET_ZOOM_BLUR",
+					"FADE_OUT_ZOOM_BLUR",
+					"ADD_TEMP_INFLUENCE",
+					"CLEAR_TEMP_INFLUENCE",
+					"SHOW_AR_MSG",
+					"CLEAR_AR_MSG",
+					"SET_SOUNDTYPE",
+					"CHANGE_STAT_MAP_NUMBER",
+					"CIRCLE_ENTITY",
+					"FACE_TO_TARGET",
+					"UNLOCK_ENEMY",
+					"FACE_TO_TARGET_OFFSET",
+					"FACE_TO_TARGET_SPEED",
+					"FACE_ALIGN",
+					"SHOW_THROW_FX",
+					"COMBAT_ART_CHARGE",
+					"MOVE_TO_DISTANCE",
+					"MOVE_TO_PINPOINT",
+					"SET_ATTRIB_CLOSEST_ENTITY",
+					"MOVE_TO_ATTRIB_ENTITY",
+					"SET_COMBATANT_PARTY",
+					"JUMP_TO_TARGET",
+					"JUMP_TARGET_MOVEMENT",
+					"SET_MISSILE_SPEED",
+					"ESCAPE_FROM_TARGET",
+					"CIRCLE_TARGET",
+					"STICK_TO_TARGET",
+					"STICKY_CIRCLE_AROUND",
+					"SET_CIRCLE_AROUND_POS",
+					"TACKLE",
+					"CIRCLE_ATTACK",
+					"COMBAT_SWEEP",
+					"SET_TARGET_Z_VEL",
+					"PUSH_PULL_FORCE",
+					"SET_INVINCIBLE",
+					"MOD_GENERIC_PROXY",
+					"CONNECT_PROXY_TO_TARGET",
+					"DISCONNECT_PROXY_FROM_TARGET",
+					"SET_ELEMENT_FILTER",
+					"DODGE_FREE_LINE",
+					"ENABLE_REACTION",
+					"SET_SPIKE_DAMAGE",
+					"DISABLE_REACTION",
+					"SET_DAMAGE_FACTOR",
+					"SET_HIT_STABLE",
+					"SET_DAMAGE_CEILING",
+					"CLEAR_DAMAGE_CEILING",
+					"SET_ENEMY_STATE",
+					"SHOOT_PROXY",
+					"SET_HIT_PROXY",
+					"SET_PROXY_OWNER_TO_POS",
+					"CLEAR_HIT_PROXY",
+					"SHOOT_PROXY_RANGE",
+					"SHOOT_PROXY_GRID",
+					"STOP_REPEATING_FORCE",
+					"UNSTICK_STICKING_PROXIES",
+					"REMOVE_PROXIES",
+					"FANCY_AIM",
+					"WAIT_UNTIL_PLAYER_ACTION",
+					"SHARE_PROXY_TEMP_TARGET",
+					"WAIT_UNTIL_PROXIES_DONE",
+					"WAIT_UNTIL_COMBAT_TRUE",
+					"WAIT_UNTIL_TRAP_OVER",
+					"WAIT_UNTIL_TARGET_DEFEATED",
+					"SPAWN_BURSTS",
+					"DIRECT_HIT",
+					"CLEAR_STUN_LOCKED",
+					"REGEN_HP",
+					"HEAL_STATUS",
+					"CLEAR_STATUS_BAR",
+					"SET_ENEMY_STATUS_VISIBILITY",
+					"SET_HP_CRITICAL",
+					"REDUCE_HP",
+					"SET_HIT_IGNORE",
+					"WAIT_UNTIL_GUARDED",
+					"ABSORB_BLOCKED_DAMAGE",
+					"ABSORB_DAMAGE",
+					"ABSORB_DAMAGE_VIA_SUM",
+					"CONSUME_SP",
+					"SET_FREE_LINE_CMD",
+					"ADD_SHIELD",
+					"REMOVE_SHIELD",
+					"SPAWN_ASSAULT",
+					"SHOW_COMBAT_MSG",
+					"ADD_TARGET_STUN_LOCK",
+					"THROW_ENERGY_DROPS",
+					"THROW_GENERIC_DROP",
+					"NAVIGATE_TO_SPAWN_POINT",
+					"DO_DAMAGE_MOVEMENT",
+					"COMBAT_IF",
+					"CHANGE_COLLAB_VAR",
+					"SET_COLLAB_BREAK_TYPE",
+					"ASSIGN_COLLAB_POINTS",
+					"SET_ATTRIB_TARGET_VALUE",
+					"SET_COLLAB_ENTITY",
+					"STORE_IN_COLLAB_PARTNER",
+					"CONNECT_HP_TO_STORED_ENEMIES",
+					"CONNECT_HP_TO_TYPES_ENEMIES",
+					"UPDATE_RESPAWN_POINT",
+					"SEND_ENEMY_MSG",
+					"RESET_TRACKER",
+					"RESET_FREQUENCY",
+					"RELEASE_STORED_ENEMIES",
+					"REASSIGN_TARGET",
+					"DESTROY_DESTRUCTIBLES",
+					"SPAWN_ENEMIES",
+					"SPAWN_ENEMY_CLOSEBY",
+					"KILL_ENEMIES",
+					"SELF_DESTRUCT",
+					"SET_TEMP_TARGET",
+					"SET_ATTRIB_TARGET_ENTITY",
+					"SET_CLOSE_TEMP_TARGET",
+					"SET_OWNER_REPLACE_TARGET",
+					"SET_POI_TEMP_TARGET",
+					"SET_PROXY_TEMP_TARGET",
+					"REDUCE_PROXY_HP",
+					"CLEAR_TEMP_TARGET",
+					"CLEAR_PREV_HIT",
+					"CLEAR_TARGET",
+					"DETOUR_COMPRESSOR_THREAT",
+					"ADD_ACTION_BUFF",
+					"MOD_ACTION_BUFF_PARAM",
+					"SET_ATTRIB_POS_COMBAT",
+					"CHANGE_ENEMY_ANNOTATION",
+					"DO_ENEMY_ACTION",
+					"DO_ENEMY_ACTION_INLINE",
+					"SET_AGGRESSION",
+					"SET_ENEMY_ELEMENT_MODE",
+					"SHOW_DREAM_MSG",
+					"RESET_NPC",
+					"APPLY_NPC_CONFIG",
+					"SHOOT_PROXY_PLAYER",
+					"SET_PLAYER_ACTION_BLOCK",
+					"SET_PLAYER_ANIM_SHEET",
+					"CLEAR_PLAYER_ANIM_SHEET",
+					"SET_PLAYER_INVINCIBLE",
+					"PLAYER_ADJUST_FACE",
+					"PLAYER_ADJUST_MOVE_DIR",
+					"PLAYER_MOVE_TO_DIR",
+					"ADD_PLAYER_CAMERA_TARGET",
+					"REMOVE_PLAYER_CAMERA_TARGET",
+					"ADD_PLAYER_SHIELD",
+					"START_ITEM_CONSUME",
+					"SHOW_FOOD_ICON",
+					"CHANGE_FOOD_ICON",
+					"CONSUME_ITEM",
+					"OPEN_CHEST",
+					"ALIGN_PUSH_PULL_POS",
+					"DO_WAVE_TELEPORT",
+					"THROW_BOMB",
+					"RAIN_BOMB",
+					"SHOOT_BUBBLE",
+					"SET_ELEMENT_POLE_TIMER",
+					"PLACE_WAVE_TELEPORT",
+					"PLACE_TESLA_COIL",
+					"PLACE_ELEMENT_SHIELD",
+					"WAIT_UNTIL_ELEMENT_SHIELD_USED",
+					"STOP_PLAYER_ELEMENT_SHIELD",
+					"DO_PLATFORM_SHOCKWAVE",
+					"SET_PARTY_TEMP_TARGET",
+					"CONSUME_PARTY_SANDWICH"
+				],
+				"optional": true,
+				"popup": true,
+				"description": "Action that is immediately performed on enemy"
+			},
+			"noEffects": {
+				"type": "Boolean",
+				"description": "If true: Do not show appear effect."
+			}
+		}
+	},
+	"SPAWN_DESTRUCTIBLE": {
+		"attributes": {
+			"position": {
+				"type": "Vec3",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "spawn point"
+			},
+			"desType": {
+				"type": "String",
+				"withNull": true,
+				"description": "Type of destructible object",
+				"options": {
+					"boxMedium": 0,
+					"boxMedNorth": 0,
+					"boxMedEast": 0,
+					"boxMedSouth": 0,
+					"boxMedWest": 0,
+					"boxLarge": 0,
+					"iceBlock": 0,
+					"bombBlock": 0,
+					"bombWallNorth": 0,
+					"bombWallEast": 0,
+					"bombWallWest": 0,
+					"keyWallNorth": 0,
+					"keyPillar": 0,
+					"keyPillarAR": 0,
+					"masterKeyWallColdDungeon": 0,
+					"masterKeyWallHeatDungeon": 0,
+					"masterKeyWallTreeDungeon": 0,
+					"autumnWall": 0,
+					"autumnWall2": 0,
+					"autumnWall3": 0
+				}
+			},
+			"onDestructIncrease": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Variable to increase by one when destroyed"
+			},
+			"onPreDestructIncrease": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Variable to increase by one when destroyed"
+			},
+			"effect": {
+				"type": "Effect",
+				"optional": true,
+				"popup": true,
+				"description": "Optional Effect"
+			}
+		}
+	},
+	"SPAWN_ENEMY_ON_ENTITY": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to spawn enemy on"
+			},
+			"enemyInfo": {
+				"type": "EnemyType",
+				"popup": true,
+				"description": "Enemy information"
+			},
+			"targetPlayer": {
+				"type": "Boolean",
+				"description": "If true, automatically target player"
+			},
+			"name": {
+				"type": "StringExpression",
+				"optional": true,
+				"description": "Name of the enemy to access via action"
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for Enemy to spawn and despawn"
+			}
+		}
+	},
+	"KILL_ENEMIES": {
+		"attributes": {
+			"enemyType": {
+				"type": "String",
+				"optional": true,
+				"description": "If provided: only remove enemy of this type",
+				"options": "enemies"
+			},
+			"noRumble": {
+				"type": "Boolean",
+				"optional": true,
+				"default": "true",
+				"description": "If true, do not rumble screen on enemy kill"
+			}
+		}
+	},
+	"SET_ENEMY_STATE": {
+		"attributes": {
+			"enemy": {
+				"type": "Actor",
+				"context": "Entity",
+				"description": "Enemy to change"
+			},
+			"enemyState": {
+				"type": "EnemyState",
+				"description": "State of Enemy to switch to"
+			}
+		}
+	},
+	"SET_ENEMY_TARGET": {
+		"attributes": {
+			"enemy": {
+				"type": "Actor",
+				"context": "Entity",
+				"description": "Enemy to change"
+			},
+			"target": {
+				"type": "Entity",
+				"withNull": true,
+				"description": "Entity to target"
+			}
+		}
+	},
+	"SET_SCREEN_ENEMY_TARGET": {
+		"attributes": {
+			"target": {
+				"type": "Entity",
+				"withNull": true,
+				"description": "Entity to target"
+			}
+		}
+	},
+	"SET_ALL_ENEMY_TARGET": {
+		"attributes": {
+			"target": {
+				"type": "Entity",
+				"withNull": true,
+				"description": "Entity to target"
+			}
+		}
+	},
+	"REMOVE_ALL_ENEMY_TARGET": {
+		"attributes": {}
+	},
+	"RESET_SP": {
+		"attributes": {
+			"target": {
+				"type": "Entity",
+				"withNull": true,
+				"description": "Entity to target"
+			},
+			"sp": {
+				"type": "Number",
+				"description": "How much SP to reset. 0.5=50%"
+			}
+		}
+	},
+	"SET_RELATIVE_HP": {
+		"attributes": {
+			"target": {
+				"type": "Entity",
+				"description": "Entity to set HP of"
+			},
+			"value": {
+				"type": "Number",
+				"description": "Relative amount of HP entity should have. 1= FULL HP"
+			}
+		}
+	},
+	"REGEN_HP": {
+		"attributes": {
+			"target": {
+				"type": "Entity",
+				"description": "Entity to target"
+			},
+			"value": {
+				"type": "Number",
+				"description": "Relative amount of HP to regen. 1= FULL HP"
+			},
+			"showNumbers": {
+				"type": "Boolean",
+				"description": "if true: do not show healing numbers"
+			}
+		}
+	},
+	"SET_TYPED_ENEMY_TARGET": {
+		"attributes": {
+			"enemyType": {
+				"type": "String",
+				"description": "Type of enemy",
+				"options": "enemies"
+			},
+			"target": {
+				"type": "Entity",
+				"withNull": true,
+				"description": "Entity to target"
+			}
+		}
+	},
+	"SET_ENEMIES_NAV_TOLERANT": {
+		"attributes": {}
+	},
+	"SET_FINAL_DRAMATIC_EFFECT": {
+		"attributes": {
+			"effectType": {
+				"type": "String",
+				"withNull": true,
+				"description": "Type of dramatic effect",
+				"options": {
+					"HP_BREAK_ZOOM": 0,
+					"LAST_ENEMY_ZOOM": 0,
+					"BOSS_ZOOM": 0,
+					"BREAK_NONE": 0,
+					"BREAK_NO_TEXT": 0,
+					"BREAK_LIGHT": 0,
+					"BREAK": 0,
+					"BREAK_BIG": 0,
+					"BREAK_WIDE": 0,
+					"BREAK_WIDE_NOSLOW": 0,
+					"OVERLOAD": 0,
+					"GUARD_COUNTER": 0,
+					"GUARD_BREAK": 0,
+					"RANK_UP": 0,
+					"S_RANK": 0,
+					"PVP_KO": 0,
+					"PVP_FINAL_KO": 0,
+					"ARENA_FINAL_KO": 0,
+					"ONCE_MORE": 0,
+					"ELEMENT_SHIELD": 0
+				}
+			}
+		}
+	},
+	"SET_COMBAT_SPEED": {
+		"attributes": {
+			"speed": {
+				"type": "Number",
+				"default": 1,
+				"description": "Speed of combat, will scale frequency of enemy attacks"
+			}
+		}
+	},
+	"MASS_REPLACE_ENTITIES_WITH_ENEMY": {
+		"attributes": {
+			"regExp": {
+				"type": "String",
+				"description": "Regular Expression used on entityName to find entities"
+			},
+			"enemyInfo": {
+				"type": "EnemyType",
+				"popup": true,
+				"description": "Enemy type to swap with entities"
+			},
+			"target": {
+				"type": "Entity",
+				"optional": true,
+				"description": "Set enemy target when spawned"
+			}
+		}
+	},
+	"SWAP_ENTITY_WITH_ENEMY": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"context": "Entity",
+				"description": "Entity to swap with enemy"
+			},
+			"enemyInfo": {
+				"type": "EnemyType",
+				"popup": true,
+				"description": "Enemy to swap with entity"
+			},
+			"manualKill": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Instead of killing the enemy, set specified variable to true."
+			}
+		}
+	},
+	"SWAP_BACK_ENEMY_WITH_ENTITY": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"context": "Entity",
+				"description": "Entity to swap with enemy"
+			},
+			"expCollect": {
+				"type": "Boolean",
+				"description": "Manually kill enemy, collecting EXP etc."
+			}
+		}
+	},
+	"SET_COMBAT_ACTIVE": {
+		"attributes": {
+			"active": {
+				"type": "Boolean",
+				"description": "Activity status of combat"
+			}
+		}
+	},
+	"DO_ENEMY_ACTION": {
+		"attributes": {
+			"enemy": {
+				"type": "Actor",
+				"context": "Entity",
+				"description": "Enemy to change"
+			},
+			"actionName": {
+				"type": "String",
+				"description": "Name of action to perform"
+			},
+			"noStateReset": {
+				"type": "Boolean",
+				"description": "If true, do not reset state before switching to action. Also keeps actionAttached!"
+			}
+		}
+	},
+	"SET_VAR_COMBAT_STAT": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to store relative hp in"
+			},
+			"entity": {
+				"type": "Entity",
+				"description": "Combatant of which to fetch stat"
+			},
+			"stat": {
+				"type": "String",
+				"description": "Type of Stat",
+				"options": {
+					"RELATIVE_HP": 0,
+					"CURRENT_HP": 0,
+					"MAX_HP": 0,
+					"ATTACK": 0,
+					"DEFENSE": 0,
+					"FOCUS": 0
+				}
+			}
+		}
+	},
+	"MANUAL_COMBATANT_KILL": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Combatant to manually kill"
+			}
+		}
+	},
+	"MANUAL_COMBATANT_REVIVE": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"context": "Entity",
+				"description": "Combatant to manually revive"
+			}
+		}
+	},
+	"SET_COMBATANT_MANUAL_KILL": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"context": "Entity",
+				"description": "Combatant to set manual kill variable to"
+			},
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to set to true when combatant is killed"
+			}
+		}
+	},
+	"START_PVP_BATTLE": {
+		"attributes": {
+			"winPoints": {
+				"type": "Integer",
+				"description": "Number of points to win PVP battle"
+			},
+			"enemies": {
+				"type": "Array",
+				"sub": {
+					"type": "Entity"
+				},
+				"description": "List of all enemies that participate in battle"
+			}
+		}
+	},
+	"PREPARE_PVP_ROUND": {
+		"attributes": {
+			"autoContinue": {
+				"type": "Boolean",
+				"description": "If true, automatically stop preparation"
+			}
+		}
+	},
+	"START_PVP_ROUND": {
+		"attributes": {}
+	},
+	"STOP_PVP_BATTLE": {
+		"attributes": {}
+	},
+	"SET_RESPAWN_POINT": {
+		"attributes": {
+			"entity": {
+				"type": "Actor",
+				"context": "Entity",
+				"description": "Entity to change"
+			},
+			"marker": {
+				"type": "Entity",
+				"description": "marker Entity to take position from"
+			}
+		}
+	},
+	"COMBAT_IF": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Combatant from which to evaluate combat if"
+			},
+			"conditions": {
+				"type": "CombatConditions",
+				"description": "Combat conditions for if statement"
+			},
+			"withElse": {
+				"type": "Boolean",
+				"noLabel": true,
+				"description": "With else case."
+			},
+			"tmpTarget": {
+				"type": "Entity",
+				"optional": true,
+				"description": "Temp target to set temporarily while combat condition is evaluated"
+			}
+		}
+	},
+	"REMOVE_PROXIES": {
+		"attributes": {
+			"group": {
+				"type": "String",
+				"description": "Only remove proxies with matching group string"
+			}
+		}
+	},
+	"OPEN_RHOMBUS_MAP": {
+		"attributes": {}
+	},
+	"MOVE_ELEVATOR": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"filterClass": "Elevator",
+				"description": "Elevator Entity"
+			},
+			"floorOption": {
+				"type": "Number",
+				"description": "The number of the floor option to use."
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "If true, wait until teleported"
+			}
+		}
+	},
+	"MOVE_ELEVATOR_START": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"filterClass": "Elevator",
+				"description": "Elevator Entity"
+			}
+		}
+	},
+	"UNTRIGGER_PROP": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"filterClass": "Prop",
+				"description": "Prop entity"
+			}
+		}
+	},
+	"START_DEMO_HIGHSCORE_TIMER": {
+		"attributes": {}
+	},
+	"STOP_DEMO_HIGHSCORE_TIMER": {
+		"attributes": {
+			"observatory": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if this is for the observatory challenge."
+			}
+		}
+	},
+	"SET_TASK": {
+		"attributes": {
+			"task": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Current task of the game."
+			},
+			"keepDisplayed": {
+				"type": "Boolean",
+				"description": "Keep Task displayed all the time"
+			}
+		}
+	},
+	"SET_PERMA_TASK": {
+		"attributes": {
+			"task": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Current perma task of the game. Displayed in Synopsis"
+			}
+		}
+	},
+	"SET_PAUSE_MUSIC_STOP": {
+		"attributes": {
+			"stop": {
+				"type": "Boolean",
+				"description": "If true: stop music in pause menu."
+			}
+		}
+	},
+	"SET_MOBILITY_BLOCK": {
+		"attributes": {
+			"value": {
+				"type": "String",
+				"description": "Type of Mobility block. SAVE also blocks teleport",
+				"options": {
+					"NONE": 0,
+					"TELEPORT": 0,
+					"SAVE": 0,
+					"CHECKPOINT": 0,
+					"NO_MAP_LEAVE": 0
+				}
+			}
+		}
+	},
+	"ACTIVATE_CANCEL_BUTTON": {
+		"attributes": {
+			"text": {
+				"type": "LangLabel",
+				"description": "If defined: enable cancel button with this text. If undefined: disable cancel button"
+			}
+		}
+	},
+	"CLEAR_CANCEL_BUTTON": {
+		"attributes": {}
+	},
+	"SET_FORCE_COMBAT": {
+		"attributes": {
+			"value": {
+				"type": "Boolean",
+				"description": "True if combat should remain active."
+			}
+		}
+	},
+	"INCREASE_COMBAT_RANK": {
+		"attributes": {
+			"value": {
+				"type": "Number",
+				"description": "Increase Combat Rank by this weight. 1=one enemy"
+			}
+		}
+	},
+	"CLEAR_TASK": {
+		"attributes": {}
+	},
+	"SET_PLAYER_CORE": {
+		"attributes": {
+			"core": {
+				"type": "String",
+				"description": "Type of Core.",
+				"options": {
+					"MOVE": 0,
+					"CHARGE": 0,
+					"DASH": 0,
+					"CLOSE_COMBAT": 0,
+					"GUARD": 0,
+					"CREDITS": 0,
+					"MENU": 0,
+					"ELEMENT_NEUTRAL": 0,
+					"ELEMENT_HEAT": 0,
+					"ELEMENT_COLD": 0,
+					"ELEMENT_SHOCK": 0,
+					"ELEMENT_WAVE": 0,
+					"QUICK_MENU": 0,
+					"THROWING": 0,
+					"ELEMENT_LOAD": 0,
+					"ELEMENT_CHANGE": 0,
+					"SPECIAL": 0,
+					"COMBAT_RANK": 0,
+					"QUEST_SWITCH": 0,
+					"EXP": 0,
+					"MENU_CIRCUIT": 0,
+					"MENU_SYNOPSIS": 0,
+					"MENU_SOCIAL": 0,
+					"MENU_SOCIAL_INVITE": 0,
+					"MENU_BOTANICS": 0,
+					"ITEMS": 0,
+					"MONEY": 0,
+					"MODIFIER": 0
+				}
+			},
+			"value": {
+				"type": "Boolean",
+				"description": "True to activate core."
+			}
+		}
+	},
+	"SET_PLAYER_SP_LEVEL": {
+		"attributes": {
+			"level": {
+				"type": "String",
+				"description": "Type of Core.",
+				"options": {
+					"0": "0 SP",
+					"1": "4 SP",
+					"2": "8 SP",
+					"3": "12 SP",
+					"4": "16 SP"
+				}
+			}
+		}
+	},
+	"INCREASE_PLAYER_SP_LEVEL": {
+		"attributes": {}
+	},
+	"ADD_PLAYER_EXP": {
+		"attributes": {
+			"exp": {
+				"type": "NumberExpression",
+				"description": "Experience count."
+			},
+			"level": {
+				"type": "Number",
+				"optional": true,
+				"description": "Level of experience"
+			}
+		}
+	},
+	"SET_ALL_PLAYER_CORE": {
+		"attributes": {
+			"value": {
+				"type": "Boolean",
+				"description": "True to activate core."
+			}
+		}
+	},
+	"SHOW_MSG": {
+		"attributes": {
+			"person": {
+				"type": "PersonExpression",
+				"description": "Talking person"
+			},
+			"message": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Message to display"
+			},
+			"autoContinue": {
+				"type": "Boolean",
+				"description": "Automatically continue after message"
+			}
+		}
+	},
+	"RING_PRIVATE_MSG": {
+		"attributes": {
+			"outgoing": {
+				"type": "Boolean",
+				"description": "If true: this is an outgoing call"
+			}
+		}
+	},
+	"START_PRIVATE_MSG": {
+		"attributes": {}
+	},
+	"END_PRIVATE_MSG": {
+		"attributes": {
+			"skipSounds": {
+				"type": "Boolean",
+				"description": "If true: skip sounds"
+			}
+		}
+	},
+	"SHOW_OFFSCREEN_MSG": {
+		"attributes": {
+			"side": {
+				"type": "String",
+				"description": "Side to display message at.",
+				"options": {
+					"RIGHT": 0,
+					"LEFT": 0
+				}
+			},
+			"message": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Message to display"
+			},
+			"autoContinue": {
+				"type": "Boolean",
+				"description": "Automaticallt continue after message"
+			}
+		}
+	},
+	"SHOW_CHOICE": {
+		"attributes": {
+			"person": {
+				"type": "PersonExpression",
+				"description": "Talking person"
+			},
+			"options": {
+				"type": "ChoiceOptions",
+				"noLabel": true,
+				"description": "List of options"
+			},
+			"columns": {
+				"type": "Integer",
+				"optional": true,
+				"default": 2,
+				"description": "Number of buttons columns."
+			},
+			"forceWidth": {
+				"type": "Integer",
+				"optional": true,
+				"description": "Override the default button width. NOTE: Buttons still get matched when a text is to large."
+			}
+		}
+	},
+	"ADD_MSG_PERSON": {
+		"attributes": {
+			"person": {
+				"type": "PersonExpression",
+				"description": "Person + Expression to add"
+			},
+			"name": {
+				"type": "LangLabel",
+				"optional": true,
+				"description": "Name to display under portrait if any"
+			},
+			"side": {
+				"type": "String",
+				"description": "Side to display Person at.",
+				"options": {
+					"RIGHT": 0,
+					"LEFT": 0
+				}
+			},
+			"order": {
+				"type": "Number",
+				"description": "Determines the order in which people are displayed on one side. LOWER values are in FRONT"
+			},
+			"clearSide": {
+				"type": "Boolean",
+				"description": "Clear the side before adding the person"
+			}
+		}
+	},
+	"REMOVE_MSG_PERSON": {
+		"attributes": {
+			"person": {
+				"type": "Character",
+				"description": "Person to remove"
+			}
+		}
+	},
+	"SET_MSG_EXPRESSION": {
+		"attributes": {
+			"person": {
+				"type": "PersonExpression",
+				"description": "Person + Expression to change"
+			}
+		}
+	},
+	"CLEAR_MSG": {
+		"attributes": {
+			"side": {
+				"type": "String",
+				"default": "ALL",
+				"description": "Side to clear",
+				"options": {
+					"RIGHT": 0,
+					"LEFT": 0,
+					"ALL": 0
+				}
+			}
+		}
+	},
+	"SHOW_CENTER_MSG": {
+		"attributes": {
+			"titleText": {
+				"type": "LangLabel",
+				"description": "Title of Box"
+			},
+			"text": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Message in Box"
+			}
+		}
+	},
+	"SHOW_DREAM_MSG": {
+		"attributes": {
+			"text": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Message in Box"
+			},
+			"entity": {
+				"type": "Entity",
+				"optional": true,
+				"description": "Entity the dream text will be displayed above or below. Text will be centered on screen if not specified"
+			},
+			"posType": {
+				"type": "String",
+				"default": "TOP",
+				"description": "Whether to display text above or below entity.",
+				"options": {
+					"TOP": 0,
+					"BOTTOM": 0
+				}
+			},
+			"offset": {
+				"type": "Vec2",
+				"description": "Offset added to position"
+			},
+			"time": {
+				"type": "Number",
+				"optional": true,
+				"description": "If set the message will stay on for the given amount of time"
+			},
+			"smallFont": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: use small font"
+			}
+		}
+	},
+	"SHOW_TUTORIAL_START": {
+		"attributes": {
+			"msgType": {
+				"type": "String",
+				"default": "TUTORIAL",
+				"description": "Type of Message",
+				"options": {
+					"TUTORIAL": 0,
+					"GENERIC": 0
+				}
+			},
+			"title": {
+				"type": "LangLabel",
+				"description": "Title of Toturial"
+			},
+			"content": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Content of Tutorial"
+			},
+			"image": {
+				"type": "Image",
+				"optional": true,
+				"description": "Image to be shown over content text"
+			}
+		}
+	},
+	"SHOW_MODAL_CHOICE": {
+		"attributes": {
+			"text": {
+				"type": "LangLabel",
+				"description": "Text of modal dialog"
+			},
+			"options": {
+				"type": "ModalChoiceOptions",
+				"description": "All the options of the modal dialog"
+			}
+		}
+	},
+	"SHOW_TUTORIAL_MSG": {
+		"attributes": {
+			"text": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Tutorial Text description"
+			},
+			"pos": {
+				"type": "Vec2",
+				"description": "Marker Square position"
+			},
+			"size": {
+				"type": "Vec2",
+				"description": "Marker Square size"
+			},
+			"direction": {
+				"type": "String",
+				"description": "Direction to show text relative to marker square.",
+				"options": {
+					"BOTTOM_RIGHT": 0,
+					"BOTTOM_LEFT": 0,
+					"TOP_RIGHT": 0,
+					"TOP_LEFT": 0
+				}
+			},
+			"connectPos": {
+				"type": "Number",
+				"default": 0.5,
+				"description": "Point where text line touches marker box. Between 0 to 1. 0= left corner, 1=right corner."
+			},
+			"stopTime": {
+				"type": "Boolean",
+				"description": "If true: Stop time while displaying the message"
+			}
+		}
+	},
+	"SHOW_TUTORIAL_PLAYER_MSG": {
+		"attributes": {
+			"text": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Tutorial Text description"
+			},
+			"targetType": {
+				"type": "String",
+				"description": "Marker Square position",
+				"options": {
+					"PLAYER": 0,
+					"CROSSHAIR": 0,
+					"ENEMY": 0
+				}
+			},
+			"size": {
+				"type": "Vec2",
+				"description": "Marker Square size"
+			},
+			"stopTime": {
+				"type": "Boolean",
+				"description": "If true: Stop time while displaying the message"
+			}
+		}
+	},
+	"SHOW_DEMO_HIGHSCORE": {
+		"attributes": {
+			"observatory": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if this is for the observatory challenge."
+			}
+		}
+	},
+	"SHOW_DEMO_TIME": {
+		"attributes": {
+			"observatory": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if this is for the observatory challenge."
+			}
+		}
+	},
+	"SHOW_GET_MSG": {
+		"attributes": {
+			"msgType": {
+				"type": "String",
+				"description": "Type of get message",
+				"options": {
+					"ACTIVATED": 0,
+					"OBTAINED": 0,
+					"REMOVED": 0,
+					"ENEMY": 0,
+					"EXTENDED": 0,
+					"WORD": 0,
+					"FRIENDSHIP": 0,
+					"PARTY": 0,
+					"USED": 0,
+					"HAND_OVER": 0,
+					"RESET": 0
+				}
+			},
+			"object": {
+				"type": "LangLabel",
+				"description": "Object of get message"
+			}
+		}
+	},
+	"SHOW_SIDE_MSG": {
+		"attributes": {
+			"person": {
+				"type": "PersonExpression",
+				"description": "Person + Exporession of message"
+			},
+			"message": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Message to display"
+			}
+		}
+	},
+	"CLEAR_SIDE_MSG": {
+		"attributes": {}
+	},
+	"SHOW_BOARD_MSG": {
+		"attributes": {
+			"text": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Text to display."
+			},
+			"center": {
+				"type": "Boolean",
+				"description": "Center the text."
+			},
+			"side": {
+				"type": "String",
+				"optional": true,
+				"description": "If defined: moved board message to side of screen, allowing to display persons in parallel",
+				"options": {
+					"RIGHT": 0,
+					"LEFT": 0
+				}
+			},
+			"autoContinue": {
+				"type": "Boolean",
+				"description": "Automatically continue after message"
+			}
+		}
+	},
+	"CLEAR_BOARD_MSG": {
+		"attributes": {}
+	},
+	"DO_THE_SHAKE": {
+		"attributes": {
+			"person": {
+				"type": "PersonExpression",
+				"description": "Talking person"
+			}
+		}
+	},
+	"RESET_NPC": {
+		"attributes": {
+			"npc": {
+				"type": "Entity",
+				"description": "NPC to reset"
+			}
+		}
+	},
+	"SET_NPC_RUNNERS": {
+		"attributes": {
+			"frequency": {
+				"type": "String",
+				"withNull": true,
+				"description": "Frequency of NPC Runners. Null = no NPC runners",
+				"options": {
+					"CROSSCENTRAL": 0,
+					"RHOMBUS_SQUARE": 0,
+					"CROWDED": 0,
+					"LIVELY": 0,
+					"REGULAR": 0,
+					"FEW": 0
+				}
+			}
+		}
+	},
+	"RESET_NPC_RUNNERS": {
+		"attributes": {}
+	},
+	"SET_NPC_CONFIG": {
+		"attributes": {
+			"npc": {
+				"type": "NPC",
+				"description": "NPC to change"
+			},
+			"config": {
+				"type": "String",
+				"description": "Config name to apply"
+			}
+		}
+	},
+	"SAVE_PLAYER_MODEL_VALUE": {
+		"attributes": {
+			"modelType": {
+				"type": "String",
+				"description": "Mode value to set",
+				"options": {
+					"NONE": 0,
+					"MONEY": 0
+				}
+			}
+		}
+	},
+	"ADD_PLAYER_CAMERA_TARGET": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to target"
+			},
+			"speed": {
+				"type": "String",
+				"optional": true,
+				"description": "Speed of camera transition",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			}
+		}
+	},
+	"REMOVE_PLAYER_CAMERA_TARGET": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to target"
+			},
+			"speed": {
+				"type": "String",
+				"optional": true,
+				"description": "Speed of camera transition",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			}
+		}
+	},
+	"REMOVE_ALL_PLAYER_CAMERAS": {
+		"attributes": {
+			"speed": {
+				"type": "String",
+				"optional": true,
+				"description": "Speed of camera transition",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			}
+		}
+	},
+	"LEARN_SKILL": {
+		"attributes": {
+			"skill": {
+				"type": "Integer",
+				"description": "Skill ID"
+			}
+		}
+	},
+	"DO_INLINE_LEVELUP": {
+		"attributes": {}
+	},
+	"RESET_SKILL_TREE": {
+		"attributes": {
+			"element": {
+				"type": "String",
+				"default": "ALL_AVAILABLE",
+				"description": "element to reset",
+				"options": {
+					"NEUTRAL": 0,
+					"HEAT": 0,
+					"COLD": 0,
+					"SHOCK": 0,
+					"WAVE": 0,
+					"ALL_AVAILABLE": 0
+				}
+			}
+		}
+	},
+	"SET_ELEMENT_LOAD": {
+		"attributes": {
+			"value": {
+				"type": "Number",
+				"description": "Value of load. 0=empty, 1=full (instant elemental overload)"
+			}
+		}
+	},
+	"SWITCH_PLAYER_CONFIG": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of player config",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0
+				}
+			}
+		}
+	},
+	"WAIT_UNTIL_PLAYER_CHARGED": {
+		"attributes": {
+			"level": {
+				"type": "Number",
+				"description": "Wait until this level of charge has been reached"
+			}
+		}
+	},
+	"SWITCH_ELEMENT_MODE": {
+		"attributes": {
+			"element": {
+				"type": "String",
+				"description": "Element to switch to",
+				"options": {
+					"NEUTRAL": 0,
+					"HEAT": 0,
+					"COLD": 0,
+					"SHOCK": 0,
+					"WAVE": 0
+				}
+			},
+			"skipEffect": {
+				"type": "Boolean",
+				"description": "If true: do no show effects of changing elements"
+			}
+		}
+	},
+	"SWITCH_TO_ELEMENT_WITH_COMBAT_ART": {
+		"attributes": {
+			"artType": {
+				"type": "String",
+				"optional": true,
+				"description": "Type of combat art",
+				"options": {
+					"THROW": 0,
+					"ATTACK": 0,
+					"DASH": 0,
+					"GUARD": 0
+				}
+			},
+			"level": {
+				"type": "Integer",
+				"description": "Minimum Level"
+			},
+			"skipEffect": {
+				"type": "Boolean",
+				"description": "If true: do no show effects of changing elements"
+			}
+		}
+	},
+	"SET_VAR_COMBAT_ART_TYPE_WITH_MIN_LEVEL": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Will include the type of combat art THROW, ATTACK, DASH or GUARD"
+			},
+			"level": {
+				"type": "Integer",
+				"description": "Minimum Level of combat art"
+			}
+		}
+	},
+	"HIDE_PETS": {
+		"attributes": {
+			"hide": {
+				"type": "Boolean",
+				"description": "If true: hide pets"
+			}
+		}
+	},
+	"ACTIVATE_CROSSHAIR": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to focus camera on"
+			}
+		}
+	},
+	"DEACTIVATE_CROSSHAIR": {
+		"attributes": {}
+	},
+	"SET_CROSSHAIR_TARGET": {
+		"attributes": {
+			"pos": {
+				"type": "Vec2",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "Target position for CrossHair"
+			}
+		}
+	},
+	"SET_CROSSHAIR_SPEED": {
+		"attributes": {
+			"value": {
+				"type": "Number",
+				"description": "Speed of CrossHair. 1 is default, 0 is pause"
+			}
+		}
+	},
+	"REDUCE_CROSSHAIR_PRECISION": {
+		"attributes": {
+			"value": {
+				"type": "Number",
+				"description": "Amount to reduce. 0=nothing, 1=maximum"
+			}
+		}
+	},
+	"GET_CROSSHAIR_DIR": {
+		"attributes": {
+			"variable": {
+				"type": "VarName",
+				"description": "Variable to contain (random) CrossHair direction."
+			}
+		}
+	},
+	"DESTROY_DESTRUCTIBLE": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Destructible to destroy"
+			}
+		}
+	},
+	"RESET_PUSH_PULL_POS": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Pushpull entity"
+			},
+			"pos": {
+				"type": "Vec3",
+				"actorOption": true,
+				"visualize": true,
+				"pointSelect": true,
+				"optional": true,
+				"description": "If defined, reset to this position"
+			}
+		}
+	},
+	"SPAWN_BOMB": {
+		"attributes": {
+			"point": {
+				"type": "Vec3",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "Where to spawn bomb"
+			},
+			"zHeight": {
+				"type": "Number",
+				"description": "From how height the bomb will fall"
+			},
+			"zVary": {
+				"type": "Number",
+				"description": "Value to +- vary the z height"
+			}
+		}
+	},
+	"SPAWN_BUBBLE": {
+		"attributes": {
+			"point": {
+				"type": "Vec3",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "Where to spawn bubble"
+			}
+		}
+	},
+	"DESTROY_BOMBS": {
+		"attributes": {}
+	},
+	"STOP_PLAYER_ELEMENT_SHIELD": {
+		"attributes": {}
+	},
+	"FIX_SHOCKWAVE_PLATFORMS": {
+		"attributes": {
+			"pointA": {
+				"type": "Vec3",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "Point of first platform to be fixed"
+			},
+			"pointB": {
+				"type": "Vec3",
+				"visualize": true,
+				"pointSelect": true,
+				"optional": true,
+				"description": "If defined: Rise all platforms overlapping with the bounding box of A and B"
+			},
+			"height": {
+				"type": "Number",
+				"description": "How high platforms should be fixed"
+			},
+			"minHeight": {
+				"type": "Number",
+				"optional": true,
+				"description": "If defined, will vary height randomly between this value and height"
+			}
+		}
+	},
+	"RELEASE_FIXED_PLATFORMS": {
+		"attributes": {}
+	},
+	"ADD_PLANT": {
+		"attributes": {
+			"plant": {
+				"type": "DropSelect",
+				"description": "drop to update"
+			}
+		}
+	},
+	"UNLOCK_ENEMY": {
+		"attributes": {
+			"enemy": {
+				"type": "EnemySearch",
+				"description": "Enemy to unlock, note that this enemy, use this only for special enemies."
+			},
+			"asSpecial": {
+				"type": "Boolean",
+				"default": true,
+				"description": "if true 'special' will be displayed instead of kill count"
+			}
+		}
+	},
+	"UNLOCK_LORE": {
+		"attributes": {
+			"lore": {
+				"type": "LoreSelect",
+				"description": "Lore to unlock. Unlocks ALL entries "
+			},
+			"notify": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if notification should be displayed"
+			}
+		}
+	},
+	"UNLOCK_LORE_ALL": {
+		"attributes": {}
+	},
+	"UNLOCK_LORE_FIRST_TIME": {
+		"attributes": {}
+	},
+	"UNLOCK_LORE_ENTRY": {
+		"attributes": {
+			"lore": {
+				"type": "LoreSelect",
+				"context": "Lore",
+				"description": "Lore to the entry is associated with"
+			},
+			"entry": {
+				"type": "LoreEntrySelect",
+				"description": "The entry to unlock"
+			},
+			"notify": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if notification should be displayed"
+			}
+		}
+	},
+	"ACTIVATE_LANDMARK": {
+		"attributes": {
+			"area": {
+				"type": "Area",
+				"context": "Area",
+				"description": "Area to select landmark from",
+				"options": "areas"
+			},
+			"landmark": {
+				"type": "Landmarks",
+				"description": "Landmark to activate"
+			}
+		}
+	},
+	"SET_LANDMARK_ACTIVE_STATE": {
+		"attributes": {
+			"area": {
+				"type": "Area",
+				"context": "Area",
+				"description": "Area to select landmark from",
+				"options": "areas"
+			},
+			"landmark": {
+				"type": "Landmarks",
+				"optional": true,
+				"description": "Landmark to set state of. If not defined: Set state of all landmarks of area (if found)"
+			},
+			"state": {
+				"type": "Boolean",
+				"description": "New Active State of Landmark"
+			}
+		}
+	},
+	"UNDO_OPENED_CHEST_TRACK": {
+		"attributes": {
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"description": "Map of the chest"
+			},
+			"area": {
+				"type": "Area",
+				"context": "Area",
+				"description": "Area of the map",
+				"options": "areas"
+			},
+			"chestId": {
+				"type": "Integer",
+				"description": "Entity id of the chest that is no more"
+			},
+			"variable": {
+				"type": "String",
+				"optional": true,
+				"description": "Alternative Variable used for chest. Do NOT add map. prefix!"
+			}
+		}
+	},
+	"OPEN_SHOP": {
+		"attributes": {
+			"shop": {
+				"type": "Shop",
+				"context": "Shop",
+				"description": "The Shop to access. Below you can see the content"
+			}
+		}
+	},
+	"OPEN_QUEST_HUB": {
+		"attributes": {
+			"hub": {
+				"type": "QuestHub",
+				"context": "QuestHub",
+				"description": "The hub to access."
+			}
+		}
+	},
+	"UNDO_VISITED_AREA": {
+		"attributes": {
+			"area": {
+				"type": "String",
+				"description": "Visited area to be undone. WARNING: Will delete ALL map variables of those maps",
+				"options": "areas"
+			}
+		}
+	},
+	"START_FORCE_INPUT": {
+		"attributes": {
+			"inputEntry": {
+				"type": "String",
+				"description": "Name of player config",
+				"options": {
+					"DODGE_RIGHT": 0,
+					"ATTACK_LEFT": 0,
+					"CHARGE_HOLD": 0,
+					"CHARGE_RELEASE": 0
+				}
+			},
+			"title": {
+				"type": "LangLabel",
+				"description": "Title of input forcer"
+			},
+			"textKeyboard": {
+				"type": "LangLabel",
+				"description": "Text for Keyboard"
+			},
+			"textGamepad": {
+				"type": "LangLabel",
+				"description": "Text for Gamepad"
+			}
+		}
+	},
+	"CLEAR_FORCE_INPUT": {
+		"attributes": {}
+	},
+	"RESET_TRADER": {
+		"attributes": {
+			"trader": {
+				"type": "TraderSelect",
+				"description": "The trader to reset."
+			}
+		}
+	},
+	"START_NPC_TRADE_MENU": {
+		"attributes": {
+			"withBranches": {
+				"type": "Boolean",
+				"description": "If true, use branches to determine whether things where traded or not."
+			}
+		}
+	},
+	"CREATE_QUEST": {
+		"attributes": {
+			"name": {
+				"type": "LangLabel",
+				"compact": true,
+				"description": "Name of the quest"
+			},
+			"level": {
+				"type": "Number",
+				"description": "Level of the quest"
+			},
+			"description": {
+				"type": "LangLabel",
+				"large": true,
+				"compact": true,
+				"height": 70,
+				"description": "Starting description text"
+			},
+			"briefing": {
+				"type": "LangLabel",
+				"large": true,
+				"compact": true,
+				"height": 70,
+				"description": "Ending description text"
+			},
+			"rewards": {
+				"type": "QuestRewards",
+				"popup": true,
+				"description": "The rewards the player gets for completing the quest."
+			},
+			"tasks": {
+				"type": "QuestTaskList",
+				"description": "The tasks to complete"
+			}
+		}
+	},
+	"START_STATIC_QUEST": {
+		"attributes": {
+			"quest": {
+				"type": "QuestNameSelect",
+				"description": "The quest to start"
+			}
+		}
+	},
+	"SOLVE_QUEST_CONDITION": {
+		"attributes": {
+			"quest": {
+				"type": "QuestLabelSelect",
+				"description": "The label to set to active"
+			}
+		}
+	},
+	"UPDATE_QUEST_LOCATION": {
+		"attributes": {
+			"quest": {
+				"type": "Quest",
+				"description": "the quest to update. ONLY WORKS IF QUEST IS ACTIVE!"
+			}
+		}
+	},
+	"RESET_QUEST_TASK": {
+		"attributes": {
+			"quest": {
+				"type": "Quest",
+				"context": "Quest",
+				"description": "The quest on which the index should be reset"
+			},
+			"task": {
+				"type": "TaskIndex",
+				"description": "The quest task to reset to"
+			}
+		}
+	},
+	"OPEN_QUEST_DIALOG": {
+		"attributes": {
+			"quest": {
+				"type": "Quest",
+				"ignoreSubs": true,
+				"description": "The quest to open"
+			},
+			"npc": {
+				"type": "Character",
+				"optional": true,
+				"description": "Character to use as quest giver, override default and can be used in event triggers."
+			},
+			"map": {
+				"type": "Maps",
+				"optional": true,
+				"description": "Map to show instead of the automated one"
+			}
+		}
+	},
+	"FINISH_STATIC_QUEST": {
+		"attributes": {
+			"quest": {
+				"type": "QuestNameSelect",
+				"description": "The label to set to solve"
+			}
+		}
+	},
+	"RESOLVE_FINISHED_QUESTS": {
+		"attributes": {}
+	},
+	"SET_CONTACT_ONLINE": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0
+				}
+			},
+			"online": {
+				"type": "Boolean",
+				"description": "True if online."
+			}
+		}
+	},
+	"SET_MEMBER_LOCKED": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to change",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0
+				}
+			},
+			"locked": {
+				"type": "Boolean",
+				"description": "True if locked."
+			}
+		}
+	},
+	"SET_CONTACT_TYPE": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0
+				}
+			},
+			"status": {
+				"type": "String",
+				"description": "Status to set",
+				"options": {
+					"UNKNOWN": 0,
+					"CONTACT": 0,
+					"FRIEND": 0
+				}
+			}
+		}
+	},
+	"SET_CONTACT_TYPE_ALL": {
+		"attributes": {
+			"status": {
+				"type": "String",
+				"description": "Status to set",
+				"options": {
+					"UNKNOWN": 0,
+					"CONTACT": 0,
+					"FRIEND": 0
+				}
+			}
+		}
+	},
+	"ADD_PARTY_MEMBER": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0
+				}
+			},
+			"npc": {
+				"type": "NPC",
+				"optional": true,
+				"description": "NPC that will turn into the party member"
+			},
+			"skipEffect": {
+				"type": "Boolean",
+				"description": "If true: skip NPC show effect"
+			},
+			"temporary": {
+				"type": "Boolean",
+				"description": "If true: add Party member temporary"
+			}
+		}
+	},
+	"SET_PARTY_MEMBER_LEVEL": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0
+				}
+			},
+			"level": {
+				"type": "Integer",
+				"description": "Level to set"
+			},
+			"exp": {
+				"type": "Integer",
+				"description": "Exp to set"
+			},
+			"updateEquipment": {
+				"type": "Boolean",
+				"description": "If true, also update equipment of party member"
+			}
+		}
+	},
+	"SET_PARTY_MEMBER_NO_DIE": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to modify",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0
+				}
+			},
+			"noDie": {
+				"type": "Boolean",
+				"description": "If true: party member won't die, even if you kill him"
+			}
+		}
+	},
+	"SET_PARTY_MEMBER_SP_LEVEL": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0
+				}
+			},
+			"level": {
+				"type": "String",
+				"description": "Type of Core.",
+				"options": {
+					"0": "0 SP",
+					"1": "4 SP",
+					"2": "8 SP",
+					"3": "12 SP",
+					"4": "16 SP"
+				}
+			}
+		}
+	},
+	"SET_PARTY_MEMBER_ALL_ELEMENTS": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0
+				}
+			},
+			"allElements": {
+				"type": "Boolean",
+				"description": "If true: has all elements. If false: has all elements player has"
+			}
+		}
+	},
+	"REMOVE_PARTY_MEMBER": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0
+				}
+			},
+			"npc": {
+				"type": "NPC",
+				"optional": true,
+				"description": "NPC that will turn into the party member"
+			},
+			"skipEffect": {
+				"type": "Boolean",
+				"description": "If true: skip NPC show effect"
+			}
+		}
+	},
+	"REVIVE_PARTY_MEMBER": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to revive",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0
+				}
+			}
+		}
+	},
+	"SET_PARTY_AI": {
+		"attributes": {
+			"battle": {
+				"type": "Number",
+				"optional": true,
+				"description": "Battie AI Factor: 0=default, 1=always the best possible decision."
+			},
+			"aggressive": {
+				"type": "Number",
+				"optional": true,
+				"description": "Aggressiveness Factor: 0=default, 1=attacks as often as possible"
+			},
+			"targeting": {
+				"type": "Number",
+				"optional": true,
+				"description": "Influence enemy targeting behavior: 0=default, 1=enemies will always target party members"
+			}
+		}
+	},
+	"PARTY_KEEP_MAP_DUNGEON": {
+		"attributes": {}
+	},
+	"TRIGGER_COMMON_EVENTS": {
+		"attributes": {
+			"commonEventType": {
+				"type": "String",
+				"description": "Type of Common Event",
+				"options": {
+					"CALL": 0,
+					"attributes": 0,
+					"ENEMY_ATTACKS": 0,
+					"ENEMY_DEFEATED": 0,
+					"BATTLE_OVER": 0,
+					"COOLDOWN_START": 0,
+					"LEVEL_UP": 0,
+					"MENU_LEAVE": 0,
+					"QUEST_ACCEPTED": 0,
+					"PARTY_MEMBER_EVENT": 0,
+					"DUNGEON_TRANSITION": 0,
+					"SOCIAL_ACTION": 0,
+					"MAP_ENTERED": 0,
+					"FORCE_UPDATE": 0
+				}
+			}
+		}
+	},
+	"CALL_EVENT": {
+		"attributes": {
+			"callEvent": {
+				"type": "CallEvent",
+				"description": "Call event that will be called."
+			}
+		}
+	},
+	"CANCEL_COMMON_EVENTS": {
+		"attributes": {
+			"commonEventType": {
+				"type": "String",
+				"description": "Type of Common Event to cancel",
+				"options": {
+					"CALL": 0,
+					"attributes": 0,
+					"ENEMY_ATTACKS": 0,
+					"ENEMY_DEFEATED": 0,
+					"BATTLE_OVER": 0,
+					"COOLDOWN_START": 0,
+					"LEVEL_UP": 0,
+					"MENU_LEAVE": 0,
+					"QUEST_ACCEPTED": 0,
+					"PARTY_MEMBER_EVENT": 0,
+					"DUNGEON_TRANSITION": 0,
+					"SOCIAL_ACTION": 0,
+					"MAP_ENTERED": 0,
+					"FORCE_UPDATE": 0
+				}
+			}
+		}
+	},
+	"SHOW_CREDIT_SECTION": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of the section. MUST BE GIVEN"
+			},
+			"credits": {
+				"type": "Select",
+				"description": "Credit Section to show",
+				"options": "credits"
+			}
+		}
+	},
+	"WAIT_UNTIL_CREDIT_TRIGGER": {
+		"attributes": {
+			"credits": {
+				"type": "String",
+				"description": "Name of the credit section gui which contains the trigger"
+			},
+			"trigger": {
+				"type": "CreditsTriggerSelect",
+				"description": "Name of the trigger"
+			}
+		}
+	},
+	"WAIT_UNTIL_CREDIT_SECTION_DONE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of the section. MUST BE GIVEN"
+			},
+			"offscreen": {
+				"type": "Boolean",
+				"default": false,
+				"description": "If true, waits until credits entry is really offscreen"
+			}
+		}
+	},
+	"RESET_ARENA_CHAIN": {
+		"attributes": {}
+	},
+	"INCREASE_ARENA_CHAIN": {
+		"attributes": {
+			"amount": {
+				"type": "Integer",
+				"default": 1,
+				"description": "Increases the chain by the given amount"
+			}
+		}
+	},
+	"ADD_ARENA_SCORE_IGNORE": {
+		"attributes": {
+			"scoreType": {
+				"type": "Select",
+				"description": "Score type to ignore, gets reset every round.",
+				"options": {
+					"DAMAGE_DONE": 0,
+					"DAMAGE_DONE_EFFECTIVE": 0,
+					"DAMAGE_TAKEN": 0,
+					"KILL": 0,
+					"BOSS_KILL": 0,
+					"TARGET_KILL": 0,
+					"MULTI_KILL": 0,
+					"ENVIRONMENT_KILL": 0,
+					"ONE_HIT_KILL": 0,
+					"LOCK_FINISH": 0,
+					"LOCK_FINISH_3": 0,
+					"ELEMENT_OVERLOAD": 0,
+					"PERFECT_SHIELD": 0,
+					"PERFECT_DODGE": 0,
+					"ENEMY_BREAK": 0,
+					"GUARD_COUNTER": 0,
+					"STATUS_INFLICT": 0,
+					"ENEMY_HEAL": 0
+				}
+			}
+		}
+	},
+	"REMOVE_ARENA_SCORE_IGNORE": {
+		"attributes": {
+			"scoreType": {
+				"type": "Select",
+				"description": "Score type to remove, gets reset every round.",
+				"options": {
+					"DAMAGE_DONE": 0,
+					"DAMAGE_DONE_EFFECTIVE": 0,
+					"DAMAGE_TAKEN": 0,
+					"KILL": 0,
+					"BOSS_KILL": 0,
+					"TARGET_KILL": 0,
+					"MULTI_KILL": 0,
+					"ENVIRONMENT_KILL": 0,
+					"ONE_HIT_KILL": 0,
+					"LOCK_FINISH": 0,
+					"LOCK_FINISH_3": 0,
+					"ELEMENT_OVERLOAD": 0,
+					"PERFECT_SHIELD": 0,
+					"PERFECT_DODGE": 0,
+					"ENEMY_BREAK": 0,
+					"GUARD_COUNTER": 0,
+					"STATUS_INFLICT": 0,
+					"ENEMY_HEAL": 0
+				}
+			}
+		}
+	},
+	"CLEAR_ARENA_SCORE_IGNORE": {
+		"attributes": {}
+	},
+	"ADD_ARENA_IGNORE_TYPE": {
+		"attributes": {
+			"enemy": {
+				"type": "EnemySearch",
+				"description": "Enemy to ignore. Will be cleared each round."
+			}
+		}
+	},
+	"ADD_ARENA_SCORE": {
+		"attributes": {
+			"type": {
+				"type": "Select",
+				"default": "KILL",
+				"description": "Type of the score. This is used to for the list at the end of the round.",
+				"options": {
+					"DAMAGE_DONE": 0,
+					"DAMAGE_DONE_EFFECTIVE": 0,
+					"DAMAGE_TAKEN": 0,
+					"KILL": 0,
+					"BOSS_KILL": 0,
+					"TARGET_KILL": 0,
+					"MULTI_KILL": 0,
+					"ENVIRONMENT_KILL": 0,
+					"ONE_HIT_KILL": 0,
+					"LOCK_FINISH": 0,
+					"LOCK_FINISH_3": 0,
+					"ELEMENT_OVERLOAD": 0,
+					"PERFECT_SHIELD": 0,
+					"PERFECT_DODGE": 0,
+					"ENEMY_BREAK": 0,
+					"GUARD_COUNTER": 0,
+					"STATUS_INFLICT": 0,
+					"ENEMY_HEAL": 0
+				}
+			}
+		}
+	},
+	"OPEN_ARENA_MENU": {
+		"attributes": {
+			"custom": {
+				"type": "Boolean",
+				"description": "If true, open menu for custom cups."
+			},
+			"noWait": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true, do not wait for menu to be closed in order to continue events"
+			}
+		}
+	},
+	"START_ARENA_CUP": {
+		"attributes": {}
+	},
+	"END_ARENA_CUP": {
+		"attributes": {}
+	},
+	"SPAWN_ARENA_WAVE": {
+		"attributes": {
+			"silent": {
+				"type": "Boolean",
+				"default": false,
+				"description": "If true, do now show any effects"
+			},
+			"increase": {
+				"type": "Boolean",
+				"default": false,
+				"description": "If true, increase the current wave counter before spawning the wave"
+			},
+			"focusPlayer": {
+				"type": "Boolean",
+				"default": true,
+				"description": "If true, enemies will focus the player. Only if this is true the drammatic effect is auto set"
+			}
+		}
+	},
+	"START_ARENA_ROUND": {
+		"attributes": {
+			"scoreGui": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "Enable/Disable ScoreGui. Default is true"
+			},
+			"timeGui": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "Enable/Disable Timer Gui. Default is true"
+			}
+		}
+	},
+	"TP_TO_CUR_ARENA_ROUND": {
+		"attributes": {}
+	},
+	"PREP_ARENA_ROUND_END": {
+		"attributes": {}
+	},
+	"END_ARENA_ROUND": {
+		"attributes": {
+			"onDeath": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "If true, round was ended through player death"
+			}
+		}
+	},
+	"SHOW_ARENA_ROUND_GUI": {
+		"attributes": {
+			"wait": {
+				"type": "Boolean",
+				"description": "If true, wait until the gui has finished animating."
+			}
+		}
+	}
+}

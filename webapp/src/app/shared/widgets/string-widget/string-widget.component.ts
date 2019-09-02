@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 
 @Component({
@@ -19,6 +19,9 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 		const attr = this.attribute;
 		if (attr && attr.options) {
 			this.keys = Object.keys(attr.options);
+			if (attr.withNull) {
+				this.keys.unshift('');
+			}
 		}
 	}
 }
