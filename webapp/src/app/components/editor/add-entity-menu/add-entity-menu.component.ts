@@ -3,6 +3,9 @@ import {MatMenuTrigger} from '@angular/material';
 import {MapEntity, Point} from '../../../models/cross-code-map';
 import {Vec2} from '../../../shared/phaser/vec2';
 import {GlobalEventsService} from '../../../shared/global-events.service';
+import entities from '../../../../assets/entities.json';
+import {EntityRegistryService} from '../../../shared/phaser/entities/registry/entity-registry.service';
+
 
 @Component({
 	selector: 'app-add-entity-menu',
@@ -21,17 +24,26 @@ export class AddEntityMenuComponent {
 	private worldPos: Point = {x: 0, y: 0};
 	private mousePos: Point = {x: 0, y: 0};
 	
-	constructor(private events: GlobalEventsService) {
+	constructor(
+		private events: GlobalEventsService,
+		entityRegistry: EntityRegistryService
+	) {
+		const registry = Object.keys(entityRegistry.getAll());
+		const entityNames = Object.keys(entities);
+		
+		const eventSet = new Set<string>([...registry, ...entityNames]);
+		
+		this.keys = Array.from(eventSet);
+		this.keys.sort();
+		
 		document.onmousemove = e => {
 			this.mousePos.x = e.pageX;
 			this.mousePos.y = e.pageY;
 		};
-		this.events.showAddEntityMenu.subscribe(val => {
+		
+		this.events.showAddEntityMenu.subscribe(pos => {
 			Vec2.assign(this.pos, this.mousePos);
-			this.worldPos = val.worldPos;
-			if (this.keys.length === 0) {
-				this.keys = Object.keys(val.definitions);
-			}
+			this.worldPos = pos;
 			
 			this.searchInput = '';
 			this.filteredKeys = this.keys.slice();

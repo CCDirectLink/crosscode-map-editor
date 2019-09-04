@@ -21,6 +21,7 @@ import {OverlayModule} from './overlay/overlay.module';
 
 import { MapContentSettingsComponent } from '../components/dialogs/map-settings/map-content-settings/map-content-settings.component';
 import { HighlightDirective } from './highlight.directive';
+import {EntityRegistryService} from './phaser/entities/registry/entity-registry.service';
 
 @NgModule({
 	imports: [
@@ -50,6 +51,7 @@ import { HighlightDirective } from './highlight.directive';
 		ElectronService,
 		MapLoaderService,
 		GlobalEventsService,
+		EntityRegistryService,
 	],
 	entryComponents: [
 		JsonEditorComponent,

@@ -5,8 +5,10 @@ import {ScalableProp} from './scalable-prop';
 import {ItemDestruct} from './item-destruct';
 import {NPC} from './npc';
 import {EventTrigger} from './event-trigger';
+import {Injectable} from '@angular/core';
 
-export class EntityRegistry {
+@Injectable()
+export class EntityRegistryService {
 	private entities: { [type: string]: any } = {};
 	private defaultEntity: any;
 	
@@ -29,6 +31,10 @@ export class EntityRegistry {
 	
 	public getDefaultEntity(): new (...args: any[]) => CCEntity {
 		return this.defaultEntity;
+	}
+	
+	public getAll() {
+		return this.entities;
 	}
 	
 	public getEntity(type: string): new (...args: any[]) => CCEntity {
