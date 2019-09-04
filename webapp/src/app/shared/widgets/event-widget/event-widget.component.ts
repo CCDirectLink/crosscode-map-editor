@@ -1,24 +1,31 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnChanges, SimpleChanges} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
-import {NpcStatesComponent} from '../npc-states-widget/npc-states/npc-states.component';
 import {OverlayRefControl} from '../../overlay/overlay-ref-control';
 import {OverlayService} from '../../overlay/overlay.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {EventWindowComponent} from './event-window/event-window.component';
-import {Globals} from '../../globals';
 
 @Component({
 	selector: 'app-event-widget',
 	templateUrl: './event-widget.component.html',
 	styleUrls: ['./event-widget.component.scss', '../widget.scss']
 })
-export class EventWidgetComponent extends AbstractWidget {
+export class EventWidgetComponent extends AbstractWidget implements OnChanges {
 	
 	private ref?: OverlayRefControl;
 	
-	constructor(private overlayService: OverlayService,
-	            private overlay: Overlay) {
+	constructor(
+		private overlayService: OverlayService,
+		private overlay: Overlay
+	) {
 		super();
+	}
+	
+	ngOnChanges(changes?: SimpleChanges): void {
+		super.ngOnChanges(changes);
+		if (!this.settings[this.key]) {
+			this.settings[this.key] = [];
+		}
 	}
 	
 	open() {
