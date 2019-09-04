@@ -54,7 +54,6 @@ export class AddEntityMenuService {
 			positionStrategy: this.overlay.position().global()
 				.left(this.mousePos.x + 'px')
 				.top(this.mousePos.y + 'px'),
-			width: 80,
 			height: '50vh',
 			backdropClickClose: true,
 			hasBackdrop: true,

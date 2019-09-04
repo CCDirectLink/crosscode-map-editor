@@ -21,12 +21,12 @@ import {EventRowComponent} from './event-widget/event-editor/row/event-row.compo
 import {RowTextComponent} from './event-widget/event-editor/row-text/row-text.component';
 import {EventHelperService} from './event-widget/event-editor/event-helper.service';
 import {EventDetailComponent} from './event-widget/event-editor/detail/event-detail.component';
-import {EventAddComponent} from './event-widget/event-editor/add/event-add.component';
 import {EventWindowComponent} from './event-widget/event-window/event-window.component';
 import {CharacterWidgetComponent} from './character-widget/character-widget.component';
 import {CharacterNamesService} from './character-widget/character-names.service';
 import {PersonExpressionWidgetComponent} from './person-expression-widget/person-expression-widget.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import {AddEventService} from './event-widget/event-editor/add/add-event.service';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -48,7 +48,6 @@ const PRIVATE_COMPONENTS = [
 	EventWindowComponent,
 	RowTextComponent,
 	EventDetailComponent,
-	EventAddComponent
 ];
 
 @NgModule({
@@ -66,6 +65,7 @@ const PRIVATE_COMPONENTS = [
 		EventRegistryService,
 		EventHelperService,
 		CharacterNamesService,
+		AddEventService,
 	],
 	declarations: [COMPONENTS, PRIVATE_COMPONENTS],
 	entryComponents: [COMPONENTS, PRIVATE_COMPONENTS],

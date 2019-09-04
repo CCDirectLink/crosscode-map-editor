@@ -5,7 +5,7 @@ import {OverlayService} from '../../../../overlay/overlay.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {EventDetailComponent} from '../detail/event-detail.component';
 import {OverlayRefControl} from '../../../../overlay/overlay-ref-control';
-import {EventAddComponent} from '../add/event-add.component';
+import {AddEventService} from '../add/add-event.service';
 
 @Component({
 	selector: 'app-row-text',
@@ -29,10 +29,13 @@ export class RowTextComponent {
 	
 	private overlayRef?: OverlayRefControl;
 	
-	constructor(private storage: EventHelperService,
-	            private overlayService: OverlayService,
-	            private overlay: Overlay,
-	            private helper: EventHelperService) {
+	constructor(
+		private storage: EventHelperService,
+		private overlayService: OverlayService,
+		private overlay: Overlay,
+		private helper: EventHelperService,
+		private addEvent: AddEventService
+	) {
 	}
 	
 	leftClick(event: MouseEvent) {
@@ -73,23 +76,14 @@ export class RowTextComponent {
 		event.stopPropagation();
 		this.dblClick.emit(this);
 		
-		const obj = this.overlayService.open(EventAddComponent, {
-			positionStrategy: this.overlay.position().global()
-				.left('calc(18vw)')
-				.top('6vh'),
-			hasBackdrop: true,
-			// backdropClass: '',
-			backdropClickClose: true,
-		});
-		
-		this.overlayRef = obj.ref;
-		
-		obj.instance.getEventClass.subscribe((v: AbstractEvent<any>) => {
-			obj.ref.close();
+		this.addEvent.showAddEventMenu({
+			left: 'calc(18vw)',
+			top: '6vh'
+		}).subscribe(event => {
 			const index = this.getIndex();
-			this.parent.splice(index, 0, v);
+			this.parent.splice(index, 0, event);
 			this.parentChange.emit(this.parent);
-		}, () => obj.ref.close());
+		});
 	}
 	
 	// region keys copy/paste/del
