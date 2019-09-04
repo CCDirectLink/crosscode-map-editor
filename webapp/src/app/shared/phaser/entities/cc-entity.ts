@@ -74,6 +74,7 @@ export abstract class CCEntity extends BaseObject {
 			offset?: Point;
 			renderMode?: string;
 			flipX?: boolean;
+			ignoreScalable?: boolean;
 		}
 		scalableX: boolean;
 		scalableY: boolean;
@@ -178,7 +179,7 @@ export abstract class CCEntity extends BaseObject {
 		
 		// setup sprite
 		if (s.sheets && s.sheets.fix) {
-			if (s.scalableX || s.scalableY) {
+			if (!s.sheets.ignoreScalable &&  (s.scalableX || s.scalableY)) {
 				// scalable
 				const fix = s.sheets.fix[0];
 				const width = settings.size.x;
@@ -409,6 +410,7 @@ export abstract class CCEntity extends BaseObject {
 		
 		if (!size.z) {
 			this.entitySettings.sheets = {
+				ignoreScalable: true,
 				fix: [{
 					gfx: 'pixel',
 					x: 0,
@@ -423,6 +425,7 @@ export abstract class CCEntity extends BaseObject {
 			};
 		} else {
 			this.entitySettings.sheets = {
+				ignoreScalable: true,
 				fix: [{
 					gfx: 'pixel',
 					x: 0,

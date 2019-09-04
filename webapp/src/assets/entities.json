@@ -1,0 +1,2997 @@
+{
+	"Marker": {
+		"spawnable": true,
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of Marker. This will be referred in teleport commands."
+			},
+			"dir": {
+				"type": "String",
+				"description": "Direction player is facing when teleported to this spot.",
+				"options": {
+					"NORTH": 0,
+					"EAST": 0,
+					"SOUTH": 0,
+					"WEST": 0
+				}
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for Enemy to spawn"
+			}
+		},
+		"drawBox": true,
+		"boxColor": "rgba(255,255,0, 0.5)"
+	},
+	"ObjectLayerView": {
+		"spawnable": true,
+		"scalableX": true,
+		"scalableY": true,
+		"scalableStep": 4,
+		"attributes": {
+			"layer": {
+				"type": "String",
+				"description": "Object Layer from which to display graphic.",
+				"options": {
+					"object1": 0,
+					"object2": 0,
+					"object3": 0
+				}
+			},
+			"collType": {
+				"type": "String",
+				"description": "CollisionType",
+				"options": {
+					"NONE": 0,
+					"IGNORE": 0,
+					"PROJECTILE": 0,
+					"VIRTUAL": 0,
+					"PBLOCK": 0,
+					"NPBLOCK": 0,
+					"BLOCK": 0,
+					"TRIGGER": 0,
+					"PASSIVE": 0,
+					"SEMI_IGNORE": 0,
+					"FENCE": 0,
+					"NPFENCE": 0
+				}
+			},
+			"zHeight": {
+				"type": "Number",
+				"description": "Z height of displayed object"
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for prop to appear"
+			},
+			"hideCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for entity to become transparent"
+			},
+			"wallY": {
+				"type": "Number",
+				"description": "Wall Y Value"
+			},
+			"terrain": {
+				"type": "String",
+				"withNull": true,
+				"description": "Terrain of prop",
+				"options": {
+					"NORMAL": 0,
+					"METAL": 0,
+					"CARDBOARD": 0,
+					"EARTH": 0,
+					"GRASS": 0,
+					"WATER": 0,
+					"WOOD": 0,
+					"STONE": 0,
+					"METALSOLID": 0,
+					"SNOW": 0,
+					"ICE": 0,
+					"NOTHING": 0,
+					"QUICKSAND": 0,
+					"SHALLOW_WATER": 0,
+					"SAND": 0,
+					"COAL": 0,
+					"HOLE": 0,
+					"LASER": 0,
+					"METAL_HOLLOW": 0,
+					"SPIDERWEB": 0,
+					"HIGHWAY": 0,
+					"undefined": 0
+				}
+			},
+			"heightShape": {
+				"type": "String",
+				"description": "Height shape (for stairs or other slopes)",
+				"options": {
+					"NONE": 0,
+					"NORTH_UP": 0,
+					"EAST_UP": 0,
+					"WEST_UP": 0,
+					"SOUTH_UP": 0
+				}
+			},
+			"shape": {
+				"type": "String",
+				"optional": true,
+				"description": "Height-Shape of Block Entity",
+				"options": {
+					"RECTANGLE": 0,
+					"SLOPE_NE": 0,
+					"SLOPE_SE": 0,
+					"SLOPE_SW": 0,
+					"SLOPE_NW": 0
+				}
+			},
+			"blockNavMap": {
+				"type": "Boolean",
+				"_info": "If true, block path map and update when destroyed"
+			},
+			"showEffect": {
+				"type": "Effect",
+				"optional": true,
+				"description": "Effect to show when showing entity"
+			},
+			"hideEffect": {
+				"type": "Effect",
+				"optional": true,
+				"description": "Effect to show when hiding entity"
+			},
+			"guiSprites": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: display as gui sprites"
+			}
+		},
+		"drawBox": false,
+		"boxColor": "rgba(120,255,120, 0.5)",
+		"frontColor": "rgba(80,244,80, 0.5)",
+		"alwaysRecreate": true
+	},
+	"TouchTrigger": {
+		"spawnable": true,
+		"attributes": {
+			"startCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for the touch trigger to react"
+			},
+			"variable": {
+				"type": "VarName",
+				"description": "Variable to be changed"
+			},
+			"type": {
+				"type": "String",
+				"default": "SET_TRUE",
+				"description": "Type of change",
+				"options": {
+					"SET_TRUE": 0,
+					"SET_FALSE": 0,
+					"WHILE_TOUCH_TRUE": 0,
+					"WHILE_TOUCH_ADD_1": 0
+				}
+			},
+			"zHeight": {
+				"type": "Integer",
+				"default": 64,
+				"description": "Height of trigger"
+			},
+			"shape": {
+				"type": "String",
+				"optional": true,
+				"description": "Height-Shape of Block Entity",
+				"options": {
+					"RECTANGLE": 0,
+					"SLOPE_NE": 0,
+					"SLOPE_SE": 0,
+					"SLOPE_SW": 0,
+					"SLOPE_NW": 0
+				}
+			},
+			"reactToParty": {
+				"type": "Boolean",
+				"description": "If true: also react to party members"
+			}
+		},
+		"scalableX": true,
+		"scalableY": true,
+		"drawBox": true,
+		"boxColor": "rgba(255,0,255, 0.25)",
+		"frontColor": "rgba(120,0,120, 0.25)"
+	},
+	"SoundSource": {
+		"spawnable": true,
+		"attributes": {
+			"sound": {
+				"type": "SoundT",
+				"description": "URL of sound."
+			},
+			"volume": {
+				"type": "Number",
+				"default": 1,
+				"description": "The volume. Value between 0 and 1."
+			},
+			"speed": {
+				"type": "Number",
+				"optional": true,
+				"description": "Playback speed. 1=default speed. 0.5=half speed."
+			},
+			"fadeDuration": {
+				"type": "Number",
+				"optional": true,
+				"description": "Duration in seconds the sound is faded out with"
+			},
+			"radius": {
+				"type": "Number",
+				"default": 800,
+				"description": "The radius of the sound range. In Pixels."
+			},
+			"rangeType": {
+				"type": "Number",
+				"description": "Determines in which direction the sound range goes",
+				"options": {
+					"CIRULAR": 0,
+					"HORIZONTAL": 0,
+					"VERTICAL": 0
+				}
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			}
+		},
+		"boxColor": "rgba(200,200,200, 0.5)",
+		"borderColor": "rgba(10, 10, 223, 0.5)",
+		"circleColor": "rgba(200, 200, 200, 1)"
+	},
+	"EffectPreviewer": {
+		"spawnable": true,
+		"attributes": {},
+		"drawBox": true,
+		"boxColor": "rgba(255,0,0, 0.5)"
+	},
+	"ConditionalLight": {
+		"spawnable": true,
+		"attributes": {
+			"condition": {
+				"type": "VarCondition",
+				"description": "Condition for light to appear"
+			},
+			"lightSize": {
+				"type": "String",
+				"withNull": true,
+				"description": "If defined: reduce shadow with provided size",
+				"options": {
+					"XXXXL": 0,
+					"XXXL": 0,
+					"XXL": 0,
+					"XL": 0,
+					"L": 0,
+					"M": 0,
+					"S": 0,
+					"XS": 0,
+					"NONE": 0
+				}
+			},
+			"glowSize": {
+				"type": "String",
+				"withNull": true,
+				"description": "If defined: glow with provided size",
+				"options": {
+					"XXXXL": 0,
+					"XXXL": 0,
+					"XXL": 0,
+					"XL": 0,
+					"L": 0,
+					"M": 0,
+					"S": 0,
+					"XS": 0,
+					"NONE": 0
+				}
+			},
+			"weather": {
+				"type": "String",
+				"withNull": true,
+				"description": "If defined, take glow color from weather definition",
+				"options": {
+					"NONE": 0,
+					"CARGO_HOLD": 0,
+					"DUSTY": 0,
+					"CLOUDY": 0,
+					"BEFORE_RAIN": 0,
+					"RAINY_WEAK": 0,
+					"RAINY_MEDIUM": 0,
+					"RAINY_STRONG": 0,
+					"ROOKIE_HARBOR": 0,
+					"ROOKIE_HARBOR_INNER": 0,
+					"EXPO_SPACE": 0,
+					"AUTUMN": 0,
+					"AUTUMN_RAIN_WEAK": 0,
+					"AUTUMN_RAIN_MEDIUM": 0,
+					"OLD_HIDEOUT_OUTSIDE": 0,
+					"OLD_HIDEOUT_OUTSIDE_ALT": 0,
+					"OLD_HIDEOUT_INNER": 0,
+					"OLD_HIDEOUT_OFFICE": 0,
+					"RHOMBUS_DNG_TOP": 0,
+					"RHOMBUS_DUNGEON": 0,
+					"CAVE": 0,
+					"CAVE_BERGEN": 0,
+					"BERGEN_SUNNY": 0,
+					"BERGEN_SNOW_START": 0,
+					"BERGEN_SNOW": 0,
+					"BERGEN_INNER": 0,
+					"COLD_DUNGEON": 0,
+					"COLD_DUNGEON_DARK": 0,
+					"COLD_DUNGEON_POST_BOSS": 0,
+					"HEAT_DUSTY": 0,
+					"HEAT_PARALLAX": 0,
+					"HEAT_SANDSTORM": 0,
+					"HEAT_SANDSTORM_LIGHT": 0,
+					"HEAT_GREEN": 0,
+					"HEAT_VILLAGE_INNER": 0,
+					"HEAT_VILLAGE_INNER_DUSTY": 0,
+					"HEAT_DUNGEON": 0,
+					"HEAT_DUNGEON_MIDBOSS": 0,
+					"HEAT_DUNGEON_COAL": 0,
+					"HEAT_DUNGEON_BOSS": 0,
+					"DREAM": 0,
+					"UNKNOWN_INNER": 0,
+					"OFFICE": 0,
+					"LOBBY": 0,
+					"LOBBY_DARK": 0,
+					"FLAT": 0,
+					"FLAT_DARK": 0,
+					"JUNGLE_SUNNY": 0,
+					"JUNGLE_RAINY_LIGHT": 0,
+					"JUNGLE_RAINY": 0,
+					"JUNGLE_INFESTED_PRE": 0,
+					"JUNGLE_INFESTED": 0,
+					"CAVE_INFESTED": 0,
+					"JUNGLE_CITY_PRE": 0,
+					"JUNGLE_CITY": 0,
+					"JUNGLE_CITY_INNER": 0,
+					"JUNGLE_WAVE_TEMPLE": 0,
+					"WAVE_DNG_INNER": 0,
+					"WAVE_DNG_INNER_FISH": 0,
+					"SHOCK_DNG_INNER": 0,
+					"TREE_DNG_INNER": 0,
+					"TREE_INNER": 0,
+					"TREE_INNER_INFESTED": 0,
+					"TREE_DNG_INNER_WAVE": 0,
+					"TREE_DNG_INNER_SHOCK": 0,
+					"SPOOKY_INNER": 0,
+					"CAVE_FOREST": 0,
+					"CAVE_ARID": 0,
+					"CAVE_ARID_CLOSER": 0,
+					"ARID_OUTSIDE": 0,
+					"ARID_INSIDE": 0,
+					"ARID_ELEVATOR_UP": 0,
+					"ARID_ELEVATOR_DOWN": 0,
+					"ARID_BOSS": 0,
+					"ARID_END_SCENE": 0,
+					"ARID_BETWEEN": 0,
+					"ARID_DNG_OUTSIDE": 0,
+					"SAPPHIRE_RIDGE": 0,
+					"SAPPHIRE_RIDGE_BUILDING": 0,
+					"SAPPHIRE_RIDGE_INNER": 0,
+					"FLASHBACK_OFFICE": 0,
+					"FLASHBACK_HIDEOUT": 0,
+					"FLASHBACK_HIDEOUT_INNER": 0,
+					"FLASHBACK_ARID": 0,
+					"FLASHBACK_DIAGRAM": 0,
+					"TREE_SPACE": 0,
+					"RHOMBUS_SQUARE": 0,
+					"RHOMBUS_SQUARE_INNER": 0,
+					"FINAL_BOSS": 0,
+					"GAUTHAM_ROOM": 0
+				}
+			},
+			"glowColor": {
+				"type": "String",
+				"optional": true,
+				"description": "Override glow color (ignores weather color)"
+			}
+		},
+		"drawBox": true,
+		"boxColor": "rgba(255,255,125, 0.8)"
+	},
+	"HiddenBlock": {
+		"spawnable": true,
+		"attributes": {
+			"shape": {
+				"type": "String",
+				"description": "Height-Shape of Block Entity",
+				"options": {
+					"RECTANGLE": 0,
+					"SLOPE_NE": 0,
+					"SLOPE_SE": 0,
+					"SLOPE_SW": 0,
+					"SLOPE_NW": 0
+				}
+			},
+			"heightShape": {
+				"type": "String",
+				"description": "Height-Shape of Block Entity",
+				"options": {
+					"NONE": 0,
+					"NORTH_UP": 0,
+					"EAST_UP": 0,
+					"WEST_UP": 0,
+					"SOUTH_UP": 0
+				}
+			},
+			"zHeight": {
+				"type": "Number"
+			},
+			"terrain": {
+				"type": "String",
+				"withNull": true,
+				"description": "Terrain of prop",
+				"options": {
+					"NORMAL": 0,
+					"METAL": 0,
+					"CARDBOARD": 0,
+					"EARTH": 0,
+					"GRASS": 0,
+					"WATER": 0,
+					"WOOD": 0,
+					"STONE": 0,
+					"METALSOLID": 0,
+					"SNOW": 0,
+					"ICE": 0,
+					"NOTHING": 0,
+					"QUICKSAND": 0,
+					"SHALLOW_WATER": 0,
+					"SAND": 0,
+					"COAL": 0,
+					"HOLE": 0,
+					"LASER": 0,
+					"METAL_HOLLOW": 0,
+					"SPIDERWEB": 0,
+					"HIGHWAY": 0,
+					"undefined": 0
+				}
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for prop to appear"
+			},
+			"collType": {
+				"type": "String",
+				"optional": true,
+				"description": "Default is BLOCK",
+				"options": {
+					"NONE": 0,
+					"IGNORE": 0,
+					"PROJECTILE": 0,
+					"VIRTUAL": 0,
+					"PBLOCK": 0,
+					"NPBLOCK": 0,
+					"BLOCK": 0,
+					"TRIGGER": 0,
+					"PASSIVE": 0,
+					"SEMI_IGNORE": 0,
+					"FENCE": 0,
+					"NPFENCE": 0
+				}
+			}
+		},
+		"drawBox": true,
+		"scalableX": true,
+		"scalableY": true,
+		"boxColor": "rgba(0,255,255, 0.5)",
+		"frontColor": "rgba(0,120,120, 0.8)"
+	},
+	"HiddenSkyBlock": {
+		"spawnable": true,
+		"attributes": {
+			"shape": {
+				"type": "String",
+				"description": "Height-Shape of Block Entity",
+				"options": {
+					"RECTANGLE": 0,
+					"SLOPE_NE": 0,
+					"SLOPE_SE": 0,
+					"SLOPE_SW": 0,
+					"SLOPE_NW": 0
+				}
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for prop to appear"
+			},
+			"collType": {
+				"type": "String",
+				"default": "NPBLOCK",
+				"description": "Default is BLOCK",
+				"options": {
+					"NONE": 0,
+					"IGNORE": 0,
+					"PROJECTILE": 0,
+					"VIRTUAL": 0,
+					"PBLOCK": 0,
+					"NPBLOCK": 0,
+					"BLOCK": 0,
+					"TRIGGER": 0,
+					"PASSIVE": 0,
+					"SEMI_IGNORE": 0,
+					"FENCE": 0,
+					"NPFENCE": 0
+				}
+			}
+		},
+		"drawBox": true,
+		"scalableX": true,
+		"scalableY": true,
+		"boxColor": "rgba(0,255,255, 0.9)",
+		"frontColor": "rgba(0,120,120, 0.8)"
+	},
+	"Door": {
+		"spawnable": true,
+		"attributes": {
+			"doorType": {
+				"type": "String",
+				"description": "Type of door",
+				"options": {
+					"DEFAULT": 0,
+					"COLD_DUNGEON": 0,
+					"HEAT_DUNGEON_ENTRANCE": 0,
+					"HEAT_DUNGEON_MASTER_DOOR": 0,
+					"SHOCKWAVE_DNG_DOOR": 0
+				}
+			},
+			"condition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for the door to open"
+			},
+			"dir": {
+				"type": "String",
+				"default": "SOUTH",
+				"description": "View direction of door.",
+				"options": {
+					"NORTH": 0,
+					"EAST": 0,
+					"SOUTH": 0,
+					"WEST": 0
+				}
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"description": "Map to be loaded"
+			},
+			"marker": {
+				"type": "Marker",
+				"description": "Marker on map to teleport player to"
+			},
+			"hideCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for entity to become transparent"
+			},
+			"blockEvent": {
+				"type": "Event",
+				"popup": true,
+				"optional": true,
+				"description": "Event to be performed when entering the door"
+			},
+			"blockEventCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition to show the block event when entering this door"
+			},
+			"variation": {
+				"type": "DoorVariations",
+				"description": "Variation of door"
+			},
+			"transitionType": {
+				"type": "String",
+				"description": "Type of transition.",
+				"options": {
+					"REGULAR": 0,
+					"INTER_AREA": 0
+				}
+			}
+		}
+	},
+	"TeleportStairs": {
+		"spawnable": true,
+		"attributes": {
+			"stairType": {
+				"type": "String",
+				"description": "View direction of teleport ground.",
+				"options": {
+					"UPWARDS_EAST": 0,
+					"UPWARDS_WEST": 0,
+					"DOWNWARDS_EAST": 0,
+					"DOWNWARDS_WEST": 0
+				}
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"description": "Map to be loaded"
+			},
+			"marker": {
+				"type": "Marker",
+				"description": "Marker on map to teleport player to"
+			},
+			"blockEvent": {
+				"type": "Event",
+				"popup": true,
+				"optional": true,
+				"description": "Event to be performed when entering the teleport ground"
+			},
+			"blockEventCondition": {
+				"type": "VarCondition",
+				"description": "Condition to show the block event when entering this teleport ground"
+			},
+			"npcRunnerProb": {
+				"type": "Number",
+				"description": "Probability that NPCs will enter and leave through this exit"
+			},
+			"layer": {
+				"type": "String",
+				"withNull": true,
+				"description": "Object layer from which to display surrounding stuff",
+				"options": {
+					"object1": 0,
+					"object2": 0,
+					"object3": 0
+				}
+			},
+			"transitionType": {
+				"type": "String",
+				"description": "Type of transition.",
+				"options": {
+					"REGULAR": 0,
+					"INTER_AREA": 0
+				}
+			}
+		},
+		"drawBox": true,
+		"boxColor": "rgba(255,255,0, 0.5)",
+		"frontColor": "rgba(120,120,0, 0.8)",
+		"alwaysRecreate": true
+	},
+	"NPCWaypoint": {
+		"spawnable": true,
+		"attributes": {
+			"connections": {
+				"type": "Array",
+				"sub": {
+					"_type": "EntitySelect"
+				},
+				"description": "Connections to other stuff"
+			}
+		},
+		"scalableX": true,
+		"scalableY": true,
+		"drawBox": true,
+		"boxColor": "rgba(120,120,255, 0.25)"
+	},
+	"TeleportGround": {
+		"spawnable": true,
+		"attributes": {
+			"zHeight": {
+				"type": "Number",
+				"default": 64
+			},
+			"dir": {
+				"type": "String",
+				"default": "SOUTH",
+				"description": "View direction of teleport ground.",
+				"options": {
+					"NORTH": 0,
+					"EAST": 0,
+					"SOUTH": 0,
+					"WEST": 0
+				}
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"description": "Map to be loaded"
+			},
+			"marker": {
+				"type": "Marker",
+				"description": "Marker on map to teleport player to"
+			},
+			"spawnDistance": {
+				"type": "Number",
+				"default": 48,
+				"description": "Distance to place player away from teleportGround when spawning"
+			},
+			"blockEvent": {
+				"type": "Event",
+				"popup": true,
+				"optional": true,
+				"description": "Event to be performed when entering the teleport ground"
+			},
+			"blockEventCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition to show the block event when entering this teleport ground"
+			},
+			"transitionType": {
+				"type": "String",
+				"description": "Type of transition.",
+				"options": {
+					"REGULAR": 0,
+					"INTER_AREA": 0
+				}
+			},
+			"npcRunnerProb": {
+				"type": "Number",
+				"description": "Probability that NPCs will enter and leave through this exit"
+			},
+			"centerWalkThrough": {
+				"type": "Boolean",
+				"description": "If entity should always walk through the center of this opening"
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for teleporter to appear"
+			}
+		},
+		"scalableX": true,
+		"scalableY": true,
+		"drawBox": true,
+		"boxColor": "rgba(255,255,0, 0.5)",
+		"frontColor": "rgba(120,120,0, 0.8)"
+	},
+	"GlowingGround": {
+		"spawnable": true,
+		"attributes": {
+			"color1": {
+				"type": "String",
+				"description": "First color of interpolation"
+			},
+			"color2": {
+				"type": "String",
+				"description": "Second color of interpolation"
+			},
+			"duration": {
+				"type": "Number",
+				"description": "Duration of color interpolation (back and forth)"
+			}
+		},
+		"scalableX": true,
+		"scalableY": true
+	},
+	"Prop": {
+		"spawnable": true,
+		"attributes": {
+			"propType": {
+				"type": "PropType",
+				"description": "Type of prop"
+			},
+			"propAnim": {
+				"type": "EntityAnim",
+				"description": "Animation of prop"
+			},
+			"condAnims": {
+				"type": "CondAnims",
+				"description": "Animations shown by conditions"
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for prop to appear"
+			},
+			"touchVar": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Variable to be changed when prop is touched"
+			},
+			"interact": {
+				"type": "PropInteract",
+				"popup": true,
+				"optional": true,
+				"description": "Interaction for this property"
+			},
+			"showEffect": {
+				"type": "Effect",
+				"optional": true,
+				"description": "Effect to show when showing entity"
+			},
+			"hideEffect": {
+				"type": "Effect",
+				"optional": true,
+				"description": "Effect to show when hiding entity"
+			},
+			"permaEffect": {
+				"type": "Effect",
+				"optional": true,
+				"description": "Effect to be shown permanently"
+			},
+			"hideCondition": {
+				"type": "VarCondition",
+				"optional": true,
+				"description": "Condition for entity to become transparent"
+			}
+		},
+		"drawBox": true,
+		"boxColor": "rgba(255,255,0, 0.5)"
+	},
+	"ScalableProp": {
+		"spawnable": true,
+		"attributes": {
+			"propConfig": {
+				"type": "ScalablePropConfig",
+				"description": "Type of Scalable Prop"
+			},
+			"patternOffset": {
+				"type": "Vec2",
+				"description": "Start offset of the repeating pattern in pixels"
+			},
+			"timeOffset": {
+				"type": "Number",
+				"description": "Time offset of the animation"
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for prop to appear"
+			},
+			"touchVar": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Variable to be changed when prop is touched"
+			},
+			"blockNavMap": {
+				"type": "Boolean",
+				"_info": "If true, block path map and update when destroyed"
+			},
+			"hideCondition": {
+				"type": "VarCondition",
+				"optional": true,
+				"description": "Condition for entity to become transparent"
+			}
+		},
+		"drawBox": true,
+		"boxColor": "rgba(255,255,0, 0.5)"
+	},
+	"Note": {
+		"spawnable": true,
+		"attributes": {
+			"zHeight": {
+				"type": "Number",
+				"default": 0
+			},
+			"text": {
+				"type": "String",
+				"large": true,
+				"description": "Text to display in information."
+			}
+		},
+		"scalableX": true,
+		"scalableY": true,
+		"drawBox": true,
+		"boxColor": "rgba(30, 30, 30, 1)",
+		"frontColor": "rgba(0, 0, 0, 1)"
+	},
+	"Enemy": {
+		"spawnable": true,
+		"attributes": {
+			"enemyInfo": {
+				"type": "EnemyType",
+				"popup": true,
+				"description": "Enemy information"
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"manualKill": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Instead of killing the enemy, set specified variable to true."
+			}
+		},
+		"drawBox": true,
+		"boxColor": "rgba(255,0,0, 0.5)"
+	},
+	"EnemySpawner": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for prop to appear"
+			},
+			"enemyTypes": {
+				"type": "EnemyTypeList",
+				"popup": true,
+				"description": "All enemies that are spawned on this place"
+			},
+			"onActivateClear": {
+				"type": "Boolean",
+				"description": "If true: initially set all enemies as killed when activated."
+			}
+		},
+		"scalableX": true,
+		"scalableY": true,
+		"drawBox": true,
+		"boxColor": "rgba(255,120,0, 0.5)"
+	},
+	"RespawnBlocker": {
+		"spawnable": true,
+		"attributes": {},
+		"scalableX": true,
+		"scalableY": true,
+		"drawBox": true,
+		"boxColor": "rgba(0,255,255, 0.3)"
+	},
+	"Elevator": {
+		"spawnable": true,
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of the elevator. Used to teleport back to this elevator"
+			},
+			"condition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for the elevator to be active"
+			},
+			"elevatorType": {
+				"type": "String",
+				"description": "Type of elevator",
+				"options": {
+					"cargoShip": 0,
+					"coldDng": 0,
+					"aridInner": 0,
+					"aridInnerHuge": 0,
+					"aridDngWeird": 0,
+					"aridDngOutside": 0,
+					"basinKeep": 0
+				}
+			},
+			"destinations": {
+				"type": "ElevatorDests",
+				"popup": true,
+				"description": "Destinations of Elevator"
+			},
+			"blockEvent": {
+				"type": "Event",
+				"popup": true,
+				"optional": true,
+				"description": "Event to be performed when using the elevator"
+			},
+			"blockEventCondition": {
+				"type": "VarCondition",
+				"description": "Condition to show the block event when using the elevator"
+			},
+			"faceDir": {
+				"type": "String",
+				"optional": true,
+				"description": "If defined: override face dir of marker",
+				"options": {
+					"NORTH": 0,
+					"EAST": 0,
+					"SOUTH": 0,
+					"WEST": 0,
+					"NORTH_EAST": 0,
+					"SOUTH_EAST": 0,
+					"SOUTH_WEST": 0,
+					"NORTH_WEST": 0
+				}
+			}
+		}
+	},
+	"JumpPanel": {
+		"spawnable": true,
+		"attributes": {
+			"jumpHeight": {
+				"type": "String",
+				"description": "How height to jump (in tiles).",
+				"options": {
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"6": 0,
+					"8": 0
+				}
+			},
+			"condition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "A condition for this if any. "
+			}
+		}
+	},
+	"JumpPanelFar": {
+		"spawnable": true,
+		"attributes": {
+			"panelType": {
+				"type": "String",
+				"description": "Type of jump Panel",
+				"options": {
+					"NORTH": 0,
+					"EAST": 0,
+					"SOUTH": 0,
+					"WEST": 0
+				}
+			},
+			"jumpDistance": {
+				"type": "String",
+				"description": "How height to jump (in tiles).",
+				"options": {
+					"9": 0,
+					"10": 0,
+					"12": 0,
+					"14": 0,
+					"16": 0,
+					"18": 0,
+					"20": 0,
+					"22": 0,
+					"24": 0,
+					"26": 0,
+					"28": 0,
+					"30": 0,
+					"32": 0,
+					"34": 0,
+					"36": 0,
+					"48": 0,
+					"54": 0
+				}
+			},
+			"condition": {
+				"type": "VarCondition",
+				"description": "A condition for this if any."
+			}
+		}
+	},
+	"JumpPanelFloat": {
+		"spawnable": true,
+		"attributes": {
+			"panelType": {
+				"type": "String",
+				"description": "Type of jump Panel",
+				"options": {
+					"DEFAULT": 0,
+					"NORTH": 0,
+					"EAST": 0,
+					"SOUTH": 0,
+					"WEST": 0
+				}
+			},
+			"jumpDistance": {
+				"type": "String",
+				"description": "How height to jump (in tiles).",
+				"options": {
+					"4": 0,
+					"8": 0,
+					"4_2": 0
+				}
+			},
+			"condition": {
+				"type": "VarCondition",
+				"description": "A condition for this if any."
+			}
+		}
+	},
+	"TeleportCentral": {
+		"spawnable": true,
+		"attributes": {
+			"npcRunnerEnterProb": {
+				"type": "Number",
+				"description": "Probability that NPCs will enter through this exit"
+			},
+			"npcRunnerExitProb": {
+				"type": "Number",
+				"description": "Probability that NPCs will exit through this exit"
+			},
+			"effects": {
+				"type": "Boolean",
+				"default": true,
+				"description": "True if ground effects should be displayed"
+			},
+			"landmark": {
+				"type": "Landmarks",
+				"mapArea": true,
+				"optional": true,
+				"description": "landmark to activate"
+			},
+			"target": {
+				"type": "Entity",
+				"optional": true,
+				"description": "Optional target to focus when landmark is activated"
+			},
+			"condition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for the landmark to activate"
+			},
+			"detectType": {
+				"type": "String",
+				"default": "RECT_OVERLAP",
+				"optional": true,
+				"description": "Type of detection",
+				"options": {
+					"CIRCLE": 0,
+					"RECT_OVERLAP": 0
+				}
+			}
+		},
+		"scalableX": true,
+		"scalableY": true,
+		"drawBox": true,
+		"boxColor": "rgba(255,255,0, 0.5)",
+		"frontColor": "rgba(120,120,0, 0.8)"
+	},
+	"TeleportField": {
+		"spawnable": true,
+		"attributes": {
+			"central": {
+				"type": "Entity",
+				"filterClass": "TeleportCentral",
+				"optional": true,
+				"description": "Central Entity the field belongs to"
+			},
+			"dir": {
+				"type": "String",
+				"default": "SOUTH",
+				"description": "View direction of teleport ground.",
+				"options": {
+					"NORTH": 0,
+					"EAST": 0,
+					"SOUTH": 0,
+					"WEST": 0
+				}
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"optional": true,
+				"description": "Map to be loaded"
+			},
+			"marker": {
+				"type": "Marker",
+				"description": "Marker on map to teleport player to"
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for teleporter to appear"
+			},
+			"teleportLabel": {
+				"type": "LangLabel",
+				"description": "Label displayed for teleporter"
+			},
+			"longTelCond": {
+				"type": "VarCondition",
+				"default": "false",
+				"description": "Condition for a long teleport sequence"
+			},
+			"pseudoExit": {
+				"type": "Boolean",
+				"description": "If true, show exit graphics and behave like exit even without map defined"
+			},
+			"blockEvent": {
+				"type": "Event",
+				"popup": true,
+				"optional": true,
+				"description": "Event to be performed when entering the teleport ground"
+			},
+			"blockEventCondition": {
+				"type": "VarCondition",
+				"description": "Condition to show the block event when entering this teleport ground"
+			},
+			"gfxType": {
+				"type": "String",
+				"description": "Graphical appearance of teleporter.",
+				"options": {
+					"SOLID": 0,
+					"AR": 0,
+					"RHOMBUS_SQR_LEFT": 0,
+					"RHOMBUS_SQR_RIGHT": 0,
+					"BERGEN_LEFT": 0,
+					"HEAT_RIGHT": 0,
+					"WAVE_UP": 0,
+					"WAVE_DOWN": 0,
+					"RHOMBUS_SQR_STATION": 0,
+					"RHOMBUS_SQR_STATION_START": 0
+				}
+			}
+		},
+		"boxColor": "rgba(255,255,0, 0.5)",
+		"frontColor": "rgba(120,120,0, 0.8)"
+	},
+	"RhombusPoint": {
+		"spawnable": true,
+		"attributes": {
+			"title": {
+				"type": "LangLabel",
+				"description": "Name of the teleport location"
+			},
+			"description": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Short description of the location"
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"description": "Map to be teleported to"
+			},
+			"marker": {
+				"type": "Marker",
+				"description": "Marker on Map to be teleported to"
+			},
+			"condition": {
+				"type": "VarCondition",
+				"optional": true,
+				"description": "optional condition for this location to show"
+			},
+			"icon": {
+				"type": "Integer",
+				"description": "Index of the preview icon to use."
+			}
+		},
+		"scalableX": true,
+		"scalableY": true,
+		"scalableStep": 2,
+		"drawBox": true,
+		"boxColor": "rgba(255, 128, 30, 0.5)",
+		"frontColor": "rgba(128, 128, 0, 1)",
+		"noZLine": true
+	},
+	"EventTrigger": {
+		"spawnable": true,
+		"attributes": {
+			"eventType": {
+				"type": "String",
+				"description": "Type of event. Cutscenes will stop the movement of the player and can't be executed in parallel. Auto Control events will take over the player's control.",
+				"options": {
+					"PARALLEL": 0,
+					"CUTSCENE": 0,
+					"INTERRUPTABLE": 0,
+					"AUTO_CONTROL": 0,
+					"COMBAT_CUTSCENE": 0
+				}
+			},
+			"startCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for the event to start"
+			},
+			"endCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"default": "false",
+				"description": "Condition for the event to not start (even if start condition is true)"
+			},
+			"event": {
+				"type": "Event",
+				"popup": true,
+				"description": "Event to be performed"
+			},
+			"triggerType": {
+				"type": "String",
+				"description": "How often should this event be run?",
+				"options": {
+					"ALWAYS": 0,
+					"ONCE_PER_ENTRY": 0,
+					"ONCE": 0
+				}
+			},
+			"loadCondition": {
+				"type": "EventLoadCondition",
+				"optional": true,
+				"description": "If true: condition is checked on map entry and event is only loaded if ture. onStart => Use start conditions, custom => use custom conditions"
+			}
+		},
+		"drawBox": true,
+		"boxColor": "rgba(255,0,0, 0.5)",
+		"noZLine": true
+	},
+	"LocationEvent": {
+		"spawnable": true,
+		"attributes": {
+			"startCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for the event to start"
+			},
+			"event": {
+				"type": "Event",
+				"popup": true,
+				"description": "Event to be performed when entity is in screen (always parallel)"
+			},
+			"radius": {
+				"type": "Number",
+				"optional": true,
+				"description": "If specified, only trigger when distance to entity is below the given radius"
+			},
+			"heightCompare": {
+				"type": "String",
+				"description": "How height comparison matters",
+				"options": {
+					"IGNORE": 0,
+					"ABOVE": 0,
+					"BELOW": 0
+				}
+			}
+		},
+		"drawBox": true,
+		"boxColor": "rgba(255,0,122, 0.5)",
+		"noZLine": true
+	},
+	"NPC": {
+		"spawnable": true,
+		"attributes": {
+			"characterName": {
+				"type": "Character",
+				"context": "Character",
+				"description": "Character of NPC"
+			},
+			"npcStates": {
+				"type": "NPCStates",
+				"popup": true,
+				"description": "Different states of the NPC"
+			},
+			"analyzable": {
+				"type": "Analyzable",
+				"compact": true,
+				"optional": true,
+				"popup": true,
+				"description": "Analyzable if any."
+			},
+			"hideCondition": {
+				"type": "VarCondition",
+				"optional": true,
+				"width": 70,
+				"description": "Condition for entity to become transparent"
+			}
+		},
+		"drawBox": true,
+		"boxColor": "rgba(0,0,255, 0.5)"
+	},
+	"Block": {
+		"spawnable": true,
+		"attributes": {}
+	},
+	"Blocker": {
+		"spawnable": true,
+		"attributes": {
+			"blockerType": {
+				"type": "String",
+				"withNull": true,
+				"description": "Type of blocking object",
+				"options": {
+					"diagonalNW": 0,
+					"diagonalNE": 0,
+					"diagonalSE": 0,
+					"diagonalSW": 0
+				}
+			},
+			"condition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for blocker to be active"
+			}
+		}
+	},
+	"BombPanel": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"noHeatFocus": {
+				"type": "Boolean",
+				"description": "No camera-follow with heat"
+			}
+		}
+	},
+	"WaterBubblePanel": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"coalCoolTime": {
+				"type": "Number",
+				"optional": true,
+				"description": "Time coal will be cooled by ice disks created from these bubbles"
+			}
+		}
+	},
+	"Compressor": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"followCamera": {
+				"type": "Boolean",
+				"description": "If true follow compressor ball with camera"
+			},
+			"ballSpeed": {
+				"type": "Number",
+				"optional": true,
+				"description": "Additional factor to slow down ball speed when going along or through walls"
+			},
+			"fastMode": {
+				"type": "Boolean",
+				"description": "Make sure puzzle element is not slowed down by assist mode"
+			}
+		}
+	},
+	"AntiCompressor": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for Anti Compressor to spawn"
+			}
+		}
+	},
+	"CompressorBouncer": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for Bouncer to spawn"
+			},
+			"dir": {
+				"type": "Face",
+				"description": "Direction to face",
+				"options": {
+					"NORTH": 0,
+					"EAST": 0,
+					"SOUTH": 0,
+					"WEST": 0
+				}
+			},
+			"condition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for bouncer to be active"
+			}
+		}
+	},
+	"WaterBlock": {
+		"spawnable": true,
+		"attributes": {
+			"blockType": {
+				"type": "String",
+				"description": "Type of block",
+				"options": {
+					"SQUARE": 0,
+					"CORNER_NE": 0,
+					"CORNER_SE": 0,
+					"CORNER_SW": 0,
+					"CORNER_NW": 0
+				}
+			},
+			"changeDuration": {
+				"type": "Number",
+				"default": 5,
+				"description": "Number of seconds for steam or ice state to persist"
+			}
+		}
+	},
+	"KeyPanel": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"keyType": {
+				"type": "String",
+				"description": "Type of Key Panel",
+				"options": {
+					"REGULAR": 0,
+					"MASTER": 0
+				}
+			}
+		}
+	},
+	"BallChanger": {
+		"spawnable": true,
+		"attributes": {
+			"changerType": {
+				"type": "BallChangerType",
+				"popup": true,
+				"description": "Type of BallChanger"
+			},
+			"condition": {
+				"type": "VarCondition",
+				"description": "Condition for BallChanger to be active"
+			},
+			"ballTime": {
+				"type": "Number",
+				"optional": true,
+				"default": 0.5,
+				"description": "How long the ball will be alive after bouncing with this block. (default=0.5)"
+			},
+			"resetBounce": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "If true, bounces are reset when this changer is hit"
+			}
+		},
+		"drawBox": true,
+		"boxColor": "rgba(255,255,0, 0.5)"
+	},
+	"WallHorizontal": {
+		"spawnable": true,
+		"scalableX": true,
+		"attributes": {
+			"skipRender": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if the wall should be invisible"
+			},
+			"leftEnd": {
+				"type": "String",
+				"description": "Left End Type",
+				"options": {
+					"CONTINUE": 0,
+					"STOP": 0
+				}
+			},
+			"rightEnd": {
+				"type": "String",
+				"description": "Right End Type",
+				"options": {
+					"CONTINUE": 0,
+					"STOP": 0
+				}
+			},
+			"condition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for wall to be active"
+			},
+			"collType": {
+				"type": "String",
+				"description": "Collision Types of Wall. BLOCK - Blocks all, PBLOCK - Blocks only projectiles, NPBLOCK - Blocks only non projectiles",
+				"options": {
+					"BLOCK": 0,
+					"PBLOCK": 0,
+					"NPBLOCK": 0
+				}
+			},
+			"wallZHeight": {
+				"type": "Number",
+				"default": 32,
+				"description": "Total height of the wall, when active"
+			},
+			"noNavMapBlock": {
+				"type": "Boolean",
+				"description": "If true: do not block nav map"
+			}
+		}
+	},
+	"WallVertical": {
+		"spawnable": true,
+		"scalableY": true,
+		"attributes": {
+			"skipRender": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if the wall should be invisible"
+			},
+			"topEnd": {
+				"type": "String",
+				"description": "Top End Type",
+				"options": {
+					"CONTINUE": 0,
+					"STOP": 0,
+					"CORNER_LEFT": 0,
+					"CORNER_RIGHT": 0
+				}
+			},
+			"bottomEnd": {
+				"type": "String",
+				"description": "Bottom End Type",
+				"options": {
+					"CONTINUE": 0,
+					"STOP": 0,
+					"CORNER_LEFT": 0,
+					"CORNER_RIGHT": 0
+				}
+			},
+			"condition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for wall to be active"
+			},
+			"collType": {
+				"type": "String",
+				"description": "Collision Types of Wall. BLOCK - Blocks all, PBLOCK - Blocks only projectiles, NPBLOCK - Blocks only non projectiles",
+				"options": {
+					"BLOCK": 0,
+					"PBLOCK": 0,
+					"NPBLOCK": 0
+				}
+			},
+			"wallZHeight": {
+				"type": "Number",
+				"default": 32,
+				"description": "Total height of the wall, when active"
+			},
+			"noNavMapBlock": {
+				"type": "Boolean",
+				"description": "If true: do not block nav map"
+			}
+		}
+	},
+	"WallBlocker": {
+		"spawnable": false,
+		"attributes": {
+			"collType": {
+				"type": "String",
+				"description": "Top End Type",
+				"options": {
+					"NONE": 0,
+					"IGNORE": 0,
+					"PROJECTILE": 0,
+					"VIRTUAL": 0,
+					"PBLOCK": 0,
+					"NPBLOCK": 0,
+					"BLOCK": 0,
+					"TRIGGER": 0,
+					"PASSIVE": 0,
+					"SEMI_IGNORE": 0,
+					"FENCE": 0,
+					"NPFENCE": 0
+				}
+			}
+		}
+	},
+	"GlowingLine": {
+		"spawnable": true,
+		"attributes": {
+			"condition": {
+				"type": "VarCondition",
+				"description": "Condition on which the line will glow"
+			}
+		},
+		"scalableX": true,
+		"scalableY": true,
+		"scalableStep": 16
+	},
+	"Lorry": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"lorryType": {
+				"type": "String",
+				"description": "Type/Size of the Lorry",
+				"options": {
+					"BIG": 0
+				}
+			},
+			"moveType": {
+				"type": "String",
+				"description": "How the platform moves",
+				"options": {
+					"PERMA_MOVE": 0,
+					"ON_TOUCH_PERMA_MOVE": 0,
+					"ON_TOUCH_MOVE_ONCE": 0,
+					"WHILE_TOUCH_MOVE": 0
+				}
+			},
+			"initDir": {
+				"type": "String",
+				"description": "The initial direction of the platform",
+				"options": {
+					"NORTH": 0,
+					"EAST": 0,
+					"SOUTH": 0,
+					"WEST": 0
+				}
+			},
+			"speed": {
+				"type": "String",
+				"description": "Speed of lorry",
+				"options": {
+					"SLOW": 0,
+					"DEFAULT": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0
+				}
+			},
+			"moveCondition": {
+				"type": "VarCondition",
+				"optional": true,
+				"description": "Additional condition for lorry to move"
+			},
+			"fastMode": {
+				"type": "Boolean",
+				"description": "Make sure puzzle element is not slowed down by assist mode"
+			}
+		}
+	},
+	"LorryRespawner": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"lorryEntity": {
+				"type": "Entity",
+				"description": "The lorry entity to be respawned at this point"
+			},
+			"initDir": {
+				"type": "String",
+				"description": "The initial direction of the platform",
+				"options": {
+					"NORTH": 0,
+					"EAST": 0,
+					"SOUTH": 0,
+					"WEST": 0
+				}
+			}
+		},
+		"drawBox": true,
+		"boxColor": "rgba(0,255,255, 0.5)"
+	},
+	"LorryRail": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"railType": {
+				"type": "String",
+				"description": "Type of rail",
+				"options": {
+					"HORIZONTAL": 0,
+					"VERTICAL": 0,
+					"CURVE_SE": 0,
+					"CURVE_SW": 0,
+					"CURVE_NE": 0,
+					"CURVE_NW": 0,
+					"DIAG1": 0,
+					"DIAG2": 0,
+					"HORIZONTAL_SWITCH": 0,
+					"VERTICAL_SWITCH": 0,
+					"CURVE_SE_SWITCH": 0,
+					"CURVE_SW_SWITCH": 0,
+					"CURVE_NE_SWITCH": 0,
+					"CURVE_NW_SWITCH": 0,
+					"STOP_WEST": 0,
+					"STOP_EAST": 0,
+					"STOP_SOUTH": 0,
+					"STOP_NORTH": 0
+				}
+			},
+			"altTypes": {
+				"type": "LorryAltTypes",
+				"optional": true,
+				"description": "Other types depending on var conditions"
+			}
+		}
+	},
+	"OneTimeSwitch": {
+		"spawnable": true,
+		"attributes": {
+			"switchType": {
+				"type": "String",
+				"description": "Type of Switch",
+				"options": {
+					"default": 0,
+					"turret-switch": 0,
+					"propeller": 0,
+					"steamPipe": 0,
+					"teslaSwitch": 0,
+					"arSwitch": 0,
+					"waveSwitch": 0
+				}
+			},
+			"variable": {
+				"type": "VarName",
+				"description": "Variable to be se to true when switch is activated"
+			},
+			"addValue": {
+				"type": "VarName",
+				"description": "Variable to increase by one when switch is activated"
+			},
+			"activeTime": {
+				"type": "Number",
+				"description": "If >0: only keep switch active for said amount of time"
+			},
+			"fixCount": {
+				"type": "Integer",
+				"description": "If >0: if addValue reached fixCount, remain active permanently"
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"fastMode": {
+				"type": "Boolean",
+				"description": "Make sure puzzle element is not slowed down by assist mode"
+			}
+		}
+	},
+	"ElementShieldSrc": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"element": {
+				"type": "String",
+				"default": "HEAT",
+				"description": "Element of shield",
+				"options": {
+					"0": 0,
+					"1": 0,
+					"2": 0,
+					"3": 0
+				}
+			},
+			"onActivateAdd": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Add 1 if shield is activated"
+			}
+		}
+	},
+	"FloorSwitch": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for Anti Compressor to spawn"
+			},
+			"switchType": {
+				"type": "String",
+				"description": "Type of floor switch",
+				"options": {
+					"PERMANENT": 0,
+					"WHILE_ON_TOP": 0,
+					"UNDOABLE": 0
+				}
+			},
+			"variable": {
+				"type": "VarName",
+				"description": "Variable to be increased by 1 when switch is activated. IMPORTANT: MUST BE TMP when switchType ist NOT PERMANENT!"
+			},
+			"lockCondition": {
+				"type": "VarCondition",
+				"optional": true,
+				"description": "If specified: Switch will always stick while condition is true"
+			}
+		}
+	},
+	"Magnet": {
+		"spawnable": true,
+		"attributes": {
+			"dir": {
+				"type": "Face",
+				"description": "Direction to face",
+				"options": {
+					"NORTH": 0,
+					"EAST": 0,
+					"SOUTH": 0,
+					"WEST": 0
+				}
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for prop to appear"
+			},
+			"altDirs": {
+				"type": "MagnetAltDirs",
+				"optional": true,
+				"description": "Other types depending on var conditions"
+			}
+		}
+	},
+	"MultiHitSwitch": {
+		"spawnable": true,
+		"attributes": {
+			"switchType": {
+				"type": "String",
+				"description": "Type of Switch",
+				"options": {
+					"default": 0,
+					"arSwitch": 0,
+					"old": 0
+				}
+			},
+			"variable": {
+				"type": "VarName",
+				"description": "Variable to be se to true when switch is activated"
+			},
+			"addValue": {
+				"type": "VarName",
+				"description": "Variable to increase by one when switch is activated"
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for Enemy to spawn"
+			}
+		}
+	},
+	"BounceSwitch": {
+		"spawnable": true,
+		"attributes": {
+			"variable": {
+				"type": "VarName",
+				"description": "Variable to be se to true when switch is activated"
+			},
+			"group": {
+				"type": "String",
+				"description": "Group Name to assign bouncing blocks to switch"
+			}
+		}
+	},
+	"BounceBlock": {
+		"spawnable": true,
+		"attributes": {
+			"blockType": {
+				"type": "String",
+				"description": "Type of Switch",
+				"options": {
+					"default": 0,
+					"slopeNE": 0,
+					"slopeSE": 0,
+					"slopeSW": 0,
+					"slopeNW": 0
+				}
+			},
+			"group": {
+				"type": "String",
+				"description": "Group of bounce switch this block belongs to"
+			},
+			"action": {
+				"type": "BounceAction",
+				"popup": true,
+				"optional": true,
+				"description": "Action to perform when block is hit"
+			},
+			"ballTime": {
+				"type": "Number",
+				"optional": true,
+				"description": "How long the ball will be alive after bouncing with this block. (default=0.5)"
+			}
+		}
+	},
+	"ElementPole": {
+		"spawnable": true,
+		"attributes": {
+			"poleType": {
+				"type": "String",
+				"description": "Type of Pole",
+				"options": {
+					"LONG": 0,
+					"LONG_64": 0,
+					"SHORT": 0
+				}
+			},
+			"group": {
+				"type": "String",
+				"description": "Group of ThermoPoleDest this pole belongs to"
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for prop to appear"
+			}
+		}
+	},
+	"ElementPoleDest": {
+		"spawnable": true,
+		"attributes": {
+			"group": {
+				"type": "String",
+				"description": "Group of ThermoPoleDest this pole belongs to"
+			},
+			"element": {
+				"type": "String",
+				"description": "Element of Destination",
+				"options": {
+					"0": 0,
+					"1": 0,
+					"2": 0,
+					"3": 0
+				}
+			},
+			"variable": {
+				"type": "VarName",
+				"description": "Variable to be se to true when switch is activated"
+			},
+			"activeTime": {
+				"type": "Number",
+				"description": "If >0: only keep switch active for said amount of time"
+			}
+		}
+	},
+	"PushPullBlock": {
+		"spawnable": true,
+		"attributes": {
+			"pushPullType": {
+				"type": "String",
+				"description": "Type of push pull block",
+				"options": {
+					"Large": 0,
+					"BergenLeftRight": 0,
+					"BergenUpDown": 0,
+					"SmallTest": 0
+				}
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Block to spawn"
+			}
+		}
+	},
+	"WavePushPullBlock": {
+		"spawnable": true,
+		"attributes": {
+			"pushPullType": {
+				"type": "String",
+				"description": "Type of push pull block",
+				"options": {
+					"Large": 0,
+					"BergenLeftRight": 0,
+					"BergenUpDown": 0,
+					"SmallTest": 0
+				}
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Block to spawn"
+			}
+		}
+	},
+	"PushPullDest": {
+		"spawnable": true,
+		"attributes": {
+			"pushPullDestType": {
+				"type": "String",
+				"description": "Type of push pull dest",
+				"options": {
+					"DEFAULT": 0
+				}
+			},
+			"zMove": {
+				"type": "Number",
+				"description": "Z Movememnt aber PushPullable has been placed"
+			},
+			"saveType": {
+				"type": "String",
+				"description": "How state of box should be saved",
+				"options": {
+					"PERMANENT": 0,
+					"TEMP": 0
+				}
+			},
+			"variable": {
+				"type": "String",
+				"description": "Variable to increase when push-pullable is placed"
+			}
+		}
+	},
+	"SlidingBlock": {
+		"spawnable": true,
+		"attributes": {}
+	},
+	"Switch": {
+		"spawnable": true,
+		"attributes": {
+			"variable": {
+				"type": "VarName",
+				"description": "Variable set to true when switch is hit"
+			}
+		}
+	},
+	"Destructible": {
+		"spawnable": true,
+		"attributes": {
+			"desType": {
+				"type": "String",
+				"withNull": true,
+				"description": "Type of destructible object",
+				"options": {
+					"boxMedium": 0,
+					"boxMedNorth": 0,
+					"boxMedEast": 0,
+					"boxMedSouth": 0,
+					"boxMedWest": 0,
+					"boxLarge": 0,
+					"iceBlock": 0,
+					"bombBlock": 0,
+					"bombWallNorth": 0,
+					"bombWallEast": 0,
+					"bombWallWest": 0,
+					"keyWallNorth": 0,
+					"keyPillar": 0,
+					"keyPillarAR": 0,
+					"masterKeyWallColdDungeon": 0,
+					"masterKeyWallHeatDungeon": 0,
+					"masterKeyWallTreeDungeon": 0,
+					"autumnWall": 0,
+					"autumnWall2": 0,
+					"autumnWall3": 0
+				}
+			},
+			"enemyInfo": {
+				"type": "EnemyType",
+				"popup": true,
+				"withNull": true,
+				"description": "Enemy to spawn after destruction"
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"blockNavMap": {
+				"type": "Boolean",
+				"_info": "If true, block path map and update when destroyed"
+			},
+			"permaDestruct": {
+				"type": "Boolean",
+				"description": "If true, then destructible stays destroyed after reentering map"
+			},
+			"onDestructIncrease": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Variable to increase by one when destroyed"
+			},
+			"onPreDestructIncrease": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Variable to increase by one when destroyed"
+			}
+		}
+	},
+	"ItemDestruct": {
+		"spawnable": true,
+		"attributes": {
+			"desType": {
+				"type": "String",
+				"withNull": true,
+				"description": "Type of destructible object",
+				"options": {
+					"StoneOfValor": 0,
+					"StoneOfSpace": 0,
+					"StoneOfTruth": 0,
+					"StoneOfSpirit": 0,
+					"StoneOfAges": 0,
+					"StoneOfNothing": 0,
+					"AutumnPlantA": 0,
+					"Autumn-Ground-1": 0,
+					"Autumn-Ground-2": 0,
+					"Autumn-Water-1": 0,
+					"Autumn-Water-2": 0,
+					"Autumn-Special": 0,
+					"Autumn-Water-Special": 0,
+					"Autumn-Fall-Ground-1": 0,
+					"Autumn-Fall-Ground-2": 0,
+					"Autumn-Fall-Water-1": 0,
+					"Autumn-Fall-Water-2": 0,
+					"Autumn-Fall-Special": 0,
+					"Autumn-Fall-Water-Special": 0,
+					"Bergen-PlantA-1": 0,
+					"Bergen-PlantA-2": 0,
+					"Bergen-PlantA-Rare": 0,
+					"Bergen-PlantB-1": 0,
+					"Bergen-PlantB-2": 0,
+					"Bergen-PlantB-Rare": 0,
+					"Bergen-PlantA-1-Snow": 0,
+					"Bergen-PlantA-2-Snow": 0,
+					"Bergen-PlantA-Snow-Rare": 0,
+					"Bergen-PlantB-1-Snow": 0,
+					"Bergen-PlantB-2-Snow": 0,
+					"Bergen-PlantB-Snow-Rare": 0,
+					"Bergen-Snow-Crystal": 0,
+					"Bergen-Vase-1": 0,
+					"Cold-Dng-Egg-1": 0,
+					"Cold-Dng-Egg-2": 0,
+					"Cold-Dng-Egg-3": 0,
+					"Cold-Dng-Egg-4": 0,
+					"Cold-Dng-Egg-Special-A": 0,
+					"Cold-Dng-Egg-Special-B": 0,
+					"Heat-Cactus-1": 0,
+					"Heat-Cactus-2": 0,
+					"Heat-Cactus-Special": 0,
+					"Heat-Dry-Cactus-1": 0,
+					"Heat-Dry-Cactus-2": 0,
+					"Heat-Palmapple-1": 0,
+					"Heat-Palmapple-2": 0,
+					"Heat-Palmapple-Special": 0,
+					"Heat-Dry-Bush-1": 0,
+					"Heat-Dry-Bush-2": 0,
+					"Heat-Dry-Bush-Special": 0,
+					"Heat-Bones-1": 0,
+					"Heat-Bones-2": 0,
+					"Heat-Bones-Special": 0,
+					"Heat-Hill-1": 0,
+					"Heat-Hill-2": 0,
+					"Heat-Hill-Special": 0,
+					"Bakii-Vase": 0,
+					"Jungle-Flower-1": 0,
+					"Jungle-Flower-2": 0,
+					"Jungle-Flower-Special": 0,
+					"Jungle-Bees-1": 0,
+					"Jungle-Bees-2": 0,
+					"Jungle-Bees-3": 0,
+					"Jungle-Waterplant-1": 0,
+					"Jungle-Waterplant-2": 0,
+					"Jungle-Waterplant-Special": 0,
+					"Jungle-Waterplant-Closed-1": 0,
+					"Jungle-Waterplant-Closed-2": 0,
+					"Jungle-Shroom-1": 0,
+					"Jungle-Shroom-2": 0,
+					"Jungle-Shroom-Special": 0,
+					"Jungle-Flower-Dotted-1": 0,
+					"Jungle-Flower-Dotted-2": 0,
+					"Jungle-Flower-Dotted-Special": 0,
+					"Sapphire-Bush-1": 0,
+					"Sapphire-Bush-2": 0,
+					"Sapphire-Bush-Special": 0,
+					"Sapphire-Bamboo-1": 0,
+					"Sapphire-Bamboo-2": 0,
+					"Sapphire-Bamboo-Special": 0,
+					"Sapphire-Cobalt-1": 0,
+					"Sapphire-Cobalt-2": 0,
+					"Sapphire-Cobalt-Special": 0,
+					"TrashBag1": 0,
+					"TrashBag2": 0,
+					"TrashBag3": 0,
+					"TrashBag4": 0
+				}
+			},
+			"items": {
+				"type": "ItemsDropRate",
+				"popup": true,
+				"description": "Items dropped"
+			},
+			"perma": {
+				"type": "Boolean",
+				"default": "false",
+				"optional": true,
+				"description": "True if cannot be respawned"
+			},
+			"indest": {
+				"type": "Boolean",
+				"default": "true",
+				"optional": true,
+				"description": "True if cannot be destroyed"
+			},
+			"trigger": {
+				"type": "String",
+				"optional": true,
+				"description": "var tp set to true once the prop has been destroyed. Only works once."
+			},
+			"increment": {
+				"type": "VarName",
+				"optional": true,
+				"description": "add 1 to the given variable"
+			},
+			"enemyInfo": {
+				"type": "EnemyType",
+				"popup": true,
+				"withNull": true,
+				"description": "Enemy to spawn after destruction"
+			}
+		}
+	},
+	"RegenDestruct": {
+		"spawnable": true,
+		"attributes": {
+			"desType": {
+				"type": "String",
+				"withNull": true,
+				"description": "Type of regen destructible object",
+				"options": {
+					"iceBlock": 0,
+					"flame": 0,
+					"shock": 0
+				}
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for destructible to spawn"
+			},
+			"activeCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for destructible to be active. Otherwise is always 'destroyed'"
+			},
+			"blockNavMap": {
+				"type": "Boolean",
+				"description": "If true, block path map and update when destroyed"
+			},
+			"regenTime": {
+				"type": "Number",
+				"default": 1,
+				"description": "Time in seconds for destruct to regenerate"
+			}
+		}
+	},
+	"ExtractPlatform": {
+		"spawnable": true,
+		"attributes": {
+			"extractType": {
+				"type": "String",
+				"description": "Type of extractable platform",
+				"options": {
+					"Small": 0,
+					"Large": 0
+				}
+			},
+			"activeZHeight": {
+				"type": "Number",
+				"description": "The z position when active."
+			},
+			"inactiveZHeight": {
+				"type": "Number",
+				"description": "The z position when inactive."
+			},
+			"condition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for the platform to move up"
+			}
+		}
+	},
+	"DynamicPlatform": {
+		"spawnable": true,
+		"attributes": {
+			"platformType": {
+				"type": "String",
+				"description": "Type of extractable platform",
+				"options": {
+					"DefaultSmall": 0,
+					"DefaultMedium": 0,
+					"Small": 0,
+					"Large": 0,
+					"RhombusMedium": 0,
+					"Floating": 0,
+					"FloatingBig": 0,
+					"AridBig": 0,
+					"ArWallH": 0,
+					"ArWallV": 0
+				}
+			},
+			"states": {
+				"type": "DynamicPlatformDests",
+				"popup": true,
+				"description": "the states to iterate. "
+			},
+			"pauseCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"default": "false",
+				"description": "Condition to pause the platform to move."
+			},
+			"pauseAnimation": {
+				"type": "EntityAnim",
+				"optional": true,
+				"description": "Animation to be played on pause"
+			},
+			"skipWait": {
+				"type": "Boolean",
+				"default": true,
+				"description": "True if actions should be interrupted when switching states."
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for Enemy to spawn"
+			}
+		}
+	},
+	"OLPlatform": {
+		"spawnable": true,
+		"scalableX": true,
+		"scalableY": true,
+		"scalableStep": 4,
+		"attributes": {
+			"layer": {
+				"type": "String",
+				"description": "Object Layer from which to display graphic.",
+				"options": {
+					"object1": 0,
+					"object2": 0,
+					"object3": 0
+				}
+			},
+			"zHeight": {
+				"type": "Number",
+				"description": "Z height of displayed object"
+			},
+			"wallY": {
+				"type": "Number",
+				"description": "Wall Y Value"
+			},
+			"terrain": {
+				"type": "String",
+				"description": "Type of ground terrain",
+				"options": {
+					"NORMAL": 0,
+					"METAL": 0,
+					"CARDBOARD": 0,
+					"EARTH": 0,
+					"GRASS": 0,
+					"WATER": 0,
+					"WOOD": 0,
+					"STONE": 0,
+					"METALSOLID": 0,
+					"SNOW": 0,
+					"ICE": 0,
+					"NOTHING": 0,
+					"QUICKSAND": 0,
+					"SHALLOW_WATER": 0,
+					"SAND": 0,
+					"COAL": 0,
+					"HOLE": 0,
+					"LASER": 0,
+					"METAL_HOLLOW": 0,
+					"SPIDERWEB": 0,
+					"HIGHWAY": 0,
+					"undefined": 0
+				}
+			},
+			"states": {
+				"type": "OlPlatformStates",
+				"popup": true,
+				"description": "States of the platform"
+			},
+			"speed": {
+				"type": "String",
+				"description": "Speed of transition",
+				"options": {
+					"FLEGMON": 0,
+					"SLOWEST": 0,
+					"SLOWER": 0,
+					"SLOW": 0,
+					"MEDIUM": 0,
+					"FAST": 0
+				}
+			},
+			"staticSpeed": {
+				"type": "Boolean",
+				"description": "Speed independent of distance"
+			},
+			"positionSound": {
+				"type": "Boolean",
+				"default": false,
+				"description": "Make sound positional"
+			},
+			"shape": {
+				"type": "String",
+				"optional": true,
+				"description": "Height-Shape of Block Entity",
+				"options": {
+					"RECTANGLE": 0,
+					"SLOPE_NE": 0,
+					"SLOPE_SE": 0,
+					"SLOPE_SW": 0,
+					"SLOPE_NW": 0
+				}
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for prop to appear"
+			}
+		},
+		"drawBox": false,
+		"boxColor": "rgba(120,255,120, 0.5)",
+		"frontColor": "rgba(80,244,80, 0.5)",
+		"alwaysRecreate": true
+	},
+	"EnemyCounter": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "VarCondition to make enemy counter appear"
+			},
+			"enemyGroup": {
+				"type": "String",
+				"description": "Enemy Group that is considered for counting"
+			},
+			"enemyCount": {
+				"type": "Number",
+				"description": "Number of enemies that needs to be defeated"
+			},
+			"preVariable": {
+				"type": "VarName",
+				"description": "Variable to be set to true when all enemies are defeated."
+			},
+			"postVariable": {
+				"type": "VarName",
+				"description": "Variable to be set to true when the last marble reached the counter."
+			},
+			"countVariable": {
+				"type": "VarName",
+				"description": "Variable to be set to the current enemyCount value."
+			},
+			"shuffleCondition": {
+				"type": "VarCondition",
+				"optional": true,
+				"description": "if provided: shuffle when condition evaluates to true"
+			}
+		}
+	},
+	"KillCounter": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Spawn Condition"
+			},
+			"countMode": {
+				"type": "Select",
+				"description": "DEFAULT: set count to kill count and trigger when all killed. INCREASE: just increase countVar every time an enemy dies.",
+				"options": {
+					"DEFAULT": 0,
+					"INCREASE": 0
+				}
+			},
+			"enemyGroup": {
+				"type": "String",
+				"description": "Enemy Group that is considered for counting"
+			},
+			"killCount": {
+				"type": "Number",
+				"description": "Number of kills to do."
+			},
+			"variable": {
+				"type": "VarName",
+				"description": "Variable to be set to true when all kill count is reached"
+			},
+			"countVariable": {
+				"type": "VarName",
+				"description": "Variable to be set to the current enemyCount value."
+			}
+		},
+		"drawBox": true,
+		"scalableX": true,
+		"scalableY": true,
+		"boxColor": "rgba(0,0,255, 0.5)",
+		"frontColor": "rgba(0,0,120, 0.8)"
+	},
+	"GroupSwitch": {
+		"spawnable": true,
+		"attributes": {
+			"switchType": {
+				"type": "String",
+				"description": "Type of Group Switch",
+				"options": {
+					"default": 0
+				}
+			},
+			"updateType": {
+				"type": "String",
+				"description": "Update type for the group switch",
+				"options": {
+					"LOCAL": 0,
+					"GLOBAL": 0
+				}
+			},
+			"group": {
+				"type": "String",
+				"description": "The associated group for this switch. Must be set for global type switches."
+			},
+			"activeTime": {
+				"type": "Number",
+				"description": "the time the switch (or all switches in the group if global) stays active."
+			},
+			"activeBoolVar": {
+				"type": "VarName",
+				"description": "Variable is set to true when all switches are activated"
+			},
+			"activeCountVar": {
+				"type": "VarName",
+				"description": "This variable stored the number of active switches in this group"
+			},
+			"firstTrigger": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Set to true when one of the first switches in a group is hit."
+			}
+		}
+	},
+	"Chest": {
+		"spawnable": true,
+		"attributes": {
+			"chestType": {
+				"type": "String",
+				"description": "Type of the chest.",
+				"options": {
+					"Default": 0,
+					"Bronze": 0,
+					"Silver": 0,
+					"Gold": 0,
+					"Key": 0,
+					"MasterKey": 0
+				}
+			},
+			"item": {
+				"type": "Item",
+				"description": "The item to spawn."
+			},
+			"amount": {
+				"type": "Number",
+				"default": 1,
+				"description": "Amount of the given item. 0 = 1."
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"variable": {
+				"type": "VarName",
+				"optional": true,
+				"description": "the value to add 1 to"
+			},
+			"trigger": {
+				"type": "VarName",
+				"optional": true,
+				"description": "trigger to set to true the only 'once' when chest is activated"
+			},
+			"hideCondition": {
+				"type": "VarCondition",
+				"optional": true,
+				"description": "Condition for entity to become transparent"
+			},
+			"noTrack": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "If true, this chest is not tracked in the area counter"
+			}
+		}
+	},
+	"QuicksandHole": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"description": "Map to be loaded"
+			},
+			"marker": {
+				"type": "Marker",
+				"description": "Marker on map to teleport player to"
+			}
+		}
+	},
+	"SteamPipe": {
+		"alwaysRecreate": true,
+		"spawnable": true,
+		"attributes": {
+			"pipeType": {
+				"type": "String",
+				"description": "Type of rail",
+				"options": {
+					"HORIZONTAL": 0,
+					"VERTICAL": 0,
+					"CURVE_SE": 0,
+					"CURVE_SW": 0,
+					"CURVE_NE": 0,
+					"CURVE_NW": 0,
+					"END_NORTH": 0,
+					"OVEN_EAST": 0,
+					"OVEN_WEST": 0,
+					"UPPER_PIPE": 0
+				}
+			}
+		}
+	},
+	"SteamTurnout": {
+		"alwaysRecreate": true,
+		"spawnable": true,
+		"attributes": {
+			"turnDefault": {
+				"type": "String",
+				"description": "Default turn of turnout",
+				"options": {
+					"HORIZONTAL": 0,
+					"VERTICAL": 0,
+					"CURVE_SE": 0,
+					"CURVE_SW": 0,
+					"CURVE_NE": 0,
+					"CURVE_NW": 0
+				}
+			},
+			"turnAlt": {
+				"type": "String",
+				"description": "Alternative turn of turnout",
+				"options": {
+					"HORIZONTAL": 0,
+					"VERTICAL": 0,
+					"CURVE_SE": 0,
+					"CURVE_SW": 0,
+					"CURVE_NE": 0,
+					"CURVE_NW": 0
+				}
+			},
+			"condition": {
+				"type": "VarCondition",
+				"description": "Condition to switch to turnAlt"
+			}
+		}
+	},
+	"SteamOven": {
+		"spawnable": true,
+		"attributes": {
+			"fastMode": {
+				"type": "Boolean",
+				"description": "Make sure puzzle element is not slowed down by assist mode"
+			}
+		}
+	},
+	"TeslaCoil": {
+		"spawnable": true,
+		"attributes": {
+			"coilType": {
+				"type": "String",
+				"description": "Type of TeslaCoil",
+				"options": {
+					"SOURCE": 0,
+					"SOURCE_FAST": 0,
+					"SOURCE_LOOSE": 0,
+					"SOURCE_LOOSE_FLIP": 0,
+					"EXTENDER": 0,
+					"EXTENDER_LOOSE": 0,
+					"EXTENDER_LOOSE_FLIP": 0,
+					"EXTENDER_IGNORE": 0,
+					"GROUND_DISCHARGE": 0,
+					"WHALE_DISCHARGE": 0,
+					"GROUND_DISCHARGE_FISH": 0
+				}
+			},
+			"varOnCharge": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Var set to true when tesla coil begins charging"
+			},
+			"varOnDischarge": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Var set to true when tesla coil discharges"
+			},
+			"align": {
+				"type": "String",
+				"optional": true,
+				"description": "Alignment of effect relative to target",
+				"options": {
+					"BOTTOM": 0,
+					"CENTER": 0,
+					"TOP": 0,
+					"FACE": 0,
+					"BASE": 0,
+					"WALL_HIT": 0,
+					"FACE_BASE": 0
+				}
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for prop to appear"
+			}
+		}
+	},
+	"WaveTeleport": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			}
+		}
+	},
+	"RotateBlocker": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"dir": {
+				"type": "String",
+				"description": "Start direction of triangular block shape",
+				"options": {
+					"NE": 0,
+					"SE": 0,
+					"SW": 0,
+					"NW": 0
+				}
+			},
+			"condition": {
+				"type": "VarCondition",
+				"description": "Condition for RotateBlocker to be active"
+			}
+		}
+	},
+	"BossPlatform": {
+		"spawnable": true,
+		"scalableX": true,
+		"scalableY": true,
+		"scalableStep": 4,
+		"attributes": {
+			"layer": {
+				"type": "String",
+				"description": "Object Layer from which to display graphic.",
+				"options": {
+					"object1": 0,
+					"object2": 0,
+					"object3": 0
+				}
+			},
+			"zHeight": {
+				"type": "Number",
+				"description": "Z height of displayed object"
+			},
+			"shape": {
+				"type": "String",
+				"optional": true,
+				"description": "Height-Shape of Block Entity",
+				"options": {
+					"RECTANGLE": 0,
+					"SLOPE_NE": 0,
+					"SLOPE_SE": 0,
+					"SLOPE_SW": 0,
+					"SLOPE_NW": 0
+				}
+			},
+			"wallY": {
+				"type": "Number",
+				"description": "Wall Y Value"
+			}
+		},
+		"drawBox": false,
+		"boxColor": "rgba(120,255,120, 0.5)",
+		"frontColor": "rgba(80,244,80, 0.5)",
+		"alwaysRecreate": true
+	},
+	"Analyzable": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "Condition for Enemy to spawn"
+			},
+			"analType": {
+				"type": "Select",
+				"default": "DEFAULT",
+				"description": "Type of the Analyzable",
+				"options": {
+					"DEFAULT": 0,
+					"QUEST": 0,
+					"SPECIAL": 0
+				}
+			},
+			"visible": {
+				"type": "VarCondition",
+				"description": "Condition to check if text is visible, if not \"???\" will be shown instead"
+			},
+			"text": {
+				"type": "LangLabel",
+				"compact": true,
+				"large": true,
+				"withNull": true,
+				"description": "Name to display above the entity"
+			},
+			"distance": {
+				"type": "Number",
+				"optional": true,
+				"description": "If defined will be visible at the border if below the given distance"
+			}
+		},
+		"drawBox": true,
+		"boxColor": "rgba(0,255,0, 0.5)"
+	},
+	"XenoDialog": {
+		"spawnable": true,
+		"attributes": {
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"description": "optional spawn condition, leave empty for true"
+			},
+			"dialog": {
+				"type": "XenoDialog",
+				"description": "The dialog"
+			},
+			"ignoreZ": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "If true, ignore Z pos when checking range"
+			},
+			"endlessDialog": {
+				"type": "Boolean",
+				"description": "if true, skip dialog wait after dialog has been completed resulting in an endless dialog loop"
+			},
+			"once": {
+				"type": "Boolean",
+				"description": "Only play this dialog once."
+			}
+		},
+		"drawBox": true,
+		"boxColor": "rgba(128,0,128, 0.5)"
+	},
+	"ArenaSpawn": {
+		"spawnable": true,
+		"attributes": {
+			"text": {
+				"type": "String",
+				"large": true,
+				"description": "Text to display in information."
+			}
+		},
+		"scalableX": true,
+		"scalableY": true,
+		"drawBox": true,
+		"boxColor": "rgba(30, 30, 30, 0.5)",
+		"frontColor": "rgba(0, 0, 0, 0.5)"
+	}
+}
