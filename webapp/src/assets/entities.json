@@ -203,7 +203,7 @@
 		"scalableY": true,
 		"drawBox": true,
 		"boxColor": "rgba(255,0,255, 0.25)",
-		"frontColor": "rgba(120,0,120, 0.25)"
+		"frontColor": "rgba(188,0,188, 0.5)"
 	},
 	"SoundSource": {
 		"spawnable": true,
