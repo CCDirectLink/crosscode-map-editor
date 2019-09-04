@@ -62,8 +62,13 @@ export class DefaultEntity extends CCEntity {
 			scalableX: !!this.typeDef.scalableX,
 			scalableY: !!this.typeDef.scalableY,
 			scalableStep: step,
-			baseSize: this.typeDef.scalableStep ? {x: step, y: step} : {x: 16, y: 16}
+			baseSize: {x: step, y: step}
 		};
+		
+		if (step === 1 && !this.details.settings.size) {
+			this.details.settings.size = {x: 16, y: 16};
+		}
+		
 		return this.scaleSettings;
 	}
 	

@@ -19,9 +19,11 @@ import {KeepHtmlPipe} from './keep-html.pipe';
 import {SettingsComponent} from '../components/dialogs/settings/settings.component';
 import {OverlayModule} from './overlay/overlay.module';
 
-import { MapContentSettingsComponent } from '../components/dialogs/map-settings/map-content-settings/map-content-settings.component';
-import { HighlightDirective } from './highlight.directive';
+import {MapContentSettingsComponent} from '../components/dialogs/map-settings/map-content-settings/map-content-settings.component';
+import {HighlightDirective} from './highlight.directive';
 import {EntityRegistryService} from './phaser/entities/registry/entity-registry.service';
+import {ListSearchOverlayComponent} from './list-search-overlay/list-search-overlay.component';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
 	imports: [
@@ -31,7 +33,8 @@ import {EntityRegistryService} from './phaser/entities/registry/entity-registry.
 		FlexLayoutModule,
 		MaterialModule,
 		AngularDraggableModule,
-		OverlayModule
+		OverlayModule,
+		ScrollingModule
 	],
 	declarations: [
 		HostDirective,
@@ -45,6 +48,7 @@ import {EntityRegistryService} from './phaser/entities/registry/entity-registry.
 		KeepHtmlPipe,
 		SettingsComponent,
 		HighlightDirective,
+		ListSearchOverlayComponent,
 	],
 	providers: [
 		HttpClientService,
@@ -60,6 +64,7 @@ import {EntityRegistryService} from './phaser/entities/registry/entity-registry.
 		NewMapComponent,
 		OffsetMapComponent,
 		SettingsComponent,
+		ListSearchOverlayComponent,
 	],
 	exports: [
 		HostDirective,

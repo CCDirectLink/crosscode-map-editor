@@ -95,6 +95,9 @@ button {
 	&::-webkit-scrollbar-thumb {
 		background-color: mat-color($accent, 600);
 	}
+
+	//noinspection CssInvalidPropertyValue
+	overflow: overlay;
 }
 
 .small-dark-scrollbar {

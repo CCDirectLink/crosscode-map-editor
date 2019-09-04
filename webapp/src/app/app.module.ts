@@ -21,9 +21,9 @@ import {WidgetModule} from './shared/widgets/widget.module';
 import {StateHistoryService} from './shared/history/state-history.service';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {EditorComponent} from './components/editor/editor.component';
-import {AddEntityMenuComponent} from './components/editor/add-entity-menu/add-entity-menu.component';
-import { TileSelectorComponent } from './components/tile-selector/tile-selector.component';
+import {TileSelectorComponent} from './components/tile-selector/tile-selector.component';
 import {RouterModule} from '@angular/router';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 @NgModule({
 	declarations: [
@@ -35,8 +35,7 @@ import {RouterModule} from '@angular/router';
 		LayersComponent,
 		EntitiesComponent,
 		LoadMapComponent,
-		AddEntityMenuComponent,
-		TileSelectorComponent
+		TileSelectorComponent,
 	],
 	imports: [
 		RouterModule.forRoot(routes),
@@ -50,6 +49,7 @@ import {RouterModule} from '@angular/router';
 		WidgetModule,
 		SharedModule,
 		HistoryModule,
+		ScrollingModule,
 	],
 	providers: [
 		WidgetRegistryService,

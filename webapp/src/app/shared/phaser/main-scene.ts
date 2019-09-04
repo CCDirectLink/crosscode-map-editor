@@ -32,7 +32,6 @@ export class MainScene extends Phaser.Scene {
 		
 		this.load.image('pixel', 'assets/pixel.png');
 		
-		this.load.json('definitions.json', 'assets/definitions.json');
 		this.load.json('destructibles.json', 'assets/destructibles.json');
 		this.load.crossOrigin = 'anonymous';
 		

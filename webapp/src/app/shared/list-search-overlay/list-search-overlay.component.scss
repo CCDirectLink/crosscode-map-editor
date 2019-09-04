@@ -1,0 +1,34 @@
+@import "theme";
+
+$primary: map-get($theme, primary);
+$accent: map-get($theme, accent);
+
+:host {
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+.overlay-panel {
+	position: absolute;
+	height: 100%;
+}
+
+.header {
+	height: 100%;
+	width: 100%;
+	padding-left: 16px;
+	padding-right: 16px;
+	background-color: mat-color($accent, 900);
+}
+
+.scroll-viewport {
+	height: 100%;
+}
+
+.list-item {
+	width: 100%;
+	text-align: center;
+}
+
+
