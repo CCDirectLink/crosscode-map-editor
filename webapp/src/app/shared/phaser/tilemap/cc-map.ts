@@ -30,13 +30,13 @@ export class CCMap {
 		private entityManager: EntityManager
 	) {
 		const stateHistory = Globals.stateHistoryService;
-		this.historySub = stateHistory.selectedState.subscribe(container => {
+		this.historySub = stateHistory.selectedState.subscribe(async container => {
 			if (!container || !container.state) {
 				return;
 			}
 			const selectedLayer = Globals.mapLoaderService.selectedLayer;
 			const i = this.layers.indexOf(<any>selectedLayer.getValue());
-			this.loadMap(JSON.parse(container.state.json), true);
+			await this.loadMap(JSON.parse(container.state.json), true);
 			if (i >= 0 && this.layers.length > i) {
 				selectedLayer.next(this.layers[i]);
 			}
