@@ -5,7 +5,11 @@ import {Point3} from '../../../../models/cross-code-map';
 
 interface JsonTemplate {
 	name: string;
-	tileOffset: number;
+	tileOffset?: number;
+	sheet?: string;
+	offset?: Point3;
+	renderMode?: string;
+	framesAlpha?: number[];
 }
 
 interface JsonTemplates {
@@ -196,15 +200,19 @@ export class Prop extends CCEntity {
 	
 	private async setupAnims(settings: PropAttributes, propDef: PropDef, sheetDef: PropSheet) {
 		
+		// console.log('------');
+		// console.log(settings);
+		// console.log('prop: ', propDef);
+		// console.log('sheet: ', sheetDef);
+		
 		const anims = propDef.anims!;
 		if (anims.DOCTYPE) {
 			console.error('prop anim has DOCTYPE :/ ', propDef.name);
 			return this.generateErrorImage();
 		}
 		
-		let sheet;
-		
 		const sprites: {
+			sheet: AnimSheet;
 			tileOffset: number;
 			alpha: number;
 			offset?: Point3;
@@ -212,13 +220,11 @@ export class Prop extends CCEntity {
 		}[] = [];
 		
 		if (anims.namedSheets) {
-			const name = anims.sheet as string || anims.SUB[0].sheet!;
-			sheet = anims.namedSheets[name];
-			
 			let template: JsonTemplate | undefined;
 			
 			const sub = anims.SUB[0].SUB as SubJsonInstance | undefined;
 			if (sub && sub.jsonINSTANCE) {
+				
 				const templates = sheetDef.jsonTEMPLATES[sub.jsonINSTANCE];
 				template = templates.find(t => t.name === settings.propAnim);
 				
@@ -226,11 +232,12 @@ export class Prop extends CCEntity {
 					console.error(`prop json template with name ${settings.propAnim} not found, `, propDef.name);
 					return this.generateErrorImage();
 				}
-				
+				const name = anims.sheet as string || anims.SUB[0].sheet!;
 				sprites.push({
+					sheet: anims.namedSheets[name],
 					alpha: 1,
 					offset: anims.SUB[0].offset,
-					tileOffset: template.tileOffset
+					tileOffset: template.tileOffset || 0
 				});
 			} else {
 				
@@ -249,26 +256,27 @@ export class Prop extends CCEntity {
 						continue;
 					}
 					
-					template = templates.find(t => t.name === settings.propAnim);
-					if (template) {
-						const sprite = {
-							renderMode: sub.renderMode,
-							offset: sub.offset,
-							alpha: 1,
-							tileOffset: template.tileOffset
-						};
+					const filteredTemplates = templates.filter(t => t.name === settings.propAnim);
+					
+					for (const template of filteredTemplates) {
+						const name = anims.sheet as string || anims.SUB[0].sheet || template.sheet!;
 						
-						if (sub.framesAlpha) {
-							sprite.alpha = sub.framesAlpha[0] || 1;
-						}
+						const alpha = sub.framesAlpha || template.framesAlpha || [];
+						const sprite = {
+							sheet: anims.namedSheets[name],
+							renderMode: sub.renderMode || template.renderMode,
+							offset: sub.offset || template.offset,
+							alpha: alpha[0] || 1,
+							tileOffset: template.tileOffset || 0
+						};
 						
 						sprites.push(sprite);
 					}
 				}
 			}
 		} else if (anims.sheet) {
-			sheet = anims.sheet as AnimSheet;
 			sprites.push({
+				sheet: anims.sheet as AnimSheet,
 				alpha: 1,
 				tileOffset: 0
 			});
@@ -277,31 +285,29 @@ export class Prop extends CCEntity {
 			return this.generateErrorImage();
 		}
 		
-		if (!sheet) {
-			console.error(`prop sheet not found, `, propDef.name);
-			return this.generateErrorImage();
-		}
-		
 		if (sprites.length === 0) {
 			console.warn('failed creating prop: ', settings);
 			
-			// console.log('------');
-			// console.log(settings);
-			// console.log('prop: ', propDef);
-			// console.log('sheet: ', sheetDef);
 			return this.generateErrorImage();
 		}
 		
-		await Helper.loadTexture(sheet.src, this.scene);
 		
 		this.entitySettings.sheets.fix = [];
 		for (const sprite of sprites) {
+			
+			if (!sprite.sheet) {
+				console.error(`prop sheet not found, `, propDef.name);
+				return this.generateErrorImage();
+			}
+			
+			await Helper.loadTexture(sprite.sheet.src, this.scene);
+			
 			const fix = {
-				gfx: sheet.src,
-				w: sheet.width,
-				h: sheet.height,
-				x: sheet.width * sprite.tileOffset + (sheet.offX || 0),
-				y: sheet.offY || 0,
+				gfx: sprite.sheet.src,
+				w: sprite.sheet.width,
+				h: sprite.sheet.height,
+				x: sprite.sheet.width * sprite.tileOffset + (sprite.sheet.offX || 0),
+				y: sprite.sheet.offY || 0,
 				alpha: sprite.alpha,
 				offsetX: 0,
 				offsetY: 0,
@@ -310,7 +316,7 @@ export class Prop extends CCEntity {
 			
 			if (sprite.offset) {
 				fix.offsetX = sprite.offset.x || 0;
-				fix.offsetY = -(sprite.offset.y || 0) - (sprite.offset.z || 0);
+				fix.offsetY = (sprite.offset.y || 0) - (sprite.offset.z || 0);
 			}
 			this.entitySettings.sheets.fix.push(fix);
 		}
