@@ -1,23 +1,57 @@
 import {CCEntity, EntityAttributes, ScaleSettings} from '../cc-entity';
 import {Helper} from '../../helper';
 import {Fix} from '../../../../models/props';
+import {Point3} from '../../../../models/cross-code-map';
+
+interface JsonTemplate {
+	name: string;
+	tileOffset: number;
+}
+
+interface JsonTemplates {
+	[key: string]: JsonTemplate[];
+}
+
+interface SubJsonInstance {
+	jsonINSTANCE?: keyof JsonTemplates;
+}
 
 interface PropSheet {
 	DOCTYPE: string;
+	jsonTEMPLATES: JsonTemplates;
 	props: PropDef[];
+}
+
+interface AnimSheet {
+	src: string;
+	width: number;
+	height: number;
+	offX?: number;
+	offY?: number;
 }
 
 interface Anims {
 	DOCTYPE?: string;
-	SUB: any[];
+	SUB: {
+		sheet?: string;
+		offset?: Point3;
+		frames?: number[];
+		framesGfxOffset?: number[];
+		time?: number;
+		repeat?: boolean;
+		renderMode?: string;
+		framesAlpha?: number[];
+		SUB?: SubJsonInstance | JsonTemplate[]
+	}[];
 	frames: any[];
 	framesGfxOffset: any[];
 	namedSheets: {
-		[key: string]: any
+		[key: string]: AnimSheet
 	};
+	renderMode?: string;
 	repeat: boolean;
 	shape: string;
-	sheet: string;
+	sheet: AnimSheet | string;
 	time: number;
 }
 
@@ -141,7 +175,7 @@ export class Prop extends CCEntity {
 		
 		this.entitySettings = {sheets: {fix: []}} as any;
 		if (prop.anims) {
-			this.setupAnims(settings, prop);
+			await this.setupAnims(settings, prop, sheet);
 		} else if (prop.fix) {
 			const exists = await Helper.loadTexture(prop.fix.gfx, this.scene);
 			if (!exists) {
@@ -160,7 +194,125 @@ export class Prop extends CCEntity {
 		this.updateSettings();
 	}
 	
-	private setupAnims(settings: PropAttributes, prop: PropDef) {
-		// TODO
+	private async setupAnims(settings: PropAttributes, propDef: PropDef, sheetDef: PropSheet) {
+		
+		const anims = propDef.anims!;
+		if (anims.DOCTYPE) {
+			console.error('prop anim has DOCTYPE :/ ', propDef.name);
+			return this.generateErrorImage();
+		}
+		
+		let sheet;
+		
+		const sprites: {
+			tileOffset: number;
+			alpha: number;
+			offset?: Point3;
+			renderMode?: string
+		}[] = [];
+		
+		if (anims.namedSheets) {
+			const name = anims.sheet as string || anims.SUB[0].sheet!;
+			sheet = anims.namedSheets[name];
+			
+			let template: JsonTemplate | undefined;
+			
+			const sub = anims.SUB[0].SUB as SubJsonInstance | undefined;
+			if (sub && sub.jsonINSTANCE) {
+				const templates = sheetDef.jsonTEMPLATES[sub.jsonINSTANCE];
+				template = templates.find(t => t.name === settings.propAnim);
+				
+				if (!template) {
+					console.error(`prop json template with name ${settings.propAnim} not found, `, propDef.name);
+					return this.generateErrorImage();
+				}
+				
+				sprites.push({
+					alpha: 1,
+					offset: anims.SUB[0].offset,
+					tileOffset: template.tileOffset
+				});
+			} else {
+				
+				// sometimes anims.SUB is already an array of templates
+				if (anims.SUB.length > 0 && (anims.SUB[0] as any).name) {
+					const templates = anims.SUB as unknown as JsonTemplate[];
+					anims.SUB = [{
+						SUB: templates,
+						renderMode: anims.renderMode
+					}];
+				}
+				
+				for (const sub of anims.SUB) {
+					const templates = sub.SUB as JsonTemplate[] | undefined;
+					if (!templates) {
+						continue;
+					}
+					
+					template = templates.find(t => t.name === settings.propAnim);
+					if (template) {
+						const sprite = {
+							renderMode: sub.renderMode,
+							offset: sub.offset,
+							alpha: 1,
+							tileOffset: template.tileOffset
+						};
+						
+						if (sub.framesAlpha) {
+							sprite.alpha = sub.framesAlpha[0] || 1;
+						}
+						
+						sprites.push(sprite);
+					}
+				}
+			}
+		} else if (anims.sheet) {
+			sheet = anims.sheet as AnimSheet;
+			sprites.push({
+				alpha: 1,
+				tileOffset: 0
+			});
+		} else {
+			console.error('prop anim has no sheet: ', propDef.name);
+			return this.generateErrorImage();
+		}
+		
+		if (!sheet) {
+			console.error(`prop sheet not found, `, propDef.name);
+			return this.generateErrorImage();
+		}
+		
+		if (sprites.length === 0) {
+			console.warn('failed creating prop: ', settings);
+			
+			// console.log('------');
+			// console.log(settings);
+			// console.log('prop: ', propDef);
+			// console.log('sheet: ', sheetDef);
+			return this.generateErrorImage();
+		}
+		
+		await Helper.loadTexture(sheet.src, this.scene);
+		
+		this.entitySettings.sheets.fix = [];
+		for (const sprite of sprites) {
+			const fix = {
+				gfx: sheet.src,
+				w: sheet.width,
+				h: sheet.height,
+				x: sheet.width * sprite.tileOffset + (sheet.offX || 0),
+				y: sheet.offY || 0,
+				alpha: sprite.alpha,
+				offsetX: 0,
+				offsetY: 0,
+				renderMode: sprite.renderMode
+			};
+			
+			if (sprite.offset) {
+				fix.offsetX = sprite.offset.x || 0;
+				fix.offsetY = -(sprite.offset.y || 0) - (sprite.offset.z || 0);
+			}
+			this.entitySettings.sheets.fix.push(fix);
+		}
 	}
 }
