@@ -79,10 +79,11 @@ export class CCMap {
 		
 		// generate Map Layers
 		if (this.inputLayers) {
-			this.inputLayers.forEach(layer => {
-				const ccLayer = new CCMapLayer(this.scene, tileMap, layer);
+			for (const layer of this.inputLayers) {
+				const ccLayer = new CCMapLayer(tileMap);
+				await ccLayer.init(layer);
 				this.layers.push(ccLayer);
-			});
+			}
 			
 			this.inputLayers = undefined;
 		}

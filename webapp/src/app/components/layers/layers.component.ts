@@ -49,7 +49,7 @@ export class LayersComponent implements OnInit {
 		}
 	}
 	
-	addNewLayer(event: Event) {
+	async addNewLayer(event: Event) {
 		if (!this.map) {
 			return;
 		}
@@ -67,7 +67,8 @@ export class LayersComponent implements OnInit {
 				data[y][x] = 0;
 			}
 		}
-		const layer = new CCMapLayer(Globals.scene, tilemap, {
+		const layer = new CCMapLayer(tilemap);
+		await layer.init({
 			type: 'Background',
 			name: this.newLayerName,
 			level: 0,

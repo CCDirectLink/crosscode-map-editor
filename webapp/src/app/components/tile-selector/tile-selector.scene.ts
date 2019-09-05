@@ -36,7 +36,7 @@ export class TileSelectorScene extends Phaser.Scene {
 			e.preventDefault();
 		};
 		
-		this.sub = Globals.mapLoaderService.selectedLayer.subscribe((layer) => {
+		this.sub = Globals.mapLoaderService.selectedLayer.subscribe(layer => {
 			if (layer) {
 				this.drawTileset(layer);
 			}
@@ -180,12 +180,7 @@ export class TileSelectorScene extends Phaser.Scene {
 		}
 	}
 	
-	private drawTileset(selectedLayer: CCMapLayer) {
-		if (this.load.isLoading()) {
-			this.load.once('complete', () => this.drawTileset(selectedLayer));
-			return;
-		}
-		
+	private async drawTileset(selectedLayer: CCMapLayer) {
 		this.tilesetRendered = false;
 		this.drawRect(0, 0);
 		
@@ -200,14 +195,16 @@ export class TileSelectorScene extends Phaser.Scene {
 			return;
 		}
 		
+		const exists = await Helper.loadTexture(selectedLayer.details.tilesetName, this);
+		if (!exists) {
+			return;
+		}
+		
 		const tilesetSize = Helper.getTilesetSize(this, selectedLayer.details.tilesetName);
 		this.tilesetSize = tilesetSize;
 		this.tileMap.removeAllLayers();
 		const tileset = this.tileMap.addTilesetImage('tileset', selectedLayer.details.tilesetName, Globals.TILE_SIZE, Globals.TILE_SIZE);
 		if (!tileset) {
-			this.load.image(selectedLayer.details.tilesetName, Globals.URL + selectedLayer.details.tilesetName);
-			this.load.once('load', () => this.drawTileset(selectedLayer));
-			this.load.start();
 			return;
 		}
 		tileset.firstgid = 1;

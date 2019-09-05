@@ -22,9 +22,6 @@ export class MainScene extends Phaser.Scene {
 	}
 	
 	preload() {
-		this.res.images.forEach(img => {
-			this.load.image(img, Globals.URL + img);
-		});
 		
 		this.load.image('pixel', 'assets/pixel.png');
 		

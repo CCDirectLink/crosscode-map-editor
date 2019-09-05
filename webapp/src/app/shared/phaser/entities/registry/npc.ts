@@ -21,17 +21,19 @@ interface CharacterSettings {
 		}
 	};
 	
-	animSheet?: {
-		namedSheets: {
-			move?: NamedSheet
-			walk?: NamedSheet
-		};
-		sheet?: NamedSheet,
-		DOCTYPE?: string;
-		shapeType?: string;
-		offset?: Point3;
-		SUB?: any;
+	animSheet?: AnimSheet;
+}
+
+interface AnimSheet {
+	namedSheets: {
+		move?: NamedSheet
+		walk?: NamedSheet
 	};
+	sheet?: NamedSheet,
+	DOCTYPE?: string;
+	shapeType?: string;
+	offset?: Point3;
+	SUB?: any;
 }
 
 interface NamedSheet {
@@ -99,7 +101,7 @@ export class NPC extends CCEntity {
 	
 	protected async setupType(settings: any) {
 		
-		const charSettings: CharacterSettings | undefined = await Helper.getJsonPromise(this.getPath('data/characters/', settings.characterName));
+		const charSettings = await Helper.getJsonPromise(this.getPath('data/characters/', settings.characterName)) as CharacterSettings | undefined;
 		if (!charSettings) {
 			console.warn(`no char settings found for character name: [${settings.characterName}]`);
 			this.generateNoImageType();
@@ -109,8 +111,7 @@ export class NPC extends CCEntity {
 		const npc = this.NPCSimple;
 		let config = (npc.sprites as any)[state.config];
 		if (!config) {
-			console.error('unknown npc config: [' + state.config + '], using default');
-			console.error('char settings', charSettings);
+			console.error(`unknown npc config: [${state.config}], using default. Charsettings: `, charSettings);
 			config = npc.sprites.normal;
 		}
 		let offset = config[state.face] || config.default;
@@ -127,7 +128,7 @@ export class NPC extends CCEntity {
 				// sheet is only reference
 				const animSheet = charSettings.animSheet;
 				const path = this.getPath('data/animations/', animSheet);
-				charSettings.animSheet = await Helper.getJsonPromise(path);
+				charSettings.animSheet = await Helper.getJsonPromise(path) as AnimSheet;
 				if (!charSettings.animSheet) {
 					throw new Error('no anim sheet found for: ' + animSheet + ' in path: ' + path);
 				}
@@ -177,6 +178,12 @@ export class NPC extends CCEntity {
 			src = src.trim();
 		}
 		
+		const exists = await Helper.loadTexture(src, this.scene);
+		
+		if (!exists) {
+			this.generateErrorImage();
+			return;
+		}
 		this.entitySettings = <any>{
 			sheets: {
 				fix: [{

@@ -1,18 +1,18 @@
 import {MapLayer, Point} from '../../../models/cross-code-map';
 import * as Phaser from 'phaser';
+import {Helper} from '../helper';
 
 export class CCMapLayer {
 	
 	// TODO: don't use details.data, it's not updated and only used for import/export. Use getPhaserLayer() instead to get tile information
-	public details: MapLayer;
+	public details!: MapLayer;
 	
 	private layer?: Phaser.Tilemaps.DynamicTilemapLayer;
 	
-	constructor(
-		scene: Phaser.Scene,
-		private tilemap: Phaser.Tilemaps.Tilemap,
-		details: MapLayer,
-	) {
+	constructor(private tilemap: Phaser.Tilemaps.Tilemap) {
+	}
+	
+	public async init(details: MapLayer) {
 		if (typeof details.level === 'string') {
 			// possible levels
 			// 'first'
@@ -41,7 +41,7 @@ export class CCMapLayer {
 		this.details = details;
 		this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), 'stub');
 		
-		this.updateTileset(details.tilesetName!);
+		await this.updateTileset(details.tilesetName!);
 		this.updateLevel(this.details.level);
 		
 		const skip = 'Navigation Collision HeightMap'.split(' ');
@@ -143,7 +143,7 @@ export class CCMapLayer {
 		
 	}
 	
-	updateTileset(tilesetname: string) {
+	async updateTileset(tilesetname: string) {
 		const details = this.details;
 		details.tilesetName = tilesetname;
 		if (details.tilesetName) {
@@ -151,6 +151,11 @@ export class CCMapLayer {
 				this.layer.destroy();
 				this.layer = undefined;
 			}
+			const exists = await Helper.loadTexture(tilesetname, this.tilemap.scene);
+			if (!exists) {
+				return;
+			}
+			
 			const newTileset = this.tilemap.addTilesetImage(tilesetname);
 			if (!newTileset) {
 				return;
@@ -186,7 +191,7 @@ export class CCMapLayer {
 		this.extractLayerData(out);
 		return out;
 	}
-
+	
 	private extractLayerData(layer: MapLayer): void {
 		if (this.layer) {
 			this.layer.getTilesWithin().forEach(tile => {

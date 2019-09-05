@@ -180,7 +180,12 @@ export abstract class CCEntity extends BaseObject {
 		
 		// setup sprite
 		if (s.sheets && s.sheets.fix) {
-			if (!s.sheets.ignoreScalable &&  (s.scalableX || s.scalableY)) {
+			for (const fix of s.sheets.fix) {
+				if (!this.scene.textures.exists(fix.gfx)) {
+					console.error(`texture not loaded: [${fix.gfx}] in class: [${this.constructor.name}]`);
+				}
+			}
+			if (!s.sheets.ignoreScalable && (s.scalableX || s.scalableY)) {
 				// scalable
 				const fix = s.sheets.fix[0];
 				const width = settings.size.x;
