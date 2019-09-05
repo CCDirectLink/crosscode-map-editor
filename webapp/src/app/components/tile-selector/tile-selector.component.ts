@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import * as Phaser from 'phaser';
 import {TileSelectorScene} from './tile-selector.scene';
 import {GlobalEventsService} from '../../shared/global-events.service';
@@ -16,8 +16,9 @@ export class TileSelectorComponent implements AfterViewInit {
 	hide = false;
 	
 	constructor(
-		private globalEvents: GlobalEventsService
+		globalEvents: GlobalEventsService,
 	) {
+		globalEvents.currentView.subscribe(view => this.hide = view !== EditorView.Layers);
 	}
 	
 	ngAfterViewInit() {
@@ -37,8 +38,6 @@ export class TileSelectorComponent implements AfterViewInit {
 			zoom: 1,
 			scene: [this.scene]
 		});
-		
-		this.globalEvents.currentView.subscribe(view => this.hide = view !== EditorView.Layers);
 	}
 	
 	onDragEnd() {
