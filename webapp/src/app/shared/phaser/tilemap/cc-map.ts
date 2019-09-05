@@ -42,22 +42,6 @@ export class CCMap {
 			}
 		});
 		
-		// TODO: move out of tilemap
-		// const undoKey = game.input.keyboard.addKey(Phaser.Keyboard.Z);
-		// game.input.keyboard.removeKeyCapture(undoKey.keyCode);
-		// this.keyBinding = undoKey.onDown.add(() => {
-		// 	if (Helper.isInputFocused()) {
-		// 		return;
-		// 	}
-		// 	if (game.input.keyboard.isDown(Phaser.KeyCode.CONTROL)) {
-		// 		if (game.input.keyboard.isDown(Phaser.KeyCode.SHIFT)) {
-		// 			stateHistory.redo();
-		// 		} else {
-		// 			stateHistory.undo();
-		// 		}
-		// 	}
-		//
-		// });
 		this.offsetSub = Globals.globalEventsService.offsetMap.subscribe(offset => this.offsetMap(offset));
 	}
 	
