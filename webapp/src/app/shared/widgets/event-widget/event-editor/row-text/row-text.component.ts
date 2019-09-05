@@ -89,26 +89,23 @@ export class RowTextComponent {
 	// region keys copy/paste/del
 	keyPress(event: KeyboardEvent) {
 		event.stopPropagation();
-		console.log(event.code);
-		switch (event.code) {
-			case 'Delete':
+		if (event.code === 'Delete') {
+			this.delete();
+			return;
+		}
+		if (!event.ctrlKey) {
+			return;
+		}
+		switch (event.key.toLowerCase()) {
+			case 'c':
+				this.copy();
+				break;
+			case 'x':
+				this.copy();
 				this.delete();
 				break;
-			case 'KeyC':
-				if (event.ctrlKey) {
-					this.copy();
-				}
-				break;
-			case 'KeyX':
-				if (event.ctrlKey) {
-					this.copy();
-					this.delete();
-				}
-				break;
-			case 'KeyV':
-				if (event.ctrlKey) {
-					this.paste();
-				}
+			case 'v':
+				this.paste();
 				break;
 		}
 	}
