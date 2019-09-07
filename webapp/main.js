@@ -7,6 +7,8 @@ const url = require('url');
 const {autoUpdater} = require("electron-updater");
 const contextMenu = require('electron-context-menu');
 const {IPC} = require('node-ipc');
+const {ipcMain} = require('electron');
+
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -125,3 +127,11 @@ sub.connectTo('crosscode-map-editor', () => {
 	});
 });
 
+
+
+// check for update
+
+ipcMain.on('update-check', (event, arg) => {
+	console.log(arg) // prints "ping"
+	event.reply('update-check-result', 'pong')
+});
