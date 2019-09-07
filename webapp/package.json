@@ -79,6 +79,7 @@
 		"node-sass": "^4.12.0",
 		"phaser": "^3.18.1",
 		"rxjs": "^6.5.2",
+		"semver": "^6.3.0",
 		"zone.js": "^0.9.1"
 	},
 	"devDependencies": {
