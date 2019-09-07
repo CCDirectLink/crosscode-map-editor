@@ -8,7 +8,7 @@ const {autoUpdater} = require("electron-updater");
 const contextMenu = require('electron-context-menu');
 const {IPC} = require('node-ipc');
 const {ipcMain} = require('electron');
-
+const semver = require('semver');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -50,23 +50,14 @@ function openWindow() {
 			win.webContents.openDevTools();
 		} else {
 			console.log('prod');
-			/*const indexPath = url.format({
+			const indexPath = url.format({
 				pathname: path.join(__dirname, 'distAngular', 'index.html'),
 				protocol: 'file',
 				slashes: true
 			});
 			console.log('path', indexPath);
-			win.loadURL(indexPath);*/
+			win.loadURL(indexPath);
 			
-			/*const log = require("electron-log");
-			log.transports.file.level = "debug";
-			autoUpdater.logger = log;*/
-			autoUpdater.autoDownload = false;
-			autoUpdater.autoInstallOnAppQuit = false;
-			console.log('Current Version', autoUpdater.currentVersion);
-			autoUpdater.checkForUpdates().then((updateResults) => {
-				console.log('Update results', updateResults);
-			});
 			// win.webContents.openDevTools();
 			// win.setMenu(null);
 		}
@@ -130,8 +121,26 @@ sub.connectTo('crosscode-map-editor', () => {
 
 
 // check for update
+const log = require("electron-log");
+log.transports.file.level = "debug";
+autoUpdater.logger = log;
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = false;
 
 ipcMain.on('update-check', (event, arg) => {
-	console.log(arg) // prints "ping"
-	event.reply('update-check-result', 'pong')
+	autoUpdater.checkForUpdates().then(({versionInfo, updateInfo}) => {
+		if (semver.lt(versionInfo.version, updateInfo.version)) {
+			event.reply('update-check-result', updateInfo.version);
+		} else {
+			console.log('No new updates available');
+			event.reply('update-check-result', '');
+		}
+	});
+});
+
+// do the update
+ipcMain.on('update-download', (event, arg) => {
+	autoUpdater.downloadUpdate().then(({versionInfo, updateInfo}) => {
+		event.reply('update-download-result', '');
+	});
 });
