@@ -10,7 +10,7 @@ import {Point} from '../../../models/cross-code-map';
 export class Vec2WidgetComponent extends AbstractWidget implements OnChanges {
 	
 	@Input() step = 1;
-	@Input() minSize: Point = {x: 1, y: 1};
+	@Input() minSize: Point = {x: -9999, y: -9999};
 	@Input() enableX = true;
 	@Input() enableY = true;
 	@Input() displayName = '';
@@ -22,7 +22,10 @@ export class Vec2WidgetComponent extends AbstractWidget implements OnChanges {
 	ngOnChanges(changes?: SimpleChanges): void {
 		super.ngOnChanges(changes);
 		if (!this.settings[this.key]) {
-			this.settings[this.key] = {x: this.minSize.x, y: this.minSize.y};
+			this.settings[this.key] = {
+				x: this.minSize.x > 0 ? this.minSize.x : 1,
+				y: this.minSize.y > 0 ? this.minSize.y : 1
+			};
 			this.updateType();
 		}
 	}
