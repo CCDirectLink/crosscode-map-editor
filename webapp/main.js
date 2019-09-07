@@ -140,7 +140,14 @@ ipcMain.on('update-check', (event, arg) => {
 
 // do the update
 ipcMain.on('update-download', (event, arg) => {
+	
+	autoUpdater.signals.updateDownloaded(() => {
+		autoUpdater.quitAndInstall();
+	});
+
 	autoUpdater.downloadUpdate().then(({versionInfo, updateInfo}) => {
 		event.reply('update-download-result', '');
 	});
+
+
 });
