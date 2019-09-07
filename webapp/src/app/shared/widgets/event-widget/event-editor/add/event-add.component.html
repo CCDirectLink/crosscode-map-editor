@@ -4,11 +4,13 @@
 			<input matInput #filterInput [(ngModel)]="filterText">
 		</mat-form-field>
 	</label>
-	<mat-nav-list class="dark-scrollbar">
-		<a mat-list-item *ngFor="let event of eventsFiltered" (click)="select(event)">
-			<span class="list-item">{{event}}</span>
-			<mat-divider></mat-divider>
-		</a>
+	<mat-nav-list class="scroll-viewport">
+		<cdk-virtual-scroll-viewport itemSize="48" class="scroll-viewport dark-scrollbar">
+			<a mat-list-item *cdkVirtualFor="let event of eventsFiltered" (click)="select(event)">
+				<span class="list-item" appHighlight [highlightText]="event" [highlightMatch]="filterText"></span>
+				<mat-divider></mat-divider>
+			</a>
+		</cdk-virtual-scroll-viewport>
 	</mat-nav-list>
 </div>
 

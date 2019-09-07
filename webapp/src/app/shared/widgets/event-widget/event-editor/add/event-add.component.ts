@@ -2,6 +2,7 @@ import {AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, View
 import {AbstractEvent} from '../../event-registry/abstract-event';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {EventRegistryService} from '../../event-registry/event-registry.service';
+import events from '../../../../../../assets/events.json';
 
 const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 
@@ -28,7 +29,14 @@ export class EventAddComponent implements OnInit, AfterViewInit {
 	_filterText?: string;
 	
 	constructor(private eventRegistry: EventRegistryService) {
-		this.events = Object.keys(this.eventRegistry.getAll());
+		
+		const registry = Object.keys(this.eventRegistry.getAll());
+		const eventNames = Object.keys(events);
+		
+		const eventSet = new Set<string>([...registry, ...eventNames]);
+		
+		this.events = Array.from(eventSet);
+		this.events.sort();
 		this.filterText = '';
 	}
 	
@@ -50,6 +58,7 @@ export class EventAddComponent implements OnInit, AfterViewInit {
 			this.eventsFiltered = this.events;
 			return;
 		}
+		event = event.trim();
 		
 		const searchStr = event.toLowerCase();
 		this.eventsFiltered = this.events.filter(text => {

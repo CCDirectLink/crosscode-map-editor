@@ -5,6 +5,10 @@ export class Wait extends AbstractEvent<any> {
 		time: {
 			type: 'Number',
 			description: 'Time to wait'
+		},
+		ignoreSlowDown: {
+			type: 'Boolean',
+			description: 'Ignore slow down rate on wait'
 		}
 	};
 	

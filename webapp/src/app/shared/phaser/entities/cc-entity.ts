@@ -22,7 +22,9 @@ export interface AttributeValue {
 	type: string;
 	description: string;
 	options?: { [key: string]: any };
+	withNull?: boolean;
 	
+	// TODO: not needed anymore, cc source is not obfuscated
 	[key: string]: any;
 }
 

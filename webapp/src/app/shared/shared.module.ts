@@ -20,6 +20,7 @@ import {SettingsComponent} from '../components/dialogs/settings/settings.compone
 import {OverlayModule} from './overlay/overlay.module';
 
 import { MapContentSettingsComponent } from '../components/dialogs/map-settings/map-content-settings/map-content-settings.component';
+import { HighlightDirective } from './highlight.directive';
 
 @NgModule({
 	imports: [
@@ -42,6 +43,7 @@ import { MapContentSettingsComponent } from '../components/dialogs/map-settings/
 		OffsetMapComponent,
 		KeepHtmlPipe,
 		SettingsComponent,
+		HighlightDirective,
 	],
 	providers: [
 		HttpClientService,
@@ -68,6 +70,7 @@ import { MapContentSettingsComponent } from '../components/dialogs/map-settings/
 		OverlayModule,
 		KeepHtmlPipe,
 		SettingsComponent,
+		HighlightDirective
 	]
 })
 export class SharedModule {

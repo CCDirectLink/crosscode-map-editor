@@ -21,6 +21,14 @@ $accent: map-get($theme, accent);
 	padding-top: 0;
 }
 
+.scroll-viewport {
+	height: 100%;
+}
+
+:host ::ng-deep .cdk-virtual-scroll-content-wrapper {
+	width: 100%;
+}
+
 .list-item {
 	width: 100%;
 	text-align: center;
