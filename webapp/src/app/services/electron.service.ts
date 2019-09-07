@@ -11,7 +11,7 @@ export class ElectronService {
 	private storageName = 'assetsPath';
 	private assetsPath = '';
 	private readonly remote?: Remote;
-	
+	private ipcRenderer?: EventEmitter;
 	constructor() {
 		if (!Globals.isElectron) {
 			return;
@@ -19,8 +19,7 @@ export class ElectronService {
 		
 		// @ts-ignore
 		const {remote, ipcRenderer} = window.require('electron');
-		
-		// @ts-ignore
+
 		this.ipcRenderer = ipcRenderer;
 		
 		this.remote = remote!;
@@ -92,18 +91,16 @@ export class ElectronService {
 	}
 
 	public checkForUpdate(): Promise<any> {
-		// @ts-ignore
 		if (!this.ipcRenderer) {
 			return Promise.reject();
 		}
 
 		return new Promise((resolve, reject) => {
-			// @ts-ignore
+			
 			this.ipcRenderer.once('update-check-result', (event, args) => {
 				resolve(args);
 			});
 
-			// @ts-ignore
 			this.ipcRenderer.send('update-check', '');			
 		});
 	}
@@ -113,15 +110,13 @@ export class ElectronService {
 			return Promise.reject();
 		}
 
-		
+
 		return new Promise((resolve, reject) => {
-			// @ts-ignore
 			this.ipcRenderer.once('update-download-result', (event, args) => {
 				resolve(args);
 				console.log('Update results', args);
 			});
 
-			// @ts-ignore
 			this.ipcRenderer.send('update-download', '');			
 		});		
 	}
