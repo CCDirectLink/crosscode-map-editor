@@ -1,7 +1,5 @@
-import {EntityAttributes, CCEntity, ScaleSettings} from '../cc-entity';
+import {CCEntity, EntityAttributes, ScaleSettings} from '../cc-entity';
 import {Helper} from '../../helper';
-import {PropDef} from './prop';
-import * as Phaser from 'phaser';
 
 export class ItemDestruct extends CCEntity {
 	
@@ -48,29 +46,36 @@ export class ItemDestruct extends CCEntity {
 		return undefined;
 	}
 	
-	protected setupType(settings: any) {
-		Helper.getJson('data/global-settings', (globalSettings) => {
-			const destructibles = this.scene.cache.json.get('destructibles.json');
-			let desType;
-			if (settings.desType) {
-				desType = settings.desType;
-			} else {
-				desType = globalSettings.ENTITY.ItemDestruct[settings.__GLOBAL__].desType;
+	protected async setupType(settings: any) {
+		const globalSettings = await Helper.getJsonPromise('data/global-settings');
+		const destructibles = this.scene.cache.json.get('destructibles.json');
+		let desType;
+		if (settings.desType) {
+			desType = settings.desType;
+		} else {
+			const config = globalSettings.ENTITY.ItemDestruct[settings.__GLOBAL__];
+			if (config) {
+				desType = config.desType;
 			}
-			const def = destructibles[desType];
-			this.entitySettings = <any>{
-				sheets: {
-					fix: [{
-						gfx: def.Aa.sheet.src,
-						x: def.Aa.sheet.offX,
-						y: def.Aa.sheet.offY,
-						w: def.Aa.sheet.width,
-						h: def.Aa.sheet.height
-					}]
-				},
-				baseSize: def.size
-			};
-			this.updateSettings();
-		});
+		}
+		if (!desType) {
+			this.generateNoImageType(0xFF0000, 1);
+			return;
+		}
+		const def = destructibles[desType];
+		this.entitySettings = <any>{
+			sheets: {
+				fix: [{
+					gfx: def.Aa.sheet.src,
+					x: def.Aa.sheet.offX,
+					y: def.Aa.sheet.offY,
+					w: def.Aa.sheet.width,
+					h: def.Aa.sheet.height
+				}]
+			},
+			baseSize: def.size
+		};
+		this.updateSettings();
+		
 	}
 }

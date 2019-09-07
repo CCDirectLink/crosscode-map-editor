@@ -9,6 +9,10 @@ import * as mapSettingsjson from '../../../../../assets/map-settings.json';
 })
 export class MapContentSettingsComponent implements OnInit {
 	@Input() settings!: CrossCodeMap;
+	
+	// TODO: why is there an output?
+	//  All other components using this event just set the setting to the object,
+	//  this could be handled here without emitting an event
 	@Output() onSettingsChange = new EventEmitter<{
 		property: any,
 		value: any

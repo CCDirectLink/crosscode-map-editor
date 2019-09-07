@@ -19,7 +19,7 @@ export class NewMapComponent implements OnInit {
 	}
 	
 	onSettingsChange(obj: { property: keyof CrossCodeMap, value: any }) {
-		this.map[obj.property] = obj.value;
+		(this.map[obj.property] as any) = obj.value;
 	}
 	
 	createDefaultMap(): CrossCodeMap {

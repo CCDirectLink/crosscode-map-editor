@@ -312,9 +312,9 @@ export abstract class CCEntity extends BaseObject {
 	}
 	
 	// TODO: refactor
-	setSettings(settings: any) {
+	async setSettings(settings: any) {
 		this.details.settings = settings;
-		this.updateType();
+		await this.updateType();
 	}
 	
 	setSelected(selected: boolean) {
@@ -364,11 +364,16 @@ export abstract class CCEntity extends BaseObject {
 	
 	public abstract getAttributes(): EntityAttributes;
 	
-	protected abstract setupType(settings: any): void;
+	protected async abstract setupType(settings: any): Promise<void>;
 	
-	public updateType() {
+	public async updateType() {
 		const settings = this.details.settings;
-		this.setupType(settings);
+		await this.setupType(settings);
+		this.setActive(true);
+	}
+	
+	public generateErrorImage() {
+		this.generateNoImageType(0xFF0000, 1);
 	}
 	
 	public generateNoImageType(rgbTop = 0xc06040, aTop = 0.5, rgb = 0x800000, a = 0.5) {
@@ -411,7 +416,7 @@ export abstract class CCEntity extends BaseObject {
 					scaleX: size.x,
 					scaleY: size.y,
 					tint: rgbTop,
-					alpha: a
+					alpha: aTop
 				}],
 			};
 		} else {

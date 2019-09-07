@@ -42,7 +42,7 @@ export class MapSettingsComponent {
 	}
 	
 	onSettingsChange(obj: { property: keyof CrossCodeMap, value: any }) {
-		this.settings[obj.property] = obj.value;
+		(this.settings[obj.property] as any) = obj.value;
 	}
 	
 	update() {

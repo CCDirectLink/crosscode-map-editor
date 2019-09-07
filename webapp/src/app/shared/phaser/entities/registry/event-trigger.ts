@@ -54,7 +54,7 @@ export class EventTrigger extends CCEntity {
 		return undefined;
 	}
 	
-	protected setupType(settings: any) {
+	protected async setupType(settings: any) {
 		this.generateNoImageType(0x0032ff, 0.7);
 	}
 }

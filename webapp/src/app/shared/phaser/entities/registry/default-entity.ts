@@ -18,7 +18,7 @@ export class DefaultEntity extends CCEntity {
 		return undefined;
 	}
 	
-	protected setupType(settings: any) {
+	protected async setupType(settings: any) {
 		this.settings = settings;
 		this.generateNoImageType();
 	}
