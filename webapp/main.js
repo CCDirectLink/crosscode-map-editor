@@ -7,8 +7,9 @@ const url = require('url');
 const {autoUpdater} = require("electron-updater");
 const contextMenu = require('electron-context-menu');
 const {IPC} = require('node-ipc');
-const {ipcMain} = require('electron');
+const {ipcMain, dialog} = require('electron');
 const semver = require('semver');
+const ProgressBar = require('electron-progressbar');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -85,7 +86,69 @@ function openWindow() {
 	createWindow();
 }
 
-app.on('ready', openWindow);
+
+
+function initAutoUpdate() {
+	const log = require("electron-log");
+	log.transports.file.level = "debug";
+	autoUpdater.logger = log;
+	autoUpdater.autoDownload = false;
+	autoUpdater.autoInstallOnAppQuit = false;
+}
+
+
+
+app.on('ready', async function() {
+	initAutoUpdate();
+	const {versionInfo, updateInfo} = await autoUpdater.checkForUpdates();
+
+	if (semver.lt(autoUpdater.currentVersion.raw, updateInfo.version)) {
+
+		const updateChoice = await dialog.showMessageBox(null, {
+			type: 'info',
+			title: 'Update Available',
+			message: `Version ${updateInfo.version} is now available.`,
+			buttons: ['Update', 'Later'],
+			cancelId: 1
+		});
+
+		switch (updateChoice) {
+			case 0: { //Update
+				const progressBar = new ProgressBar({
+					indeterminate: false,
+					text: 'Downloading...',
+					detail: '',
+					browserWindow: {
+						
+						// have to add this because
+						// newer versions require this
+						webPreferences: {
+							nodeIntegration: true
+						}
+					}
+				});
+
+				autoUpdater.on('download-progress', (progress) => {
+					progressBar.value = parseInt(progress.percent);
+				});
+				
+				autoUpdater.signals.updateDownloaded(() => {
+					progressBar.close();
+					autoUpdater.quitAndInstall(true, true);
+				});
+
+				await autoUpdater.downloadUpdate();
+			}
+			break;
+			case 1: { // Later
+				openWindow();
+			}
+			break;
+		}
+	} else { // No update
+		openWindow();
+	}
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -116,38 +179,4 @@ sub.connectTo('crosscode-map-editor', () => {
 		});
 		master.server.start();
 	});
-});
-
-
-
-// check for update
-const log = require("electron-log");
-log.transports.file.level = "debug";
-autoUpdater.logger = log;
-autoUpdater.autoDownload = false;
-autoUpdater.autoInstallOnAppQuit = false;
-
-ipcMain.on('update-check', (event, arg) => {
-	autoUpdater.checkForUpdates().then(({versionInfo, updateInfo}) => {
-		if (semver.lt(versionInfo.version, updateInfo.version)) {
-			event.reply('update-check-result', updateInfo.version);
-		} else {
-			console.log('No new updates available');
-			event.reply('update-check-result', '');
-		}
-	});
-});
-
-// do the update
-ipcMain.on('update-download', (event, arg) => {
-	
-	autoUpdater.signals.updateDownloaded(() => {
-		autoUpdater.quitAndInstall();
-	});
-
-	autoUpdater.downloadUpdate().then(({versionInfo, updateInfo}) => {
-		event.reply('update-download-result', '');
-	});
-
-
 });
