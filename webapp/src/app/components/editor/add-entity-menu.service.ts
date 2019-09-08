@@ -25,9 +25,12 @@ export class AddEntityMenuService {
 		private events: GlobalEventsService,
 		private overlayService: OverlayService,
 		private overlay: Overlay,
-		entityRegistry: EntityRegistryService
+		private entityRegistry: EntityRegistryService
 	) {
-		const registry = Object.keys(entityRegistry.getAll());
+	}
+	
+	public init() {
+		const registry = Object.keys(this.entityRegistry.getAll());
 		const entityNames = Object.keys(entities);
 		
 		const eventSet = new Set<string>([...registry, ...entityNames]);
