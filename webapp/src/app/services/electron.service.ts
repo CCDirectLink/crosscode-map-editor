@@ -3,6 +3,7 @@ import {Globals} from '../shared/globals';
 import {Dialog, Remote} from 'electron';
 import * as nodeFs from 'fs';
 
+
 @Injectable()
 export class ElectronService {
 	
@@ -11,7 +12,7 @@ export class ElectronService {
 	private storageName = 'assetsPath';
 	private assetsPath = '';
 	private readonly remote?: Remote;
-	private ipcRenderer?: EventEmitter;
+	private ipcRenderer?: any;
 	constructor() {
 		if (!Globals.isElectron) {
 			return;
@@ -97,7 +98,7 @@ export class ElectronService {
 
 		return new Promise((resolve, reject) => {
 			
-			this.ipcRenderer.once('update-check-result', (event, args) => {
+			this.ipcRenderer.once('update-check-result', (event: any, args: any) => {
 				resolve(args);
 			});
 
@@ -112,7 +113,7 @@ export class ElectronService {
 
 
 		return new Promise((resolve, reject) => {
-			this.ipcRenderer.once('update-download-result', (event, args) => {
+			this.ipcRenderer.once('update-download-result', (event: any, args: any) => {
 				resolve(args);
 				console.log('Update results', args);
 			});
