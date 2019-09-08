@@ -1,0 +1,10 @@
+<mat-card class="update-notif">
+	<mat-card-header>
+		<mat-card-title>New version: {{ data.version }}</mat-card-title>
+	</mat-card-header>
+	<mat-card-actions>
+		<button mat-raised-button color="primary" (click)="snackBarRef.close('Update')">Update</button>
+		<button mat-raised-button color="warn" (click)="snackBarRef.close()">Dismiss</button>	
+	</mat-card-actions>
+</mat-card>
+

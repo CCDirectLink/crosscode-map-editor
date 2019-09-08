@@ -25,7 +25,7 @@ import {AddEntityMenuComponent} from './components/editor/add-entity-menu/add-en
 import { TileSelectorComponent } from './components/tile-selector/tile-selector.component';
 import {RouterModule} from '@angular/router';
 import { UpdateNotifierComponent } from './components/update-notifier/update-notifier.component';
-import { UpdateNotifierSnackbarComponent } from './components/update-notifier/update-notifier-snackbar/update-notifier-snackbar.component';
+import { UpdateNotifierDialogComponent } from './components/update-notifier/update-notifier-dialog/update-notifier-dialog.component';
 import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
@@ -41,9 +41,9 @@ import {MatCardModule} from '@angular/material/card';
 		AddEntityMenuComponent,
 		TileSelectorComponent,
 		UpdateNotifierComponent,
-		UpdateNotifierSnackbarComponent
+		UpdateNotifierDialogComponent
 	],
-	entryComponents: [UpdateNotifierSnackbarComponent],
+	entryComponents: [UpdateNotifierDialogComponent],
 	imports: [
 		RouterModule.forRoot(routes),
 		BrowserModule,
