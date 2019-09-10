@@ -96,7 +96,7 @@ function initAutoUpdate() {
 	autoUpdater.autoInstallOnAppQuit = false;
 }
 
-
+// need to make this async
 function openChangelog(version) {
 	const mainWindowState = windowStateKeeper({
 		defaultWidth: 1000,
