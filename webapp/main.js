@@ -97,13 +97,37 @@ function initAutoUpdate() {
 }
 
 
+function openChangelog(version) {
+	const mainWindowState = windowStateKeeper({
+		defaultWidth: 1000,
+		defaultHeight: 800
+	});
+
+	const win = new BrowserWindow({
+		x: mainWindowState.x,
+		y: mainWindowState.y,
+		width: mainWindowState.width,
+		height: mainWindowState.height,
+		webPreferences: {
+			devTools: true,
+			webSecurity: false
+		}
+	});
+
+	win.loadURL(`https://github.com/CCDirectLink/crosscode-map-editor/releases/tag/v${version}`);
+	return win;
+}
+
 
 app.on('ready', async function() {
 	initAutoUpdate();
 	const {versionInfo, updateInfo} = await autoUpdater.checkForUpdates();
 
 	if (semver.lt(autoUpdater.currentVersion.raw, updateInfo.version)) {
-
+		let changelogWin = openChangelog(updateInfo.version);
+		changelogWin.on('closed', () => {
+			changelogWin = null;
+		});
 		const updateChoice = await dialog.showMessageBox(null, {
 			type: 'info',
 			title: 'Update Available',
@@ -112,7 +136,12 @@ app.on('ready', async function() {
 			cancelId: 1
 		});
 
+		if (changelogWin) {
+			changelogWin.close();
+		}
+
 		switch (updateChoice) {
+			case 3: // Auto-update
 			case 0: { //Update
 				const progressBar = new ProgressBar({
 					indeterminate: false,
