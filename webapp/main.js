@@ -97,7 +97,7 @@ function initAutoUpdate() {
 }
 
 // need to make this async
-function openChangelog(version) {
+async function openChangelog(version) {
 	const mainWindowState = windowStateKeeper({
 		defaultWidth: 1000,
 		defaultHeight: 800
@@ -115,68 +115,79 @@ function openChangelog(version) {
 	});
 
 	win.loadURL(`https://github.com/CCDirectLink/crosscode-map-editor/releases/tag/v${version}`);
-	return win;
+
+	return new Promise((resolve, reject) => {
+		win.webContents.on('did-finish-load', function() {
+			resolve(win);
+		});
+	});
 }
 
 
 app.on('ready', async function() {
 	initAutoUpdate();
-	const {versionInfo, updateInfo} = await autoUpdater.checkForUpdates();
-
-	if (semver.lt(autoUpdater.currentVersion.raw, updateInfo.version)) {
-		let changelogWin = openChangelog(updateInfo.version);
-		changelogWin.on('closed', () => {
-			changelogWin = null;
-		});
-		const updateChoice = await dialog.showMessageBox(null, {
-			type: 'info',
-			title: 'Update Available',
-			message: `Version ${updateInfo.version} is now available.`,
-			buttons: ['Update', 'Later'],
-			cancelId: 1
-		});
-
-		if (changelogWin) {
-			changelogWin.close();
-		}
-
-		switch (updateChoice) {
-			case 3: // Auto-update
-			case 0: { //Update
-				const progressBar = new ProgressBar({
-					indeterminate: false,
-					text: 'Downloading...',
-					detail: '',
-					browserWindow: {
-						
-						// have to add this because
-						// newer versions require this
-						webPreferences: {
-							nodeIntegration: true
+	
+	try {
+		const {versionInfo, updateInfo} = await autoUpdater.checkForUpdates();
+		if (semver.lt(autoUpdater.currentVersion.raw, updateInfo.version)) {
+			let changelogWin = await openChangelog(updateInfo.version);
+			changelogWin.on('closed', () => {
+				changelogWin = null;
+			});
+			const updateChoice = await dialog.showMessageBox(null, {
+				type: 'info',
+				title: 'Update Available',
+				message: `Version ${updateInfo.version} is now available.`,
+				buttons: ['Update', 'Later'],
+				cancelId: 1
+			});
+	
+			if (changelogWin) {
+				changelogWin.close();
+			}
+	
+			switch (updateChoice) {
+				case 3: // Auto-update
+				case 0: { //Update
+					const progressBar = new ProgressBar({
+						indeterminate: false,
+						text: 'Downloading...',
+						detail: '',
+						browserWindow: {
+							
+							// have to add this because
+							// newer versions require this
+							webPreferences: {
+								nodeIntegration: true
+							}
 						}
-					}
-				});
-
-				autoUpdater.on('download-progress', (progress) => {
-					progressBar.value = parseInt(progress.percent);
-				});
-				
-				autoUpdater.signals.updateDownloaded(() => {
-					progressBar.close();
-					autoUpdater.quitAndInstall(true, true);
-				});
-
-				await autoUpdater.downloadUpdate();
+					});
+	
+					autoUpdater.on('download-progress', (progress) => {
+						progressBar.value = parseInt(progress.percent);
+					});
+					
+					autoUpdater.signals.updateDownloaded(() => {
+						progressBar.close();
+						autoUpdater.quitAndInstall(true, true);
+					});
+	
+					await autoUpdater.downloadUpdate();
+				}
+				break;
+				case 1: { // Later
+					openWindow();
+				}
+				break;
 			}
-			break;
-			case 1: { // Later
-				openWindow();
-			}
-			break;
+		} else { // No update
+			openWindow();
 		}
-	} else { // No update
-		openWindow();
+	} catch (e) {
+		openWindow();	
 	}
+	
+	
 });
 
 // Quit when all windows are closed.
