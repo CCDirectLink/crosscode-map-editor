@@ -14,12 +14,6 @@ const args = process.argv.slice(1);
 const dev = args.some(val => val === '--dev');
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
 
-// context menu
-
-contextMenu({
-	showInspectElement: true
-});
-
 let openWindows = 0;
 
 function openWindow() {
@@ -44,6 +38,9 @@ function openWindow() {
 		
 		if (dev) {
 			console.log('dev');
+			contextMenu({
+				showInspectElement: true
+			});
 			win.loadURL('http://localhost:4200/index.html');
 			win.webContents.openDevTools();
 		} else {
