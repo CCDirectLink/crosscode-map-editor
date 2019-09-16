@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {NestedTreeControl} from '@angular/cdk/tree';
 import {MatSidenav, MatTreeNestedDataSource} from '@angular/material';
 import {HttpClientService} from '../../services/http-client.service';
@@ -13,6 +13,10 @@ import {VirtualMapNode} from './virtualMapNode.model';
 	styleUrls: ['./load-map.component.scss']
 })
 export class LoadMapComponent {
+	
+	@ViewChild('filterInput', {static: true})
+	filterInput!: ElementRef<HTMLInputElement>;
+	
 	@Input()
 	sidenav!: MatSidenav;
 	
@@ -31,6 +35,10 @@ export class LoadMapComponent {
 	) {
 		this.mapsSource.data = [];
 		this.refresh();
+	}
+	
+	focusInput() {
+		this.filterInput.nativeElement.focus();
 	}
 	
 	refresh() {

@@ -19,7 +19,7 @@
 
 		<div class="filter" fxLayout="column">
 			<mat-form-field>
-				<input matInput type="text" placeholder="Filter" [(ngModel)]="filter" (ngModelChange)="update()"/>
+				<input #filterInput matInput type="text" placeholder="Filter" [(ngModel)]="filter" (ngModelChange)="update()"/>
 			</mat-form-field>
 		</div>
 		<input #fileUpload type="file" class="hidden" (change)="loadMap($event)" accept=".json"/>
