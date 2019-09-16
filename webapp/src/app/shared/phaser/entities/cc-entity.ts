@@ -65,6 +65,7 @@ export abstract class CCEntity extends BaseObject {
 				scaleX?: number;
 				scaleY?: number;
 				renderHeight?: number;
+				renderMode?: string;
 				offsetX?: number;
 				offsetY?: number;
 				flipX?: boolean;
@@ -210,6 +211,10 @@ export abstract class CCEntity extends BaseObject {
 						img.x -= fix.x;
 						img.y -= fix.y;
 						
+						if (fix.renderMode === 'lighter') {
+							img.blendMode = Phaser.BlendModes.ADD;
+						}
+						
 						this.container.add(img);
 						this.images.push(img);
 					}
@@ -265,6 +270,11 @@ export abstract class CCEntity extends BaseObject {
 					img.setCrop(cropX, cropY, sheet.w, sheet.h);
 					img.flipX = !!sheet.flipX;
 					img.flipY = !!sheet.flipY;
+					
+					if (sheet.renderMode === 'lighter') {
+						img.blendMode = Phaser.BlendModes.ADD;
+					}
+					
 					this.container.add(img);
 					this.images.push(img);
 				});

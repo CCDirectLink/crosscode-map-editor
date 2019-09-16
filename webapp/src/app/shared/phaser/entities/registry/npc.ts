@@ -15,7 +15,7 @@ interface CharacterSettings {
 	runX?: number;
 	runY?: number;
 	walkAnimSet?: {
-		normal: {
+		normal?: {
 			idle: string;
 			move: string;
 		}
@@ -146,7 +146,7 @@ export class NPC extends CCEntity {
 			if (!sheet) {
 				let key;
 				
-				if (charSettings.walkAnimSet) {
+				if (charSettings.walkAnimSet && charSettings.walkAnimSet.normal) {
 					// try to get sheet through walkAnimSet
 					const animKey = charSettings.walkAnimSet.normal.idle;
 					for (let i = 0; i < charSettings.animSheet.SUB.length; i++) {
