@@ -22,6 +22,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - Opening multiple instances of the Map editor now works as intended
 - keep editor mode (layer/entities) after map reload #89
+- Prop entities with animated/multiple sheets now display properly
 
 ## [0.4.0] - 2019-06-28
 - ?
