@@ -30,6 +30,7 @@ app.post('/api/saveFile', async (req, res) => {
 		const msg = await api.saveFile(config.pathToCrosscode, req.body);
 		res.status(200).json(msg);
 	} catch (e) {
+		console.error(e);
 		res.status(400).json({error: e});
 	}
 });
