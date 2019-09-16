@@ -1,7 +1,7 @@
 <div class="outer-container">
 	<mat-sidenav-container>
 		<mat-sidenav #sidenavLoadMap [autoFocus]="false">
-			<app-load-map #loadmap [sidenav]="sidenavLoadMap"></app-load-map>
+			<app-load-map [sidenav]="sidenavLoadMap"></app-load-map>
 		</mat-sidenav>
 		<mat-sidenav-content>
 			<app-toolbar (loadMapClicked)="loadMapClicked()"></app-toolbar>
