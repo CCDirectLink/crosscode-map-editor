@@ -18,6 +18,8 @@ export class EntityManager extends BaseObject {
 	private gridKey!: Phaser.Input.Keyboard.Key;
 	private visibilityKey!: Phaser.Input.Keyboard.Key;
 	
+	private skipEdit = false;
+	
 	private leftClickOpts: {
 		timer: number;
 		pos: Point;
@@ -67,12 +69,13 @@ export class EntityManager extends BaseObject {
 			entity.setActive(true);
 		});
 		const sub2 = Globals.globalEventsService.selectedEntity.subscribe(entity => {
-			if (this.selectedEntities.length > 0) {
+			if (this.selectedEntities.length > 0 && !this.skipEdit) {
 				Globals.stateHistoryService.saveState({
 					name: 'Entity edited',
 					icon: 'build',
 				}, false);
 			}
+			this.skipEdit = false;
 			this.selectedEntities.forEach(e => e.setSelected(false));
 			this.selectedEntities = [];
 			if (entity) {
@@ -320,6 +323,7 @@ export class EntityManager extends BaseObject {
 	}
 	
 	deleteSelectedEntities() {
+		this.skipEdit = true;
 		const saveHistory = this.selectedEntities.length > 0;
 		this.selectedEntities.forEach(e => {
 			const i = this.entities.indexOf(e);

@@ -15,9 +15,8 @@ export class EditorComponent {
 	@ViewChild('sidenavLoadMap', {static: true})
 	sidenavLoadMap!: MatSidenav;
 	
-	constructor(
-		addEntityMenu: AddEntityMenuService
-	) {
+	constructor(addEntity: AddEntityMenuService) {
+		addEntity.init();
 	}
 	
 	loadMapClicked() {
