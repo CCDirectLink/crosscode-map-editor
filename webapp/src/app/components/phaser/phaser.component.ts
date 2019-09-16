@@ -39,27 +39,22 @@ export class PhaserComponent implements OnInit {
 	
 	ngOnInit() {
 		this.heightMap.init();
-		this.http.getAllFiles().subscribe(res => {
-			const scene = new MainScene(res);
-			const game = new Phaser.Game({
-				width: window.innerWidth * window.devicePixelRatio,
-				height: window.innerHeight * window.devicePixelRatio - 64,
-				type: Phaser.AUTO,
-				parent: 'content',
-				scale: {
-					mode: Phaser.Scale.ScaleModes.NONE,
-					zoom: 1 / window.devicePixelRatio
-				},
-				render: {
-					pixelArt: true
-				},
-				zoom: 1,
-				scene: [scene]
-			});
-			Globals.game = game;
-			Globals.scene = scene;
-		}, err => {
-			this.globalEvents.loadComplete.error(err);
+		const scene = new MainScene();
+		Globals.game = new Phaser.Game({
+			width: window.innerWidth * window.devicePixelRatio,
+			height: window.innerHeight * window.devicePixelRatio - 64,
+			type: Phaser.AUTO,
+			parent: 'content',
+			scale: {
+				mode: Phaser.Scale.ScaleModes.NONE,
+				zoom: 1 / window.devicePixelRatio
+			},
+			render: {
+				pixelArt: true
+			},
+			zoom: 1,
+			scene: [scene]
 		});
+		Globals.scene = scene;
 	}
 }

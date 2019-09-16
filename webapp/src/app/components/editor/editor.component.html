@@ -1,6 +1,6 @@
 <div class="outer-container">
 	<mat-sidenav-container>
-		<mat-sidenav #sidenavLoadMap [autoFocus]="false">
+		<mat-sidenav #sidenavLoadMap [autoFocus]="false" (openedStart)="focusInput()">
 			<app-load-map #loadmap [sidenav]="sidenavLoadMap"></app-load-map>
 		</mat-sidenav>
 		<mat-sidenav-content>

@@ -1,7 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
-import {LoadMapComponent} from '../load-map/load-map.component';
 import {MatSidenav} from '@angular/material/sidenav';
 import {AddEntityMenuService} from './add-entity-menu.service';
+import {LoadMapComponent} from '../load-map/load-map.component';
 
 @Component({
 	selector: 'app-editor',
@@ -21,6 +21,10 @@ export class EditorComponent {
 	
 	loadMapClicked() {
 		this.sidenavLoadMap.toggle();
-		this.loadmap.refresh();
+	}
+	
+	focusInput() {
+		// has to wait before sidenav renders the content
+		setTimeout(() => this.loadmap.focusInput(), 100);
 	}
 }

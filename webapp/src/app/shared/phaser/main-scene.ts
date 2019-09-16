@@ -1,6 +1,5 @@
 import * as Phaser from 'phaser';
 import {EditorView} from '../../models/editor-view';
-import {FileInfos} from '../../models/file-infos';
 import {Globals} from '../globals';
 import {CCMap} from './tilemap/cc-map';
 import {Subscription} from 'rxjs';
@@ -15,9 +14,7 @@ export class MainScene extends Phaser.Scene {
 	private border?: Phaser.GameObjects.Rectangle;
 	private sub?: Subscription;
 	
-	constructor(
-		private res: FileInfos,
-	) {
+	constructor() {
 		super({key: 'main'});
 	}
 	
