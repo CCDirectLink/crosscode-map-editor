@@ -14,6 +14,9 @@ import {VirtualMapNode} from './virtualMapNode.model';
 })
 export class LoadMapComponent {
 	
+	@ViewChild('fileUpload', {static: true})
+	fileUpload!: ElementRef<HTMLInputElement>;
+	
 	@ViewChild('filterInput', {static: true})
 	filterInput!: ElementRef<HTMLInputElement>;
 	
@@ -60,6 +63,7 @@ export class LoadMapComponent {
 	
 	loadMap(event: Event) {
 		this.mapLoader.loadMap(event);
+		this.fileUpload.nativeElement.value = '';
 	}
 	
 	load(name: string) {
