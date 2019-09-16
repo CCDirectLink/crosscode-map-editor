@@ -1,9 +1,5 @@
 import * as Phaser from 'phaser';
 import {EditorView} from '../../models/editor-view';
-import {StateHistoryService} from '../history/state-history.service';
-import {MapLoaderService} from '../map-loader.service';
-import {PhaserEventsService} from './phaser-events.service';
-import {GlobalEventsService} from '../global-events.service';
 import {FileInfos} from '../../models/file-infos';
 import {Globals} from '../globals';
 import {CCMap} from './tilemap/cc-map';
@@ -26,9 +22,6 @@ export class MainScene extends Phaser.Scene {
 	}
 	
 	preload() {
-		this.res.images.forEach(img => {
-			this.load.image(img, Globals.URL + img);
-		});
 		
 		this.load.image('pixel', 'assets/pixel.png');
 		
@@ -43,7 +36,6 @@ export class MainScene extends Phaser.Scene {
 	
 	create() {
 		const game = this.game;
-		
 		this.cameras.main.setBackgroundColor('#616161');
 		game.canvas.oncontextmenu = function (e) {
 			e.preventDefault();

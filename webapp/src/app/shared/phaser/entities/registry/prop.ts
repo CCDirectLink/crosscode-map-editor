@@ -2,6 +2,41 @@ import {CCEntity, EntityAttributes, ScaleSettings} from '../cc-entity';
 import {Helper} from '../../helper';
 import {Fix} from '../../../../models/props';
 
+interface PropSheet {
+	DOCTYPE: string;
+	props: PropDef[];
+}
+
+interface Anims {
+	DOCTYPE?: string;
+	SUB: any[];
+	frames: any[];
+	framesGfxOffset: any[];
+	namedSheets: {
+		[key: string]: any
+	};
+	repeat: boolean;
+	shape: string;
+	sheet: string;
+	time: number;
+}
+
+interface PropAttributes {
+	propType: {
+		sheet: string;
+		name: string;
+	};
+	propAnim: string;
+	condAnims: string;
+	spawnCondition: string;
+	touchVar: string;
+	interact: string;
+	showEffect: string;
+	hideEffect: string;
+	permaEffect: string;
+	hideCondition: string;
+}
+
 export interface PropDef {
 	name: string;
 	size: {
@@ -11,16 +46,7 @@ export interface PropDef {
 	};
 	collType: string;
 	fix?: Fix;
-	anims?: {
-		SUB: any[];
-		frames: any[];
-		framesGfxOffset: any[];
-		namedSheets: any;
-		repeat: boolean;
-		shape: string;
-		sheet: string;
-		time: number;
-	};
+	anims?: Anims;
 	effects?: {
 		hide: string;
 		sheet: string;
@@ -89,17 +115,18 @@ export class Prop extends CCEntity {
 		return undefined;
 	}
 	
-	protected async setupType(settings: any) {
+	protected async setupType(settings: PropAttributes) {
 		if (!settings.propType) {
 			console.warn('prop without prop type');
 			return this.generateErrorImage();
 		}
-		const sheet = await Helper.getJsonPromise('data/props/' + settings.propType.sheet);
-		let prop: PropDef | undefined;
+		const sheet = await Helper.getJsonPromise('data/props/' + settings.propType.sheet) as PropSheet;
 		if (!sheet) {
 			console.warn('prop without sheet', settings);
 			return this.generateErrorImage();
 		}
+		
+		let prop: PropDef | undefined;
 		for (let i = 0; i < sheet.props.length; i++) {
 			const p = sheet.props[i];
 			if (settings.propType.name === p.name) {
@@ -112,16 +139,28 @@ export class Prop extends CCEntity {
 			return this.generateErrorImage();
 		}
 		
-		this.entitySettings = <any>{sheets: {fix: []}};
-		if (prop.fix) {
+		this.entitySettings = {sheets: {fix: []}} as any;
+		if (prop.anims) {
+			this.setupAnims(settings, prop);
+		} else if (prop.fix) {
+			const exists = await Helper.loadTexture(prop.fix.gfx, this.scene);
+			if (!exists) {
+				console.error('prop image does not exist: ' + prop.fix.gfx);
+				return this.generateErrorImage();
+			}
+			
 			this.entitySettings.sheets.fix[0] = prop.fix;
 			this.entitySettings.sheets.renderMode = prop.fix.renderMode;
 		} else {
-			console.log('sheet not found for prop: ' + prop.name);
+			console.error('failed to create prop: ' + prop.name);
 			return this.generateErrorImage();
 		}
 		this.entitySettings.baseSize = prop.size;
 		this.entitySettings.collType = prop.collType;
 		this.updateSettings();
+	}
+	
+	private setupAnims(settings: PropAttributes, prop: PropDef) {
+		// TODO
 	}
 }

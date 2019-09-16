@@ -16,7 +16,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 - Upgrade from Phaser 2 CE to Phaser 3
 - Height Map generation now supports autotiles and different terrain
-- hide menu in release build, because most settings don't work. fixes #93 
+- hide menu in release build, because most settings don't work. fixes #93
+- removed preloading of assets. Improves initial loading time
 
 ### Fixed
 - Opening multiple instances of the Map editor now works as intended

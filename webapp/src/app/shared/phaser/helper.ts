@@ -1,6 +1,7 @@
 import {Point} from '../../models/cross-code-map';
 import {Globals} from '../globals';
 import {CCMapLayer} from './tilemap/cc-map-layer';
+import Scene = Phaser.Scene;
 
 export class Helper {
 	
@@ -81,9 +82,30 @@ export class Helper {
 		scene.load.start();
 	}
 	
-	public static getJsonPromise(key: string): any {
+	public static getJsonPromise(key: string) {
 		return new Promise(resolve => {
 			this.getJson(key, json => resolve(json));
+		});
+	}
+	
+	/**
+	 * returns true if texture exists, false otherwise
+	 */
+	public static async loadTexture(key: string | undefined, scene: Scene): Promise<boolean> {
+		
+		if (!key) {
+			return false;
+		}
+		
+		if (scene.textures.exists(key)) {
+			return true;
+		}
+		
+		return new Promise(res => {
+			scene.load.image(key, Globals.URL + key);
+			scene.load.once('complete', () => res(true));
+			scene.load.once('loaderror', () => res(false));
+			scene.load.start();
 		});
 	}
 	

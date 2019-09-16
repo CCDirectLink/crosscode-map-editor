@@ -2,6 +2,16 @@ import {CCEntity, EntityAttributes, ScaleSettings} from '../cc-entity';
 import {Point, Point3} from '../../../../models/cross-code-map';
 import {Helper} from '../../helper';
 
+interface ScalablePropSheet {
+	DOCTYPE: string;
+	entries: {
+		[key: string]: ScalablePropDef
+	};
+	jsonTEMPLATES?: {
+		[key: string]: ScalablePropDef
+	};
+}
+
 export interface ScalablePropDef {
 	baseSize: Point3;
 	terrain: string;
@@ -85,7 +95,7 @@ export class ScalableProp extends CCEntity {
 			console.warn('scalable prop without prop config');
 			return this.generateErrorImage();
 		}
-		const sheet = await Helper.getJsonPromise('data/scale-props/' + settings.propConfig.sheet);
+		const sheet = await Helper.getJsonPromise('data/scale-props/' + settings.propConfig.sheet) as ScalablePropSheet;
 		if (!sheet) {
 			console.error('sheet not found: ' + settings.propConfig.sheet);
 			return this.generateErrorImage();
@@ -97,14 +107,16 @@ export class ScalableProp extends CCEntity {
 		}
 		
 		this.entitySettings = <any>{};
-		if (prop.jsonINSTANCE) {
+		if (prop.jsonINSTANCE && sheet.jsonTEMPLATES) {
 			const jsonInstance = sheet.jsonTEMPLATES[prop.jsonINSTANCE];
+			// TODO: patterns currently ignored
 			const p = jsonInstance.patterns;
 			this.replaceJsonParams(jsonInstance, prop);
 			prop = jsonInstance;
 		}
 		
 		if (prop.gfx) {
+			await Helper.loadTexture(prop.gfx, this.scene);
 			this.entitySettings.sheets = {
 				fix: [{
 					gfx: prop.gfx,
