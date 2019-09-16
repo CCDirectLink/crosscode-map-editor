@@ -27,6 +27,10 @@ import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 export class OverlayPanelComponent implements OnInit {
 	
 	@Input() title = '';
+	@Input() allowDrag = true;
+	@Input() customSize?: { width: string, height: string };
+	
+	classes: { [key: string]: boolean } = {};
 	
 	constructor() {
 	}

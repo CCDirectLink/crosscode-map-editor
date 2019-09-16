@@ -11,8 +11,17 @@
 	</div>
 	<ng-template #defaultInput>
 		<input class="default-input"
+		       *ngIf="!attribute?.large; else largeInput"
 		       [id]="key"
 		       [ngModel]="settings[key]"
 		       (input)="setSetting(key, $event.target.value)">
+	</ng-template>
+	
+	<ng-template #largeInput>
+		<textarea class="default-input"
+		          [id]="key"
+		          [ngModel]="settings[key]"
+		          (input)="setSetting(key, $event.target.value)"
+		></textarea>
 	</ng-template>
 </div>

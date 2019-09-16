@@ -3,7 +3,6 @@ import {CrossCodeMap, MapEntity, Point} from '../../../models/cross-code-map';
 import {Vec2} from '../vec2';
 import {Globals} from '../../globals';
 import {SelectionBox} from './selection-box';
-import {EntityRegistry} from './registry/entity-registry';
 import {BaseObject} from '../base-object';
 import {Helper} from '../helper';
 
@@ -34,9 +33,10 @@ export class EntityManager extends BaseObject {
 	
 	private selectionBox!: SelectionBox;
 	
-	private entityRegistry: EntityRegistry = new EntityRegistry();
-	
-	constructor(scene: Phaser.Scene, active = true) {
+	constructor(
+		scene: Phaser.Scene,
+		active = true
+	) {
 		super(scene, 'entityManager', active);
 	}
 	
@@ -277,7 +277,7 @@ export class EntityManager extends BaseObject {
 	}
 	
 	async generateEntity(entity: MapEntity): Promise<CCEntity> {
-		const entityClass = this.entityRegistry.getEntity(entity.type);
+		const entityClass = Globals.entityRegistry.getEntity(entity.type);
 		
 		const ccEntity = new entityClass(this.scene, this.map, entity.x, entity.y, entity.type);
 		await ccEntity.setSettings(entity.settings);
@@ -327,10 +327,6 @@ export class EntityManager extends BaseObject {
 	
 	private showAddEntityMenu() {
 		
-		Globals.globalEventsService.showAddEntityMenu.next({
-			worldPos: Helper.getPointerPos(this.scene.input.activePointer),
-			// TODO: remove definitions.json, use entity registry instead
-			definitions: this.scene.cache.json.get('definitions.json')
-		});
+		Globals.globalEventsService.showAddEntityMenu.next(Helper.getPointerPos(this.scene.input.activePointer));
 	}
 }

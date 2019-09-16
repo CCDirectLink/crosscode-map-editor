@@ -95,6 +95,11 @@ button {
 	&::-webkit-scrollbar-thumb {
 		background-color: mat-color($accent, 600);
 	}
+
+	// non standard value, makes scrollbar not take additional space.
+	// More information: https://stackoverflow.com/a/43051077/5244460
+	// noinspection CssInvalidPropertyValue
+	overflow: overlay;
 }
 
 .small-dark-scrollbar {

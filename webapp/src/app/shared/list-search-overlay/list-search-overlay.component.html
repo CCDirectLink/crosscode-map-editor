@@ -1,0 +1,20 @@
+<cc-overlay-panel class="overlay-panel" [customSize]="{width: '300px', height: '100%'}" [allowDrag]="false" [@slideContent]="animation">
+	<ng-container ngProjectAs="toolbar">
+		<label class="header" fxLayoutAlign="center" fxLayout="column">
+			<mat-form-field>
+				<input matInput #filterInput [(ngModel)]="filterText">
+			</mat-form-field>
+		</label>
+	</ng-container>
+	<ng-container ngProjectAs="content">
+		<mat-nav-list class="scroll-viewport">
+			<cdk-virtual-scroll-viewport itemSize="48" class="scroll-viewport dark-scrollbar">
+				<a mat-list-item *cdkVirtualFor="let item of filteredList" (click)="select(item)">
+					<span class="list-item" appHighlight [highlightText]="item" [highlightMatch]="filterText"></span>
+					<mat-divider></mat-divider>
+				</a>
+			</cdk-virtual-scroll-viewport>
+		</mat-nav-list>
+	</ng-container>
+</cc-overlay-panel>
+

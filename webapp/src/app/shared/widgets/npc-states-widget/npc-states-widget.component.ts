@@ -60,7 +60,8 @@ export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, 
 			positionStrategy: this.overlay.position().global()
 				.left('23vw')
 				.top('calc(64px + 6vh / 2)'),
-			hasBackdrop: true
+			hasBackdrop: true,
+			disablePhaserInput: true
 		});
 		
 		this.ref = obj.ref;

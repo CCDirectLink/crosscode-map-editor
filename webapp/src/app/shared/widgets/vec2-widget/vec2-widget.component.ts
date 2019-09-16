@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 import {Point} from '../../../models/cross-code-map';
 
@@ -7,7 +7,7 @@ import {Point} from '../../../models/cross-code-map';
 	templateUrl: './vec2-widget.component.html',
 	styleUrls: ['./vec2-widget.component.scss', '../widget.scss']
 })
-export class Vec2WidgetComponent extends AbstractWidget {
+export class Vec2WidgetComponent extends AbstractWidget implements OnChanges {
 	
 	@Input() step = 1;
 	@Input() minSize: Point = {x: -9999, y: -9999};
@@ -18,7 +18,18 @@ export class Vec2WidgetComponent extends AbstractWidget {
 	constructor() {
 		super();
 	}
-
+	
+	ngOnChanges(changes?: SimpleChanges): void {
+		super.ngOnChanges(changes);
+		if (!this.settings[this.key]) {
+			this.settings[this.key] = {
+				x: this.minSize.x > 0 ? this.minSize.x : 1,
+				y: this.minSize.y > 0 ? this.minSize.y : 1
+			};
+			this.updateType();
+		}
+	}
+	
 	toInt(value: string) {
 		return parseInt(value, 10);
 	}

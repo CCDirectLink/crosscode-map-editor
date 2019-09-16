@@ -1,13 +1,15 @@
 <h2 class="mat-title">{{entity?.details.type}}</h2>
-<div class="entity-settings-container" fxLayout="column">
+<div class="entity-settings-container dark-scrollbar" fxLayout="column">
 	
 	<app-string-widget [key]="'name'" [entity]="entity" *ngIf="entity"></app-string-widget>
 	
 	<!--<app-json-widget [key]="'details'" [custom]="entity" [entity]="entity" *ngIf="entity"></app-json-widget>-->
 	
-	<app-vec2-widget [key]="'container'" [custom]="entity" [entity]="entity" [displayName]="'Pos'" *ngIf="entity"></app-vec2-widget>
+	<app-vec2-widget [key]="'container'" [custom]="entity" [entity]="entity" [displayName]="'Pos'"
+	                 *ngIf="entity"></app-vec2-widget>
 	
-	<app-level-widget [key]="'level'" [custom]="entity.details" [entity]="entity" [displayName]="'Level'" *ngIf="entity"></app-level-widget>
+	<app-level-widget [key]="'level'" [custom]="entity.details" [entity]="entity" [displayName]="'Level'"
+	                  *ngIf="entity"></app-level-widget>
 	
 	<ng-template appHost></ng-template>
 </div>
