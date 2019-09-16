@@ -16,8 +16,8 @@ interface CharacterSettings {
 	runY?: number;
 	walkAnimSet?: {
 		normal: {
-			idle: string,
-			move: string
+			idle: string;
+			move: string;
 		}
 	};
 	
@@ -26,10 +26,10 @@ interface CharacterSettings {
 
 interface AnimSheet {
 	namedSheets: {
-		move?: NamedSheet
-		walk?: NamedSheet
+		move?: NamedSheet;
+		walk?: NamedSheet;
 	};
-	sheet?: NamedSheet,
+	sheet?: NamedSheet;
 	DOCTYPE?: string;
 	shapeType?: string;
 	offset?: Point3;
