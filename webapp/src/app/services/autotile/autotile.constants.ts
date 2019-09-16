@@ -13,6 +13,7 @@ export interface AutotileConfig {
 	type: AutotileType;
 	base: Point;
 	cliff?: Point;
+	mergeWithEmpty: boolean;
 	key: string;
 }
 

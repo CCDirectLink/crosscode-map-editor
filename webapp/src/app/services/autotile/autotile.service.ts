@@ -123,7 +123,11 @@ export class AutotileService {
 		}
 		const index = layer.getPhaserLayer()!.getTileAt(newPos.x, newPos.y, true).index;
 		if (index === 0) {
-			out.fill = 'XXXX';
+			if (config.mergeWithEmpty) {
+				out.fill = 'XXXX';
+			} else {
+				out.fill = 'OOOO';
+			}
 			out.update = false;
 			return out;
 		}

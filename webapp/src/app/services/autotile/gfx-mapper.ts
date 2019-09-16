@@ -23,6 +23,7 @@ interface JsonType {
 	tileCountX: number;
 	autotiles: {
 		type: keyof typeof AutotileType;
+		mergeWithEmpty?: boolean;
 		base: Point;
 		cliff: Point;
 	}[];
@@ -68,6 +69,7 @@ export class GfxMapper {
 					key: config.map,
 					tileCountX: config.tileCountX,
 					type: type,
+					mergeWithEmpty: autotile.mergeWithEmpty === undefined ? true : autotile.mergeWithEmpty,
 					base: autotile.base,
 					cliff: autotile.cliff
 				};
