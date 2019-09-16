@@ -18,6 +18,8 @@ export class EntityManager extends BaseObject {
 	private gridKey!: Phaser.Input.Keyboard.Key;
 	private visibilityKey!: Phaser.Input.Keyboard.Key;
 	
+	private skipEdit = false;
+	
 	private leftClickOpts: {
 		timer: number;
 		pos: Point;
@@ -67,6 +69,13 @@ export class EntityManager extends BaseObject {
 			entity.setActive(true);
 		});
 		const sub2 = Globals.globalEventsService.selectedEntity.subscribe(entity => {
+			if (this.selectedEntities.length > 0 && !this.skipEdit) {
+				Globals.stateHistoryService.saveState({
+					name: 'Entity edited',
+					icon: 'build',
+				}, false);
+			}
+			this.skipEdit = false;
 			this.selectedEntities.forEach(e => e.setSelected(false));
 			this.selectedEntities = [];
 			if (entity) {
@@ -87,6 +96,11 @@ export class EntityManager extends BaseObject {
 			// entity manager is activated
 			e.setActive(true);
 			this.selectEntity(e);
+			
+			Globals.stateHistoryService.saveState({
+				name: 'Entity added',
+				icon: 'add'
+			}, true);
 		});
 		this.addSubscription(sub3);
 		
@@ -158,9 +172,7 @@ export class EntityManager extends BaseObject {
 					if (entity) {
 						console.log(entity);
 						const p = {x: pointer.worldX, y: pointer.worldY};
-						console.log('click check');
 						if (this.leftClickOpts.timer < 200 && Vec2.distance2(p, this.leftClickOpts.pos) < 10) {
-							console.log('click');
 							this.selectEntity(entity, this.multiSelectKey.isDown);
 						}
 					}
@@ -311,12 +323,21 @@ export class EntityManager extends BaseObject {
 	}
 	
 	deleteSelectedEntities() {
+		this.skipEdit = true;
+		const saveHistory = this.selectedEntities.length > 0;
 		this.selectedEntities.forEach(e => {
 			const i = this.entities.indexOf(e);
 			this.entities.splice(i, 1);
 			e.destroy();
 		});
 		this.selectEntity();
+		
+		if (saveHistory) {
+			Globals.stateHistoryService.saveState({
+				name: 'Entity deleted',
+				icon: 'delete'
+			}, true);
+		}
 	}
 	
 	exportEntities(): MapEntity[] {

@@ -1,5 +1,7 @@
-import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {HistoryState, HistoryStateContainer, StateHistoryService} from './state-history.service';
+import {EventManager} from '@angular/platform-browser';
+import {Helper} from '../phaser/helper';
 
 @Component({
 	selector: 'app-history',
@@ -7,16 +9,19 @@ import {HistoryState, HistoryStateContainer, StateHistoryService} from './state-
 	styleUrls: ['./history.component.scss'],
 	encapsulation: ViewEncapsulation.None
 })
-export class HistoryComponent implements OnInit {
+export class HistoryComponent implements OnInit, OnDestroy {
 	
 	@ViewChild('listContainer', {static: false}) list?: ElementRef;
+	
+	private eventHandler?: Function;
 	
 	states: HistoryState[] = [];
 	selected?: HistoryStateContainer;
 	selectedIndex = 0;
 	
 	constructor(
-		private stateHistory: StateHistoryService
+		private stateHistory: StateHistoryService,
+		private eventManager: EventManager
 	) {
 		stateHistory.states.subscribe(states => {
 			this.states = states;
@@ -35,6 +40,26 @@ export class HistoryComponent implements OnInit {
 	}
 	
 	ngOnInit() {
+		this.eventHandler = this.eventManager.addEventListener(document as any, 'keydown', (event: KeyboardEvent) => {
+			if (Helper.isInputFocused()) {
+				return;
+			}
+			if (event.ctrlKey && event.key.toLowerCase() === 'z') {
+				event.preventDefault();
+				if (event.shiftKey) {
+					this.redo();
+				} else {
+					this.undo();
+				}
+			}
+		});
+	}
+	
+	ngOnDestroy(): void {
+		if (this.eventHandler) {
+			this.eventHandler();
+			this.eventHandler = undefined;
+		}
 	}
 	
 	updateSelected(container?: HistoryStateContainer) {

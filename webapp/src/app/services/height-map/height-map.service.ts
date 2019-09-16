@@ -67,7 +67,7 @@ export class HeightMapService {
 			if (Helper.isInputFocused()) {
 				return;
 			}
-			if (event.ctrlKey && event.code === 'KeyH') {
+			if (event.ctrlKey && event.key.toLowerCase() === 'h') {
 				event.preventDefault();
 				this.generateHeights(event.shiftKey);
 			}

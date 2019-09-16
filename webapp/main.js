@@ -18,6 +18,7 @@ let openWindows = 0;
 
 function openWindow() {
 	let win;
+	
 	function createWindow() {
 		
 		const mainWindowState = windowStateKeeper({
@@ -58,7 +59,7 @@ function openWindow() {
 			autoUpdater.logger = log;
 			autoUpdater.checkForUpdatesAndNotify();
 			// win.webContents.openDevTools();
-			// win.setMenu(null);
+			win.setMenu(null);
 		}
 		
 		openWindows++;
@@ -72,7 +73,7 @@ function openWindow() {
 		
 		mainWindowState.manage(win);
 	}
-
+	
 	app.on('activate', () => {
 		// On macOS it's common to re-create a window in the app when the
 		// dock icon is clicked and there are no other windows open.
@@ -106,7 +107,7 @@ sub.connectTo('crosscode-map-editor', () => {
 	});
 	sub.of['crosscode-map-editor'].on('error', () => {
 		sub.disconnect('crosscode-map-editor');
-
+		
 		const master = new IPC();
 		master.config.silent = true;
 		master.config.id = 'crosscode-map-editor'

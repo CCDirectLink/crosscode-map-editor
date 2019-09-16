@@ -22,7 +22,7 @@ export class SaveService {
 				return;
 			}
 			
-			if (event.ctrlKey && event.code === 'KeyS') {
+			if (event.ctrlKey && event.key.toLowerCase() === 's') {
 				event.preventDefault();
 				const map = mapLoader.tileMap.getValue();
 				if (!map) {
