@@ -51,25 +51,25 @@ export class NPC extends CCEntity {
 		characterName: {
 			type: 'Character',
 			description: 'Character of NPC',
-			ah: 'Character'
+			context: 'Character'
 		},
 		npcStates: {
 			type: 'NPCStates',
 			description: 'Different states of the NPC',
-			uc: true
+			popup: true
 		},
 		analyzable: {
 			type: 'Analyzable',
 			description: 'Analyzable if any.',
-			yka: true,
-			I: true,
-			uc: true
+			compact: true,
+			optional: true,
+			popup: true
 		},
 		hideCondition: {
 			type: 'VarCondition',
 			description: 'Condition for entity to become transparent',
-			I: true,
-			dv: 70
+			optional: true,
+			width: 70
 		}
 	};
 	

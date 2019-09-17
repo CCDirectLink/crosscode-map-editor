@@ -4,6 +4,7 @@ import {OverlayRefControl} from '../../overlay/overlay-ref-control';
 import {OverlayService} from '../../overlay/overlay.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {EventWindowComponent} from './event-window/event-window.component';
+import {EventType} from './event-registry/abstract-event';
 
 @Component({
 	selector: 'app-event-widget',
@@ -23,7 +24,7 @@ export class EventWidgetComponent extends AbstractWidget implements OnChanges {
 	
 	ngOnChanges(changes?: SimpleChanges): void {
 		super.ngOnChanges(changes);
-		if (!this.settings[this.key]) {
+		if (!this.settings[this.key] && !this.attribute.optional) {
 			this.settings[this.key] = [];
 		}
 	}
@@ -41,12 +42,16 @@ export class EventWidgetComponent extends AbstractWidget implements OnChanges {
 		});
 		this.ref = obj.ref;
 		
-		obj.instance.event = this.settings[this.key];
+		obj.instance.event = this.settings[this.key] || [];
 		
-		obj.instance.exit.subscribe((v: any) => {
+		obj.instance.exit.subscribe((v: EventType[]) => {
 			this.close();
 			this.settings[this.key] = v;
+			if (v && v.length === 0 && this.attribute.optional) {
+				this.settings[this.key] = undefined;
+			}
 			this.updateType();
+			
 		}, () => this.close());
 	}
 	
