@@ -15,7 +15,7 @@ import {EventHelperService} from '../event-helper.service';
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventEditorComponent implements OnInit, OnChanges {
-	@Input() eventData: any[] = [];
+	@Input() eventData: EventType[] = [];
 	
 	workingData?: AbstractEvent<any>[];
 	

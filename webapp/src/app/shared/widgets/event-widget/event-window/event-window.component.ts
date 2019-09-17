@@ -1,5 +1,6 @@
 import {Component, OnChanges, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {EventEditorComponent} from '../event-editor/editor/event-editor.component';
+import {EventType} from '../event-registry/abstract-event';
 
 @Component({
 	selector: 'app-event-window',
@@ -10,8 +11,8 @@ export class EventWindowComponent {
 	
 	@ViewChild('eventEditor', { static: false }) eventEditor!: EventEditorComponent;
 	
-	@Input() event!: any[];
-	@Output() exit = new EventEmitter();
+	@Input() event!: EventType[];
+	@Output() exit = new EventEmitter<EventType[]>();
 	
 	constructor() {
 	}

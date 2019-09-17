@@ -24,6 +24,7 @@ export interface AttributeValue {
 	options?: { [key: string]: any };
 	withNull?: boolean;
 	large?: boolean;
+	optional?: boolean;
 	
 	// TODO: not needed anymore, cc source is not obfuscated
 	[key: string]: any;
