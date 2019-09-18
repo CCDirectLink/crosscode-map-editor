@@ -1,6 +1,11 @@
-<cc-overlay-panel title="Event">
+<cc-overlay-panel [title]="actionStep ? 'Action' : 'Event'">
 	<ng-container ngProjectAs="content">
-		<app-event-editor #eventEditor fxLayout="column" [eventData]="event" [actionStep]="actionStep"></app-event-editor>
+		<app-event-editor
+			#eventEditor
+			fxLayout="column"
+			[eventData]="event"
+			[actionStep]="actionStep"
+		></app-event-editor>
 	</ng-container>
 	<ng-container ngProjectAs="actions">
 		<button mat-stroked-button (click)="cancel()">Cancel</button>
