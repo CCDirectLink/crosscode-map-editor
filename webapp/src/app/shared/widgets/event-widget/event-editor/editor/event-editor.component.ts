@@ -16,6 +16,7 @@ import {EventHelperService} from '../event-helper.service';
 })
 export class EventEditorComponent implements OnInit, OnChanges {
 	@Input() eventData: EventType[] = [];
+	@Input() actionStep = false;
 	
 	workingData?: AbstractEvent<any>[];
 	

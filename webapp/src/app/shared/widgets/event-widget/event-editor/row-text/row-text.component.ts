@@ -17,6 +17,7 @@ export class RowTextComponent {
 	
 	@Input() text?: string;
 	@Input() hideGreaterSign = false;
+	@Input() actionStep = false;
 	
 	@Input() data?: AbstractEvent<any>;
 	@Output() dataChange = new EventEmitter();
@@ -79,7 +80,7 @@ export class RowTextComponent {
 		this.addEvent.showAddEventMenu({
 			left: 'calc(18vw)',
 			top: '6vh'
-		}).subscribe(event => {
+		}, this.actionStep).subscribe(event => {
 			const index = this.getIndex();
 			this.parent.splice(index, 0, event);
 			this.parentChange.emit(this.parent);

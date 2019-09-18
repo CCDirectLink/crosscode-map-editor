@@ -13,7 +13,7 @@ export abstract class AbstractEvent<T extends EventType> {
 		events: AbstractEvent<any>[]
 	}[] = [];
 	
-	constructor(public data: T) {
+	constructor(public data: T, public actionStep = false) {
 	}
 	
 	protected abstract generateNewDataInternal(): { [key: string]: any };

@@ -12,6 +12,7 @@ export class EventWindowComponent {
 	@ViewChild('eventEditor', { static: false }) eventEditor!: EventEditorComponent;
 	
 	@Input() event!: EventType[];
+	@Input() actionStep = false;
 	@Output() exit = new EventEmitter<EventType[]>();
 	
 	constructor() {

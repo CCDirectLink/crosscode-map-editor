@@ -7,7 +7,7 @@ import {Vec2WidgetComponent} from './vec2-widget/vec2-widget.component';
 import {NPCStatesWidgetComponent} from './npc-states-widget/npc-states-widget.component';
 import {EventWidgetComponent} from './event-widget/event-widget.component';
 import {CharacterWidgetComponent} from './character-widget/character-widget.component';
-import {PersonExpressionWidgetComponent} from './person-expression-widget/person-expression-widget.component'; 
+import {PersonExpressionWidgetComponent} from './person-expression-widget/person-expression-widget.component';
 
 @Injectable()
 export class WidgetRegistryService {
@@ -23,6 +23,7 @@ export class WidgetRegistryService {
 		this.register('NPCStates', NPCStatesWidgetComponent);
 		this.register('Vec2', Vec2WidgetComponent);
 		this.register('Event', EventWidgetComponent);
+		this.register('Action', EventWidgetComponent);
 		this.register('Character', CharacterWidgetComponent);
 		this.register('PersonExpression', PersonExpressionWidgetComponent);
 	}

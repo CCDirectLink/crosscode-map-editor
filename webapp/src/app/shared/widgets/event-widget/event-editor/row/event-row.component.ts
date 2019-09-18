@@ -9,6 +9,7 @@ import {AbstractEvent} from '../../event-registry/abstract-event';
 export class EventRowComponent implements OnInit {
 	@Input() data: AbstractEvent<any> = <any>{};
 	@Input() parent: AbstractEvent<any> = <any>{};
+	@Input() actionStep = false;
 	
 	constructor() {
 	}

@@ -1,18 +1,22 @@
 import {Injectable} from '@angular/core';
 import {AbstractEvent} from '../../event-registry/abstract-event';
 import {EventRegistryService} from '../../event-registry/event-registry.service';
-import events from '../../../../../../assets/events.json';
 import {ListSearchOverlayComponent} from '../../../../list-search-overlay/list-search-overlay.component';
 import {OverlayRefControl} from '../../../../overlay/overlay-ref-control';
 import {OverlayService} from '../../../../overlay/overlay.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {Observable, Subject} from 'rxjs';
 
+import events from '../../../../../../assets/events.json';
+import actions from '../../../../../../assets/actions.json';
+
 @Injectable()
 export class AddEventService {
 	private selectedEvent = new Subject<AbstractEvent<any>>();
+	private actionStep = false;
 	
 	events: string[];
+	actions: string[];
 	
 	private ref?: OverlayRefControl;
 	
@@ -28,12 +32,16 @@ export class AddEventService {
 		
 		this.events = Array.from(eventSet);
 		this.events.sort();
+		
+		this.actions = Object.keys(actions);
+		this.actions.sort();
 	}
 	
-	showAddEventMenu(pos: { left: string, top: string }): Observable<AbstractEvent<any>> {
+	showAddEventMenu(pos: { left: string, top: string }, actionStep = false): Observable<AbstractEvent<any>> {
 		if (this.ref && this.ref.isOpen()) {
 			return this.selectedEvent.asObservable();
 		}
+		this.actionStep = actionStep;
 		const obj = this.overlayService.open(ListSearchOverlayComponent, {
 			positionStrategy: this.overlay.position().global()
 				.left(pos.left)
@@ -45,7 +53,7 @@ export class AddEventService {
 		this.ref = obj.ref;
 		this.ref.onClose.subscribe(() => this.resetSubject());
 		
-		obj.instance.list = this.events;
+		obj.instance.list = actionStep ? this.actions : this.events;
 		obj.instance.animation = 'slide';
 		obj.instance.selected.subscribe((v: string) => {
 			this.select(v);
@@ -63,7 +71,7 @@ export class AddEventService {
 	
 	select(event: string) {
 		const clss = this.eventRegistry.getEvent(event);
-		const instance: AbstractEvent<any> = new clss({type: event});
+		const instance: AbstractEvent<any> = new clss({type: event}, this.actionStep);
 		instance.generateNewData();
 		instance.update();
 		this.selectedEvent.next(instance);

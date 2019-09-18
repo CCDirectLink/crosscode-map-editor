@@ -1,6 +1,7 @@
 import {AbstractEvent, EventType} from './abstract-event';
 import {AttributeValue, EntityAttributes} from '../../../phaser/entities/cc-entity';
 import events from '../../../../../assets/events.json';
+import actions from '../../../../../assets/actions.json';
 
 interface DefaultEventData extends EventType {
 	[key: string]: any;
@@ -15,9 +16,13 @@ interface JsonEventType {
 export class DefaultEvent extends AbstractEvent<DefaultEventData> {
 	private readonly type?: JsonEventType;
 	
-	constructor(data: DefaultEventData) {
-		super(data);
-		this.type = events[this.data.type];
+	constructor(data: DefaultEventData, actionStep = false) {
+		super(data, actionStep);
+		if (actionStep) {
+			this.type = actions[this.data.type];
+		} else {
+			this.type = events[this.data.type];
+		}
 	}
 	
 	getAttributes(): EntityAttributes | undefined {

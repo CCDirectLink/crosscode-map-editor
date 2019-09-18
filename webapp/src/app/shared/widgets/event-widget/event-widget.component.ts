@@ -42,6 +42,7 @@ export class EventWidgetComponent extends AbstractWidget implements OnChanges {
 		});
 		this.ref = obj.ref;
 		
+		obj.instance.actionStep = this.attribute.type === 'Action';
 		obj.instance.event = this.settings[this.key] || [];
 		
 		obj.instance.exit.subscribe((v: EventType[]) => {
