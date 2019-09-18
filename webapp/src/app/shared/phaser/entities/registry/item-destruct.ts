@@ -63,10 +63,19 @@ export class ItemDestruct extends CCEntity {
 			return;
 		}
 		const def = destructibles[desType];
+		const gfx = def.Aa.sheet.src;
+		
+		const exists = await Helper.loadTexture(gfx, this.scene);
+		
+		if (!exists) {
+			this.generateErrorImage();
+			return;
+		}
+		
 		this.entitySettings = <any>{
 			sheets: {
 				fix: [{
-					gfx: def.Aa.sheet.src,
+					gfx: gfx,
 					x: def.Aa.sheet.offX,
 					y: def.Aa.sheet.offY,
 					w: def.Aa.sheet.width,
