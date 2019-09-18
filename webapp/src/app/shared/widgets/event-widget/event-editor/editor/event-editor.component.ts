@@ -43,7 +43,7 @@ export class EventEditorComponent implements OnInit, OnChanges {
 			cpy = cpy.quest;
 		}
 		if (cpy.map) {
-			this.workingData = cpy.map((val: EventType) => this.helper.getEventFromType(val));
+			this.workingData = cpy.map((val: EventType) => this.helper.getEventFromType(val, this.actionStep));
 		} else {
 			this.workingData = [];
 		}

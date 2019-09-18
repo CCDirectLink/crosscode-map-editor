@@ -63,7 +63,7 @@ export class EventDetailComponent implements OnInit {
 	private loadSettings() {
 		const ref = this.appHost.viewContainerRef;
 		const exported = this.event.export();
-		this.newData = this.helper.getEventFromType(exported).data;
+		this.newData = this.helper.getEventFromType(exported, this.event.actionStep).data;
 		
 		if (!this.event.getAttributes) {
 			console.log('wtf', this);

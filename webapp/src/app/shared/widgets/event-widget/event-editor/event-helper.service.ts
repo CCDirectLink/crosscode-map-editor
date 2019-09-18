@@ -15,20 +15,20 @@ export class EventHelperService {
 	constructor(private eventRegistry: EventRegistryService) {
 	}
 	
-	public getEventFromType(val: EventType): AbstractEvent<any> {
+	public getEventFromType(val: EventType, actionStep: boolean): AbstractEvent<any> {
 		const eventClass = this.eventRegistry.getEvent(val.type);
-		const instance: AbstractEvent<any> = new eventClass(val);
+		const instance: AbstractEvent<any> = new eventClass(val, actionStep);
 		
 		if (val.type === 'IF') {
 			const valIf = val as any;
-			valIf.thenStep = valIf.thenStep.map((v: EventType) => this.getEventFromType(v));
+			valIf.thenStep = valIf.thenStep.map((v: EventType) => this.getEventFromType(v, actionStep));
 			if (valIf.elseStep) {
-				valIf.elseStep = valIf.elseStep.map((v: EventType) => this.getEventFromType(v));
+				valIf.elseStep = valIf.elseStep.map((v: EventType) => this.getEventFromType(v, actionStep));
 			}
 		} else if (val.type === 'SHOW_CHOICE') {
 			const valChoice = val as any;
 			valChoice.options.forEach((option: any, index: number) => {
-				valChoice[index] = valChoice[index].map((v: EventType) => this.getEventFromType(v));
+				valChoice[index] = valChoice[index].map((v: EventType) => this.getEventFromType(v, actionStep));
 			});
 		}
 		

@@ -122,7 +122,7 @@ export class RowTextComponent {
 		if (clipboard) {
 			const index = this.getIndex();
 			const cpy = JSON.parse(JSON.stringify(clipboard));
-			this.parent.splice(index, 0, this.helper.getEventFromType(cpy));
+			this.parent.splice(index, 0, this.helper.getEventFromType(cpy, this.actionStep));
 		}
 	}
 	

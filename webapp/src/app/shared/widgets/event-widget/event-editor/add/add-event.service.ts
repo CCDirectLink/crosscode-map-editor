@@ -37,7 +37,7 @@ export class AddEventService {
 		this.actions.sort();
 	}
 	
-	showAddEventMenu(pos: { left: string, top: string }, actionStep = false): Observable<AbstractEvent<any>> {
+	showAddEventMenu(pos: { left: string, top: string }, actionStep: boolean): Observable<AbstractEvent<any>> {
 		if (this.ref && this.ref.isOpen()) {
 			return this.selectedEvent.asObservable();
 		}

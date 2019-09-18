@@ -16,6 +16,9 @@ import {SetCameraPos} from './set-camera-pos';
 import {SetCameraBetween} from './set-camera-between';
 import {Label} from './label';
 import {GotoLabel} from './goto-label';
+import {AbstractEvent, EventType} from './abstract-event';
+
+type EventConstructor<T extends EventType> = new (data: T, actionStep: boolean) => AbstractEvent<T>;
 
 @Injectable()
 export class EventRegistryService {
@@ -40,7 +43,7 @@ export class EventRegistryService {
 		this.register('WAIT', Wait);
 		this.register('LABEL', Label);
 		this.register('GOTO_LABEL', GotoLabel);
-
+		
 	}
 	
 	private setDefaultEvent(event: any) {
@@ -55,7 +58,7 @@ export class EventRegistryService {
 		return this.defaultEvent;
 	}
 	
-	public getEvent(type: string): any {
+	public getEvent<T extends EventType>(type: string): EventConstructor<T> {
 		return this.events[type] || this.defaultEvent;
 	}
 	
