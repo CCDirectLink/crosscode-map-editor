@@ -2,6 +2,7 @@ import {Point} from '../../models/cross-code-map';
 
 /** value is width, height is always 2 */
 export enum AutotileType {
+	SMALL = 4,
 	DEFAULT = 8,
 	LARGE = 10,
 	SUPER_LARGE = 12,
@@ -46,6 +47,26 @@ export const FILL_TYPE: {
 	[key in AutotileType]: FillType
 } = <any>{};
 
+const empty: FillType = {
+	XXXX: [],
+	OXXX: [],
+	XOXX: [],
+	OXOX: [],
+	OOXX: [],
+	OXXO: [],
+	OOXO: [],
+	OOOX: [],
+	OOOO: [],
+	XXXO: [],
+	XXOX: [],
+	XOXO: [],
+	XXOO: [],
+	XOOX: [],
+	OXOO: [],
+	XOOO: []
+};
+
+
 const fillTypeDefault: FillType = {
 	XXXX: [{x: 0, y: 0}],
 	OXXX: [{x: 1, y: 0}],
@@ -87,24 +108,18 @@ fillTypeMegaLarge.XXOO.push({x: 12, y: 1});
 fillTypeMegaLarge.XOOX.push({x: 13, y: 1});
 FILL_TYPE[AutotileType.MEGA_LARGE] = fillTypeMegaLarge;
 
-const empty: FillType = {
-	XXXX: [],
-	OXXX: [],
-	XOXX: [],
-	OXOX: [],
-	OOXX: [],
-	OXXO: [],
-	OOXO: [],
-	OOOX: [],
-	OOOO: [],
-	XXXO: [],
-	XXOX: [],
-	XOXO: [],
-	XXOO: [],
-	XOOX: [],
-	OXOO: [],
-	XOOO: []
-};
+const fillTypeSmall: FillType = JSON.parse(JSON.stringify(empty));
+for (const value of Object.values(fillTypeSmall) as Point[][]) {
+	value.push({x: 0, y: 0});
+	value.push({x: 0, y: 0});
+	value.push({x: 0, y: 0});
+	value.push({x: 1, y: 0});
+	value.push({x: 2, y: 0});
+	value.push({x: 3, y: 0});
+}
+
+FILL_TYPE[AutotileType.SMALL] = fillTypeSmall;
+
 
 export const FILL_TYPE_CLIFF_BORDER: FillType = JSON.parse(JSON.stringify(empty));
 
