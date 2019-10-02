@@ -1,4 +1,6 @@
 import {EntityAttributes} from '../../../phaser/entities/cc-entity';
+import {DomSanitizer} from '@angular/platform-browser';
+import {SecurityContext} from '@angular/core';
 
 export interface EventType {
 	type: string;
@@ -13,7 +15,11 @@ export abstract class AbstractEvent<T extends EventType> {
 		events: AbstractEvent<any>[]
 	}[] = [];
 	
-	constructor(public data: T, public actionStep = false) {
+	constructor(
+		private domSanitizer: DomSanitizer,
+		public data: T,
+		public actionStep = false,
+	) {
 	}
 	
 	protected abstract generateNewDataInternal(): { [key: string]: any };
@@ -53,7 +59,7 @@ export abstract class AbstractEvent<T extends EventType> {
 			const type = attr[key].type;
 			if (type === 'Color') {
 				value = this.getColorRectangle(value);
-			} else if (type === 'Vec2') {
+			} else if (type === 'Vec2' && value) {
 				value = this.getVec2String(value.x, value.y);
 			} else if (type === 'Entity') {
 				value = '[' + value.name + ']';
@@ -63,22 +69,27 @@ export abstract class AbstractEvent<T extends EventType> {
 	}
 	
 	protected getVec2String(x: number, y: number): string {
-		return `(${x}, ${y})`;
+		return `(${this.sanitize(x)}, ${this.sanitize(y)})`;
 	}
 	
 	protected getTypeString(color: string): string {
+		color = this.sanitize(color);
 		return this.getBoldString(this.data.type, color);
 	}
 	
 	protected getBoldString(text: string, color: string): string {
-		return `<b style="color: ${color}">${text}</b>`;
+		return `<b style="color: ${this.sanitize(color)}">${text}</b>`;
 	}
 	
 	protected getColoredString(text: string, color: string): string {
-		return `<span style="color: ${color}">${text}</span>`;
+		return `<span style="color: ${this.sanitize(color)}">${text}</span>`;
 	}
 	
 	protected getColorRectangle(color: string): string {
-		return `<span style="background-color: ${color};">&nbsp &nbsp &nbsp &nbsp</span>`;
+		return `<span style="background-color: ${this.sanitize(color)};">&nbsp &nbsp &nbsp &nbsp</span>`;
+	}
+	
+	private sanitize(val: string | number) {
+		return this.domSanitizer.sanitize(SecurityContext.HTML, val) || '';
 	}
 }

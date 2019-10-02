@@ -2,6 +2,7 @@ import {AbstractEvent, EventType} from './abstract-event';
 import {AttributeValue, EntityAttributes} from '../../../phaser/entities/cc-entity';
 import events from '../../../../../assets/events.json';
 import actions from '../../../../../assets/actions.json';
+import {DomSanitizer} from '@angular/platform-browser';
 
 interface DefaultEventData extends EventType {
 	[key: string]: any;
@@ -16,8 +17,12 @@ interface JsonEventType {
 export class DefaultEvent extends AbstractEvent<DefaultEventData> {
 	private readonly type?: JsonEventType;
 	
-	constructor(data: DefaultEventData, actionStep = false) {
-		super(data, actionStep);
+	constructor(
+		domSanitizer: DomSanitizer,
+		data: DefaultEventData,
+		actionStep = false
+	) {
+		super(domSanitizer, data, actionStep);
 		if (actionStep) {
 			this.type = actions[this.data.type];
 		} else {

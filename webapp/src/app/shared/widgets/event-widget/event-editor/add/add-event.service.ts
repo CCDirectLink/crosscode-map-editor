@@ -9,6 +9,7 @@ import {Observable, Subject} from 'rxjs';
 
 import events from '../../../../../../assets/events.json';
 import actions from '../../../../../../assets/actions.json';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Injectable()
 export class AddEventService {
@@ -23,7 +24,8 @@ export class AddEventService {
 	constructor(
 		private eventRegistry: EventRegistryService,
 		private overlayService: OverlayService,
-		private overlay: Overlay
+		private overlay: Overlay,
+		private domSanitizer: DomSanitizer
 	) {
 		const registry = Object.keys(this.eventRegistry.getAll());
 		const eventNames = Object.keys(events);
@@ -71,7 +73,7 @@ export class AddEventService {
 	
 	select(event: string) {
 		const clss = this.eventRegistry.getEvent(event);
-		const instance: AbstractEvent<any> = new clss({type: event}, this.actionStep);
+		const instance: AbstractEvent<any> = new clss(this.domSanitizer, {type: event}, this.actionStep);
 		instance.generateNewData();
 		instance.update();
 		this.selectedEvent.next(instance);

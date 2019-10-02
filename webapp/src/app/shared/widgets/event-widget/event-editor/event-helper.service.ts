@@ -1,23 +1,23 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Subject} from 'rxjs';
-import {WidgetModule} from '../../widget.module';
+import {BehaviorSubject} from 'rxjs';
 import {AbstractEvent, EventType} from '../event-registry/abstract-event';
 import {EventRegistryService} from '../event-registry/event-registry.service';
-import {AttributeValue} from '../../../phaser/entities/cc-entity';
-import {If, IfData} from '../event-registry/if';
-import {ShowChoice, ShowChoiceData} from '../event-registry/ShowChoice';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Injectable()
 export class EventHelperService {
 	
 	selectedEvent: BehaviorSubject<any> = new BehaviorSubject(null);
 	
-	constructor(private eventRegistry: EventRegistryService) {
+	constructor(
+		private eventRegistry: EventRegistryService,
+		private domSanitizer: DomSanitizer
+	) {
 	}
 	
 	public getEventFromType(val: EventType, actionStep: boolean): AbstractEvent<any> {
 		const eventClass = this.eventRegistry.getEvent(val.type);
-		const instance: AbstractEvent<any> = new eventClass(val, actionStep);
+		const instance: AbstractEvent<any> = new eventClass(this.domSanitizer, val, actionStep);
 		
 		if (val.type === 'IF') {
 			const valIf = val as any;

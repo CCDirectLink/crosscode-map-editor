@@ -17,8 +17,9 @@ import {SetCameraBetween} from './set-camera-between';
 import {Label} from './label';
 import {GotoLabel} from './goto-label';
 import {AbstractEvent, EventType} from './abstract-event';
+import {DomSanitizer} from '@angular/platform-browser';
 
-type EventConstructor<T extends EventType> = new (data: T, actionStep: boolean) => AbstractEvent<T>;
+type EventConstructor<T extends EventType> = new (domSanitizer: DomSanitizer, data: T, actionStep: boolean) => AbstractEvent<T>;
 
 @Injectable()
 export class EventRegistryService {
