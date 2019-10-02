@@ -45,6 +45,20 @@
 		"tileCountX": 32,
 		"autotiles": [
 			{
+				"type": "SMALL",
+				"base": {
+					"x": 0,
+					"y": 0
+				}
+			},
+			{
+				"type": "SMALL",
+				"base": {
+					"x": 0,
+					"y": 1
+				}
+			},
+			{
 				"type": "MEGA_LARGE",
 				"base": {
 					"x": 6,
@@ -65,6 +79,70 @@
 					"x": 18,
 					"y": 4
 				}
+			},
+			{
+				"type": "SUPER_LARGE",
+				"base": {
+					"x": 20,
+					"y": 11
+				},
+				"mergeWithEmpty": false
+			},
+			{
+				"type": "SUPER_LARGE",
+				"base": {
+					"x": 20,
+					"y": 13
+				},
+				"mergeWithEmpty": false
+			},
+			{
+				"type": "SUPER_LARGE",
+				"base": {
+					"x": 20,
+					"y": 15
+				},
+				"mergeWithEmpty": false
+			},
+			{
+				"type": "SUPER_LARGE",
+				"base": {
+					"x": 20,
+					"y": 17
+				},
+				"mergeWithEmpty": false
+			},
+			{
+				"type": "SUPER_LARGE",
+				"base": {
+					"x": 20,
+					"y": 19
+				},
+				"mergeWithEmpty": false
+			},
+			{
+				"type": "SUPER_LARGE",
+				"base": {
+					"x": 20,
+					"y": 21
+				},
+				"mergeWithEmpty": false
+			},
+			{
+				"type": "SUPER_LARGE",
+				"base": {
+					"x": 20,
+					"y": 23
+				},
+				"mergeWithEmpty": false
+			},
+			{
+				"type": "SUPER_LARGE",
+				"base": {
+					"x": 20,
+					"y": 25
+				},
+				"mergeWithEmpty": false
 			}
 		]
 	},
