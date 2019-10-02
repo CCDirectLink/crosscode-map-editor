@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Action step widget [Image](https://user-images.githubusercontent.com/9483499/65177671-74513600-da57-11e9-8423-7aef12bb53ab.png)
 - more autotile definitions for jungle
 
+### Fixed
+- Bug where events would sometimes not show
+
 ## [0.5.0] - 2019-09-18
 
 ### Added
