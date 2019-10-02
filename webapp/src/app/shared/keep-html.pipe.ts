@@ -7,7 +7,6 @@ export class KeepHtmlPipe implements PipeTransform {
 	}
 	
 	transform(content: string) {
-		// TODO: should not trust <script> tags
 		return this.sanitizer.bypassSecurityTrustHtml(content);
 	}
 }
