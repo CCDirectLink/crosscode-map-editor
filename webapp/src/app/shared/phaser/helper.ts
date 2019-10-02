@@ -115,7 +115,7 @@ export class Helper {
 	 * without messing up the map
 	 * */
 	public static isInputFocused(): boolean {
-		if (Globals.disablePhaserInput) {
+		if (Globals.disablePhaserInput.size > 0) {
 			return true;
 		}
 		if (!document.activeElement) {

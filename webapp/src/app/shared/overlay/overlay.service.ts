@@ -14,6 +14,9 @@ interface CustomOverlayConfig extends OverlayConfig {
 	providedIn: OverlayModule
 })
 export class OverlayService {
+	
+	private static disablePhaserInputKey = 0;
+	
 	constructor(
 		private injector: Injector,
 		private overlay: Overlay) {
@@ -29,8 +32,9 @@ export class OverlayService {
 			ref.backdropClick().subscribe(() => refControl.close());
 		}
 		if (options.disablePhaserInput) {
-			Globals.disablePhaserInput = true;
-			ref.detachments().subscribe(() => Globals.disablePhaserInput = false);
+			const key = ++OverlayService.disablePhaserInputKey;
+			Globals.disablePhaserInput.add(key);
+			ref.detachments().subscribe(() => Globals.disablePhaserInput.delete(key));
 		}
 		
 		const instance: any = ref.attach(portal).instance;

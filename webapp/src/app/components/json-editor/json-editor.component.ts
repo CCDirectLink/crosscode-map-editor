@@ -22,12 +22,12 @@ export class JsonEditorComponent implements AfterViewInit {
 		this.data = data.val;
 		this.key = data.key;
 		ref.afterClosed().subscribe(() => {
-			Globals.disablePhaserInput = false;
+			Globals.disablePhaserInput.delete('json');
 		});
 	}
 	
 	ngAfterViewInit() {
-		Globals.disablePhaserInput = true;
+		Globals.disablePhaserInput.add('json');
 		this.options = {};
 		this.options.onChange = () => {
 			if (!this.editor) {

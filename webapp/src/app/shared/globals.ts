@@ -17,7 +17,7 @@ export class Globals {
 		gridSize: 8,
 		enableGrid: false
 	};
-	static disablePhaserInput = false;
+	static disablePhaserInput = new Set<any>();
 	
 	// TODO: remove them from global state
 	static stateHistoryService: StateHistoryService;

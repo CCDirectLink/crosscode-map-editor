@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 - Bug where events would sometimes not show
+- delete in event editor sometimes deleting the whole entity
 
 ## [0.5.0] - 2019-09-18
 
