@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.5.1] - 2019-10-02
+
 ### Added
 - Action step widget [Image](https://user-images.githubusercontent.com/9483499/65177671-74513600-da57-11e9-8423-7aef12bb53ab.png)
 - more autotile definitions for jungle
@@ -12,6 +14,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - Bug where events would sometimes not show
 - delete in event editor sometimes deleting the whole entity
+- SET_MSG_EXPRESSION should work now, #118
 
 ## [0.5.0] - 2019-09-18
 
