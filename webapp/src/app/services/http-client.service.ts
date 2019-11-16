@@ -20,7 +20,7 @@ export class HttpClientService {
 		if (!Globals.isElectron) {
 			return this.http.get<FileInfos>(Globals.URL + 'api/allFiles');
 		}
-		const path = this.electron.getAssetsPath();
+		const path = this.electron.getAssetsPath(true);
 		return this.toObservable(api.getAllFiles(path) as Promise<FileInfos>);
 	}
 	
@@ -28,7 +28,7 @@ export class HttpClientService {
 		if (!Globals.isElectron) {
 			return this.http.get<string[]>(Globals.URL + 'api/allTilesets');
 		}
-		const path = this.electron.getAssetsPath();
+		const path = this.electron.getAssetsPath(true);
 		return this.toObservable(api.getAllTilesets(path));
 	}
 	
@@ -36,12 +36,17 @@ export class HttpClientService {
 		if (!Globals.isElectron) {
 			return this.http.get<string[]>(Globals.URL + 'api/allMaps');
 		}
-		const path = this.electron.getAssetsPath();
-		return this.toObservable(api.getAllMaps(path));
+		const assetsPath = this.electron.getAssetsPath(true);
+		return this.toObservable(api.getAllMaps(assetsPath));
 	}
 	
 	getAssetsFile<T>(path: string): Observable<T> {
-		return this.http.get<T>(Globals.URL + path);
+		if (!Globals.isElectron) {
+			return this.http.get<T>(Globals.URL + path);
+		}
+		const assetsPath = this.electron.getAssetsPath(true);
+		return this.http.get<T>(`file://${assetsPath}` + path);
+		
 	}
 	
 	saveFile(path: string, content: any) {
@@ -49,8 +54,8 @@ export class HttpClientService {
 		if (!Globals.isElectron) {
 			return this.http.post(Globals.URL + 'api/saveFile', file);
 		}
-		
-		return this.toObservable(api.saveFile(this.electron.getAssetsPath(), file));
+		const assetsPath = this.electron.getAssetsPath(true);
+		return this.toObservable(api.saveFile(assetsPath, file));
 	}
 	
 	private toObservable<T>(promise: Promise<T>): Observable<T> {
