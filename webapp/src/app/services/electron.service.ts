@@ -2,14 +2,19 @@ import {Injectable} from '@angular/core';
 import {Globals} from '../shared/globals';
 import {Dialog, Remote} from 'electron';
 import * as nodeFs from 'fs';
+import * as nodePath from 'path';
+import {api} from 'cc-map-editor-common';
 
 @Injectable()
 export class ElectronService {
 	
 	private readonly fs?: typeof nodeFs;
-	
+	private readonly path?: typeof nodePath;
 	private storageName = 'assetsPath';
 	private assetsPath = '';
+	private allModsAssetsPath: Map = new Map();
+	private	overrideModName: string = "";
+	private overrideStorageName = 'overrideModName';
 	private readonly remote?: Remote;
 	
 	constructor() {
@@ -21,7 +26,7 @@ export class ElectronService {
 		const remote = window.require('electron').remote;
 		this.remote = remote!;
 		this.fs = remote.require('fs');
-		
+		this.path = remote.require('path');
 		this.assetsPath = localStorage.getItem(this.storageName) || '';
 		this.updateURL();
 	}
@@ -37,9 +42,44 @@ export class ElectronService {
 	}
 	
 	private updateURL() {
-		Globals.URL = 'file:///' + this.assetsPath;
+		const oldUrl: string = Globals.URL;
+		const newUrl = 'file:///' + this.assetsPath;
+		if (oldUrl !== newUrl) {
+			Globals.URL = newUrl;
+			this.resetModsAssetsPath();
+		}
 	}
 	
+	private resetModsAssetsPath() {
+		if (!this.path)
+			return;
+		this.modAssetsPathIndex = "";
+		const modsPaths = api.getAllMods(this.assetsPath);
+		for (let i = 0; i < modsPaths.length; ++i) {
+			const modAssetsPath = this.path.join(modsPaths[i].path, 'assets/');
+			if (!this.checkAssetsPath(modAssetsPath, true)) {
+				modsPaths.splice(i, 1);
+				--i;
+				continue;
+			}
+			modsPaths[i].path = modAssetsPath;
+			this.allModsAssetsPath.set(modsPaths[i].name, modsPaths[i]);
+		}
+		const modName = localStorage.getItem(this.overrideStorageName);
+		if (modName) {
+			this.overrideModName = modName;
+		} 
+	}
+
+	public setModOverride(modName : string) {
+		this.overrideModName = modName;
+		localStorage.setItem(this.overrideStorageName, modName);
+	}
+
+	public getValidModNames() {
+		return Array.from(this.allModsAssetsPath).map(e => e[0]);
+	}
+
 	public relaunch() {
 		if (!this.remote) {
 			throw new Error('remote is not defined');
@@ -48,7 +88,7 @@ export class ElectronService {
 		this.remote.app.quit();
 	}
 	
-	public checkAssetsPath(path: string): boolean {
+	public checkAssetsPath(path: string, ignoreError: boolean = false): boolean {
 		if (!this.fs) {
 			return false;
 		}
@@ -56,7 +96,7 @@ export class ElectronService {
 			const files = this.fs.readdirSync(path);
 			return files.includes('data') && files.includes('media');
 		} catch (e) {
-			console.error(e);
+			if (!ignoreError) console.error(e);
 			return false;
 		}
 	}
@@ -81,8 +121,16 @@ export class ElectronService {
 		localStorage.setItem(this.storageName, normalized);
 		this.updateURL();
 	}
-	
-	public getAssetsPath() {
-		return this.assetsPath;
+
+	public getAssetsPath(allowOverride = false) {
+		let assetsPath = this.assetsPath;
+		if (allowOverride) {
+			console.log(`Name`, this.overrideModName);
+			console.log('Storage', this.allModsAssetsPath);
+			if (this.overrideModName) {
+				assetsPath = this.allModsAssetsPath.get(this.overrideModName).path;
+			}
+		}
+		return assetsPath;
 	}
 }
