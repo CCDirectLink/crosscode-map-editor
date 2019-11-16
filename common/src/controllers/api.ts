@@ -62,3 +62,33 @@ export async function getAllMaps(dir: string) {
 		.map(p => p.substring('data/maps/'.length, p.length - '.json'.length))
 		.map(p => p.replace(/\//g, '.').replace(/\\/g, '.'));
 }
+
+
+export function getAllMods(dir: string) {
+	const rootModsFolder = path.join(dir,'mods/');
+	const validMods = [];
+	if (!fs.existsSync(rootModsFolder)) {
+		return validMods;
+	}
+
+	const modsList = fs.readdirSync(rootModsFolder);
+	for (const mod of modsList) {
+		const modPath = path.join(rootModsFolder, mod);
+		const packagePath = path.join(modPath, 'package.json');
+		let modName;
+		try {
+			modName = JSON.parse(fs.readFileSync(packagePath, 'utf8')).name;
+			if (!modName)
+				continue;
+		} catch (e) {
+			continue;
+		}
+		if (!fs.existsSync(packagePath))
+			continue;
+		validMods.push({
+			name: modName,
+			path: modPath
+		});
+	}
+	return validMods;
+}
