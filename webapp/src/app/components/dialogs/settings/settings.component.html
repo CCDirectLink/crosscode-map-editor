@@ -13,11 +13,18 @@
 				</mat-form-field>
 				<div class="actions-container" fxLayout="row">
 					<button mat-stroked-button (click)="select()">Select</button>
-					<button mat-stroked-button (click)="check()">
+					<button mat-stroked-button (click)="check() && initModChoices()">
 						Check
 						<mat-icon [ngClass]="iconCss" class="icon-base">{{icon}}</mat-icon>
 					</button>
 				</div>
+			</form>
+			<form fxLayout="row" class="option-row">
+				<mat-select (selectionChange)="setModOverrideIndex($event.value)">
+					<mat-option *ngFor="let modName of modChoices" [value]="modName">
+						{{modName}}
+					</mat-option>
+				</mat-select>
 			</form>
 		</div>
 	</ng-container>

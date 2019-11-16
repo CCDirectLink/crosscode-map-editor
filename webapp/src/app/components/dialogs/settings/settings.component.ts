@@ -14,7 +14,8 @@ export class SettingsComponent implements OnInit {
 	folderFormControl = new FormControl();
 	icon = 'help_outline';
 	iconCss = 'icon-undefined';
-	
+	modChoices: string[] = [];
+
 	constructor(
 		private ref: OverlayRefControl,
 		private electron: ElectronService,
@@ -26,9 +27,21 @@ export class SettingsComponent implements OnInit {
 		this.folderFormControl.setValue(this.electron.getAssetsPath());
 		this.folderFormControl.valueChanges.subscribe(() => this.resetIcon());
 		
-		this.check();
+		if (this.check()) 
+			this.initModChoices();
 	}
 	
+	initModChoices() {
+		this.modChoices.splice(0);
+		this.modChoices.push('None');
+		this.modChoices.push(...this.electron.getValidModNames());
+	}
+
+	setModOverrideIndex(modName: string) {
+		console.log(modName);
+		this.electron.setModOverride(modName);
+	}
+
 	private resetIcon() {
 		this.icon = 'help_outline';
 		this.iconCss = 'icon-undefined';
@@ -56,10 +69,12 @@ export class SettingsComponent implements OnInit {
 		this.setIcon(valid);
 		if (valid) {
 			this.folderFormControl.setErrors(null);
+			return true;
 		} else {
 			this.folderFormControl.setErrors({
 				invalid: true
 			});
+			return false;
 		}
 	}
 	
