@@ -33,7 +33,7 @@ export class SettingsComponent implements OnInit {
 	
 	initModChoices() {
 		this.modChoices.splice(0);
-		this.modChoices.push('None');
+		this.modChoices.push('');
 		this.modChoices.push(...this.electron.getValidModNames());
 	}
 
