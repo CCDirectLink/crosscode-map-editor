@@ -5,6 +5,7 @@ import * as nodeFs from 'fs';
 import * as nodePath from 'path';
 import {api} from 'cc-map-editor-common';
 import {GlobalEventsService} from '../shared/global-events.service';
+
 @Injectable()
 export class ElectronService {
 	
@@ -17,7 +18,9 @@ export class ElectronService {
 	private overrideStorageName = 'overrideModName';
 	private readonly remote?: Remote;
 	
-	constructor(private globalEvents: GlobalEventsService) {
+	constructor(
+		private globalEvents: GlobalEventsService
+	) {
 		if (!Globals.isElectron) {
 			return;
 		}
@@ -27,10 +30,11 @@ export class ElectronService {
 		this.remote = remote!;
 		this.fs = remote.require('fs');
 		this.path = remote.require('path');
-		this.assetsPath = localStorage.getItem(this.storageName) || '';
+		// @ts-ignore
+		this.assetsPath = this.path.normalize(localStorage.getItem(this.storageName) || '');
 		this.updateURL();
 	}
-	
+
 	private static normalizePath(p: string) {
 		if (p.endsWith('\\')) {
 			p = p.split('\\').join('/');
@@ -58,7 +62,7 @@ export class ElectronService {
 		const modsPaths = api.getAllMods(this.assetsPath);
 		for (let i = 0; i < modsPaths.length; ++i) {
 			const modAssetsPath = this.path.join(modsPaths[i].path, 'assets/');
-			if (!this.checkAssetsPath(modAssetsPath, true)) {
+			if (!this.checkModAssetsPath(modAssetsPath)) {
 				modsPaths.splice(i, 1);
 				--i;
 				continue;
@@ -73,10 +77,18 @@ export class ElectronService {
 		} 
 	}
 
+	public hasModOverride() {
+		return this.overrideModName !== '';
+	}
+
 	public setModOverride(modName: string) {
 		this.overrideModName = modName;
 		this.globalEvents.assetsPathChange.next(modName);
 		localStorage.setItem(this.overrideStorageName, modName);
+	}
+
+	public getModOverride() {
+		return this.overrideModName;
 	}
 
 	public getValidModNames() {
@@ -91,7 +103,17 @@ export class ElectronService {
 		this.remote.app.quit();
 	}
 	
-	public checkAssetsPath(path: string, ignoreError: boolean = false): boolean {
+	public checkModAssetsPath(path: string) {
+		if (!this.fs) {
+			return false;
+		}
+		try {
+			return this.fs.readdirSync(path).includes('data');
+		} catch (e) {}
+		return false;
+	}
+
+	public checkAssetsPath(path: string): boolean {
 		if (!this.fs) {
 			return false;
 		}
@@ -99,9 +121,7 @@ export class ElectronService {
 			const files = this.fs.readdirSync(path);
 			return files.includes('data') && files.includes('media');
 		} catch (e) {
-			if (!ignoreError) {
-				console.error(e);
-			}
+			console.error(e);
 			return false;
 		}
 	}
@@ -130,12 +150,21 @@ export class ElectronService {
 	public getAssetsPath(allowOverride = false) {
 		let assetsPath = this.assetsPath;
 		if (allowOverride) {
-			console.log(`Name`, this.overrideModName);
-			console.log('Storage', this.allModsAssetsPath);
 			if (this.overrideModName) {
 				assetsPath = this.allModsAssetsPath.get(this.overrideModName).path;
 			}
 		}
 		return assetsPath;
+	}
+
+	public getRelativeAssetsPath(allowOverride = false) {
+		if (!this.path) {
+			return '';
+		}
+
+		let relativeAssetsPath = this.path.normalize(this.getAssetsPath(allowOverride));
+		let baseAssetsPath = this.path.normalize(this.getAssetsPath(false));
+
+		return ElectronService.normalizePath(relativeAssetsPath.replace(baseAssetsPath, ''));
 	}
 }
