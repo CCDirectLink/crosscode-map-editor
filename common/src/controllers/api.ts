@@ -75,19 +75,23 @@ export function getAllMods(dir: string) {
 	for (const mod of modsList) {
 		const modPath = path.join(rootModsFolder, mod);
 		const packagePath = path.join(modPath, 'package.json');
-		let modName;
+		if (!fs.existsSync(packagePath)) {
+			continue;
+		}
+
+		let modPackage;
 		try {
-			modName = JSON.parse(fs.readFileSync(packagePath, 'utf8')).name;
-			if (!modName)
+
+			modPackage = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
+			if (!modPackage.name)
 				continue;
 		} catch (e) {
 			continue;
 		}
-		if (!fs.existsSync(packagePath))
-			continue;
 		validMods.push({
-			name: modName,
-			path: modPath
+			name: modPackage.name,
+			path: modPath,
+			package: modPackage
 		});
 	}
 	return validMods;
