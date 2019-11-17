@@ -42,7 +42,7 @@ export class LoadMapComponent {
 
 		globalEvents.assetsPathChange.subscribe((modName) => {
 			console.log(`New Mod Name ${modName}`);
-			this.refresh()
+			this.refresh();
 		});
 	}
 	

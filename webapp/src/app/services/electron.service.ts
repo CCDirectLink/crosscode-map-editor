@@ -13,7 +13,7 @@ export class ElectronService {
 	private storageName = 'assetsPath';
 	private assetsPath = '';
 	private allModsAssetsPath: Map<string, any> = new Map();
-	private	overrideModName: string = "";
+	private	overrideModName = '';
 	private overrideStorageName = 'overrideModName';
 	private readonly remote?: Remote;
 	
@@ -51,9 +51,10 @@ export class ElectronService {
 	}
 	
 	private resetModsAssetsPath() {
-		if (!this.path)
+		if (!this.path) {
 			return;
-		this.overrideModName = "";
+		}
+		this.overrideModName = '';
 		const modsPaths = api.getAllMods(this.assetsPath);
 		for (let i = 0; i < modsPaths.length; ++i) {
 			const modAssetsPath = this.path.join(modsPaths[i].path, 'assets/');
@@ -72,7 +73,7 @@ export class ElectronService {
 		} 
 	}
 
-	public setModOverride(modName : string) {
+	public setModOverride(modName: string) {
 		this.overrideModName = modName;
 		this.globalEvents.assetsPathChange.next(modName);
 		localStorage.setItem(this.overrideStorageName, modName);
@@ -98,7 +99,9 @@ export class ElectronService {
 			const files = this.fs.readdirSync(path);
 			return files.includes('data') && files.includes('media');
 		} catch (e) {
-			if (!ignoreError) console.error(e);
+			if (!ignoreError) {
+				console.error(e);
+			}
 			return false;
 		}
 	}

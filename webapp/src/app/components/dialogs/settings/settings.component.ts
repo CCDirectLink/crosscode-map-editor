@@ -27,9 +27,10 @@ export class SettingsComponent implements OnInit {
 		this.folderFormControl.setValue(this.electron.getAssetsPath());
 		this.folderFormControl.valueChanges.subscribe(() => this.resetIcon());
 		
-		if (this.check()) 
+		if (this.check()) {
 			this.initModChoices();
-	}
+		}
+	}	
 	
 	initModChoices() {
 		this.modChoices.splice(0);
