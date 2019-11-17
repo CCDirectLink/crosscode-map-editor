@@ -4,7 +4,7 @@ import {Dialog, Remote} from 'electron';
 import * as nodeFs from 'fs';
 import * as nodePath from 'path';
 import {api} from 'cc-map-editor-common';
-
+import {GlobalEventsService} from '../shared/global-events.service';
 @Injectable()
 export class ElectronService {
 	
@@ -12,12 +12,12 @@ export class ElectronService {
 	private readonly path?: typeof nodePath;
 	private storageName = 'assetsPath';
 	private assetsPath = '';
-	private allModsAssetsPath: Map = new Map();
+	private allModsAssetsPath: Map<string, any> = new Map();
 	private	overrideModName: string = "";
 	private overrideStorageName = 'overrideModName';
 	private readonly remote?: Remote;
 	
-	constructor() {
+	constructor(private globalEvents: GlobalEventsService) {
 		if (!Globals.isElectron) {
 			return;
 		}
@@ -53,7 +53,7 @@ export class ElectronService {
 	private resetModsAssetsPath() {
 		if (!this.path)
 			return;
-		this.modAssetsPathIndex = "";
+		this.overrideModName = "";
 		const modsPaths = api.getAllMods(this.assetsPath);
 		for (let i = 0; i < modsPaths.length; ++i) {
 			const modAssetsPath = this.path.join(modsPaths[i].path, 'assets/');
@@ -68,11 +68,13 @@ export class ElectronService {
 		const modName = localStorage.getItem(this.overrideStorageName);
 		if (modName) {
 			this.overrideModName = modName;
+			this.globalEvents.assetsPathChange.next(modName);
 		} 
 	}
 
 	public setModOverride(modName : string) {
 		this.overrideModName = modName;
+		this.globalEvents.assetsPathChange.next(modName);
 		localStorage.setItem(this.overrideStorageName, modName);
 	}
 

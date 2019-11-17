@@ -5,7 +5,7 @@ import {HttpClientService} from '../../services/http-client.service';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {MapNode, MapNodeRoot} from './mapNode.model';
 import {VirtualMapNode} from './virtualMapNode.model';
-
+import {GlobalEventsService} from '../../shared/global-events.service';
 
 @Component({
 	selector: 'app-load-map',
@@ -35,9 +35,15 @@ export class LoadMapComponent {
 	constructor(
 		private mapLoader: MapLoaderService,
 		private http: HttpClientService,
+		private globalEvents: GlobalEventsService,
 	) {
 		this.mapsSource.data = [];
 		this.refresh();
+
+		globalEvents.assetsPathChange.subscribe((modName) => {
+			console.log(`New Mod Name ${modName}`);
+			this.refresh()
+		});
 	}
 	
 	focusInput() {
