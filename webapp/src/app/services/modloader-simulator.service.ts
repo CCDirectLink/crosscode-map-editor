@@ -44,7 +44,6 @@ export class ModloaderSimulatorService {
 				this.mods.push(mod);
 			}
 		}
-		console.log(this.mods);
 	}
 	
 	private hasAssetsPath(dir: string) {
@@ -60,6 +59,9 @@ export class ModloaderSimulatorService {
 	}
 	
 	resolvePath(path: string) {
+		if (!this.path) {
+			return path;
+		}
 		const basePath = this.electron.getAssetsPath(false);
 		let overridePath = this.path.join(basePath, path);
 		for (const mod of this.mods) {
@@ -71,7 +73,7 @@ export class ModloaderSimulatorService {
 	}
 
 	getPatchFiles(relativePath: string) {
-		if (!this.fs) {
+		if (!this.fs || !this.path) {
 			return [];
 		}
 		
