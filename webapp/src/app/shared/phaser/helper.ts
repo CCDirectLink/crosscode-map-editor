@@ -75,9 +75,15 @@ export class Helper {
 		}
 		
 		// load json
-		scene.load.json(key, Globals.URL + key + '.json');
+		const truePath = Globals.modloaderSimulator.resolvePath(key + '.json');
+		scene.load.json(key, 'file://' + truePath);
 		scene.load.once('complete', () => {
-			return callback(scene.cache.json.get(key));
+			const data = scene.cache.json.get(key);
+			const patches = Globals.modloaderSimulator.getPatchFiles(key + '.json');
+			if(patches.length) {
+				console.log(`${key} patches`, patches);
+			}
+			return callback(data);
 		});
 		scene.load.start();
 	}
@@ -96,13 +102,13 @@ export class Helper {
 		if (!key) {
 			return false;
 		}
-		
+
 		if (scene.textures.exists(key)) {
 			return true;
 		}
-		
 		return new Promise(res => {
-			scene.load.image(key, Globals.URL + key);
+			const truePath = Globals.modloaderSimulator.resolvePath(key);
+			scene.load.image(key, 'file://' + truePath);
 			scene.load.once('complete', () => res(true));
 			scene.load.once('loaderror', () => res(false));
 			scene.load.start();
