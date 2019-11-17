@@ -18,6 +18,7 @@ import {ModalDirective} from './modal.directive';
 import {KeepHtmlPipe} from './keep-html.pipe';
 import {SettingsComponent} from '../components/dialogs/settings/settings.component';
 import {OverlayModule} from './overlay/overlay.module';
+import {ModloaderSimulatorService} from './../services/modloader-simulator.service';
 
 import {MapContentSettingsComponent} from '../components/dialogs/map-settings/map-content-settings/map-content-settings.component';
 import {HighlightDirective} from './highlight.directive';
@@ -56,6 +57,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 		MapLoaderService,
 		GlobalEventsService,
 		EntityRegistryService,
+		ModloaderSimulatorService,
 	],
 	entryComponents: [
 		JsonEditorComponent,
