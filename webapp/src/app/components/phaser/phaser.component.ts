@@ -10,6 +10,7 @@ import {MainScene} from '../../shared/phaser/main-scene';
 import {HeightMapService} from '../../services/height-map/height-map.service';
 import {AutotileService} from '../../services/autotile/autotile.service';
 import {EntityRegistryService} from '../../shared/phaser/entities/registry/entity-registry.service';
+import {ModloaderSimulatorService} from '../../services/modloader-simulator.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -26,7 +27,8 @@ export class PhaserComponent implements OnInit {
 	            private heightMap: HeightMapService,
 	            private http: HttpClientService,
 	            registry: EntityRegistryService,
-	            autotile: AutotileService
+				autotile: AutotileService,
+				modloaderSimulator: ModloaderSimulatorService
 	) {
 		Globals.stateHistoryService = stateHistory;
 		Globals.mapLoaderService = mapLoader;
@@ -34,6 +36,7 @@ export class PhaserComponent implements OnInit {
 		Globals.globalEventsService = globalEvents;
 		Globals.autotileService = autotile;
 		Globals.entityRegistry = registry;
+		Globals.modloaderSimulator = modloaderSimulator;
 	}
 	
 	
