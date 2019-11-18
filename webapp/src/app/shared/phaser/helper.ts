@@ -79,11 +79,12 @@ export class Helper {
 		scene.load.json(key, 'file://' + truePath);
 		scene.load.once('complete', () => {
 			const data = scene.cache.json.get(key);
-			const patches = Globals.modloaderSimulator.getPatchFiles(key + '.json');
-			if(patches.length) {
-				console.log(`${key} patches`, patches);
-			}
-			return callback(data);
+			Globals.modloaderSimulator
+						.patchJson(data, key + '.json')
+						.then((data: any) => {
+							callback(data);
+						});
+			return;
 		});
 		scene.load.start();
 	}
