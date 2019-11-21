@@ -8,7 +8,8 @@ import {Globals} from '../shared/globals';
 import {GlobalEventsService} from '../shared/global-events.service';
 import {api} from 'cc-map-editor-common';
 import {orderByDependencies} from './modloader-simulator-utils';
-import {patch} from './lib/patch-steps-es6';
+// @ts-ignore
+import {patch} from './lib/patch-steps-es6.js';
 import {Helper} from '../shared/phaser/helper';
 
 @Injectable({
@@ -78,7 +79,7 @@ export class ModloaderSimulatorService {
 		const patchDataArr = this.getPatchFiles(relativeJsonPath);
 		for (const {mod, data: patchData} of patchDataArr) {
 			const relativeModPath = this.getRelativePath(mod.path);
-			await patch(data, patchData, (fromGame, relativePath) => {
+			await patch(data, patchData, (fromGame: string | boolean, relativePath: string): Promise<any> => {
 				if (this.path) {
 					if (!fromGame) {
 						relativePath = this.path.join(relativeModPath, relativePath);
