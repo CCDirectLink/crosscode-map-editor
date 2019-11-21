@@ -66,37 +66,41 @@ export class Helper {
 		return JSON.parse(JSON.stringify(obj));
 	}
 	
-	private static patchJson(data: string, key: string, callback: (json: any) => void) {
-		const dataClone = Helper.copy(data);
-		Globals.modloaderSimulator
+	private static patchJson(data: string, key: string, callback: (json: any) => void, skipPatch: boolean = false) {
+		if (!skipPatch) {
+			const dataClone = Helper.copy(data);
+			Globals.modloaderSimulator
 			.patchJson(dataClone, key + '.json')
 			.then((data: any) => {
 				callback(data);
-			});
+			});	
+		} else {
+			callback(data);
+		}
+		
 	}
 
-	public static getJson(key: string, callback: (json: any) => void) {
+	public static getJson(key: string, callback: (json: any) => void, skipPatch: boolean = false) {
 		const scene = Globals.scene;
 		
 		// get json from cache
 		if (scene.cache.json.has(key)) {
-			return Helper.patchJson(scene.cache.json.get(key), key, callback);
+			return Helper.patchJson(scene.cache.json.get(key), key, callback, skipPatch);
 		}
 		
 		// load json
 		const truePath = Globals.modloaderSimulator.resolvePath(key + '.json');
 		scene.load.json(key, 'file://' + truePath);
 		scene.load.once('complete', () => {
-			Helper.patchJson(scene.cache.json.get(key), key, callback);
-			
+			Helper.patchJson(scene.cache.json.get(key), key, callback, skipPatch);
 			return;
 		});
 		scene.load.start();
 	}
 	
-	public static getJsonPromise(key: string) {
+	public static getJsonPromise(key: string, skipPatch: boolean = false) {
 		return new Promise(resolve => {
-			this.getJson(key, json => resolve(json));
+			this.getJson(key, json => resolve(json), skipPatch);
 		});
 	}
 	

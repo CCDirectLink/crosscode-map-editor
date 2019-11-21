@@ -80,17 +80,18 @@ export class ModloaderSimulatorService {
 		for (const {mod, data: patchData} of patchDataArr) {
 			const relativeModPath = this.getRelativePath(mod.path);
 			await patch(data, patchData, (fromGame: string | boolean, relativePath: string): Promise<any> => {
+				const skipPatch = fromGame === false ? true: false;
 				if (this.path) {
 					if (!fromGame) {
 						relativePath = this.path.join(relativeModPath, relativePath);
 					}
-
+					
 					// highly likely it has .json at the end so remove it
 					if (relativePath.toLowerCase().endsWith('.json')) {
 						relativePath = relativePath.substring(0, relativePath.length - 5);
 					}
 				}
-				return Helper.getJsonPromise(relativePath);
+				return Helper.getJsonPromise(relativePath, skipPatch);
 			});
 		}
 		return data;
