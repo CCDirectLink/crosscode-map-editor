@@ -66,24 +66,29 @@ export class Helper {
 		return JSON.parse(JSON.stringify(obj));
 	}
 	
+	private static patchJson(data: string, key: string, callback: (json: any) => void) {
+		const dataClone = Helper.copy(data);
+		Globals.modloaderSimulator
+			.patchJson(dataClone, key + '.json')
+			.then((data: any) => {
+				callback(data);
+			});
+	}
+
 	public static getJson(key: string, callback: (json: any) => void) {
 		const scene = Globals.scene;
 		
 		// get json from cache
 		if (scene.cache.json.has(key)) {
-			return callback(scene.cache.json.get(key));
+			return Helper.patchJson(scene.cache.json.get(key), key, callback);
 		}
 		
 		// load json
 		const truePath = Globals.modloaderSimulator.resolvePath(key + '.json');
 		scene.load.json(key, 'file://' + truePath);
 		scene.load.once('complete', () => {
-			const data = scene.cache.json.get(key);
-			Globals.modloaderSimulator
-						.patchJson(data, key + '.json')
-						.then((data: any) => {
-							callback(data);
-						});
+			Helper.patchJson(scene.cache.json.get(key), key, callback);
+			
 			return;
 		});
 		scene.load.start();
