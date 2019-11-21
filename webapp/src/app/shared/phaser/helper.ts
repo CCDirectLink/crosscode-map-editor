@@ -66,18 +66,13 @@ export class Helper {
 		return JSON.parse(JSON.stringify(obj));
 	}
 	
-	private static patchJson(data: string, key: string, callback: (json: any) => void, skipPatch: boolean = false) {
-		if (!skipPatch) {
-			const dataClone = Helper.copy(data);
-			Globals.modloaderSimulator
-			.patchJson(dataClone, key + '.json')
-			.then((data: any) => {
-				callback(data);
-			});	
-		} else {
+	private static patchJson(data: string, key: string, callback: (json: any) => void) {
+		const dataClone = Helper.copy(data);
+		Globals.modloaderSimulator
+		.patchJson(dataClone, key + '.json')
+		.then((data: any) => {
 			callback(data);
-		}
-		
+		});	
 	}
 
 	public static getJson(key: string, callback: (json: any) => void, skipPatch: boolean = false) {
@@ -85,15 +80,20 @@ export class Helper {
 		
 		// get json from cache
 		if (scene.cache.json.has(key)) {
-			return Helper.patchJson(scene.cache.json.get(key), key, callback, skipPatch);
+			if (skipPatch) {
+				return callback(Helper.copy(scene.cache.json.get(key)));
+			}
+			return Helper.patchJson(scene.cache.json.get(key), key, callback);
 		}
 		
 		// load json
 		const truePath = Globals.modloaderSimulator.resolvePath(key + '.json');
 		scene.load.json(key, 'file://' + truePath);
 		scene.load.once('complete', () => {
-			Helper.patchJson(scene.cache.json.get(key), key, callback, skipPatch);
-			return;
+			if (skipPatch) {
+				return callback(Helper.copy(scene.cache.json.get(key)));
+			}
+			return Helper.patchJson(scene.cache.json.get(key), key, callback);
 		});
 		scene.load.start();
 	}
