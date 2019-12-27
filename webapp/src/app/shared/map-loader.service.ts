@@ -62,7 +62,7 @@ export class MapLoaderService {
 	}
 	
 	loadMapByName(name: string) {
-		const path = PathResolver.convertToPath(BasePath.MAPS, name, FileExtension.JSON);
+		const path = PathResolver.convertToPath(BasePath.ROOT, name, FileExtension.JSON);
 		
 		this.http.getAssetsFile<CrossCodeMap>(path).subscribe(map => {
 			this.loadRawMap(map, name, path);
