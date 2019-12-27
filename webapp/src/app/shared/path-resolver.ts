@@ -1,5 +1,6 @@
 export enum BasePath {
-	MAPS = 'data/maps/'
+	MAPS = 'data/maps/',
+	ROOT = ''
 }
 
 export enum FileExtension {
