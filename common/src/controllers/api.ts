@@ -2,11 +2,15 @@ import { requireLocal } from '../require';
 
 import * as nodefs from 'fs';
 import * as nodepath from 'path';
+import {GenericModLoader} from "@ac2pic/modloader";
 
 const fs: typeof nodefs = requireLocal('fs');
 const path: typeof nodepath = requireLocal('path');
+const CCModLoader: typeof GenericModLoader = requireLocal('@ac2pic/modloader');
+const modloader = new CCModLoader;
 
 export { saveFile } from './saveFile';
+
 
 async function listAllFiles(dir: string, filelist: string[], ending: string, root?: string): Promise<string[]> {
 	if (root === undefined) {
@@ -61,4 +65,11 @@ export async function getAllMaps(dir: string) {
 	return (await listAllFiles(path.resolve(dir, 'data/maps/'), [], 'json', path.resolve(dir)))
 		.map(p => p.substring('data/maps/'.length, p.length - '.json'.length))
 		.map(p => p.replace(/\//g, '.').replace(/\\/g, '.'));
+}
+
+export function changeAssetsPath(dir: string): void {
+	modloader.setGamePath(dir);
+	modloader.loadMods();
+
+	console.log(modloader.getMods());
 }
