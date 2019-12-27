@@ -89,3 +89,7 @@ export function changeAssetsPath(dir: string): void {
 
 	console.log(modloader.getMods());
 }
+
+export function patchJson(data: any, relativePath: string): Promise<any> {
+	return modloader.patchJson(data, relativePath);
+}

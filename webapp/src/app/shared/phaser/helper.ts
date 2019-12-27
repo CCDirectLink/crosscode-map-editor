@@ -76,9 +76,26 @@ export class Helper {
 		}
 		
 		// load json
-		scene.load.json(key, Globals.URL + key + '.json');
+		const relativePath = key + '.json';
+		let truePath: string;
+		if (Globals.isElectron) {
+			truePath = api.getResourcePath(relativePath);
+		} else {
+			truePath = Globals.URL + relativePath;
+		}
+		
+		console.log(`${relativePath} is at ${truePath}`);
+
+		scene.load.json(key, truePath);
 		scene.load.once('complete', () => {
-			return callback(scene.cache.json.get(key));
+			const data: any = scene.cache.json.get(key);
+			if (Globals.isElectron) {
+				api.patchJson(data, relativePath).then((patchedData: any) => {
+					callback(patchedData);
+				});
+			} else {
+				return callback(data);
+			}
 		});
 		scene.load.start();
 	}
