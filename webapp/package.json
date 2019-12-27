@@ -55,6 +55,7 @@
 	},
 	"private": true,
 	"dependencies": {
+		"@ac2pic/modloader": "^1.0.0",
 		"@angular/animations": "^8.2.3",
 		"@angular/cdk": "^8.0.0",
 		"@angular/common": "^8.2.3",
