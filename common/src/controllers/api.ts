@@ -79,6 +79,10 @@ export async function getAllMaps(dir: string) {
 			.map(p => p.replace(/\//g, '.').replace(/\\/g, '.'));
 }
 
+export function getResourcePath(relativePath: string): string {
+	return modloader.getResourcePath(relativePath);
+}
+
 export function changeAssetsPath(dir: string): void {
 	modloader.setGamePath(dir);
 	modloader.loadMods();

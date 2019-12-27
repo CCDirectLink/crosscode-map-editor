@@ -1,6 +1,7 @@
 import {Point} from '../../models/cross-code-map';
 import {Globals} from '../globals';
 import {CCMapLayer} from './tilemap/cc-map-layer';
+import {api} from 'cc-map-editor-common';
 import Scene = Phaser.Scene;
 
 export class Helper {
@@ -102,7 +103,15 @@ export class Helper {
 		}
 		
 		return new Promise(res => {
-			scene.load.image(key, Globals.URL + key);
+			let truePath;
+			if (Globals.isElectron) {
+				truePath = api.getResourcePath(key);
+			} else {
+				truePath = Globals.URL + key;
+			}
+
+			console.log(`${key} is at ${truePath}`);
+			scene.load.image(key, truePath);
 			scene.load.once('complete', () => res(true));
 			scene.load.once('loaderror', () => res(false));
 			scene.load.start();
