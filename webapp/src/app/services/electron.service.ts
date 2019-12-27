@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Globals} from '../shared/globals';
 import {Dialog, Remote} from 'electron';
+import {api} from 'cc-map-editor-common';
 import * as nodeFs from 'fs';
 
 @Injectable()
@@ -11,7 +12,7 @@ export class ElectronService {
 	private storageName = 'assetsPath';
 	private assetsPath = '';
 	private readonly remote?: Remote;
-	
+
 	constructor() {
 		if (!Globals.isElectron) {
 			return;
@@ -23,6 +24,7 @@ export class ElectronService {
 		this.fs = remote.require('fs');
 		
 		this.assetsPath = localStorage.getItem(this.storageName) || '';
+		api.changeAssetsPath(this.assetsPath);
 		this.updateURL();
 	}
 	
@@ -71,7 +73,7 @@ export class ElectronService {
 			defaultPath: 'C:\\Program Files (x86)\\Steam\\steamapps\\common\\CrossCode\\assets',
 			properties: ['openDirectory']
 		});
-		
+
 		return newPath ? newPath[0] : undefined;
 	}
 	
@@ -79,6 +81,9 @@ export class ElectronService {
 		const normalized = ElectronService.normalizePath(path);
 		this.assetsPath = normalized;
 		localStorage.setItem(this.storageName, normalized);
+		
+		api.changeAssetsPath(normalized);
+
 		this.updateURL();
 	}
 	
