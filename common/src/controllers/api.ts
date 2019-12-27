@@ -61,10 +61,22 @@ export async function getAllTilesets(dir: string) {
 	return await listAllFiles(path.resolve(dir, 'media/map/'), [], 'png', path.resolve(dir));
 }
 
+
 export async function getAllMaps(dir: string) {
-	return (await listAllFiles(path.resolve(dir, 'data/maps/'), [], 'json', path.resolve(dir)))
-		.map(p => p.substring('data/maps/'.length, p.length - '.json'.length))
-		.map(p => p.replace(/\//g, '.').replace(/\\/g, '.'));
+	let baseMapFiles = await listAllFiles(path.resolve(dir, 'data/maps/'), [], 'json', path.resolve(dir));
+
+	const mods = modloader.getMods();
+	for (const mod of mods) {
+		try {
+			const mapFiles = await listAllFiles(mod.resolvePath('data/maps/'), [], 'json', path.resolve(dir));
+			console.log(mapFiles);
+			baseMapFiles = baseMapFiles.concat(mapFiles);
+		} catch (e) {}
+	}
+
+	return baseMapFiles
+			.map(p => p.substring(0, p.length - '.json'.length))
+			.map(p => p.replace(/\//g, '.').replace(/\\/g, '.'));
 }
 
 export function changeAssetsPath(dir: string): void {
