@@ -16,7 +16,7 @@ export class PathResolver {
 	 * @param name The name of the asset in relation to base using '.' as separator.
 	 * @param extension
 	 */
-	public static convertToPath(base: BasePath, name: string, extension: FileExtension) {
+	public static convertToPath(base: BasePath | string, name: string, extension: FileExtension) {
 		return base + name.replace(/\./g, '/') + extension;
 	}
 }
