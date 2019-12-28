@@ -91,6 +91,10 @@ export class Helper {
 			const data: any = scene.cache.json.get(key);
 			if (Globals.isElectron) {
 				api.patchJson(data, relativePath).then((patchedData: any) => {
+					// no longer need to patch every time
+					scene.cache.json.remove(key);
+					scene.cache.json.add(key, patchedData);
+					
 					callback(patchedData);
 				});
 			} else {
