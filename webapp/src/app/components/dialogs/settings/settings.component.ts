@@ -3,6 +3,8 @@ import {OverlayRefControl} from '../../../shared/overlay/overlay-ref-control';
 import {ElectronService} from '../../../services/electron.service';
 import {FormControl} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
+import {Globals} from '../../../shared/globals';
+import {api} from 'cc-map-editor-common';
 
 @Component({
 	selector: 'app-settings',
@@ -12,9 +14,10 @@ import {MatSnackBar} from '@angular/material';
 export class SettingsComponent implements OnInit {
 	
 	folderFormControl = new FormControl();
+	mapContextFormControl = new FormControl();
 	icon = 'help_outline';
 	iconCss = 'icon-undefined';
-	
+	mods: any[] = [{name: "BASE"}]; 
 	constructor(
 		private ref: OverlayRefControl,
 		private electron: ElectronService,
@@ -25,10 +28,25 @@ export class SettingsComponent implements OnInit {
 	ngOnInit() {
 		this.folderFormControl.setValue(this.electron.getAssetsPath());
 		this.folderFormControl.valueChanges.subscribe(() => this.resetIcon());
-		
-		this.check();
+	
+		if (this.check()) {
+			if (Globals.isElectron) {
+				this.initMods();
+			}
+		}
 	}
 	
+	initMods() {
+		this.mods.splice(1);
+		const mods = api.getMods();
+
+		for (const mod of mods) {
+			if (mod.hasPath('data/maps')) {
+				this.mods.push({name: mod.name, path: mod.resolveRelativePath('assets/')});
+			}
+		}
+	}
+
 	private resetIcon() {
 		this.icon = 'help_outline';
 		this.iconCss = 'icon-undefined';
@@ -56,10 +74,12 @@ export class SettingsComponent implements OnInit {
 		this.setIcon(valid);
 		if (valid) {
 			this.folderFormControl.setErrors(null);
+			return true;
 		} else {
 			this.folderFormControl.setErrors({
 				invalid: true
 			});
+			return false;
 		}
 	}
 	
@@ -73,6 +93,13 @@ export class SettingsComponent implements OnInit {
 		ref.onAction().subscribe(() => this.electron.relaunch());
 	}
 	
+
+	selectMod(index: number) {
+		const mod = this.mods[index];
+		console.log('Selected', mod);
+		Globals.globalEventsService.changeMapContext.next(mod);
+	}
+
 	close() {
 		this.ref.close();
 	}
