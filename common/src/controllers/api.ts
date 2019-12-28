@@ -6,8 +6,12 @@ import {GenericModLoader, Mod} from '@ac2pic/modloader';
 
 const fs: typeof nodefs = requireLocal('fs');
 const path: typeof nodepath = requireLocal('path');
-const CCModLoader: typeof GenericModLoader = requireLocal('@ac2pic/modloader');
-const modloader = new CCModLoader;
+let modloader;
+try {
+	const CCModLoader: typeof GenericModLoader = requireLocal('@ac2pic/modloader');
+	modloader = new CCModLoader;
+	
+} catch (e) {}
 
 export { saveFile } from './saveFile';
 
@@ -75,8 +79,6 @@ export function getResourcePath(relativePath: string): string {
 export function changeAssetsPath(dir: string): void {
 	modloader.setGamePath(dir);
 	modloader.loadMods();
-
-	console.log(modloader.getMods());
 }
 
 export function getMods(): Mod[] {
