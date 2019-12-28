@@ -6,6 +6,7 @@ import {CCMap} from './phaser/tilemap/cc-map';
 import {CCMapLayer} from './phaser/tilemap/cc-map-layer';
 import {HttpClientService} from '../services/http-client.service';
 import {Globals} from './globals';
+import {GlobalEventsService} from './global-events.service';
 import {ElectronService} from '../services/electron.service';
 import {BasePath, FileExtension, PathResolver} from './path-resolver';
 
@@ -15,12 +16,20 @@ export class MapLoaderService {
 	private _map = new BehaviorSubject<CrossCodeMap>(undefined as any);
 	tileMap = new BehaviorSubject<CCMap | undefined>(undefined);
 	selectedLayer = new BehaviorSubject<CCMapLayer | undefined>(undefined);
-	
+	private pathOverride = ''; 
 	constructor(
 		private snackBar: MatSnackBar,
 		private http: HttpClientService,
-		private electron: ElectronService
+		private electron: ElectronService,
+		private eventService: GlobalEventsService
 	) {
+		this.eventService.changeMapContext.subscribe(({name, path: mapPath}: any) => {
+			if (name !== "BASE") {
+				this.pathOverride = mapPath;
+			} else {
+				this.pathOverride = '';
+			}
+		});
 	}
 	
 	loadMap(event: Event) {
@@ -62,7 +71,7 @@ export class MapLoaderService {
 	}
 	
 	loadMapByName(name: string) {
-		const path = PathResolver.convertToPath(BasePath.ROOT, name, FileExtension.JSON);
+		const path = PathResolver.convertToPath(this.pathOverride + BasePath.MAPS, name, FileExtension.JSON);
 		
 		this.http.getAssetsFile<CrossCodeMap>(path).subscribe(map => {
 			this.loadRawMap(map, name, path);
