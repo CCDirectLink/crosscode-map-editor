@@ -5,7 +5,7 @@ import {HttpClientService} from '../../services/http-client.service';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {MapNode, MapNodeRoot} from './mapNode.model';
 import {VirtualMapNode} from './virtualMapNode.model';
-
+import {GlobalEventsService} from '../../shared/global-events.service';
 
 @Component({
 	selector: 'app-load-map',
@@ -32,12 +32,24 @@ export class LoadMapComponent {
 	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering.
 	filter = '';
 	
+	private overridePath = "";
+
 	constructor(
 		private mapLoader: MapLoaderService,
 		private http: HttpClientService,
+		private eventService: GlobalEventsService
 	) {
 		this.mapsSource.data = [];
 		this.refresh();
+
+		this.eventService.changeMapContext.subscribe(({name, path: modPath} : any) => {
+			if (name === "BASE") {
+				this.overridePath = "";
+			} else {
+				this.overridePath = modPath;
+			}
+			this.refresh();
+		});
 	}
 	
 	focusInput() {
@@ -46,7 +58,7 @@ export class LoadMapComponent {
 	
 	refresh() {
 		this.loading = true;
-		this.http.getMaps().subscribe(paths => {
+		this.http.getMaps(this.overridePath).subscribe(paths => {
 			this.loading = false;
 			this.displayMaps(paths);
 			this.update();
