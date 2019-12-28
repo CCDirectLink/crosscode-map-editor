@@ -15,6 +15,7 @@ export class GlobalEventsService {
 	offsetMap = new Subject<Point>();
 	toggleVisibility = new Subject<void>();
 	showAddEntityMenu = new Subject<Point>();
+	changeMapContext = new Subject<string>();
 
 	constructor() {
 	}
