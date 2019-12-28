@@ -32,7 +32,7 @@ export class LoadMapComponent {
 	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering.
 	filter = '';
 	
-	private overridePath = "";
+	private overridePath = '';
 
 	constructor(
 		private mapLoader: MapLoaderService,
@@ -42,9 +42,9 @@ export class LoadMapComponent {
 		this.mapsSource.data = [];
 		this.refresh();
 
-		this.eventService.changeMapContext.subscribe(({name, path: modPath} : any) => {
-			if (name === "BASE") {
-				this.overridePath = "";
+		this.eventService.changeMapContext.subscribe(({name, path: modPath}: any) => {
+			if (name === 'BASE') {
+				this.overridePath = '';
 			} else {
 				this.overridePath = modPath;
 			}

@@ -24,7 +24,7 @@ export class MapLoaderService {
 		private eventService: GlobalEventsService
 	) {
 		this.eventService.changeMapContext.subscribe(({name, path: mapPath}: any) => {
-			if (name !== "BASE") {
+			if (name !== 'BASE') {
 				this.pathOverride = mapPath;
 			} else {
 				this.pathOverride = '';

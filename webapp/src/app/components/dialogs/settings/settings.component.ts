@@ -17,7 +17,7 @@ export class SettingsComponent implements OnInit {
 	mapContextFormControl = new FormControl();
 	icon = 'help_outline';
 	iconCss = 'icon-undefined';
-	mods: any[] = [{name: "BASE"}]; 
+	mods: any[] = [{name: 'BASE'}]; 
 	constructor(
 		private ref: OverlayRefControl,
 		private electron: ElectronService,

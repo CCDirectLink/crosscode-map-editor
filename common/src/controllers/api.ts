@@ -2,7 +2,7 @@ import { requireLocal } from '../require';
 
 import * as nodefs from 'fs';
 import * as nodepath from 'path';
-import {GenericModLoader, Mod} from "@ac2pic/modloader";
+import {GenericModLoader, Mod} from '@ac2pic/modloader';
 
 const fs: typeof nodefs = requireLocal('fs');
 const path: typeof nodepath = requireLocal('path');

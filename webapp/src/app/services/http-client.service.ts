@@ -32,11 +32,11 @@ export class HttpClientService {
 		return this.toObservable(api.getAllTilesets(path));
 	}
 	
-	getMaps(path: string = ""): Observable<string[]> {
+	getMaps(path: string = ''): Observable<string[]> {
 		if (!Globals.isElectron) {
 			return this.http.get<string[]>(Globals.URL + 'api/allMaps');
 		}
-		path = this.electron.getAssetsPath() + "/" + path;
+		path = this.electron.getAssetsPath() + '/' + path;
 
 		return this.toObservable(api.getAllMaps(path));
 	}
