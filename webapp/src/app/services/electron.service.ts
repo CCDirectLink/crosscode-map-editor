@@ -24,7 +24,6 @@ export class ElectronService {
 		this.fs = remote.require('fs');
 		
 		this.assetsPath = localStorage.getItem(this.storageName) || '';
-		api.changeAssetsPath(this.assetsPath);
 		this.updateURL();
 	}
 	
@@ -40,6 +39,10 @@ export class ElectronService {
 	
 	private updateURL() {
 		Globals.URL = 'file:///' + this.assetsPath;
+
+		if (Globals.isElectron) {
+			api.changeAssetsPath(this.assetsPath);
+		}
 	}
 	
 	public relaunch() {
@@ -81,8 +84,6 @@ export class ElectronService {
 		const normalized = ElectronService.normalizePath(path);
 		this.assetsPath = normalized;
 		localStorage.setItem(this.storageName, normalized);
-		
-		api.changeAssetsPath(normalized);
 
 		this.updateURL();
 	}
