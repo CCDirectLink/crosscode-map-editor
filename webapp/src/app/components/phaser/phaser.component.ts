@@ -34,6 +34,7 @@ export class PhaserComponent implements OnInit {
 		Globals.globalEventsService = globalEvents;
 		Globals.autotileService = autotile;
 		Globals.entityRegistry = registry;
+		Globals.httpService = http;
 	}
 	
 	
