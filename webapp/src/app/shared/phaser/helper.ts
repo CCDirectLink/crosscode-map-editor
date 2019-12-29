@@ -84,7 +84,7 @@ export class Helper {
 
 		scene.load.json(key, truePath);
 		scene.load.once('complete', async () => {
-			let data: any = scene.cache.json.get(key);
+			const data: any = scene.cache.json.get(key);
 
 			const patchedData = await Globals.httpService.patchJson(data, relativePath);
 			scene.cache.json.remove(key);

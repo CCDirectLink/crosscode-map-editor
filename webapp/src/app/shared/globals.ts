@@ -27,5 +27,5 @@ export class Globals {
 	static phaserEventsService: PhaserEventsService;
 	static autotileService: AutotileService;
 	static entityRegistry: EntityRegistryService;
-	static httpService: HttpClientService
+	static httpService: HttpClientService;
 }
