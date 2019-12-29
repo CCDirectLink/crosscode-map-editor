@@ -67,6 +67,7 @@
 		"@angular/platform-browser": "^8.2.3",
 		"@angular/platform-browser-dynamic": "^8.2.3",
 		"@angular/router": "^8.2.3",
+		"@types/node": "^13.1.1",
 		"angular2-draggable": "^2.3.1",
 		"cc-map-editor-common": "../common",
 		"core-js": "^3.1.3",
