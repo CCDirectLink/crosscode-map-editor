@@ -35,7 +35,7 @@
 	"browserslist": [
 		"Electron >= 4"
 	],
-	"scripts": { 
+	"scripts": {
 		"ng": "ng",
 		"start": "ng serve",
 		"start:aot": "ng serve --aot",
@@ -55,7 +55,7 @@
 	},
 	"private": true,
 	"dependencies": {
-		"@ac2pic/modloader": "^1.0.5",
+		"@ac2pic/modloader": "^1.0.6",
 		"@angular/animations": "^8.2.3",
 		"@angular/cdk": "^8.0.0",
 		"@angular/common": "^8.2.3",

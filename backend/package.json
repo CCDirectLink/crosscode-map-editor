@@ -11,7 +11,7 @@
     "debug": "nodemon -e ts --watch src --watch ../common --exec \"npm run build && node --inspect dist/server.js\""
   },
   "dependencies": {
-    "@ac2pic/modloader": "^1.0.5",
+    "@ac2pic/modloader": "^1.0.6",
     "body-parser": "^1.19.0",
     "cc-map-editor-common": "../common",
     "cors": "^2.8.5",
