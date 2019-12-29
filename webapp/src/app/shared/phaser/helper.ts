@@ -65,44 +65,30 @@ export class Helper {
 	public static copy(obj: any) {
 		return JSON.parse(JSON.stringify(obj));
 	}
-	
-	public static async getJson(key: string, callback: (json: any) => void) {
-		const scene = Globals.scene;
 		
-		// get json from cache
+
+	public static getJson(key: string, callback: (json: any) => void) {
+		const scene = Globals.scene;
+
 		if (scene.cache.json.has(key)) {
 			return callback(scene.cache.json.get(key));
 		}
 		
-		// load json
-		const relativePath = key + '.json';
-		let truePath: string = await Globals.httpService.getResourcePath(relativePath);
-		if (!Globals.isElectron) {
-			truePath = Globals.URL + truePath;
-		}
-	
-
-		scene.load.json(key, truePath);
-		scene.load.once('complete', async () => {
-			const data: any = scene.cache.json.get(key);
-
-			const patchedData = await Globals.httpService.patchJson(data, relativePath);
-			scene.cache.json.remove(key);
-			scene.cache.json.add(key, patchedData);
-			callback(patchedData);
+		Globals.modloaderService.loadJson(key + '.json').then((data) => {
+			scene.cache.json.add(key, data);
+			callback(data);
 		});
-		scene.load.start();
 	}
-	
+
 	public static getJsonPromise(key: string) {
 		return new Promise(resolve => {
 			this.getJson(key, json => resolve(json));
 		});
 	}
-	
 	/**
 	 * returns true if texture exists, false otherwise
 	 */
+	
 	public static async loadTexture(key: string | undefined, scene: Scene): Promise<boolean> {
 		
 		if (!key) {
@@ -113,16 +99,13 @@ export class Helper {
 			return true;
 		}
 		
-		return new Promise(async res => {
-			let truePath: string = await Globals.httpService.getResourcePath(key);
-			if (!Globals.isElectron) {
-				truePath = Globals.URL + truePath;
-			}
-
-			scene.load.image(key, truePath);
-			scene.load.once('complete', () => res(true));
-			scene.load.once('loaderror', () => res(false));
-			scene.load.start();
+		return new Promise(res => {
+			Globals.modloaderService.getResourcePath(key).subscribe((truePath) => {
+				scene.load.image(key, truePath);
+				scene.load.once('complete', () => res(true));
+				scene.load.once('loaderror', () => res(false));
+				scene.load.start();
+			});
 		});
 	}
 	

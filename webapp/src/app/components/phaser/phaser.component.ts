@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit} from '@angular/core';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {Globals} from '../../shared/globals';
-import {HttpClientService} from '../../services/http-client.service';
+import {ModloaderService} from '../../services/modloader.service';
 import {StateHistoryService} from '../../shared/history/state-history.service';
 import {PhaserEventsService} from '../../shared/phaser/phaser-events.service';
 import * as Phaser from 'phaser';
@@ -24,7 +24,7 @@ export class PhaserComponent implements OnInit {
 	            private stateHistory: StateHistoryService,
 	            private phaserEventsService: PhaserEventsService,
 	            private heightMap: HeightMapService,
-	            private http: HttpClientService,
+	            private modloader: ModloaderService,
 	            registry: EntityRegistryService,
 	            autotile: AutotileService
 	) {
@@ -34,7 +34,7 @@ export class PhaserComponent implements OnInit {
 		Globals.globalEventsService = globalEvents;
 		Globals.autotileService = autotile;
 		Globals.entityRegistry = registry;
-		Globals.httpService = http;
+		Globals.modloaderService = modloader;
 	}
 	
 	

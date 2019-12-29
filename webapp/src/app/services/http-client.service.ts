@@ -45,29 +45,6 @@ export class HttpClientService {
 		return this.http.get<T>(Globals.URL + path);
 	}
 	
-	getResourcePath(relativePath: string): Promise<string> {
-		if (!Globals.isElectron) {
-			return this.http.get<string>(Globals.URL + 'api/resource/path/?path=' + encodeURI(relativePath)).toPromise();
-		}
-
-		return Promise.resolve(api.getResourcePath(relativePath));
-	}
-
-	patchJson(data: any, relativePath: string): Promise<any> {
-		if (!Globals.isElectron) {
-			return this.http.post<any>(Globals.URL + 'api/resource/patch', {path: relativePath, data}).toPromise();
-		}
-		return api.patchJson(data, relativePath);
-	}
-
-	getAllModsAssetsPath(): Observable<any> {
-		if (!Globals.isElectron) {
-			return this.http.get<string[]>(Globals.URL + 'api/mods/assets/path');
-		}
-
-		return this.toObservable(Promise.resolve(api.getAllModsAssetsPath()));
-	}
-
 	saveFile(path: string, content: any) {
 		const file = {path: path, content: content};
 		if (!Globals.isElectron) {

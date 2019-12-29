@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Globals} from '../shared/globals';
 import {Dialog, Remote} from 'electron';
-import {api} from 'cc-map-editor-common';
 import * as nodeFs from 'fs';
+import { ModloaderService } from './modloader.service';
 
 @Injectable()
 export class ElectronService {
@@ -13,7 +13,9 @@ export class ElectronService {
 	private assetsPath = '';
 	private readonly remote?: Remote;
 
-	constructor() {
+	constructor(
+		private modloader: ModloaderService
+	) {
 		if (!Globals.isElectron) {
 			return;
 		}
@@ -40,9 +42,7 @@ export class ElectronService {
 	private updateURL() {
 		Globals.URL = 'file:///' + this.assetsPath;
 
-		if (Globals.isElectron) {
-			api.changeAssetsPath(this.assetsPath);
-		}
+		this.modloader.changeAssetsPath(this.assetsPath);
 	}
 	
 	public relaunch() {

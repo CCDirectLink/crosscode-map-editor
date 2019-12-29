@@ -1,11 +1,10 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {OverlayRefControl} from '../../../shared/overlay/overlay-ref-control';
 import {ElectronService} from '../../../services/electron.service';
+import {ModloaderService} from '../../../services/modloader.service';
 import {FormControl} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
 import {Globals} from '../../../shared/globals';
-import {api} from 'cc-map-editor-common';
-import {HttpClientService} from '../../../services/http-client.service';
 @Component({
 	selector: 'app-settings',
 	templateUrl: './settings.component.html',
@@ -23,7 +22,7 @@ export class SettingsComponent implements OnInit {
 		private ref: OverlayRefControl,
 		private electron: ElectronService,
 		private snackBar: MatSnackBar,
-		private http: HttpClientService
+		private modloader: ModloaderService,
 	) {
 	}
 	
@@ -45,7 +44,7 @@ export class SettingsComponent implements OnInit {
 	initMods() {
 		this.mods.splice(1);
 
-		this.http.getAllModsAssetsPath().subscribe(mods => this.mods.push(...mods));
+		this.modloader.getAllModsAssetsPath().subscribe(mods => this.mods.push(...mods));
 	}
 
 	private resetIcon() {

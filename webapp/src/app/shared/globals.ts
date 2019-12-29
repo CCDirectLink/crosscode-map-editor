@@ -5,7 +5,7 @@ import {GlobalEventsService} from './global-events.service';
 import {PhaserEventsService} from './phaser/phaser-events.service';
 import {AutotileService} from '../services/autotile/autotile.service';
 import {EntityRegistryService} from './phaser/entities/registry/entity-registry.service';
-import {HttpClientService} from '../services/http-client.service';
+import {ModloaderService} from '../services/modloader.service';
 
 export class Globals {
 	static isElectron = false;
@@ -27,5 +27,5 @@ export class Globals {
 	static phaserEventsService: PhaserEventsService;
 	static autotileService: AutotileService;
 	static entityRegistry: EntityRegistryService;
-	static httpService: HttpClientService;
+	static modloaderService: ModloaderService;
 }
