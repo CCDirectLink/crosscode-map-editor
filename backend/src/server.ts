@@ -5,6 +5,12 @@ import * as errorHandler from 'errorhandler';
 import * as cors from 'cors';
 import {config} from './config';
 import {api} from 'cc-map-editor-common';
+import * as path from 'path';
+
+// setup 
+api.changeAssetsPath(config.pathToCrosscode);
+
+
 
 const app = express();
 
@@ -24,7 +30,10 @@ app.use(bodyParser.urlencoded({extended: true}));
  */
 app.get('/api/allFiles', async (_, res) => res.json(await api.getAllFiles(config.pathToCrosscode)));
 app.get('/api/allTilesets', async (_, res) => res.json(await api.getAllTilesets(config.pathToCrosscode)));
-app.get('/api/allMaps', async (_, res) => res.json(await api.getAllMaps(config.pathToCrosscode)));
+app.get('/api/allMaps', async (req, res) => {
+	const mapPath = req.query.path || '';
+	res.json(await api.getAllMaps(config.pathToCrosscode + '/' + mapPath));
+});
 app.post('/api/saveFile', async (req, res) => {
 	try {
 		const msg = await api.saveFile(config.pathToCrosscode, req.body);
@@ -33,6 +42,33 @@ app.post('/api/saveFile', async (req, res) => {
 		console.error(e);
 		res.status(400).json({error: e});
 	}
+});
+
+
+app.get('/api/mods/assets/path', async (_, res) => {
+	const mods = api.getMods();
+	const assetsMods = [];  
+	for (const mod of mods) {
+		if (mod.hasPath('data/maps')) {
+			assetsMods.push({name: mod.name, path: mod.resolveRelativePath('assets/')});
+		}
+	}
+	res.json(assetsMods);
+});
+
+app.get('/api/resource/path', async (req, res) => {
+	const relativePath = req.query.path;
+	// need to return relative path
+	const foundPath = path.resolve(api.getResourcePath(relativePath));
+	const basePath = path.resolve(config.pathToCrosscode + '/');
+
+	res.json(foundPath.replace(basePath, '').replace(/\\/g, '/'));
+});
+
+app.post('/api/resource/patch', async (req, res) => {
+	const relativePath = req.body.path;
+	const data = req.body.data;
+	res.json(await api.patchJson(data, relativePath));
 });
 
 /**
