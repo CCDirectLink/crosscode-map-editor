@@ -5,7 +5,7 @@ import {FormControl} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
 import {Globals} from '../../../shared/globals';
 import {api} from 'cc-map-editor-common';
-
+import {HttpClientService} from '../../../services/http-client.service';
 @Component({
 	selector: 'app-settings',
 	templateUrl: './settings.component.html',
@@ -13,6 +13,7 @@ import {api} from 'cc-map-editor-common';
 })
 export class SettingsComponent implements OnInit {
 	
+	isElectron = Globals.isElectron;
 	folderFormControl = new FormControl();
 	mapContextFormControl = new FormControl();
 	icon = 'help_outline';
@@ -21,30 +22,30 @@ export class SettingsComponent implements OnInit {
 	constructor(
 		private ref: OverlayRefControl,
 		private electron: ElectronService,
-		private snackBar: MatSnackBar
+		private snackBar: MatSnackBar,
+		private http: HttpClientService
 	) {
 	}
 	
 	ngOnInit() {
-		this.folderFormControl.setValue(this.electron.getAssetsPath());
-		this.folderFormControl.valueChanges.subscribe(() => this.resetIcon());
-	
-		if (this.check()) {
-			if (Globals.isElectron) {
+
+		if (Globals.isElectron) {
+			this.folderFormControl.setValue(this.electron.getAssetsPath());
+			this.folderFormControl.valueChanges.subscribe(() => this.resetIcon());
+		
+			if (this.check()) {
 				this.initMods();
 			}
+		} else {
+			this.initMods();
 		}
+
 	}
 	
 	initMods() {
 		this.mods.splice(1);
-		const mods = api.getMods();
 
-		for (const mod of mods) {
-			if (mod.hasPath('data/maps')) {
-				this.mods.push({name: mod.name, path: mod.resolveRelativePath('assets/')});
-			}
-		}
+		this.http.getAllModsAssetsPath().subscribe(mods => this.mods.push(...mods));
 	}
 
 	private resetIcon() {
@@ -84,19 +85,20 @@ export class SettingsComponent implements OnInit {
 	}
 	
 	save() {
-		this.electron.saveAssetsPath(this.folderFormControl.value);
+		if (Globals.isElectron) {
+			this.electron.saveAssetsPath(this.folderFormControl.value);
+			const ref = this.snackBar.open('Changing the path requires to restart the editor', 'Restart', {
+				duration: 6000
+			});
+			
+			ref.onAction().subscribe(() => this.electron.relaunch());
+		}
 		this.close();
-		const ref = this.snackBar.open('Changing the path requires to restart the editor', 'Restart', {
-			duration: 6000
-		});
-		
-		ref.onAction().subscribe(() => this.electron.relaunch());
 	}
 	
 
 	selectMod(index: number) {
 		const mod = this.mods[index];
-		console.log('Selected', mod);
 		Globals.globalEventsService.changeMapContext.next(mod);
 	}
 
