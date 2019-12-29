@@ -26,7 +26,7 @@ export class ModloaderService {
         if (this.modloader) {
             return this.modloader.loadJson(relativePath);
         }
-        return this.http.get<any>(Globals.URL + 'api/resource/load?path='+ encodeURI(relativePath)).toPromise();
+        return this.http.get<any>(Globals.URL + 'api/resource/load?path=' + encodeURI(relativePath)).toPromise();
     }
 
     changeAssetsPath(assetsPath: string): void {
