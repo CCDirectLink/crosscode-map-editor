@@ -1,7 +1,7 @@
 <cc-overlay-panel title="Settings">
 	<ng-container ngProjectAs="content">
 		<div fxLayout="column" class="content-container">
-			<form fxLayout="row" class="option-row">
+			<form fxLayout="row" class="option-row" *ngIf="isElectron">
 				<mat-form-field fxFlex="auto">
 					<mat-label>Assets folder</mat-label>
 					<input matInput placeholder="C:\Program Files (x86)\Steam\steamapps\common\CrossCode\assets"
