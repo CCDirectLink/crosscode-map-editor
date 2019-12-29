@@ -87,3 +87,14 @@ export function getMods(): Mod[] {
 export function patchJson(data: any, relativePath: string): Promise<any> {
 	return modloader.patchJson(data, relativePath);
 }
+
+export function getAllModsAssetsPath(): any[] {
+	const mods = modloader.getMods();
+	const assetsMods = [];  
+	for (const mod of mods) {
+		if (mod.hasPath('data/maps')) {
+			assetsMods.push({name: mod.name, path: mod.resolveRelativePath('assets/')});
+		}
+	}
+	return assetsMods;
+}

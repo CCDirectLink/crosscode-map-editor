@@ -65,15 +65,7 @@ export class HttpClientService {
 			return this.http.get<string[]>(Globals.URL + 'api/mods/assets/path');
 		}
 
-		const mods = api.getMods();
-		const assetsMods = [];  
-		for (const mod of mods) {
-			if (mod.hasPath('data/maps')) {
-				assetsMods.push({name: mod.name, path: mod.resolveRelativePath('assets/')});
-			}
-		}
-
-		return this.toObservable(Promise.resolve(assetsMods));
+		return this.toObservable(Promise.resolve(api.getAllModsAssetsPath()));
 	}
 
 	saveFile(path: string, content: any) {

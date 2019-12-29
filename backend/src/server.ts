@@ -46,14 +46,7 @@ app.post('/api/saveFile', async (req, res) => {
 
 
 app.get('/api/mods/assets/path', async (_, res) => {
-	const mods = api.getMods();
-	const assetsMods = [];  
-	for (const mod of mods) {
-		if (mod.hasPath('data/maps')) {
-			assetsMods.push({name: mod.name, path: mod.resolveRelativePath('assets/')});
-		}
-	}
-	res.json(assetsMods);
+	res.json(api.getAllModsAssetsPath());
 });
 
 app.get('/api/resource/path', async (req, res) => {
