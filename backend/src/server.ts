@@ -5,12 +5,8 @@ import * as errorHandler from 'errorhandler';
 import * as cors from 'cors';
 import {config} from './config';
 import {api} from 'cc-map-editor-common';
+import * as modloader from './modloader';
 import * as path from 'path';
-
-// setup 
-api.changeAssetsPath(config.pathToCrosscode);
-
-
 
 const app = express();
 
@@ -46,13 +42,13 @@ app.post('/api/saveFile', async (req, res) => {
 
 
 app.get('/api/mods/assets/path', async (_, res) => {
-	res.json(api.getAllModsAssetsPath());
+	res.json(modloader.getAllModsAssetsPath());
 });
 
 app.get('/api/resource/path', async (req, res) => {
 	const relativePath = req.query.path;
 	// need to return relative path
-	const foundPath = path.resolve(api.getResourcePath(relativePath));
+	const foundPath = path.resolve(modloader.getResourcePath(relativePath));
 	const basePath = path.resolve(config.pathToCrosscode + '/');
 
 	res.json(foundPath.replace(basePath, '').replace(/\\/g, '/'));
@@ -60,7 +56,7 @@ app.get('/api/resource/path', async (req, res) => {
 
 app.get('/api/resource/load', async (req, res) => {
 	const relativePath = req.query.path;
-	res.json(await api.loadJson(relativePath));
+	res.json(await modloader.loadJson(relativePath));
 });
 
 /**
