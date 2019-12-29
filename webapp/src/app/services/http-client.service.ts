@@ -34,7 +34,7 @@ export class HttpClientService {
 	
 	getMaps(path: string = ''): Observable<string[]> {
 		if (!Globals.isElectron) {
-			return this.http.get<string[]>(Globals.URL + 'api/allMaps');
+			return this.http.get<string[]>(Globals.URL + 'api/allMaps/?path=' + encodeURI(path));
 		}
 		path = this.electron.getAssetsPath() + '/' + path;
 
@@ -45,6 +45,37 @@ export class HttpClientService {
 		return this.http.get<T>(Globals.URL + path);
 	}
 	
+	getResourcePath(relativePath: string): Promise<string> {
+		if (!Globals.isElectron) {
+			return this.http.get<string>(Globals.URL + 'api/resource/path/?path=' + encodeURI(relativePath)).toPromise();
+		}
+
+		return Promise.resolve(api.getResourcePath(relativePath));
+	}
+
+	patchJson(data: any, relativePath: string): Promise<any> {
+		if (!Globals.isElectron) {
+			return this.http.post<any>(Globals.URL + 'api/resource/patch', {path: relativePath, data}).toPromise();
+		}
+		return api.patchJson(data, relativePath);
+	}
+
+	getAllModsAssetsPath(): Observable<any> {
+		if (!Globals.isElectron) {
+			return this.http.get<string[]>(Globals.URL + 'api/mods/assets/path');
+		}
+
+		const mods = api.getMods();
+		const assetsMods = [];  
+		for (const mod of mods) {
+			if (mod.hasPath('data/maps')) {
+				assetsMods.push({name: mod.name, path: mod.resolveRelativePath('assets/')});
+			}
+		}
+
+		return this.toObservable(Promise.resolve(assetsMods));
+	}
+
 	saveFile(path: string, content: any) {
 		const file = {path: path, content: content};
 		if (!Globals.isElectron) {
