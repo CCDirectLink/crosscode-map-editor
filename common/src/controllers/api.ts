@@ -84,8 +84,9 @@ export function changeAssetsPath(dir: string): void {
 export function getMods(): Mod[] {
 	return modloader.getMods();
 }
-export function patchJson(data: any, relativePath: string): Promise<any> {
-	return modloader.patchJson(data, relativePath);
+
+export function loadJson(relativePath: string): Promise<string> {
+	return modloader.loadJson(relativePath);
 }
 
 export function getAllModsAssetsPath(): any[] {

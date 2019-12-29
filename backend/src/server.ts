@@ -58,10 +58,9 @@ app.get('/api/resource/path', async (req, res) => {
 	res.json(foundPath.replace(basePath, '').replace(/\\/g, '/'));
 });
 
-app.post('/api/resource/patch', async (req, res) => {
-	const relativePath = req.body.path;
-	const data = req.body.data;
-	res.json(await api.patchJson(data, relativePath));
+app.get('/api/resource/load', async (req, res) => {
+	const relativePath = req.query.path;
+	res.json(await api.loadJson(relativePath));
 });
 
 /**
