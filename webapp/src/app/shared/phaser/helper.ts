@@ -1,7 +1,6 @@
 import {Point} from '../../models/cross-code-map';
 import {Globals} from '../globals';
 import {CCMapLayer} from './tilemap/cc-map-layer';
-import {api} from 'cc-map-editor-common';
 import Scene = Phaser.Scene;
 
 export class Helper {
@@ -67,7 +66,7 @@ export class Helper {
 		return JSON.parse(JSON.stringify(obj));
 	}
 	
-	public static getJson(key: string, callback: (json: any) => void) {
+	public static async getJson(key: string, callback: (json: any) => void) {
 		const scene = Globals.scene;
 		
 		// get json from cache
@@ -77,29 +76,20 @@ export class Helper {
 		
 		// load json
 		const relativePath = key + '.json';
-		let truePath: string;
-		if (Globals.isElectron) {
-			truePath = api.getResourcePath(relativePath);
-		} else {
-			truePath = Globals.URL + relativePath;
+		let truePath: string = await Globals.httpService.getResourcePath(relativePath);
+		if (!Globals.isElectron) {
+			truePath = Globals.URL + truePath;
 		}
-		
-		console.log(`${relativePath} is at ${truePath}`);
+	
 
 		scene.load.json(key, truePath);
-		scene.load.once('complete', () => {
-			const data: any = scene.cache.json.get(key);
-			if (Globals.isElectron) {
-				api.patchJson(data, relativePath).then((patchedData: any) => {
-					// no longer need to patch every time
-					scene.cache.json.remove(key);
-					scene.cache.json.add(key, patchedData);
-					
-					callback(patchedData);
-				});
-			} else {
-				return callback(data);
-			}
+		scene.load.once('complete', async () => {
+			let data: any = scene.cache.json.get(key);
+
+			const patchedData = await Globals.httpService.patchJson(data, relativePath);
+			scene.cache.json.remove(key);
+			scene.cache.json.add(key, patchedData);
+			callback(patchedData);
 		});
 		scene.load.start();
 	}
@@ -123,15 +113,12 @@ export class Helper {
 			return true;
 		}
 		
-		return new Promise(res => {
-			let truePath;
-			if (Globals.isElectron) {
-				truePath = api.getResourcePath(key);
-			} else {
-				truePath = Globals.URL + key;
+		return new Promise(async res => {
+			let truePath: string = await Globals.httpService.getResourcePath(key);
+			if (!Globals.isElectron) {
+				truePath = Globals.URL + truePath;
 			}
 
-			console.log(`${key} is at ${truePath}`);
 			scene.load.image(key, truePath);
 			scene.load.once('complete', () => res(true));
 			scene.load.once('loaderror', () => res(false));
