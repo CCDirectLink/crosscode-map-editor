@@ -77,6 +77,10 @@ export class Helper {
 		Globals.modloaderService.loadJson(key + '.json').then((data) => {
 			scene.cache.json.add(key, data);
 			callback(data);
+		}).catch(() => {
+			// whenever there is an issue for any reason
+			scene.cache.json.add(key, null);
+			callback(null);
 		});
 	}
 
