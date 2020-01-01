@@ -17,14 +17,13 @@ import {EntityRegistryService} from '../../shared/phaser/entities/registry/entit
 	styleUrls: ['./phaser.component.scss']
 })
 export class PhaserComponent implements OnInit {
-	
+
 	constructor(private element: ElementRef,
 	            private mapLoader: MapLoaderService,
 	            private globalEvents: GlobalEventsService,
 	            private stateHistory: StateHistoryService,
 	            private phaserEventsService: PhaserEventsService,
 	            private heightMap: HeightMapService,
-	            private http: HttpClientService,
 	            registry: EntityRegistryService,
 	            autotile: AutotileService
 	) {
@@ -35,8 +34,8 @@ export class PhaserComponent implements OnInit {
 		Globals.autotileService = autotile;
 		Globals.entityRegistry = registry;
 	}
-	
-	
+
+
 	ngOnInit() {
 		this.heightMap.init();
 		const scene = new MainScene();

@@ -93,6 +93,16 @@
 		"electron-builder": "^20.43.0",
 		"ts-node": "~8.2.0",
 		"tslint": "^5.17.0",
-		"typescript": "~3.5.3"
+		"typescript": "~3.5.3",
+		"@types/jasmine": "~3.3.8",
+		"@types/jasminewd2": "~2.0.3",
+		"jasmine-core": "~3.4.0",
+		"jasmine-spec-reporter": "~4.2.1",
+		"karma": "~4.1.0",
+		"karma-chrome-launcher": "~2.2.0",
+		"karma-coverage-istanbul-reporter": "~2.0.1",
+		"karma-jasmine": "~2.0.1",
+		"karma-jasmine-html-reporter": "^1.4.0",
+		"@angular-devkit/architect": "<0.900 || ^0.900.0-0 || ^9.0.0-0"
 	}
 }

@@ -399,7 +399,12 @@ export abstract class CCEntity extends BaseObject {
 	public generateNoImageType(rgbTop = 0xc06040, aTop = 0.5, rgb = 0x800000, a = 0.5) {
 		const settings = this.details.settings;
 		
-		const baseSize = settings.size || {x: 16, y: 16};
+		const baseSize: Point3 = {x: 16, y: 16, z: 0};
+		if (settings.size) {
+			baseSize.x = settings.size.x;
+			baseSize.y = settings.size.y;
+		}
+		
 		baseSize.z = settings.zHeight || settings.wallZHeight || 0;
 		
 		this.entitySettings = <any>{};
