@@ -5,7 +5,7 @@ import * as nodepath from 'path';
 const path: typeof nodepath = requireLocal('path');
 
 
-const CCModLoader: typeof GenericModLoader = requireLocal('@ac2pic/modloader');
+const CCModLoader: typeof GenericModLoader = require('@ac2pic/modloader');
 
 
 let modloader: GenericModLoader;
