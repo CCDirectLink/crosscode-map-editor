@@ -26,9 +26,9 @@ export function getResourcePath(relativePath: string, returnRelative: boolean = 
 	if (returnRelative) {
 		const foundPath = path.resolve(modloader.getResourcePath(relativePath));
 		const basePath = path.resolve(modloader.getGamePath());
-		const resourcePath = foundPath.replace(basePath, '');
+		resourcePath = foundPath.replace(basePath, '');
 		if (path.sep !== '/') {
-			return resourcePath.replace(new RegExp(path.sep, "g"), '/');
+			return resourcePath.replace(new RegExp(path.sep, 'g'), '/');
 		}
 	}
 
