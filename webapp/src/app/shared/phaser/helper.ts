@@ -105,7 +105,11 @@ export class Helper {
 		
 		return new Promise(res => {
 			Globals.modloaderService.getResourcePath(key).subscribe((truePath) => {
-				scene.load.image(key, truePath);
+				if (Globals.isElectron) {
+					scene.load.image(key, truePath);
+				} else {
+					scene.load.image(key, Globals.URL + truePath);
+				}
 				scene.load.once('complete', () => res(true));
 				scene.load.once('loaderror', () => res(false));
 				scene.load.start();
