@@ -5,9 +5,10 @@ import * as errorHandler from 'errorhandler';
 import * as cors from 'cors';
 import {config} from './config';
 import {api, modloader} from 'cc-map-editor-common';
-import * as path from 'path';
 
 const app = express();
+
+modloader.changeAssetsPath(config.pathToCrosscode);
 
 /**
  * Express configuration.
