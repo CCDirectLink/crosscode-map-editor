@@ -4,8 +4,7 @@ import * as logger from 'morgan';
 import * as errorHandler from 'errorhandler';
 import * as cors from 'cors';
 import {config} from './config';
-import {api} from 'cc-map-editor-common';
-import * as modloader from './modloader';
+import {api, modloader} from 'cc-map-editor-common';
 import * as path from 'path';
 
 const app = express();
@@ -41,20 +40,16 @@ app.post('/api/saveFile', async (req, res) => {
 });
 
 
-app.get('/api/mods/assets/path', async (_, res) => {
+app.get('/api/modloader/mods/assets-path', async (_, res) => {
 	res.json(modloader.getAllModsAssetsPath());
 });
 
-app.get('/api/resource/path', async (req, res) => {
+app.get('/api/modloader/resource', async (req, res) => {
 	const relativePath = req.query.path;
-	// need to return relative path
-	const foundPath = path.resolve(modloader.getResourcePath(relativePath));
-	const basePath = path.resolve(config.pathToCrosscode + '/');
-
-	res.json(foundPath.replace(basePath, '').replace(/\\/g, '/'));
+	res.json(modloader.getResourcePath(relativePath, true));
 });
 
-app.get('/api/resource/load', async (req, res) => {
+app.get('/api/modloader/load/json', async (req, res) => {
 	const relativePath = req.query.path;
 	res.json(await modloader.loadJson(relativePath));
 });
