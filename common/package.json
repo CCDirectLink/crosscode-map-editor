@@ -26,5 +26,7 @@
     "tslint": "^5.17.0",
     "typescript": "^3.5.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@ac2pic/modloader": "^1.1.1"
+  }
 }
