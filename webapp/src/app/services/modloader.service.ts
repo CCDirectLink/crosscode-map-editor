@@ -16,7 +16,7 @@ export class ModloaderService {
 
     loadJson(relativePath: string): Promise<any> {
         if (!Globals.isElectron) {
-            this.http.get<any>(Globals.URL + 'modloader/load/json?path=' + encodeURI(relativePath)).toPromise();
+            return this.http.get<any>(Globals.URL + 'api/modloader/load/json?path=' + encodeURI(relativePath)).toPromise();
         }
 
         return modloader.loadJson(relativePath);
@@ -30,8 +30,7 @@ export class ModloaderService {
 
     getResourcePath(relativePath: string): Observable<string> {
         if (!Globals.isElectron) {
-            this.http.get<string>(Globals.URL + 'modloader/resource?path=' + encodeURI(relativePath));
-
+            return this.http.get<string>(Globals.URL + 'api/modloader/resource?path=' + encodeURI(relativePath));
         }
 
         const resourcePath = modloader.getResourcePath(relativePath);
@@ -40,7 +39,7 @@ export class ModloaderService {
 
     getAllModsAssetsPath(): Observable<{name: string, path: string}[]> {
         if (!Globals.isElectron) {
-            return this.http.get<{name: string, path: string}[]>(Globals.URL + 'modloader/mods/assets-path');
+            return this.http.get<{name: string, path: string}[]>(Globals.URL + 'api/modloader/mods/assets-path');
         }
 
         return new Observable<{name: string, path: string}[]>(subscriber => {
