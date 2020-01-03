@@ -1,63 +1,51 @@
 import { Injectable } from '@angular/core';
 import {Globals} from '../shared/globals';
-import {GenericModLoader, Mod} from '@ac2pic/modloader';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {modloader} from 'cc-map-editor-common';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ModloaderService {
-    
-    private modloader: GenericModLoader | null;
 
     constructor(
         private http: HttpClient
     ) { 
-        if (Globals.isElectron) {
-            // @ts-ignore
-            this.modloader = new (require('@ac2pic/modloader'));
-        } else {
-            this.modloader = null;
-        }
     }
 
     loadJson(relativePath: string): Promise<any> {
-        if (this.modloader) {
-            return this.modloader.loadJson(relativePath);
+        if (!Globals.isElectron) {
+            this.http.get<any>(Globals.URL + 'modloader/load/json?path=' + encodeURI(relativePath)).toPromise()
         }
-        return this.http.get<any>(Globals.URL + 'api/resource/load?path=' + encodeURI(relativePath)).toPromise();
+
+        return modloader.loadJson(relativePath);
     }
 
     changeAssetsPath(assetsPath: string): void {
-        if (this.modloader) {
-            this.modloader.setGamePath(assetsPath);
-            this.modloader.loadMods();
+        if (Globals.isElectron) {
+            modloader.changeAssetsPath(assetsPath);
         }
     }
 
     getResourcePath(relativePath: string): Observable<string> {
-        if (this.modloader) {
-            const resourcePath = this.modloader.getResourcePath(relativePath);
-            return new Observable<string>(sub => sub.next(resourcePath));
+        if (!Globals.isElectron) {
+            this.http.get<string>(Globals.URL + 'modloader/resource?path=' + encodeURI(relativePath))
+
         }
-        return this.http.get<string>(Globals.URL + 'api/resource/path/?path=' + encodeURI(relativePath));
+
+        const resourcePath = modloader.getResourcePath(relativePath);
+        return new Observable<string>(sub => sub.next(resourcePath));
     }
 
     getAllModsAssetsPath(): Observable<{name: string, path: string}[]> {
-        if (this.modloader) {
-            const mods = this.modloader.getMods();
-            const assetsMods: {name: string, path: string}[] = [];  
-            for (const mod of mods) {
-                if (mod.hasPath('data/maps')) {
-                    assetsMods.push({name: mod.name, path: mod.resolveRelativePath('assets/')});
-                }
-            }
-            return new Observable<{name: string, path: string}[]>(subscriber => {
-                subscriber.next(assetsMods);
-            });
+        if (!Globals.isElectron) {
+            return this.http.get<{name: string, path: string}[]>(Globals.URL + 'modloader/mods/assets-path');
         }
 
-        return this.http.get<{name: string, path: string}[]>(Globals.URL + 'api/mods/assets/path');
+        return new Observable<{name: string, path: string}[]>(subscriber => {
+            subscriber.next(modloader.getAllModsAssetsPath());
+        });
+        
     }
 }
