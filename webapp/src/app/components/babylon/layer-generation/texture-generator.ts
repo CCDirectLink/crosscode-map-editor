@@ -20,6 +20,7 @@ export class TextureGenerator {
 		const gameSize = Globals.game.scale.gameSize;
 		this.prevSize.x = gameSize.width;
 		this.prevSize.y = gameSize.height;
+		this.resize(map.mapWidth, map.mapHeight);
 		
 		// make only background layers visible and hide entities
 		map.layers.forEach(l => l.visible = false);
@@ -34,10 +35,10 @@ export class TextureGenerator {
 	}
 	
 	destroy() {
-		// Globals.phaserEventsService.showMapBorder.next(true);
-		// if (this.prevSize.x > 0) {
-		// 	Globals.game.scale.setGameSize(this.prevSize.x, this.prevSize.y);
-		// }
+		Globals.phaserEventsService.showMapBorder.next(true);
+		if (this.prevSize.x > 0) {
+			Globals.game.scale.setGameSize(this.prevSize.x, this.prevSize.y);
+		}
 	}
 	
 	private resize(width: number, height: number) {
@@ -48,11 +49,6 @@ export class TextureGenerator {
 		for (const layer of this.layers) {
 			layer.visible = layer.details.level <= level;
 		}
-		const offset = getLevelOffset(level) * 0;
-		Globals.scene.cameras.main.scrollY = -offset;
-		
-		const map = Globals.map;
-		this.resize(map.mapWidth, map.mapHeight + offset / Globals.TILE_SIZE);
 		
 		const src = await this.snapshot();
 		

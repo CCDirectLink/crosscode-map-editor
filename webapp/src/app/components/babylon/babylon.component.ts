@@ -4,6 +4,8 @@ import {CustomFreeCamera} from './camera/custom-free-camera';
 import {TextureGenerator} from './layer-generation/texture-generator';
 import {LayerMeshGenerator} from './layer-generation/layer-mesh-generator';
 import {Globals} from '../../shared/globals';
+import {showAxis} from './debug/show-axis';
+import {ToggleMesh} from './debug/toggle-mesh';
 
 
 interface CamStore {
@@ -83,10 +85,19 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		const texture = new Texture('data:level0', scene, undefined, undefined, Texture.NEAREST_SAMPLINGMODE, undefined, undefined, src);
 		
 		testMaterial.diffuseTexture = texture;
+		// testMaterial.alpha = 0.5;
 		
 		for (const mesh of meshes) {
 			mesh.material = testMaterial;
 		}
+		
+		const toggle = new ToggleMesh(scene);
+		
+		meshes[1].isVisible = false;
+		toggle.addButton('debug plane', () => meshes[1].isVisible = !meshes[1].isVisible);
+		toggle.addButton('wireframe', () => testMaterial.wireframe = !testMaterial.wireframe);
+		
+		showAxis(2, scene);
 		
 		engine.runRenderLoop(() => scene.render());
 	}

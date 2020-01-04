@@ -51,7 +51,7 @@ export class ToolbarComponent implements OnInit {
 		);
 		
 		this.events.loadComplete.subscribe(() => {
-			this.mapLoader.loadMapByName('bergen-trail/test');
+			this.mapLoader.loadMapByName('tests/3dtest');
 		});
 	}
 	
