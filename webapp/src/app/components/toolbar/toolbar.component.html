@@ -17,10 +17,17 @@
 		
 		<mat-menu #tools="matMenu">
 			<button mat-menu-item (click)="offsetMap()" [disabled]="!map">Offset Map</button>
-			<button mat-menu-item (click)="generateHeights(true)" [disabled]="!map">Generate Heights FULL (Ctrl + Shift + H)</button>
-			<button mat-menu-item (click)="generateHeights(false)" [disabled]="!map">Generate Heights (Ctrl + H)</button>
+			<button mat-menu-item (click)="generateHeights(true)" [disabled]="!map">
+				Generate Heights FULL (Ctrl + Shift + H)
+			</button>
+			<button mat-menu-item (click)="generateHeights(false)" [disabled]="!map">
+				Generate Heights (Ctrl + H)
+			</button>
 		</mat-menu>
-
+		
+		<div fxLayout="column" fxLayoutAlign="center" class="toggle-3d">
+			<mat-slide-toggle color="primary" (change)="changeTo3d($event)">3D!</mat-slide-toggle>
+		</div>
 	</div>
 	
 	<div fxFlex>

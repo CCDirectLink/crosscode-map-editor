@@ -13,6 +13,7 @@ export class MainScene extends Phaser.Scene {
 	
 	private border?: Phaser.GameObjects.Rectangle;
 	private sub?: Subscription;
+	private borderVisible = true;
 	
 	constructor() {
 		super({key: 'main'});
@@ -52,6 +53,12 @@ export class MainScene extends Phaser.Scene {
 			}
 		});
 		Globals.phaserEventsService.updateMapBorder.subscribe(() => this.rescaleBorder());
+		Globals.phaserEventsService.showMapBorder.subscribe(visible => {
+			if (this.border) {
+				this.border.visible = visible;
+			}
+			this.borderVisible = visible;
+		});
 		
 		const pan = new MapPan(this, 'mapPan');
 		this.add.existing(pan);
@@ -75,9 +82,6 @@ export class MainScene extends Phaser.Scene {
 		});
 		
 		Globals.globalEventsService.currentView.next(EditorView.Layers);
-		
-		// TODO
-		// this.heightGenerator.init(game);
 	}
 	
 	destroy() {
@@ -98,5 +102,6 @@ export class MainScene extends Phaser.Scene {
 		this.border = this.add.rectangle(-this.borderSize, -this.borderSize, map.mapWidth * s + this.borderSize * 2, map.mapHeight * s + this.borderSize * 2);
 		this.border.setStrokeStyle(this.borderSize * 2, 0xfc4445, 1);
 		this.border.setOrigin(0, 0);
+		this.border.visible = this.borderVisible;
 	}
 }

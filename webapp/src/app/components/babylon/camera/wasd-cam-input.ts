@@ -1,4 +1,4 @@
-import {Axis, ICameraInput, Nullable, Vector3} from '@babylonjs/core';
+import {ICameraInput, Nullable, Vector3} from '@babylonjs/core';
 import {CustomFreeCamera} from './custom-free-camera';
 
 
@@ -7,7 +7,7 @@ import {CustomFreeCamera} from './custom-free-camera';
  */
 export class WasdCamInput implements ICameraInput<CustomFreeCamera> {
 	camera: Nullable<CustomFreeCamera> = null;
-
+	
 	private onKeyDown?: any;
 	private onKeyUp?: any;
 	private keys = new Set<string>();
@@ -17,9 +17,18 @@ export class WasdCamInput implements ICameraInput<CustomFreeCamera> {
 	private keysBackward = ['KeyS'];
 	private keysUp = ['KeyQ'];
 	private keysDown = ['KeyE'];
-	private keysAll = [...this.keysLeft, ...this.keysRight, ...this.keysForward, ...this.keysBackward, ...this.keysUp, ...this.keysDown];
-	private sensibility = 0.1;
-
+	private keysTurbo = ['ShiftLeft'];
+	private keysAll = [
+		...this.keysLeft,
+		...this.keysRight,
+		...this.keysForward,
+		...this.keysBackward,
+		...this.keysUp,
+		...this.keysDown,
+		...this.keysTurbo
+	];
+	private sensibility = 1.2;
+	
 	attachControl(element: HTMLElement, noPreventDefault?: boolean): void {
 		const _this = this;
 		if (!this.onKeyDown) {
@@ -40,12 +49,12 @@ export class WasdCamInput implements ICameraInput<CustomFreeCamera> {
 					}
 				}
 			};
-
+			
 			element.addEventListener('keydown', this.onKeyDown, false);
 			element.addEventListener('keyup', this.onKeyUp, false);
 		}
 	}
-
+	
 	detachControl(element: HTMLElement): void {
 		if (this.onKeyDown) {
 			element.removeEventListener('keydown', this.onKeyDown);
@@ -55,13 +64,15 @@ export class WasdCamInput implements ICameraInput<CustomFreeCamera> {
 			this.onKeyUp = null;
 		}
 	}
-
+	
 	checkInputs() {
 		if (this.onKeyDown) {
 			const camera = this.camera!;
+			const scale = this.keysTurbo.some(t => this.keys.has(t)) ? 2.5 : 1;
+			
 			for (const key of this.keys) {
 				const speed = camera._computeLocalCameraSpeed();
-
+				
 				if (this.keysForward.includes(key)) {
 					camera._localDirection.copyFromFloats(0, 0, speed);
 				} else if (this.keysBackward.includes(key)) {
@@ -74,24 +85,24 @@ export class WasdCamInput implements ICameraInput<CustomFreeCamera> {
 					camera._localDirection.copyFromFloats(0, speed, 0);
 				} else if (this.keysDown.includes(key)) {
 					camera._localDirection.copyFromFloats(0, -speed, 0);
+				} else if (this.keysTurbo.includes(key)) {
+					continue;
 				}
-
+				
 				camera.getViewMatrix().invertToRef(camera._cameraTransformMatrix);
 				Vector3.TransformNormalToRef(camera._localDirection, camera._cameraTransformMatrix, camera._transformedDirection);
+				camera._transformedDirection.scaleToRef(this.sensibility * scale, camera._transformedDirection);
 				camera.cameraDirection.addInPlace(camera._transformedDirection);
 			}
 		}
 	}
-
-	private moveCam() {
-	}
-
+	
 	getClassName(): string {
 		return 'WasdCamInput';
 	}
-
+	
 	getSimpleName(): string {
 		return 'WasdCamInput';
 	}
-
+	
 }

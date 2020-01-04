@@ -19,6 +19,7 @@ import {
 	MatTooltipModule,
 	MatTreeModule
 } from '@angular/material';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 const MODULES = [
 	MatButtonModule,
@@ -38,7 +39,8 @@ const MODULES = [
 	MatProgressSpinnerModule,
 	MatListModule,
 	MatIconModule,
-	MatTreeModule
+	MatTreeModule,
+	MatSlideToggleModule,
 ];
 
 @NgModule({

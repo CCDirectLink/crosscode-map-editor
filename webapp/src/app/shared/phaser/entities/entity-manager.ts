@@ -233,9 +233,7 @@ export class EntityManager extends BaseObject {
 				if (Helper.isInputFocused()) {
 					return;
 				}
-				this.entities.forEach(e => {
-					e.container.visible = !e.container.visible;
-				});
+				this.hideEntities();
 			}
 		});
 		
@@ -245,6 +243,13 @@ export class EntityManager extends BaseObject {
 	preUpdate(time: number, delta: number): void {
 		this.leftClickOpts.timer += delta;
 		this.selectionBox.update(this.entities);
+	}
+	
+	
+	hideEntities() {
+		this.entities.forEach(e => {
+			e.container.visible = !e.container.visible;
+		});
 	}
 	
 	/** generates all entities and adds proper input handling */
