@@ -3,6 +3,7 @@ import {Globals} from '../shared/globals';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {modloader} from 'cc-map-editor-common';
+import {MapContext} from '../models/cross-code-map';
 
 @Injectable({
     providedIn: 'root'
@@ -37,12 +38,12 @@ export class ModloaderService {
         return new Observable<string>(sub => sub.next(resourcePath));
     }
 
-    getAllModsAssetsPath(): Observable<{name: string, path: string}[]> {
+    getAllModsAssetsPath(): Observable<MapContext[]> {
         if (!Globals.isElectron) {
-            return this.http.get<{name: string, path: string}[]>(Globals.URL + 'api/modloader/mods/assets-path');
+            return this.http.get<MapContext[]>(Globals.URL + 'api/modloader/mods/assets-path');
         }
 
-        return new Observable<{name: string, path: string}[]>(subscriber => {
+        return new Observable<MapContext[]>(subscriber => {
             subscriber.next(modloader.getAllModsAssetsPath());
         });
         
