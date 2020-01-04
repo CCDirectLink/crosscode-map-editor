@@ -1,10 +1,12 @@
 import {Globals} from '../../../shared/globals';
 import {CCMapLayer} from '../../../shared/phaser/tilemap/cc-map-layer';
 import {RadialSweepTracer} from './radial-sweep-tracer';
-import {Mesh, Path2, PolygonMeshBuilder, Scene} from '@babylonjs/core';
+import {Mesh, MeshBuilder, Scene, Vector3} from '@babylonjs/core';
 import * as earcut from 'earcut';
+import {Point} from '../../../models/cross-code-map';
 import Tile = Phaser.Tilemaps.Tile;
 import DynamicTilemapLayer = Phaser.Tilemaps.DynamicTilemapLayer;
+import {UvMapper} from './uv-mapper';
 
 
 export class LayerMeshGenerator {
@@ -50,6 +52,13 @@ export class LayerMeshGenerator {
 				}
 			}
 			meshes.push(this.generateMesh('coll layer ' + collLayer.details.level + ' - ' + (++meshCounter), group, phaserLayer, scene));
+			// debug mesh
+			const ground = MeshBuilder.CreateGround('debug plane', {
+				width: collLayer.details.width,
+				height: collLayer.details.height
+			});
+			ground.position.y = 1;
+			meshes.push(ground);
 		}
 		
 		return meshes;
@@ -57,7 +66,7 @@ export class LayerMeshGenerator {
 	
 	private generateMesh(name: string, tiles: Set<Tile>, layer: DynamicTilemapLayer, scene: Scene) {
 		const tracer = new RadialSweepTracer();
-		const path = tracer.getContour(tiles, layer);
+		const path = Array.from(tracer.getContour(tiles, layer));
 		
 		// debug tracer
 		// const debugPath = Array.from(path).map(tile => {
@@ -69,26 +78,28 @@ export class LayerMeshGenerator {
 		// 	layer.putTileAt(0, t.x, t.y);
 		// });
 		// debugPath.forEach(p => layer.putTileAt(ogmap.get(p.x * 1000 + p.y) || 0, p.x, p.y));
-		let polyPath: Path2 | undefined;
-		const pathArr = Array.from(path).map(t => {
-			return {x: t.x, y: -t.y + layer.tilemap.height};
-		});
+		
 		// let s = '';
 		// pathArr.forEach(p => s += `poly_path.addLineTo(${p.x}, ${p.y});\n`);
 		// console.log(s);
 		
-		// pathArr.reverse();
+		const pathArr = Array.from(path).map(t => {
+			return {x: t.x, y: -t.y};
+		});
 		
+		const polyPath: Vector3[] = [];
 		for (const tile of pathArr) {
-			if (!polyPath) {
-				polyPath = new Path2(tile.x, tile.y);
-			} else {
-				polyPath.addLineTo(tile.x, tile.y);
-			}
+			polyPath.push(new Vector3(tile.x, 0, tile.y));
 		}
 		
-		const builder = new PolygonMeshBuilder(name, polyPath, scene, earcut);
-		return builder.build(false, 4);
+		const mesh = MeshBuilder.ExtrudePolygon(name, {shape: polyPath, depth: 2, updatable: true}, scene, earcut);
+		mesh.position.x = -layer.tilemap.width * 0.5;
+		mesh.position.z = layer.tilemap.height * 0.5;
+		console.log(mesh);
+		
+		const uvMapper = new UvMapper();
+		uvMapper.mapUv(mesh);
+		return mesh;
 	}
 	
 	private getNeighbours(tile: Tile, layer: DynamicTilemapLayer) {
