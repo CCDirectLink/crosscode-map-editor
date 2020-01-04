@@ -57,3 +57,9 @@ export interface MapLayer {
 	moveSpeed: Point;
 	data: number[][];
 }
+
+
+export interface MapContext {
+    name: string;
+    path: string;
+}
