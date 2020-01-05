@@ -5,6 +5,7 @@ import {HttpClientService} from '../services/http-client.service';
 import {ElectronService} from '../services/electron.service';
 import {MapLoaderService} from './map-loader.service';
 import {MapSettingsComponent} from '../components/dialogs/map-settings/map-settings.component';
+import {MapContextComponent} from '../components/dialogs/map-context/map-context.component';
 import {NewMapComponent} from '../components/dialogs/new-map/new-map.component';
 import {FloatingWindowComponent} from '../components/floating-window/floating-window.component';
 import {JsonEditorComponent} from '../components/json-editor/json-editor.component';
@@ -34,12 +35,13 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 		MaterialModule,
 		AngularDraggableModule,
 		OverlayModule,
-		ScrollingModule
+		ScrollingModule,
 	],
 	declarations: [
 		HostDirective,
 		ModalDirective,
 		MapSettingsComponent,
+		MapContextComponent,
 		MapContentSettingsComponent,
 		NewMapComponent,
 		JsonEditorComponent,
@@ -60,6 +62,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 	entryComponents: [
 		JsonEditorComponent,
 		MapSettingsComponent,
+		MapContextComponent,
 		MapContentSettingsComponent,
 		NewMapComponent,
 		OffsetMapComponent,
@@ -70,6 +73,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 		HostDirective,
 		ModalDirective,
 		MapSettingsComponent,
+		MapContextComponent,
 		MapContentSettingsComponent,
 		NewMapComponent,
 		JsonEditorComponent,
