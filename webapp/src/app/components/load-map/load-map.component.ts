@@ -1,11 +1,13 @@
 import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {NestedTreeControl} from '@angular/cdk/tree';
-import {MatSidenav, MatTreeNestedDataSource} from '@angular/material';
+import {MatSidenav, MatTreeNestedDataSource, MatDialog} from '@angular/material';
 import {HttpClientService} from '../../services/http-client.service';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {MapNode, MapNodeRoot} from './mapNode.model';
 import {VirtualMapNode} from './virtualMapNode.model';
 import {GlobalEventsService} from '../../shared/global-events.service';
+import {MapContext} from '../../models/cross-code-map';
+import {MapContextComponent} from '../dialogs/map-context/map-context.component';
 
 @Component({
 	selector: 'app-load-map',
@@ -32,22 +34,27 @@ export class LoadMapComponent {
 	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering.
 	filter = '';
 	
-	private overridePath = '';
+	private mapContext: MapContext;
 
 	constructor(
 		private mapLoader: MapLoaderService,
 		private http: HttpClientService,
-		private eventService: GlobalEventsService
+		private eventService: GlobalEventsService,
+		private dialog: MatDialog,
 	) {
 		this.mapsSource.data = [];
-		this.refresh();
+		
 
-		this.eventService.changeMapContext.subscribe(({name, path: modPath}: any) => {
-			if (name === 'BASE') {
-				this.overridePath = '';
-			} else {
-				this.overridePath = modPath;
-			}
+		const defaultContext: MapContext = {
+			name: 'CrossCode',
+			path: ''
+		};
+		this.mapContext = defaultContext;
+
+		this.refresh();
+		
+		this.eventService.changeMapContext.subscribe((mapContext: MapContext) => {
+			this.mapContext = mapContext;
 			this.refresh();
 		});
 	}
@@ -56,9 +63,15 @@ export class LoadMapComponent {
 		this.filterInput.nativeElement.focus();
 	}
 	
+	openMapContextSettings() {
+		this.dialog.open(MapContextComponent, {
+			data: this.mapContext
+		});
+	}
+
 	refresh() {
 		this.loading = true;
-		this.http.getMaps(this.overridePath).subscribe(paths => {
+		this.http.getMaps(this.mapContext).subscribe(paths => {
 			this.loading = false;
 			this.displayMaps(paths);
 			this.update();
@@ -79,7 +92,7 @@ export class LoadMapComponent {
 	}
 	
 	load(name: string) {
-		this.mapLoader.loadMapByName(name);
+		this.mapLoader.loadMapByName(this.mapContext, name);
 	}
 	
 	hasChild(_: number, node: VirtualMapNode) {
