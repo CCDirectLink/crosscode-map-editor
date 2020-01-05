@@ -17,7 +17,8 @@ import {
 	MatTabsModule,
 	MatToolbarModule,
 	MatTooltipModule,
-	MatTreeModule
+	MatTreeModule,
+	MatRadioModule,
 } from '@angular/material';
 
 const MODULES = [
@@ -38,7 +39,8 @@ const MODULES = [
 	MatProgressSpinnerModule,
 	MatListModule,
 	MatIconModule,
-	MatTreeModule
+	MatTreeModule,
+	MatRadioModule,
 ];
 
 @NgModule({
