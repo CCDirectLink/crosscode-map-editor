@@ -5,6 +5,7 @@ import {Globals} from '../shared/globals';
 import {ElectronService} from './electron.service';
 import {FileInfos} from '../models/file-infos';
 import {api} from 'cc-map-editor-common';
+import { MapContext } from '../models/cross-code-map';
 
 @Injectable()
 export class HttpClientService {
@@ -32,7 +33,8 @@ export class HttpClientService {
 		return this.toObservable(api.getAllTilesets(path));
 	}
 	
-	getMaps(path: string = ''): Observable<string[]> {
+	getMaps(context: MapContext): Observable<string[]> {
+		let path = context.path;
 		if (!Globals.isElectron) {
 			return this.http.get<string[]>(Globals.URL + 'api/allMaps/?path=' + encodeURI(path));
 		}
