@@ -1,7 +1,7 @@
 <cc-overlay-panel title="Settings">
 	<ng-container ngProjectAs="content">
 		<div fxLayout="column" class="content-container">
-			<form fxLayout="row" class="option-row" *ngIf="isElectron">
+			<form fxLayout="row" class="option-row">
 				<mat-form-field fxFlex="auto">
 					<mat-label>Assets folder</mat-label>
 					<input matInput placeholder="C:\Program Files (x86)\Steam\steamapps\common\CrossCode\assets"
@@ -13,21 +13,11 @@
 				</mat-form-field>
 				<div class="actions-container" fxLayout="row">
 					<button mat-stroked-button (click)="select()">Select</button>
-					<button mat-stroked-button (click)="check() && initMods()">
+					<button mat-stroked-button (click)="check()">
 						Check
 						<mat-icon [ngClass]="iconCss" class="icon-base">{{icon}}</mat-icon>
 					</button>
 				</div>
-			</form>
-			<form fxLayout="row" class="option-row">
-				<mat-form-field fxFlex="auto">
-					<mat-label>Map Context</mat-label>
-					<mat-select (selectionChange)="selectMod($event.value)">
-						<mat-option *ngFor="let mod of mods; let i = index" [value]="i">
-							{{mod.name}}
-						</mat-option>
-					</mat-select>
-				</mat-form-field>
 			</form>
 		</div>
 	</ng-container>
