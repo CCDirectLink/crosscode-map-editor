@@ -1,3 +1,5 @@
+import { MapContext } from "../models/cross-code-map";
+
 export enum BasePath {
 	MAPS = 'data/maps/'
 }
@@ -15,7 +17,7 @@ export class PathResolver {
 	 * @param name The name of the asset in relation to base using '.' as separator.
 	 * @param extension
 	 */
-	public static convertToPath(base: BasePath | string, name: string, extension: FileExtension) {
-		return base + name.replace(/\./g, '/') + extension;
+	public static convertToPath(mapContext: MapContext,base: BasePath,name: string, extension: FileExtension) {
+		return mapContext.path + base + name.replace(/\./g, '/') + extension;
 	}
 }

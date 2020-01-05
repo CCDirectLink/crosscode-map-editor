@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {MatSnackBar} from '@angular/material';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {CrossCodeMap} from '../models/cross-code-map';
+import {CrossCodeMap, MapContext} from '../models/cross-code-map';
 import {CCMap} from './phaser/tilemap/cc-map';
 import {CCMapLayer} from './phaser/tilemap/cc-map-layer';
 import {HttpClientService} from '../services/http-client.service';
@@ -70,8 +70,8 @@ export class MapLoaderService {
 		this._map.next(map);
 	}
 	
-	loadMapByName(name: string) {
-		const path = PathResolver.convertToPath(this.pathOverride + BasePath.MAPS, name, FileExtension.JSON);
+	loadMapByName(mapContext: MapContext, name: string) {
+		const path = PathResolver.convertToPath(mapContext, BasePath.MAPS, name, FileExtension.JSON);
 		
 		this.http.getAssetsFile<CrossCodeMap>(path).subscribe(map => {
 			this.loadRawMap(map, name, path);
