@@ -29,13 +29,13 @@ export class ModloaderService {
         }
     }
 
-    getResourcePath(relativePath: string): Observable<string> {
+    getResourcePath(relativePath: string): Promise<string> {
         if (!Globals.isElectron) {
-            return this.http.get<string>(Globals.URL + 'api/modloader/resource?path=' + encodeURI(relativePath));
+            return this.http.get<string>(Globals.URL + 'api/modloader/resource?path=' + encodeURI(relativePath)).toPromise();
         }
 
         const resourcePath = modloader.getResourcePath(relativePath);
-        return new Observable<string>(sub => sub.next(resourcePath));
+        return Promise.resolve(resourcePath);
     }
 
     getAllModsAssetsPath(): Observable<MapContext[]> {
