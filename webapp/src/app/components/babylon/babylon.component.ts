@@ -1,11 +1,12 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Color3, Engine, FreeCamera, HemisphericLight, Scene, StandardMaterial, Texture, Vector3} from '@babylonjs/core';
+import {Color3, Engine, FreeCamera, HemisphericLight, Mesh, Scene, Vector3} from '@babylonjs/core';
 import {CustomFreeCamera} from './camera/custom-free-camera';
 import {TextureGenerator} from './layer-generation/texture-generator';
 import {LayerMeshGenerator} from './layer-generation/layer-mesh-generator';
 import {Globals} from '../../shared/globals';
 import {showAxis} from './debug/show-axis';
 import {ToggleMesh} from './debug/toggle-mesh';
+import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
 
 
 interface CamStore {
@@ -27,6 +28,7 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 	private cam?: FreeCamera;
 	private readonly storageKey = 'camPos';
 	private textureGenerator: TextureGenerator;
+	private groundLayers: CCMapLayer[] = [];
 	
 	constructor() {
 		this.textureGenerator = new TextureGenerator();
@@ -42,12 +44,11 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	
 	private async initBabylon() {
+		this.groundLayers = [];
 		const engine = new Engine(this.canvas.nativeElement);
 		this.engine = engine;
 		const scene = new Scene(engine);
 		this.scene = scene;
-		
-		console.log(this.canvas.nativeElement);
 		
 		const cam = new CustomFreeCamera('camera', new Vector3(0, 0, -4), scene);
 		cam.position.y = 1;
@@ -64,45 +65,82 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		
 		}
 		
-		const light1 = new HemisphericLight('light1', new Vector3(1, 1, 0), scene);
+		const light1 = new HemisphericLight('light1', new Vector3(1, 1, 1), scene);
 		light1.diffuse = new Color3(1, 1, 1).scale(1);
 		light1.specular = new Color3(1, 1, 1).scale(0.2);
-		
-		const testMaterial = new StandardMaterial('testMat', scene);
-		
 		
 		const map = Globals.map;
 		const layers = map.layers.filter(layer => layer.details.type.toLowerCase() === 'collision');
 		
+		layers.unshift(await this.generateGroundLayer(layers[0]));
+		
 		const meshGenerator = new LayerMeshGenerator();
 		
-		// for (const coll of layers) {
-		// 	meshGenerator.generateLevel(coll);
-		// }
+		const allMeshes: Mesh[] = [];
 		
-		const src = await this.textureGenerator.generate(1);
-		const meshes = meshGenerator.generateLevel(layers[0], scene);
-		const texture = new Texture('data:level0', scene, undefined, undefined, Texture.NEAREST_SAMPLINGMODE, undefined, undefined, src);
-		
-		testMaterial.diffuseTexture = texture;
-		// testMaterial.alpha = 0.5;
-		
-		for (const mesh of meshes) {
-			mesh.material = testMaterial;
+		for (const coll of layers) {
+			const layerMaterial = await this.textureGenerator.generate(coll.details.level + 1, scene);
+			const meshes = meshGenerator.generateLevel(coll, scene);
+			
+			for (const mesh of meshes) {
+				mesh.material = layerMaterial;
+			}
+			
+			allMeshes.push(...meshes);
 		}
 		
 		const toggle = new ToggleMesh(scene);
 		
-		meshes[1].isVisible = false;
-		toggle.addButton('debug plane', () => meshes[1].isVisible = !meshes[1].isVisible);
-		toggle.addButton('wireframe', () => testMaterial.wireframe = !testMaterial.wireframe);
+		// meshes[1].isVisible = false;
+		// toggle.addButton('debug plane', () => meshes[1].isVisible = !meshes[1].isVisible);
+		toggle.addButton('wireframe', () => allMeshes.forEach(m => m.material!.wireframe = !m.material!.wireframe));
 		
 		showAxis(2, scene);
 		
 		engine.runRenderLoop(() => scene.render());
 	}
 	
+	private async generateGroundLayer(other: CCMapLayer) {
+		// TODO: remove
+		const data: number[][] = [];
+		const height = other.details.height + 10;
+		for (let y = 0; y < height; y++) {
+			data[y] = [];
+			for (let x = 0; x < other.details.width; x++) {
+				data[y][x] = 2;
+			}
+		}
+		const layer = new CCMapLayer(other.getPhaserLayer()!.tilemap);
+		await layer.init({
+			type: 'Collision',
+			name: 'groundColl',
+			level: -1,
+			width: other.details.width,
+			height: height,
+			visible: 1,
+			tilesetName: '',
+			repeat: false,
+			distance: 1,
+			tilesize: Globals.TILE_SIZE,
+			moveSpeed: {x: 0, y: 0},
+			data: data,
+		});
+		
+		for (let y = 0; y < height; y++) {
+			for (let x = 0; x < other.details.width; x++) {
+				layer.getPhaserLayer()!.putTileAt(2, x, y);
+			}
+		}
+		this.groundLayers.push(layer);
+		return layer;
+	}
+	
 	ngOnDestroy() {
+		for (const layer of this.groundLayers) {
+			layer.destroy();
+		}
+		
+		
 		this.textureGenerator.destroy();
 		if (this.cam) {
 			const camPos = this.cam.position;

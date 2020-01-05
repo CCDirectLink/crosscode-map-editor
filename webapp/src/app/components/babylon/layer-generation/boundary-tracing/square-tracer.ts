@@ -1,10 +1,9 @@
 import Tile = Phaser.Tilemaps.Tile;
 import DynamicTilemapLayer = Phaser.Tilemaps.DynamicTilemapLayer;
-import {Point} from '../../../models/cross-code-map';
+import {Point} from '../../../../models/cross-code-map';
 
 export class SquareTracer {
 	getContour(tiles: Set<Tile>, layer: DynamicTilemapLayer) {
-		console.log('start square tracing algorithm');
 		// use top left as starting point
 		let startTile = tiles.values().next().value;
 		for (const value of tiles.values()) {

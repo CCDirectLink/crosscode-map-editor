@@ -1,6 +1,6 @@
 import {Globals} from '../../../shared/globals';
 import {CCMapLayer} from '../../../shared/phaser/tilemap/cc-map-layer';
-import {getLevelOffset} from './offset-helper';
+import {Scene, StandardMaterial, Texture} from '@babylonjs/core';
 
 export class TextureGenerator {
 	
@@ -45,14 +45,21 @@ export class TextureGenerator {
 		Globals.game.scale.setGameSize(width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
 	}
 	
-	public async generate(level: number): Promise<string> {
+	public async generate(level: number, scene: Scene) {
 		for (const layer of this.layers) {
 			layer.visible = layer.details.level <= level;
 		}
 		
+		const layerMaterial = new StandardMaterial('layerMaterial' + level, scene);
 		const src = await this.snapshot();
 		
-		return src;
+		const texture = new Texture('data:level' + level, scene, undefined, undefined, Texture.NEAREST_SAMPLINGMODE, undefined, undefined, src);
+		texture.wrapU = Texture.CLAMP_ADDRESSMODE;
+		texture.wrapV = Texture.CLAMP_ADDRESSMODE;
+		
+		layerMaterial.diffuseTexture = texture;
+		
+		return layerMaterial;
 	}
 	
 	private async snapshot(): Promise<string> {

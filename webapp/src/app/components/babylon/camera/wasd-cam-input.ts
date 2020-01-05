@@ -27,7 +27,7 @@ export class WasdCamInput implements ICameraInput<CustomFreeCamera> {
 		...this.keysDown,
 		...this.keysTurbo
 	];
-	private sensibility = 1.2;
+	private sensibility = 1.8;
 	
 	attachControl(element: HTMLElement, noPreventDefault?: boolean): void {
 		const _this = this;

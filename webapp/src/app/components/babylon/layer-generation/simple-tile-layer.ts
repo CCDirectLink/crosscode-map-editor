@@ -7,7 +7,7 @@ export class SimpleTileLayer {
 	private data: Tile[][] = [];
 	private width = 0;
 	private height = 0;
-	private uselesTile = new Tile(null as any, 0, 0, 0, 0, 0, 0, 0);
+	private diagonalConnector = new Map<number, Set<number>>();
 	
 	public init(width: number, height: number) {
 		this.width = width;
@@ -27,6 +27,7 @@ export class SimpleTileLayer {
 		layer.getTilesWithin().forEach(tile => {
 			const i = tile.index;
 			const dirs: Point[] = [];
+			const connections: { c1: Point, c2: Point }[] = [];
 			
 			// ■
 			if (i === 2) {
@@ -41,6 +42,10 @@ export class SimpleTileLayer {
 				dirs.push({x: 0, y: 0});
 				dirs.push({x: 0, y: 1});
 				dirs.push({x: 1, y: 1});
+				connections.push({
+					c1: {x: 0, y: 0},
+					c2: {x: 1, y: 1}
+				});
 			}
 			
 			// ◤
@@ -48,6 +53,10 @@ export class SimpleTileLayer {
 				dirs.push({x: 0, y: 0});
 				dirs.push({x: 1, y: 0});
 				dirs.push({x: 0, y: 1});
+				connections.push({
+					c1: {x: 1, y: 0},
+					c2: {x: 0, y: 1}
+				});
 			}
 			
 			// ◥
@@ -55,6 +64,10 @@ export class SimpleTileLayer {
 				dirs.push({x: 0, y: 0});
 				dirs.push({x: 1, y: 0});
 				dirs.push({x: 1, y: 1});
+				connections.push({
+					c1: {x: 0, y: 0},
+					c2: {x: 1, y: 1}
+				});
 			}
 			
 			// ◢
@@ -62,11 +75,33 @@ export class SimpleTileLayer {
 				dirs.push({x: 1, y: 0});
 				dirs.push({x: 0, y: 1});
 				dirs.push({x: 1, y: 1});
+				connections.push({
+					c1: {x: 1, y: 0},
+					c2: {x: 0, y: 1}
+				});
 			}
 			
 			for (const d of dirs) {
 				this.setTileAt(2, tile.x + d.x, tile.y + d.y);
 			}
+			for (const connection of connections) {
+				const c1 = this.p2Hash({x: tile.x + connection.c1.x, y: tile.y + connection.c1.y});
+				const c2 = this.p2Hash({x: tile.x + connection.c2.x, y: tile.y + connection.c2.y});
+				let group = this.diagonalConnector.get(c1);
+				if (!group) {
+					group = new Set<number>();
+					this.diagonalConnector.set(c1, group);
+				}
+				group.add(c2);
+				
+				group = this.diagonalConnector.get(c2);
+				if (!group) {
+					group = new Set<number>();
+					this.diagonalConnector.set(c2, group);
+				}
+				group.add(c1);
+			}
+			
 			
 		});
 		
@@ -96,10 +131,21 @@ export class SimpleTileLayer {
 			}
 			all += row + '\n';
 		}
-		console.log(all);
+	}
+	
+	private p2Hash(p: Point) {
+		return p.x * 100000 + p.y;
 	}
 	
 	private isInLayerBounds(tileX: number, tileY: number) {
 		return (tileX >= 0 && tileX < this.width && tileY >= 0 && tileY < this.height);
+	}
+	
+	canConnect(tile: Tile, dir: Point) {
+		const group = this.diagonalConnector.get(this.p2Hash(tile));
+		if (!group) {
+			return false;
+		}
+		return group.has(this.p2Hash({x: tile.x + dir.x, y: tile.y + dir.y}));
 	}
 }

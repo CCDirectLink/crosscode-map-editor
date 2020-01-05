@@ -1,7 +1,7 @@
 import DynamicTilemapLayer = Phaser.Tilemaps.DynamicTilemapLayer;
 import Tile = Phaser.Tilemaps.Tile;
-import {Point} from '../../../models/cross-code-map';
-import {SimpleTileLayer} from './simple-tile-layer';
+import {Point} from '../../../../models/cross-code-map';
+import {SimpleTileLayer} from '../simple-tile-layer';
 
 interface TracerTile extends Tile {
 	prev?: TracerTile;
@@ -14,7 +14,6 @@ export class RadialSweepTracer {
 		preparedLayer.initLayer(layer);
 		// preparedLayer.debug();
 		
-		console.log('start radial sweep algorithm');
 		// use top left as starting point
 		let startTile = tiles.values().next().value;
 		for (const value of tiles.values()) {
@@ -55,7 +54,9 @@ export class RadialSweepTracer {
 			dir = this.rotate(dir);
 			const next = layer.getTileAt(tile.x + dir.x, tile.y + dir.y);
 			if (next && next.index !== 0) {
-				return {next: next, dir: dir};
+				if (dir.x === 0 || dir.y === 0 || layer.canConnect(tile, dir)) {
+					return {next: next, dir: dir};
+				}
 			}
 		}
 		
