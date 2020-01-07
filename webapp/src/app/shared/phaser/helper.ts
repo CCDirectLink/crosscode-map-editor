@@ -2,9 +2,16 @@ import {Point} from '../../models/cross-code-map';
 import {Globals} from '../globals';
 import {CCMapLayer} from './tilemap/cc-map-layer';
 import Scene = Phaser.Scene;
+import { ModloaderService } from '../../services/modloader.service';
 
 export class Helper {
 	
+	private static modloaderService: ModloaderService;
+
+	public static setModloader(modloaderService: ModloaderService) {
+		this.modloaderService = modloaderService;
+	}
+
 	public static worldToTile(x: number, y: number): Point {
 		const p: Point = {x: 0, y: 0};
 		
@@ -74,7 +81,7 @@ export class Helper {
 			return callback(scene.cache.json.get(key));
 		}
 		
-		Globals.modloaderService.loadJson(key + '.json').then((data) => {
+		Helper.modloaderService.loadJson(key + '.json').then((data: T) => {
 			scene.cache.json.add(key, data);
 			callback(data);
 		}).catch(() => {
@@ -102,7 +109,7 @@ export class Helper {
 		if (scene.textures.exists(key)) {
 			return true;
 		}
-		const truePath = await Globals.modloaderService.getResourcePath(key);
+		const truePath = await Helper.modloaderService.getResourcePath(key);
 		return new Promise(res => {
 			if (Globals.isElectron) {
 				scene.load.image(key, truePath);
