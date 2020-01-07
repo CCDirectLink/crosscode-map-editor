@@ -41,16 +41,16 @@ app.post('/api/saveFile', async (req, res) => {
 });
 
 
-app.get('/api/modloader/mods/assets-path', async (_, res) => {
+app.get('/api/mods', async (_, res) => {
 	res.json(modloader.getAllModsAssetsPath());
 });
 
-app.get('/api/modloader/resource', async (req, res) => {
+app.get('/api/resourcePath', async (req, res) => {
 	const relativePath = req.query.path;
 	res.json(modloader.getResourcePath(relativePath, true));
 });
 
-app.get('/api/modloader/load/json', async (req, res) => {
+app.get('/api/load/json', async (req, res) => {
 	const relativePath = req.query.path;
 	res.json(await modloader.loadJson(relativePath));
 });
