@@ -27,5 +27,4 @@ export class Globals {
 	static phaserEventsService: PhaserEventsService;
 	static autotileService: AutotileService;
 	static entityRegistry: EntityRegistryService;
-	static modloaderService: ModloaderService;
 }
