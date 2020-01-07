@@ -13,6 +13,7 @@ export enum FileExtension {
 export class PathResolver {
 	
 	/**
+	 * @param mapContext The MapContext to use to build base path
 	 * @param base The path in relation to assets.
 	 * @param name The name of the asset in relation to base using '.' as separator.
 	 * @param extension
