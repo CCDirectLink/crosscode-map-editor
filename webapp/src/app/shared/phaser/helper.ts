@@ -62,12 +62,12 @@ export class Helper {
 	}
 	
 	/** copies obj via JSON.parse(JSON.stringify(obj)); */
-	public static copy(obj: any) {
+	public static copy<T>(obj: T): T {
 		return JSON.parse(JSON.stringify(obj));
 	}
 		
 
-	public static getJson(key: string, callback: (json: any) => void) {
+	public static getJson<T>(key: string, callback: (json: T | null) => void) {
 		const scene = Globals.scene;
 
 		if (scene.cache.json.has(key)) {
