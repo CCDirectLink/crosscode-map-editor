@@ -4,7 +4,7 @@
     "outDir": "../out-tsc/spec",
     "baseUrl": "./",
     "module": "es2015",
-    "target": "es5",
+    "target": "es6",
     "types": [
       "jasmine",
       "node"

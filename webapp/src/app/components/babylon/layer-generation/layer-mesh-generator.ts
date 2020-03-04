@@ -22,7 +22,11 @@ export class LayerMeshGenerator {
 		}
 		
 		const simpleTileLayer = new SimpleTileLayer();
-		simpleTileLayer.initWithoutDiagonals(phaserLayer);
+		simpleTileLayer.initLayer(phaserLayer);
+		
+		if (collLayer.details.level < map.masterLevel) {
+			this.transformToBelowMaster(simpleTileLayer);
+		}
 		
 		const tiles: Tile[] = simpleTileLayer.tiles.flat();
 		
@@ -78,6 +82,33 @@ export class LayerMeshGenerator {
 		return meshes;
 	}
 	
+	public transformToBelowMaster(layer: SimpleTileLayer) {
+		for (const row of layer.tiles) {
+			for (const tile of row) {
+				switch (tile.index) {
+					case 0: // empty
+						tile.index = 2;
+						break;
+					case 1: // ■
+						tile.index = 0;
+						break;
+					case 4: // ◣
+						tile.index = 10;
+						break;
+					case 5: // ◤
+						tile.index = 11;
+						break;
+					case 6: // ◥
+						tile.index = 8;
+						break;
+					case 7: // ◢
+						tile.index = 9;
+						break;
+				}
+			}
+		}
+	}
+	
 	private generateMesh(name: string, tiles: Set<Tile>, ccLayer: CCMapLayer, simpleTileLayer: SimpleTileLayer, scene: Scene) {
 		const layer = ccLayer.getPhaserLayer()!;
 		const tracer = new RadialSweepTracer();
@@ -131,11 +162,9 @@ export class LayerMeshGenerator {
 		merge.position.x = -layer.tilemap.width * 0.5;
 		merge.position.z = layer.tilemap.height * 0.5;
 		
-		let levelOffset = getLevelOffsetTile(ccLayer.details.level);
+		const levelOffset = getLevelOffsetTile(ccLayer.details.level + 1);
+		console.log(`${ccLayer.details.level}:  ${levelOffset}`);
 		merge.position.y = levelOffset;
-		if (levelOffset < 0) {
-			levelOffset = 0;
-		}
 		merge.position.z -= levelOffset;
 		
 		return merge;

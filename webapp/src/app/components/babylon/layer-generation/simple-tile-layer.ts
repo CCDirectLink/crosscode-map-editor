@@ -5,14 +5,17 @@ import {Point} from '../../../models/cross-code-map';
 export class SimpleTileLayer {
 	
 	private _data: Tile[][] = [];
-	private _width = 0;
 	
+	public get tiles(): Phaser.Tilemaps.Tile[][] {
+		return this._data;
+	}
+	
+	private _width = 0;
 	public get width(): number {
 		return this._width;
 	}
 	
 	private _height = 0;
-	
 	public get height(): number {
 		return this._height;
 	}
@@ -32,7 +35,22 @@ export class SimpleTileLayer {
 		}
 	}
 	
-	public initLayer(layer: DynamicTilemapLayer | SimpleTileLayer) {
+	public initSimple(tiles: number[][]) {
+		const width = tiles[0].length;
+		const height = tiles.length;
+		this._width = width;
+		this._height = height;
+		this._data = new Array(height);
+		for (let i = 0; i < height; i++) {
+			this._data[i] = new Array(width);
+			const row = this._data[i];
+			for (let j = 0; j < width; j++) {
+				row[j] = new Tile(null as any, tiles[i][j], j, i, 1, 1, 1, 1);
+			}
+		}
+	}
+	
+	public initLayerForDiagonals(layer: DynamicTilemapLayer | SimpleTileLayer) {
 		let width = 0;
 		let height = 0;
 		let tiles: Tile[];
@@ -41,8 +59,8 @@ export class SimpleTileLayer {
 			height = layer.height;
 			tiles = layer.tiles.flat();
 		} else {
-			width = layer.tilemap.width;
-			height = layer.tilemap.height;
+			width = layer.layer.width;
+			height = layer.layer.height;
 			tiles = layer.getTilesWithin();
 		}
 		
@@ -130,8 +148,8 @@ export class SimpleTileLayer {
 		
 	}
 	
-	public initWithoutDiagonals(layer: DynamicTilemapLayer) {
-		this.init(layer.tilemap.width, layer.tilemap.height);
+	public initLayer(layer: DynamicTilemapLayer) {
+		this.init(layer.layer.width, layer.layer.height);
 		
 		// TODO: set directly, skip isInLayerBounds check
 		for (const tile of layer.getTilesWithin()) {
@@ -180,7 +198,7 @@ export class SimpleTileLayer {
 		return group.has(this.p2Hash({x: tile.x + dir.x, y: tile.y + dir.y}));
 	}
 	
-	public get tiles(): Phaser.Tilemaps.Tile[][] {
-		return this._data;
+	public exportLayer() {
+		return this.tiles.map(row => row.map(tile => tile.index));
 	}
 }

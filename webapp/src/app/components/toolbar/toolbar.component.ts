@@ -14,6 +14,7 @@ import {Globals} from '../../shared/globals';
 import {SaveService} from '../../services/save.service';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {Router} from '@angular/router';
+import {SimpleTileLayer} from '../babylon/layer-generation/simple-tile-layer';
 
 @Component({
 	selector: 'app-toolbar',
@@ -51,7 +52,7 @@ export class ToolbarComponent implements OnInit {
 		);
 		
 		this.events.loadComplete.subscribe(() => {
-			this.mapLoader.loadMapByName('tests/3d/bergen-trail-entrance-groundtest');
+			this.mapLoader.loadMapByName('tests/3d/boundary_test');
 		});
 	}
 	

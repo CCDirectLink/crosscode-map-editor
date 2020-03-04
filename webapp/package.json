@@ -91,21 +91,19 @@
 		"zone.js": "^0.9.1"
 	},
 	"devDependencies": {
+		"@angular-devkit/architect": "<0.900 || ^0.900.0-0 || ^9.0.0-0",
 		"@angular-devkit/build-angular": "~0.802.2",
 		"@angular/cli": "^8.2.2",
 		"@angular/compiler-cli": "^8.2.3",
 		"@angular/language-service": "^8.2.3",
 		"@types/earcut": "^2.1.0",
+		"@types/jasmine": "~3.3.8",
+		"@types/jasminewd2": "~2.0.3",
 		"@types/jsoneditor": "^5.28.1",
 		"@types/node": "^12.0.7",
 		"codelyzer": "~5.1.0",
 		"electron": "^5.0.3",
 		"electron-builder": "^20.43.0",
-		"ts-node": "~8.2.0",
-		"tslint": "^5.17.0",
-		"typescript": "~3.5.3",
-		"@types/jasmine": "~3.3.8",
-		"@types/jasminewd2": "~2.0.3",
 		"jasmine-core": "~3.4.0",
 		"jasmine-spec-reporter": "~4.2.1",
 		"karma": "~4.1.0",
@@ -113,6 +111,9 @@
 		"karma-coverage-istanbul-reporter": "~2.0.1",
 		"karma-jasmine": "~2.0.1",
 		"karma-jasmine-html-reporter": "^1.4.0",
-		"@angular-devkit/architect": "<0.900 || ^0.900.0-0 || ^9.0.0-0"
+		"karma-phantomjs-launcher": "^1.0.4",
+		"ts-node": "~8.2.0",
+		"tslint": "^5.17.0",
+		"typescript": "~3.5.3"
 	}
 }

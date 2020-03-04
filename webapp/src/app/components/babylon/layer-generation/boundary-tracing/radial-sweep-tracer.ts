@@ -11,7 +11,7 @@ export class RadialSweepTracer {
 	getContour(tiles: Set<Tile>, layer: SimpleTileLayer) {
 		// prepare tiles
 		const preparedLayer = new SimpleTileLayer();
-		preparedLayer.initLayer(layer);
+		preparedLayer.initLayerForDiagonals(layer);
 		// preparedLayer.debug();
 		
 		// use top left as starting point
