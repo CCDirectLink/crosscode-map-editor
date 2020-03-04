@@ -3,9 +3,11 @@ import {Globals} from '../../../shared/globals';
 function getLevelOffset(level: number) {
 	const map = Globals.map;
 	if (level >= map.levels.length) {
-		return map.levels[map.levels.length - 1].height + 64;
+		const maxDiff = map.levels[map.levels.length - 1].height - map.levels[map.levels.length - 2].height;
+		return map.levels[map.levels.length - 1].height + maxDiff * (level - map.levels.length + 1);
 	} else if (level < 0) {
-		return map.levels[0].height + 64 * level;
+		const minDiff = map.levels[1].height - map.levels[0].height;
+		return map.levels[0].height + minDiff * level;
 	}
 	return map.levels[level].height;
 }

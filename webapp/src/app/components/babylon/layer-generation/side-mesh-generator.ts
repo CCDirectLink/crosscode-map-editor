@@ -3,6 +3,7 @@ import {Point3} from '../../../models/cross-code-map';
 import {getLevelOffsetTile} from './offset-helper';
 import {CCMapLayer} from '../../../shared/phaser/tilemap/cc-map-layer';
 import {Globals} from '../../../shared/globals';
+import {SimpleTileLayer} from './simple-tile-layer';
 
 interface UV {
 	u: number;
@@ -24,14 +25,13 @@ export class SideMeshGenerator {
 	private heightOffset = 0;
 	private heightOffset2 = 0;
 	
-	generate(top: Mesh, ccLayer: CCMapLayer): Mesh {
-		const layer = ccLayer.getPhaserLayer()!;
+	generate(top: Mesh, ccLayer: CCMapLayer, simpleTileLayer: SimpleTileLayer): Mesh {
 		top.updateFacetData();
 		this.heightOffset = getLevelOffsetTile(ccLayer.details.level);
 		this.heightOffset2 = getLevelOffsetTile(ccLayer.details.level + 1) - getLevelOffsetTile(ccLayer.details.level);
 		
-		this.width = layer.tilemap.width;
-		this.height = layer.tilemap.height;
+		this.width = simpleTileLayer.width;
+		this.height = simpleTileLayer.height;
 		
 		const quads = this.makeQuads(top, -this.heightOffset2);
 		

@@ -4,27 +4,50 @@ import {Point} from '../../../models/cross-code-map';
 
 export class SimpleTileLayer {
 	
-	private data: Tile[][] = [];
-	private width = 0;
-	private height = 0;
+	private _data: Tile[][] = [];
+	private _width = 0;
+	
+	public get width(): number {
+		return this._width;
+	}
+	
+	private _height = 0;
+	
+	public get height(): number {
+		return this._height;
+	}
+	
 	private diagonalConnector = new Map<number, Set<number>>();
 	
 	public init(width: number, height: number) {
-		this.width = width;
-		this.height = height;
-		this.data = new Array(height);
+		this._width = width;
+		this._height = height;
+		this._data = new Array(height);
 		for (let i = 0; i < height; i++) {
-			this.data[i] = new Array(width);
-			const row = this.data[i];
+			this._data[i] = new Array(width);
+			const row = this._data[i];
 			for (let j = 0; j < width; j++) {
 				row[j] = new Tile(null as any, 0, j, i, 1, 1, 1, 1);
 			}
 		}
 	}
 	
-	public initLayer(layer: DynamicTilemapLayer) {
-		this.init(layer.tilemap.width + 1, layer.tilemap.height + 1);
-		layer.getTilesWithin().forEach(tile => {
+	public initLayer(layer: DynamicTilemapLayer | SimpleTileLayer) {
+		let width = 0;
+		let height = 0;
+		let tiles: Tile[];
+		if (layer instanceof SimpleTileLayer) {
+			width = layer.width;
+			height = layer.height;
+			tiles = layer.tiles.flat();
+		} else {
+			width = layer.tilemap.width;
+			height = layer.tilemap.height;
+			tiles = layer.getTilesWithin();
+		}
+		
+		this.init(width + 1, height + 1);
+		tiles.forEach(tile => {
 			const i = tile.index;
 			const dirs: Point[] = [];
 			const connections: { c1: Point, c2: Point }[] = [];
@@ -107,26 +130,34 @@ export class SimpleTileLayer {
 		
 	}
 	
+	public initWithoutDiagonals(layer: DynamicTilemapLayer) {
+		this.init(layer.tilemap.width, layer.tilemap.height);
+		
+		// TODO: set directly, skip isInLayerBounds check
+		for (const tile of layer.getTilesWithin()) {
+			this.setTileAt(tile.index, tile.x, tile.y);
+		}
+	}
+	
 	public getTileAt(tileX: number, tileY: number) {
 		if (!this.isInLayerBounds(tileX, tileY)) {
 			return null;
-			
 		}
-		const tile = this.data[tileY][tileX];
+		const tile = this._data[tileY][tileX];
 		return tile || null;
 	}
 	
 	public setTileAt(index: number, x: number, y: number) {
 		if (this.isInLayerBounds(x, y)) {
-			this.data[y][x].index = index;
+			this._data[y][x].index = index;
 		}
 	}
 	
 	public debug() {
 		let all = '';
-		for (let j = 0; j < this.height; j++) {
+		for (let j = 0; j < this._height; j++) {
 			let row = '';
-			for (let i = 0; i < this.width; i++) {
+			for (let i = 0; i < this._width; i++) {
 				row += this.getTileAt(i, j)!.index === 2 ? 'X' : '.';
 			}
 			all += row + '\n';
@@ -138,7 +169,7 @@ export class SimpleTileLayer {
 	}
 	
 	private isInLayerBounds(tileX: number, tileY: number) {
-		return (tileX >= 0 && tileX < this.width && tileY >= 0 && tileY < this.height);
+		return (tileX >= 0 && tileX < this._width && tileY >= 0 && tileY < this._height);
 	}
 	
 	canConnect(tile: Tile, dir: Point) {
@@ -147,5 +178,9 @@ export class SimpleTileLayer {
 			return false;
 		}
 		return group.has(this.p2Hash({x: tile.x + dir.x, y: tile.y + dir.y}));
+	}
+	
+	public get tiles(): Phaser.Tilemaps.Tile[][] {
+		return this._data;
 	}
 }

@@ -8,7 +8,7 @@ interface TracerTile extends Tile {
 }
 
 export class RadialSweepTracer {
-	getContour(tiles: Set<Tile>, layer: DynamicTilemapLayer) {
+	getContour(tiles: Set<Tile>, layer: SimpleTileLayer) {
 		// prepare tiles
 		const preparedLayer = new SimpleTileLayer();
 		preparedLayer.initLayer(layer);

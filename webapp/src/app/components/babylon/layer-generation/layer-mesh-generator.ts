@@ -5,9 +5,8 @@ import {Mesh, MeshBuilder, Scene, Vector3, Vector4} from '@babylonjs/core';
 import * as earcut from 'earcut';
 import {SideMeshGenerator} from './side-mesh-generator';
 import {getLevelOffsetTile} from './offset-helper';
+import {SimpleTileLayer} from './simple-tile-layer';
 import Tile = Phaser.Tilemaps.Tile;
-import DynamicTilemapLayer = Phaser.Tilemaps.DynamicTilemapLayer;
-
 
 export class LayerMeshGenerator {
 	
@@ -21,7 +20,22 @@ export class LayerMeshGenerator {
 		if (!phaserLayer) {
 			throw new Error('phaser layer of collision layer does not exist');
 		}
-		const tiles = phaserLayer.getTilesWithin();
+		
+		const simpleTileLayer = new SimpleTileLayer();
+		simpleTileLayer.initWithoutDiagonals(phaserLayer);
+		
+		const tiles: Tile[] = simpleTileLayer.tiles.flat();
+		
+		if (collLayer.details.level < Globals.map.masterLevel) {
+			console.log('< master level');
+			tiles.forEach(tile => {
+				// if (tile.index === 1) {
+				// 	tile.index = 8;
+				// }
+				// tile.index = 4;
+			});
+		}
+		
 		const allTiles = new Set<Tile>();
 		for (const tile of tiles) {
 			if (tile.index <= 0) {
@@ -41,17 +55,17 @@ export class LayerMeshGenerator {
 		let meshCounter = 0;
 		
 		while (allTiles.size > 0) {
-			const toCheck = [allTiles.values().next().value];
+			const toCheck: (Tile | null)[] = [allTiles.values().next().value];
 			const group = new Set<Tile>();
 			while (toCheck.length > 0) {
 				const tile = toCheck.pop()!;
 				if (allTiles.delete(tile)) {
 					
 					group.add(tile);
-					toCheck.push(...this.getNeighbours(tile, phaserLayer));
+					toCheck.push(...this.getNeighbours(tile, simpleTileLayer));
 				}
 			}
-			meshes.push(this.generateMesh('coll layer ' + collLayer.details.level + ' - ' + (++meshCounter), group, collLayer, scene));
+			meshes.push(this.generateMesh('coll layer ' + collLayer.details.level + ' - ' + (++meshCounter), group, collLayer, simpleTileLayer, scene));
 			// debug mesh
 			// const ground = MeshBuilder.CreateGround('debug plane', {
 			// 	width: collLayer.details.width,
@@ -64,10 +78,10 @@ export class LayerMeshGenerator {
 		return meshes;
 	}
 	
-	private generateMesh(name: string, tiles: Set<Tile>, ccLayer: CCMapLayer, scene: Scene) {
+	private generateMesh(name: string, tiles: Set<Tile>, ccLayer: CCMapLayer, simpleTileLayer: SimpleTileLayer, scene: Scene) {
 		const layer = ccLayer.getPhaserLayer()!;
 		const tracer = new RadialSweepTracer();
-		const path = Array.from(tracer.getContour(tiles, layer));
+		const path = Array.from(tracer.getContour(tiles, simpleTileLayer));
 		
 		let maxX = -9999;
 		let minX = 9999;
@@ -88,10 +102,8 @@ export class LayerMeshGenerator {
 		
 		const offsetX = minX / layer.tilemap.width;
 		const level = ccLayer.details.level;
-		let heightOffset = getLevelOffsetTile(level + 1) - getLevelOffsetTile(level);
-		if (level < 0) {
-			heightOffset = 0;
-		}
+		const heightOffset = getLevelOffsetTile(level + 1) - getLevelOffsetTile(level);
+		console.log(`level: ${level} - offset: ${heightOffset}`);
 		let offsetY = (layer.tilemap.height - maxY + heightOffset) / layer.tilemap.height;
 		
 		// 1 px offset, no idea where that comes from
@@ -112,7 +124,7 @@ export class LayerMeshGenerator {
 		}, scene, earcut);
 		
 		const sideMeshGenerator = new SideMeshGenerator();
-		const mesh = sideMeshGenerator.generate(top, ccLayer);
+		const mesh = sideMeshGenerator.generate(top, ccLayer, simpleTileLayer);
 		
 		const merge = Mesh.MergeMeshes([top, mesh])!;
 		
@@ -130,8 +142,8 @@ export class LayerMeshGenerator {
 		// return top;
 	}
 	
-	private getNeighbours(tile: Tile, layer: DynamicTilemapLayer) {
-		const out: Tile[] = [
+	private getNeighbours(tile: Tile, layer: SimpleTileLayer) {
+		const out: (Tile | null)[] = [
 			layer.getTileAt(tile.x + 1, tile.y),
 			layer.getTileAt(tile.x - 1, tile.y),
 			layer.getTileAt(tile.x, tile.y + 1),
