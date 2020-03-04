@@ -4,39 +4,39 @@ import {CCMap} from '../../tilemap/cc-map';
 
 interface JsonEntityType {
 	attributes: EntityAttributes;
-	
+
 	spawnable?: boolean;
-	
+
 	drawBox?: boolean;
 	borderColor?: string;
 	boxColor?: string;
 	circleColor?: string;
 	frontColor?: string;
-	
+
 	scalableX?: boolean;
 	scalableY?: boolean;
 	scalableStep?: number;
-	
+
 	alwaysRecreate?: boolean;
 	noZLine?: boolean;
 }
 
 export class DefaultEntity extends CCEntity {
-	
+
 	constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string, settings: any) {
 		super(scene, map, x, y, typeName);
 		this.typeDef = entities[typeName];
 	}
-	
+
 	private readonly typeDef?: JsonEntityType;
 	private settings: any = {};
 	private scaleSettings?: ScaleSettings;
-	
+
 	getAttributes(): EntityAttributes {
 		if (this.typeDef) {
 			return this.typeDef.attributes;
 		}
-		
+
 		const out: EntityAttributes = {};
 		Object.keys(this.settings).forEach(key => {
 			out[key] = {
@@ -46,45 +46,46 @@ export class DefaultEntity extends CCEntity {
 		});
 		return out;
 	}
-	
+
 	getScaleSettings(): ScaleSettings | undefined {
 		if (this.scaleSettings) {
 			return this.scaleSettings;
 		}
-		
+
 		if (!this.typeDef) {
 			return undefined;
 		}
-		
+
 		const step = this.typeDef.scalableStep || 1;
-		
+
 		this.scaleSettings = {
 			scalableX: !!this.typeDef.scalableX,
 			scalableY: !!this.typeDef.scalableY,
 			scalableStep: step,
 			baseSize: {x: step, y: step}
 		};
-		
+
 		if (step === 1 && !this.details.settings.size) {
-			this.details.settings.size = {x: 16, y: 16};
+			// TODO: where is that used
+			// this.details.settings.size = {x: 16, y: 16};
 		}
-		
+
 		return this.scaleSettings;
 	}
-	
+
 	protected async setupType(settings: any) {
 		this.settings = settings;
 		if (!this.typeDef) {
 			this.generateNoImageType();
 			return;
 		}
-		
+
 		const boxColor = this.convertToColor(this.typeDef.boxColor);
 		const frontColor = this.convertToColor(this.typeDef.frontColor);
 		this.generateNoImageType(boxColor.rgb, boxColor.a, frontColor.rgb, frontColor.a);
-		
+
 	}
-	
+
 	private convertToColor(rgba?: string) {
 		if (!rgba) {
 			return {};
