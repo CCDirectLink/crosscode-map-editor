@@ -84,7 +84,7 @@ export class SimpleTileLayer {
 			}
 			
 			// ◣
-			if (i === 8) {
+			if (i === 8 || i === 24) {
 				dirs.push({x: 0, y: 0});
 				dirs.push({x: 0, y: 1});
 				dirs.push({x: 1, y: 1});
@@ -95,7 +95,7 @@ export class SimpleTileLayer {
 			}
 			
 			// ◤
-			if (i === 9) {
+			if (i === 9 || i === 25) {
 				dirs.push({x: 0, y: 0});
 				dirs.push({x: 1, y: 0});
 				dirs.push({x: 0, y: 1});
@@ -106,7 +106,7 @@ export class SimpleTileLayer {
 			}
 			
 			// ◥
-			if (i === 10) {
+			if (i === 10 || i === 26) {
 				dirs.push({x: 0, y: 0});
 				dirs.push({x: 1, y: 0});
 				dirs.push({x: 1, y: 1});
@@ -117,7 +117,7 @@ export class SimpleTileLayer {
 			}
 			
 			// ◢
-			if (i === 11) {
+			if (i === 11 || i === 27) {
 				dirs.push({x: 1, y: 0});
 				dirs.push({x: 0, y: 1});
 				dirs.push({x: 1, y: 1});

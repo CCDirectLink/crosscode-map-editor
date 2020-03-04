@@ -26,7 +26,10 @@ export class LayerMeshGenerator {
 		
 		// TODO: +2 seems wrong
 		// extend bottom based on level;
-		const offset = getLevelOffsetTile(collLayer.details.level + 2) - getLevelOffsetTile(collLayer.details.level + 1);
+		let offset = getLevelOffsetTile(collLayer.details.level + 1) - getLevelOffsetTile(collLayer.details.level);
+		if (collLayer.details.level <= 0) {
+			offset = 0;
+		}
 		simpleTileLayer.extendBottom(offset);
 		
 		if (collLayer.details.level < map.masterLevel) {
@@ -46,12 +49,11 @@ export class LayerMeshGenerator {
 		}
 		
 		const allTiles = new Set<Tile>();
+		const validTiles = [2, 8, 9, 10, 11, 20, 21, 22, 23, 24, 25, 26, 27];
 		for (const tile of tiles) {
-			if (tile.index <= 0) {
-				continue;
+			if (validTiles.includes(tile.index)) {
+				allTiles.add(tile);
 			}
-			
-			allTiles.add(tile);
 		}
 		
 		if (allTiles.size === 0) {
@@ -87,6 +89,7 @@ export class LayerMeshGenerator {
 		return meshes;
 	}
 	
+	// empty -> block, blue -> empty
 	public transformToBelowMaster(layer: SimpleTileLayer) {
 		for (const row of layer.tiles) {
 			for (const tile of row) {
