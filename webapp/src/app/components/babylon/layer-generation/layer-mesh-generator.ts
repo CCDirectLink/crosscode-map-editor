@@ -24,6 +24,11 @@ export class LayerMeshGenerator {
 		const simpleTileLayer = new SimpleTileLayer();
 		simpleTileLayer.initLayer(phaserLayer);
 		
+		// TODO: +2 seems wrong
+		// extend bottom based on level;
+		const offset = getLevelOffsetTile(collLayer.details.level + 2) - getLevelOffsetTile(collLayer.details.level + 1);
+		simpleTileLayer.extendBottom(offset);
+		
 		if (collLayer.details.level < map.masterLevel) {
 			this.transformToBelowMaster(simpleTileLayer);
 		}
@@ -132,9 +137,23 @@ export class LayerMeshGenerator {
 		const topHeight = (maxY - minY) / layer.tilemap.height;
 		
 		const offsetX = minX / layer.tilemap.width;
+		
+		const horizontalOffset = getLevelOffsetTile(ccLayer.details.level + 1);
+		
 		const level = ccLayer.details.level;
-		const heightOffset = getLevelOffsetTile(level + 1) - getLevelOffsetTile(level);
-		console.log(`level: ${level} - offset: ${heightOffset}`);
+		let heightOffset = getLevelOffsetTile(level + 1) - getLevelOffsetTile(level);
+		if (level < Globals.map.masterLevel) {
+			heightOffset = 2;
+		}
+		// if (level === 0) {
+		// 	heightOffset = 0;
+		// } else if (level === 1) {
+		// 	heightOffset = 2;
+		// } else if (level === 2) {
+		// 	heightOffset = 2;
+		// }
+		
+		console.log(`level: ${level} - offset: ${heightOffset} - horizontal: ${horizontalOffset}`);
 		let offsetY = (layer.tilemap.height - maxY + heightOffset) / layer.tilemap.height;
 		
 		// 1 px offset, no idea where that comes from
@@ -162,10 +181,9 @@ export class LayerMeshGenerator {
 		merge.position.x = -layer.tilemap.width * 0.5;
 		merge.position.z = layer.tilemap.height * 0.5;
 		
-		const levelOffset = getLevelOffsetTile(ccLayer.details.level + 1);
-		console.log(`${ccLayer.details.level}:  ${levelOffset}`);
-		merge.position.y = levelOffset;
-		merge.position.z -= levelOffset;
+		const verticalOffset = getLevelOffsetTile((ccLayer.details.level) + 1);
+		merge.position.y = verticalOffset;
+		merge.position.z -= horizontalOffset;
 		
 		return merge;
 		// return top;

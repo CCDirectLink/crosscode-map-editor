@@ -20,6 +20,11 @@ export class SimpleTileLayer {
 		return this._height;
 	}
 	
+	private _extendedBottom = 0;
+	get extendedBottom(): number {
+		return this._extendedBottom;
+	}
+	
 	private diagonalConnector = new Map<number, Set<number>>();
 	
 	public init(width: number, height: number) {
@@ -155,6 +160,27 @@ export class SimpleTileLayer {
 		for (const tile of layer.getTilesWithin()) {
 			this.setTileAt(tile.index, tile.x, tile.y);
 		}
+	}
+	
+	extendBottom(offset: number) {
+		if (offset < 0) {
+			throw new Error('bottom cannot be extended with a negative number');
+		}
+		for (let i = 0; i < offset; i++) {
+			const lastRow = this.tiles[this.tiles.length - 1];
+			this.tiles.push(lastRow.map(tile => new Tile(
+				tile.layer,
+				tile.index,
+				tile.x,
+				tile.y + 1,
+				tile.width,
+				tile.height,
+				tile.baseWidth,
+				tile.baseHeight)
+			));
+		}
+		this._height = this.tiles.length;
+		this._extendedBottom += offset;
 	}
 	
 	public getTileAt(tileX: number, tileY: number) {

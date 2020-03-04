@@ -31,7 +31,7 @@ export class SideMeshGenerator {
 		this.heightOffset2 = getLevelOffsetTile(ccLayer.details.level + 1) - getLevelOffsetTile(ccLayer.details.level);
 		
 		this.width = simpleTileLayer.width;
-		this.height = simpleTileLayer.height;
+		this.height = simpleTileLayer.height - simpleTileLayer.extendedBottom;
 		
 		const quads = this.makeQuads(top, -this.heightOffset2);
 		

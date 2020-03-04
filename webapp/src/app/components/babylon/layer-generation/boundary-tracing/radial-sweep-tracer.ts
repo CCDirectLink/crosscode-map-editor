@@ -49,8 +49,7 @@ export class RadialSweepTracer {
 	private getNext(tile: Tile, dir: Point, layer: SimpleTileLayer): { next: TracerTile, dir: Point } {
 		dir.x *= -1;
 		dir.y *= -1;
-		
-		for (let i = 0; i < 10; i++) {
+		for (let i = 0; i < 8; i++) {
 			dir = this.rotate(dir);
 			const next = layer.getTileAt(tile.x + dir.x, tile.y + dir.y);
 			if (next && next.index !== 0) {
