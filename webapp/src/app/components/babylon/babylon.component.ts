@@ -74,17 +74,23 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		layers.sort((a, b) => a.details.level - b.details.level);
 		
 		// if all layers are >= master level, add another layer to make ground visible
-		if (map.masterLevel === 0) {
-			layers.unshift(await this.generateGroundLayer(layers[0]));
-		}
+		// if (map.masterLevel === 0) {
+		layers.unshift(await this.generateGroundLayer(layers[0]));
+		// }
 		
 		const meshGenerator = new LayerMeshGenerator();
 		
 		const allMeshes: Mesh[] = [];
 		
-		for (const coll of layers) {
-			const layerMaterial = await this.textureGenerator.generate(coll.details.level + 1, scene);
-			const meshes = meshGenerator.generateLevel(coll, scene);
+		for (let i = 0; i < layers.length; i++) {
+			const coll = layers[i];
+			const above = layers[i + 1];
+			let renderAll = 0;
+			if (i === layers.length - 2) {
+				renderAll = 9999;
+			}
+			const layerMaterial = await this.textureGenerator.generate(coll.details.level + 1 + renderAll, scene);
+			const meshes = meshGenerator.generateLevel(coll, above, scene);
 			
 			for (const mesh of meshes) {
 				mesh.material = layerMaterial;

@@ -22,6 +22,8 @@ export class SideMeshGenerator {
 	private width = 0;
 	private height = 0;
 	
+	private level = -1;
+	
 	private heightOffset = 0;
 	private heightOffset2 = 0;
 	
@@ -32,6 +34,8 @@ export class SideMeshGenerator {
 		
 		this.width = simpleTileLayer.width;
 		this.height = simpleTileLayer.height - simpleTileLayer.extendedBottom;
+		
+		this.level = ccLayer.details.level;
 		
 		const quads = this.makeQuads(top, -this.heightOffset2);
 		
@@ -123,6 +127,10 @@ export class SideMeshGenerator {
 		let v = vertex.y === 0 ? this.heightOffset2 : 0;
 		v += vertex.z;
 		v += this.height;
+		// TODO: hardcoded offset
+		if (this.level < Globals.map.masterLevel) {
+			v += 1;
+		}
 		// v -= this.heightOffset;
 		u /= this.width;
 		v /= this.height;

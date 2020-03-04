@@ -10,7 +10,7 @@ import Tile = Phaser.Tilemaps.Tile;
 
 export class LayerMeshGenerator {
 	
-	public generateLevel(collLayer: CCMapLayer, scene: Scene) {
+	public generateLevel(collLayer: CCMapLayer, aboveLayer: CCMapLayer | undefined, scene: Scene) {
 		const map = Globals.map;
 		if (!map) {
 			throw new Error('map doesnt exist');
@@ -24,17 +24,17 @@ export class LayerMeshGenerator {
 		const simpleTileLayer = new SimpleTileLayer();
 		simpleTileLayer.initLayer(phaserLayer);
 		
-		// TODO: +2 seems wrong
+		if (collLayer.details.level < map.masterLevel) {
+			this.transformToBelowMaster(simpleTileLayer, aboveLayer);
+		}
+		
 		// extend bottom based on level;
 		let offset = getLevelOffsetTile(collLayer.details.level + 1) - getLevelOffsetTile(collLayer.details.level);
 		if (collLayer.details.level <= 0) {
-			offset = 0;
+			// TODO: hardcoded
+			offset += 1;
 		}
 		simpleTileLayer.extendBottom(offset);
-		
-		if (collLayer.details.level < map.masterLevel) {
-			this.transformToBelowMaster(simpleTileLayer);
-		}
 		
 		const tiles: Tile[] = simpleTileLayer.tiles.flat();
 		
@@ -71,7 +71,6 @@ export class LayerMeshGenerator {
 			while (toCheck.length > 0) {
 				const tile = toCheck.pop()!;
 				if (allTiles.delete(tile)) {
-					
 					group.add(tile);
 					toCheck.push(...this.getNeighbours(tile, simpleTileLayer));
 				}
@@ -90,28 +89,57 @@ export class LayerMeshGenerator {
 	}
 	
 	// empty -> block, blue -> empty
-	public transformToBelowMaster(layer: SimpleTileLayer) {
+	public transformToBelowMaster(layer: SimpleTileLayer, above?: CCMapLayer) {
+		let tileOffset = 0;
+		if (above) {
+			tileOffset = getLevelOffsetTile(above.details.level - 1) - 1;
+			if (above.details.level === 0) {
+				above = undefined;
+			}
+		}
 		for (const row of layer.tiles) {
 			for (const tile of row) {
-				switch (tile.index) {
-					case 0: // empty
-						tile.index = 2;
-						break;
-					case 1: // ■
-						tile.index = 0;
-						break;
-					case 4: // ◣
-						tile.index = 10;
-						break;
-					case 5: // ◤
-						tile.index = 11;
-						break;
-					case 6: // ◥
-						tile.index = 8;
-						break;
-					case 7: // ◢
-						tile.index = 9;
-						break;
+				let aboveIndex = -1;
+				if (above) {
+					const aboveTile = above.getPhaserLayer()!.getTileAt(tile.x, tile.y + tileOffset);
+					if (aboveTile) {
+						aboveIndex = aboveTile.index;
+					}
+				}
+				tile.index = reverseTileIndex(tile.index);
+				if (tile.index === 2 && aboveIndex !== -1) {
+					tile.index = reverseTileIndex(aboveIndex);
+				}
+				
+				function reverseTileIndex(index: number) {
+					switch (index) {
+						// empty
+						case 0:
+							return 2;
+						
+						// ■
+						case 1:
+							return 0;
+						
+						// ◣
+						case 4:
+							return 10;
+						
+						// ◤
+						case 5:
+							return 11;
+						
+						// ◥
+						case 6:
+							return 8;
+						
+						// ◢
+						case 7:
+							return 9;
+						
+						default:
+							return index;
+					}
 				}
 			}
 		}
@@ -146,15 +174,9 @@ export class LayerMeshGenerator {
 		const level = ccLayer.details.level;
 		let heightOffset = getLevelOffsetTile(level + 1) - getLevelOffsetTile(level);
 		if (level < Globals.map.masterLevel) {
+			// TODO: hardcoded
 			heightOffset = 2;
 		}
-		// if (level === 0) {
-		// 	heightOffset = 0;
-		// } else if (level === 1) {
-		// 	heightOffset = 2;
-		// } else if (level === 2) {
-		// 	heightOffset = 2;
-		// }
 		
 		console.log(`level: ${level} - offset: ${heightOffset} - horizontal: ${horizontalOffset}`);
 		let offsetY = (layer.tilemap.height - maxY + heightOffset) / layer.tilemap.height;
