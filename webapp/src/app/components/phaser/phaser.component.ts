@@ -17,7 +17,7 @@ import {EntityRegistryService} from '../../shared/phaser/entities/registry/entit
 	styleUrls: ['./phaser.component.scss']
 })
 export class PhaserComponent implements OnInit {
-
+	
 	constructor(private element: ElementRef,
 	            private mapLoader: MapLoaderService,
 	            private globalEvents: GlobalEventsService,
@@ -35,8 +35,8 @@ export class PhaserComponent implements OnInit {
 		Globals.autotileService = autotile;
 		Globals.entityRegistry = registry;
 	}
-
-
+	
+	
 	ngOnInit() {
 		this.heightMap.init();
 		const scene = new MainScene();
@@ -58,18 +58,19 @@ export class PhaserComponent implements OnInit {
 		});
 		Globals.scene = scene;
 	}
-
+	
 	@HostListener('window:resize', ['$event'])
 	onResize(event: Event) {
 		if (!Globals.game) {
 			return;
 		}
 		const scale = this.getScale();
-		const width = scale.width;
-		const height = scale.height;
-		Globals.game.scale.resize(width, height);
+		Globals.game.scale.resize(
+			scale.width,
+			scale.height
+		);
 	}
-
+	
 	private getScale() {
 		return {
 			width: window.innerWidth * window.devicePixelRatio,
