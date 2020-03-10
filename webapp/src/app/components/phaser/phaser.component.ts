@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {Globals} from '../../shared/globals';
@@ -40,9 +40,10 @@ export class PhaserComponent implements OnInit {
 	ngOnInit() {
 		this.heightMap.init();
 		const scene = new MainScene();
+		const scale = this.getScale();
 		Globals.game = new Phaser.Game({
-			width: window.innerWidth * window.devicePixelRatio,
-			height: window.innerHeight * window.devicePixelRatio - 64,
+			width: scale.width,
+			height: scale.height,
 			type: Phaser.AUTO,
 			parent: 'content',
 			scale: {
@@ -56,5 +57,24 @@ export class PhaserComponent implements OnInit {
 			scene: [scene]
 		});
 		Globals.scene = scene;
+	}
+	
+	@HostListener('window:resize', ['$event'])
+	onResize(event: Event) {
+		if (!Globals.game) {
+			return;
+		}
+		const scale = this.getScale();
+		Globals.game.scale.resize(
+			scale.width,
+			scale.height
+		);
+	}
+	
+	private getScale() {
+		return {
+			width: window.innerWidth * window.devicePixelRatio,
+			height: window.innerHeight * window.devicePixelRatio - 64
+		};
 	}
 }
