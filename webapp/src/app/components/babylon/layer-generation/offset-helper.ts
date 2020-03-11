@@ -16,4 +16,12 @@ function getLevelOffsetTile(level: number) {
 	return getLevelOffset(level) / Globals.TILE_SIZE;
 }
 
-export {getLevelOffsetTile, getLevelOffset};
+// adjust level dependent on masterLevel. level < masterLevel => level+1
+function adjustLevel(level: number) {
+	if (level < Globals.map.masterLevel) {
+		return level += 1;
+	}
+	return level;
+}
+
+export {getLevelOffsetTile, getLevelOffset, adjustLevel};

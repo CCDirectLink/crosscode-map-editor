@@ -164,20 +164,21 @@ export class SimpleTileLayer {
 	
 	extendBottom(offset: number) {
 		if (offset < 0) {
-			throw new Error('bottom cannot be extended with a negative number');
-		}
-		for (let i = 0; i < offset; i++) {
-			const lastRow = this.tiles[this.tiles.length - 1];
-			this.tiles.push(lastRow.map(tile => new Tile(
-				tile.layer,
-				tile.index,
-				tile.x,
-				tile.y + 1,
-				tile.width,
-				tile.height,
-				tile.baseWidth,
-				tile.baseHeight)
-			));
+			// this.tiles.length = this.tiles.length + offset;
+		} else {
+			for (let i = 0; i < offset; i++) {
+				const lastRow = this.tiles[this.tiles.length - 1];
+				this.tiles.push(lastRow.map(tile => new Tile(
+					tile.layer,
+					tile.index,
+					tile.x,
+					tile.y + 1,
+					tile.width,
+					tile.height,
+					tile.baseWidth,
+					tile.baseHeight)
+				));
+			}
 		}
 		this._height = this.tiles.length;
 		this._extendedBottom += offset;

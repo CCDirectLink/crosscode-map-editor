@@ -127,9 +127,8 @@ export class SideMeshGenerator {
 		let v = vertex.y === 0 ? this.heightOffset2 : 0;
 		v += vertex.z;
 		v += this.height;
-		// TODO: hardcoded offset
 		if (this.level < Globals.map.masterLevel) {
-			v += 1;
+			v += getLevelOffsetTile(this.level) - getLevelOffsetTile(Globals.map.masterLevel);
 		}
 		// v -= this.heightOffset;
 		u /= this.width;

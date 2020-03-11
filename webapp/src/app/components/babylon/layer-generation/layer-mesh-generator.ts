@@ -4,7 +4,7 @@ import {RadialSweepTracer} from './boundary-tracing/radial-sweep-tracer';
 import {Mesh, MeshBuilder, Scene, Vector3, Vector4} from '@babylonjs/core';
 import * as earcut from 'earcut';
 import {SideMeshGenerator} from './side-mesh-generator';
-import {getLevelOffsetTile} from './offset-helper';
+import {adjustLevel, getLevelOffsetTile} from './offset-helper';
 import {SimpleTileLayer} from './simple-tile-layer';
 import Tile = Phaser.Tilemaps.Tile;
 
@@ -29,24 +29,17 @@ export class LayerMeshGenerator {
 		}
 		
 		// extend bottom based on level;
-		let offset = getLevelOffsetTile(collLayer.details.level + 1) - getLevelOffsetTile(collLayer.details.level);
-		if (collLayer.details.level <= 0) {
-			// TODO: hardcoded
-			offset += 1;
+		// let offset = getLevelOffsetTile(collLayer.details.level + 1) - getLevelOffsetTile(collLayer.details.level);
+		const levelOffset = getLevelOffsetTile(adjustLevel(collLayer.details.level));
+		const levelOffset2 = getLevelOffsetTile(adjustLevel(collLayer.details.level + 1));
+		let offset = levelOffset2 - levelOffset;
+		if (collLayer.details.level < Globals.map.masterLevel) {
+			offset *= -1;
 		}
+		// console.log(`levelOffset: ${levelOffset} - levelOffset2: ${levelOffset2} - offset: ${offset}`);
 		simpleTileLayer.extendBottom(offset);
 		
 		const tiles: Tile[] = simpleTileLayer.tiles.flat();
-		
-		if (collLayer.details.level < Globals.map.masterLevel) {
-			console.log('< master level');
-			tiles.forEach(tile => {
-				// if (tile.index === 1) {
-				// 	tile.index = 8;
-				// }
-				// tile.index = 4;
-			});
-		}
 		
 		const allTiles = new Set<Tile>();
 		const validTiles = [2, 8, 9, 10, 11, 20, 21, 22, 23, 24, 25, 26, 27];
@@ -92,7 +85,7 @@ export class LayerMeshGenerator {
 	public transformToBelowMaster(layer: SimpleTileLayer, above?: CCMapLayer) {
 		let tileOffset = 0;
 		if (above) {
-			tileOffset = getLevelOffsetTile(above.details.level - 1) - 1;
+			tileOffset = getLevelOffsetTile(above.details.level);
 			if (above.details.level === 0) {
 				above = undefined;
 			}
@@ -169,16 +162,15 @@ export class LayerMeshGenerator {
 		
 		const offsetX = minX / layer.tilemap.width;
 		
-		const horizontalOffset = getLevelOffsetTile(ccLayer.details.level + 1);
-		
 		const level = ccLayer.details.level;
-		let heightOffset = getLevelOffsetTile(level + 1) - getLevelOffsetTile(level);
-		if (level < Globals.map.masterLevel) {
-			// TODO: hardcoded
-			heightOffset = 2;
+		let heightOffset = 0;
+		// TODO: try to handle this case with adjustLevel function
+		if (level + 1 >= Globals.map.masterLevel) {
+			heightOffset = getLevelOffsetTile(adjustLevel(level + 1)) - getLevelOffsetTile(adjustLevel(level));
+		} else {
+			heightOffset = getLevelOffsetTile(adjustLevel(level + 2)) - getLevelOffsetTile(adjustLevel(level + 1));
 		}
 		
-		console.log(`level: ${level} - offset: ${heightOffset} - horizontal: ${horizontalOffset}`);
 		let offsetY = (layer.tilemap.height - maxY + heightOffset) / layer.tilemap.height;
 		
 		// 1 px offset, no idea where that comes from
@@ -203,11 +195,14 @@ export class LayerMeshGenerator {
 		
 		const merge = Mesh.MergeMeshes([top, mesh])!;
 		
-		merge.position.x = -layer.tilemap.width * 0.5;
-		merge.position.z = layer.tilemap.height * 0.5;
+		// merge.position.x = -layer.tilemap.width * 0.5;
+		// merge.position.z = layer.tilemap.height * 0.5;
 		
 		const verticalOffset = getLevelOffsetTile((ccLayer.details.level) + 1);
 		merge.position.y = verticalOffset;
+		
+		const horizontalOffset = getLevelOffsetTile(adjustLevel(ccLayer.details.level));
+		
 		merge.position.z -= horizontalOffset;
 		
 		return merge;

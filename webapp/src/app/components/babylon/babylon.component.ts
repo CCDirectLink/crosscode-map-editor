@@ -73,10 +73,8 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		const layers = map.layers.filter(layer => layer.details.type.toLowerCase() === 'collision');
 		layers.sort((a, b) => a.details.level - b.details.level);
 		
-		// if all layers are >= master level, add another layer to make ground visible
-		// if (map.masterLevel === 0) {
+		// add another layer to the bottom to make the ground visible
 		layers.unshift(await this.generateGroundLayer(layers[0]));
-		// }
 		
 		const meshGenerator = new LayerMeshGenerator();
 		
