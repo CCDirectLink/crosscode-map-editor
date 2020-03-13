@@ -55,25 +55,14 @@ export class SimpleTileLayer {
 		}
 	}
 	
-	public initLayerForDiagonals(layer: DynamicTilemapLayer | SimpleTileLayer) {
-		let width = 0;
-		let height = 0;
+	public initLayerForTracing(layer: SimpleTileLayer) {
 		let tiles: Tile[];
-		if (layer instanceof SimpleTileLayer) {
-			width = layer.width;
-			height = layer.height;
-			tiles = layer.tiles.flat();
-		} else {
-			width = layer.layer.width;
-			height = layer.layer.height;
-			tiles = layer.getTilesWithin();
-		}
+		tiles = layer.tiles.flat();
 		
-		this.init(width + 1, height + 1);
+		this.init(layer.width * 2, layer.height * 2);
 		tiles.forEach(tile => {
 			const i = tile.index;
 			const dirs: Point[] = [];
-			const connections: { c1: Point, c2: Point }[] = [];
 			
 			// ■
 			if (i === 2) {
@@ -88,10 +77,6 @@ export class SimpleTileLayer {
 				dirs.push({x: 0, y: 0});
 				dirs.push({x: 0, y: 1});
 				dirs.push({x: 1, y: 1});
-				connections.push({
-					c1: {x: 0, y: 0},
-					c2: {x: 1, y: 1}
-				});
 			}
 			
 			// ◤
@@ -99,10 +84,6 @@ export class SimpleTileLayer {
 				dirs.push({x: 0, y: 0});
 				dirs.push({x: 1, y: 0});
 				dirs.push({x: 0, y: 1});
-				connections.push({
-					c1: {x: 1, y: 0},
-					c2: {x: 0, y: 1}
-				});
 			}
 			
 			// ◥
@@ -110,10 +91,6 @@ export class SimpleTileLayer {
 				dirs.push({x: 0, y: 0});
 				dirs.push({x: 1, y: 0});
 				dirs.push({x: 1, y: 1});
-				connections.push({
-					c1: {x: 0, y: 0},
-					c2: {x: 1, y: 1}
-				});
 			}
 			
 			// ◢
@@ -121,36 +98,12 @@ export class SimpleTileLayer {
 				dirs.push({x: 1, y: 0});
 				dirs.push({x: 0, y: 1});
 				dirs.push({x: 1, y: 1});
-				connections.push({
-					c1: {x: 1, y: 0},
-					c2: {x: 0, y: 1}
-				});
 			}
 			
 			for (const d of dirs) {
-				this.setTileAt(2, tile.x + d.x, tile.y + d.y);
+				this.setTileAt(2, tile.x * 2 + d.x, tile.y * 2 + d.y);
 			}
-			for (const connection of connections) {
-				const c1 = this.p2Hash({x: tile.x + connection.c1.x, y: tile.y + connection.c1.y});
-				const c2 = this.p2Hash({x: tile.x + connection.c2.x, y: tile.y + connection.c2.y});
-				let group = this.diagonalConnector.get(c1);
-				if (!group) {
-					group = new Set<number>();
-					this.diagonalConnector.set(c1, group);
-				}
-				group.add(c2);
-				
-				group = this.diagonalConnector.get(c2);
-				if (!group) {
-					group = new Set<number>();
-					this.diagonalConnector.set(c2, group);
-				}
-				group.add(c1);
-			}
-			
-			
 		});
-		
 	}
 	
 	public initLayer(layer: DynamicTilemapLayer) {
@@ -209,20 +162,8 @@ export class SimpleTileLayer {
 		}
 	}
 	
-	private p2Hash(p: Point) {
-		return p.x * 100000 + p.y;
-	}
-	
 	private isInLayerBounds(tileX: number, tileY: number) {
 		return (tileX >= 0 && tileX < this._width && tileY >= 0 && tileY < this._height);
-	}
-	
-	canConnect(tile: Tile, dir: Point) {
-		const group = this.diagonalConnector.get(this.p2Hash(tile));
-		if (!group) {
-			return false;
-		}
-		return group.has(this.p2Hash({x: tile.x + dir.x, y: tile.y + dir.y}));
 	}
 	
 	public exportLayer() {

@@ -1,7 +1,7 @@
-import DynamicTilemapLayer = Phaser.Tilemaps.DynamicTilemapLayer;
 import Tile = Phaser.Tilemaps.Tile;
 import {Point} from '../../../../models/cross-code-map';
 import {SimpleTileLayer} from '../simple-tile-layer';
+import {p2Hash, p2HashReverse} from '../point-helper';
 
 interface TracerTile extends Tile {
 	prev?: TracerTile;
@@ -11,7 +11,7 @@ export class RadialSweepTracer {
 	getContour(tiles: Set<Tile>, layer: SimpleTileLayer) {
 		// prepare tiles
 		const preparedLayer = new SimpleTileLayer();
-		preparedLayer.initLayerForDiagonals(layer);
+		preparedLayer.initLayerForTracing(layer);
 		// preparedLayer.debug();
 		
 		// use top left as starting point
@@ -22,9 +22,12 @@ export class RadialSweepTracer {
 			}
 		}
 		
-		let realStartTile = preparedLayer.getTileAt(startTile.x, startTile.y);
+		const startX = startTile.x * 2;
+		const startY = startTile.y * 2;
+		
+		let realStartTile = preparedLayer.getTileAt(startX, startY);
 		if (!realStartTile || realStartTile.index === 0) {
-			realStartTile = preparedLayer.getTileAt(startTile.x + 1, startTile.y)!;
+			realStartTile = preparedLayer.getTileAt(startX + 1, startY)!;
 		}
 		
 		const boundaryPoints = new Set<TracerTile>();
@@ -43,7 +46,16 @@ export class RadialSweepTracer {
 			next = container.next;
 		}
 		
-		return boundaryPoints;
+		const output = new Set<number>();
+		
+		// shrinks "layer" points back to original size and removes duplicates
+		for (const p of boundaryPoints) {
+			const x = Math.ceil(p.x / 2);
+			const y = Math.ceil(p.y / 2);
+			output.add(p2Hash(x, y));
+		}
+		
+		return Array.from(output).map(v => p2HashReverse(v));
 	}
 	
 	private getNext(tile: Tile, dir: Point, layer: SimpleTileLayer): { next: TracerTile, dir: Point } {
@@ -53,9 +65,7 @@ export class RadialSweepTracer {
 			dir = this.rotate(dir);
 			const next = layer.getTileAt(tile.x + dir.x, tile.y + dir.y);
 			if (next && next.index !== 0) {
-				if (dir.x === 0 || dir.y === 0 || layer.canConnect(tile, dir)) {
-					return {next: next, dir: dir};
-				}
+				return {next: next, dir: dir};
 			}
 		}
 		

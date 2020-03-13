@@ -7,6 +7,7 @@ import {Globals} from '../../shared/globals';
 import {showAxis} from './debug/show-axis';
 import {ToggleMesh} from './debug/toggle-mesh';
 import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
+import {Router} from '@angular/router';
 
 
 interface CamStore {
@@ -30,17 +31,26 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 	private textureGenerator: TextureGenerator;
 	private groundLayers: CCMapLayer[] = [];
 	
-	constructor() {
+	constructor(
+		private router: Router
+	) {
 		this.textureGenerator = new TextureGenerator();
 	}
 	
 	ngOnInit() {
+		// if phaser is not initialized, move away from 3d
+		if (!Globals.scene.cameras) {
+			this.router.navigate(['/']);
+			return;
+		}
 		this.textureGenerator.init();
 	}
 	
 	ngAfterViewInit() {
-		// timeout needed because babylon would initialize with wrong width/height and would need a resize
-		setTimeout(() => this.initBabylon(), 0);
+		if (Globals.scene.cameras) {
+			// timeout needed because babylon would initialize with wrong width/height and would need a resize
+			setTimeout(() => this.initBabylon(), 0);
+		}
 	}
 	
 	private async initBabylon() {
@@ -70,11 +80,13 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		light1.specular = new Color3(1, 1, 1).scale(0.2);
 		
 		const map = Globals.map;
-		const layers = map.layers.filter(layer => layer.details.type.toLowerCase() === 'collision');
+		let layers = map.layers.filter(layer => layer.details.type.toLowerCase() === 'collision');
 		layers.sort((a, b) => a.details.level - b.details.level);
 		
 		// add another layer to the bottom to make the ground visible
-		layers.unshift(await this.generateGroundLayer(layers[0]));
+		layers = [await this.generateGroundLayer(layers[0]), ...layers];
+		// layers = [layers[0]];
+		
 		
 		const meshGenerator = new LayerMeshGenerator();
 		

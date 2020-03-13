@@ -141,7 +141,7 @@ export class LayerMeshGenerator {
 	private generateMesh(name: string, tiles: Set<Tile>, ccLayer: CCMapLayer, simpleTileLayer: SimpleTileLayer, scene: Scene) {
 		const layer = ccLayer.getPhaserLayer()!;
 		const tracer = new RadialSweepTracer();
-		const path = Array.from(tracer.getContour(tiles, simpleTileLayer));
+		const path = tracer.getContour(tiles, simpleTileLayer);
 		
 		let maxX = -9999;
 		let minX = 9999;
@@ -176,7 +176,7 @@ export class LayerMeshGenerator {
 		// 1 px offset, no idea where that comes from
 		offsetY -= 1 / layer.tilemap.heightInPixels;
 		
-		const pathArr = Array.from(path).map(t => {
+		const pathArr = path.map(t => {
 			return new Vector3(t.x, 0, -t.y);
 		});
 		
