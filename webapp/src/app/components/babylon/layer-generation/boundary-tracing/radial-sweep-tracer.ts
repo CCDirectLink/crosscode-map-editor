@@ -1,4 +1,5 @@
 import Tile = Phaser.Tilemaps.Tile;
+import Polygon = Phaser.Geom.Polygon;
 import {Point} from '../../../../models/cross-code-map';
 import {SimpleTileLayer} from '../simple-tile-layer';
 import {p2Hash, p2HashReverse} from '../point-helper';
@@ -8,7 +9,7 @@ interface TracerTile extends Tile {
 }
 
 export class RadialSweepTracer {
-	getContour(tiles: Set<Tile>, layer: SimpleTileLayer) {
+	getContour(tiles: Set<Tile>, layer: SimpleTileLayer): { path: Point[], holes: Point[][] } {
 		// prepare tiles
 		const preparedLayer = new SimpleTileLayer();
 		preparedLayer.initLayerForTracing(layer);
@@ -25,9 +26,86 @@ export class RadialSweepTracer {
 		const startX = startTile.x * 2;
 		const startY = startTile.y * 2;
 		
-		let realStartTile = preparedLayer.getTileAt(startX, startY);
+		const boundaryPoints = this.getContourInternal(startX, startY, preparedLayer);
+		// const holes = this.findHoles(boundaryPoints, preparedLayer);
+		
+		return {
+			path: this.shrinkPath(boundaryPoints),
+			// holes: holes.map(hole => this.shrinkPath(hole, true))
+			holes: []
+		};
+	}
+	
+	private shrinkPath(path: Set<TracerTile>, other = false) {
+		const output = new Set<number>();
+		
+		// shrinks "layer" points back to original size and removes duplicates
+		for (const p of path) {
+			const x = Math.ceil(p.x / 2);
+			const y = Math.ceil(p.y / 2);
+			output.add(p2Hash(x, y));
+		}
+		
+		return Array.from(output).map(v => p2HashReverse(v));
+	}
+	
+	// TODO: fails to generate diagonals
+	private findHoles(path: Set<TracerTile>, layer: SimpleTileLayer) {
+		const visited = new Set<number>();
+		
+		const invertedLayer = new SimpleTileLayer();
+		invertedLayer.initLayerInverted(layer);
+		// path nodes cannot be empty, ignore them
+		for (const point of path) {
+			visited.add(p2Hash(point.x, point.y));
+		}
+		const points = Array.from(path).map(p => new Phaser.Geom.Point(p.x, p.y));
+		const polygon = new Polygon(points);
+		const polygonHoles: Polygon[] = [];
+		
+		const holes = [];
+		
+		for (const tile of layer.tiles.flat()) {
+			if (tile.index === 2) {
+				continue;
+			}
+			
+			if (tile.x % 2 === 0 || tile.y % 2 === 0) {
+				continue;
+			}
+			
+			const hash = p2Hash(tile.x, tile.y);
+			if (visited.has(hash)) {
+				continue;
+			}
+			
+			if (!polygon.contains(tile.x, tile.y)) {
+				continue;
+			}
+			
+			if (polygonHoles.some(polygon => polygon.contains(tile.x, tile.y))) {
+				continue;
+			}
+			
+			// found hole, start tracing algorithm
+			const hole = this.getContourInternal(tile.x, tile.y, invertedLayer);
+			holes.push(hole);
+			for (const point of hole) {
+				visited.add(p2Hash(point.x, point.y));
+			}
+			const polygonHole = new Polygon(Array.from(hole).map(p => new Phaser.Geom.Point(p.x, p.y)));
+			polygonHoles.push(polygonHole);
+			
+		}
+		
+		return holes;
+	}
+	
+	private getContourInternal(startX: number, startY: number, layer: SimpleTileLayer) {
+		
+		let realStartTile = layer.getTileAt(startX, startY);
 		if (!realStartTile || realStartTile.index === 0) {
-			realStartTile = preparedLayer.getTileAt(startX + 1, startY)!;
+			realStartTile = layer.getTileAt(startX + 1, startY)!;
 		}
 		
 		const boundaryPoints = new Set<TracerTile>();
@@ -38,24 +116,14 @@ export class RadialSweepTracer {
 		
 		while (next !== realStartTile || boundaryPoints.size === 0) {
 			boundaryPoints.add(next);
-			const container = this.getNext(next, dir, preparedLayer);
+			const container = this.getNext(next, dir, layer);
 			dir = container.dir;
 			if (!boundaryPoints.has(container.next)) {
 				container.next.prev = next;
 			}
 			next = container.next;
 		}
-		
-		const output = new Set<number>();
-		
-		// shrinks "layer" points back to original size and removes duplicates
-		for (const p of boundaryPoints) {
-			const x = Math.ceil(p.x / 2);
-			const y = Math.ceil(p.y / 2);
-			output.add(p2Hash(x, y));
-		}
-		
-		return Array.from(output).map(v => p2HashReverse(v));
+		return boundaryPoints;
 	}
 	
 	private getNext(tile: Tile, dir: Point, layer: SimpleTileLayer): { next: TracerTile, dir: Point } {

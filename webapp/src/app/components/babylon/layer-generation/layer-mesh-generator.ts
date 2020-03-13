@@ -141,7 +141,9 @@ export class LayerMeshGenerator {
 	private generateMesh(name: string, tiles: Set<Tile>, ccLayer: CCMapLayer, simpleTileLayer: SimpleTileLayer, scene: Scene) {
 		const layer = ccLayer.getPhaserLayer()!;
 		const tracer = new RadialSweepTracer();
-		const path = tracer.getContour(tiles, simpleTileLayer);
+		const tracerObj = tracer.getContour(tiles, simpleTileLayer);
+		console.log('tracerOBJ', tracerObj);
+		const path = tracerObj.path;
 		
 		let maxX = -9999;
 		let minX = 9999;
@@ -180,8 +182,15 @@ export class LayerMeshGenerator {
 			return new Vector3(t.x, 0, -t.y);
 		});
 		
+		const holes = tracerObj.holes.map(hole => {
+			return hole.map(t => {
+				return new Vector3(t.x, 0, -t.y);
+			});
+		});
+		
 		const top = MeshBuilder.CreatePolygon(name, {
 			shape: pathArr,
+			holes: holes,
 			updatable: true,
 			faceUV: [
 				new Vector4(offsetX, offsetY, offsetX + topWidth, offsetY + topHeight),
@@ -189,6 +198,7 @@ export class LayerMeshGenerator {
 				new Vector4(0, 0, 0, 0)
 			]
 		}, scene, earcut);
+		
 		
 		const sideMeshGenerator = new SideMeshGenerator();
 		const mesh = sideMeshGenerator.generate(top, ccLayer, simpleTileLayer);

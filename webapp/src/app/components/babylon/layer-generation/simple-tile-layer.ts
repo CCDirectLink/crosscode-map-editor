@@ -106,6 +106,22 @@ export class SimpleTileLayer {
 		});
 	}
 	
+	public initLayerInverted(layer: SimpleTileLayer) {
+		const width = layer.width;
+		const height = layer.height;
+		this._width = width;
+		this._height = height;
+		this._data = new Array(height);
+		for (let i = 0; i < height; i++) {
+			this._data[i] = new Array(width);
+			const row = this._data[i];
+			for (let j = 0; j < width; j++) {
+				const otherIndex = layer._data[i][j].index;
+				row[j] = new Tile(null as any, otherIndex === 2 ? 0 : 2, j, i, 1, 1, 1, 1);
+			}
+		}
+	}
+	
 	public initLayer(layer: DynamicTilemapLayer) {
 		this.init(layer.layer.width, layer.layer.height);
 		
