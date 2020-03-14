@@ -106,9 +106,7 @@ export class SimpleTileLayer {
 		});
 	}
 	
-	public initLayerInverted(layer: SimpleTileLayer) {
-		const width = layer.width;
-		const height = layer.height;
+	public initLayerInverted(tiles: Tile[], width: number, height: number) {
 		this._width = width;
 		this._height = height;
 		this._data = new Array(height);
@@ -116,10 +114,43 @@ export class SimpleTileLayer {
 			this._data[i] = new Array(width);
 			const row = this._data[i];
 			for (let j = 0; j < width; j++) {
-				const otherIndex = layer._data[i][j].index;
-				row[j] = new Tile(null as any, otherIndex === 2 ? 0 : 2, j, i, 1, 1, 1, 1);
+				const other = tiles.find(tile => tile.x === j && tile.y === i);
+				let index = 0;
+				if (other) {
+					index = this.invertBlue(other.index);
+				}
+				row[j] = new Tile(null as any, index, j, i, 1, 1, 1, 1);
 			}
 		}
+	}
+	
+	private invertBlue(tile: number) {
+		// ■
+		if ([0, 1].includes(tile)) {
+			return 2;
+		}
+		
+		// ◣
+		if ([4, 10, 16, 26].includes(tile)) {
+			return 8;
+		}
+		
+		// ◤
+		if ([5, 11, 17, 27].includes(tile)) {
+			return 9;
+		}
+		
+		// ◥
+		if ([6, 8, 18, 24].includes(tile)) {
+			return 10;
+		}
+		
+		// ◢
+		if ([7, 9, 19, 25].includes(tile)) {
+			return 11;
+		}
+		
+		throw new Error('not a blue tile: ' + tile);
 	}
 	
 	public initLayer(layer: DynamicTilemapLayer) {
@@ -165,6 +196,12 @@ export class SimpleTileLayer {
 		if (this.isInLayerBounds(x, y)) {
 			this._data[y][x].index = index;
 		}
+	}
+	
+	public copy() {
+		const out = new SimpleTileLayer();
+		out.initSimple(this.exportLayer());
+		return out;
 	}
 	
 	public debug() {

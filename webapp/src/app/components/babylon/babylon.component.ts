@@ -85,8 +85,8 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		
 		// add another layer to the bottom to make the ground visible
 		layers = [await this.generateGroundLayer(layers[0]), ...layers];
-		// layers = [layers[0]];
-		
+		// layers = [layers[2]];
+
 		
 		const meshGenerator = new LayerMeshGenerator();
 		

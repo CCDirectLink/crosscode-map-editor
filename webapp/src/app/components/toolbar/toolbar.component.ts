@@ -14,7 +14,6 @@ import {Globals} from '../../shared/globals';
 import {SaveService} from '../../services/save.service';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {Router} from '@angular/router';
-import {SimpleTileLayer} from '../babylon/layer-generation/simple-tile-layer';
 
 @Component({
 	selector: 'app-toolbar',
@@ -52,9 +51,14 @@ export class ToolbarComponent implements OnInit {
 		);
 		
 		this.events.loadComplete.subscribe(() => {
-			// this.mapLoader.loadMapByName('tests/3d/full');
+			// this.mapLoader.loadMapByName('tests/3d/3dtest');
+			// this.mapLoader.loadMapByName('tests/3d/flicker');
+			// this.mapLoader.loadMapByName('tests/3d/holes');
+			this.mapLoader.loadMapByName('bergen/bergen');
 			// this.mapLoader.loadMapByName('bergen-trail/path-1-entrance');
-			this.mapLoader.loadMapByName('arid/cliff-1');
+			// this.mapLoader.loadMapByName('bergen-trail/test');
+			// this.mapLoader.loadMapByName('arid/cliff-1');
+			// this.mapLoader.loadMapByName('bergen/mine-entrance');
 		});
 	}
 	

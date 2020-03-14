@@ -69,13 +69,6 @@ export class LayerMeshGenerator {
 				}
 			}
 			meshes.push(this.generateMesh('coll layer ' + collLayer.details.level + ' - ' + (++meshCounter), group, collLayer, simpleTileLayer, scene));
-			// debug mesh
-			// const ground = MeshBuilder.CreateGround('debug plane', {
-			// 	width: collLayer.details.width,
-			// 	height: collLayer.details.height
-			// });
-			// ground.position.y = 1;
-			// meshes.push(ground);
 		}
 		
 		return meshes;
@@ -100,7 +93,7 @@ export class LayerMeshGenerator {
 					}
 				}
 				tile.index = reverseTileIndex(tile.index);
-				if (tile.index === 2 && aboveIndex !== -1) {
+				if (tile.index === 2 && [1, 4, 5, 6, 7].includes(aboveIndex)) {
 					tile.index = reverseTileIndex(aboveIndex);
 				}
 				
@@ -204,6 +197,7 @@ export class LayerMeshGenerator {
 		const mesh = sideMeshGenerator.generate(top, ccLayer, simpleTileLayer);
 		
 		const merge = Mesh.MergeMeshes([top, mesh])!;
+		// const merge = Mesh.MergeMeshes([top])!;
 		
 		// merge.position.x = -layer.tilemap.width * 0.5;
 		// merge.position.z = layer.tilemap.height * 0.5;

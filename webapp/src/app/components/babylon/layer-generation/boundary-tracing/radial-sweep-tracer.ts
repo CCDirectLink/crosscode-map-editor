@@ -27,12 +27,12 @@ export class RadialSweepTracer {
 		const startY = startTile.y * 2;
 		
 		const boundaryPoints = this.getContourInternal(startX, startY, preparedLayer);
-		// const holes = this.findHoles(boundaryPoints, preparedLayer);
+		const path = this.shrinkPath(boundaryPoints);
+		const holes = this.findHoles(path, layer, preparedLayer);
 		
 		return {
-			path: this.shrinkPath(boundaryPoints),
-			// holes: holes.map(hole => this.shrinkPath(hole, true))
-			holes: []
+			path: path,
+			holes: holes
 		};
 	}
 	
@@ -49,55 +49,82 @@ export class RadialSweepTracer {
 		return Array.from(output).map(v => p2HashReverse(v));
 	}
 	
-	// TODO: fails to generate diagonals
-	private findHoles(path: Set<TracerTile>, layer: SimpleTileLayer) {
-		const visited = new Set<number>();
+	private findHoles(path: Point[], layer: SimpleTileLayer, preparedLayer: SimpleTileLayer) {
+		let inside: Tile[] = [];
 		
-		const invertedLayer = new SimpleTileLayer();
-		invertedLayer.initLayerInverted(layer);
 		// path nodes cannot be empty, ignore them
-		for (const point of path) {
-			visited.add(p2Hash(point.x, point.y));
-		}
-		const points = Array.from(path).map(p => new Phaser.Geom.Point(p.x, p.y));
+		
+		const points = path.map(p => new Phaser.Geom.Point(p.x, p.y));
 		const polygon = new Polygon(points);
-		const polygonHoles: Polygon[] = [];
 		
-		const holes = [];
-		
+		// find every blue/hole inside the polygon
 		for (const tile of layer.tiles.flat()) {
-			if (tile.index === 2) {
+			
+			// i care only about no/blue tiles
+			const blue = [0, 1, 4, 5, 6, 7, 8, 9, 10, 11, 16, 17, 18, 19, 24, 25, 26, 27];
+			if (!blue.includes(tile.index)) {
 				continue;
 			}
 			
-			if (tile.x % 2 === 0 || tile.y % 2 === 0) {
+			// ignore single tile holes, current implementation does weird stuff
+			const neighbours = [
+				layer.getTileAt(tile.x + 1, tile.y),
+				layer.getTileAt(tile.x - 1, tile.y),
+				layer.getTileAt(tile.x, tile.y + 1),
+				layer.getTileAt(tile.x, tile.y - 1),
+			];
+			
+			if (!neighbours.some(n => blue.includes(n ? n.index : -1))) {
 				continue;
 			}
 			
-			const hash = p2Hash(tile.x, tile.y);
-			if (visited.has(hash)) {
+			// only tiles that have some distance from the border to avoid bugs, again, implementation is not that great
+			if (points.some(p => {
+				const diffX = Math.abs(p.x - tile.x);
+				const diffY = Math.abs(p.y - tile.y);
+				return diffX <= 1 && diffY <= 1 && diffX + diffY <= 1;
+			})) {
 				continue;
 			}
+			
 			
 			if (!polygon.contains(tile.x, tile.y)) {
 				continue;
 			}
 			
-			if (polygonHoles.some(polygon => polygon.contains(tile.x, tile.y))) {
-				continue;
-			}
-			
-			// found hole, start tracing algorithm
-			const hole = this.getContourInternal(tile.x, tile.y, invertedLayer);
-			holes.push(hole);
-			for (const point of hole) {
-				visited.add(p2Hash(point.x, point.y));
-			}
-			const polygonHole = new Polygon(Array.from(hole).map(p => new Phaser.Geom.Point(p.x, p.y)));
-			polygonHoles.push(polygonHole);
-			
+			inside.push(tile);
 		}
+		const holes: Point[][] = [];
 		
+		// as long as there are holes left, trace them (100 = failsafe)
+		for (let i = 0; i < 100 && inside.length > 0; i++) {
+			const tile = inside[0];
+			
+			const invertedLayer = new SimpleTileLayer();
+			invertedLayer.initLayerInverted(inside, layer.width, layer.height);
+			const forTracing = new SimpleTileLayer();
+			forTracing.initLayerForTracing(invertedLayer);
+			const hole = this.getContourInternal(tile.x * 2, tile.y * 2, forTracing);
+			const holeArr = this.shrinkPath(hole);
+			holes.push(holeArr);
+			
+			const holePoly = new Polygon(holeArr.map(p => new Phaser.Geom.Point(p.x, p.y)));
+			inside = inside.filter(insideTile => {
+				if (holeArr.some(p => {
+					const diffX = Math.abs(p.x - insideTile.x);
+					const diffY = Math.abs(p.y - insideTile.y);
+					return diffX <= 1 && diffY <= 1 && diffX + diffY <= 1;
+				})) {
+					return false;
+				}
+				
+				return !holePoly.contains(insideTile.x, insideTile.y) &&
+					!holePoly.contains(insideTile.x + 1, insideTile.y) &&
+					!holePoly.contains(insideTile.x - 1, insideTile.y) &&
+					!holePoly.contains(insideTile.x, insideTile.y + 1) &&
+					!holePoly.contains(insideTile.x, insideTile.y - 1);
+			});
+		}
 		return holes;
 	}
 	
