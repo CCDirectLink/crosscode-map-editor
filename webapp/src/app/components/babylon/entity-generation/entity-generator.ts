@@ -12,6 +12,13 @@ import {
 } from '@babylonjs/core';
 import {Globals} from '../../../shared/globals';
 
+interface Dimensions {
+	x: number;
+	y: number;
+	w: number;
+	h: number;
+}
+
 export class EntityGenerator {
 	async generateEntity(entity: CCEntity, scene: Scene) {
 		const fix = entity.entitySettings.sheets.fix;
@@ -26,29 +33,57 @@ export class EntityGenerator {
 			}
 			const material = await this.makeMaterial(entity, img, scene);
 			
-			const width = img.w / Globals.TILE_SIZE;
-			const height = img.h / Globals.TILE_SIZE;
+			const m = this.generateMesh(entity, img, material, scene);
+		}
+	}
+	
+	private generateMesh(entity: CCEntity, fix: EntitySettingsFix, material: StandardMaterial, scene: Scene) {
+		const width = fix.w / Globals.TILE_SIZE;
+		const height = fix.h / Globals.TILE_SIZE;
+		
+		let fullWidth = width;
+		if (entity.entitySettings.scalableX) {
+			fullWidth = entity.details.settings.size.x / Globals.TILE_SIZE;
+		}
+		
+		const meshes: Mesh[] = [];
+		
+		for (let start = 0; start < fullWidth; start += width) {
+			const currWidth = Math.min(fullWidth - start, width);
+			const customFix = {
+				x: fix.x,
+				y: fix.y,
+				w: currWidth * Globals.TILE_SIZE,
+				h: fix.h
+			};
 			
-			const uvs = this.calculateUvs(material.diffuseTexture!, img);
-			const m = MeshBuilder.CreatePlane('', {
-				width: width,
+			const uvs = this.calculateUvs(material.diffuseTexture!, customFix, entity.entitySettings.scalableX);
+			
+			const mesh = MeshBuilder.CreatePlane('', {
+				width: currWidth,
 				height: height,
 				sideOrientation: Mesh.DOUBLESIDE,
 				frontUVs: uvs,
 				backUVs: uvs
 			}, scene);
-			m.billboardMode = Mesh.BILLBOARDMODE_Y;
 			
-			m.material = material;
+			if (fullWidth === width) {
+				mesh.billboardMode = Mesh.BILLBOARDMODE_Y;
+			}
+			const pos = this.posFromEntity(entity);
+			mesh.position.copyFromFloats(pos.x, pos.z, -pos.y);
+			mesh.position.addInPlaceFromFloats(0, height / 2, 0);
+			mesh.position.addInPlaceFromFloats(start + (currWidth - width) / 2, 0, 0);
+			mesh.material = material;
 			
-			const pos = this.posFromEntity(entity, img);
-			m.position.copyFromFloats(pos.x, pos.z, -pos.y);
-			m.position.addInPlaceFromFloats(0, height / 2, 0);
+			meshes.push(mesh);
 		}
+		
+		return meshes;
 	}
 	
 	// z = height
-	private posFromEntity(entity: CCEntity, fix: EntitySettingsFix) {
+	private posFromEntity(entity: CCEntity) {
 		const level = entity.details.level;
 		
 		const out = new Vector3(
@@ -81,7 +116,7 @@ export class EntityGenerator {
 		// texture.wrapV = Texture.CLAMP_ADDRESSMODE;
 		texture.hasAlpha = true;
 		material.diffuseTexture = texture;
-		if (fix.renderMode === 'lighter') {
+		if (fix.renderMode === 'lighter' || entity.entitySettings.sheets.renderMode === 'lighter') {
 			material.alphaMode = Engine.ALPHA_ADD;
 			material.opacityTexture = texture;
 		}
@@ -97,14 +132,20 @@ export class EntityGenerator {
 		});
 	}
 	
-	private calculateUvs(texture: BaseTexture, fix: EntitySettingsFix) {
+	private calculateUvs(texture: BaseTexture, fix: Dimensions, flipX = false, flipY = false) {
 		const size = texture.getSize();
 		
-		return new Vector4(
-			fix.w + fix.x,
-			size.height - (fix.h + fix.y),
-			fix.x,
-			size.height - fix.y,
-		).multiplyByFloats(1 / size.width, 1 / size.height, 1 / size.width, 1 / size.height);
+		let out: Vector4;
+		const u = fix.w + fix.x;
+		const v = size.height - (fix.h + fix.y);
+		const u2 = fix.x;
+		const v2 = size.height - fix.y;
+		
+		out = new Vector4(u, v, u2, v2);
+		if (flipX) {
+			out = new Vector4(u2, v, u, v2);
+		}
+		
+		return out.multiplyByFloats(1 / size.width, 1 / size.height, 1 / size.width, 1 / size.height);
 	}
 }
