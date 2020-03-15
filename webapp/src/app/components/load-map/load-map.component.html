@@ -33,7 +33,7 @@
 						<mat-icon class="icon">edit</mat-icon>
 						<span *ngFor="let name of node.names; let isLast=last">
 							<a appHighlight [highlightText]="name" [highlightMatch]="filter"></a>
-							<a *ngIf="!isLast">.</a>
+							<a *ngIf="!isLast" class="separator">/</a>
 						</span>
 					</button>
 				</li>
@@ -47,7 +47,7 @@
 						</mat-icon>
 						<span *ngFor="let name of node.names; let isLast=last">
 							<a appHighlight [highlightText]="name" [highlightMatch]="filter"></a>
-							<a *ngIf="!isLast">.</a>
+							<a *ngIf="!isLast" class="separator">/</a>
 						</span>
 					</button>
 					<ul *ngIf="treeControl.isExpanded(node)">
