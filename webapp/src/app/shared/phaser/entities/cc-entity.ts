@@ -18,6 +18,25 @@ export interface EntityAttributes {
 	[key: string]: AttributeValue;
 }
 
+export interface EntitySettingsFix {
+	gfx: any;
+	x: number;
+	y: number;
+	w: number;
+	h: number;
+	scaleX?: number;
+	scaleY?: number;
+	renderHeight?: number;
+	renderMode?: string;
+	offsetX?: number;
+	offsetY?: number;
+	flipX?: boolean;
+	flipY?: boolean;
+	tint?: number;
+	alpha?: number;
+	
+}
+
 export interface AttributeValue {
 	type: string;
 	description: string;
@@ -57,23 +76,7 @@ export abstract class CCEntity extends BaseObject {
 		collType: string;
 		baseSize: Point3;
 		sheets: {
-			fix: {
-				gfx: any;
-				x: number;
-				y: number;
-				w: number;
-				h: number;
-				scaleX?: number;
-				scaleY?: number;
-				renderHeight?: number;
-				renderMode?: string;
-				offsetX?: number;
-				offsetY?: number;
-				flipX?: boolean;
-				flipY?: boolean;
-				tint?: number;
-				alpha?: number;
-			}[],
+			fix: EntitySettingsFix[],
 			offset?: Point;
 			renderMode?: string;
 			flipX?: boolean;

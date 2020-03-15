@@ -9,7 +9,10 @@ import {Helper} from '../helper';
 export class EntityManager extends BaseObject {
 	
 	private map?: CrossCodeMap;
-	private entities: CCEntity[] = [];
+	private _entities: CCEntity[] = [];
+	get entities(): CCEntity[] {
+		return this._entities;
+	}
 	
 	private multiSelectKey!: Phaser.Input.Keyboard.Key;
 	private copyKey!: Phaser.Input.Keyboard.Key;
@@ -58,14 +61,14 @@ export class EntityManager extends BaseObject {
 	
 	protected deactivate() {
 		this.selectEntity();
-		this.entities.forEach(entity => {
+		this._entities.forEach(entity => {
 			entity.setActive(false);
 			entity.setSelected(false);
 		});
 	}
 	
 	protected activate() {
-		this.entities.forEach(entity => {
+		this._entities.forEach(entity => {
 			entity.setActive(true);
 		});
 		const sub2 = Globals.globalEventsService.selectedEntity.subscribe(entity => {
@@ -242,12 +245,12 @@ export class EntityManager extends BaseObject {
 	
 	preUpdate(time: number, delta: number): void {
 		this.leftClickOpts.timer += delta;
-		this.selectionBox.update(this.entities);
+		this.selectionBox.update(this._entities);
 	}
 	
 	
 	hideEntities() {
-		this.entities.forEach(e => {
+		this._entities.forEach(e => {
 			e.container.visible = !e.container.visible;
 		});
 	}
@@ -255,10 +258,10 @@ export class EntityManager extends BaseObject {
 	/** generates all entities and adds proper input handling */
 	async initialize(map?: CrossCodeMap) {
 		this.map = map;
-		if (this.entities) {
-			this.entities.forEach(e => e.destroy());
+		if (this._entities) {
+			this._entities.forEach(e => e.destroy());
 		}
-		this.entities = [];
+		this._entities = [];
 		
 		if (!map || !map.entities) {
 			return;
@@ -300,7 +303,7 @@ export class EntityManager extends BaseObject {
 		await ccEntity.setSettings(entity.settings);
 		ccEntity.level = entity.level;
 		ccEntity.setActive(false);
-		this.entities.push(ccEntity);
+		this._entities.push(ccEntity);
 		return ccEntity;
 	}
 	
@@ -331,8 +334,8 @@ export class EntityManager extends BaseObject {
 		this.skipEdit = true;
 		const saveHistory = this.selectedEntities.length > 0;
 		this.selectedEntities.forEach(e => {
-			const i = this.entities.indexOf(e);
-			this.entities.splice(i, 1);
+			const i = this._entities.indexOf(e);
+			this._entities.splice(i, 1);
 			e.destroy();
 		});
 		this.selectEntity();
@@ -347,7 +350,7 @@ export class EntityManager extends BaseObject {
 	
 	exportEntities(): MapEntity[] {
 		const out: MapEntity[] = [];
-		this.entities.forEach(e => out.push(e.exportEntity()));
+		this._entities.forEach(e => out.push(e.exportEntity()));
 		return out;
 	}
 	

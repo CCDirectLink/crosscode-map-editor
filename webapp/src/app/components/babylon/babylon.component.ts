@@ -8,6 +8,8 @@ import {showAxis} from './debug/show-axis';
 import {ToggleMesh} from './debug/toggle-mesh';
 import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
 import {Router} from '@angular/router';
+import {addWireframeButton} from './ui/wireframe';
+import {EntityGenerator} from './entity-generation/entity-generator';
 
 
 interface CamStore {
@@ -75,9 +77,18 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		
 		}
 		
-		const light1 = new HemisphericLight('light1', new Vector3(1, 1, 1), scene);
-		light1.diffuse = new Color3(1, 1, 1).scale(1);
+		const light1 = new HemisphericLight('light1', new Vector3(0, 1, 0), scene);
+		const light2 = new HemisphericLight('light2', new Vector3(0, -1, 0), scene);
+		// light1.diffuse = new Color3(1, 1, 1).scale(0.7);
+		// light2.diffuse = new Color3(1, 1, 1).scale(0.7);
+		
 		light1.specular = new Color3(1, 1, 1).scale(0.2);
+		light2.specular = new Color3(1, 1, 1).scale(0.2);
+		
+		
+		// const light1 = new HemisphericLight('light1', new Vector3(1, 1, 1), scene);
+		// light1.diffuse = new Color3(1, 1, 1).scale(1);
+		// light1.specular = new Color3(1, 1, 1).scale(0);
 		
 		const map = Globals.map;
 		let layers = map.layers.filter(layer => layer.details.type.toLowerCase() === 'collision');
@@ -86,7 +97,7 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		// add another layer to the bottom to make the ground visible
 		layers = [await this.generateGroundLayer(layers[0]), ...layers];
 		// layers = [layers[2]];
-
+		
 		
 		const meshGenerator = new LayerMeshGenerator();
 		
@@ -109,11 +120,20 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 			allMeshes.push(...meshes);
 		}
 		
+		const entityGenerator = new EntityGenerator();
+		
+		const entities = map.entityManager.entities;
+		const promises: Promise<any>[] = [];
+		for (const e of entities) {
+			promises.push(entityGenerator.generateEntity(e, scene));
+		}
+		
+		await Promise.all(promises);
+		console.log('all done');
+		
 		const toggle = new ToggleMesh(scene);
 		
-		// meshes[1].isVisible = false;
-		// toggle.addButton('debug plane', () => meshes[1].isVisible = !meshes[1].isVisible);
-		toggle.addButton('wireframe', () => allMeshes.forEach(m => m.material!.wireframe = !m.material!.wireframe));
+		addWireframeButton(toggle, allMeshes);
 		
 		showAxis(2, scene);
 		

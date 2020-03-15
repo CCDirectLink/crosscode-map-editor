@@ -135,7 +135,6 @@ export class LayerMeshGenerator {
 		const layer = ccLayer.getPhaserLayer()!;
 		const tracer = new RadialSweepTracer();
 		const tracerObj = tracer.getContour(tiles, simpleTileLayer);
-		console.log('tracerOBJ', tracerObj);
 		const path = tracerObj.path;
 		
 		let maxX = -9999;
