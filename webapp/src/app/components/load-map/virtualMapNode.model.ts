@@ -24,7 +24,7 @@ export class VirtualMapNode {
             || !children[0].isDirectory
             || this.isRoot
         ) {
-            return [this.original.name]
+            return [this.original.name];
         }
 
         return [this.original.name].concat(...children[0].names);
@@ -41,7 +41,7 @@ export class VirtualMapNode {
             && result[0].isDirectory 
             && !this.isRoot
         ) {
-            return result[0].children
+            return result[0].children;
         }
         return result;
     }
@@ -58,7 +58,7 @@ export class VirtualMapNode {
     }
 
     private get isDirectory(): boolean {
-        return this.children !== undefined
+        return this.children !== undefined;
     }
 
     private get isRoot(): boolean {
@@ -84,6 +84,6 @@ export class VirtualMapNode {
             return aIsDir ? 1 : -1;
         }
 
-        return a.name.localeCompare(b.name)
+        return a.name.localeCompare(b.name);
     }
 }
