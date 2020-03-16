@@ -123,7 +123,7 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 			if (i === layers.length - 2) {
 				renderAll = 9999;
 			}
-			const layerMaterial = await this.textureGenerator.generate(coll.details.level + 1 + renderAll, scene);
+			const layerMaterial = this.textureGenerator.generate(coll.details.level + 1 + renderAll, scene);
 			performance.mark('texture');
 			const meshes = meshGenerator.generateLevel(coll, above, scene);
 			

@@ -1,59 +1,52 @@
 import {Globals} from '../../../shared/globals';
 import {CCMapLayer} from '../../../shared/phaser/tilemap/cc-map-layer';
 import {Scene, StandardMaterial, Texture} from '@babylonjs/core';
+import {Point} from '../../../models/cross-code-map';
 
 export class TextureGenerator {
-	
-	private prevSize = {x: 0, y: 0};
 	private layers: CCMapLayer[] = [];
+	private ctx!: CanvasRenderingContext2D;
+	private startLayer = 0;
 	
 	init() {
 		const map = Globals.map;
 		
-		// prepare phaser to take snapshots
-		const cam = Globals.scene.cameras.main;
+		const canvas = document.createElement('canvas');
+		canvas.width = map.mapWidth * Globals.TILE_SIZE;
+		canvas.height = map.mapHeight * Globals.TILE_SIZE;
 		
-		cam.setZoom(1);
-		cam.scrollX = 0;
-		cam.scrollY = 0;
+		const ctx = canvas.getContext('2d');
+		if (!ctx) {
+			throw new Error('Could not get context of buffer canvas');
+		}
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		this.ctx = ctx;
 		
-		const gameSize = Globals.game.scale.gameSize;
-		this.prevSize.x = gameSize.width;
-		this.prevSize.y = gameSize.height;
-		this.resize(map.mapWidth, map.mapHeight);
-		
-		// make only background layers visible and hide entities
-		map.layers.forEach(l => l.visible = false);
-		const layers = map.layers.filter(l => l.details.type.toLowerCase() === 'background');
-		layers.sort((a, b) => a.details.level - b.details.level);
-		
-		this.layers = layers;
-		
-		map.entityManager.hideEntities();
+		this.layers = map.layers
+			.filter(l => l.details.type.toLowerCase() === 'background')
+			.sort((a, b) => a.details.level - b.details.level);
 		
 		Globals.phaserEventsService.showMapBorder.next(false);
 	}
 	
 	destroy() {
 		Globals.phaserEventsService.showMapBorder.next(true);
-		if (this.prevSize.x > 0) {
-			Globals.game.scale.setGameSize(this.prevSize.x, this.prevSize.y);
-		}
 	}
 	
-	private resize(width: number, height: number) {
-		Globals.game.scale.setGameSize(width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
-	}
-	
-	public async generate(level: number, scene: Scene) {
+	/**
+	 * Assumes that on every call layer is only increased.
+	 * @param level
+	 * @param scene
+	 */
+	public generate(level: number, scene: Scene) {
 		for (const layer of this.layers) {
 			layer.visible = layer.details.level <= level;
 		}
 		
 		const layerMaterial = new StandardMaterial('layerMaterial' + level, scene);
-		const src = await this.snapshot();
+		this.snapshot(level);
 		
-		const texture = new Texture('data:level' + level, scene, undefined, undefined, Texture.NEAREST_SAMPLINGMODE, undefined, undefined, src);
+		const texture = new Texture('data:level' + level, scene, undefined, undefined, Texture.NEAREST_SAMPLINGMODE, undefined, undefined, this.ctx.canvas.toDataURL());
 		texture.wrapU = Texture.CLAMP_ADDRESSMODE;
 		texture.wrapV = Texture.CLAMP_ADDRESSMODE;
 		
@@ -62,14 +55,30 @@ export class TextureGenerator {
 		return layerMaterial;
 	}
 	
-	private async snapshot(): Promise<string> {
-		return new Promise((res, rej) => {
-			Globals.game.renderer.snapshot(img => {
-				const src = (img as HTMLImageElement).src;
-				// src = src.split(/base64,(.+)/)[1];
-				res(src);
-			});
-		});
-		
+	private snapshot(level: number) {
+		const ctx = this.ctx;
+		let i = this.startLayer;
+		for (; i < this.layers.length && this.layers[i].details.level <= level; i++) {
+			const layer = this.layers[i];
+			const phaserLayer = layer.getPhaserLayer()!;
+			
+			const tiles = phaserLayer.getTilesWithin();
+			for (const tile of tiles) {
+				const index = tile.index;
+				const x = tile.x;
+				const y = tile.y;
+				const tileset = tile.tileset;
+				if (!tileset) {
+					continue;
+				}
+				const tilesetImage = tileset.image.source[0].image;
+				const uv = tile.tileset.getTileTextureCoordinates(index) as Point;
+				
+				ctx.drawImage(tilesetImage,
+					uv.x, uv.y, Globals.TILE_SIZE, Globals.TILE_SIZE,
+					x * Globals.TILE_SIZE, y * Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE)
+			}
+		}
+		this.startLayer = i;
 	}
 }
