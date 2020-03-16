@@ -213,10 +213,16 @@ export class SimpleTileLayer {
 			}
 			all += row + '\n';
 		}
+		console.log(all);
 	}
 	
 	private isInLayerBounds(tileX: number, tileY: number) {
 		return (tileX >= 0 && tileX < this._width && tileY >= 0 && tileY < this._height);
+	}
+	
+	public exportTestCases() {
+		return `[\n${this._data.map(inner => '\t[' + inner.map(t => t.index).join(', ') + ']').join(',\n')}
+	]`;
 	}
 	
 	public exportLayer() {

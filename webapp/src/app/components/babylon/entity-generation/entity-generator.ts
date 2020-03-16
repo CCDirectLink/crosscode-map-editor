@@ -86,10 +86,16 @@ export class EntityGenerator {
 	private posFromEntity(entity: CCEntity) {
 		const level = entity.details.level;
 		
+		let levelObj = Globals.map.levels[level.level];
+		if (!levelObj) {
+			// TODO: check why it's actually not defined
+			levelObj = {height: 0};
+		}
+		
 		const out = new Vector3(
 			entity.container.x,
 			entity.container.y,
-			Globals.map.levels[level.level].height + level.offset
+			levelObj.height + level.offset
 		);
 		
 		// bounding box offset

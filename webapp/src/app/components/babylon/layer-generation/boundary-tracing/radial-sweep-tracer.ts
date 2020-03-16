@@ -3,12 +3,13 @@ import Polygon = Phaser.Geom.Polygon;
 import {Point} from '../../../../models/cross-code-map';
 import {SimpleTileLayer} from '../simple-tile-layer';
 import {p2Hash, p2HashReverse} from '../point-helper';
+import {BoundaryTracer} from './boundary-tracer';
 
 interface TracerTile extends Tile {
 	prev?: TracerTile;
 }
 
-export class RadialSweepTracer {
+export class RadialSweepTracer implements BoundaryTracer {
 	getContour(tiles: Set<Tile>, layer: SimpleTileLayer): { path: Point[], holes: Point[][] } {
 		// prepare tiles
 		const preparedLayer = new SimpleTileLayer();
