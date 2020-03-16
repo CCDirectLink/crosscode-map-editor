@@ -102,6 +102,8 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		// light1.diffuse = new Color3(1, 1, 1).scale(1);
 		// light1.specular = new Color3(1, 1, 1).scale(0);
 		
+		performance.mark('start');
+		
 		let layers = map.layers.filter(layer => layer.details.type.toLowerCase() === 'collision');
 		layers.sort((a, b) => a.details.level - b.details.level);
 		
@@ -109,12 +111,12 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		layers = [await this.generateGroundLayer(layers[0]), ...layers];
 		// layers = [layers[2]];
 		
-		
 		const meshGenerator = new LayerMeshGenerator();
 		
 		const allMeshes: Mesh[] = [];
 		
 		for (let i = 0; i < layers.length; i++) {
+			performance.mark('layerStart');
 			const coll = layers[i];
 			const above = layers[i + 1];
 			let renderAll = 0;
@@ -122,6 +124,7 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 				renderAll = 9999;
 			}
 			const layerMaterial = await this.textureGenerator.generate(coll.details.level + 1 + renderAll, scene);
+			performance.mark('texture');
 			const meshes = meshGenerator.generateLevel(coll, above, scene);
 			
 			for (const mesh of meshes) {
@@ -129,8 +132,16 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 			
 			allMeshes.push(...meshes);
+			performance.mark('layerEnd');
+			performance.measure('layer: ' + coll.details.level, 'layerStart', 'layerEnd');
+			performance.measure('texture: ' + coll.details.level, 'layerStart', 'texture');
+			performance.measure('mesh: ' + coll.details.level, 'texture', 'layerEnd');
 			this.loadPercent = babylonLoading.addLayer();
+			
+			
 		}
+		performance.mark('layersEnd');
+		
 		
 		const entityGenerator = new EntityGenerator();
 		
@@ -141,13 +152,16 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 		
 		await Promise.all(promises);
-		console.log('all done');
+		performance.mark('end');
 		
 		const toggle = new ToggleMesh(scene);
 		
 		addWireframeButton(toggle, allMeshes);
 		
 		showAxis(2, scene);
+		
+		performance.measure('layers', 'start', 'layersEnd');
+		performance.measure('entities', 'layersEnd', 'end');
 		
 		this.loading = false;
 		engine.runRenderLoop(() => scene.render());
