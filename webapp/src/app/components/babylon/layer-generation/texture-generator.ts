@@ -76,7 +76,7 @@ export class TextureGenerator {
 				
 				ctx.drawImage(tilesetImage,
 					uv.x, uv.y, Globals.TILE_SIZE, Globals.TILE_SIZE,
-					x * Globals.TILE_SIZE, y * Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE)
+					x * Globals.TILE_SIZE, y * Globals.TILE_SIZE, Globals.TILE_SIZE, Globals.TILE_SIZE);
 			}
 		}
 		this.startLayer = i;

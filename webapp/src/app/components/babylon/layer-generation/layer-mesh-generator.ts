@@ -7,6 +7,7 @@ import {SideMeshGenerator} from './side-mesh-generator';
 import {adjustLevel, getLevelOffsetTile} from './offset-helper';
 import {SimpleTileLayer} from './simple-tile-layer';
 import Tile = Phaser.Tilemaps.Tile;
+import { NodeTracer, NodeGrid, PolygonDescription } from './boundary-tracing/node-grid';
 
 export class LayerMeshGenerator {
 	
@@ -41,36 +42,16 @@ export class LayerMeshGenerator {
 		
 		const tiles: Tile[] = simpleTileLayer.tiles.flat();
 		
-		const allTiles = new Set<Tile>();
-		const validTiles = [2, 8, 9, 10, 11, 20, 21, 22, 23, 24, 25, 26, 27];
-		for (const tile of tiles) {
-			if (validTiles.includes(tile.index)) {
-				allTiles.add(tile);
-			}
-		}
-		
-		if (allTiles.size === 0) {
-			console.warn('not generating mesh, collision layer is empty');
-			return [];
-		}
-		
 		const meshes: Mesh[] = [];
 		
 		let meshCounter = 0;
 		
-		while (allTiles.size > 0) {
-			const toCheck: (Tile | null)[] = [allTiles.values().next().value];
-			const group = new Set<Tile>();
-			while (toCheck.length > 0) {
-				const tile = toCheck.pop()!;
-				if (allTiles.delete(tile)) {
-					group.add(tile);
-					toCheck.push(...this.getNeighbours(tile, simpleTileLayer));
-				}
-			}
-			meshes.push(this.generateMesh('coll layer ' + collLayer.details.level + ' - ' + (++meshCounter), group, collLayer, simpleTileLayer, scene));
+		const grid = new NodeGrid(simpleTileLayer.width, simpleTileLayer.height);
+		grid.findEdges(tiles);
+		const polygons = grid.findPolygons();
+		for (const polygon of polygons) {
+			meshes.push(this.generateMesh('coll layer ' + collLayer.details.level + ' - ' + (++meshCounter), polygon, collLayer, simpleTileLayer, scene));
 		}
-		
 		return meshes;
 	}
 	
@@ -131,11 +112,9 @@ export class LayerMeshGenerator {
 		}
 	}
 	
-	private generateMesh(name: string, tiles: Set<Tile>, ccLayer: CCMapLayer, simpleTileLayer: SimpleTileLayer, scene: Scene) {
+	private generateMesh(name: string, polygon: PolygonDescription, ccLayer: CCMapLayer, simpleTileLayer: SimpleTileLayer, scene: Scene, ) {
 		const layer = ccLayer.getPhaserLayer()!;
-		const tracer = new RadialSweepTracer();
-		const tracerObj = tracer.getContour(tiles, simpleTileLayer);
-		const path = tracerObj.path;
+		const path = polygon.points;
 		
 		let maxX = -9999;
 		let minX = 9999;
@@ -174,7 +153,7 @@ export class LayerMeshGenerator {
 			return new Vector3(t.x, 0, -t.y);
 		});
 		
-		const holes = tracerObj.holes.map(hole => {
+		const holes = polygon.holes.map(hole => {
 			return hole.map(t => {
 				return new Vector3(t.x, 0, -t.y);
 			});
@@ -183,7 +162,7 @@ export class LayerMeshGenerator {
 		const top = MeshBuilder.CreatePolygon(name, {
 			shape: pathArr,
 			holes: holes,
-			updatable: true,
+			updatable: false,
 			faceUV: [
 				new Vector4(offsetX, offsetY, offsetX + topWidth, offsetY + topHeight),
 				new Vector4(0, 0, 0, 0),

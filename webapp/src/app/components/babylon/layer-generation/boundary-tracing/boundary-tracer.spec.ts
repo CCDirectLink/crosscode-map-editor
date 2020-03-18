@@ -1,7 +1,7 @@
 import {BoundaryTracer} from './boundary-tracer';
-import {RadialSweepTracer} from './radial-sweep-tracer';
 import {SimpleTileLayer} from '../simple-tile-layer';
 import {Point} from '../../../../models/cross-code-map';
+import {NodeTracer} from './node-grid';
 import Tile = Phaser.Tilemaps.Tile;
 
 describe('boundary tracing', () => {
@@ -13,7 +13,7 @@ describe('boundary tracing', () => {
 	});
 	
 	beforeEach(() => {
-		tracer = new RadialSweepTracer();
+		tracer = new NodeTracer();
 	});
 	
 	// to generate output in tracer:

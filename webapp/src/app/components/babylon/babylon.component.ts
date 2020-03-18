@@ -168,7 +168,6 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	
 	private async generateGroundLayer(other: CCMapLayer) {
-		// TODO: remove
 		const data: number[][] = [];
 		const height = other.details.height + 10;
 		for (let y = 0; y < height; y++) {
