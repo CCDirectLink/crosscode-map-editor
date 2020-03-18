@@ -314,6 +314,22 @@ describe('boundary tracing', () => {
 			const traceObj = tracer.getContour(tiles, layer);
 			console.log(traceObj);
 		});
+		
+		it('evil pattern', () => {
+			const layer = new SimpleTileLayer();
+			layer.initSimple([
+				[0, 0, 0, 0, 0, 0],
+				[0, 0, 0, 2, 0, 0],
+				[0, 0, 11, 0, 0, 0],
+				[0, 0, 2, 0, 0, 0],
+				[0, 2, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0, 0]
+			]);
+			const tiles = new Set<Tile>();
+			tiles.add(layer.getTileAt(2, 2)!);
+			const traceObj = tracer.getContour(tiles, layer);
+			console.log(traceObj);
+		});
 	});
 	
 	
