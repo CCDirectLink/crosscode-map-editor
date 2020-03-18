@@ -10,7 +10,6 @@ import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
 import {Router} from '@angular/router';
 import {addWireframeButton} from './ui/wireframe';
 import {EntityGenerator} from './entity-generation/entity-generator';
-import {BabylonLoading} from './babylon-loading';
 
 
 interface CamStore {
@@ -34,8 +33,7 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 	private textureGenerator: TextureGenerator;
 	private groundLayers: CCMapLayer[] = [];
 	
-	loading = false;
-	loadPercent = 0;
+	loading = true;
 	
 	constructor(
 		private router: Router
@@ -60,13 +58,7 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 	
 	private async initBabylon() {
-		this.loading = true;
 		const map = Globals.map;
-		
-		const babylonLoading = new BabylonLoading();
-		babylonLoading.init(map);
-		this.loadPercent = 0;
-		
 		
 		this.groundLayers = [];
 		const engine = new Engine(this.canvas.nativeElement);
@@ -136,7 +128,6 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 			performance.measure('layer: ' + coll.details.level, 'layerStart', 'layerEnd');
 			performance.measure('texture: ' + coll.details.level, 'layerStart', 'texture');
 			performance.measure('mesh: ' + coll.details.level, 'texture', 'layerEnd');
-			this.loadPercent = babylonLoading.addLayer();
 			
 			
 		}
@@ -164,6 +155,7 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		performance.measure('entities', 'layersEnd', 'end');
 		
 		this.loading = false;
+		
 		engine.runRenderLoop(() => scene.render());
 	}
 	

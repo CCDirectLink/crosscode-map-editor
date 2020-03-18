@@ -1,9 +1,6 @@
 <div class="babylon-overlay">
-	<div *ngIf="loading" class="loading">
-		<div class="loading-bar">
-			<mat-progress-bar mode="determinate" [value]="loadPercent * 100"></mat-progress-bar>
-			<h3 class="mat-h1">{{loadPercent * 100 | number:'1.0-0'}}%</h3>
-		</div>
+	<div class="loading" *ngIf="loading">
+		<h1 class="mat-h1">LOADING...</h1>
 	</div>
 	<canvas #renderCanvas></canvas>
 </div>
