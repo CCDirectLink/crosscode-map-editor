@@ -18,16 +18,11 @@ export class VirtualMapNode {
     }
 
     public get names(): string[] {
-        const children = this.realChildren;
-        if (!children
-            || children.length !== 1 
-            || !children[0].isDirectory
-            || this.isRoot
-        ) {
+        if (!this.containsSingleDirectory) {
             return [this.original.name];
         }
 
-        return [this.original.name].concat(...children[0].names);
+        return [this.original.name].concat(...this.realChildren![0].names);
     }
 
     public get path(): string | undefined {
@@ -35,15 +30,10 @@ export class VirtualMapNode {
     }
 
     public get children(): VirtualMapNode[] | undefined {
-        const result = this.realChildren;
-        if (result 
-            && result.length === 1 
-            && result[0].isDirectory 
-            && !this.isRoot
-        ) {
-            return result[0].children;
+        if (this.containsSingleDirectory) {
+            return this.realChildren![0].children;
         }
-        return result;
+        return this.realChildren;
     }
 
     private resolve(node: MapNode): VirtualMapNode {
@@ -63,6 +53,14 @@ export class VirtualMapNode {
 
     private get isRoot(): boolean {
         return this.original.name === '';
+    }
+
+    private get containsSingleDirectory(): boolean {
+        const realChildren = this.realChildren;
+        return realChildren !== undefined
+            && realChildren.length === 1
+            && realChildren[0].isDirectory
+            && !this.isRoot;
     }
 
     private get realChildren(): VirtualMapNode[] | undefined {
