@@ -31,7 +31,10 @@
 					<button mat-button class="mapTree-button"
 							(click)="node.path ? load(node.path) : fileUpload.click()">
 						<mat-icon class="icon">edit</mat-icon>
-						<a appHighlight [highlightText]="node.name" [highlightMatch]="filter"></a>
+						<span *ngFor="let name of node.names; let isLast=last">
+							<a appHighlight [highlightText]="name" [highlightMatch]="filter"></a>
+							<a *ngIf="!isLast" class="separator">/</a>
+						</span>
 					</button>
 				</li>
 			</mat-tree-node>
@@ -42,7 +45,10 @@
 						<mat-icon class="icon mat-icon-rtl-mirror">
 							{{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
 						</mat-icon>
-						<a appHighlight [highlightText]="node.name" [highlightMatch]="filter"></a>
+						<span *ngFor="let name of node.names; let isLast=last">
+							<a appHighlight [highlightText]="name" [highlightMatch]="filter"></a>
+							<a *ngIf="!isLast" class="separator">/</a>
+						</span>
 					</button>
 					<ul *ngIf="treeControl.isExpanded(node)">
 						<ng-container matTreeNodeOutlet></ng-container>

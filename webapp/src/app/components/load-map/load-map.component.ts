@@ -28,7 +28,7 @@ export class LoadMapComponent {
 	treeControl = new NestedTreeControl<VirtualMapNode>(node => node.children);
 	mapsSource = new MatTreeNestedDataSource<VirtualMapNode>();
 	
-	root: MapNodeRoot = {name: 'root', displayed: true, children: []}; // The root itself is never displayed. It is used as a datasource for virtualRoot.
+	root: MapNodeRoot = {name: '', displayed: true, children: []}; // The root itself is never displayed. It is used as a datasource for virtualRoot.
 	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering.
 	filter = '';
 	
