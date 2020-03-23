@@ -1,3 +1,9 @@
+<div class="filter" fxLayout="column">
+	<mat-form-field>
+		<input #filterInput matInput type="text" placeholder="Filter" [(ngModel)]="filter" (ngModelChange)="updateFilter()"/>
+	</mat-form-field>
+</div>
+<mat-divider></mat-divider>
 <h2 class="mat-title">{{entity?.details.type}}</h2>
 <div class="entity-settings-container dark-scrollbar" fxLayout="column">
 	

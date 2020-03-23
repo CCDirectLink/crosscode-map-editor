@@ -94,6 +94,8 @@ export abstract class CCEntity extends BaseObject {
 		this.details = <any>{
 			type: typeName
 		};
+		
+		Globals.globalEventsService.filterEntity.subscribe(filter => this.setVisible(this.filter(filter)));
 	}
 	
 	
@@ -568,5 +570,30 @@ export abstract class CCEntity extends BaseObject {
 			this.text = undefined;
 		}
 		
+	}
+
+	protected filter(filter: string): boolean {
+		const lower = filter.toLocaleLowerCase();
+		const attributes = this.getAttributes();
+
+		for (const name of Object.keys(attributes)) {
+			const toLowerCase = (this.details.settings[name] || '').toLowerCase;
+			if (toLowerCase && (this.details.settings[name] || '').toLowerCase().includes(lower)) {
+				return true;
+			}
+		}
+
+		return this.details.type.toLowerCase().includes(lower)
+			|| (this.details.settings.name || '').toLowerCase().includes(lower);
+	}
+
+	private setVisible(visible: boolean) {
+		if (visible) {
+			this.container.alpha = 1;
+			this.activate();
+		} else {
+			this.container.alpha = 0.2;
+			this.deactivate();
+		}
 	}
 }
