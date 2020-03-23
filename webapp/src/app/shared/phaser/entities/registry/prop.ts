@@ -20,7 +20,7 @@ interface SubJsonInstance {
 	jsonINSTANCE?: keyof JsonTemplates;
 }
 
-interface PropSheet {
+export interface PropSheet {
 	DOCTYPE: string;
 	jsonTEMPLATES: JsonTemplates;
 	props: PropDef[];
@@ -34,7 +34,7 @@ interface AnimSheet {
 	offY?: number;
 }
 
-interface Anims {
+export interface Anims {
 	DOCTYPE?: string;
 	SUB: {
 		sheet?: string;
