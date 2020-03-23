@@ -26,7 +26,7 @@ interface PropSheet {
 	props: PropDef[];
 }
 
-interface AnimSheet {
+export interface AnimSheet {
 	src: string;
 	width: number;
 	height: number;
@@ -34,7 +34,7 @@ interface AnimSheet {
 	offY?: number;
 }
 
-interface Anims {
+export interface Anims {
 	DOCTYPE?: string;
 	SUB: {
 		sheet?: string;
