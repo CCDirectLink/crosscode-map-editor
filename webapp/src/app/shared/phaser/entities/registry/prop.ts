@@ -20,13 +20,13 @@ interface SubJsonInstance {
 	jsonINSTANCE?: keyof JsonTemplates;
 }
 
-export interface PropSheet {
+interface PropSheet {
 	DOCTYPE: string;
 	jsonTEMPLATES: JsonTemplates;
 	props: PropDef[];
 }
 
-interface AnimSheet {
+export interface AnimSheet {
 	src: string;
 	width: number;
 	height: number;
