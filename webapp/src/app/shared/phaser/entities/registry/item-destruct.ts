@@ -1,7 +1,7 @@
 import {CCEntity, EntityAttributes, ScaleSettings} from '../cc-entity';
 import {Helper} from '../../helper';
-import { Point3 } from '../../../../models/cross-code-map';
-import { Anims, AnimSheet } from './prop';
+import {Point3} from '../../../../models/cross-code-map';
+import {Anims, AnimSheet} from './prop';
 
 export class ItemDestruct extends CCEntity {
 	
@@ -34,6 +34,7 @@ export class ItemDestruct extends CCEntity {
 		enemyInfo: {
 			type: 'EnemyType',
 			description: 'Enemy to spawn after destruction',
+			popup: true,
 			withNull: true
 		}
 	};
@@ -58,10 +59,10 @@ export class ItemDestruct extends CCEntity {
 			}
 		}
 		const destructibles = this.scene.cache.json.get('destructibles.json') as ItemDestructTypes;
-        this.attributes.desType.options = {};
-        for (const name of Object.keys(destructibles)) {
-            this.attributes.desType.options[name] = name;
-        }
+		this.attributes.desType.options = {};
+		for (const name of Object.keys(destructibles)) {
+			this.attributes.desType.options[name] = name;
+		}
 		const type = destructibles[desType];
 		if (!type) {
 			this.generateNoImageType(0xFF0000, 1);
