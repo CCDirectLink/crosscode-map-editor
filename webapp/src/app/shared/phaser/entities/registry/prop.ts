@@ -218,21 +218,17 @@ export class Prop extends CCEntity {
 			offset?: Point3;
 			renderMode?: string
 		}[] = [];
-
-
+		
+		
 		if (anims.sheet || anims.namedSheets) {
 			this.setupAnim(settings, anims, sheetDef, propDef.name, sprites);
 		} else { //<- temporary
 			if (anims.SUB) {
-				// TODO: Draw other layers. renderMode doesn't seem to work properly.
-				this.setupAnim(settings, anims.SUB[0] as Anims, sheetDef, propDef.name, sprites);
-				/*
 				for (const anim of anims.SUB as Anims[]) {
 					this.setupAnim(settings, anim, sheetDef, propDef.name, sprites);
-				}*/
+				}
 			}
 		}
-
 		
 		
 		if (sprites.length === 0) {
@@ -271,7 +267,7 @@ export class Prop extends CCEntity {
 			this.entitySettings.sheets.fix.push(fix);
 		}
 	}
-
+	
 	private setupAnim(settings: PropAttributes, anims: Anims, sheetDef: PropSheet, pname: string, sprites: {
 		sheet: AnimSheet;
 		tileOffset: number;
@@ -338,7 +334,8 @@ export class Prop extends CCEntity {
 			sprites.push({
 				sheet: anims.sheet as AnimSheet,
 				alpha: 1,
-				tileOffset: 0
+				tileOffset: 0,
+				renderMode: anims.renderMode
 			});
 		} else {
 			console.error('prop anim has no sheet: ', pname);
