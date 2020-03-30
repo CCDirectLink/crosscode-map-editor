@@ -222,7 +222,7 @@ export class Prop extends CCEntity {
 		
 		if (anims.sheet || anims.namedSheets) {
 			this.setupAnim(settings, anims, sheetDef, propDef.name, sprites);
-		} else { //<- temporary
+		} else {
 			if (anims.SUB) {
 				for (const anim of anims.SUB as Anims[]) {
 					this.setupAnim(settings, anim, sheetDef, propDef.name, sprites);
