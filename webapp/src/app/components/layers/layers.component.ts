@@ -6,6 +6,7 @@ import {GlobalEventsService} from '../../shared/global-events.service';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {StateHistoryService} from '../../shared/history/state-history.service';
 import {Globals} from '../../shared/globals';
+import { HttpClientService } from '../../services/http-client.service';
 
 @Component({
 	selector: 'app-layers',
@@ -14,13 +15,16 @@ import {Globals} from '../../shared/globals';
 	encapsulation: ViewEncapsulation.None
 })
 export class LayersComponent implements OnInit {
+	static tilesets: string[] = []; //Cache
 	
 	selectedLayer?: CCMapLayer;
 	map?: CCMap;
 	newLayerName = '';
+	tilesets: string[] = []; //Angular view data
 	
 	constructor(private mapLoader: MapLoaderService,
-	            private stateHistory: StateHistoryService,
+				private stateHistory: StateHistoryService,
+				private http: HttpClientService,
 	            events: GlobalEventsService) {
 		events.toggleVisibility.subscribe(() => {
 			if (this.selectedLayer) {
@@ -30,6 +34,8 @@ export class LayersComponent implements OnInit {
 				} as Event, this.selectedLayer);
 			}
 		});
+
+		this.loadTilesets();
 	}
 	
 	ngOnInit() {
@@ -121,6 +127,20 @@ export class LayersComponent implements OnInit {
 		}
 		this.selectedLayer.updateTileset(name);
 		this.mapLoader.selectedLayer.next(this.selectedLayer);
+	}
+
+	getTilesetName(path: string): string {
+		return path.substring('media/map/'.length, path.length - '.png'.length);
+	}
+
+	private async loadTilesets() {
+		if (LayersComponent.tilesets.length > 0) {
+			this.tilesets = LayersComponent.tilesets;
+			return;
+		}
+
+		LayersComponent.tilesets = await this.http.getAllTilesets().toPromise();
+		this.tilesets = LayersComponent.tilesets;
 	}
 	
 	updateLevel(level: number) {
