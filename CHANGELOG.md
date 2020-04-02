@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- New maps saved inside the assets folder by default
 - Map folders that only contain one subfolder displayed as one entry
 - Tileset selector
 
