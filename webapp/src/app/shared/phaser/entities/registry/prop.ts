@@ -220,6 +220,62 @@ export class Prop extends CCEntity {
 			renderMode?: string
 		}[] = [];
 		
+		
+		if (anims.sheet || anims.namedSheets) {
+			this.setupAnim(settings, anims, sheetDef, propDef.name, sprites);
+		} else {
+			if (anims.SUB) {
+				for (const anim of anims.SUB as Anims[]) {
+					this.setupAnim(settings, anim, sheetDef, propDef.name, sprites);
+				}
+			}
+		}
+		
+		
+		if (sprites.length === 0) {
+			console.warn('failed creating prop: ', settings);
+			
+			return this.generateErrorImage();
+		}
+		
+		
+		this.entitySettings.sheets.fix = [];
+		for (const sprite of sprites) {
+			
+			if (!sprite.sheet) {
+				console.error(`prop sheet not found, `, propDef.name);
+				return this.generateErrorImage();
+			}
+			
+			await Helper.loadTexture(sprite.sheet.src, this.scene);
+			
+			const fix = {
+				gfx: sprite.sheet.src,
+				w: sprite.sheet.width,
+				h: sprite.sheet.height,
+				x: sprite.sheet.width * sprite.tileOffset + (sprite.sheet.offX || 0),
+				y: sprite.sheet.offY || 0,
+				alpha: sprite.alpha,
+				offsetX: 0,
+				offsetY: 0,
+				renderMode: sprite.renderMode
+			};
+			
+			if (sprite.offset) {
+				fix.offsetX = sprite.offset.x || 0;
+				fix.offsetY = (sprite.offset.y || 0) - (sprite.offset.z || 0);
+			}
+			this.entitySettings.sheets.fix.push(fix);
+		}
+	}
+	
+	private setupAnim(settings: PropAttributes, anims: Anims, sheetDef: PropSheet, pname: string, sprites: {
+		sheet: AnimSheet;
+		tileOffset: number;
+		alpha: number;
+		offset?: Point3;
+		renderMode?: string
+	}[]) {
 		if (anims.namedSheets) {
 			let template: JsonTemplate | undefined;
 			
@@ -230,7 +286,7 @@ export class Prop extends CCEntity {
 				template = templates.find(t => t.name === settings.propAnim);
 				
 				if (!template) {
-					console.error(`prop json template with name ${settings.propAnim} not found, `, propDef.name);
+					console.error(`prop json template with name ${settings.propAnim} not found, `, pname);
 					return this.generateErrorImage();
 				}
 				const name = anims.sheet as string || anims.SUB[0].sheet!;
@@ -279,47 +335,12 @@ export class Prop extends CCEntity {
 			sprites.push({
 				sheet: anims.sheet as AnimSheet,
 				alpha: 1,
-				tileOffset: 0
+				tileOffset: 0,
+				renderMode: anims.renderMode
 			});
 		} else {
-			console.error('prop anim has no sheet: ', propDef.name);
+			console.error('prop anim has no sheet: ', pname);
 			return this.generateErrorImage();
-		}
-		
-		if (sprites.length === 0) {
-			console.warn('failed creating prop: ', settings);
-			
-			return this.generateErrorImage();
-		}
-		
-		
-		this.entitySettings.sheets.fix = [];
-		for (const sprite of sprites) {
-			
-			if (!sprite.sheet) {
-				console.error(`prop sheet not found, `, propDef.name);
-				return this.generateErrorImage();
-			}
-			
-			await Helper.loadTexture(sprite.sheet.src, this.scene);
-			
-			const fix = {
-				gfx: sprite.sheet.src,
-				w: sprite.sheet.width,
-				h: sprite.sheet.height,
-				x: sprite.sheet.width * sprite.tileOffset + (sprite.sheet.offX || 0),
-				y: sprite.sheet.offY || 0,
-				alpha: sprite.alpha,
-				offsetX: 0,
-				offsetY: 0,
-				renderMode: sprite.renderMode
-			};
-			
-			if (sprite.offset) {
-				fix.offsetX = sprite.offset.x || 0;
-				fix.offsetY = (sprite.offset.y || 0) - (sprite.offset.z || 0);
-			}
-			this.entitySettings.sheets.fix.push(fix);
 		}
 	}
 }
