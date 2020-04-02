@@ -1,0 +1,853 @@
+{
+	"default": {
+		"map": {
+			"sheet": "media/entity/style/default-map.png",
+			"hasDoorMat": true,
+			"teleportField": {
+				"x": 0,
+				"y": 160,
+				"xCount": 3,
+				"zHeight": 0
+			}
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/default-puzzle.png"
+		},
+		"puzzle2": {
+			"sheet": "media/entity/style/default-puzzle-2.png"
+		},
+		"destruct": {
+			"sheet": "media/entity/style/default-destruct.png"
+		},
+		"walls": {
+			"colors": {
+				"blockFront": "#475ae2",
+				"blockTop": "#e6e9ff",
+				"pBlockFront": "#80ff83",
+				"pBlockTop": "#b3c9ff",
+				"npBlockFront": "#eb8835",
+				"npBlockTop": "#ffe2ca"
+			}
+		}
+	},
+	"cargo-hold": {
+		"map": {
+			"sheet": "media/entity/style/cargo-hold-map.png",
+			"hasDoorMat": true,
+			"teleportField": {
+				"x": 0,
+				"y": 160,
+				"xCount": 3,
+				"zHeight": 0
+			}
+		}
+	},
+	"cargo-ship-outer": {
+		"map": {
+			"sheet": "media/entity/style/cargo-outer-map.png",
+			"hasDoorMat": false
+		}
+	},
+	"cargo-ship-bridge": {
+		"map": {
+			"sheet": "media/entity/style/cargo-bridge-map.png",
+			"hasDoorMat": false
+		}
+	},
+	"rhombus-puzzle": {
+		"map": {
+			"sheet": "media/entity/style/rhombus-dng-map.png",
+			"hasDoorMat": true,
+			"teleportField": {
+				"x": 0,
+				"y": 160,
+				"xCount": 3,
+				"zHeight": 0
+			}
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/rhombus-dng-puzzle.png"
+		},
+		"walls": {
+			"colors": {
+				"blockFront": "#71a3ff",
+				"blockTop": "#b6dcff",
+				"pBlockFront": "#80ff83",
+				"pBlockTop": "#b3c9ff",
+				"npBlockFront": "#ffba80",
+				"npBlockTop": "#ffd6b3"
+			}
+		}
+	},
+	"rhombus-outside": {
+		"map": {
+			"sheet": "media/entity/style/rhombus-outside-map.png",
+			"hasDoorMat": false,
+			"doorGlow": {
+				"x": 128,
+				"y": 0,
+				"xCount": 1
+			},
+			"teleportField": {
+				"x": 0,
+				"y": 96,
+				"xCount": 3,
+				"zHeight": 0
+			},
+			"doorVariations": {
+				"glass": {
+					"x": 160,
+					"y": 0,
+					"doorMat": false
+				}
+			}
+		}
+	},
+	"rhombus-interior": {
+		"map": {
+			"sheet": "media/entity/style/rhombus-interior-map.png",
+			"hasDoorMat": true,
+			"doorGlow": {
+				"x": 144,
+				"y": 0,
+				"xCount": 1,
+				"sideX": 160,
+				"sideY": 96
+			},
+			"stairDoor": {
+				"x": 176,
+				"y": 48
+			}
+		}
+	},
+	"rookie-harbor-outer": {
+		"map": {
+			"sheet": "media/entity/style/rh-outer-map.png",
+			"hasDoorMat": false,
+			"teleportField": {
+				"x": 0,
+				"y": 48,
+				"xCount": 3,
+				"zHeight": 0
+			}
+		}
+	},
+	"rookie-harbor-interior": {
+		"map": {
+			"sheet": "media/entity/style/rh-interior-map.png",
+			"hasDoorMat": true,
+			"doorVariations": {
+				"wood": {
+					"x": 160,
+					"y": 0
+				}
+			},
+			"stairDoor": {
+				"x": 160,
+				"y": 48
+			}
+		}
+	},
+	"hideout-outer": {
+		"map": {
+			"sheet": "media/entity/style/hideout-outer-map.png",
+			"hasDoorMat": false,
+			"teleportField": {
+				"x": 0,
+				"y": 96,
+				"xCount": 3,
+				"zHeight": 0
+			}
+		}
+	},
+	"hideout-inner": {
+		"map": {
+			"sheet": "media/entity/style/hideout-inner-map.png",
+			"hasDoorMat": false,
+			"doorVariations": {
+				"dark": {
+					"x": 160,
+					"y": 0
+				}
+			},
+			"stairDoor": {
+				"x": 160,
+				"y": 48
+			}
+		}
+	},
+	"autumn": {
+		"map": {
+			"sheet": "media/entity/style/autumn-map.png",
+			"hasDoorMat": true,
+			"teleportField": {
+				"x": 0,
+				"y": 160,
+				"xCount": 3,
+				"zHeight": 0
+			}
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/autumn-puzzle.png"
+		}
+	},
+	"cave": {
+		"map": {
+			"sheet": "media/entity/style/cave.png",
+			"hasDoorMat": true,
+			"teleportField": {
+				"x": 0,
+				"y": 160,
+				"xCount": 3,
+				"zHeight": 0
+			}
+		},
+		"effect": {
+			"sheet": "area.cold-dng"
+		},
+		"destruct": {
+			"sheet": "media/entity/style/cave-destruct.png"
+		},
+		"waterblock": {
+			"sheet": "media/map/heat-dng.png",
+			"x": 384,
+			"y": 304,
+			"puddleX": 352,
+			"puddleY": 448
+		}
+	},
+	"christmas": {
+		"map": {
+			"sheet": "media/entity/style/cargo-hold-map.png",
+			"hasDoorMat": true
+		},
+		"destruct": {
+			"sheet": "media/entity/style/christmas-destruct.png"
+		}
+	},
+	"bergen-outer": {
+		"map": {
+			"sheet": "media/entity/style/bergen-map.png",
+			"hasDoorMat": false,
+			"teleportField": {
+				"x": 0,
+				"y": 48,
+				"xCount": 3,
+				"zHeight": 0
+			}
+		},
+		"destruct": {
+			"sheet": "media/entity/style/cold-dng-destruct.png"
+		}
+	},
+	"bergen-inner": {
+		"map": {
+			"sheet": "media/entity/style/bergen-inner-map.png",
+			"hasDoorMat": true,
+			"stairDoor": {
+				"x": 160,
+				"y": 48
+			},
+			"teleportField": {
+				"x": 0,
+				"y": 48,
+				"xCount": 3,
+				"zHeight": 0
+			},
+			"doorVariations": {
+				"wood": {
+					"x": 160,
+					"y": 0,
+					"doorMat": false
+				}
+			}
+		},
+		"destruct": {
+			"sheet": "media/entity/style/cold-dng-destruct.png"
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/bergen-inner-puzzle.png"
+		}
+	},
+	"cold-dng": {
+		"map": {
+			"sheet": "media/entity/style/cold-dng-map.png",
+			"hasDoorMat": true,
+			"teleportField": {
+				"x": 0,
+				"y": 160,
+				"xCount": 3,
+				"zHeight": 0
+			}
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/cold-dng-puzzle.png"
+		},
+		"puzzle2": {
+			"sheet": "media/entity/style/cold-dng-puzzle-2.png"
+		},
+		"walls": {
+			"colors": {
+				"blockFront": "#71a3ff",
+				"blockTop": "#b6dcff",
+				"pBlockFront": "#80ff83",
+				"pBlockTop": "#b3c9ff",
+				"npBlockFront": "#ffba80",
+				"npBlockTop": "#ffd6b3"
+			}
+		},
+		"lorry": {
+			"sheet": "media/map/cold-dng.png",
+			"railX": 176,
+			"railY": 256,
+			"lorryX": 128,
+			"lorryY": 272
+		},
+		"effect": {
+			"sheet": "area.cold-dng"
+		},
+		"destruct": {
+			"sheet": "media/entity/style/cold-dng-destruct.png"
+		}
+	},
+	"heat-outer": {
+		"map": {
+			"sheet": "media/entity/style/heat-map.png",
+			"hasDoorMat": false,
+			"doorSound": "STONE",
+			"teleportField": {
+				"x": 0,
+				"y": 48,
+				"xCount": 3,
+				"zHeight": 0
+			}
+		},
+		"destruct": {
+			"sheet": "media/entity/style/heat-destruct.png"
+		},
+		"quicksand": {
+			"sheet": "media/map/heat-area-hax.png",
+			"x": 128,
+			"y": 48
+		}
+	},
+	"heat-inner": {
+		"map": {
+			"sheet": "media/entity/style/heat-interior-map.png",
+			"hasDoorMat": false,
+			"doorSound": "STONE",
+			"stairDoor": {
+				"x": 160,
+				"y": 0
+			}
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/heat-dng-puzzle.png"
+		},
+		"puzzle2": {
+			"sheet": "media/entity/style/heat-dng-puzzle-2.png"
+		},
+		"destruct": {
+			"sheet": "media/entity/style/heat-dng-destruct.png"
+		}
+	},
+	"heat-dng": {
+		"map": {
+			"sheet": "media/entity/style/heat-dng-map.png",
+			"hasDoorMat": true,
+			"doorSound": "STONE",
+			"teleportField": {
+				"x": 0,
+				"y": 160,
+				"xCount": 3,
+				"zHeight": 0
+			},
+			"stairDoor": {
+				"x": 160,
+				"y": 0
+			}
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/heat-dng-puzzle.png"
+		},
+		"puzzle2": {
+			"sheet": "media/entity/style/heat-dng-puzzle-2.png"
+		},
+		"destruct": {
+			"sheet": "media/entity/style/heat-dng-destruct.png"
+		},
+		"waterblock": {
+			"sheet": "media/map/heat-dng.png",
+			"x": 384,
+			"y": 304,
+			"puddleX": 352,
+			"puddleY": 448
+		},
+		"pipes": {
+			"sheet": "media/map/heat-dng.png",
+			"x": 320,
+			"y": 144
+		},
+		"quicksand": {
+			"sheet": "media/map/heat-dng.png",
+			"x": 160,
+			"y": 272
+		},
+		"walls": {
+			"colors": {
+				"blockFront": "#5e5aac",
+				"blockTop": "#d6d4f6",
+				"pBlockFront": "#80ff83",
+				"pBlockTop": "#b3c9ff",
+				"npBlockFront": "#d95c3b",
+				"npBlockTop": "#e58c61"
+			}
+		},
+		"lorry": {
+			"sheet": "media/map/heat-dng.png",
+			"railX": 176,
+			"railY": 304,
+			"lorryX": 128,
+			"lorryY": 304
+		},
+		"coals": {
+			"sheet": "media/map/heat-dng.png",
+			"x": 432,
+			"y": 144
+		}
+	},
+	"arid-outer": {
+		"map": {
+			"sheet": "media/entity/style/arid-map.png",
+			"hasDoorMat": false,
+			"teleportField": {
+				"x": 0,
+				"y": 48,
+				"xCount": 3,
+				"zHeight": 0
+			},
+			"doorGlow": {
+				"x": 128,
+				"y": 0,
+				"xCount": 1
+			}
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/arid-puzzle.png"
+		},
+		"puzzle2": {
+			"sheet": "media/entity/style/arid-puzzle-2.png"
+		}
+	},
+	"unknown-interior": {
+		"map": {
+			"sheet": "media/entity/style/unknown-interior-map.png",
+			"hasDoorMat": true,
+			"doorGlow": {
+				"x": 144,
+				"y": 0,
+				"xCount": 1,
+				"sideX": 160,
+				"sideY": 96
+			}
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/unknown-interior-puzzle.png"
+		},
+		"puzzle2": {
+			"sheet": "media/entity/style/unknown-interior-puzzle-2.png"
+		},
+		"pipes": {
+			"sheet": "media/map/arid-interior.png",
+			"x": 176,
+			"y": 368
+		},
+		"pipeSwitch": {
+			"sheet": "media/map/arid-interior.png",
+			"x": 224,
+			"y": 432
+		},
+		"propeller": {
+			"sheet": "media/map/arid-interior.png",
+			"x": 192,
+			"y": 480
+		},
+		"destruct": {
+			"sheet": "media/entity/style/unknown-interior-destruct.png"
+		},
+		"magnet": {
+			"sheet": "media/map/arid-interior.png",
+			"x": 256,
+			"y": 512
+		},
+		"tesla": {
+			"sheet": "media/map/arid-interior.png",
+			"x": 288,
+			"y": 544
+		},
+		"teslaSwitch": {
+			"sheet": "media/map/arid-interior.png",
+			"x": 256,
+			"y": 544
+		},
+		"anticompressor": {
+			"sheet": "media/map/arid-interior.png",
+			"x": 288,
+			"y": 592
+		},
+		"dynPlatformSmall": {
+			"sheet": "media/map/arid-interior.png",
+			"x": 416,
+			"y": 624
+		},
+		"dynPlatformMedium": {
+			"sheet": "media/map/arid-interior.png",
+			"x": 368,
+			"y": 624
+		},
+		"effect": {
+			"sheet": "area.cold-dng"
+		},
+		"rotateBlocker": {
+			"sheet": "media/map/arid-interior.png",
+			"x": 208,
+			"y": 656
+		},
+		"waveSwitch": {
+			"sheet": "media/map/arid-interior.png",
+			"x": 224,
+			"y": 736
+		},
+		"waveblock": {
+			"sheet": "media/map/arid-interior.png",
+			"x": 304,
+			"y": 656
+		},
+		"waterblock": {
+			"sheet": "media/map/arid-interior.png",
+			"x": 0,
+			"y": 784,
+			"puddleX": 144,
+			"puddleY": 720
+		},
+		"bouncer": {
+			"sheet": "media/map/arid-interior.png",
+			"x": 128,
+			"y": 880
+		}
+	},
+	"jungle-outer": {
+		"map": {
+			"sheet": "media/entity/style/jungle-map.png",
+			"hasDoorMat": false,
+			"doorSound": "CLOTH",
+			"teleportField": {
+				"x": 0,
+				"y": 96,
+				"xCount": 3,
+				"zHeight": 0
+			},
+			"doorGlow": {
+				"x": 128,
+				"y": 0,
+				"xCount": 1
+			},
+			"doorVariations": {
+				"blue": {
+					"x": 160,
+					"y": 0,
+					"doorMat": false,
+					"doorGlow": {
+						"x": 288,
+						"y": 0,
+						"xCount": 1
+					}
+				}
+			}
+		},
+		"destruct": {
+			"sheet": "media/entity/style/jungle-destruct.png"
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/shockwave-dng-puzzle.png"
+		},
+		"puzzle2": {
+			"sheet": "media/entity/style/shockwave-dng-puzzle-2.png"
+		},
+		"magnet": {
+			"sheet": "media/map/shockwave-dng.png",
+			"x": 160,
+			"y": 272
+		}
+	},
+	"tree-inner": {
+		"map": {
+			"sheet": "media/entity/style/jungle-map.png",
+			"hasDoorMat": false,
+			"doorSound": "CLOTH",
+			"teleportField": {
+				"x": 0,
+				"y": 96,
+				"xCount": 3,
+				"zHeight": 0
+			},
+			"doorGlow": {
+				"x": 128,
+				"y": 0,
+				"xCount": 1
+			},
+			"doorVariations": {
+				"blue": {
+					"x": 160,
+					"y": 0,
+					"doorMat": false,
+					"doorGlow": {
+						"x": 288,
+						"y": 0,
+						"xCount": 1
+					}
+				}
+			}
+		}
+	},
+	"jungle-city": {
+		"map": {
+			"sheet": "media/entity/style/jungle-city-map.png",
+			"hasDoorMat": false,
+			"doorGlow": {
+				"x": 128,
+				"y": 0,
+				"xCount": 1
+			},
+			"teleportField": {
+				"x": 0,
+				"y": 48,
+				"xCount": 3,
+				"zHeight": 0
+			}
+		},
+		"destruct": {
+			"sheet": "media/entity/style/jungle-destruct.png"
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/jungle-city-puzzle.png"
+		},
+		"magnet": {
+			"sheet": "media/map/shockwave-dng.png",
+			"x": 160,
+			"y": 272
+		},
+		"waveblock": {
+			"sheet": "media/entity/objects/cargoCrateTeleport.png",
+			"x": 0,
+			"y": 0
+		}
+	},
+	"jungle-city-inner": {
+		"map": {
+			"sheet": "media/entity/style/jungle-interior-map.png",
+			"hasDoorMat": true,
+			"stairDoor": {
+				"x": 160,
+				"y": 0
+			},
+			"doorVariations": {
+				"metal": {
+					"x": 160,
+					"y": 48
+				},
+				"elevator": {
+					"x": 160,
+					"y": 96
+				}
+			}
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/jungle-city-puzzle.png"
+		},
+		"magnet": {
+			"sheet": "media/map/shockwave-dng.png",
+			"x": 160,
+			"y": 272
+		},
+		"waveblock": {
+			"sheet": "media/entity/objects/cargoCrateTeleport.png",
+			"x": 0,
+			"y": 0
+		}
+	},
+	"shockwave-dng": {
+		"map": {
+			"sheet": "media/entity/style/shockwave-dng-map.png",
+			"hasDoorMat": true,
+			"doorSound": "STONE",
+			"teleportField": {
+				"x": 0,
+				"y": 160,
+				"xCount": 3,
+				"zHeight": 0
+			},
+			"stairDoor": {
+				"x": 160,
+				"y": 0
+			}
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/shockwave-dng-puzzle.png"
+		},
+		"puzzle2": {
+			"sheet": "media/entity/style/shockwave-dng-puzzle-2.png"
+		},
+		"magnet": {
+			"sheet": "media/map/shockwave-dng.png",
+			"x": 160,
+			"y": 272
+		},
+		"bouncer": {
+			"sheet": "media/map/shockwave-dng-props.png",
+			"x": 0,
+			"y": 0
+		},
+		"waterblock": {
+			"sheet": "media/map/shockwave-dng.png",
+			"x": 384,
+			"y": 304,
+			"puddleX": 352,
+			"puddleY": 448
+		},
+		"waveblock": {
+			"sheet": "media/map/shockwave-dng.png",
+			"x": 96,
+			"y": 480
+		},
+		"tesla": {
+			"sheet": "media/map/shockwave-dng.png",
+			"x": 240,
+			"y": 352
+		},
+		"waveSwitch": {
+			"sheet": "media/map/shockwave-dng.png",
+			"x": 16,
+			"y": 696
+		},
+		"anticompressor": {
+			"sheet": "media/map/shockwave-dng.png",
+			"x": 240,
+			"y": 400
+		},
+		"dynPlatformSmall": {
+			"sheet": "media/map/shockwave-dng.png",
+			"x": 48,
+			"y": 640
+		},
+		"dynPlatformMedium": {
+			"sheet": "media/map/shockwave-dng.png",
+			"x": 0,
+			"y": 640
+		},
+		"lorry": {
+			"sheet": "media/map/shockwave-dng.png",
+			"railX": 176,
+			"railY": 304,
+			"lorryX": 128,
+			"lorryY": 304
+		},
+		"rotateBlocker": {
+			"sheet": "media/map/shockwave-dng.png",
+			"x": 256,
+			"y": 720
+		},
+		"destruct": {
+			"sheet": "media/entity/style/shockwave-dng-destruct.png"
+		}
+	},
+	"lab": {
+		"map": {
+			"sheet": "media/entity/style/lab-map.png",
+			"hasDoorMat": true,
+			"teleportField": {
+				"x": 0,
+				"y": 160,
+				"xCount": 3,
+				"zHeight": 0
+			}
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/lab-interior-puzzle.png"
+		},
+		"puzzle2": {
+			"sheet": "media/entity/style/lab-interior-puzzle-2.png"
+		},
+		"pipes": {
+			"sheet": "media/map/lab.png",
+			"x": 0,
+			"y": 576
+		},
+		"pipeSwitch": {
+			"sheet": "media/map/lab.png",
+			"x": 48,
+			"y": 640
+		},
+		"propeller": {
+			"sheet": "media/map/lab.png",
+			"x": 0,
+			"y": 688
+		},
+		"destruct": {
+			"sheet": "media/entity/style/lab-interior-destruct.png"
+		},
+		"magnet": {
+			"sheet": "media/map/lab.png",
+			"x": 112,
+			"y": 576
+		},
+		"tesla": {
+			"sheet": "media/map/lab.png",
+			"x": 144,
+			"y": 608
+		},
+		"teslaSwitch": {
+			"sheet": "media/map/lab.png",
+			"x": 112,
+			"y": 608
+		},
+		"anticompressor": {
+			"sheet": "media/map/lab.png",
+			"x": 144,
+			"y": 656
+		},
+		"dynPlatformSmall": {
+			"sheet": "media/map/lab.png",
+			"x": 408,
+			"y": 672
+		},
+		"dynPlatformMedium": {
+			"sheet": "media/map/lab.png",
+			"x": 360,
+			"y": 672
+		},
+		"effect": {
+			"sheet": "area.cold-dng"
+		},
+		"rotateBlocker": {
+			"sheet": "media/map/lab.png",
+			"x": 192,
+			"y": 608
+		},
+		"waveSwitch": {
+			"sheet": "media/map/lab.png",
+			"x": 192,
+			"y": 672
+		},
+		"waveblock": {
+			"sheet": "media/map/lab.png",
+			"x": 288,
+			"y": 608
+		},
+		"bouncer": {
+			"sheet": "media/map/lab.png",
+			"x": 320,
+			"y": 576
+		}
+	}
+}

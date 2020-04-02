@@ -1,6 +1,9 @@
 import {Point} from '../../models/cross-code-map';
 import {Globals} from '../globals';
 import {CCMapLayer} from './tilemap/cc-map-layer';
+import {CCMap} from './tilemap/cc-map';
+import mapStyles from '../../../../../webapp/src/assets/map-styles.json';
+import {MapStyles} from '../../models/map-styles';
 import Scene = Phaser.Scene;
 
 export class Helper {
@@ -124,5 +127,14 @@ export class Helper {
 		const tag = document.activeElement.tagName.toLowerCase();
 		
 		return tag === 'input' || tag === 'textarea';
+	}
+	
+	public static getMapStyle(map: CCMap, type: string): MapStyles {
+		const mapStyleName = map.attributes.mapStyle || 'default';
+		const mapStyle = mapStyles[mapStyleName];
+		if (mapStyle && mapStyle[type]) {
+			return mapStyle[type];
+		}
+		return mapStyles.default[type];
 	}
 }
