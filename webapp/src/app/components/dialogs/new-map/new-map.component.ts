@@ -52,7 +52,7 @@ export class NewMapComponent implements OnInit {
 	}
 	
 	close() {
-		this.mapLoader.loadRawMap(this.map, this.map.name);
+		this.mapLoader.loadRawMap(this.map, this.map.name, `data/maps/${this.map.name}.json`);
 		this.ref.close();
 	}
 	
