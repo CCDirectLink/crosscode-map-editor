@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 - Map not rendered properly when resizing the window
+- Fixed map download not being a proper `.json` extension.
 
 ## [0.5.1] - 2019-10-02
 
