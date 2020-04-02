@@ -1,6 +1,5 @@
-import {CCEntity, EntityAttributes, ScaleSettings} from '../cc-entity';
+import {CCEntity, EntityAttributes, Fix, ScaleSettings} from '../cc-entity';
 import {Helper} from '../../helper';
-import {Fix} from '../../../../models/props';
 import {Point3} from '../../../../models/cross-code-map';
 
 interface JsonTemplate {
@@ -32,6 +31,7 @@ export interface AnimSheet {
 	height: number;
 	offX?: number;
 	offY?: number;
+	xCount?: number;
 }
 
 export interface Anims {
@@ -47,6 +47,7 @@ export interface Anims {
 		framesAlpha?: number[];
 		SUB?: SubJsonInstance | JsonTemplate[]
 	}[];
+	offset?: Point3;
 	frames: any[];
 	framesGfxOffset: any[];
 	namedSheets: {
