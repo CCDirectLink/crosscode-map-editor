@@ -1,4 +1,4 @@
-<div class="filter" fxLayout="column">
+<div class="filter" fxLayout="column" *ngIf="!entity">
 	<mat-form-field>
 		<input #filterInput matInput type="text" placeholder="Filter" [(ngModel)]="filter" (ngModelChange)="updateFilter()"/>
 	</mat-form-field>
