@@ -31,7 +31,10 @@ export class EntitiesComponent implements OnInit {
 			this.entity = e;
 			this.loadSettings(e);
 		});
-		loader.tileMap.subscribe(map => this.map = map);
+		loader.tileMap.subscribe(map => {
+			this.map = map;
+			this.filter = '';
+		});
 	}
 	
 	ngOnInit() {
