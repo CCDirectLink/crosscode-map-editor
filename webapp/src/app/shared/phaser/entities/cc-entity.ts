@@ -577,8 +577,8 @@ export abstract class CCEntity extends BaseObject {
 		const attributes = this.getAttributes();
 
 		for (const name of Object.keys(attributes)) {
-			const toLowerCase = (this.details.settings[name] || '').toLowerCase;
-			if (toLowerCase && (this.details.settings[name] || '').toLowerCase().includes(lower)) {
+			const value = this.details.settings[name] || '';
+			if (typeof value === 'string' && value.toLowerCase().includes(lower)) {
 				return true;
 			}
 		}
