@@ -6,6 +6,7 @@ import {Vec2} from '../vec2';
 
 import {Globals} from '../../globals';
 import {BaseObject} from '../base-object';
+import { Subscription } from 'rxjs';
 
 export interface ScaleSettings {
 	scalableX: boolean;
@@ -39,6 +40,8 @@ export abstract class CCEntity extends BaseObject {
 	
 	private text?: Phaser.GameObjects.Text;
 	private images: Phaser.GameObjects.Image[] = [];
+
+	private readonly filterSubscription: Subscription;
 	
 	
 	// input (is handled mostly by entity manager)
@@ -95,7 +98,7 @@ export abstract class CCEntity extends BaseObject {
 			type: typeName
 		};
 		
-		Globals.globalEventsService.filterEntity.subscribe(filter => this.setVisible(this.filter(filter)));
+		this.filterSubscription = Globals.globalEventsService.filterEntity.subscribe(filter => this.setVisible(this.filter(filter)));
 	}
 	
 	
@@ -352,6 +355,7 @@ export abstract class CCEntity extends BaseObject {
 	destroy() {
 		super.destroy();
 		this.container.destroy();
+		this.filterSubscription.unsubscribe();
 		if (this.text) {
 			this.text.destroy();
 		}
