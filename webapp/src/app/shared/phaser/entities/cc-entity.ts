@@ -6,7 +6,7 @@ import {Vec2} from '../vec2';
 
 import {Globals} from '../../globals';
 import {BaseObject} from '../base-object';
-import { Subscription } from 'rxjs';
+import {Subscription} from 'rxjs';
 
 export interface ScaleSettings {
 	scalableX: boolean;
@@ -40,7 +40,7 @@ export abstract class CCEntity extends BaseObject {
 	
 	private text?: Phaser.GameObjects.Text;
 	private images: Phaser.GameObjects.Image[] = [];
-
+	
 	private readonly filterSubscription: Subscription;
 	
 	
@@ -575,29 +575,28 @@ export abstract class CCEntity extends BaseObject {
 		}
 		
 	}
-
+	
 	protected filter(filter: string): boolean {
 		const lower = filter.toLocaleLowerCase();
 		const attributes = this.getAttributes();
-
+		
 		for (const name of Object.keys(attributes)) {
 			const value = this.details.settings[name] || '';
 			if (typeof value === 'string' && value.toLowerCase().includes(lower)) {
 				return true;
 			}
 		}
-
+		
 		return this.details.type.toLowerCase().includes(lower)
 			|| (this.details.settings.name || '').toLowerCase().includes(lower);
 	}
-
+	
 	private setVisible(visible: boolean) {
+		this.setActive(visible);
 		if (visible) {
 			this.container.alpha = 1;
-			this.activate();
 		} else {
 			this.container.alpha = 0.2;
-			this.deactivate();
 		}
 	}
 }

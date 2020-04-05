@@ -161,9 +161,7 @@ export class EntityManager extends BaseObject {
 							this.selectEntity();
 						}
 						entities.forEach(entity => {
-							if (entity.active) {
-								this.selectEntity(entity, true);
-							}
+							this.selectEntity(entity, true);
 						});
 					}
 					
