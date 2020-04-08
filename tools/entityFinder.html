@@ -1,0 +1,191 @@
+<html>
+<style>
+	table {
+		font-family: arial, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	
+	td, th {
+		border: 1px solid #dddddd;
+		text-align: left;
+		padding: 8px;
+	}
+	
+	tr {
+		background-color: rgba(0, 0, 0, 0.1);
+	}
+	
+	tr:first-child {
+		background-color: rgba(0, 0, 0, 0.34);
+	}
+	
+	body {
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		background-color: #def;
+		font-family: Roboto, sans-serif;
+		color: white;
+	}
+	
+	.container1 {
+		overflow: hidden;
+		flex: 0 1 auto;
+		padding: 20px;
+		background-color: #e6594c;
+	}
+	
+	.container2 {
+		flex: 1 1 0;
+		padding: 20px;
+		background-color: #419932;
+	}
+	
+	#listing {
+		flex: 1 1 0;
+		max-height: 300px;
+		min-height: 0;
+		overflow-y: auto;
+	}
+</style>
+<body>
+<div class="container1">
+	EntityType: <input type="text" id="entity" value="Prop"><br><br>
+	<input type="file" webkitdirectory="" directory="" onchange="fileInputChange()" id="fileinput"/>
+	<button onclick="generate()">Generate!</button>
+	<div class="listing">
+		<ul id="listing"></ul>
+	</div>
+</div>
+
+<div class="container2">
+	<div id="tableOutput"></div>
+</div>
+</body>
+
+<script>
+	let out;
+	
+	function showEntity(out) {
+		let output = document.getElementById("output");
+		while (output.firstChild) {
+			output.removeChild(output.firstChild);
+		}
+		console.log(out);
+		Object.keys(out).forEach(key => {
+			let item = document.createElement("li");
+			item.innerHTML = key + ': ' + out[key];
+			output.appendChild(item);
+		});
+	}
+	
+	function createTable(out) {
+		console.log(out);
+		let table = document.createElement('table');
+		
+		const header = document.createElement('tr');
+		let count = 0;
+		let colCount = 0;
+		
+		Object.entries(out).forEach(([key, value]) => {
+			if (value.size > count) {
+				count = value.size;
+			}
+			colCount++;
+			let cell = document.createElement('th');
+			cell.appendChild(document.createTextNode(key));
+			header.appendChild(cell);
+		});
+		
+		table.appendChild(header);
+		
+		for (let i = 0; i < count; i++) {
+			const row = document.createElement('tr');
+			for (let j = 0; j < colCount; j++) {
+				let val = Object.values(out)[j];
+				if (!val) {
+					continue;
+				}
+				val = [...val];
+				let text = val[i] === undefined ? '' : val[i] + '';
+				text = text.substr(0, 100);
+				if ((val[i] + '').length > 100) {
+					text += '...';
+				}
+				let cell = document.createElement('td');
+				cell.appendChild(document.createTextNode(text));
+				row.appendChild(cell);
+			}
+			table.appendChild(row);
+		}
+		
+		const output = document.getElementById('tableOutput');
+		while (output.firstChild) {
+			output.removeChild(output.firstChild);
+		}
+		output.appendChild(table);
+	}
+	
+	function generate() {
+		out = {};
+		out['file'] = new Set();
+		let input = document.getElementById("fileinput").files;
+		let entity = document.getElementById("entity").value;
+		let parsed = 0;
+		const reader = new FileReader();
+		reader.onload = evt => {
+			readFile(evt.target.result, entity);
+			parsed++;
+			if (parsed % 10 === 0) {
+				console.log(parsed);
+			}
+			if (parsed === input.length) {
+				// showEntity(out);
+				createTable(out);
+			} else {
+				reader.readAsText(input[parsed], 'UTF-8');
+			}
+		};
+		reader.onerror = err => console.error('err', err);
+		reader.readAsText(input[parsed], 'UTF-8');
+	}
+	
+	function fileInputChange() {
+		let output = document.getElementById("listing");
+		while (output.firstChild) {
+			output.removeChild(output.firstChild);
+		}
+		
+		let files = event.target.files;
+		
+		for (let i = 0; i < files.length; i++) {
+			let item = document.createElement("li");
+			item.innerHTML = files[i].webkitRelativePath;
+			output.appendChild(item);
+		}
+	}
+	
+	function readFile(file, entity) {
+		file = JSON.parse(file);
+		const entities = file.entities.filter(e => e.type === entity);
+
+
+		entities.forEach(e => {
+			if (!e.settings)
+				return
+			Object.keys(e.settings).forEach(key => {
+				if (!out[key]) {
+					out[key] = new Set();
+				}
+				out['file'].add(file.name)
+				out[key].add(JSON.stringify(e.settings[key], null, 2));
+			})
+		})
+
+
+	}
+</script>
+
+</html>

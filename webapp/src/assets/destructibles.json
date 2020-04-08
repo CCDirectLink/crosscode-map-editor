@@ -5,20 +5,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.stones",
       "name": "burstValor"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/destructible-stones.png",
@@ -60,20 +60,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.stones",
       "name": "burstSpace"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/destructible-stones.png",
@@ -115,20 +115,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.stones",
       "name": "burstTruth"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/destructible-stones.png",
@@ -170,20 +170,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.stones",
       "name": "burstSpirit"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/destructible-stones.png",
@@ -225,20 +225,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.stones",
       "name": "burstAges"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/destructible-stones.png",
@@ -280,20 +280,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.stones",
       "name": "burst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/destructible-stones.png",
@@ -335,20 +335,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.autumn",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/autumn-destructibles.png",
@@ -390,20 +390,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.autumn",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/autumn-destructibles.png",
@@ -445,20 +445,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.autumn",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/autumn-destructibles.png",
@@ -500,20 +500,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.autumn",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/autumn-destructibles.png",
@@ -555,20 +555,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.autumn",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/autumn-destructibles.png",
@@ -610,20 +610,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.autumn",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/autumn-destructibles.png",
@@ -665,20 +665,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.autumn",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/autumn-destructibles.png",
@@ -720,20 +720,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.autumn",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/autumn-destructibles.png",
@@ -775,20 +775,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.autumn",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/autumn-destructibles.png",
@@ -831,20 +831,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.autumn",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/autumn-destructibles.png",
@@ -887,20 +887,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.autumn",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/autumn-destructibles.png",
@@ -943,20 +943,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.autumn",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/autumn-destructibles.png",
@@ -999,20 +999,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.autumn",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/entity/objects/autumn-destructibles.png",
@@ -1055,20 +1055,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.bergen",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/bergen-trail.png",
@@ -1111,20 +1111,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.bergen",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/bergen-trail.png",
@@ -1167,20 +1167,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.bergen",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/bergen-trail.png",
@@ -1223,20 +1223,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.bergen",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/bergen-trail.png",
@@ -1279,20 +1279,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.bergen",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/bergen-trail.png",
@@ -1335,20 +1335,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.bergen",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/bergen-trail.png",
@@ -1391,20 +1391,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.bergen",
       "name": "plantBurstSnow"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/bergen-trail.png",
@@ -1447,20 +1447,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.bergen",
       "name": "plantBurstSnow"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/bergen-trail.png",
@@ -1503,20 +1503,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.bergen",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/bergen-trail.png",
@@ -1559,20 +1559,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.bergen",
       "name": "plantBurstSnow"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/bergen-trail.png",
@@ -1615,20 +1615,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.bergen",
       "name": "plantBurstSnow"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/bergen-trail.png",
@@ -1671,20 +1671,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.bergen",
       "name": "plantBurstSnow"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/bergen-trail.png",
@@ -1727,20 +1727,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 8
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.bergen",
       "name": "burstSnow"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/bergen-trail.png",
@@ -1783,20 +1783,20 @@
       "y": 10,
       "z": 18
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 9
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.bergen",
       "name": "vase-break"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/bergen-trail.png",
@@ -1839,20 +1839,20 @@
       "y": 16,
       "z": 16
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 9
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.cold-dng",
       "name": "eggs"
     },
-    "Aa": {
+    "anims": {
       "wallY": 0.4,
       "sheet": {
         "src": "media/map/cold-dng.png",
@@ -1896,20 +1896,20 @@
       "y": 16,
       "z": 16
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 9
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.cold-dng",
       "name": "eggs"
     },
-    "Aa": {
+    "anims": {
       "wallY": 0.4,
       "sheet": {
         "src": "media/map/cold-dng.png",
@@ -1953,20 +1953,20 @@
       "y": 16,
       "z": 16
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 9
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.cold-dng",
       "name": "eggs"
     },
-    "Aa": {
+    "anims": {
       "wallY": 0.4,
       "sheet": {
         "src": "media/map/cold-dng.png",
@@ -2010,20 +2010,20 @@
       "y": 16,
       "z": 16
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 9
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.cold-dng",
       "name": "eggs"
     },
-    "Aa": {
+    "anims": {
       "wallY": 0.4,
       "sheet": {
         "src": "media/map/cold-dng.png",
@@ -2067,20 +2067,20 @@
       "y": 24,
       "z": 24
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 9
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.cold-dng",
       "name": "eggs"
     },
-    "Aa": {
+    "anims": {
       "wallY": 0.4,
       "sheet": {
         "src": "media/map/cold-dng.png",
@@ -2124,20 +2124,20 @@
       "y": 24,
       "z": 24
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 9
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.cold-dng",
       "name": "eggs"
     },
-    "Aa": {
+    "anims": {
       "wallY": 0.4,
       "sheet": {
         "src": "media/map/cold-dng.png",
@@ -2181,20 +2181,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-area.png",
@@ -2237,20 +2237,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-area.png",
@@ -2293,20 +2293,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-area.png",
@@ -2349,20 +2349,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-props.png",
@@ -2405,20 +2405,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-props.png",
@@ -2461,20 +2461,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-area.png",
@@ -2517,20 +2517,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-area.png",
@@ -2573,20 +2573,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-area.png",
@@ -2629,20 +2629,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "plantBurstRed"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-area.png",
@@ -2685,20 +2685,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "plantBurstRed"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-area.png",
@@ -2741,20 +2741,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "plantBurstRed"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-area.png",
@@ -2797,20 +2797,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "boneBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-area.png",
@@ -2853,20 +2853,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "boneBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-area.png",
@@ -2909,20 +2909,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "boneBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-area.png",
@@ -2965,20 +2965,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "termiteDust"
     },
-    "Aa": {
+    "anims": {
       "wallY": 1,
       "shapeType": "Y_FLAT",
       "sheet": {
@@ -3022,20 +3022,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "termiteDust"
     },
-    "Aa": {
+    "anims": {
       "wallY": 1,
       "shapeType": "Y_FLAT",
       "sheet": {
@@ -3079,20 +3079,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "termiteDust"
     },
-    "Aa": {
+    "anims": {
       "wallY": 1,
       "shapeType": "Y_FLAT",
       "sheet": {
@@ -3136,20 +3136,20 @@
       "y": 12,
       "z": 20
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 9
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.heat",
       "name": "vase-break"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/heat-area.png",
@@ -3192,20 +3192,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "plantBurstViolet"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -3248,20 +3248,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "plantBurstViolet"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -3304,20 +3304,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "plantBurstViolet"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -3360,21 +3360,21 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "honeyBurst"
     },
-    "YA": 0,
-    "Aa": {
+    "gravity": 0,
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -3417,21 +3417,21 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "honeyBurst"
     },
-    "YA": 0,
-    "Aa": {
+    "gravity": 0,
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -3474,21 +3474,21 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "honeyBurst"
     },
-    "YA": 0,
-    "Aa": {
+    "gravity": 0,
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -3532,20 +3532,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "plantBurstWater"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -3588,20 +3588,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "plantBurstWater"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -3644,20 +3644,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "plantBurstWater"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -3700,20 +3700,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "plantBurstWater"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -3756,20 +3756,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "plantBurstWater"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -3812,20 +3812,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "shroomBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -3868,20 +3868,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "shroomBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -3924,20 +3924,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "shroomBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -3980,20 +3980,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "plantBurstViolet"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -4036,20 +4036,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "plantBurstViolet"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -4092,20 +4092,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "plantBurstViolet"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -4148,20 +4148,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.forest",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/forest.png",
@@ -4205,20 +4205,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.forest",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/forest.png",
@@ -4262,20 +4262,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.forest",
       "name": "plantBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/forest.png",
@@ -4319,20 +4319,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.forest",
       "name": "bambooBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/forest.png",
@@ -4376,20 +4376,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.forest",
       "name": "bambooBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/forest.png",
@@ -4433,20 +4433,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 12
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.forest",
       "name": "bambooBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/forest.png",
@@ -4490,20 +4490,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 8
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.cave-cobalt",
       "name": "cobaltBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/cave-cobalt.png",
@@ -4547,20 +4547,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 8
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.cave-cobalt",
       "name": "cobaltBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/cave-cobalt.png",
@@ -4604,20 +4604,20 @@
       "y": 16,
       "z": 22
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 8
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.cave-cobalt",
       "name": "cobaltBurst"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/cave-cobalt.png",
@@ -4661,20 +4661,20 @@
       "y": 16,
       "z": 16
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 8
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "trashBag"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -4718,20 +4718,20 @@
       "y": 16,
       "z": 16
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 8
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "trashBag"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -4775,20 +4775,20 @@
       "y": 16,
       "z": 24
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 8
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "trashBag"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",
@@ -4832,20 +4832,20 @@
       "y": 16,
       "z": 24
     },
-    "kd": {
+    "effectOffset": {
       "x": 0,
       "y": 0,
       "z": 8
     },
-    "Ob": {
+    "boom": {
       "sheet": "puzzle.destructible",
       "name": "small"
     },
-    "Xb": {
+    "debris": {
       "sheet": "area.jungle",
       "name": "trashBag"
     },
-    "Aa": {
+    "anims": {
       "shapeType": "Y_FLAT",
       "sheet": {
         "src": "media/map/jungle-props.png",

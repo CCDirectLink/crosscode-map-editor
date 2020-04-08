@@ -31,6 +31,25 @@ export interface AttributeValue {
 	[key: string]: any;
 }
 
+export interface Fix {
+	gfx: any;
+	x: number;
+	y: number;
+	w: number;
+	h: number;
+	scaleX?: number;
+	scaleY?: number;
+	renderHeight?: number;
+	renderMode?: string;
+	offsetX?: number;
+	offsetY?: number;
+	flipX?: boolean;
+	flipY?: boolean;
+	tint?: number;
+	alpha?: number;
+}
+
+
 export abstract class CCEntity extends BaseObject {
 	
 	private map: CCMap;
@@ -60,23 +79,7 @@ export abstract class CCEntity extends BaseObject {
 		collType: string;
 		baseSize: Point3;
 		sheets: {
-			fix: {
-				gfx: any;
-				x: number;
-				y: number;
-				w: number;
-				h: number;
-				scaleX?: number;
-				scaleY?: number;
-				renderHeight?: number;
-				renderMode?: string;
-				offsetX?: number;
-				offsetY?: number;
-				flipX?: boolean;
-				flipY?: boolean;
-				tint?: number;
-				alpha?: number;
-			}[],
+			fix: Fix[],
 			offset?: Point;
 			renderMode?: string;
 			flipX?: boolean;

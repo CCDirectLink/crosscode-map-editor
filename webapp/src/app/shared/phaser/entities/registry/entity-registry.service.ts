@@ -6,6 +6,7 @@ import {ItemDestruct} from './item-destruct';
 import {NPC} from './npc';
 import {EventTrigger} from './event-trigger';
 import {Injectable} from '@angular/core';
+import { Destructible } from './destructible';
 
 @Injectable()
 export class EntityRegistryService {
@@ -17,6 +18,7 @@ export class EntityRegistryService {
 		this.register('Prop', Prop);
 		this.register('ScalableProp', ScalableProp);
 		this.register('ItemDestruct', ItemDestruct);
+		this.register('Destructible', Destructible);
 		this.register('NPC', NPC);
 		this.register('EventTrigger', EventTrigger);
 	}
