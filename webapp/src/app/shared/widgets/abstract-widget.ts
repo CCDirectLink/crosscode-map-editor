@@ -32,6 +32,20 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 			this.updateType();
 		}
 	}
+
+	setSubSetting(keys: string[], value: any, updateType = true, parse = false) {
+		if (parse) {
+			value = JSON.parse(value);
+		}
+		let node = this.settings;
+		for (let i = 0; i < keys.length - 1; i++) {
+			node = node[keys[i]];
+		}
+		node[keys[keys.length - 1]] = value;
+		if (updateType) {
+			this.updateType();
+		}
+	}
 	
 	updateSettings() {
 		if (this.entity) {

@@ -27,6 +27,7 @@ import {CharacterNamesService} from './character-widget/character-names.service'
 import {PersonExpressionWidgetComponent} from './person-expression-widget/person-expression-widget.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {AddEventService} from './event-widget/event-editor/add/add-event.service';
+import { EnemyTypeWidgetComponent } from './enemy-type-widget/enemy-type-widget.component';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -41,6 +42,7 @@ const COMPONENTS = [
 	EventEditorComponent,
 	CharacterWidgetComponent,
 	PersonExpressionWidgetComponent,
+	EnemyTypeWidgetComponent,
 ];
 
 const PRIVATE_COMPONENTS = [
