@@ -1,8 +1,11 @@
 export enum BasePath {
-	MAPS = 'data/maps/'
+	MAPS = 'data/maps/',
+	ENEMIES = 'data/enemies/',
+	ANIMATIONS = 'data/animations/'
 }
 
 export enum FileExtension {
+	NONE = '',
 	PNG = '.png',
 	JSON = '.json',
 	OGG = '.ogg'
