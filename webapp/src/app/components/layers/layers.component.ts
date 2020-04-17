@@ -125,12 +125,15 @@ export class LayersComponent implements OnInit {
 		if (!this.selectedLayer) {
 			throw new Error('no layer selected');
 		}
-		this.selectedLayer.updateTileset(name);
+		this.selectedLayer.updateTileset(this.getTilesetPath(name));
 		this.mapLoader.selectedLayer.next(this.selectedLayer);
 	}
 
 	getTilesetName(path: string): string {
 		return path.substring('media/map/'.length, path.length - '.png'.length);
+	}
+	getTilesetPath(name: string): string {
+		return 'media/map/' + name.replace(/\./g, '/') + '.png'
 	}
 
 	private async loadTilesets() {
@@ -139,7 +142,7 @@ export class LayersComponent implements OnInit {
 			return;
 		}
 
-		LayersComponent.tilesets = await this.http.getAllTilesets().toPromise();
+		LayersComponent.tilesets = (await this.http.getAllTilesets().toPromise()).map(t => this.getTilesetName(t));
 		this.tilesets = LayersComponent.tilesets;
 	}
 	

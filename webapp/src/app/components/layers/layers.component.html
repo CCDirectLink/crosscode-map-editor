@@ -70,10 +70,10 @@
 				<mat-list-item fxLayout="column">
 					<span class="label">Tileset: </span>
 					<mat-form-field class="list-item" floatLabel="never">
-						<!--<input matInput [disabled]="!selectedLayer" [ngModel]="selectedLayer?.details.tilesetName" (input)="updateTilesetName($event.target.value)">-->
-						<mat-select fxFlex [disabled]="!selectedLayer" [ngModel]="selectedLayer?.details.tilesetName" (selectionChange)="updateTilesetName($event.value)">
-							<mat-option *ngFor="let tileset of tilesets" [value]="tileset">{{getTilesetName(tileset)}}</mat-option>
-						</mat-select>
+						<input matInput [disabled]="!selectedLayer" [ngModel]="getTilesetName(selectedLayer?.details.tilesetName)" (input)="updateTilesetName($event.target.value)" [matAutocomplete]="auto">
+						<mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+							<mat-option *ngFor="let tileset of tilesets" [value]="tileset">{{tileset}}</mat-option>
+						</mat-autocomplete>
 					</mat-form-field>
 				</mat-list-item>
 				
