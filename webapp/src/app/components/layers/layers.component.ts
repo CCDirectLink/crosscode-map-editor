@@ -133,7 +133,7 @@ export class LayersComponent implements OnInit {
 		return path.substring('media/map/'.length, path.length - '.png'.length);
 	}
 	getTilesetPath(name: string): string {
-		return 'media/map/' + name.replace(/\./g, '/') + '.png'
+		return 'media/map/' + name.replace(/\./g, '/') + '.png';
 	}
 
 	private async loadTilesets() {
