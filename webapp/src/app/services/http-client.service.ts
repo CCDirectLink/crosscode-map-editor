@@ -33,7 +33,19 @@ export class HttpClientService {
 	}
 	
 	getAssetsFile<T>(path: string): Observable<T> {
-		return this.http.get<T>(Globals.URL + path);
+		if (!Globals.isElectron) {
+			return this.http.post<T>(Globals.URL + 'api/get', {path});
+		}
+		const cc = this.electron.getAssetsPath();
+		return this.toObservable(api.get<T>(cc, path));
+	}
+
+	resolveFile(path: string): Observable<string> {
+		if (!Globals.isElectron) {
+			return this.http.post<string>(Globals.URL + 'api/resolve', {path});
+		}
+		const cc = this.electron.getAssetsPath();
+		return this.toObservable(api.resolve(cc, path));
 	}
 	
 	saveFile(path: string, content: any) {
