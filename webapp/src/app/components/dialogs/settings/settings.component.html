@@ -19,6 +19,15 @@
 					</button>
 				</div>
 			</form>
+			<div fxLayout="row" class="option-row">
+				<mat-form-field fxFlex="auto">
+					<mat-label>Mod</mat-label>
+					<mat-select [(value)]="mod">
+						<mat-option>None</mat-option>
+						<mat-option *ngFor="let mod of mods" [value]="mod">{{mod}}</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
 		</div>
 	</ng-container>
 	<ng-container ngProjectAs="actions">

@@ -3,6 +3,7 @@ import {OverlayRefControl} from '../../../shared/overlay/overlay-ref-control';
 import {ElectronService} from '../../../services/electron.service';
 import {FormControl} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
+import { HttpClientService } from '../../../services/http-client.service';
 
 @Component({
 	selector: 'app-settings',
@@ -14,12 +15,17 @@ export class SettingsComponent implements OnInit {
 	folderFormControl = new FormControl();
 	icon = 'help_outline';
 	iconCss = 'icon-undefined';
+	mods: string[] = [];
+	mod = '';
 	
 	constructor(
 		private ref: OverlayRefControl,
 		private electron: ElectronService,
-		private snackBar: MatSnackBar
+		private snackBar: MatSnackBar,
+		http: HttpClientService
 	) {
+		http.getMods().subscribe(mods => this.mods = mods);
+		this.mod = this.electron.getSelectedMod();
 	}
 	
 	ngOnInit() {
@@ -65,6 +71,7 @@ export class SettingsComponent implements OnInit {
 	
 	save() {
 		this.electron.saveAssetsPath(this.folderFormControl.value);
+		this.electron.saveModSelect(this.mod);
 		this.close();
 		const ref = this.snackBar.open('Changing the path requires to restart the editor', 'Restart', {
 			duration: 6000
