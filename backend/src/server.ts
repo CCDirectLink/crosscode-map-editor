@@ -26,6 +26,12 @@ app.get('/api/allFiles', async (_, res) => res.json(await api.getAllFiles(config
 app.get('/api/allTilesets', async (_, res) => res.json(await api.getAllTilesets(config.pathToCrosscode)));
 app.get('/api/allMaps', async (_, res) => res.json(await api.getAllMaps(config.pathToCrosscode)));
 app.get('/api/allMods', async (_, res) => res.json(await api.getAllMods(config.pathToCrosscode)));
+app.post('/api/get', async (req, res) => {
+	res.json(await api.get(config.pathToCrosscode, req.body.path));
+});
+app.post('/api/resolve', async (req, res) => {
+	res.json(await api.resolve(config.pathToCrosscode, req.body.path));
+});
 app.post('/api/saveFile', async (req, res) => {
 	try {
 		const msg = await api.saveFile(config.pathToCrosscode, req.body);
@@ -47,6 +53,8 @@ app.use(errorHandler());
 app.listen(app.get('port'), () => {
 	console.log(('  App is running at http://localhost:%d in %s mode'), app.get('port'), app.get('env'));
 	console.log('  Press CTRL-C to stop\n');
+
+	api.selectedMod(config.pathToCrosscode, config.mod);
 });
 
 module.exports = app;
