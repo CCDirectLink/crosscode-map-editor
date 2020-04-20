@@ -2,14 +2,17 @@ import {Injectable} from '@angular/core';
 import {Globals} from '../shared/globals';
 import {Dialog, Remote} from 'electron';
 import * as nodeFs from 'fs';
+import { api } from 'cc-map-editor-common';
 
 @Injectable()
 export class ElectronService {
 	
 	private readonly fs?: typeof nodeFs;
 	
-	private storageName = 'assetsPath';
-	private assetsPath = '';
+	private static readonly storageName = 'assetsPath';
+	private static readonly modName = 'selectedMod';
+	private static assetsPath = '';
+	private static selectedMod = '';
 	private readonly remote?: Remote;
 	
 	constructor() {
@@ -22,8 +25,17 @@ export class ElectronService {
 		this.remote = remote!;
 		this.fs = remote.require('fs');
 		
-		this.assetsPath = localStorage.getItem(this.storageName) || '';
-		this.updateURL();
+	}
+
+	public static async init() {
+		if (!Globals.isElectron) {
+			return;
+		}
+
+		ElectronService.assetsPath = localStorage.getItem(ElectronService.storageName) || '';
+		ElectronService.updateURL();
+		ElectronService.selectedMod = localStorage.getItem(this.modName) || '';
+		await ElectronService.updateMod();
 	}
 	
 	private static normalizePath(p: string) {
@@ -36,8 +48,12 @@ export class ElectronService {
 		return p;
 	}
 	
-	private updateURL() {
-		Globals.URL = 'file:///' + this.assetsPath;
+	private static updateURL() {
+		Globals.URL = 'file:///' + ElectronService.assetsPath;
+	}
+
+	private static async updateMod() {
+		await api.selectedMod(ElectronService.assetsPath, ElectronService.selectedMod);
 	}
 	
 	public relaunch() {
@@ -77,12 +93,22 @@ export class ElectronService {
 	
 	public saveAssetsPath(path: string) {
 		const normalized = ElectronService.normalizePath(path);
-		this.assetsPath = normalized;
-		localStorage.setItem(this.storageName, normalized);
-		this.updateURL();
+		ElectronService.assetsPath = normalized;
+		localStorage.setItem(ElectronService.storageName, normalized);
+		ElectronService.updateURL();
+	}
+
+	public saveModSelect(mod: string) {
+		localStorage.setItem(ElectronService.modName, mod);
+		ElectronService.selectedMod = mod;
+		ElectronService.updateMod();
 	}
 	
 	public getAssetsPath() {
-		return this.assetsPath;
+		return ElectronService.assetsPath;
+	}
+
+	public getSelectedMod() {
+		return ElectronService.selectedMod;
 	}
 }

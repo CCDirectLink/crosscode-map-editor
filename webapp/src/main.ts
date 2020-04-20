@@ -6,6 +6,7 @@ import {environment} from './environments/environment';
 import {Globals} from './app/shared/globals';
 
 import 'hammerjs';
+import { ElectronService } from './app/services/electron.service';
 
 if (environment.production) {
 	enableProdMode();
@@ -17,4 +18,7 @@ if (typeof process !== 'undefined' && typeof process.versions === 'object' && !!
 }
 console.log('is electron: ', Globals.isElectron);
 
-platformBrowserDynamic().bootstrapModule(AppModule);
+(async () => {
+	await ElectronService.init();
+	platformBrowserDynamic().bootstrapModule(AppModule);
+})()
