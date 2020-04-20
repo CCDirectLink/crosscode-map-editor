@@ -17,27 +17,19 @@ export class HttpClientService {
 	}
 	
 	getAllFiles(): Observable<FileInfos> {
-		if (!Globals.isElectron) {
-			return this.http.get<FileInfos>(Globals.URL + 'api/allFiles');
-		}
-		const path = this.electron.getAssetsPath();
-		return this.toObservable(api.getAllFiles(path) as Promise<FileInfos>);
+		return this.request('api/allFiles', api.getAllFiles);
 	}
 	
 	getAllTilesets(): Observable<string[]> {
-		if (!Globals.isElectron) {
-			return this.http.get<string[]>(Globals.URL + 'api/allTilesets');
-		}
-		const path = this.electron.getAssetsPath();
-		return this.toObservable(api.getAllTilesets(path));
+		return this.request('api/allTilesets', api.getAllTilesets);
 	}
 	
 	getMaps(): Observable<string[]> {
-		if (!Globals.isElectron) {
-			return this.http.get<string[]>(Globals.URL + 'api/allMaps');
-		}
-		const path = this.electron.getAssetsPath();
-		return this.toObservable(api.getAllMaps(path));
+		return this.request('api/allMaps', api.getAllMaps);
+	}
+
+	getMods(): Observable<string[]> {
+		return this.request('api/allMods', api.getAllMods);
 	}
 	
 	getAssetsFile<T>(path: string): Observable<T> {
@@ -51,6 +43,19 @@ export class HttpClientService {
 		}
 		
 		return this.toObservable(api.saveFile(this.electron.getAssetsPath(), file));
+	}
+
+	/**
+	 * Request a resource either from backend when run in the browser or directly from backend when run with Electron.
+	 * @param url 		URL of the backend endpoint relative to Globals.URL
+	 * @param common 	Direct call to common
+	 */
+	private request<T>(url: string, common: (path: string) => Promise<T>): Observable<T> {
+		if (!Globals.isElectron) {
+			return this.http.get<T>(Globals.URL + url);
+		}
+		const path = this.electron.getAssetsPath();
+		return this.toObservable(common(path));
 	}
 	
 	private toObservable<T>(promise: Promise<T>): Observable<T> {
