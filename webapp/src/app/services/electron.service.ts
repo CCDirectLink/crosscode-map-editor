@@ -6,13 +6,12 @@ import { api } from 'cc-map-editor-common';
 
 @Injectable()
 export class ElectronService {
-	
-	private readonly fs?: typeof nodeFs;
-	
 	private static readonly storageName = 'assetsPath';
 	private static readonly modName = 'selectedMod';
 	private static assetsPath = '';
 	private static selectedMod = '';
+	
+	private readonly fs?: typeof nodeFs;
 	private readonly remote?: Remote;
 	
 	constructor() {

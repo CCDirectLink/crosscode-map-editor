@@ -21,4 +21,4 @@ console.log('is electron: ', Globals.isElectron);
 (async () => {
 	await ElectronService.init();
 	platformBrowserDynamic().bootstrapModule(AppModule);
-})()
+})();

@@ -100,8 +100,8 @@ function selectMod(name: string, packages: Map<string, {folderName: string, ccmo
 		return;
 	}
 
-	for (const name of Object.keys(pkg.ccmodDependencies)) {
-		selectMod(name, packages, result);
+	for (const depName of Object.keys(pkg.ccmodDependencies)) {
+		selectMod(depName, packages, result);
 	}
 }
 
