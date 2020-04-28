@@ -10,6 +10,7 @@ export class GlobalEventsService {
 	currentView = new BehaviorSubject<EditorView | undefined>(undefined);
 	selectedEntity = new BehaviorSubject<CCEntity | undefined>(undefined);
 	generateNewEntity = new Subject<MapEntity>();
+	filterEntity = new Subject<string>();
 	loadComplete = new Subject<void>();
 	generateHeights = new Subject<boolean>();
 	offsetMap = new Subject<Point>();

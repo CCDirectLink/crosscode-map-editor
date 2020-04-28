@@ -17,11 +17,12 @@ export class EntitiesComponent implements OnInit {
 	@ViewChild(HostDirective, {static: false}) appHost?: HostDirective;
 	entity?: CCEntity;
 	map?: CCMap;
+	filter = '';
 	
 	constructor(
 		private componentFactoryResolver: ComponentFactoryResolver,
 		private widgetRegistry: WidgetRegistryService,
-		events: GlobalEventsService,
+		private events: GlobalEventsService,
 		loader: MapLoaderService
 	) {
 		events.selectedEntity.subscribe(e => {
@@ -30,7 +31,10 @@ export class EntitiesComponent implements OnInit {
 			this.entity = e;
 			this.loadSettings(e);
 		});
-		loader.tileMap.subscribe(map => this.map = map);
+		loader.tileMap.subscribe(map => {
+			this.map = map;
+			this.filter = '';
+		});
 	}
 	
 	ngOnInit() {
@@ -58,6 +62,10 @@ export class EntitiesComponent implements OnInit {
 		Object.entries(entity.getAttributes()).forEach(([key, val]) => {
 			this.generateWidget(entity, key, val, ref);
 		});
+	}
+
+	updateFilter() {
+		this.events.filterEntity.next(this.filter);
 	}
 	
 	private generateWidget(entity: CCEntity, key: string, val: AttributeValue, ref: ViewContainerRef) {

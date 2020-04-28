@@ -17,7 +17,8 @@ import {
 	MatTabsModule,
 	MatToolbarModule,
 	MatTooltipModule,
-	MatTreeModule
+	MatTreeModule,
+	MatDividerModule
 } from '@angular/material';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
@@ -40,6 +41,7 @@ const MODULES = [
 	MatListModule,
 	MatIconModule,
 	MatTreeModule,
+	MatDividerModule,
 	MatSlideToggleModule,
 ];
 

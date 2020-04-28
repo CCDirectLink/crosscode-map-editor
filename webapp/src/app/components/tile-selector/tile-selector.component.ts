@@ -1,8 +1,9 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, HostListener} from '@angular/core';
 import * as Phaser from 'phaser';
 import {TileSelectorScene} from './tile-selector.scene';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {EditorView} from '../../models/editor-view';
+import {Globals} from '../../shared/globals';
 import {NavigationStart, Router} from '@angular/router';
 
 
@@ -48,7 +49,15 @@ export class TileSelectorComponent implements AfterViewInit {
 			scene: [this.scene]
 		});
 	}
-	
+
+	@HostListener('window:resize', ['$event'])
+	onResize(event: Event) {
+		if (!this.display) {
+			return;
+		}
+		this.display.scale.refresh();
+	}
+
 	onDragEnd() {
 		if (!this.display || !this.scene) {
 			return;
