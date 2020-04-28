@@ -202,11 +202,13 @@ export async function selectedMod(dir: string, modName: string) {
 }
 
 export async function get<T>(dir: string, file: string): Promise<T> {
-	const promises = [getAsync(path.join(dir, file))];
+	const promises: Promise<Buffer>[] = [];
 	for (const mod of mods) {
 		const modFile = path.join(dir, 'mods', mod, 'assets', file);
 		promises.push(getAsync(modFile));
 	}
+	promises.push(getAsync(path.join(dir, file)));
+
 	const results = await Promise.all(promises);
 	for (const result of results) {
 		if (result) {
@@ -217,11 +219,13 @@ export async function get<T>(dir: string, file: string): Promise<T> {
 }
 
 export async function resolve(dir: string, file: string): Promise<string> {
-	const promises = [resolveAsync(path.join(dir, file))];
+	const promises: Promise<string>[] = [];
 	for (const mod of mods) {
 		const modFile = path.join(dir, 'mods', mod, 'assets', file);
 		promises.push(resolveAsync(modFile));
 	}
+	promises.push(resolveAsync(path.join(dir, file)));
+
 	const results = await Promise.all(promises);
 	for (const result of results) {
 		if (result) {
