@@ -9,6 +9,7 @@ export class GlobalEventsService {
 
 	currentView = new BehaviorSubject<EditorView | undefined>(undefined);
 	selectedEntity = new BehaviorSubject<CCEntity | undefined>(undefined);
+	updateEntitySettings = new Subject<CCEntity>();
 	generateNewEntity = new Subject<MapEntity>();
 	filterEntity = new Subject<string>();
 	loadComplete = new Subject<void>();

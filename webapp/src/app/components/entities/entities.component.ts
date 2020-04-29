@@ -26,8 +26,10 @@ export class EntitiesComponent implements OnInit {
 		loader: MapLoaderService
 	) {
 		events.selectedEntity.subscribe(e => {
-			// clear focus of input fields to enable phaser inputs again
-			(<HTMLElement>document.activeElement).blur();
+			// clear focus of input fields to enable phaser inputs again ONLY if not a canvas
+			if (document.activeElement && document.activeElement.tagName !== 'CANVAS') {
+				(<HTMLElement>document.activeElement).blur();
+			}
 			this.entity = e;
 			this.loadSettings(e);
 		});
@@ -53,7 +55,10 @@ export class EntitiesComponent implements OnInit {
 		
 		const def = entity.getScaleSettings();
 		if (def && (def.scalableX || def.scalableY)) {
-			const vec2Widget: Vec2WidgetComponent = <Vec2WidgetComponent>this.generateWidget(entity, 'size', {type: 'Vec2', description: ''}, ref);
+			const vec2Widget: Vec2WidgetComponent = <Vec2WidgetComponent>this.generateWidget(entity, 'size', {
+				type: 'Vec2',
+				description: ''
+			}, ref);
 			vec2Widget.enableX = def.scalableX;
 			vec2Widget.enableY = def.scalableY;
 			vec2Widget.step = def.scalableStep;
@@ -63,7 +68,7 @@ export class EntitiesComponent implements OnInit {
 			this.generateWidget(entity, key, val, ref);
 		});
 	}
-
+	
 	updateFilter() {
 		this.events.filterEntity.next(this.filter);
 	}

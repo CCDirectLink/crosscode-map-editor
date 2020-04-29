@@ -1,7 +1,10 @@
 import {CCEntity, Fix} from '../../../shared/phaser/entities/cc-entity';
 import {
+	ActionManager,
 	BaseTexture,
+	Color4,
 	Engine,
+	ExecuteCodeAction,
 	Mesh,
 	MeshBuilder,
 	Scene,
@@ -11,6 +14,7 @@ import {
 	Vector4
 } from '@babylonjs/core';
 import {Globals} from '../../../shared/globals';
+import {EntityManager3d} from './entity-manager-3d';
 
 interface Dimensions {
 	x: number;
@@ -20,6 +24,13 @@ interface Dimensions {
 }
 
 export class EntityGenerator {
+	
+	private entityManager: EntityManager3d;
+	
+	constructor(entityManager: EntityManager3d) {
+		this.entityManager = entityManager;
+	}
+	
 	async generateEntity(entity: CCEntity, scene: Scene) {
 		const fix = entity.entitySettings.sheets.fix;
 		if (!fix || fix.length === 0) {
@@ -34,6 +45,15 @@ export class EntityGenerator {
 			const material = await this.makeMaterial(entity, img, scene);
 			
 			const m = this.generateMesh(entity, img, material, scene);
+			m.edgesWidth = 0;
+			m.edgesColor = new Color4(1, 1, 0, 1);
+			m.enableEdgesRendering();
+			m.actionManager = new ActionManager(scene);
+			m.actionManager.registerAction(new ExecuteCodeAction(ActionManager.OnPickTrigger, () => {
+				this.entityManager.onClick(m);
+			}));
+			
+			this.entityManager.registerEntity(entity, m);
 		}
 	}
 	
@@ -88,11 +108,14 @@ export class EntityGenerator {
 			mesh.position.addInPlaceFromFloats(0, height / 2, 0);
 			mesh.position.addInPlaceFromFloats(start + (currWidth - width) / 2, 0, 0);
 			mesh.material = material;
-			
 			meshes.push(mesh);
 		}
 		
-		return meshes;
+		if (meshes.length === 1) {
+			return meshes[0];
+		} else {
+			return Mesh.MergeMeshes(meshes)!;
+		}
 	}
 	
 	
@@ -133,7 +156,7 @@ export class EntityGenerator {
 		mesh.position.addInPlaceFromFloats(0, 0, 1 / Globals.TILE_SIZE);
 		mesh.material = material;
 		
-		return [mesh];
+		return mesh;
 	}
 	
 	// z = height

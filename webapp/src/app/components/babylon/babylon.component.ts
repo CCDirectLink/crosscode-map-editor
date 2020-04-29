@@ -9,7 +9,10 @@ import {ToggleMesh} from './debug/toggle-mesh';
 import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
 import {Router} from '@angular/router';
 import {addWireframeButton} from './ui/wireframe';
-import {EntityGenerator} from './entity-generation/entity-generator';
+import {EntityGenerator} from './entities/entity-generator';
+import {GlobalEventsService} from '../../shared/global-events.service';
+import {EditorView} from '../../models/editor-view';
+import {EntityManager3d} from './entities/entity-manager-3d';
 
 
 interface CamStore {
@@ -32,11 +35,13 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 	private readonly storageKey = 'camPos';
 	private textureGenerator: TextureGenerator;
 	private groundLayers: CCMapLayer[] = [];
+	private entityManager?: EntityManager3d;
 	
 	loading = true;
 	
 	constructor(
-		private router: Router
+		private router: Router,
+		private globalEvents: GlobalEventsService
 	) {
 		this.textureGenerator = new TextureGenerator();
 	}
@@ -134,7 +139,10 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		performance.mark('layersEnd');
 		
 		
-		const entityGenerator = new EntityGenerator();
+		const entityManager = new EntityManager3d();
+		this.entityManager = entityManager;
+		
+		const entityGenerator = new EntityGenerator(entityManager);
 		
 		const entities = map.entityManager.entities;
 		const promises: Promise<any>[] = [];
@@ -144,6 +152,8 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		
 		await Promise.all(promises);
 		performance.mark('end');
+		
+		entityManager.init(entityGenerator, scene);
 		
 		const toggle = new ToggleMesh(scene);
 		
@@ -155,6 +165,8 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		performance.measure('entities', 'layersEnd', 'end');
 		
 		this.loading = false;
+		
+		this.globalEvents.currentView.next(EditorView.Entities);
 		
 		engine.runRenderLoop(() => scene.render());
 	}
@@ -198,6 +210,9 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 			layer.destroy();
 		}
 		
+		if (this.entityManager) {
+			this.entityManager.destroy();
+		}
 		
 		this.textureGenerator.destroy();
 		if (this.cam) {
