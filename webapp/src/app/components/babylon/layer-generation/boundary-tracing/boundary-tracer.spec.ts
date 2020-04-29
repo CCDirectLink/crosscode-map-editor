@@ -332,6 +332,26 @@ describe('boundary tracing', () => {
 			const traceObj = tracer.getContour(tiles, layer);
 			console.log(traceObj);
 		});
+		
+		// https://user-images.githubusercontent.com/9483499/80650239-e967fd80-8a73-11ea-9c58-00dc8e0f2a52.png
+		it('forest/caves/cave-013-pandza-01', () => {
+			const layer = new SimpleTileLayer();
+			layer.initSimple([
+				[2, 2, 2, 2, 2, 2, 2,  2,  2, 2, 2],
+				[2, 2, 0, 0, 0, 0, 0,  0,  0, 2, 2],
+				[2, 0, 0, 0, 2, 2, 2,  2,  0, 2, 2],
+				[2, 0, 0, 2, 9, 0, 0, 10,  0, 2, 2],
+				[2, 2, 9, 0, 0, 0, 0,  0, 10, 2, 2],
+				[2, 0, 0, 0, 0, 0, 0,  0,  0, 2, 2],
+				[2, 2, 2, 2, 2, 2, 2,  2,  2, 2, 2],
+				[2, 2, 2, 2, 2, 2, 2,  2,  2, 2, 2]
+			]);
+			const tiles = new Set<Tile>();
+			tiles.add(layer.getTileAt(2, 2)!);
+			const traceObj = tracer.getContour(tiles, layer);
+			console.log(traceObj);
+		});
+		
 	});
 	
 	
