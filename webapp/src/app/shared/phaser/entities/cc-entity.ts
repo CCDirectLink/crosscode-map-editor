@@ -510,13 +510,15 @@ export abstract class CCEntity extends BaseObject {
 		return box;
 	}
 	
-	private getActualSize() {
+	public getActualSize(): Point3 {
 		const s = this.entitySettings;
 		const size = Object.assign({}, this.details.settings.size || s.baseSize);
 		try {
 			size.x = Number(size.x);
 			size.y = Number(size.y);
-			size.z = Number(size.z || this.details.settings.zHeight || this.details.settings.wallZHeight || (s.baseSize ? s.baseSize.z || 0 : 0));
+			if (size.z !== 0) {
+				size.z = Number(size.z || this.details.settings.zHeight || this.details.settings.wallZHeight || (s.baseSize ? s.baseSize.z || 0 : 0));
+			}
 		} catch (e) {
 			console.log(this);
 			console.error(e);

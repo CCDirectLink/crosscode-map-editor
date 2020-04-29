@@ -1,4 +1,4 @@
-import {CCEntity, EntitySettingsFix} from '../../../shared/phaser/entities/cc-entity';
+import {CCEntity, Fix} from '../../../shared/phaser/entities/cc-entity';
 import {
 	BaseTexture,
 	Engine,
@@ -37,7 +37,20 @@ export class EntityGenerator {
 		}
 	}
 	
-	private generateMesh(entity: CCEntity, fix: EntitySettingsFix, material: StandardMaterial, scene: Scene) {
+	private generateMesh(entity: CCEntity, fix: Fix, material: StandardMaterial, scene: Scene) {
+		const actualSize = entity.getActualSize();
+		if (
+			actualSize.x === fix.w && actualSize.y + actualSize.z === fix.h ||
+			entity.entitySettings.scalableY ||
+			actualSize.x === fix.w && actualSize.x !== actualSize.y
+		) {
+			return this.generateBox(entity, fix, material, scene);
+		} else {
+			return this.generatePlane(entity, fix, material, scene);
+		}
+	}
+	
+	private generatePlane(entity: CCEntity, fix: Fix, material: StandardMaterial, scene: Scene) {
 		const width = fix.w / Globals.TILE_SIZE;
 		const height = fix.h / Globals.TILE_SIZE;
 		
@@ -82,6 +95,47 @@ export class EntityGenerator {
 		return meshes;
 	}
 	
+	
+	// TODO: babylon introduced MeshBuilder.CreateTiledBox with a new version,
+	//  but the new version requires a typescript update.
+	//  To update typescript we also need to update angular.
+	//  So after angular is on version >= 9 we can try to add this,
+	//  for now the textures are broken with scalable entities
+	private generateBox(entity: CCEntity, fix: Fix, material: StandardMaterial, scene: Scene) {
+		const width = fix.w / Globals.TILE_SIZE;
+		const height = fix.h / Globals.TILE_SIZE;
+		
+		const size = entity.getActualSize();
+		
+		size.z = Math.max(0.01, size.z);
+		
+		const scaledSize = {
+			x: size.x / Globals.TILE_SIZE,
+			y: size.y / Globals.TILE_SIZE,
+			z: size.z / Globals.TILE_SIZE,
+		};
+		
+		const uvs = this.calculateBoxUvs(material.diffuseTexture!, fix, size.y, fix.flipX);
+		
+		const mesh = MeshBuilder.CreateBox('', {
+			width: scaledSize.x,
+			height: scaledSize.z,
+			depth: scaledSize.y,
+			faceUV: uvs,
+			// sideOrientation: Mesh.DOUBLESIDE,
+			// @ts-ignore
+			wrap: true
+		}, scene);
+		
+		const pos = this.posFromEntity(entity);
+		mesh.position.copyFromFloats(entity.container.x / Globals.TILE_SIZE, pos.z, -entity.container.y / Globals.TILE_SIZE);
+		mesh.position.addInPlaceFromFloats(scaledSize.x / 2, scaledSize.z / 2, -scaledSize.y / 2);
+		mesh.position.addInPlaceFromFloats(0, 0, 1 / Globals.TILE_SIZE);
+		mesh.material = material;
+		
+		return [mesh];
+	}
+	
 	// z = height
 	private posFromEntity(entity: CCEntity) {
 		const level = entity.details.level;
@@ -115,7 +169,7 @@ export class EntityGenerator {
 		return out;
 	}
 	
-	private async makeMaterial(entity: CCEntity, fix: EntitySettingsFix, scene: Scene) {
+	private async makeMaterial(entity: CCEntity, fix: Fix, scene: Scene) {
 		const material = new StandardMaterial(fix.gfx, scene);
 		const texture = await this.loadTexture(Globals.URL + fix.gfx, scene);
 		// texture.wrapU = Texture.CLAMP_ADDRESSMODE;
@@ -153,5 +207,84 @@ export class EntityGenerator {
 		}
 		
 		return out.multiplyByFloats(1 / size.width, 1 / size.height, 1 / size.width, 1 / size.height);
+	}
+	
+	// not used currently
+	private calculateBoxUvs(texture: BaseTexture, fix: Dimensions, depth: number, flipX = false) {
+		let box = fix.w === depth;
+		
+		// always use box, looks better most of the time
+		box = true;
+		
+		const front = this.calculateUvs(texture, {
+			x: fix.x,
+			y: fix.y + depth,
+			w: fix.w,
+			h: fix.h - depth,
+		}, !flipX, false);
+		
+		const back = this.calculateUvs(texture, {
+			x: fix.x,
+			y: fix.y + depth,
+			w: fix.w,
+			h: fix.h - depth,
+		}, flipX, false);
+		
+		let right = this.calculateUvs(texture, {
+			x: fix.x + fix.w - 1,
+			y: fix.y + depth,
+			w: 1,
+			h: fix.h - depth,
+		}, !flipX, false);
+		
+		let left = this.calculateUvs(texture, {
+			x: fix.x,
+			y: fix.y + depth,
+			w: 1,
+			h: fix.h - depth,
+		}, !flipX, false);
+		
+		// needs to be rotated 90°
+		const top = this.calculateUvs(texture, {
+			x: fix.x,
+			y: fix.y,
+			w: fix.w,
+			h: fix.h - (fix.h - depth),
+		}, !flipX, false);
+		
+		const tmpX = top.x;
+		
+		const bottom = this.calculateUvs(texture, {
+			x: fix.x,
+			y: fix.y,
+			w: fix.w,
+			h: fix.h,
+		}, true, false);
+		
+		if (flipX) {
+			const tmp = left;
+			left = right;
+			right = tmp;
+		}
+		
+		if (box) {
+			return [
+				back, // back,
+				front, // front
+				front, // right,
+				front, // left,
+				top, // top
+				bottom, // bottom
+			];
+		} else {
+			return [
+				back, // back,
+				front, // front
+				right, // right,
+				left, // left,
+				top, // top
+				bottom, // bottom
+			];
+		}
 	}
 }

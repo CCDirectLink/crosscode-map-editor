@@ -53,13 +53,15 @@ export class ToolbarComponent implements OnInit {
 		this.events.loadComplete.subscribe(() => {
 			// this.mapLoader.loadMapByName('tests/3d/3dtest');
 			// this.mapLoader.loadMapByName('tests/3d/flicker');
-			// this.mapLoader.loadMapByName('tests/3d/holes');
+			// this.mapLoader.loadMapByName('tests/3d/3dboxtest');
 			// this.mapLoader.loadMapByName('tests/3d/path-1-entrance-entities');
 			// this.mapLoader.loadMapByName('bergen/bergen');
 			this.mapLoader.loadMapByName('bergen-trail/path-1-entrance');
+			// this.mapLoader.loadMapByName('autumn/entrance');
 			// this.mapLoader.loadMapByName('bergen-trail/test');
 			// this.mapLoader.loadMapByName('arid/cliff-1');
 			// this.mapLoader.loadMapByName('bergen/mine-entrance');
+			// this.mapLoader.loadMapByName('forest/caves/cave-013-pandza-01');
 		});
 	}
 	
