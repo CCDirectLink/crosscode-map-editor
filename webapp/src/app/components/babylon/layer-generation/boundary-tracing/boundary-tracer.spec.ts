@@ -4,8 +4,6 @@ import {Point} from '../../../../models/cross-code-map';
 import {NodeTracer} from './node-grid';
 import Tile = Phaser.Tilemaps.Tile;
 
-// TODO: "forest/caves/cave-013-pandza-01" is broken
-
 describe('boundary tracing', () => {
 	
 	let tracer: BoundaryTracer;
