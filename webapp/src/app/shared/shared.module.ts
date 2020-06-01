@@ -24,6 +24,7 @@ import {HighlightDirective} from './highlight.directive';
 import {EntityRegistryService} from './phaser/entities/registry/entity-registry.service';
 import {ListSearchOverlayComponent} from './list-search-overlay/list-search-overlay.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import { BrowserService } from '../services/browser.service';
 
 @NgModule({
 	imports: [
@@ -53,6 +54,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 	providers: [
 		HttpClientService,
 		ElectronService,
+		BrowserService,
 		MapLoaderService,
 		GlobalEventsService,
 		EntityRegistryService,

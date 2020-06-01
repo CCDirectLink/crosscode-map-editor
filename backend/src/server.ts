@@ -32,6 +32,10 @@ app.post('/api/get', async (req, res) => {
 app.post('/api/resolve', async (req, res) => {
 	res.json(await api.resolve(config.pathToCrosscode, req.body.path));
 });
+app.post('/api/select', async (req, res) => {
+	await api.selectedMod(config.pathToCrosscode, req.body.mod);
+	res.json({success: true});
+});
 app.post('/api/saveFile', async (req, res) => {
 	try {
 		const msg = await api.saveFile(config.pathToCrosscode, req.body);
@@ -53,8 +57,6 @@ app.use(errorHandler());
 app.listen(app.get('port'), () => {
 	console.log(('  App is running at http://localhost:%d in %s mode'), app.get('port'), app.get('env'));
 	console.log('  Press CTRL-C to stop\n');
-
-	api.selectedMod(config.pathToCrosscode, config.mod);
 });
 
 module.exports = app;

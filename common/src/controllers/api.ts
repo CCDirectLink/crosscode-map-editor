@@ -198,6 +198,7 @@ export async function getAllMods(dir: string) {
 
 export async function selectedMod(dir: string, modName: string) {
 	const packages = await readMods(dir);
+	mods.splice(0); //Clear array
 	selectMod(modName, packages, mods);
 }
 

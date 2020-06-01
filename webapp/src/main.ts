@@ -7,6 +7,7 @@ import {Globals} from './app/shared/globals';
 
 import 'hammerjs';
 import { ElectronService } from './app/services/electron.service';
+import { BrowserService } from './app/services/browser.service';
 
 if (environment.production) {
 	enableProdMode();
@@ -20,5 +21,6 @@ console.log('is electron: ', Globals.isElectron);
 
 (async () => {
 	await ElectronService.init();
+	await BrowserService.init();
 	platformBrowserDynamic().bootstrapModule(AppModule);
 })();

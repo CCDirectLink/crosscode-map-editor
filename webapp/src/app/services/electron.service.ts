@@ -3,9 +3,10 @@ import {Globals} from '../shared/globals';
 import {Dialog, Remote} from 'electron';
 import * as nodeFs from 'fs';
 import { api } from 'cc-map-editor-common';
+import { SharedService } from './sharedService';
 
 @Injectable()
-export class ElectronService {
+export class ElectronService implements SharedService {
 	private static readonly storageName = 'assetsPath';
 	private static readonly modName = 'selectedMod';
 	private static assetsPath = '';
@@ -97,10 +98,10 @@ export class ElectronService {
 		ElectronService.updateURL();
 	}
 
-	public saveModSelect(mod: string) {
+	public async saveModSelect(mod: string) {
 		localStorage.setItem(ElectronService.modName, mod);
 		ElectronService.selectedMod = mod;
-		ElectronService.updateMod();
+		await ElectronService.updateMod();
 	}
 	
 	public getAssetsPath() {
