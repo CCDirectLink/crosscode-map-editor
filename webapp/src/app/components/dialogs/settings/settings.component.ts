@@ -3,6 +3,10 @@ import {OverlayRefControl} from '../../../shared/overlay/overlay-ref-control';
 import {ElectronService} from '../../../services/electron.service';
 import {FormControl} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
+import { HttpClientService } from '../../../services/http-client.service';
+import { Globals } from '../../../shared/globals';
+import { BrowserService } from '../../../services/browser.service';
+import { SharedService } from '../../../services/sharedService';
 
 @Component({
 	selector: 'app-settings',
@@ -11,20 +15,37 @@ import {MatSnackBar} from '@angular/material';
 })
 export class SettingsComponent implements OnInit {
 	
+	isElectron = Globals.isElectron;
 	folderFormControl = new FormControl();
 	icon = 'help_outline';
 	iconCss = 'icon-undefined';
+	mods: string[] = [];
+	mod = '';
+
+	private readonly sharedService: SharedService;
 	
 	constructor(
 		private ref: OverlayRefControl,
 		private electron: ElectronService,
-		private snackBar: MatSnackBar
+		private browser: BrowserService,
+		private snackBar: MatSnackBar,
+		http: HttpClientService
 	) {
+		if (Globals.isElectron) {
+			this.sharedService = electron;
+		} else {
+			this.sharedService = browser;
+		}
+
+		http.getMods().subscribe(mods => this.mods = mods);
+		this.mod = this.sharedService.getSelectedMod();
 	}
 	
 	ngOnInit() {
-		this.folderFormControl.setValue(this.electron.getAssetsPath());
-		this.folderFormControl.valueChanges.subscribe(() => this.resetIcon());
+		if (this.isElectron) {
+			this.folderFormControl.setValue(this.electron.getAssetsPath());
+			this.folderFormControl.valueChanges.subscribe(() => this.resetIcon());
+		}
 		
 		this.check();
 	}
@@ -64,13 +85,16 @@ export class SettingsComponent implements OnInit {
 	}
 	
 	save() {
-		this.electron.saveAssetsPath(this.folderFormControl.value);
+		if (this.isElectron) {
+			this.electron.saveAssetsPath(this.folderFormControl.value);
+		}
+		this.sharedService.saveModSelect(this.mod);
 		this.close();
 		const ref = this.snackBar.open('Changing the path requires to restart the editor', 'Restart', {
 			duration: 6000
 		});
 		
-		ref.onAction().subscribe(() => this.electron.relaunch());
+		ref.onAction().subscribe(() => this.sharedService.relaunch());
 	}
 	
 	close() {
