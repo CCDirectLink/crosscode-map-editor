@@ -17,9 +17,9 @@ cache:
 
 install:
   - cd common
-  - npm install
+  - npm ci
   - cd ../webapp
-  - npm install
+  - npm ci
   - cd ..
 
 script:
