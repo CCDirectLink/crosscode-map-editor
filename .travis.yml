@@ -24,7 +24,7 @@ install:
 
 script:
   - cd common 
-  - npm run tslint
+  - npm run lint
   - npm run build
   - cd ../webapp
   - npm run lint
