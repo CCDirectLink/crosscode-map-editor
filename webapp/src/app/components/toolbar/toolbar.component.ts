@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MapLoaderService} from '../../shared/map-loader.service';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 import {MapSettingsComponent} from '../dialogs/map-settings/map-settings.component';
 import {NewMapComponent} from '../dialogs/new-map/new-map.component';
 import {CCMap} from '../../shared/phaser/tilemap/cc-map';

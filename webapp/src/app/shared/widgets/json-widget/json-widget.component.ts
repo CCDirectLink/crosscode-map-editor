@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 import {JsonEditorComponent} from '../../../components/json-editor/json-editor.component';
-import {MatDialog} from '@angular/material';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
 	selector: 'app-json-widget',
@@ -26,7 +26,7 @@ export class JsonWidgetComponent extends AbstractWidget {
 			}
 		});
 		
-		ref.afterClosed().subscribe(res => {
+		ref.afterClosed().subscribe((res: any) => {
 			if (res) {
 				this.setCustomSetting(this.key, JSON.stringify(res));
 			}

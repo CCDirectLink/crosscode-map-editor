@@ -1,6 +1,7 @@
 import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {NestedTreeControl} from '@angular/cdk/tree';
-import {MatSidenav, MatTreeNestedDataSource} from '@angular/material';
+import {MatSidenav} from '@angular/material/sidenav';
+import {MatTreeNestedDataSource} from '@angular/material/tree';
 import {HttpClientService} from '../../services/http-client.service';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {MapNode, MapNodeRoot} from './mapNode.model';

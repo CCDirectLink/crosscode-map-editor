@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {OverlayRefControl} from '../../../shared/overlay/overlay-ref-control';
 import {ElectronService} from '../../../services/electron.service';
 import {FormControl} from '@angular/forms';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import { HttpClientService } from '../../../services/http-client.service';
 import { Globals } from '../../../shared/globals';
 import { BrowserService } from '../../../services/browser.service';

@@ -4,7 +4,7 @@ import {CCMap} from '../../shared/phaser/tilemap/cc-map';
 import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
 import {EditorView} from '../../models/editor-view';
 import {GlobalEventsService} from '../../shared/global-events.service';
-import {MatTabChangeEvent} from '@angular/material';
+import {MatTabChangeEvent} from '@angular/material/tabs';
 
 @Component({
 	selector: 'app-sidenav',
@@ -45,12 +45,12 @@ export class SidenavComponent implements OnInit {
 		this.globalEvents.currentView.subscribe(view => {
 			this.currentView = view;
 			switch (view) {
-				case EditorView.Layers:
-					this.activeTab = 0;
-					break;
-				case EditorView.Entities:
-					this.activeTab = 1;
-					break;
+			case EditorView.Layers:
+				this.activeTab = 0;
+				break;
+			case EditorView.Entities:
+				this.activeTab = 1;
+				break;
 			}
 		});
 		
