@@ -10,11 +10,6 @@ matrix:
   allow_failures:
     - os: windows
 
-cache:
-  directories:
-    - webapp/node_modules
-    - common/node_modules
-
 install:
   - cd common
   - npm ci
