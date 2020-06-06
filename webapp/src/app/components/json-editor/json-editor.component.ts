@@ -18,7 +18,7 @@ export class JsonEditorComponent implements AfterViewInit {
 	json = JSON;
 	
 	constructor(@Optional() @Inject(MAT_DIALOG_DATA) data: { key: string, val: any },
-	            public ref: MatDialogRef<JsonEditorComponent>) {
+				public ref: MatDialogRef<JsonEditorComponent>) {
 		this.data = data.val;
 		this.key = data.key;
 		ref.afterClosed().subscribe(() => {

@@ -29,11 +29,11 @@ export class ToolbarComponent implements OnInit {
 	public loadMapClicked = new EventEmitter<void>(false);
 	
 	constructor(private mapLoader: MapLoaderService,
-	            private events: GlobalEventsService,
-	            private dialog: MatDialog,
-	            private overlayService: OverlayService,
-	            private overlay: Overlay,
-	            private save: SaveService
+				private events: GlobalEventsService,
+				private dialog: MatDialog,
+				private overlayService: OverlayService,
+				private overlay: Overlay,
+				private save: SaveService
 	) {
 	}
 	

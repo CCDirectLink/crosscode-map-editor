@@ -43,8 +43,8 @@ export class EventDetailComponent implements OnInit {
 	warning = false;
 	
 	constructor(private componentFactoryResolver: ComponentFactoryResolver,
-	            private widgetRegistry: WidgetRegistryService,
-	            private helper: EventHelperService) {
+				private widgetRegistry: WidgetRegistryService,
+				private helper: EventHelperService) {
 	}
 	
 	ngOnInit(): void {

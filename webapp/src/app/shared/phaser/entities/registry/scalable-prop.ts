@@ -5,10 +5,10 @@ import {Helper} from '../../helper';
 interface ScalablePropSheet {
 	DOCTYPE: string;
 	entries: {
-		[key: string]: ScalablePropDef
+		[key: string]: ScalablePropDef;
 	};
 	jsonTEMPLATES?: {
-		[key: string]: ScalablePropDef
+		[key: string]: ScalablePropDef;
 	};
 }
 

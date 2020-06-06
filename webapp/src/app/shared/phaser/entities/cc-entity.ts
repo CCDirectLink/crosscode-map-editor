@@ -79,12 +79,12 @@ export abstract class CCEntity extends BaseObject {
 		collType: string;
 		baseSize: Point3;
 		sheets: {
-			fix: Fix[],
+			fix: Fix[];
 			offset?: Point;
 			renderMode?: string;
 			flipX?: boolean;
 			ignoreScalable?: boolean;
-		}
+		};
 		scalableX: boolean;
 		scalableY: boolean;
 		scalableStep: number;

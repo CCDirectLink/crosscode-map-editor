@@ -33,7 +33,7 @@ export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, 
 	private ref?: OverlayRefControl;
 	
 	constructor(private overlayService: OverlayService,
-	            private overlay: Overlay) {
+				private overlay: Overlay) {
 		super();
 	}
 	

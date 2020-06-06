@@ -10,9 +10,9 @@ export abstract class AbstractEvent<T extends EventType> {
 	
 	public info = '---';
 	public children: {
-		title?: string,
-		hideGreaterSign?: boolean
-		events: AbstractEvent<any>[]
+		title?: string;
+		hideGreaterSign?: boolean;
+		events: AbstractEvent<any>[];
 	}[] = [];
 	
 	constructor(
