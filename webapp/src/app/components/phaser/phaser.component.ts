@@ -23,7 +23,8 @@ export class PhaserComponent implements OnInit {
 	            private globalEvents: GlobalEventsService,
 	            private stateHistory: StateHistoryService,
 	            private phaserEventsService: PhaserEventsService,
-	            private heightMap: HeightMapService,
+				private heightMap: HeightMapService,
+				private http: HttpClientService,
 	            registry: EntityRegistryService,
 	            autotile: AutotileService
 	) {
