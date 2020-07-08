@@ -22,7 +22,6 @@ import {Router} from '@angular/router';
 })
 export class ToolbarComponent implements OnInit {
 	
-	isElectron = Globals.isElectron;
 	map?: CCMap;
 	loaded = false;
 	error = '';
