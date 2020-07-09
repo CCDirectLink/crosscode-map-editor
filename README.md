@@ -1,4 +1,4 @@
-[![Discord Server](https://img.shields.io/discord/382339402338402315.svg?label=Discord%20Server)](https://discord.gg/SJmMZKy)  [![Build Status](https://travis-ci.org/CCDirectLink/crosscode-map-editor.svg?branch=master)](https://travis-ci.org/CCDirectLink/crosscode-map-editor)
+[![Discord Server](https://img.shields.io/discord/382339402338402315.svg?label=Discord%20Server)](https://discord.gg/SJmMZKy)  [![Build Status](https://travis-ci.org/CCDirectLink/crosscode-map-editor.svg?branch=master)](https://travis-ci.org/CCDirectLink/crosscode-map-editor) [![GitHub release](https://img.shields.io/github/release/CCDirectLink/crosscode-map-editor.svg)](https://GitHub.com/CCDirectLink/crosscode-map-editor/releases/)
 
 # CrossCode Map Editor
 
