@@ -27,7 +27,7 @@ export class WasdCamInput implements ICameraInput<CustomFreeCamera> {
 		...this.keysDown,
 		...this.keysTurbo
 	];
-	private sensibility = 1.8;
+	private sensibility = 11.8;
 	
 	attachControl(element: HTMLElement, noPreventDefault?: boolean): void {
 		const _this = this;
@@ -68,7 +68,7 @@ export class WasdCamInput implements ICameraInput<CustomFreeCamera> {
 	checkInputs() {
 		if (this.onKeyDown) {
 			const camera = this.camera!;
-			const scale = this.keysTurbo.some(t => this.keys.has(t)) ? 2.5 : 1;
+			const scale = this.keysTurbo.some(t => this.keys.has(t)) ? 3.5 : 1;
 			
 			for (const key of this.keys) {
 				const speed = camera._computeLocalCameraSpeed();
