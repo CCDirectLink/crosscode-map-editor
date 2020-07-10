@@ -111,7 +111,7 @@ export class LayerMeshGenerator {
 		}
 	}
 	
-	private generateMesh(name: string, polygon: PolygonDescription, ccLayer: CCMapLayer, simpleTileLayer: SimpleTileLayer, scene: Scene, ) {
+	private generateMesh(name: string, polygon: PolygonDescription, ccLayer: CCMapLayer, simpleTileLayer: SimpleTileLayer, scene: Scene) {
 		const layer = ccLayer.getPhaserLayer()!;
 		const path = polygon.points;
 		
@@ -187,7 +187,6 @@ export class LayerMeshGenerator {
 		merge.position.z -= horizontalOffset;
 		
 		return merge;
-		// return top;
 	}
 	
 	private getNeighbours(tile: Tile, layer: SimpleTileLayer) {

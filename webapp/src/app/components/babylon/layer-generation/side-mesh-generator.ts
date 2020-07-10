@@ -88,7 +88,7 @@ export class SideMeshGenerator {
 			this.findPosIndex(quad.v4, positions),
 		];
 		
-		indices.push(...[
+		indices.push(
 			vertex[0],
 			vertex[1],
 			vertex[2],
@@ -97,13 +97,13 @@ export class SideMeshGenerator {
 			vertex[0],
 			
 			// backside
-			vertex[2],
-			vertex[1],
-			vertex[0],
-			vertex[0],
-			vertex[3],
-			vertex[2],
-		]);
+			// vertex[2],
+			// vertex[1],
+			// vertex[0],
+			// vertex[0],
+			// vertex[3],
+			// vertex[2],
+		);
 		
 		// side/back is broken, remove them
 		for (const v of [quad.v1, quad.v2, quad.v3, quad.v4]) {
@@ -111,15 +111,15 @@ export class SideMeshGenerator {
 			uvs.set(hash, this.getUvFromVertex(v));
 		}
 		
-		// TODO
-		normals.push(...[
-			0, 0, 1,
-			0, 0, 1,
-			0, 0, 1,
-			0, 0, 1,
-		]);
+		// normals are wrong. Doesn't seem to matter much
+		normals.push(
+			0, 1, 0,
+			0, 1, 0,
+			0, 1, 0,
+			0, 1, 0,
+		);
 		
-		// TODO
+		// vertex colors, currently unused
 		// colors.push(...[
 		// 	1, 0, 0, 1,
 		// 	1, 0, 0, 1,
