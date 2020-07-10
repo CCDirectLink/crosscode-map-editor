@@ -26,6 +26,7 @@ export class ToolbarComponent implements OnInit {
 	loaded = false;
 	error = '';
 	version = environment.version;
+	is3d = false;
 	
 	@Output()
 	public loadMapClicked = new EventEmitter<void>(false);
@@ -104,6 +105,7 @@ export class ToolbarComponent implements OnInit {
 	}
 	
 	changeTo3d(event: MatSlideToggleChange) {
+		this.is3d = event.checked;
 		this.router.navigate([event.checked ? '3d' : '']);
 	}
 }
