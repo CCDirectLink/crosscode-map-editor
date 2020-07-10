@@ -15,8 +15,8 @@ export class WasdCamInput implements ICameraInput<CustomFreeCamera> {
 	private keysRight = ['KeyD'];
 	private keysForward = ['KeyW'];
 	private keysBackward = ['KeyS'];
-	private keysUp = ['KeyQ'];
-	private keysDown = ['KeyE'];
+	private keysUp = ['KeyE'];
+	private keysDown = ['KeyQ'];
 	private keysTurbo = ['ShiftLeft'];
 	private keysAll = [
 		...this.keysLeft,
