@@ -65,11 +65,6 @@ export class DefaultEntity extends CCEntity {
 			baseSize: {x: step, y: step}
 		};
 
-		if (step === 1 && !this.details.settings.size) {
-			// TODO: where is that used
-			// this.details.settings.size = {x: 16, y: 16};
-		}
-
 		return this.scaleSettings;
 	}
 
