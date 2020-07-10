@@ -1,13 +1,12 @@
 import {Globals} from '../../../shared/globals';
 import {CCMapLayer} from '../../../shared/phaser/tilemap/cc-map-layer';
-import {RadialSweepTracer} from './boundary-tracing/radial-sweep-tracer';
 import {Mesh, MeshBuilder, Scene, Vector3, Vector4} from '@babylonjs/core';
 import * as earcut from 'earcut';
 import {SideMeshGenerator} from './side-mesh-generator';
 import {adjustLevel, getLevelOffsetTile} from './offset-helper';
 import {SimpleTileLayer} from './simple-tile-layer';
+import {NodeGrid, PolygonDescription} from './boundary-tracing/node-grid';
 import Tile = Phaser.Tilemaps.Tile;
-import { NodeTracer, NodeGrid, PolygonDescription } from './boundary-tracing/node-grid';
 
 export class LayerMeshGenerator {
 	
