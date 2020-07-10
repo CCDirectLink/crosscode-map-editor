@@ -10,7 +10,6 @@ import {environment} from '../../../environments/environment';
 import {OverlayService} from '../../shared/overlay/overlay.service';
 import {Overlay} from '@angular/cdk/overlay';
 import {SettingsComponent} from '../dialogs/settings/settings.component';
-import {Globals} from '../../shared/globals';
 import {SaveService} from '../../services/save.service';
 import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 import {Router} from '@angular/router';
@@ -27,6 +26,7 @@ export class ToolbarComponent implements OnInit {
 	error = '';
 	version = environment.version;
 	is3d = false;
+	is3dLoading = false;
 	
 	@Output()
 	public loadMapClicked = new EventEmitter<void>(false);
@@ -53,6 +53,8 @@ export class ToolbarComponent implements OnInit {
 		this.events.loadComplete.subscribe(() => {
 			// this.mapLoader.loadMapByName('bergen-trail/path-1-entrance');
 		});
+		
+		this.events.babylonLoading.subscribe(val => this.is3dLoading = val);
 	}
 	
 	saveMap(saveAs: boolean) {

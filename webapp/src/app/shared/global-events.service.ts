@@ -17,6 +17,8 @@ export class GlobalEventsService {
 	offsetMap = new Subject<Point>();
 	toggleVisibility = new Subject<void>();
 	showAddEntityMenu = new Subject<Point>();
+	
+	babylonLoading = new BehaviorSubject<boolean>(false);
 
 	constructor() {
 	}

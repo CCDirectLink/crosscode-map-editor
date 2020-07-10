@@ -30,7 +30,7 @@
 		</mat-menu>
 		
 		<div fxLayout="column" fxLayoutAlign="center" class="toggle-3d">
-			<mat-slide-toggle color="primary" (change)="changeTo3d($event)">3D!</mat-slide-toggle>
+			<mat-slide-toggle [disabled]="is3dLoading" color="primary" (change)="changeTo3d($event)">3D!</mat-slide-toggle>
 		</div>
 	</div>
 	

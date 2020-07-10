@@ -13,6 +13,7 @@ import {EntityGenerator} from './entities/entity-generator';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {EditorView} from '../../models/editor-view';
 import {EntityManager3d} from './entities/entity-manager-3d';
+import {Subscription} from 'rxjs';
 
 
 interface CamStore {
@@ -37,13 +38,16 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 	private groundLayers: CCMapLayer[] = [];
 	private entityManager?: EntityManager3d;
 	
-	loading = true;
+	private sub: Subscription;
+	
+	loading = false;
 	
 	constructor(
 		private router: Router,
 		private globalEvents: GlobalEventsService
 	) {
 		this.textureGenerator = new TextureGenerator();
+		this.sub = globalEvents.babylonLoading.subscribe(val => this.loading = val);
 	}
 	
 	ngOnInit() {
@@ -52,13 +56,20 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.router.navigate(['/']);
 			return;
 		}
+		this.globalEvents.babylonLoading.next(true);
 		this.textureGenerator.init();
 	}
 	
 	ngAfterViewInit() {
 		if (Globals.scene.cameras) {
 			// timeout needed because babylon would initialize with wrong width/height and would need a resize
-			setTimeout(() => this.initBabylon(), 0);
+			setTimeout(async () => {
+				try {
+					await this.initBabylon();
+				} finally {
+					this.globalEvents.babylonLoading.next(false);
+				}
+			}, 0);
 		}
 	}
 	
@@ -164,8 +175,6 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 		performance.measure('layers', 'start', 'layersEnd');
 		performance.measure('entities', 'layersEnd', 'end');
 		
-		this.loading = false;
-		
 		this.globalEvents.currentView.next(EditorView.Entities);
 		
 		engine.runRenderLoop(() => scene.render());
@@ -231,6 +240,8 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 			gl!.getExtension('WEBGL_lose_context')!.loseContext();
 			this.engine.dispose();
 		}
+		this.globalEvents.babylonLoading.next(false);
+		this.sub.unsubscribe();
 	}
 	
 }
