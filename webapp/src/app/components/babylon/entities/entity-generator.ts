@@ -232,7 +232,6 @@ export class EntityGenerator {
 		return out.multiplyByFloats(1 / size.width, 1 / size.height, 1 / size.width, 1 / size.height);
 	}
 	
-	// not used currently
 	private calculateBoxUvs(texture: BaseTexture, fix: Dimensions, depth: number, flipX = false) {
 		let box = fix.w === depth;
 		
