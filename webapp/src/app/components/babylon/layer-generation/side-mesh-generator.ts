@@ -97,12 +97,12 @@ export class SideMeshGenerator {
 			vertex[0],
 			
 			// backside
-			// vertex[2],
-			// vertex[1],
-			// vertex[0],
-			// vertex[0],
-			// vertex[3],
-			// vertex[2],
+			vertex[2],
+			vertex[1],
+			vertex[0],
+			vertex[0],
+			vertex[3],
+			vertex[2],
 		);
 		
 		// side/back is broken, remove them
