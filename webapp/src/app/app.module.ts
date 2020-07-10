@@ -25,7 +25,6 @@ import {TileSelectorComponent} from './components/tile-selector/tile-selector.co
 import {RouterModule} from '@angular/router';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {BabylonComponent} from './components/babylon/babylon.component';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
 	declarations: [
@@ -53,7 +52,6 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 		SharedModule,
 		HistoryModule,
 		ScrollingModule,
-		MatProgressBarModule,
 	],
 	providers: [
 		WidgetRegistryService,
