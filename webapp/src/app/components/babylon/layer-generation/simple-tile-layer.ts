@@ -25,8 +25,6 @@ export class SimpleTileLayer {
 		return this._extendedBottom;
 	}
 	
-	private diagonalConnector = new Map<number, Set<number>>();
-	
 	public init(width: number, height: number) {
 		this._width = width;
 		this._height = height;
@@ -53,57 +51,6 @@ export class SimpleTileLayer {
 				row[j] = new Tile(null as any, tiles[i][j], j, i, 1, 1, 1, 1);
 			}
 		}
-	}
-	
-	public initLayerForTracing(layer: SimpleTileLayer) {
-		let tiles: Tile[];
-		tiles = layer.tiles.flat();
-		
-		this.init(layer.width * 2, layer.height * 2);
-		tiles.forEach(tile => {
-			const i = tile.index;
-			const dirs: Point[] = [];
-			
-			// ■
-			if (i === 2) {
-				dirs.push({x: 0, y: 0});
-				dirs.push({x: 1, y: 0});
-				dirs.push({x: 0, y: 1});
-				dirs.push({x: 1, y: 1});
-			}
-			
-			// ◣
-			if (i === 8 || i === 24) {
-				dirs.push({x: 0, y: 0});
-				dirs.push({x: 0, y: 1});
-				dirs.push({x: 1, y: 1});
-			}
-			
-			// ◤
-			if (i === 9 || i === 25) {
-				dirs.push({x: 0, y: 0});
-				dirs.push({x: 1, y: 0});
-				dirs.push({x: 0, y: 1});
-			}
-			
-			// ◥
-			if (i === 10 || i === 26) {
-				dirs.push({x: 0, y: 0});
-				dirs.push({x: 1, y: 0});
-				dirs.push({x: 1, y: 1});
-			}
-			
-			// ◢
-			if (i === 11 || i === 27) {
-				dirs.push({x: 1, y: 0});
-				dirs.push({x: 0, y: 1});
-				dirs.push({x: 1, y: 1});
-			}
-			
-			for (const d of dirs) {
-				this.setTileAt(2, tile.x * 2 + d.x, tile.y * 2 + d.y);
-			}
-		});
 	}
 	
 	public initLayer(layer: DynamicTilemapLayer) {
@@ -151,10 +98,8 @@ export class SimpleTileLayer {
 		}
 	}
 	
-	public copy() {
-		const out = new SimpleTileLayer();
-		out.initSimple(this.exportLayer());
-		return out;
+	private isInLayerBounds(tileX: number, tileY: number) {
+		return (tileX >= 0 && tileX < this._width && tileY >= 0 && tileY < this._height);
 	}
 	
 	public debug() {
@@ -167,10 +112,6 @@ export class SimpleTileLayer {
 			all += row + '\n';
 		}
 		console.log(all);
-	}
-	
-	private isInLayerBounds(tileX: number, tileY: number) {
-		return (tileX >= 0 && tileX < this._width && tileY >= 0 && tileY < this._height);
 	}
 	
 	public exportTestCases() {
