@@ -2,9 +2,11 @@ import {CCEntity, Fix} from '../../../shared/phaser/entities/cc-entity';
 import {
 	ActionManager,
 	BaseTexture,
+	Color3,
 	Color4,
 	Engine,
 	ExecuteCodeAction,
+	ISize,
 	Mesh,
 	MeshBuilder,
 	Scene,
@@ -38,11 +40,12 @@ export class EntityGenerator {
 		}
 		
 		for (const img of fix) {
-			// TODO diffuse color https://doc.babylonjs.com/babylon101/materials#diffuse-color-example
+			let material: StandardMaterial;
 			if (img.gfx === 'pixel') {
-				continue;
+				material = this.makePixelMaterial(entity, img, scene);
+			} else {
+				material = await this.makeMaterial(entity, img, scene);
 			}
-			const material = await this.makeMaterial(entity, img, scene);
 			
 			const m = this.generateMesh(entity, img, material, scene);
 			m.edgesWidth = 0;
@@ -90,7 +93,7 @@ export class EntityGenerator {
 				h: fix.h
 			};
 			
-			const uvs = this.calculateUvs(material.diffuseTexture!, customFix, entity.entitySettings.scalableX);
+			const uvs = this.calculateUvs(material.diffuseTexture, customFix, entity.entitySettings.scalableX);
 			
 			const mesh = MeshBuilder.CreatePlane('', {
 				width: currWidth,
@@ -138,7 +141,7 @@ export class EntityGenerator {
 			z: size.z / Globals.TILE_SIZE,
 		};
 		
-		const uvs = this.calculateBoxUvs(material.diffuseTexture!, fix, size.y, fix.flipX);
+		const uvs = this.calculateBoxUvs(material.diffuseTexture, fix, size.y, fix.flipX);
 		
 		const mesh = MeshBuilder.CreateBox('', {
 			width: scaledSize.x,
@@ -207,6 +210,24 @@ export class EntityGenerator {
 		return material;
 	}
 	
+	private makePixelMaterial(entity: CCEntity, fix: Fix, scene: Scene) {
+		const material = new StandardMaterial('pixel' + fix.tint, scene);
+		
+		const color = fix.tint || 0;
+		
+		const b = color % 256;
+		const g = ((color - b) / 256) % 256;
+		const r = ((color - b) / 256 ** 2) - g / 256;
+		
+		material.diffuseColor = new Color3(r / 255, g / 255, b / 255);
+		material.alpha = fix.alpha || 0;
+		if (fix.renderMode === 'lighter' || entity.entitySettings.sheets.renderMode === 'lighter') {
+			material.alphaMode = Engine.ALPHA_ADD;
+		}
+		
+		return material;
+	}
+	
 	private async loadTexture(url: string, scene: Scene) {
 		return new Promise<Texture>((res, rej) => {
 			const texture = new Texture(url, scene, undefined, undefined, Texture.NEAREST_SAMPLINGMODE, () => {
@@ -215,8 +236,16 @@ export class EntityGenerator {
 		});
 	}
 	
-	private calculateUvs(texture: BaseTexture, fix: Dimensions, flipX = false, flipY = false) {
-		const size = texture.getSize();
+	private calculateUvs(texture: BaseTexture | null, fix: Dimensions, flipX = false, flipY = false) {
+		let size: ISize;
+		if (texture) {
+			size = texture.getSize();
+		} else {
+			size = {
+				height: 1,
+				width: 1
+			};
+		}
 		
 		let out: Vector4;
 		const u = fix.w + fix.x;
@@ -232,7 +261,7 @@ export class EntityGenerator {
 		return out.multiplyByFloats(1 / size.width, 1 / size.height, 1 / size.width, 1 / size.height);
 	}
 	
-	private calculateBoxUvs(texture: BaseTexture, fix: Dimensions, depth: number, flipX = false) {
+	private calculateBoxUvs(texture: BaseTexture | null, fix: Dimensions, depth: number, flipX = false) {
 		let box = fix.w === depth;
 		
 		// always use box, looks better most of the time
