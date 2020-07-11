@@ -22,11 +22,8 @@ export class EntityManager3d {
 			}
 		}
 		
-		// TODO: async await can sometimes duplicate entities, figure out how to run this function only one at a time
 		this.sub = Globals.globalEventsService.updateEntitySettings.subscribe(async entity => {
-			const toKill = this.entityMap.get(entity)!;
 			await entityGenerator.generateEntity(entity, scene);
-			toKill.dispose();
 			const m = this.entityMap.get(entity)!;
 			m.edgesWidth = EDGE_WIDTH;
 			this.prevSelected = m;
@@ -63,6 +60,10 @@ export class EntityManager3d {
 	
 	registerEntity(entity: CCEntity, m: Mesh) {
 		this.meshMap.set(m, entity);
+		const prev = this.entityMap.get(entity);
+		if (prev) {
+			prev.dispose();
+		}
 		this.entityMap.set(entity, m);
 	}
 }
