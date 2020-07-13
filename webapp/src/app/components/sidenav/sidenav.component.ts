@@ -17,7 +17,6 @@ export class SidenavComponent implements OnInit {
 	activeTab = EditorView.Layers;
 	selectedLayer?: CCMapLayer;
 	tilemap?: CCMap;
-	currentView?: EditorView;
 	editorViewEnum = EditorView;
 	
 	constructor(
