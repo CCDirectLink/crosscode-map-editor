@@ -37,7 +37,7 @@ export class SidenavComponent implements OnInit {
 			currentView.next(currentView.value); //Update select mode
 		});
 		this.globalEvents.currentView.subscribe(view => {
-			if (view !== undefined && this.activeTab != view) {
+			if (view !== undefined && this.activeTab !== view) {
 				this.activeTab = view;
 			}
 		});
