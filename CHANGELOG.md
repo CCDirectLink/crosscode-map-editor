@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 - Fixed level heights being stored as strings instead of numbers
+- Fixed freeze when loading another map while editing entities
+- Fixed placements of npcs
 
 ## [0.7.0] - 2020-06-02
 
