@@ -30,7 +30,11 @@ app.post('/api/get', async (req, res) => {
 	res.json(await api.get(config.pathToCrosscode, req.body.path));
 });
 app.post('/api/resolve', async (req, res) => {
-	res.json(await api.resolve(config.pathToCrosscode, req.body.path));
+	try {
+		res.json(await api.resolve(config.pathToCrosscode, req.body.path));
+	} catch (err) {
+		res.status(404).json(err);
+	}
 });
 app.post('/api/select', async (req, res) => {
 	await api.selectedMod(config.pathToCrosscode, req.body.mod);

@@ -63,13 +63,13 @@ export class MainScene extends Phaser.Scene {
 		this.add.existing(entityManager);
 		
 		Globals.globalEventsService.currentView.subscribe(view => {
+			tileDrawer.setActive(false);
+			entityManager.setActive(false);
 			switch (view) {
 				case EditorView.Layers:
 					tileDrawer.setActive(true);
-					entityManager.setActive(false);
 					break;
 				case EditorView.Entities:
-					tileDrawer.setActive(false);
 					entityManager.setActive(true);
 					break;
 			}
