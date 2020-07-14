@@ -3,17 +3,17 @@
 	
 	<label [for]="key + '.x'" class="property-name-small">X:</label>
 	<input [id]="key + '.x'" type="number" class="default-input small-input"
-	       [step]="step"
-	       [min]="minSize.x"
-	       [disabled]="!enableX"
+	       [step]="scaleSettings.scalableStep"
+	       [min]="scaleSettings.baseSize.x"
+	       [disabled]="!scaleSettings.scalableX"
 		   [ngModel]="settings[key].x"
 		   (input)="setVal('x', toInt($event.target.value))">
 	
 	<label [for]="key + '.y'" class="property-name-small">Y:</label>
 	<input [id]="key + '.y'" type="number" class="default-input small-input"
-	       [step]="step"
-	       [min]="minSize.x"
-	       [disabled]="!enableY"
+	       [step]="scaleSettings.scalableStep"
+	       [min]="scaleSettings.baseSize.y"
+	       [disabled]="!scaleSettings.scalableY"
 		   [ngModel]="settings[key].y"
 		   (input)="setVal('y', toInt($event.target.value))">
 </div>
