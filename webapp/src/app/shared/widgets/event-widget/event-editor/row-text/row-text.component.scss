@@ -10,6 +10,16 @@ $config: mat-typography-config();
 	pointer-events: none;
 }
 
+.event-row-icon {
+	color: #b8b8b8;
+	float: left;
+	margin-right: 5px;
+	font-size: 14px;
+	line-height: 26px;
+	height: 26px; //Force default height even if icon is smaller
+	text-align: center;
+}
+
 .event-row-text {
 	line-height: 26px;
 }
