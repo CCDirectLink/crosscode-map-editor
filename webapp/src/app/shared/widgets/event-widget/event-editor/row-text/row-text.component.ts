@@ -118,6 +118,7 @@ export class RowTextComponent {
 			const index = this.getIndex();
 			const cpy = JSON.parse(JSON.stringify(clipboard));
 			this.parent.splice(index, 0, this.helper.getEventFromType(cpy, this.actionStep));
+			this.dataChange.emit();
 		}
 	}
 	
@@ -127,6 +128,7 @@ export class RowTextComponent {
 		}
 		const index = this.getIndex();
 		this.parent.splice(index, 1);
+		this.dataChange.emit();
 	}
 	
 	// endregion
