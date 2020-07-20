@@ -20,15 +20,11 @@ export class RowTextComponent {
 	@Input() actionStep = false;
 	
 	@Input() data?: AbstractEvent<any>;
-	@Output() dataChange = new EventEmitter();
-	
 	@Input() parent!: AbstractEvent<any>[];
-	@Output() parentChange = new EventEmitter();
-	
+
+	@Output() dataChange = new EventEmitter<void>();
 	@Output() dblClick = new EventEmitter();
 	@Output() click = new EventEmitter();
-	
-	private overlayRef?: OverlayRefControl;
 	
 	constructor(
 		private storage: EventHelperService,
@@ -60,14 +56,13 @@ export class RowTextComponent {
 			backdropClickClose: true,
 		});
 		
-		this.overlayRef = obj.ref;
 		
 		obj.instance.event = this.data;
 		obj.instance.exit.subscribe((v: AbstractEvent<any>) => {
 			obj.ref.close();
 			this.data = v;
 			v.update();
-			this.dataChange.emit(v);
+			this.dataChange.emit();
 		}, () => obj.ref.close());
 		
 		return false;
@@ -83,7 +78,7 @@ export class RowTextComponent {
 		}, this.actionStep).subscribe(event => {
 			const index = this.getIndex();
 			this.parent.splice(index, 0, event);
-			this.parentChange.emit(this.parent);
+			this.dataChange.emit();
 		});
 	}
 	

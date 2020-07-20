@@ -21,3 +21,9 @@
 			$color2 $size * 2
 	);
 }
+
+.event-inner-container > .mat-tree-node {
+	display: block;
+	flex: none;
+	min-height: auto;
+}

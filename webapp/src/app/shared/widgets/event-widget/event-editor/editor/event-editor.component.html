@@ -1,17 +1,7 @@
 <div class="event-container dark-scrollbar" fxLayout="column">
-	<div class="event-inner-container" fxFlex="1 0 100%" fxLayout="column">
-		<app-event-row
-			[data]="data"
-			[parent]="workingData"
-			*ngFor="let data of workingData"
-			[actionStep]="actionStep"
-		></app-event-row>
-		<app-row-text
-			fxFlex="auto"
-			fxLayout="column"
-			text=" "
-			[(parent)]="workingData"
-			[actionStep]="actionStep"
-		></app-row-text>
-	</div>
+	<mat-tree class="event-inner-container" fxFlex="1 0 100%" fxLayout="column" [dataSource]="dataSource" [treeControl]="treeControl">
+		<mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding [matTreeNodePaddingIndent]="16">
+			<app-row-text [text]="node.text" [data]="node.data" [parent]="getParent(node)" [actionStep]="node.isActionStep" (dataChange)="refresh()"></app-row-text>
+		</mat-tree-node>
+	</mat-tree>
 </div>
