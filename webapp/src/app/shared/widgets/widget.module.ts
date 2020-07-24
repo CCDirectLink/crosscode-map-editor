@@ -26,6 +26,7 @@ import {CharacterNamesService} from './character-widget/character-names.service'
 import {PersonExpressionWidgetComponent} from './person-expression-widget/person-expression-widget.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {AddEventService} from './event-widget/event-editor/add/add-event.service';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -56,6 +57,7 @@ const PRIVATE_COMPONENTS = [
 		MaterialModule,
 		OverlayModule,
 		AngularDraggableModule,
+		DragDropModule,
 		ScrollingModule,
 		SharedModule
 	],

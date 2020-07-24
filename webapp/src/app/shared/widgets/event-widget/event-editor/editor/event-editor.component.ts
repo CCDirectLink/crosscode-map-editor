@@ -8,6 +8,8 @@ import { AbstractEvent, EventType, EventTypeChild } from '../../event-registry/a
 import { EventHelperService } from '../event-helper.service';
 import { NestedTreeControl, FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeNestedDataSource, MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { from } from 'rxjs';
 
 interface EventDisplay {
 	text: string;
@@ -96,6 +98,32 @@ export class EventEditorComponent implements OnChanges {
 		}
 		
 		return null;
+	}
+
+	drop(event: CdkDragDrop<EventDisplay>) {
+		const moved = event.item.data as EventDisplay;
+
+		if (event.currentIndex === 0) {
+			this.workingData!.unshift(moved.data!);
+		} else {
+			const toTop = event.currentIndex > event.previousIndex ? this.treeControl.dataNodes[event.currentIndex] : this.treeControl.dataNodes[event.currentIndex - 1];
+			if (toTop.children && toTop.children.length > 0) {
+				toTop.children.unshift(moved.data!);
+			} else {
+				const toParent = this.getParent(toTop) || this.workingData!;
+				const toIndex = toParent.indexOf(toTop.data!);
+				toParent.splice(toIndex + 1, 0, moved.data!);
+			}
+		}
+
+		const fromParent = this.getParent(moved) || this.workingData!;
+		if (event.currentIndex > event.previousIndex) {
+			fromParent.splice(fromParent.indexOf(moved.data!), 1);
+		} else {
+			fromParent.splice(fromParent.lastIndexOf(moved.data!), 1);
+		}
+		
+		this.refresh();
 	}
 
 	private setLevel(node: EventDisplay, level: number): EventDisplay {
