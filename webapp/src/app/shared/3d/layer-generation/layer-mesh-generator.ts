@@ -1,5 +1,5 @@
-import {Globals} from '../../../shared/globals';
-import {CCMapLayer} from '../../../shared/phaser/tilemap/cc-map-layer';
+import {Globals} from '../../globals';
+import {CCMapLayer} from '../../phaser/tilemap/cc-map-layer';
 import {Mesh, MeshBuilder, Scene, Vector3, Vector4} from '@babylonjs/core';
 import * as earcut from 'earcut';
 import {SideMeshGenerator} from './side-mesh-generator';

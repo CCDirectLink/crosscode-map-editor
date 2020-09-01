@@ -1,5 +1,5 @@
-import {Globals} from '../../../shared/globals';
-import {CCMapLayer} from '../../../shared/phaser/tilemap/cc-map-layer';
+import {Globals} from '../../globals';
+import {CCMapLayer} from '../../phaser/tilemap/cc-map-layer';
 import {Scene, StandardMaterial, Texture} from '@babylonjs/core';
 import {Point} from '../../../models/cross-code-map';
 

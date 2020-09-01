@@ -1,4 +1,4 @@
-import {CCEntity, Fix} from '../../../shared/phaser/entities/cc-entity';
+import {CCEntity, Fix} from '../../phaser/entities/cc-entity';
 import {
 	ActionManager,
 	BaseTexture,
@@ -15,7 +15,7 @@ import {
 	Vector3,
 	Vector4
 } from '@babylonjs/core';
-import {Globals} from '../../../shared/globals';
+import {Globals} from '../../globals';
 import {EntityManager3d} from './entity-manager-3d';
 
 interface Dimensions {

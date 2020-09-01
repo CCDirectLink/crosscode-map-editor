@@ -1,8 +1,8 @@
 import {Mesh, VertexBuffer, VertexData} from '@babylonjs/core';
 import {Point3} from '../../../models/cross-code-map';
 import {getLevelOffsetTile} from './offset-helper';
-import {CCMapLayer} from '../../../shared/phaser/tilemap/cc-map-layer';
-import {Globals} from '../../../shared/globals';
+import {CCMapLayer} from '../../phaser/tilemap/cc-map-layer';
+import {Globals} from '../../globals';
 import {SimpleTileLayer} from './simple-tile-layer';
 
 interface UV {
