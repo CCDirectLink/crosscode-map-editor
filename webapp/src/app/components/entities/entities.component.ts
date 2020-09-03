@@ -55,14 +55,8 @@ export class EntitiesComponent implements OnInit {
 		
 		const def = entity.getScaleSettings();
 		if (def && (def.scalableX || def.scalableY)) {
-			const vec2Widget: Vec2WidgetComponent = <Vec2WidgetComponent>this.generateWidget(entity, 'size', {
-				type: 'Vec2',
-				description: ''
-			}, ref);
-			vec2Widget.enableX = def.scalableX;
-			vec2Widget.enableY = def.scalableY;
-			vec2Widget.step = def.scalableStep;
-			vec2Widget.minSize = def.baseSize;
+			const vec2Widget: Vec2WidgetComponent = <Vec2WidgetComponent>this.generateWidget(entity, 'size', {type: 'Vec2', description: ''}, ref);
+			vec2Widget.def = def;
 		}
 		Object.entries(entity.getAttributes()).forEach(([key, val]) => {
 			this.generateWidget(entity, key, val, ref);

@@ -84,6 +84,9 @@ export class Helper {
 				return callback(scene.cache.json.get(key));
 			});
 			scene.load.start();
+		}, () => {
+			console.warn(`Failed to resolve resource: ${key}.json`);
+			callback(undefined);
 		});
 	}
 	
