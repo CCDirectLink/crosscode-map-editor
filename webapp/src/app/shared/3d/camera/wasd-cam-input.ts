@@ -8,8 +8,8 @@ import {CustomFreeCamera} from './custom-free-camera';
 export class WasdCamInput implements ICameraInput<CustomFreeCamera> {
 	camera: Nullable<CustomFreeCamera> = null;
 	
-	private onKeyDown?: any;
-	private onKeyUp?: any;
+	private onKeyDown?: (evt: KeyboardEvent) => void;
+	private onKeyUp?: (evt: KeyboardEvent) => void;
 	private keys = new Set<string>();
 	private keysLeft = ['KeyA'];
 	private keysRight = ['KeyD'];
@@ -30,20 +30,19 @@ export class WasdCamInput implements ICameraInput<CustomFreeCamera> {
 	private sensibility = 11.8;
 	
 	attachControl(element: HTMLElement, noPreventDefault?: boolean): void {
-		const _this = this;
 		if (!this.onKeyDown) {
 			element.tabIndex = 1;
-			this.onKeyDown = function (evt: KeyboardEvent) {
-				if (_this.keysAll.includes(evt.code)) {
-					_this.keys.add(evt.code);
+			this.onKeyDown = evt => {
+				if (this.keysAll.includes(evt.code)) {
+					this.keys.add(evt.code);
 					if (!noPreventDefault) {
 						evt.preventDefault();
 					}
 				}
 			};
-			this.onKeyUp = function (evt: KeyboardEvent) {
-				if (_this.keysAll.includes(evt.code)) {
-					_this.keys.delete(evt.code);
+			this.onKeyUp = evt => {
+				if (this.keysAll.includes(evt.code)) {
+					this.keys.delete(evt.code);
 					if (!noPreventDefault) {
 						evt.preventDefault();
 					}
@@ -58,10 +57,10 @@ export class WasdCamInput implements ICameraInput<CustomFreeCamera> {
 	detachControl(element: HTMLElement): void {
 		if (this.onKeyDown) {
 			element.removeEventListener('keydown', this.onKeyDown);
-			element.removeEventListener('keyup', this.onKeyUp);
+			element.removeEventListener('keyup', this.onKeyUp!);
 			this.keys.clear();
-			this.onKeyDown = null;
-			this.onKeyUp = null;
+			this.onKeyDown = undefined;
+			this.onKeyUp = undefined;
 		}
 	}
 	
