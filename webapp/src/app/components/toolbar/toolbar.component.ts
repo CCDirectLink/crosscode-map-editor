@@ -51,9 +51,11 @@ export class ToolbarComponent implements OnInit {
 		);
 		
 		// Use this to automatically load a map on startup for faster testing
-		this.events.loadComplete.subscribe(() => {
-			// this.mapLoader.loadMapByName('heat/path-00');
-		});
+		if (!environment.production) {
+			this.events.loadComplete.subscribe(() => {
+				// this.mapLoader.loadMapByName('heat/path-00');
+			});
+		}
 		
 		this.events.babylonLoading.subscribe(val => this.is3dLoading = val);
 	}
