@@ -185,11 +185,7 @@ export class BabylonViewer {
 			data: data,
 		});
 		
-		for (let y = 0; y < height; y++) {
-			for (let x = 0; x < other.details.width; x++) {
-				layer.getPhaserLayer()!.putTileAt(2, x, y);
-			}
-		}
+		layer.getPhaserLayer()!.putTilesAt(layer.details.data, 0, 0, false);
 		this.groundLayers.push(layer);
 		return layer;
 	}
