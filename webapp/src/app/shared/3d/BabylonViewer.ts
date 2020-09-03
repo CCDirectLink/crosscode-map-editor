@@ -56,6 +56,18 @@ export class BabylonViewer {
 		cam.minZ = 0;
 		this.cam = cam;
 		
+		Object.assign(cam.rotation, {
+			x: 0.7,
+			y: 0,
+			z: 0
+		});
+		
+		Object.assign(cam.position, {
+			x: map.mapWidth / 2,
+			y: 31,
+			z: (-map.mapHeight / 2) - 36
+		});
+		
 		try {
 			const store = JSON.parse(sessionStorage.getItem(this.storageKey)!) as CamStore;
 			Object.assign(cam.position, store.position);
