@@ -1,6 +1,6 @@
 import {Globals} from '../../globals';
 
-function getLevelOffset(level: number) {
+export function getLevelOffset(level: number) {
 	const map = Globals.map;
 	if (level >= map.levels.length) {
 		let maxDiff = 80;
@@ -18,16 +18,14 @@ function getLevelOffset(level: number) {
 	return map.levels[level].height;
 }
 
-function getLevelOffsetTile(level: number) {
+export function getLevelOffsetTile(level: number) {
 	return getLevelOffset(level) / Globals.TILE_SIZE;
 }
 
 // adjust level dependent on masterLevel. level < masterLevel => level+1
-function adjustLevel(level: number) {
+export function adjustLevel(level: number) {
 	if (level < Globals.map.masterLevel) {
 		return level += 1;
 	}
 	return level;
 }
-
-export {getLevelOffsetTile, getLevelOffset, adjustLevel};
