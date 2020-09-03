@@ -1,7 +1,8 @@
 import {SimpleTileLayer} from '../simple-tile-layer';
 import {Point} from '../../../../models/cross-code-map';
 import Tile = Phaser.Tilemaps.Tile;
+import {PolygonDescription} from './node-grid';
 
 export interface BoundaryTracer {
-	getContour(tiles: Set<Tile>, layer: SimpleTileLayer): { path: Point[], holes: Point[][] };
+	getContour(layer: SimpleTileLayer): PolygonDescription[];
 }

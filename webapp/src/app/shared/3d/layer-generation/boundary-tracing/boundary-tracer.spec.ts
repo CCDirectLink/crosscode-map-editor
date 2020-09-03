@@ -1,8 +1,8 @@
-import {BoundaryTracer} from './boundary-tracer';
 import {SimpleTileLayer} from '../simple-tile-layer';
 import {Point} from '../../../../models/cross-code-map';
-import {NodeTracer} from './node-grid';
+import {NodeGrid, NodeTracer} from './node-grid';
 import Tile = Phaser.Tilemaps.Tile;
+import {BoundaryTracer} from './boundary-tracer';
 
 describe('boundary tracing', () => {
 	
@@ -33,8 +33,7 @@ describe('boundary tracing', () => {
 	
 	// https://user-images.githubusercontent.com/9483499/76783283-e52c9d00-67b1-11ea-8761-b49a62526d73.png
 	it('simple rectangle without holes', () => {
-		compare({
-			start: {x: 2, y: 2},
+		compare(0, {
 			layer: [
 				[0, 0, 0, 0, 0, 0, 0, 0],
 				[0, 0, 0, 0, 0, 0, 0, 0],
@@ -65,8 +64,7 @@ describe('boundary tracing', () => {
 	
 	// https://user-images.githubusercontent.com/9483499/76783353-055c5c00-67b2-11ea-9e3f-e6184d4f659b.png
 	it('simple with corners', () => {
-		compare({
-			start: {x: 2, y: 1},
+		compare(0, {
 			layer: [
 				[0, 0, 0, 0, 0, 0, 0, 0],
 				[0, 0, 11, 2, 8, 0, 0, 0],
@@ -97,8 +95,7 @@ describe('boundary tracing', () => {
 	
 	// https://user-images.githubusercontent.com/9483499/76783703-a77c4400-67b2-11ea-8c61-1be4a3ee85ff.png
 	it('1 tile hole', () => {
-		compare({
-			start: {x: 2, y: 3},
+		compare(0, {
 			layer: [
 				[0, 0, 0, 0, 0, 0, 0, 0],
 				[0, 0, 0, 0, 0, 0, 0, 0],
@@ -136,8 +133,7 @@ describe('boundary tracing', () => {
 	
 	// https://user-images.githubusercontent.com/9483499/76783543-59ffd700-67b2-11ea-9541-e86f7861c466.png
 	it('4 tile hole', () => {
-		compare({
-			start: {x: 1, y: 1},
+		compare(0, {
 			layer: [
 				[0, 0, 0, 0, 0, 0, 0, 0],
 				[0, 2, 2, 2, 2, 2, 2, 0],
@@ -191,8 +187,7 @@ describe('boundary tracing', () => {
 	
 	// https://user-images.githubusercontent.com/9483499/76784090-5456c100-67b3-11ea-961b-1aedb4faedd2.png
 	it('hole with diagonals', () => {
-		compare({
-			start: {x: 1, y: 1},
+		compare(0, {
 			layer: [
 				[0, 0, 0, 0, 0, 0, 0, 0],
 				[0, 2, 2, 2, 2, 2, 0, 0],
@@ -258,9 +253,7 @@ describe('boundary tracing', () => {
 				[0, 0, 0, 0, 0, 0, 0, 0],
 				[0, 0, 0, 0, 0, 0, 0, 0]
 			]);
-			const tiles = new Set<Tile>();
-			tiles.add(layer.getTileAt(2, 2)!);
-			const traceObj = tracer.getContour(tiles, layer);
+			const traceObj = tracer.getContour(layer);
 			console.log(traceObj);
 		});
 		
@@ -278,9 +271,7 @@ describe('boundary tracing', () => {
 				[2, 8, 11, 8, 10, 11, 0, 0],
 				[10, 8, 8, 8, 2, 0, 0, 0]
 			]);
-			const tiles = new Set<Tile>();
-			tiles.add(layer.getTileAt(2, 2)!);
-			const traceObj = tracer.getContour(tiles, layer);
+			const traceObj = tracer.getContour(layer);
 			console.log(traceObj);
 		});
 		
@@ -309,12 +300,11 @@ describe('boundary tracing', () => {
 				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 				[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 			]);
-			const tiles = new Set<Tile>();
-			tiles.add(layer.getTileAt(2, 2)!);
-			const traceObj = tracer.getContour(tiles, layer);
-			console.log(traceObj);
+			const result = tracer.getContour(layer);
+			console.log(result);
 		});
 		
+		// https://user-images.githubusercontent.com/9483499/76968814-cc46f780-6929-11ea-87fc-c32401af7e2d.png
 		it('evil pattern', () => {
 			const layer = new SimpleTileLayer();
 			layer.initSimple([
@@ -325,29 +315,25 @@ describe('boundary tracing', () => {
 				[0, 2, 0, 0, 0, 0],
 				[0, 0, 0, 0, 0, 0]
 			]);
-			const tiles = new Set<Tile>();
-			tiles.add(layer.getTileAt(2, 2)!);
-			const traceObj = tracer.getContour(tiles, layer);
-			console.log(traceObj);
+			const result = tracer.getContour(layer);
+			console.log(result);
 		});
 		
 		// https://user-images.githubusercontent.com/9483499/80650239-e967fd80-8a73-11ea-9c58-00dc8e0f2a52.png
 		it('forest/caves/cave-013-pandza-01', () => {
 			const layer = new SimpleTileLayer();
 			layer.initSimple([
-				[2, 2, 2, 2, 2, 2, 2,  2,  2, 2, 2],
-				[2, 2, 0, 0, 0, 0, 0,  0,  0, 2, 2],
-				[2, 0, 0, 0, 2, 2, 2,  2,  0, 2, 2],
-				[2, 0, 0, 2, 9, 0, 0, 10,  0, 2, 2],
-				[2, 2, 9, 0, 0, 0, 0,  0, 10, 2, 2],
-				[2, 0, 0, 0, 0, 0, 0,  0,  0, 2, 2],
-				[2, 2, 2, 2, 2, 2, 2,  2,  2, 2, 2],
-				[2, 2, 2, 2, 2, 2, 2,  2,  2, 2, 2]
+				[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+				[2, 2, 0, 0, 0, 0, 0, 0, 0, 2, 2],
+				[2, 0, 0, 0, 2, 2, 2, 2, 0, 2, 2],
+				[2, 0, 0, 2, 9, 0, 0, 10, 0, 2, 2],
+				[2, 2, 9, 0, 0, 0, 0, 0, 10, 2, 2],
+				[2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2],
+				[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+				[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
 			]);
-			const tiles = new Set<Tile>();
-			tiles.add(layer.getTileAt(2, 2)!);
-			const traceObj = tracer.getContour(tiles, layer);
-			console.log(traceObj);
+			const result = tracer.getContour(layer);
+			console.log(result);
 		});
 		
 	});
@@ -355,8 +341,7 @@ describe('boundary tracing', () => {
 	
 	// https://user-images.githubusercontent.com/9483499/76784726-6e44d380-67b4-11ea-9236-af4817cba85d.png
 	it('complex', () => {
-		compare({
-			start: {x: 2, y: 2},
+		compare(0, {
 			layer: [
 				[0, 0, 0, 0, 11, 8, 0, 0],
 				[0, 11, 2, 2, 9, 10, 2, 0],
@@ -417,8 +402,7 @@ describe('boundary tracing', () => {
 	
 	// https://user-images.githubusercontent.com/9483499/76882082-6bacb180-687a-11ea-9977-8c7380648600.png
 	it('full collision', () => {
-		compare({
-			start: {x: 0, y: 0},
+		compare(0, {
 			layer: [
 				[2, 2, 2, 2, 2, 2, 2, 2],
 				[2, 2, 2, 2, 2, 2, 2, 2],
@@ -474,8 +458,7 @@ describe('boundary tracing', () => {
 	// https://user-images.githubusercontent.com/9483499/76883774-f2fb2480-687c-11ea-9414-e38689674677.png
 	describe('inception', () => {
 		it('outer', () => {
-			compare({
-				start: {x: 0, y: 0},
+			compare(0, {
 				layer: [
 					[11, 2, 2, 2, 2, 2, 2, 8],
 					[2, 9, 0, 0, 0, 0, 10, 2],
@@ -543,8 +526,7 @@ describe('boundary tracing', () => {
 		});
 		
 		it('inner', () => {
-			compare({
-				start: {x: 2, y: 2},
+			compare(1, {
 				layer: [
 					[11, 2, 2, 2, 2, 2, 2, 8],
 					[2, 9, 0, 0, 0, 0, 10, 2],
@@ -583,8 +565,7 @@ describe('boundary tracing', () => {
 	// https://user-images.githubusercontent.com/9483499/76885959-5d619400-6880-11ea-9851-76321d165598.png
 	describe('separate blocks', () => {
 		it('top left', () => {
-			compare({
-				start: {x: 1, y: 1},
+			compare(0, {
 				layer: [
 					[0, 0, 0, 0, 0, 0, 0, 0],
 					[0, 11, 2, 2, 0, 2, 8, 0],
@@ -614,8 +595,7 @@ describe('boundary tracing', () => {
 		});
 		
 		it('bottom right', () => {
-			compare({
-				start: {x: 5, y: 1},
+			compare(1, {
 				layer: [
 					[0, 0, 0, 0, 0, 0, 0, 0],
 					[0, 11, 2, 2, 0, 2, 8, 0],
@@ -654,8 +634,7 @@ describe('boundary tracing', () => {
 	
 	// https://user-images.githubusercontent.com/9483499/76888261-eb8b4980-6883-11ea-87f1-31d7f0171fc8.png
 	it('all types of tiles', () => {
-		compare({
-			start: {x: 1, y: 1},
+		compare(0, {
 			layer: [
 				[0, 1, 1, 1, 1, 1, 4, 0],
 				[0, 27, 2, 2, 2, 24, 5, 0],
@@ -698,15 +677,16 @@ describe('boundary tracing', () => {
 		});
 	});
 	
-	function compare(input: { start: Point, layer: number[][] }, expected: { path: Point[], holes: Point[][] }) {
+	function compare(index: number, input: { layer: number[][] }, expected: { path: Point[], holes: Point[][] }) {
 		const layer = new SimpleTileLayer();
 		
 		layer.initSimple(input.layer);
-		const tiles = new Set<Tile>();
-		tiles.add(layer.getTileAt(input.start.x, input.start.y)!);
-		const traceObj = tracer.getContour(tiles, layer);
 		
-		expected.path = reorder(expected.path, traceObj.path[0]);
+		const result = tracer.getContour(layer);
+		
+		const traceObj = result[index];
+		
+		expected.path = reorder(expected.path, traceObj.points[0]);
 		const holes = [];
 		for (let i = 0; i < expected.holes.length; i++) {
 			const hole = expected.holes[i];
@@ -714,8 +694,8 @@ describe('boundary tracing', () => {
 		}
 		expected.holes = holes;
 		
-		expect(traceObj.path).toEqual(expected.path);
-		expect(traceObj.holes).toEqual(expected.holes);
+		expect(traceObj.points.map(p => ({x: p.x, y: p.y}))).toEqual(expected.path);
+		expect(traceObj.holes.map(h => h.map(p => ({x: p.x, y: p.y})))).toEqual(expected.holes);
 	}
 	
 	// doesn't matter where the path starts, only the order is important

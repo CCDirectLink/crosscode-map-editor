@@ -1,21 +1,12 @@
 import Tile = Phaser.Tilemaps.Tile;
-import {Point} from '../../../../models/cross-code-map';
-import {BoundaryTracer} from './boundary-tracer';
 import {SimpleTileLayer} from '../simple-tile-layer';
+import {BoundaryTracer} from './boundary-tracer';
 
 export class NodeTracer implements BoundaryTracer {
-	public getContour(tiles: Set<Tile>, layer: SimpleTileLayer): { path: Point[]; holes: Point[][]; } {
+	public getContour(layer: SimpleTileLayer): PolygonDescription[] {
 		const grid = new NodeGrid(layer.width, layer.height);
 		grid.findEdges(layer.tiles.flat());
-		const result = grid.findPolygons();
-		if (result.length === 0) {
-			return {path: [], holes: []};
-		}
-		
-		return {
-			path: result[0].points.map(p => ({x: p.x, y: p.y})),
-			holes: result[0].holes.map(h => h.map(p => ({x: p.x, y: p.y})))
-		};
+		return grid.findPolygons();
 	}
 }
 
