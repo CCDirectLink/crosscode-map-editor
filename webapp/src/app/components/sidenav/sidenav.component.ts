@@ -18,6 +18,7 @@ export class SidenavComponent implements OnInit {
 	selectedLayer?: CCMapLayer;
 	tilemap?: CCMap;
 	editorViewEnum = EditorView;
+	disableLayersTab = false;
 	
 	constructor(
 		private mapLoader: MapLoaderService,
@@ -41,7 +42,9 @@ export class SidenavComponent implements OnInit {
 				this.activeTab = view;
 			}
 		});
-		
+		this.globalEvents.is3D.subscribe(is3d => {
+			this.disableLayersTab = is3d;
+		});
 	}
 	
 	tabChanged(event: MatTabChangeEvent) {

@@ -171,7 +171,7 @@ export class LayerMeshGenerator {
 		
 		
 		const sideMeshGenerator = new SideMeshGenerator();
-		const mesh = sideMeshGenerator.generate(top, ccLayer, simpleTileLayer);
+		const mesh = sideMeshGenerator.generate(pathArr, holes, ccLayer, simpleTileLayer);
 		
 		const merge = Mesh.MergeMeshes([top, mesh])!;
 		// const merge = Mesh.MergeMeshes([top])!;

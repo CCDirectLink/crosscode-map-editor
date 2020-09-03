@@ -1,6 +1,6 @@
 <div fxLayout="column" class="nav-container" *ngIf="tilemap">
 	<mat-tab-group (selectedTabChange)="tabChanged($event)" [selectedIndex]="activeTab">
-		<mat-tab label="Layers">
+		<mat-tab label="Layers" [disabled]="disableLayersTab">
 			<app-layers class="hacky-tab-height-fix" fxLayout="column"></app-layers>
 		</mat-tab>
 		<mat-tab label="Entities">

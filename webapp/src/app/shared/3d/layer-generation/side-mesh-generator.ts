@@ -1,4 +1,4 @@
-import {Mesh, VertexBuffer, VertexData} from '@babylonjs/core';
+import {Mesh, Vector3, VertexData} from '@babylonjs/core';
 import {Point3} from '../../../models/cross-code-map';
 import {getLevelOffsetTile} from './offset-helper';
 import {CCMapLayer} from '../../phaser/tilemap/cc-map-layer';
@@ -27,8 +27,7 @@ export class SideMeshGenerator {
 	private heightOffset = 0;
 	private heightOffset2 = 0;
 	
-	generate(top: Mesh, ccLayer: CCMapLayer, simpleTileLayer: SimpleTileLayer): Mesh {
-		top.updateFacetData();
+	generate(path: Vector3[], holes: Vector3[][], ccLayer: CCMapLayer, simpleTileLayer: SimpleTileLayer): Mesh {
 		this.heightOffset = getLevelOffsetTile(ccLayer.details.level);
 		this.heightOffset2 = getLevelOffsetTile(ccLayer.details.level + 1) - getLevelOffsetTile(ccLayer.details.level);
 		
@@ -37,7 +36,7 @@ export class SideMeshGenerator {
 		
 		this.level = ccLayer.details.level;
 		
-		const quads = this.makeQuads(top, -this.heightOffset2);
+		const quads = this.makeQuads(path, holes, -this.heightOffset2);
 		
 		const positions: Point3[] = [];
 		const indices: number[] = [];
@@ -160,28 +159,24 @@ export class SideMeshGenerator {
 		return p.x * 100000000 + p.y * 10000 + p.z;
 	}
 	
-	private makeQuads(top: Mesh, height: number) {
-		const vertices = top.getVerticesData(VertexBuffer.PositionKind)!;
-		const vertices3: Point3[] = [];
-		for (let i = 0; i < vertices.length - 2; i += 3) {
-			const x = vertices[i];
-			const y = vertices[i + 1];
-			const z = vertices[i + 2];
-			vertices3.push({x: x, y: y, z: z});
-		}
+	private makeQuads(path: Vector3[], holes: Vector3[][], height: number) {
+		
+		const groups = [path, ...holes];
 		
 		const quads: Quad[] = [];
 		
-		for (let i = 0; i < vertices3.length; i++) {
-			const curr = vertices3[i];
-			const next = vertices3[i + 1] || vertices3[0];
-			
-			quads.push({
-				v1: {x: curr.x, y: curr.y, z: curr.z},
-				v2: {x: curr.x, y: curr.y + height, z: curr.z},
-				v3: {x: next.x, y: next.y + height, z: next.z},
-				v4: {x: next.x, y: next.y, z: next.z},
-			});
+		for (const vertices of groups) {
+			for (let i = 0; i < vertices.length; i++) {
+				const curr = vertices[i];
+				const next = vertices[i + 1] || vertices[0];
+				
+				quads.push({
+					v1: {x: curr.x, y: curr.y, z: curr.z},
+					v2: {x: curr.x, y: curr.y + height, z: curr.z},
+					v3: {x: next.x, y: next.y + height, z: next.z},
+					v4: {x: next.x, y: next.y, z: next.z},
+				});
+			}
 		}
 		return quads;
 	}

@@ -33,6 +33,8 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.router.navigate(['/']);
 			return;
 		}
+		this.globalEvents.babylonLoading.next(true);
+		this.globalEvents.is3D.next(true);
 	}
 	
 	ngAfterViewInit() {
@@ -47,6 +49,7 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 	ngOnDestroy() {
 		this.viewer.onDestroy();
 		this.sub.unsubscribe();
+		this.globalEvents.is3D.next(false);
 	}
 	
 }

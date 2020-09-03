@@ -18,6 +18,7 @@ export class EntitiesComponent implements OnInit {
 	entity?: CCEntity;
 	map?: CCMap;
 	filter = '';
+	hideFilter = false;
 	
 	constructor(
 		private componentFactoryResolver: ComponentFactoryResolver,
@@ -33,6 +34,7 @@ export class EntitiesComponent implements OnInit {
 			this.entity = e;
 			this.loadSettings(e);
 		});
+		events.is3D.subscribe(is3d => this.hideFilter = is3d);
 		loader.tileMap.subscribe(map => {
 			this.map = map;
 			this.filter = '';
@@ -55,7 +57,14 @@ export class EntitiesComponent implements OnInit {
 		
 		const def = entity.getScaleSettings();
 		if (def && (def.scalableX || def.scalableY)) {
-			const vec2Widget: Vec2WidgetComponent = <Vec2WidgetComponent>this.generateWidget(entity, 'size', {type: 'Vec2', description: ''}, ref);
+			const vec2Widget: Vec2WidgetComponent = <Vec2WidgetComponent>this.generateWidget(
+				entity,
+				'size', {
+					type: 'Vec2',
+					description: ''
+				},
+				ref
+			);
 			vec2Widget.def = def;
 		}
 		Object.entries(entity.getAttributes()).forEach(([key, val]) => {

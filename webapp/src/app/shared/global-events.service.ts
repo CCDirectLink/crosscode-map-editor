@@ -19,6 +19,7 @@ export class GlobalEventsService {
 	showAddEntityMenu = new Subject<Point>();
 	
 	babylonLoading = new BehaviorSubject<boolean>(false);
+	is3D = new BehaviorSubject<boolean>(false);
 
 	constructor() {
 	}
