@@ -50,8 +50,9 @@ export class ToolbarComponent implements OnInit {
 			err => this.error = 'Error: could not load CrossCode assets. Update path in edit/settings'
 		);
 		
+		// Use this to automatically load a map on startup for faster testing
 		this.events.loadComplete.subscribe(() => {
-			// this.mapLoader.loadMapByName('bergen-trail/path-1-entrance');
+			// this.mapLoader.loadMapByName('heat/path-00');
 		});
 		
 		this.events.babylonLoading.subscribe(val => this.is3dLoading = val);
