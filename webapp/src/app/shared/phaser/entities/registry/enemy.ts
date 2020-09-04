@@ -9,17 +9,30 @@ export class Enemy extends DefaultEntity {
 	protected async setupType(settings: any) {
 		settings.enemyInfo = settings.enemyInfo || {};
 
-		const enemyPath = PathResolver.convertToPath(BasePath.ENEMIES, settings.enemyInfo.type, FileExtension.NONE);
-		const enemyData = await Helper.getJsonPromise(enemyPath) as EnemyData;
+		const enemyPath = PathResolver.convertToPath(BasePath.ENEMIES, settings.enemyInfo.type || '', FileExtension.NONE);
+		const enemyData = await Helper.getJsonPromise(enemyPath) as EnemyData | undefined;
+		if (!enemyData) {
+			this.generateErrorImage();
+			return;
+		}
 
 		const sheetPath = PathResolver.convertToPath(BasePath.ANIMATIONS, enemyData.anims, FileExtension.NONE);
-		const sheet = this.resolveSUB(await Helper.getJsonPromise(sheetPath)) as any[]; //TODO: type
-		
+		const rawSheet = await Helper.getJsonPromise(sheetPath);
+		if (!rawSheet) {
+			this.generateErrorImage();
+			return;
+		}
+
+		const sheet = this.resolveSUB(rawSheet) as any[]; //TODO: type
+
 		//TODO: proper rendering
 		const first = sheet[0];
 		const named = first.namedSheets[first.sheet];
-		
-		await Helper.loadTexture(named.src, this.scene);
+
+		if (!await Helper.loadTexture(named.src, this.scene)) {
+			this.generateErrorImage();
+			return;
+		}
 
 		this.entitySettings.sheets = {
 			fix: [{
@@ -45,7 +58,7 @@ export class Enemy extends DefaultEntity {
 		const SUB: any[] = object.SUB;
 
 		const result = [];
-		for(const sub of SUB) {
+		for (const sub of SUB) {
 			for (const subSub of this.resolveSUB(sub)) {
 				const combined = Object.assign(Object.assign({}, subSub), object);
 				delete combined.SUB;
