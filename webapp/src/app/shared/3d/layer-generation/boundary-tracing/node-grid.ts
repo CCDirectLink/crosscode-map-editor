@@ -161,10 +161,8 @@ export class Node {
 	public readonly y: number;
 
 	private readonly connections: (Node | undefined)[] = new Array(8);
-	private readonly markedFrom: (Node | undefined)[] = new Array(8);
 
 	private nextConnection = 0;
-	private nextMarked = 0;
 
 	public constructor(x: number, y: number) {
 		this.x = x;
@@ -189,20 +187,8 @@ export class Node {
 		}
 	}
 
-	public mark(from: Node): void {
-		this.markedFrom[this.nextMarked] = from;
-		from.markedFrom[from.nextMarked] = this;
-
-		this.nextMarked++;
-		from.nextMarked++;
-	}
-
-	public isMarkedFrom(from: Node): boolean {
-		return from && this.markedFrom.includes(from);
-	}
-
 	public get hasConnections(): boolean {
-		return this.connections.filter(c => c && !this.isMarkedFrom(c)).length > 0;
+		return this.connections.filter(c => !!c).length > 0;
 	}
 
 	public get firstConnection(): Node {
@@ -216,10 +202,9 @@ export class Node {
 	}
 
 	private findRouteToGo(node: Node, from: Node, hole: boolean, result: Node[]): void {
-		from.mark(this);
+		this.connectTo(from); //Removes the connection.
 
 		if (node === this && node !== from) {
-
 			return;
 		}
 
@@ -234,13 +219,13 @@ export class Node {
 		throw new Error('Incomplete polygon');
 	}
 
-	//Returns the next node in clockwise order.
+	/** Returns the next node in clockwise order. */
 	private rightNode(fromDir: number): Node | undefined {
 		let maxNode: Node | undefined;
 		let maxDirection = -1;
 
 		for (const conn of this.connections) {
-			if (!conn || this.isMarkedFrom(conn)) {
+			if (!conn) {
 				continue;
 			}
 
@@ -254,13 +239,13 @@ export class Node {
 		return maxNode;
 	}
 
-	//Returns the next node in counterclockwise order.
+	/** Returns the next node in counterclockwise order. */
 	private leftNode(fromDir: number): Node | undefined {
 		let minNode: Node | undefined;
 		let minDirection = 8;
 
 		for (const conn of this.connections) {
-			if (!conn || this.isMarkedFrom(conn)) {
+			if (!conn) {
 				continue;
 			}
 
@@ -274,6 +259,7 @@ export class Node {
 		return minNode;
 	}
 
+	/**  Returns a number from 0 to 7 in clockwise order starting from the top or -1 if invalid. */
 	private direction(connection: Node | undefined): number {
 		if (!connection) {
 			return -1;
