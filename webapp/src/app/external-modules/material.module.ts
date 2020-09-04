@@ -20,6 +20,7 @@ import {
 	MatTreeModule,
 	MatDividerModule
 } from '@angular/material';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 const MODULES = [
 	MatButtonModule,
@@ -40,7 +41,8 @@ const MODULES = [
 	MatListModule,
 	MatIconModule,
 	MatTreeModule,
-	MatDividerModule
+	MatDividerModule,
+	MatSlideToggleModule,
 ];
 
 @NgModule({
