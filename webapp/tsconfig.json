@@ -14,7 +14,7 @@
 			"node_modules/phaser/types"
 		],
 		"lib": [
-			"es2018",
+			"es2019",
 			"dom"
 		]
 	}

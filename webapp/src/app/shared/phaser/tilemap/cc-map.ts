@@ -27,7 +27,7 @@ export class CCMap {
 	constructor(
 		private game: Phaser.Game,
 		private scene: Phaser.Scene,
-		private entityManager: EntityManager
+		public entityManager: EntityManager
 	) {
 		const stateHistory = Globals.stateHistoryService;
 		this.historySub = stateHistory.selectedState.subscribe(async container => {

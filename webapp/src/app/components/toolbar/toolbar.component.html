@@ -2,31 +2,42 @@
 <mat-toolbar fxLayout="row" class="mat-elevation-z4 elevated-toolbar">
 	
 	<div fxFlex fxLayoutAlign="start">
-		<button mat-button [matMenuTriggerFor]="file">File</button>
-		<mat-menu #file="matMenu">
-			<button mat-menu-item *ngIf="loaded" (click)="loadMapClicked.emit()">Load Map</button>
-			<button [disabled]="!map" mat-menu-item (click)="saveMap(false)">Save Map (Ctrl + S)</button>
-			<button [disabled]="!map" mat-menu-item (click)="saveMap(true)">Save Map as... (Ctrl + Shift + S)</button>
-		</mat-menu>
+		<div [style.visibility]="is3d ? 'hidden': 'visible'">
+			<button mat-button [matMenuTriggerFor]="file">File</button>
+			<mat-menu #file="matMenu">
+				<button mat-menu-item *ngIf="loaded" (click)="loadMapClicked.emit()">Load Map</button>
+				<button [disabled]="!map" mat-menu-item (click)="saveMap(false)">Save Map (Ctrl + S)</button>
+				<button [disabled]="!map" mat-menu-item (click)="saveMap(true)">Save Map as... (Ctrl + Shift + S)
+				</button>
+			</mat-menu>
+			
+			<button mat-button [matMenuTriggerFor]="menu">Edit</button>
+			<mat-menu #menu="matMenu">
+				<button mat-menu-item [matMenuTriggerFor]="tools">Tools</button>
+				<button mat-menu-item (click)="showSettings()">Settings</button>
+			</mat-menu>
+		</div>
 		
-		<button mat-button [matMenuTriggerFor]="menu">Edit</button>
-		<mat-menu #menu="matMenu">
-			<button mat-menu-item [matMenuTriggerFor]="tools">Tools</button>
-			<button mat-menu-item (click)="showSettings()">Settings</button>
-		</mat-menu>
 		
 		<mat-menu #tools="matMenu">
 			<button mat-menu-item (click)="offsetMap()" [disabled]="!map">Offset Map</button>
-			<button mat-menu-item (click)="generateHeights(true)" [disabled]="!map">Generate Heights FULL (Ctrl + Shift + H)</button>
-			<button mat-menu-item (click)="generateHeights(false)" [disabled]="!map">Generate Heights (Ctrl + H)</button>
+			<button mat-menu-item (click)="generateHeights(true)" [disabled]="!map">
+				Generate Heights FULL (Ctrl + Shift + H)
+			</button>
+			<button mat-menu-item (click)="generateHeights(false)" [disabled]="!map">
+				Generate Heights (Ctrl + H)
+			</button>
 		</mat-menu>
-
+		
+		<div fxLayout="column" fxLayoutAlign="center" class="toggle-3d">
+			<mat-slide-toggle [disabled]="!map || is3dLoading" color="primary" (change)="changeTo3d($event)">3D!</mat-slide-toggle>
+		</div>
 	</div>
 	
 	<div fxFlex>
 		<span class="mat-headline">{{map?.name}}</span>
 	</div>
-	<div fxFlex fxLayoutAlign="end">
+	<div fxFlex fxLayoutAlign="end" [style.visibility]="is3d ? 'hidden': 'visible'">
 		<div>
 			<button *ngIf="map" mat-button (click)="openMapSettings()">Map Settings</button>
 			<button *ngIf="loaded; else loader" mat-button (click)="newMap()">New Map</button>

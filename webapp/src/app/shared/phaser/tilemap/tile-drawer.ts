@@ -153,7 +153,6 @@ export class TileDrawer extends BaseObject {
 				return;
 			}
 			Vec2.assign(this.lastDraw, p);
-			
 			for (const tile of this.selectedTiles) {
 				finalPos.x = p.x + tile.offset.x;
 				finalPos.y = p.y + tile.offset.y;
@@ -342,7 +341,6 @@ export class TileDrawer extends BaseObject {
 		// reset last draw when selected tiles change
 		this.lastDraw.x = -1;
 		this.previewTileMap.removeAllLayers();
-		console.log(this.selectedTiles[0].id);
 		const layer = this.previewTileMap.createBlankDynamicLayer('layer', 'only', 0, 0, 40, 40);
 		
 		this.selectedTiles.forEach(tile => {
