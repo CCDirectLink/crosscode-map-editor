@@ -229,7 +229,7 @@ export class Node {
 				continue;
 			}
 
-			let dir = (this.direction(conn) - fromDir) & 7; //&7 is the same as (... + 8) % 8
+			const dir = (this.direction(conn) - fromDir + 8) % 8;
 			if (dir > maxDirection) {
 				maxNode = conn;
 				maxDirection = dir;
@@ -249,7 +249,7 @@ export class Node {
 				continue;
 			}
 
-			let dir = (this.direction(conn) - fromDir) & 7; //&7 is the same as (... + 8) % 8
+			const dir = (this.direction(conn) - fromDir + 8) % 8;
 			if (dir < minDirection) {
 				minNode = conn;
 				minDirection = dir;
