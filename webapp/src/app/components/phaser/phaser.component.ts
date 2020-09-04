@@ -18,15 +18,16 @@ import {EntityRegistryService} from '../../shared/phaser/entities/registry/entit
 })
 export class PhaserComponent implements OnInit {
 	
-	constructor(private element: ElementRef,
-	            private mapLoader: MapLoaderService,
-	            private globalEvents: GlobalEventsService,
-	            private stateHistory: StateHistoryService,
-	            private phaserEventsService: PhaserEventsService,
-	            private heightMap: HeightMapService,
-	            private http: HttpClientService,
-	            registry: EntityRegistryService,
-	            autotile: AutotileService
+	constructor(
+		private element: ElementRef,
+		private mapLoader: MapLoaderService,
+		private globalEvents: GlobalEventsService,
+		private stateHistory: StateHistoryService,
+		private phaserEventsService: PhaserEventsService,
+		private heightMap: HeightMapService,
+		private http: HttpClientService,
+		registry: EntityRegistryService,
+		autotile: AutotileService
 	) {
 		Globals.stateHistoryService = stateHistory;
 		Globals.mapLoaderService = mapLoader;
@@ -34,6 +35,7 @@ export class PhaserComponent implements OnInit {
 		Globals.globalEventsService = globalEvents;
 		Globals.autotileService = autotile;
 		Globals.entityRegistry = registry;
+		Globals.httpService = http;
 	}
 	
 	

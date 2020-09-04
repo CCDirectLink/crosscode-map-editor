@@ -1,6 +1,9 @@
 import {Point} from '../../models/cross-code-map';
 import {Globals} from '../globals';
 import {CCMapLayer} from './tilemap/cc-map-layer';
+import {CCMap} from './tilemap/cc-map';
+import mapStyles from '../../../../../webapp/src/assets/map-styles.json';
+import {MapStyles} from '../../models/map-styles';
 import Scene = Phaser.Scene;
 
 export class Helper {
@@ -74,12 +77,17 @@ export class Helper {
 			return callback(scene.cache.json.get(key));
 		}
 		
-		// load json
-		scene.load.json(key, Globals.URL + key + '.json');
-		scene.load.once('complete', () => {
-			return callback(scene.cache.json.get(key));
+		Globals.httpService.resolveFile(key + '.json').subscribe(file => {
+			// load json
+			scene.load.json(key, Globals.URL + file);
+			scene.load.once('complete', () => {
+				return callback(scene.cache.json.get(key));
+			});
+			scene.load.start();
+		}, () => {
+			console.warn(`Failed to resolve resource: ${key}.json`);
+			callback(undefined);
 		});
-		scene.load.start();
 	}
 	
 	public static getJsonPromise(key: string) {
@@ -101,8 +109,10 @@ export class Helper {
 			return true;
 		}
 		
+		const file = await Globals.httpService.resolveFile(key).toPromise();
+		
 		return new Promise(res => {
-			scene.load.image(key, Globals.URL + key);
+			scene.load.image(key, Globals.URL + file);
 			scene.load.once('complete', () => res(true));
 			scene.load.once('loaderror', () => res(false));
 			scene.load.start();
@@ -124,5 +134,14 @@ export class Helper {
 		const tag = document.activeElement.tagName.toLowerCase();
 		
 		return tag === 'input' || tag === 'textarea';
+	}
+	
+	public static getMapStyle(map: CCMap, type: string): MapStyles {
+		const mapStyleName = map.attributes.mapStyle || 'default';
+		const mapStyle = mapStyles[mapStyleName];
+		if (mapStyle && mapStyle[type]) {
+			return mapStyle[type];
+		}
+		return mapStyles.default[type];
 	}
 }

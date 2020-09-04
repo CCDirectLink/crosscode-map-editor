@@ -14,11 +14,11 @@ import {MatTabChangeEvent} from '@angular/material';
 })
 export class SidenavComponent implements OnInit {
 	
-	activeTab = 0;
+	activeTab = EditorView.Layers;
 	selectedLayer?: CCMapLayer;
 	tilemap?: CCMap;
-	currentView?: EditorView;
 	editorViewEnum = EditorView;
+	disableLayersTab = false;
 	
 	constructor(
 		private mapLoader: MapLoaderService,
@@ -35,25 +35,16 @@ export class SidenavComponent implements OnInit {
 		this.mapLoader.tileMap.subscribe(tilemap => {
 			this.tilemap = tilemap;
 			const currentView = this.globalEvents.currentView;
-			
-			const view = currentView.getValue();
-			currentView.next(EditorView.Layers);
-			if (view !== EditorView.Layers) {
-				currentView.next(view);
-			}
+			currentView.next(currentView.value); //Update select mode
 		});
 		this.globalEvents.currentView.subscribe(view => {
-			this.currentView = view;
-			switch (view) {
-				case EditorView.Layers:
-					this.activeTab = 0;
-					break;
-				case EditorView.Entities:
-					this.activeTab = 1;
-					break;
+			if (view !== undefined && this.activeTab !== view) {
+				this.activeTab = view;
 			}
 		});
-		
+		this.globalEvents.is3D.subscribe(is3d => {
+			this.disableLayersTab = is3d;
+		});
 	}
 	
 	tabChanged(event: MatTabChangeEvent) {

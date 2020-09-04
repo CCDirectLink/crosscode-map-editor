@@ -21,4 +21,9 @@ export class PathResolver {
 	public static convertToPath(base: BasePath, name: string, extension: FileExtension) {
 		return base + name.replace(/\./g, '/') + extension;
 	}
+
+	public static convertToFileName(name: string) {
+		const split = name.split('.');
+		return split[split.length - 1] + '.json';
+	}
 }

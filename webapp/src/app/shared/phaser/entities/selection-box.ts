@@ -64,6 +64,9 @@ export class SelectionBox {
 		// TODO: super inefficient
 		entities.forEach(e => {
 			if (Phaser.Geom.Intersects.RectangleToRectangle(rect, e.getBoundingBox())) {
+				if (!e.active) {
+					return;
+				}
 				e.inputOver();
 				this.selectedEntities.add(e);
 			} else {

@@ -9,12 +9,17 @@ export class GlobalEventsService {
 
 	currentView = new BehaviorSubject<EditorView | undefined>(undefined);
 	selectedEntity = new BehaviorSubject<CCEntity | undefined>(undefined);
+	updateEntitySettings = new Subject<CCEntity>();
 	generateNewEntity = new Subject<MapEntity>();
+	filterEntity = new Subject<string>();
 	loadComplete = new Subject<void>();
 	generateHeights = new Subject<boolean>();
 	offsetMap = new Subject<Point>();
 	toggleVisibility = new Subject<void>();
 	showAddEntityMenu = new Subject<Point>();
+	
+	babylonLoading = new BehaviorSubject<boolean>(false);
+	is3D = new BehaviorSubject<boolean>(false);
 
 	constructor() {
 	}

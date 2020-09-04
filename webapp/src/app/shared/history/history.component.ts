@@ -2,6 +2,7 @@ import {Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation} 
 import {HistoryState, HistoryStateContainer, StateHistoryService} from './state-history.service';
 import {EventManager} from '@angular/platform-browser';
 import {Helper} from '../phaser/helper';
+import {NavigationStart, Router} from '@angular/router';
 
 @Component({
 	selector: 'app-history',
@@ -18,10 +19,12 @@ export class HistoryComponent implements OnInit, OnDestroy {
 	states: HistoryState[] = [];
 	selected?: HistoryStateContainer;
 	selectedIndex = 0;
+	hide = false;
 	
 	constructor(
 		private stateHistory: StateHistoryService,
-		private eventManager: EventManager
+		private eventManager: EventManager,
+		router: Router,
 	) {
 		stateHistory.states.subscribe(states => {
 			this.states = states;
@@ -36,6 +39,13 @@ export class HistoryComponent implements OnInit, OnDestroy {
 		});
 		stateHistory.selectedState.subscribe(container => {
 			this.updateSelected(container);
+		});
+		
+		// TODO: floating windows should be handled globally
+		router.events.subscribe(event => {
+			if (event instanceof NavigationStart) {
+				this.hide = event.url === '/3d';
+			}
 		});
 	}
 	

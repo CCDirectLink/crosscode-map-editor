@@ -6,6 +6,7 @@ import {Vec2} from '../vec2';
 
 import {Globals} from '../../globals';
 import {BaseObject} from '../base-object';
+import {Subscription} from 'rxjs';
 
 export interface ScaleSettings {
 	scalableX: boolean;
@@ -30,6 +31,25 @@ export interface AttributeValue {
 	[key: string]: any;
 }
 
+export interface Fix {
+	gfx: any;
+	x: number;
+	y: number;
+	w: number;
+	h: number;
+	scaleX?: number;
+	scaleY?: number;
+	renderHeight?: number;
+	renderMode?: string;
+	offsetX?: number;
+	offsetY?: number;
+	flipX?: boolean;
+	flipY?: boolean;
+	tint?: number;
+	alpha?: number;
+}
+
+
 export abstract class CCEntity extends BaseObject {
 	
 	private map: CCMap;
@@ -40,14 +60,20 @@ export abstract class CCEntity extends BaseObject {
 	private text?: Phaser.GameObjects.Text;
 	private images: Phaser.GameObjects.Image[] = [];
 	
+	private readonly filterSubscription: Subscription;
+	
 	
 	// input (is handled mostly by entity manager)
 	private collisionImage!: Phaser.GameObjects.Graphics;
 	private inputZone!: Phaser.GameObjects.Zone;
 	
-	private selected = false;
+	private _selected = false;
 	
-	// drag
+	get selected(): boolean {
+		return this._selected;
+	}
+
+// drag
 	public isDragged = false;
 	public startOffset: Point = {x: 0, y: 0};
 	
@@ -57,23 +83,7 @@ export abstract class CCEntity extends BaseObject {
 		collType: string;
 		baseSize: Point3;
 		sheets: {
-			fix: {
-				gfx: any;
-				x: number;
-				y: number;
-				w: number;
-				h: number;
-				scaleX?: number;
-				scaleY?: number;
-				renderHeight?: number;
-				renderMode?: string;
-				offsetX?: number;
-				offsetY?: number;
-				flipX?: boolean;
-				flipY?: boolean;
-				tint?: number;
-				alpha?: number;
-			}[],
+			fix: Fix[],
 			offset?: Point;
 			renderMode?: string;
 			flipX?: boolean;
@@ -94,6 +104,8 @@ export abstract class CCEntity extends BaseObject {
 		this.details = <any>{
 			type: typeName
 		};
+		
+		this.filterSubscription = Globals.globalEventsService.filterEntity.subscribe(filter => this.setVisible(this.filter(filter)));
 	}
 	
 	
@@ -118,13 +130,13 @@ export abstract class CCEntity extends BaseObject {
 	
 	
 	public inputOver() {
-		if (!this.selected) {
+		if (!this._selected) {
 			this.collisionImage.alpha = 0.35;
 		}
 	}
 	
 	public inputOut() {
-		if (!this.selected) {
+		if (!this._selected) {
 			this.collisionImage.alpha = 0;
 		}
 	}
@@ -302,6 +314,7 @@ export abstract class CCEntity extends BaseObject {
 		}
 		
 		this.drawBoundingBox();
+		Globals.globalEventsService.updateEntitySettings.next(this);
 	}
 	
 	set level(level: any) {
@@ -338,7 +351,7 @@ export abstract class CCEntity extends BaseObject {
 	}
 	
 	setSelected(selected: boolean) {
-		this.selected = selected;
+		this._selected = selected;
 		if (this.collisionImage) {
 			this.collisionImage.alpha = selected ? 0.6 : 0;
 		}
@@ -350,6 +363,7 @@ export abstract class CCEntity extends BaseObject {
 	destroy() {
 		super.destroy();
 		this.container.destroy();
+		this.filterSubscription.unsubscribe();
 		if (this.text) {
 			this.text.destroy();
 		}
@@ -399,7 +413,12 @@ export abstract class CCEntity extends BaseObject {
 	public generateNoImageType(rgbTop = 0xc06040, aTop = 0.5, rgb = 0x800000, a = 0.5) {
 		const settings = this.details.settings;
 		
-		const baseSize = settings.size || {x: 16, y: 16};
+		const baseSize: Point3 = {x: 16, y: 16, z: 0};
+		if (settings.size) {
+			baseSize.x = settings.size.x;
+			baseSize.y = settings.size.y;
+		}
+		
 		baseSize.z = settings.zHeight || settings.wallZHeight || 0;
 		
 		this.entitySettings = <any>{};
@@ -496,13 +515,15 @@ export abstract class CCEntity extends BaseObject {
 		return box;
 	}
 	
-	private getActualSize() {
+	public getActualSize(): Point3 {
 		const s = this.entitySettings;
 		const size = Object.assign({}, this.details.settings.size || s.baseSize);
 		try {
 			size.x = Number(size.x);
 			size.y = Number(size.y);
-			size.z = Number(size.z || this.details.settings.zHeight || this.details.settings.wallZHeight || (s.baseSize ? s.baseSize.z || 0 : 0));
+			if (size.z !== 0) {
+				size.z = Number(size.z || this.details.settings.zHeight || this.details.settings.wallZHeight || (s.baseSize ? s.baseSize.z || 0 : 0));
+			}
 		} catch (e) {
 			console.log(this);
 			console.error(e);
@@ -568,5 +589,29 @@ export abstract class CCEntity extends BaseObject {
 			this.text = undefined;
 		}
 		
+	}
+	
+	protected filter(filter: string): boolean {
+		const lower = filter.toLocaleLowerCase();
+		const attributes = this.getAttributes();
+		
+		for (const name of Object.keys(attributes)) {
+			const value = this.details.settings[name] || '';
+			if (typeof value === 'string' && value.toLowerCase().includes(lower)) {
+				return true;
+			}
+		}
+		
+		return this.details.type.toLowerCase().includes(lower)
+			|| (this.details.settings.name || '').toLowerCase().includes(lower);
+	}
+	
+	private setVisible(visible: boolean) {
+		this.setActive(visible);
+		if (visible) {
+			this.container.alpha = 1;
+		} else {
+			this.container.alpha = 0.2;
+		}
 	}
 }

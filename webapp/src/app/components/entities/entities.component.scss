@@ -14,3 +14,21 @@ h2 {
 	overflow-y: auto;
 	overflow-x: hidden;
 }
+
+.filter {
+	padding: 4px 16px 0;
+}
+
+::ng-deep {
+	$bottomSpace: 0.7em;
+	& .mat-form-field {
+		.mat-form-field-wrapper {
+			padding-bottom: $bottomSpace;
+		}
+
+		.mat-form-field-underline {
+			bottom: $bottomSpace;
+		}
+	}
+}
+

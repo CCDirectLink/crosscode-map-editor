@@ -1,4 +1,4 @@
 export enum EditorView {
-	Layers,
-	Entities
+	Layers = 0,
+	Entities = 1,
 }

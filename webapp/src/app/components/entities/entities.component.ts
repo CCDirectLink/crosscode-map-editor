@@ -17,20 +17,28 @@ export class EntitiesComponent implements OnInit {
 	@ViewChild(HostDirective, {static: false}) appHost?: HostDirective;
 	entity?: CCEntity;
 	map?: CCMap;
+	filter = '';
+	hideFilter = false;
 	
 	constructor(
 		private componentFactoryResolver: ComponentFactoryResolver,
 		private widgetRegistry: WidgetRegistryService,
-		events: GlobalEventsService,
+		private events: GlobalEventsService,
 		loader: MapLoaderService
 	) {
 		events.selectedEntity.subscribe(e => {
-			// clear focus of input fields to enable phaser inputs again
-			(<HTMLElement>document.activeElement).blur();
+			// clear focus of input fields to enable phaser inputs again ONLY if not a canvas
+			if (document.activeElement && document.activeElement.tagName !== 'CANVAS') {
+				(<HTMLElement>document.activeElement).blur();
+			}
 			this.entity = e;
 			this.loadSettings(e);
 		});
-		loader.tileMap.subscribe(map => this.map = map);
+		events.is3D.subscribe(is3d => this.hideFilter = is3d);
+		loader.tileMap.subscribe(map => {
+			this.map = map;
+			this.filter = '';
+		});
 	}
 	
 	ngOnInit() {
@@ -49,15 +57,23 @@ export class EntitiesComponent implements OnInit {
 		
 		const def = entity.getScaleSettings();
 		if (def && (def.scalableX || def.scalableY)) {
-			const vec2Widget: Vec2WidgetComponent = <Vec2WidgetComponent>this.generateWidget(entity, 'size', {type: 'Vec2', description: ''}, ref);
-			vec2Widget.enableX = def.scalableX;
-			vec2Widget.enableY = def.scalableY;
-			vec2Widget.step = def.scalableStep;
-			vec2Widget.minSize = def.baseSize;
+			const vec2Widget: Vec2WidgetComponent = <Vec2WidgetComponent>this.generateWidget(
+				entity,
+				'size', {
+					type: 'Vec2',
+					description: ''
+				},
+				ref
+			);
+			vec2Widget.def = def;
 		}
 		Object.entries(entity.getAttributes()).forEach(([key, val]) => {
 			this.generateWidget(entity, key, val, ref);
 		});
+	}
+	
+	updateFilter() {
+		this.events.filterEntity.next(this.filter);
 	}
 	
 	private generateWidget(entity: CCEntity, key: string, val: AttributeValue, ref: ViewContainerRef) {

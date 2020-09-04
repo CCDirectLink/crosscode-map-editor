@@ -1,4 +1,4 @@
-[![Discord Server](https://img.shields.io/discord/382339402338402315.svg?label=Discord%20Server)](https://discord.gg/SJmMZKy)  [![Build Status](https://travis-ci.org/CCDirectLink/crosscode-map-editor.svg?branch=master)](https://travis-ci.org/CCDirectLink/crosscode-map-editor)
+[![Discord Server](https://img.shields.io/discord/382339402338402315.svg?label=Discord%20Server)](https://discord.gg/SJmMZKy)  [![Build Status](https://travis-ci.org/CCDirectLink/crosscode-map-editor.svg?branch=master)](https://travis-ci.org/CCDirectLink/crosscode-map-editor) [![GitHub release](https://img.shields.io/github/release/CCDirectLink/crosscode-map-editor.svg)](https://GitHub.com/CCDirectLink/crosscode-map-editor/releases/)
 
 # CrossCode Map Editor
 
@@ -14,6 +14,7 @@ A Map Editor for the game [CrossCode](http://www.cross-code.com/en/home), build 
 If you just want to use the editor install the latest [Release](https://github.com/CCDirectLink/crosscode-map-editor/releases/latest).
 
 ## Getting started - Development
+
 For development you need to do in order:
 1. build the `common` module
 2. run `backend` and `webapp`
@@ -44,6 +45,8 @@ npm start
 
 ### webapp
 move into the `webapp` folder and then install dependencies via `npm`
+| :warning: Dependencies are required only for Electron, devDependencies are included in the Angular build. |
+|---|
 ```
 npm install
 ```

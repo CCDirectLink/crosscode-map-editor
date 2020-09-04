@@ -4,6 +4,7 @@
   "description": "edit stuff",
   "scripts": {
     "start": "npm run serve",
+    "startWithCommon": "cd ../common && npm run build && cd ../backend && npm start",
     "tslint": "tslint -c ./tslint.json -p tsconfig.json",
     "build": "tsc && npm run tslint",
     "watch": "tsc -w",

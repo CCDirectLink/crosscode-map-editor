@@ -4,6 +4,7 @@ import {TileSelectorScene} from './tile-selector.scene';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {EditorView} from '../../models/editor-view';
 import {Globals} from '../../shared/globals';
+import {NavigationStart, Router} from '@angular/router';
 
 
 @Component({
@@ -15,13 +16,21 @@ export class TileSelectorComponent implements AfterViewInit {
 	private display?: Phaser.Game;
 	private scene?: TileSelectorScene;
 	hide = false;
-
+	
 	constructor(
 		globalEvents: GlobalEventsService,
+		router: Router
 	) {
 		globalEvents.currentView.subscribe(view => this.hide = view !== EditorView.Layers);
+		
+		// TODO: floating windows should be handled globally
+		router.events.subscribe(event => {
+			if (event instanceof NavigationStart) {
+				this.hide = event.url === '/3d';
+			}
+		});
 	}
-
+	
 	ngAfterViewInit() {
 		this.scene = new TileSelectorScene();
 		this.display = new Phaser.Game({
@@ -53,7 +62,7 @@ export class TileSelectorComponent implements AfterViewInit {
 		if (!this.display || !this.scene) {
 			return;
 		}
-
+		
 		this.scene.resize();
 	}
 }

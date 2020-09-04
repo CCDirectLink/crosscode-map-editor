@@ -12,9 +12,13 @@ import {BasePath, FileExtension, PathResolver} from './path-resolver';
 @Injectable()
 export class MapLoaderService {
 	
-	private _map = new BehaviorSubject<CrossCodeMap>(undefined as any);
 	tileMap = new BehaviorSubject<CCMap | undefined>(undefined);
 	selectedLayer = new BehaviorSubject<CCMapLayer | undefined>(undefined);
+	
+	private _map = new BehaviorSubject<CrossCodeMap>(undefined as any);
+	get map(): Observable<CrossCodeMap> {
+		return this._map.asObservable();
+	}
 	
 	constructor(
 		private snackBar: MatSnackBar,
@@ -63,13 +67,10 @@ export class MapLoaderService {
 	
 	loadMapByName(name: string) {
 		const path = PathResolver.convertToPath(BasePath.MAPS, name, FileExtension.JSON);
+		const filename = PathResolver.convertToFileName(name);
 		
 		this.http.getAssetsFile<CrossCodeMap>(path).subscribe(map => {
-			this.loadRawMap(map, name, path);
+			this.loadRawMap(map, filename, path);
 		});
-	}
-	
-	get map(): Observable<CrossCodeMap> {
-		return this._map.asObservable();
 	}
 }
