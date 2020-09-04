@@ -206,22 +206,7 @@ export class Node {
 	}
 
 	public get firstConnection(): Node {
-		let maxNode: Node | undefined;
-		let maxDirection = -1;
-
-		for (const conn of this.connections) {
-			if (!conn || this.isMarkedFrom(conn)) {
-				continue;
-			}
-
-			let dir = this.direction(conn);
-			if (dir > maxDirection) {
-				maxNode = conn;
-				maxDirection = dir;
-			}
-		}
-
-		return maxNode!;
+		return this.rightNode(0)!;
 	}
 
 	public findRouteTo(node: Node, from: Node, hole: boolean): Node[] {
@@ -240,14 +225,19 @@ export class Node {
 
 		result.push(this);
 
-
 		const fromDir = this.direction(from);
+		const nextNode = hole ? this.rightNode(fromDir) : this.leftNode(fromDir);
+		if (nextNode) {
+			return nextNode.findRouteToGo(node, this, hole, result);
+		}
 
-		let maxNode = this.connections[0];
+		throw new Error('Incomplete polygon');
+	}
+
+	//Returns the next node in clockwise order.
+	private rightNode(fromDir: number): Node | undefined {
+		let maxNode: Node | undefined;
 		let maxDirection = -1;
-
-		let minNode = this.connections[0];
-		let minDirection = 8;
 
 		for (const conn of this.connections) {
 			if (!conn || this.isMarkedFrom(conn)) {
@@ -259,23 +249,29 @@ export class Node {
 				maxNode = conn;
 				maxDirection = dir;
 			}
+		}
+
+		return maxNode;
+	}
+
+	//Returns the next node in counterclockwise order.
+	private leftNode(fromDir: number): Node | undefined {
+		let minNode: Node | undefined;
+		let minDirection = 8;
+
+		for (const conn of this.connections) {
+			if (!conn || this.isMarkedFrom(conn)) {
+				continue;
+			}
+
+			let dir = (this.direction(conn) - fromDir) & 7; //&7 is the same as (... + 8) % 8
 			if (dir < minDirection) {
 				minNode = conn;
 				minDirection = dir;
 			}
 		}
 
-		if (hole) {
-			if (maxNode) {
-				return maxNode.findRouteToGo(node, this, true, result);
-			}
-		} else {
-			if (minNode) {
-				return minNode.findRouteToGo(node, this, false, result);
-			}
-		}
-
-		throw new Error('Incomplete polygon');
+		return minNode;
 	}
 
 	private direction(connection: Node | undefined): number {
