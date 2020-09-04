@@ -1,6 +1,6 @@
 import Tile = Phaser.Tilemaps.Tile;
-import {SimpleTileLayer} from '../simple-tile-layer';
-import {BoundaryTracer} from './boundary-tracer';
+import { SimpleTileLayer } from '../simple-tile-layer';
+import { BoundaryTracer } from './boundary-tracer';
 
 export class NodeTracer implements BoundaryTracer {
 	public getContour(layer: SimpleTileLayer): PolygonDescription[] {
@@ -13,7 +13,7 @@ export class NodeTracer implements BoundaryTracer {
 export class NodeGrid {
 	private readonly nodes: Node[];
 	private readonly width: number;
-	
+
 	public constructor(width: number, height: number) {
 		this.width = width + 1;
 		this.nodes = new Array((width + 1) * (height + 1));
@@ -23,11 +23,11 @@ export class NodeGrid {
 			}
 		}
 	}
-	
+
 	public get(x: number, y: number): Node {
 		return this.nodes[y * this.width + x];
 	}
-	
+
 	public findEdges(collTiles: Tile[]) {
 		for (const tile of collTiles) {
 			const n11 = this.get(tile.x, tile.y);
@@ -37,16 +37,16 @@ export class NodeGrid {
 			this.connect(tile.index, n11, n12, n21, n22);
 		}
 	}
-	
+
 	public findPolygons(): PolygonDescription[] {
 		const result: PolygonDescription[] = [];
-		
-		let poly = this.findPolygon();
+
+		let poly = this.findPolygon(result);
 		while (poly) {
 			result.push(poly);
-			poly = this.findPolygon();
+			poly = this.findPolygon(result);
 		}
-		
+
 		// Find polygon in polygon and make them holes.
 		for (let i = 0; i < result.length; i++) {
 			const desc = result[i];
@@ -63,11 +63,11 @@ export class NodeGrid {
 				}
 			}
 		}
-		
+
 		return result;
 	}
-	
-	private findPolygon(): PolygonDescription | null {
+
+	private findPolygon(found: PolygonDescription[]): PolygonDescription | null {
 		let start: Node | undefined;
 		for (const node of this.nodes) {
 			if (node.hasConnections) {
@@ -78,22 +78,27 @@ export class NodeGrid {
 		if (!start) {
 			return null;
 		}
-		
-		let nodes = start.firstConnection.findRouteTo(start, start);
+
+		let isHole = false;
+		for (const poly of found) {
+			if (poly.poly.contains(start.x, start.y)) {
+				isHole = !isHole;
+			}
+		}
+
+		let nodes = start.firstConnection.findRouteTo(start, start, isHole);
 		if (!nodes) {
 			throw new Error('Incomplete polygon');
 		}
-		
+
 		if (this.isPathClockwise(nodes)) {
 			nodes = nodes.reverse();
 		}
-		
-		nodes[0].resetCost();
-		
+
 		const p = new Phaser.Geom.Polygon(nodes as unknown as Phaser.Geom.Point[]);
-		return {points: nodes, holes: [], poly: p, holePolys: []};
+		return { points: nodes, holes: [], poly: p, holePolys: [] };
 	}
-	
+
 	private connect(index: number, n11: Node, n12: Node, n21: Node, n22: Node): void {
 		switch (index) {
 			case 0:
@@ -137,15 +142,15 @@ export class NodeGrid {
 			//throw new Error('Unknown collision tile: ' + index);
 		}
 	}
-	
+
 	private isPathClockwise(nodes: Node[]): boolean {
 		return this.isClockwise(nodes[0], nodes[1], nodes[nodes.length - 1]);
 	}
-	
+
 	private isClockwise(node: Node, next: Node, prev: Node): boolean {
-		const conn1 = {x: next.x - node.x, y: next.y - node.y};
-		const conn2 = {x: prev.x - node.x, y: prev.y - node.y};
-		
+		const conn1 = { x: next.x - node.x, y: next.y - node.y };
+		const conn2 = { x: prev.x - node.x, y: prev.y - node.y };
+
 		return (conn1.x === conn2.x && conn1.y > conn2.y) // ◥
 			|| (conn1.x > conn2.x); // ■, ◣, ◤, ◢
 	}
@@ -154,21 +159,18 @@ export class NodeGrid {
 export class Node {
 	public readonly x: number;
 	public readonly y: number;
-	
+
 	private readonly connections: (Node | undefined)[] = new Array(8);
 	private readonly markedFrom: (Node | undefined)[] = new Array(8);
-	
+
 	private nextConnection = 0;
 	private nextMarked = 0;
-	
-	private cost = -1;
-	private costFrom!: Node;
-	
+
 	public constructor(x: number, y: number) {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	/**
 	 * Connects to another node or disconnects if the connection already exists.
 	 * @param node
@@ -181,82 +183,140 @@ export class Node {
 		} else {
 			this.connections[this.nextConnection] = node;
 			node.connections[node.nextConnection] = this;
-			
+
 			this.nextConnection++;
 			node.nextConnection++;
 		}
 	}
-	
-	public resetCost(): void {
-		if (this.cost === -1) {
-			return;
-		}
-		
-		this.cost = -1;
-		this.costFrom = undefined as unknown as Node;
-		
-		for (const node of this.connections) {
-			if (node) {
-				node.resetCost();
-			}
-		}
-	}
-	
+
 	public mark(from: Node): void {
 		this.markedFrom[this.nextMarked] = from;
 		from.markedFrom[from.nextMarked] = this;
-		
+
 		this.nextMarked++;
 		from.nextMarked++;
 	}
-	
+
 	public isMarkedFrom(from: Node): boolean {
 		return from && this.markedFrom.includes(from);
 	}
-	
+
 	public get hasConnections(): boolean {
 		return this.connections.filter(c => c && !this.isMarkedFrom(c)).length > 0;
 	}
-	
+
 	public get firstConnection(): Node {
-		return this.connections.find(c => c && !this.isMarkedFrom(c))!;
-	}
-	
-	public findRouteTo(node: Node, from: Node): Node[] | null {
-		if (node === this) {
-			if (this.connections.every(c => !c || c.cost !== -1 || c.isMarkedFrom(this))) {
-				const result: Node[] = [node];
-				node.mark(from);
-				while (from !== node) {
-					result.push(from);
-					from.mark(from.costFrom);
-					from = from.costFrom;
-				}
-				return result;
-			} else {
-				return null;
-			}
-		}
-		
-		const newCost = from.cost + 1;
-		if (this.cost <= newCost && this.cost !== -1) { //There is already a better path
-			return null;
-		}
-		
-		this.cost = newCost;
-		this.costFrom = from;
-		
-		for (const connection of this.connections) {
-			if (!connection || this.isMarkedFrom(connection) || connection === from) {
+		let maxNode: Node | undefined;
+		let maxDirection = -1;
+
+		for (const conn of this.connections) {
+			if (!conn || this.isMarkedFrom(conn)) {
 				continue;
 			}
-			
-			const result = connection.findRouteTo(node, this);
-			if (result) {
-				return result;
+
+			let dir = this.direction(conn);
+			if (dir > maxDirection) {
+				maxNode = conn;
+				maxDirection = dir;
 			}
 		}
-		return null;
+
+		return maxNode!;
+	}
+
+	public findRouteTo(node: Node, from: Node, hole: boolean): Node[] {
+		const result: Node[] = [node];
+		this.findRouteToGo(node, from, hole, result);
+		return result;
+	}
+
+	private findRouteToGo(node: Node, from: Node, hole: boolean, result: Node[]): void {
+		from.mark(this);
+
+		if (node === this && node !== from) {
+
+			return;
+		}
+
+		result.push(this);
+
+
+		const fromDir = this.direction(from);
+
+		let maxNode = this.connections[0];
+		let maxDirection = -1;
+
+		let minNode = this.connections[0];
+		let minDirection = 8;
+
+		for (const conn of this.connections) {
+			if (!conn || this.isMarkedFrom(conn)) {
+				continue;
+			}
+
+			let dir = (this.direction(conn) - fromDir) & 7; //&7 is the same as (... + 8) % 8
+			if (dir > maxDirection) {
+				maxNode = conn;
+				maxDirection = dir;
+			}
+			if (dir < minDirection) {
+				minNode = conn;
+				minDirection = dir;
+			}
+		}
+
+		if (hole) {
+			if (maxNode) {
+				return maxNode.findRouteToGo(node, this, true, result);
+			}
+		} else {
+			if (minNode) {
+				return minNode.findRouteToGo(node, this, false, result);
+			}
+		}
+
+		throw new Error('Incomplete polygon');
+	}
+
+	private direction(connection: Node | undefined): number {
+		if (!connection) {
+			return -1;
+		}
+
+		const dirX = connection.x - this.x;
+		const dirY = connection.y - this.y;
+
+		switch (dirY) {
+			case -1:
+				switch (dirX) {
+					case -1:
+						return 7;
+					case 0:
+						return 0;
+					case 1:
+						return 1;
+				}
+				break;
+			case 0:
+				switch (dirX) {
+					case -1:
+						return 6;
+					case 1:
+						return 2;
+				}
+				break;
+			case 1:
+				switch (dirX) {
+					case -1:
+						return 5;
+					case 0:
+						return 4;
+					case 1:
+						return 3;
+				}
+				break;
+		}
+		throw new Error('Invalid connection');
 	}
 }
 
