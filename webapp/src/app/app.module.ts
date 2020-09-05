@@ -24,6 +24,7 @@ import {EditorComponent} from './components/editor/editor.component';
 import {TileSelectorComponent} from './components/tile-selector/tile-selector.component';
 import {RouterModule} from '@angular/router';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import {BabylonComponent} from './components/babylon/babylon.component';
 
 @NgModule({
 	declarations: [
@@ -36,6 +37,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 		EntitiesComponent,
 		LoadMapComponent,
 		TileSelectorComponent,
+		BabylonComponent,
 	],
 	imports: [
 		RouterModule.forRoot(routes),

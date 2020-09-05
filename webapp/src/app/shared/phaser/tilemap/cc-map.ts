@@ -27,7 +27,7 @@ export class CCMap {
 	constructor(
 		private game: Phaser.Game,
 		private scene: Phaser.Scene,
-		private entityManager: EntityManager
+		public entityManager: EntityManager
 	) {
 		const stateHistory = Globals.stateHistoryService;
 		this.historySub = stateHistory.selectedState.subscribe(async container => {
@@ -131,6 +131,13 @@ export class CCMap {
 	
 	exportMap(): CrossCodeMap {
 		const out: CrossCodeMap = <any>{};
+
+		for (const level of this.levels) {
+			const number = Number(level.height);
+			if (!Number.isNaN(number)) {
+				level.height = number;
+			}
+		}
 		
 		out.name = this.name;
 		out.levels = this.levels;

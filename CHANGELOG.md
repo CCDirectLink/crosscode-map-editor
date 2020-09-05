@@ -5,6 +5,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- 3d view for all maps
+
+### Fixed
+- Unnecessary files in binary
+
+## [0.7.1] - 2020-07-17
+
+### Fixed
+- Level heights being stored as strings instead of numbers
+- Freeze when loading another map while editing entities
+- Placements of npcs not working
+- Wrong size when changing scalable prop definition 
+
 ## [0.7.0] - 2020-06-02
 
 ### Added

@@ -80,7 +80,14 @@ export class ScalableProp extends CCEntity {
 			R: true
 		}
 	};
-	private scaleSettings?: ScaleSettings;
+	
+	// don't allow scaleSettings ref to be changed, allows realtime update of size vec2 widget
+	private readonly scaleSettings: ScaleSettings = {
+		scalableX: false,
+		scalableY: false,
+		baseSize: {x: 16, y: 16},
+		scalableStep: 1
+	};
 	
 	public getAttributes(): EntityAttributes {
 		return this.attributes;
@@ -93,16 +100,19 @@ export class ScalableProp extends CCEntity {
 	protected async setupType(settings: any) {
 		if (!settings.propConfig) {
 			console.warn('scalable prop without prop config');
+			this.resetScaleSettings();
 			return this.generateErrorImage();
 		}
 		const sheet = await Helper.getJsonPromise('data/scale-props/' + settings.propConfig.sheet) as ScalablePropSheet;
 		if (!sheet) {
 			console.error('sheet not found: ' + settings.propConfig.sheet);
+			this.resetScaleSettings();
 			return this.generateErrorImage();
 		}
 		let prop: ScalablePropDef = sheet.entries[settings.propConfig.name];
 		if (!prop) {
 			console.error('scale-prop not found: ' + settings.propConfig.name);
+			this.resetScaleSettings();
 			return this.generateErrorImage();
 		}
 		
@@ -131,16 +141,28 @@ export class ScalableProp extends CCEntity {
 			};
 		}
 		
-		this.scaleSettings = {
-			scalableX: prop.scalableX,
-			scalableY: prop.scalableY,
-			scalableStep: prop.scalableStep,
-			baseSize: prop.baseSize
-		};
+		this.scaleSettings.scalableX = prop.scalableX;
+		this.scaleSettings.scalableY = prop.scalableY;
+		this.scaleSettings.scalableStep = prop.scalableStep;
+		this.scaleSettings.baseSize = prop.baseSize;
+		
+		if (!this.scaleSettings.scalableX) {
+			this.details.settings.size.x = this.scaleSettings.baseSize.x;
+		}
+		if (!this.scaleSettings.scalableY) {
+			this.details.settings.size.y = this.scaleSettings.baseSize.y;
+		}
 		
 		Object.assign(this.entitySettings, this.scaleSettings);
 		this.entitySettings.collType = prop.collType;
 		this.entitySettings.pivot = prop.pivot;
 		this.updateSettings();
+	}
+	
+	private resetScaleSettings() {
+		this.scaleSettings.scalableX = true;
+		this.scaleSettings.scalableY = true;
+		this.scaleSettings.scalableStep = 1;
+		this.scaleSettings.baseSize = {x: 1, y: 1};
 	}
 }
