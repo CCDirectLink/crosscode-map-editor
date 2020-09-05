@@ -1,4 +1,4 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {CrossCodeMap} from '../../../models/cross-code-map';
 import {MapLoaderService} from '../../../shared/map-loader.service';
 import {CCMap} from '../../../shared/phaser/tilemap/cc-map';

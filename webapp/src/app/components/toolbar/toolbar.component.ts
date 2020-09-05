@@ -47,7 +47,7 @@ export class ToolbarComponent implements OnInit {
 		});
 		this.events.loadComplete.subscribe(
 			() => this.loaded = true,
-			err => this.error = 'Error: could not load CrossCode assets. Update path in edit/settings'
+			() => this.error = 'Error: could not load CrossCode assets. Update path in edit/settings'
 		);
 
 		// Use this to automatically load a map on startup for faster testing

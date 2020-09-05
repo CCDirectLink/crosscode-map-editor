@@ -1,4 +1,4 @@
-import {Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Input, OnChanges, OnInit} from '@angular/core';
 import {AttributeValue, CCEntity} from '../phaser/entities/cc-entity';
 
 export abstract class AbstractWidget implements OnInit, OnChanges {
@@ -13,7 +13,7 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 		this.ngOnChanges();
 	}
 	
-	ngOnChanges(changes?: SimpleChanges): void {
+	ngOnChanges(): void {
 		if (this.custom) {
 			this.settings = this.custom;
 		} else if (this.entity) {

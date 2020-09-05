@@ -1,4 +1,4 @@
-import {Directive, ElementRef, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Directive, ElementRef, Input, OnChanges} from '@angular/core';
 
 @Directive({
 	selector: '[appHighlight]'
@@ -14,7 +14,7 @@ export class HighlightDirective implements OnChanges {
 	
 	}
 	
-	ngOnChanges(changes: SimpleChanges): void {
+	ngOnChanges(): void {
 		this.element.nativeElement.innerHTML = this.highlight();
 	}
 	

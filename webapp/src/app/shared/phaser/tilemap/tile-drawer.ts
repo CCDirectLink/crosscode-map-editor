@@ -86,7 +86,7 @@ export class TileDrawer extends BaseObject {
 	}
 	
 	
-	preUpdate(time: number, delta: number): void {
+	preUpdate(): void {
 		// hide cursor when no map loaded
 		if (!this.layer) {
 			this.container.visible = false;

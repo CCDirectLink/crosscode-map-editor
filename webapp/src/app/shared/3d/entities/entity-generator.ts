@@ -128,8 +128,8 @@ export class EntityGenerator {
 	//  So after angular is on version >= 9 we can try to add this,
 	//  for now the textures are broken with scalable entities
 	private generateBox(entity: CCEntity, fix: Fix, material: StandardMaterial, scene: Scene) {
-		const width = fix.w / Globals.TILE_SIZE;
-		const height = fix.h / Globals.TILE_SIZE;
+		// const width = fix.w / Globals.TILE_SIZE;
+		// const height = fix.h / Globals.TILE_SIZE;
 		
 		const size = entity.getActualSize();
 		
@@ -236,7 +236,7 @@ export class EntityGenerator {
 		});
 	}
 	
-	private calculateUvs(texture: BaseTexture | null, fix: Dimensions, flipX = false, flipY = false) {
+	private calculateUvs(texture: BaseTexture | null, fix: Dimensions, flipX = false) {
 		let size: ISize;
 		if (texture) {
 			size = texture.getSize();
@@ -272,28 +272,28 @@ export class EntityGenerator {
 			y: fix.y + depth,
 			w: fix.w,
 			h: fix.h - depth,
-		}, !flipX, false);
+		}, !flipX);
 		
 		const back = this.calculateUvs(texture, {
 			x: fix.x,
 			y: fix.y + depth,
 			w: fix.w,
 			h: fix.h - depth,
-		}, flipX, false);
+		}, flipX);
 		
 		let right = this.calculateUvs(texture, {
 			x: fix.x + fix.w - 1,
 			y: fix.y + depth,
 			w: 1,
 			h: fix.h - depth,
-		}, !flipX, false);
+		}, !flipX);
 		
 		let left = this.calculateUvs(texture, {
 			x: fix.x,
 			y: fix.y + depth,
 			w: 1,
 			h: fix.h - depth,
-		}, !flipX, false);
+		}, !flipX);
 		
 		// needs to be rotated 90°
 		const top = this.calculateUvs(texture, {
@@ -301,16 +301,14 @@ export class EntityGenerator {
 			y: fix.y,
 			w: fix.w,
 			h: fix.h - (fix.h - depth),
-		}, !flipX, false);
-		
-		const tmpX = top.x;
+		}, !flipX);
 		
 		const bottom = this.calculateUvs(texture, {
 			x: fix.x,
 			y: fix.y,
 			w: fix.w,
 			h: fix.h,
-		}, true, false);
+		}, true);
 		
 		if (flipX) {
 			const tmp = left;

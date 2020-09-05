@@ -55,7 +55,7 @@ export class LayersComponent implements OnInit {
 		}
 	}
 	
-	async addNewLayer(event: Event) {
+	async addNewLayer() {
 		if (!this.map) {
 			return;
 		}

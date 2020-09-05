@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core';
-import {MapLoaderService} from '../../../shared/map-loader.service';
+import {Component} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import {Point} from '../../../models/cross-code-map';
 import {GlobalEventsService} from '../../../shared/global-events.service';

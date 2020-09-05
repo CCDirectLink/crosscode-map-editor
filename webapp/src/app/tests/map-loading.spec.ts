@@ -73,7 +73,7 @@ describe('Map Loading', () => {
 });
 
 async function loadMap(service: MapLoaderService, http: HttpClientService, mapName: string): Promise<{ imported: any, exported: any }> {
-	return new Promise(((res, rej) => {
+	return new Promise(((res) => {
 		let imported: CrossCodeMap;
 
 		const sub = service.tileMap.subscribe(map => {

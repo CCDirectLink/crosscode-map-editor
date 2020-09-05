@@ -120,7 +120,7 @@ export class ScalableProp extends CCEntity {
 		if (prop.jsonINSTANCE && sheet.jsonTEMPLATES) {
 			const jsonInstance = sheet.jsonTEMPLATES[prop.jsonINSTANCE];
 			// TODO: patterns currently ignored
-			const p = jsonInstance.patterns;
+			//const p = jsonInstance.patterns;
 			this.replaceJsonParams(jsonInstance, prop);
 			prop = jsonInstance;
 		}

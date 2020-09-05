@@ -1,4 +1,4 @@
-import {Mesh, Scene} from '@babylonjs/core';
+import {Scene} from '@babylonjs/core';
 import {AdvancedDynamicTexture, Button, Control, StackPanel} from '@babylonjs/gui';
 
 export class ToggleMesh {

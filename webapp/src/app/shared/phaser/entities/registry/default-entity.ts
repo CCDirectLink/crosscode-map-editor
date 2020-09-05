@@ -23,7 +23,7 @@ interface JsonEntityType {
 
 export class DefaultEntity extends CCEntity {
 
-	constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string, settings: any) {
+	constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
 		super(scene, map, x, y, typeName);
 		this.typeDef = entities[typeName];
 	}

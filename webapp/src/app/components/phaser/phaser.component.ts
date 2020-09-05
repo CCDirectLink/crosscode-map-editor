@@ -62,7 +62,7 @@ export class PhaserComponent implements OnInit {
 	}
 
 	@HostListener('window:resize', ['$event'])
-	onResize(event: Event) {
+	onResize() {
 		if (!Globals.game) {
 			return;
 		}

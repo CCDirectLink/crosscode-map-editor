@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 import {JsonEditorComponent} from '../../../components/json-editor/json-editor.component';
 import {MatDialog} from '@angular/material/dialog';
