@@ -73,7 +73,6 @@
 		"@typescript-eslint/no-misused-new": "error",
 		"@typescript-eslint/no-non-null-assertion": "off",
 		"@typescript-eslint/no-unused-expressions": "error",
-        "@typescript-eslint/no-unused-vars": "warn",
 		"@typescript-eslint/prefer-function-type": "error",
 		"@typescript-eslint/quotes": ["error", "single"],
 		"@typescript-eslint/semi": ["error", "always"],
