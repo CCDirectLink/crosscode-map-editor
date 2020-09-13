@@ -68,6 +68,6 @@ export class EventRegistryService {
 	}
 	
 	private hasEvent(type: string): boolean {
-		return type in this.events;
+		return Object.prototype.hasOwnProperty.call(this.events, type);
 	}
 }

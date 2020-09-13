@@ -48,6 +48,6 @@ export class WidgetRegistryService {
 	}
 
 	private hasWidget(type: string): boolean {
-		return type in this.widgets;
+		return Object.prototype.hasOwnProperty.call(this.widgets, type);
 	}
 }

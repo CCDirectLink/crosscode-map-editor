@@ -50,7 +50,7 @@ export class TileSelectorComponent implements AfterViewInit {
 	}
 
 	@HostListener('window:resize', ['$event'])
-	onResize() {
+	onResize(event: Event) {
 		if (!this.display) {
 			return;
 		}

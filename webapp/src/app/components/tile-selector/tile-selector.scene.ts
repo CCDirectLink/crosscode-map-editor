@@ -145,7 +145,7 @@ export class TileSelectorScene extends Phaser.Scene {
 	}
 	
 	
-	update(): void {
+	update(time: number, delta: number): void {
 		const pointer = this.input.activePointer;
 		const p = Helper.worldToTile(pointer.worldX, pointer.worldY);
 		
