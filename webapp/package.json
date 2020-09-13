@@ -115,7 +115,7 @@
 		"karma-jasmine-html-reporter": "^1.5.4",
 		"karma-phantomjs-launcher": "^1.0.4",
 		"node-sass": "^4.14.1",
-		"phaser": "^3.24.1",
+		"phaser": "3.24.1",
 		"rxjs": "^6.6.2",
 		"typescript": "~3.9.7",
 		"zone.js": "^0.11.1"

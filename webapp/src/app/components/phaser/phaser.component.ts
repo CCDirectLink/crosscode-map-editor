@@ -53,6 +53,7 @@ export class PhaserComponent implements OnInit {
 				zoom: 1 / window.devicePixelRatio
 			},
 			render: {
+				antialiasGL: false,
 				pixelArt: true
 			},
 			zoom: 1,
