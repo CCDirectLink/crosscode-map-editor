@@ -101,44 +101,44 @@ export class NodeGrid {
 
 	private connect(index: number, n11: Node, n12: Node, n21: Node, n22: Node): void {
 		switch (index) {
-			case 0:
-				return;
-			case 2: // ■
-				n11.connectTo(n21); //Left
-				n12.connectTo(n22); //Right
-				n11.connectTo(n12); //Top
-				n21.connectTo(n22); //Bottom
-				return;
-			case 8: // ◣
-			case 20:
-			case 24:
-				n11.connectTo(n21); //Left
-				n21.connectTo(n22); //Bottom
-				n11.connectTo(n22); //Top -> bottom
-				return;
-			case 9: // ◤
-			case 21:
-			case 25:
-				n11.connectTo(n21); //Left
-				n11.connectTo(n12); //Top
-				n21.connectTo(n12); //Bottom -> top
-				return;
-			case 10: // ◥
-			case 22:
-			case 26:
-				n12.connectTo(n22); //Right
-				n11.connectTo(n12); //Top
-				n11.connectTo(n22); //Top -> bottom
-				return;
-			case 11: // ◢
-			case 23:
-			case 27:
-				n12.connectTo(n22); //Right
-				n21.connectTo(n22); //Bottom
-				n21.connectTo(n12); //Bottom -> top
-				return;
-			default:
-				return;
+		case 0:
+			return;
+		case 2: // ■
+			n11.connectTo(n21); //Left
+			n12.connectTo(n22); //Right
+			n11.connectTo(n12); //Top
+			n21.connectTo(n22); //Bottom
+			return;
+		case 8: // ◣
+		case 20:
+		case 24:
+			n11.connectTo(n21); //Left
+			n21.connectTo(n22); //Bottom
+			n11.connectTo(n22); //Top -> bottom
+			return;
+		case 9: // ◤
+		case 21:
+		case 25:
+			n11.connectTo(n21); //Left
+			n11.connectTo(n12); //Top
+			n21.connectTo(n12); //Bottom -> top
+			return;
+		case 10: // ◥
+		case 22:
+		case 26:
+			n12.connectTo(n22); //Right
+			n11.connectTo(n12); //Top
+			n11.connectTo(n22); //Top -> bottom
+			return;
+		case 11: // ◢
+		case 23:
+		case 27:
+			n12.connectTo(n22); //Right
+			n21.connectTo(n22); //Bottom
+			n21.connectTo(n12); //Bottom -> top
+			return;
+		default:
+			return;
 			//throw new Error('Unknown collision tile: ' + index);
 		}
 	}
@@ -269,34 +269,34 @@ export class Node {
 		const dirY = connection.y - this.y;
 
 		switch (dirY) {
+		case -1:
+			switch (dirX) {
 			case -1:
-				switch (dirX) {
-					case -1:
-						return 7;
-					case 0:
-						return 0;
-					case 1:
-						return 1;
-				}
-				break;
+				return 7;
 			case 0:
-				switch (dirX) {
-					case -1:
-						return 6;
-					case 1:
-						return 2;
-				}
-				break;
+				return 0;
 			case 1:
-				switch (dirX) {
-					case -1:
-						return 5;
-					case 0:
-						return 4;
-					case 1:
-						return 3;
-				}
-				break;
+				return 1;
+			}
+			break;
+		case 0:
+			switch (dirX) {
+			case -1:
+				return 6;
+			case 1:
+				return 2;
+			}
+			break;
+		case 1:
+			switch (dirX) {
+			case -1:
+				return 5;
+			case 0:
+				return 4;
+			case 1:
+				return 3;
+			}
+			break;
 		}
 		throw new Error('Invalid connection');
 	}

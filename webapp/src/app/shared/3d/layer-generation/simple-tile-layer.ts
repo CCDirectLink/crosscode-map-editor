@@ -1,6 +1,5 @@
 import Tile = Phaser.Tilemaps.Tile;
 import DynamicTilemapLayer = Phaser.Tilemaps.DynamicTilemapLayer;
-import {Point} from '../../../models/cross-code-map';
 
 export class SimpleTileLayer {
 	

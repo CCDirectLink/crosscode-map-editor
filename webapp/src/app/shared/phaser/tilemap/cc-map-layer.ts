@@ -114,7 +114,7 @@ export class CCMapLayer {
 		}
 	}
 
-	resize(width: number, height: number, skipRender = false) {
+	resize(width: number, height: number) {
 		if (!this.layer) {
 			return;
 		}

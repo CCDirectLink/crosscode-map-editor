@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {CrossCodeMap} from '../models/cross-code-map';
 import {CCMap} from './phaser/tilemap/cc-map';

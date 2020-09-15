@@ -139,10 +139,10 @@ interface DestructibleType {
 	debrisAngle?: number;
 	keyConsume?: string;
 	range?: {
-		key: string,
-		delay: number,
-		padding: number,
-		startDelay?: number,
+		key: string;
+		delay: number;
+		padding: number;
+		startDelay?: number;
 	};
 }
 

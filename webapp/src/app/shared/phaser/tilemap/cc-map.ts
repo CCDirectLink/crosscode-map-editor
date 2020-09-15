@@ -103,11 +103,11 @@ export class CCMap {
 		Globals.mapLoaderService.selectedLayer.next(this.layers[0]);
 	}
 	
-	resize(width: number, height: number, skipRender = false) {
+	resize(width: number, height: number) {
 		this.mapWidth = width;
 		this.mapHeight = height;
 		
-		this.layers.forEach(layer => layer.resize(width, height, skipRender));
+		this.layers.forEach(layer => layer.resize(width, height));
 		Globals.phaserEventsService.updateMapBorder.next(true);
 	}
 	

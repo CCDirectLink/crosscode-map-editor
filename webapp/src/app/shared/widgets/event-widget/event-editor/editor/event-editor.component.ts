@@ -5,7 +5,6 @@ import {
 	ChangeDetectionStrategy, OnChanges
 } from '@angular/core';
 import {AbstractEvent, EventType} from '../../event-registry/abstract-event';
-import {EventRegistryService} from '../../event-registry/event-registry.service';
 import {EventHelperService} from '../event-helper.service';
 
 @Component({

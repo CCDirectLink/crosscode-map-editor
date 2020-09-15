@@ -3,7 +3,6 @@ import * as Phaser from 'phaser';
 import {TileSelectorScene} from './tile-selector.scene';
 import {GlobalEventsService} from '../../shared/global-events.service';
 import {EditorView} from '../../models/editor-view';
-import {Globals} from '../../shared/globals';
 import {NavigationStart, Router} from '@angular/router';
 
 

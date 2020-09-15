@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import {Component, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {EventEditorComponent} from '../event-editor/editor/event-editor.component';
 import {EventType} from '../event-registry/abstract-event';
 

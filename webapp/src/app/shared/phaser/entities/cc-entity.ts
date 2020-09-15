@@ -73,7 +73,7 @@ export abstract class CCEntity extends BaseObject {
 		return this._selected;
 	}
 
-// drag
+	// drag
 	public isDragged = false;
 	public startOffset: Point = {x: 0, y: 0};
 	
@@ -83,12 +83,12 @@ export abstract class CCEntity extends BaseObject {
 		collType: string;
 		baseSize: Point3;
 		sheets: {
-			fix: Fix[],
+			fix: Fix[];
 			offset?: Point;
 			renderMode?: string;
 			flipX?: boolean;
 			ignoreScalable?: boolean;
-		}
+		};
 		scalableX: boolean;
 		scalableY: boolean;
 		scalableStep: number;
@@ -151,7 +151,7 @@ export abstract class CCEntity extends BaseObject {
 	}
 	
 	
-	preUpdate(time: number, delta: number): void {
+	preUpdate(): void {
 		if (this.isDragged) {
 			const container = this.container;
 			const p = this.scene.input.activePointer;

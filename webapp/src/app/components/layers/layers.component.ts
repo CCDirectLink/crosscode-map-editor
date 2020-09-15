@@ -25,7 +25,7 @@ export class LayersComponent implements OnInit {
 	constructor(private mapLoader: MapLoaderService,
 				private stateHistory: StateHistoryService,
 				private http: HttpClientService,
-	            events: GlobalEventsService) {
+				events: GlobalEventsService) {
 		events.toggleVisibility.subscribe(() => {
 			if (this.selectedLayer) {
 				this.toggleVisibility({
@@ -55,7 +55,7 @@ export class LayersComponent implements OnInit {
 		}
 	}
 	
-	async addNewLayer(event: Event) {
+	async addNewLayer() {
 		if (!this.map) {
 			return;
 		}

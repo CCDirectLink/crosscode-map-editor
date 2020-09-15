@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 - Unnecessary files in binary
+- Updated dependencies
 
 ## [0.7.1] - 2020-07-17
 

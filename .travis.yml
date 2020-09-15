@@ -10,21 +10,16 @@ matrix:
   allow_failures:
     - os: windows
 
-cache:
-  directories:
-    - webapp/node_modules
-    - common/node_modules
-
 install:
   - cd common
-  - npm install
+  - npm ci
   - cd ../webapp
-  - npm install
+  - npm ci
   - cd ..
 
 script:
   - cd common 
-  - npm run tslint
+  - npm run lint
   - npm run build
   - cd ../webapp
   - npm run lint

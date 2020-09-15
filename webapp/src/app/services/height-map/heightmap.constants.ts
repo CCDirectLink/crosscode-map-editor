@@ -26,7 +26,7 @@ export interface CheckDir {
 	gfx: GFX_TYPE;
 	terrainBorder?: {
 		dx: number;
-		dy: number
+		dy: number;
 	}[];
 }
 
@@ -145,7 +145,7 @@ DIAG_GFX[FILL_TYPE.NORTHWEST] = GFX_TYPE.DIAGONAL_NW;
 export const SQUARE_CORNER_CHECK: {
 	dir1: keyof AllCheckDirs;
 	dir2: keyof AllCheckDirs;
-	gfx: GFX_TYPE
+	gfx: GFX_TYPE;
 }[] = [
 	{dir1: 'NORTH', dir2: 'EAST', gfx: GFX_TYPE.SQUARE_NE},
 	{dir1: 'NORTH', dir2: 'WEST', gfx: GFX_TYPE.SQUARE_NW},
@@ -195,7 +195,7 @@ export const CHECK_DIR: AllCheckDirs = {
 
 export const CHECK_ITERATE: (keyof AllCheckDirs)[] = [];
 for (const name in CHECK_DIR) {
-	if (CHECK_DIR.hasOwnProperty(name)) {
+	if (name in CHECK_DIR) {
 		CHECK_ITERATE.push(name as keyof AllCheckDirs);
 	}
 }
