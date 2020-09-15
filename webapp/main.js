@@ -1,10 +1,10 @@
 'use strict';
 
-const {app, BrowserWindow} = require('electron');
+const {app, protocol, BrowserWindow} = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const path = require('path');
 const url = require('url');
-const {autoUpdater} = require("electron-updater");
+const {autoUpdater} = require('electron-updater');
 const contextMenu = require('electron-context-menu');
 const {IPC} = require('node-ipc');
 
@@ -33,7 +33,8 @@ function openWindow() {
 			height: mainWindowState.height,
 			webPreferences: {
 				webSecurity: false,
-				nodeIntegration: true
+				nodeIntegration: true,
+				enableRemoteModule: true
 			}
 		});
 		
@@ -54,8 +55,8 @@ function openWindow() {
 			console.log('path', indexPath);
 			win.loadURL(indexPath);
 			
-			const log = require("electron-log");
-			log.transports.file.level = "debug";
+			const log = require('electron-log');
+			log.transports.file.level = 'debug';
 			autoUpdater.logger = log;
 			autoUpdater.checkForUpdatesAndNotify();
 			// win.webContents.openDevTools();
@@ -66,7 +67,7 @@ function openWindow() {
 		win.on('closed', () => {
 			win = null;
 			openWindows--;
-			if (openWindows == 0) {
+			if (openWindows === 0) {
 				app.quit();
 			}
 		});
@@ -78,12 +79,19 @@ function openWindow() {
 		// On macOS it's common to re-create a window in the app when the
 		// dock icon is clicked and there are no other windows open.
 		if (win === null) {
-			createWindow()
+			createWindow();
 		}
 	});
 	
 	createWindow();
 }
+
+app.whenReady().then(() => {
+	protocol.registerFileProtocol('file', (request, callback) => {
+		const pathname = decodeURI(request.url.replace('file:///', ''));
+		callback(pathname);
+	});
+});
 
 app.on('ready', openWindow);
 
@@ -92,7 +100,7 @@ app.on('window-all-closed', () => {
 	// On macOS it is common for applications and their menu bar
 	// to stay active until the user quits explicitly with Cmd + Q
 	if (process.platform !== 'darwin') {
-		app.quit()
+		app.quit();
 	}
 });
 
@@ -110,7 +118,7 @@ sub.connectTo('crosscode-map-editor', () => {
 		
 		const master = new IPC();
 		master.config.silent = true;
-		master.config.id = 'crosscode-map-editor'
+		master.config.id = 'crosscode-map-editor';
 		master.serve(() => {
 			master.server.on('connect', () => openWindow());
 		});
