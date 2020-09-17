@@ -7,9 +7,9 @@ export interface EventType {
 }
 
 export interface EventTypeChild {
-	title?: string,
-	hideGreaterSign?: boolean
-	events: AbstractEvent<any>[]
+	title?: string;
+	hideGreaterSign?: boolean;
+	events: AbstractEvent<any>[];
 }
 
 export abstract class AbstractEvent<T extends EventType> {

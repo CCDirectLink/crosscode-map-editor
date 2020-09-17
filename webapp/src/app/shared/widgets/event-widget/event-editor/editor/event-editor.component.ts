@@ -1,15 +1,13 @@
 import {
 	Component,
-	OnInit,
 	Input,
 	ChangeDetectionStrategy, OnChanges
 } from '@angular/core';
-import { AbstractEvent, EventType, EventTypeChild } from '../../event-registry/abstract-event';
+import { AbstractEvent, EventType } from '../../event-registry/abstract-event';
 import { EventHelperService } from '../event-helper.service';
-import { NestedTreeControl, FlatTreeControl } from '@angular/cdk/tree';
-import { MatTreeNestedDataSource, MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material';
+import { FlatTreeControl } from '@angular/cdk/tree';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { from } from 'rxjs';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 
 interface EventDisplay {
 	text: string;
@@ -145,8 +143,8 @@ export class EventEditorComponent implements OnChanges {
 			if (node.children 
 				&& node.children.length > 0
 				&& node.children[0].title == null) {
-					entry.children = node.children[0].events;
-				}
+				entry.children = node.children[0].events;
+			}
 
 			result.push(entry);
 
@@ -174,7 +172,7 @@ export class EventEditorComponent implements OnChanges {
 			hideIcon: false,
 			isActionStep: false,
 			level: 0
-		})
+		});
 
 		return result;
 	}

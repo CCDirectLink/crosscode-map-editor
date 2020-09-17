@@ -18,7 +18,7 @@ interface CharacterSettings {
 		normal?: {
 			idle: string;
 			move: string;
-		}
+		};
 	};
 	
 	animSheet?: AnimSheet;

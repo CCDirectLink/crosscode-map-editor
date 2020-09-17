@@ -93,16 +93,16 @@ export class RowTextComponent {
 			return;
 		}
 		switch (event.key.toLowerCase()) {
-			case 'c':
-				this.copy();
-				break;
-			case 'x':
-				this.copy();
-				this.delete();
-				break;
-			case 'v':
-				this.paste();
-				break;
+		case 'c':
+			this.copy();
+			break;
+		case 'x':
+			this.copy();
+			this.delete();
+			break;
+		case 'v':
+			this.paste();
+			break;
 		}
 	}
 	

@@ -67,8 +67,12 @@ export abstract class CCEntity extends BaseObject {
 	private collisionImage!: Phaser.GameObjects.Graphics;
 	private inputZone!: Phaser.GameObjects.Zone;
 	
-	private selected = false;
+	private _selected = false;
 	
+	get selected(): boolean {
+		return this._selected;
+	}
+
 	// drag
 	public isDragged = false;
 	public startOffset: Point = {x: 0, y: 0};
@@ -79,12 +83,12 @@ export abstract class CCEntity extends BaseObject {
 		collType: string;
 		baseSize: Point3;
 		sheets: {
-			fix: Fix[],
+			fix: Fix[];
 			offset?: Point;
 			renderMode?: string;
 			flipX?: boolean;
 			ignoreScalable?: boolean;
-		}
+		};
 		scalableX: boolean;
 		scalableY: boolean;
 		scalableStep: number;
@@ -126,13 +130,13 @@ export abstract class CCEntity extends BaseObject {
 	
 	
 	public inputOver() {
-		if (!this.selected) {
+		if (!this._selected) {
 			this.collisionImage.alpha = 0.35;
 		}
 	}
 	
 	public inputOut() {
-		if (!this.selected) {
+		if (!this._selected) {
 			this.collisionImage.alpha = 0;
 		}
 	}
@@ -147,7 +151,7 @@ export abstract class CCEntity extends BaseObject {
 	}
 	
 	
-	preUpdate(time: number, delta: number): void {
+	preUpdate(): void {
 		if (this.isDragged) {
 			const container = this.container;
 			const p = this.scene.input.activePointer;
@@ -310,6 +314,7 @@ export abstract class CCEntity extends BaseObject {
 		}
 		
 		this.drawBoundingBox();
+		Globals.globalEventsService.updateEntitySettings.next(this);
 	}
 	
 	set level(level: any) {
@@ -346,7 +351,7 @@ export abstract class CCEntity extends BaseObject {
 	}
 	
 	setSelected(selected: boolean) {
-		this.selected = selected;
+		this._selected = selected;
 		if (this.collisionImage) {
 			this.collisionImage.alpha = selected ? 0.6 : 0;
 		}
@@ -408,7 +413,12 @@ export abstract class CCEntity extends BaseObject {
 	public generateNoImageType(rgbTop = 0xc06040, aTop = 0.5, rgb = 0x800000, a = 0.5) {
 		const settings = this.details.settings;
 		
-		const baseSize = settings.size || {x: 16, y: 16};
+		const baseSize: Point3 = {x: 16, y: 16, z: 0};
+		if (settings.size) {
+			baseSize.x = settings.size.x;
+			baseSize.y = settings.size.y;
+		}
+		
 		baseSize.z = settings.zHeight || settings.wallZHeight || 0;
 		
 		this.entitySettings = <any>{};
@@ -505,13 +515,15 @@ export abstract class CCEntity extends BaseObject {
 		return box;
 	}
 	
-	private getActualSize() {
+	public getActualSize(): Point3 {
 		const s = this.entitySettings;
 		const size = Object.assign({}, this.details.settings.size || s.baseSize);
 		try {
 			size.x = Number(size.x);
 			size.y = Number(size.y);
-			size.z = Number(size.z || this.details.settings.zHeight || this.details.settings.wallZHeight || (s.baseSize ? s.baseSize.z || 0 : 0));
+			if (size.z !== 0) {
+				size.z = Number(size.z || this.details.settings.zHeight || this.details.settings.wallZHeight || (s.baseSize ? s.baseSize.z || 0 : 0));
+			}
 		} catch (e) {
 			console.log(this);
 			console.error(e);

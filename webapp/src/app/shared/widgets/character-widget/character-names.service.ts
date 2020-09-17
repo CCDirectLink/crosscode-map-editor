@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
 export class CharacterNamesService {
 	private names: string[];
 
- 	constructor() { 
-    	this.names = ['main.lea'];
+	constructor() { 
+		this.names = ['main.lea'];
 	}
   
 	/**

@@ -1,6 +1,6 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
-import {CrossCodeMap, Point} from '../../../models/cross-code-map';
+import {CrossCodeMap} from '../../../models/cross-code-map';
 import {MapLoaderService} from '../../map-loader.service';
 import {Subscription} from 'rxjs';
 

@@ -4,8 +4,11 @@
 	background-color: #9f7a1e;
 }
 
-.outer-container mat-sidenav-container {
+.inner-container {
+	position: relative;
+	width: 100%;
 	height: 100%;
+	background-color: #9f7a1e;
 }
 
 .no-scroll {

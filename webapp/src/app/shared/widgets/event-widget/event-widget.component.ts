@@ -1,4 +1,4 @@
-import {Component, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, OnChanges} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 import {OverlayRefControl} from '../../overlay/overlay-ref-control';
 import {OverlayService} from '../../overlay/overlay.service';
@@ -22,8 +22,8 @@ export class EventWidgetComponent extends AbstractWidget implements OnChanges {
 		super();
 	}
 	
-	ngOnChanges(changes?: SimpleChanges): void {
-		super.ngOnChanges(changes);
+	ngOnChanges(): void {
+		super.ngOnChanges();
 		if (!this.settings[this.key] && !this.attribute.optional) {
 			this.settings[this.key] = [];
 		}

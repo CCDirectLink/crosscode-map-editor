@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {MatSnackBar} from '@angular/material';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {CrossCodeMap} from '../models/cross-code-map';
 import {CCMap} from './phaser/tilemap/cc-map';
@@ -12,9 +12,13 @@ import {BasePath, FileExtension, PathResolver} from './path-resolver';
 @Injectable()
 export class MapLoaderService {
 	
-	private _map = new BehaviorSubject<CrossCodeMap>(undefined as any);
 	tileMap = new BehaviorSubject<CCMap | undefined>(undefined);
 	selectedLayer = new BehaviorSubject<CCMapLayer | undefined>(undefined);
+	
+	private _map = new BehaviorSubject<CrossCodeMap>(undefined as any);
+	get map(): Observable<CrossCodeMap> {
+		return this._map.asObservable();
+	}
 	
 	constructor(
 		private snackBar: MatSnackBar,
@@ -68,9 +72,5 @@ export class MapLoaderService {
 		this.http.getAssetsFile<CrossCodeMap>(path).subscribe(map => {
 			this.loadRawMap(map, filename, path);
 		});
-	}
-	
-	get map(): Observable<CrossCodeMap> {
-		return this._map.asObservable();
 	}
 }

@@ -1,4 +1,4 @@
-import {Component, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 import {NpcStatesComponent} from './npc-states/npc-states.component';
 import {OverlayService} from '../../overlay/overlay.service';
@@ -33,12 +33,12 @@ export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, 
 	private ref?: OverlayRefControl;
 	
 	constructor(private overlayService: OverlayService,
-	            private overlay: Overlay) {
+				private overlay: Overlay) {
 		super();
 	}
 	
-	ngOnChanges(changes: SimpleChanges): void {
-		super.ngOnChanges(changes);
+	ngOnChanges(): void {
+		super.ngOnChanges();
 		this.npcStates = this.settings[this.key];
 		if (!this.npcStates) {
 			this.npcStates = [];

@@ -82,7 +82,7 @@ export class ElectronService implements SharedService {
 			throw new Error('remote is not defined');
 		}
 		const dialog: Dialog = this.remote.dialog;
-		const newPath = dialog.showOpenDialog({
+		const newPath = dialog.showOpenDialogSync({
 			title: 'Select CrossCode assets folder',
 			defaultPath: 'C:\\Program Files (x86)\\Steam\\steamapps\\common\\CrossCode\\assets',
 			properties: ['openDirectory']

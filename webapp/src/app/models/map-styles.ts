@@ -8,7 +8,7 @@ export type MapStyle = {
 	sheet: string;
 	hasDoorMat?: boolean;
 } & {
-	[key: string]: any
+	[key: string]: any;
 };
 
 export interface WallColors {
