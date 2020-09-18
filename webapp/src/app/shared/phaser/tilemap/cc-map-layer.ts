@@ -1,17 +1,17 @@
-import {MapLayer, Point} from '../../../models/cross-code-map';
+import { MapLayer, Point } from '../../../models/cross-code-map';
 import * as Phaser from 'phaser';
-import {Helper} from '../helper';
+import { Helper } from '../helper';
+import Tile = Phaser.Tilemaps.Tile;
 
 export class CCMapLayer {
-
-	// TODO: don't use details.data, it's not updated and only used for import/export. Use getPhaserLayer() instead to get tile information
+	
 	public details!: MapLayer;
-
-	private layer?: Phaser.Tilemaps.DynamicTilemapLayer;
-
+	
+	private layer!: Phaser.Tilemaps.DynamicTilemapLayer;
+	
 	constructor(private tilemap: Phaser.Tilemaps.Tilemap) {
 	}
-
+	
 	public async init(details: MapLayer) {
 		if (typeof details.level === 'string') {
 			// possible levels
@@ -40,10 +40,12 @@ export class CCMapLayer {
 		}
 		this.details = details;
 		this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), 'stub');
-
+		if (details.data) {
+			this.layer.putTilesAt(details.data, 0, 0, false);
+		}
 		await this.updateTileset(details.tilesetName!);
 		this.updateLevel(this.details.level);
-
+		
 		const skip = 'Navigation Collision HeightMap'.split(' ');
 		// const skip = 'Navigation Background HeightMap'.split(' ');
 		skip.forEach(type => {
@@ -52,48 +54,36 @@ export class CCMapLayer {
 			}
 		});
 	}
-
+	
 	get visible(): boolean {
-		if (!this.layer) {
-			return false;
-		}
 		return this.layer.visible;
 	}
-
+	
 	set visible(val: boolean) {
-		if (this.layer) {
-			this.layer.visible = val;
-			this.layer.active = val;
-		}
+		this.layer.visible = val;
+		this.layer.active = val;
 	}
-
+	
 	get alpha(): number {
-		if (!this.layer) {
-			return 1;
-		}
 		return this.layer.alpha;
 	}
-
+	
 	set alpha(val: number) {
-		if (this.layer) {
-			this.layer.alpha = val;
-		}
+		this.layer.alpha = val;
 	}
-
+	
 	destroy() {
-		if (this.layer) {
-			this.layer.destroy();
-			this.layer = undefined;
-		}
+		this.layer.destroy();
 	}
-
+	
 	offsetLayer(offset: Point, borderTiles = false) {
-		const data = this.details.data;
-		const newData: number[][] = JSON.parse(JSON.stringify(data));
-
+		const data = this.layer.layer.data;
+		const newData: number[][] = [];
+		
 		for (let y = 0; y < data.length; y++) {
+			newData[y] = [];
 			for (let x = 0; x < data[y].length; x++) {
-				let newTile = 0;
+				let newTile: Tile | undefined;
 				let row = data[y - offset.y];
 				if (!row && borderTiles) {
 					row = offset.y > 0 ? data[0] : data[data.length - 1];
@@ -104,83 +94,61 @@ export class CCMapLayer {
 						newTile = offset.x > 0 ? row[0] : row[row.length - 1];
 					}
 				}
-				newData[y][x] = newTile || 0;
+				newData[y][x] = newTile?.index ?? 0;
 			}
 		}
-
-		this.details.data = newData;
-		if (this.layer) {
-			this.layer.putTilesAt(this.details.data, 0, 0, false);
-		}
+		this.layer.putTilesAt(newData, 0, 0, false);
 	}
-
+	
 	resize(width: number, height: number) {
-		if (!this.layer) {
-			return;
-		}
-		const details = this.details;
-		details.width = width;
-		details.height = height;
-
-		this.extractLayerData(details);
-
+		const data = this.layer.layer.data;
+		this.details.width = width;
+		this.details.height = height;
+		
 		const newData: number[][] = [];
-		for (let y = 0; y < details.height; y++) {
+		for (let y = 0; y < height; y++) {
 			newData[y] = [];
-			const old = details.data[y] || [];
-			for (let x = 0; x < details.width; x++) {
-				newData[y][x] = old[x] || 0;
+			const old = data[y] || [];
+			for (let x = 0; x < width; x++) {
+				newData[y][x] = old[x]?.index ?? 0;
 			}
 		}
-		details.data = newData;
 		const tilesetName = this.layer.tileset[0].name;
 		const visible = this.layer.visible;
 		this.layer.destroy();
-
-		this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), tilesetName, 0, 0, details.width, details.height);
-		this.layer.putTilesAt(details.data, 0, 0, false);
+		
+		this.layer = this.tilemap.createBlankDynamicLayer(this.details.name + Math.random(), tilesetName, 0, 0, width, height);
+		this.layer.putTilesAt(newData, 0, 0, false);
 		this.visible = visible;
-
 	}
-
+	
 	async updateTileset(tilesetname: string) {
 		const details = this.details;
 		details.tilesetName = tilesetname;
-		if (details.tilesetName) {
-			if (this.layer) {
-				this.layer.destroy();
-				this.layer = undefined;
-			}
-			const exists = await Helper.loadTexture(tilesetname, this.tilemap.scene);
-			if (!exists) {
-				return;
-			}
-
-			const newTileset = this.tilemap.addTilesetImage(tilesetname);
-			if (!newTileset) {
-				return;
-			}
-			newTileset.firstgid = 1;
-			this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), newTileset, 0, 0, details.width, details.height);
-			this.layer.putTilesAt(details.data, 0, 0, false);
-		}
+		
+		const oldLayer = this.layer;
+		const exists = await Helper.loadTexture(tilesetname, this.tilemap.scene);
+		
+		const newTileset = this.tilemap.addTilesetImage(tilesetname, undefined, undefined, undefined, undefined, undefined, 1);
+		this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), newTileset ?? [], 0, 0, details.width, details.height);
+		this.layer.putTilesAt(oldLayer.layer.data, 0, 0, false);
+		
+		oldLayer.destroy();
 	}
-
+	
 	updateLevel(level: number) {
 		this.details.level = level;
 		let zIndex = this.details.level * 10;
 		if (isNaN(zIndex)) {
 			zIndex = 999;
 		}
-		if (this.layer) {
-			this.layer.depth = this.details.level * 10;
-		}
+		this.layer.depth = this.details.level * 10;
 	}
-
-	getPhaserLayer(): Phaser.Tilemaps.DynamicTilemapLayer | undefined {
+	
+	getPhaserLayer(): Phaser.Tilemaps.DynamicTilemapLayer {
 		return this.layer;
 	}
-
+	
 	exportLayer(): MapLayer {
 		const out: MapLayer = Object.assign({}, this.details);
 		if (out.levelName) {
@@ -191,15 +159,13 @@ export class CCMapLayer {
 		this.extractLayerData(out);
 		return out;
 	}
-
+	
 	private extractLayerData(layer: MapLayer): void {
-		if (this.layer) {
-			this.layer.getTilesWithin().forEach(tile => {
-				if (!layer.data[tile.y]) {
-					layer.data[tile.y] = [];
-				}
-				layer.data[tile.y][tile.x] = tile.index;
-			});
-		}
+		this.layer.getTilesWithin().forEach(tile => {
+			if (!layer.data[tile.y]) {
+				layer.data[tile.y] = [];
+			}
+			layer.data[tile.y][tile.x] = tile.index;
+		});
 	}
 }

@@ -12,6 +12,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Unnecessary files in binary
 - Updated dependencies
 - generate unique mapId's for every new entity
+- Initialize tiles with 0 instead of -1 in new layers, #165
+- Resize and offset should now work properly again
+- Fixed changing layer tileset causes previously made changes to be lost
 
 ## [0.7.1] - 2020-07-17
 
