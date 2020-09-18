@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MapLoaderService } from '../shared/map-loader.service';
 import { SharedModule } from '../shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
+import { MapEntity } from '../models/cross-code-map';
 import { PhaserComponent } from '../components/phaser/phaser.component';
 import { StateHistoryService } from '../shared/history/state-history.service';
 import { AutotileService } from '../services/autotile/autotile.service';
@@ -15,7 +16,7 @@ class SimpleServiceMock {
 	}
 }
 
-describe('Map Loading', () => {
+describe('Entities', () => {
 	let component: PhaserComponent;
 	let fixture: ComponentFixture<PhaserComponent>;
 	
@@ -40,43 +41,51 @@ describe('Map Loading', () => {
 		fixture.detectChanges();
 	});
 	
-	it('should create phaser component', () => {
-		expect(component).toBeTruthy();
-	});
-	
-	it('should export same map as imported (autumn/entrance)', async () => {
+	it('make new npc and export map', async () => {
 		const service: MapLoaderService = TestBed.get(MapLoaderService);
 		const http: HttpClientService = TestBed.get(HttpClientService);
-		const output = await loadMap(service, http, 'autumn/entrance');
-		expect(output.exported).toEqual(output.imported);
+		const res = await TestHelper.loadMap(service, http, 'autumn/entrance');
+		const map = res.ccmap;
+		const exported1 = map.exportMap();
+		
+		const npc = makeNewNpc();
+		const e = await map.entityManager.generateNewEntity(npc);
+		expect(e).toBeDefined();
+		const exported2 = map.exportMap();
+		
+		expect(exported2.entities.length - exported1.entities.length).toBe(1, 'exported map should have 1 additional entity');
 	});
 	
-	it('should export same map as imported (lots of maps)', async () => {
-		
+	
+	it('entities should have a unique mapId (instanceof Number)', async () => {
 		const service: MapLoaderService = TestBed.get(MapLoaderService);
 		const http: HttpClientService = TestBed.get(HttpClientService);
+		const res = await TestHelper.loadMap(service, http, 'autumn/entrance');
+		const map = res.ccmap;
 		
-		const paths = await http.getMaps().toPromise();
-		
-		const autumn = paths.filter(p => p.startsWith('autumn.')).slice(0, 5);
-		const arid = paths.filter(p => p.startsWith('arid.')).slice(0, 5);
-		const rhombus = paths.filter(p => p.startsWith('rhombus-sqr.')).slice(0, 5);
-		const shock = paths.filter(p => p.startsWith('shock-dng.')).slice(0, 5);
-		
-		const toTest = [...autumn, ...arid, ...rhombus, ...shock];
-		expect(toTest.length).toBeGreaterThan(10);
-		for (const mapName of toTest) {
-			const output = await loadMap(service, http, mapName);
-			expect(output.exported).toEqual(output.imported);
+		await map.entityManager.generateNewEntity(makeNewNpc());
+		await map.entityManager.generateNewEntity(makeNewNpc());
+		await map.entityManager.generateNewEntity(makeNewNpc());
+		const exported = map.exportMap();
+		const ids = exported.entities.map(e => e.settings.mapId);
+		ids.sort((a, b) => (a ?? -9) - (b ?? -9));
+		console.log(ids);
+		for (const id of ids) {
+			expect(id).toBeInstanceOf(Number);
 		}
+		
+		expect(new Set(ids).size).toBe(exported.entities.length, 'mapId should be unique for every entity');
 	});
+	
 });
 
-async function loadMap(service: MapLoaderService, http: HttpClientService, mapName: string): Promise<{ imported: any, exported: any }> {
-	const res = await TestHelper.loadMap(service, http, mapName);
-	const exported = res.ccmap.exportMap();
-	delete exported.path;
-	delete exported.filename;
-	return {imported: res.imported, exported: exported};
-	
+function makeNewNpc() {
+	const npc: MapEntity = {
+		x: 123,
+		y: 221,
+		type: 'NPC',
+		level: 0,
+		settings: {}
+	};
+	return npc;
 }

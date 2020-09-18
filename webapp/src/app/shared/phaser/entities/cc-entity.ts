@@ -1,12 +1,12 @@
-import {CCMap} from '../tilemap/cc-map';
-import {MapEntity, Point, Point3} from '../../../models/cross-code-map';
-import {Helper} from '../helper';
+import { CCMap } from '../tilemap/cc-map';
+import { MapEntity, Point, Point3 } from '../../../models/cross-code-map';
+import { Helper } from '../helper';
 import * as Phaser from 'phaser';
-import {Vec2} from '../vec2';
+import { Vec2 } from '../vec2';
 
-import {Globals} from '../../globals';
-import {BaseObject} from '../base-object';
-import {Subscription} from 'rxjs';
+import { Globals } from '../../globals';
+import { BaseObject } from '../base-object';
+import { Subscription } from 'rxjs';
 
 export interface ScaleSettings {
 	scalableX: boolean;
@@ -28,6 +28,12 @@ export interface AttributeValue {
 	optional?: boolean;
 	
 	// TODO: not needed anymore, cc source is not obfuscated
+	[key: string]: any;
+}
+
+export interface DetailSettings {
+	mapId: number;
+	
 	[key: string]: any;
 }
 
@@ -72,13 +78,19 @@ export abstract class CCEntity extends BaseObject {
 	get selected(): boolean {
 		return this._selected;
 	}
-
+	
 	// drag
 	public isDragged = false;
 	public startOffset: Point = {x: 0, y: 0};
 	
 	// zIndex: number;
-	details: { level: { level: number, offset: number }, type: string, settings: any } = <any>{};
+	details: {
+		level: {
+			level: number;
+			offset: number;
+		}; type: string;
+		settings: DetailSettings;
+	} = <any>{};
 	entitySettings: {
 		collType: string;
 		baseSize: Point3;
@@ -95,7 +107,7 @@ export abstract class CCEntity extends BaseObject {
 		pivot: Point;
 	} = <any>{};
 	
-	protected constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
+	public constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
 		super(scene, typeName, false);
 		scene.add.existing(this);
 		this.map = map;

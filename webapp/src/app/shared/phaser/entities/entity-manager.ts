@@ -1,14 +1,15 @@
-import {CCEntity} from './cc-entity';
-import {CrossCodeMap, MapEntity, Point} from '../../../models/cross-code-map';
-import {Vec2} from '../vec2';
-import {Globals} from '../../globals';
-import {SelectionBox} from './selection-box';
-import {BaseObject} from '../base-object';
-import {Helper} from '../helper';
+import { CCEntity } from './cc-entity';
+import { CrossCodeMap, MapEntity, Point } from '../../../models/cross-code-map';
+import { Vec2 } from '../vec2';
+import { Globals } from '../../globals';
+import { SelectionBox } from './selection-box';
+import { BaseObject } from '../base-object';
+import { Helper } from '../helper';
+import { CCMap } from '../tilemap/cc-map';
 
 export class EntityManager extends BaseObject {
 	
-	private map?: CrossCodeMap;
+	private map?: CCMap;
 	private _entities: CCEntity[] = [];
 	get entities(): CCEntity[] {
 		return this._entities;
@@ -89,21 +90,7 @@ export class EntityManager extends BaseObject {
 		this.addSubscription(sub2);
 		
 		const sub3 = Globals.globalEventsService.generateNewEntity.subscribe(async entity => {
-			if (!this.map) {
-				return;
-			}
-			// TODO: better generate level from collision tiles
-			entity.level = this.map.masterLevel;
-			const e = await this.generateEntity(entity);
-			
-			// entity manager is activated
-			e.setActive(true);
-			this.selectEntity(e);
-			
-			Globals.stateHistoryService.saveState({
-				name: 'Entity added',
-				icon: 'add'
-			}, true);
+			await this.generateNewEntity(entity);
 		});
 		this.addSubscription(sub3);
 		
@@ -256,14 +243,14 @@ export class EntityManager extends BaseObject {
 	}
 	
 	/** generates all entities and adds proper input handling */
-	async initialize(map?: CrossCodeMap) {
-		this.map = map;
+	async initialize(map: CrossCodeMap, ccMap: CCMap) {
+		this.map = ccMap;
 		if (this._entities) {
 			this._entities.forEach(e => e.destroy());
 		}
 		this._entities = [];
 		
-		if (!map || !map.entities) {
+		if (!map.entities) {
 			return;
 		}
 		
@@ -296,12 +283,36 @@ export class EntityManager extends BaseObject {
 		}
 	}
 	
+	public async generateNewEntity(entity: MapEntity): Promise<CCEntity | undefined> {
+		if (!this.map) {
+			return;
+		}
+		// TODO: better generate level from collision tiles
+		entity.level = this.map.masterLevel;
+		const e = await this.generateEntity(entity);
+		
+		// entity manager is activated
+		e.setActive(true);
+		this.selectEntity(e);
+		
+		Globals.stateHistoryService.saveState({
+			name: 'Entity added',
+			icon: 'add'
+		}, true);
+		
+		return e;
+	}
+	
 	async generateEntity(entity: MapEntity): Promise<CCEntity> {
 		const entityClass = Globals.entityRegistry.getEntity(entity.type);
-		
-		const ccEntity = new entityClass(this.scene, this.map, entity.x, entity.y, entity.type);
+		console.assert(this.map);
+		const map = this.map!;
+		const ccEntity = new entityClass(this.scene, map, entity.x, entity.y, entity.type);
 		await ccEntity.setSettings(entity.settings);
 		ccEntity.level = entity.level;
+		if (!ccEntity.details.settings.mapId) {
+			ccEntity.details.settings.mapId = map.getUniqueMapid();
+		}
 		ccEntity.setActive(false);
 		this._entities.push(ccEntity);
 		return ccEntity;

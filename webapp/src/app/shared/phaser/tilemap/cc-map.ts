@@ -14,6 +14,7 @@ export class CCMap {
 	attributes: Attributes = <any>{};
 	screen: Point = {x: 0, y: 0};
 	
+	private lastMapId = 1;
 	private tileMap?: Phaser.Tilemaps.Tilemap;
 	
 	private historySub: Subscription;
@@ -88,8 +89,16 @@ export class CCMap {
 			this.inputLayers = undefined;
 		}
 		
+		this.lastMapId = 0;
+		for (const entity of map.entities) {
+			const mapId = entity.settings.mapId ?? 0;
+			if (mapId > this.lastMapId) {
+				this.lastMapId = mapId;
+			}
+		}
+		
 		// generate entities
-		await this.entityManager.initialize(map);
+		await this.entityManager.initialize(map, this);
 		
 		if (!skipInit) {
 			Globals.stateHistoryService.init({
@@ -129,6 +138,10 @@ export class CCMap {
 		return this.tileMap;
 	}
 	
+	public getUniqueMapid() {
+		return ++this.lastMapId;
+	}
+
 	exportMap(): CrossCodeMap {
 		const out: CrossCodeMap = <any>{};
 
