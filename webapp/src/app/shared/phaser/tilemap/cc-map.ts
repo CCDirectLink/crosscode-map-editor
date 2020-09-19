@@ -89,7 +89,7 @@ export class CCMap {
 			this.inputLayers = undefined;
 		}
 		
-		this.lastMapId = 0;
+		this.lastMapId = 1;
 		for (const entity of map.entities) {
 			const mapId = entity.settings.mapId ?? 0;
 			if (mapId > this.lastMapId) {
