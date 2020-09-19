@@ -19,7 +19,6 @@ export class EntityRegistryService {
 		this.register('ItemDestruct', ItemDestruct);
 		this.register('Destructible', Destructible);
 		this.register('NPC', NPC);
-		this.register('NPC', NPC);
 		this.register('EventTrigger', EventTrigger);
 	}
 	
