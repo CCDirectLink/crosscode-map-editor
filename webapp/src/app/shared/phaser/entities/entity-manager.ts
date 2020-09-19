@@ -323,7 +323,7 @@ export class EntityManager extends BaseObject {
 		this.copyEntities = this.selectedEntities.slice();
 	}
 	
-	paste() {
+	async paste() {
 		if (this.copyEntities.length === 0 || !this.map) {
 			return;
 		}
@@ -332,14 +332,16 @@ export class EntityManager extends BaseObject {
 		const mousePos = Helper.getPointerPos(this.scene.input.activePointer);
 		this.selectEntity();
 		
-		this.copyEntities.forEach(async e => {
+		for (const e of this.copyEntities) {
 			const entityDef = e.exportEntity();
+			entityDef.settings.mapId = undefined;
 			Vec2.sub(entityDef, offset);
 			Vec2.add(entityDef, mousePos);
 			const newEntity = await this.generateEntity(entityDef);
 			newEntity.setActive(true);
 			this.selectEntity(newEntity, this.copyEntities.length > 1);
-		});
+		}
+		
 	}
 	
 	deleteSelectedEntities() {
