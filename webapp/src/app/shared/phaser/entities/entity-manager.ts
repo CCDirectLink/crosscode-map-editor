@@ -309,11 +309,11 @@ export class EntityManager extends BaseObject {
 		console.assert(this.map, 'I dont think map is ever undefined, but if it ever happens check the TODO on private map?: CCMap;');
 		const map = this.map!;
 		const ccEntity = new entityClass(this.scene, map, entity.x, entity.y, entity.type);
+		if (!entity.settings.mapId) {
+			entity.settings.mapId = map.getUniqueMapid();
+		}
 		await ccEntity.setSettings(entity.settings);
 		ccEntity.level = entity.level;
-		if (!ccEntity.details.settings.mapId) {
-			ccEntity.details.settings.mapId = map.getUniqueMapid();
-		}
 		ccEntity.setActive(false);
 		this._entities.push(ccEntity);
 		return ccEntity;
