@@ -11,7 +11,6 @@ import { CCEntity } from '../cc-entity';
 @Injectable()
 export class EntityRegistryService {
 	private entities: { [type: string]: typeof CCEntity } = {};
-	private defaultEntity = DefaultEntity;
 	
 	constructor() {
 		this.register('Prop', Prop);
@@ -27,7 +26,7 @@ export class EntityRegistryService {
 	}
 	
 	public getDefaultEntity(): typeof DefaultEntity {
-		return this.defaultEntity;
+		return DefaultEntity;
 	}
 	
 	public getAll() {
@@ -37,6 +36,6 @@ export class EntityRegistryService {
 	// typed as DefaultEntity so constructor can be used with parameter checking.
 	// CCEntity is abstract and doesn't allow using the constructor
 	public getEntity(type: string): typeof DefaultEntity {
-		return (this.entities[type] || this.defaultEntity) as any;
+		return (this.entities[type] ?? DefaultEntity) as typeof DefaultEntity;
 	}
 }
