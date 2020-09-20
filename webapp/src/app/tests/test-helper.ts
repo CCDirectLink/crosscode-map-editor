@@ -6,6 +6,7 @@ import { CCMap } from '../shared/phaser/tilemap/cc-map';
 import { Subscription } from 'rxjs';
 
 export class TestHelper {
+	// TODO: shouldn't be used because it relies on backend and original crosscode maps. Instead make custom maps for testing
 	public static async loadMap(service: MapLoaderService, http: HttpClientService, mapName: string): Promise<{ imported: CrossCodeMap, ccmap: CCMap }> {
 		return new Promise(((res) => {
 			let imported: CrossCodeMap;
@@ -16,6 +17,7 @@ export class TestHelper {
 					return;
 				}
 				
+				// TODO: sometimes undefined
 				sub!.unsubscribe();
 				res({imported: imported, ccmap: map});
 			});
