@@ -1,3 +1,5 @@
+import { DetailSettings } from '../shared/phaser/entities/cc-entity';
+
 export interface CrossCodeMap {
 	name: string;
 	levels: { height: number }[];
@@ -38,7 +40,7 @@ export interface MapEntity {
 	x: number;
 	y: number;
 	level: number | { level: number, offset: number };
-	settings: any;
+	settings: Partial<DetailSettings>;
 }
 
 export interface MapLayer {
