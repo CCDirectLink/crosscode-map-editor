@@ -289,8 +289,8 @@ export abstract class CCEntity extends BaseObject {
 					}
 					
 					// crop offset
-					img.x -= cropX;
-					img.y -= cropY;
+					img.x -= sheet.x;
+					img.y -= sheet.y;
 					
 					img.setCrop(cropX, cropY, sheet.w, sheet.h);
 					img.flipX = !!sheet.flipX;
