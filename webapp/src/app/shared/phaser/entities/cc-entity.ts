@@ -268,19 +268,17 @@ export abstract class CCEntity extends BaseObject {
 					let cropX = sheet.x;
 					if (sheet.flipX) {
 						cropX = img.displayWidth - sheet.x - sheet.w;
-						img.x += cropX - sheet.x;
 					}
 					
 					let cropY = sheet.y;
 					if (sheet.flipY) {
 						// TODO: untested
 						cropY = img.displayWidth - sheet.y - sheet.h;
-						img.y += cropY - sheet.y;
 					}
 					
 					// crop offset
-					img.x -= cropX;
-					img.y -= cropY;
+					img.x -= sheet.x;
+					img.y -= sheet.y;
 					
 					img.setCrop(cropX, cropY, sheet.w, sheet.h);
 					img.flipX = !!sheet.flipX;
