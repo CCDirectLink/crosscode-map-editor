@@ -9,6 +9,7 @@ import { CCMap } from '../tilemap/cc-map';
 
 export class EntityManager extends BaseObject {
 	
+	// TODO: If ? is really required, add a description why.
 	private map?: CCMap;
 	private _entities: CCEntity[] = [];
 	get entities(): CCEntity[] {
@@ -305,14 +306,14 @@ export class EntityManager extends BaseObject {
 	
 	async generateEntity(entity: MapEntity): Promise<CCEntity> {
 		const entityClass = Globals.entityRegistry.getEntity(entity.type);
-		console.assert(this.map);
+		console.assert(this.map, 'I dont think map is ever undefined, but if it ever happens check the TODO on private map?: CCMap;');
 		const map = this.map!;
 		const ccEntity = new entityClass(this.scene, map, entity.x, entity.y, entity.type);
+		if (!entity.settings.mapId) {
+			entity.settings.mapId = map.getUniqueMapid();
+		}
 		await ccEntity.setSettings(entity.settings);
 		ccEntity.level = entity.level;
-		if (!ccEntity.details.settings.mapId) {
-			ccEntity.details.settings.mapId = map.getUniqueMapid();
-		}
 		ccEntity.setActive(false);
 		this._entities.push(ccEntity);
 		return ccEntity;
@@ -322,7 +323,7 @@ export class EntityManager extends BaseObject {
 		this.copyEntities = this.selectedEntities.slice();
 	}
 	
-	paste() {
+	async paste() {
 		if (this.copyEntities.length === 0 || !this.map) {
 			return;
 		}
@@ -331,14 +332,16 @@ export class EntityManager extends BaseObject {
 		const mousePos = Helper.getPointerPos(this.scene.input.activePointer);
 		this.selectEntity();
 		
-		this.copyEntities.forEach(async e => {
+		for (const e of this.copyEntities) {
 			const entityDef = e.exportEntity();
+			entityDef.settings.mapId = undefined;
 			Vec2.sub(entityDef, offset);
 			Vec2.add(entityDef, mousePos);
 			const newEntity = await this.generateEntity(entityDef);
 			newEntity.setActive(true);
 			this.selectEntity(newEntity, this.copyEntities.length > 1);
-		});
+		}
+		
 	}
 	
 	deleteSelectedEntities() {

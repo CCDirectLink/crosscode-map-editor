@@ -107,7 +107,7 @@ export abstract class CCEntity extends BaseObject {
 		pivot: Point;
 	} = <any>{};
 	
-	public constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
+	protected constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
 		super(scene, typeName, false);
 		scene.add.existing(this);
 		this.map = map;
