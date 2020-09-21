@@ -127,7 +127,7 @@ export class CCMapLayer {
 		details.tilesetName = tilesetname;
 		
 		const oldLayer = this.layer;
-		const exists = await Helper.loadTexture(tilesetname, this.tilemap.scene);
+		await Helper.loadTexture(tilesetname, this.tilemap.scene);
 		
 		const newTileset = this.tilemap.addTilesetImage(tilesetname, undefined, undefined, undefined, undefined, undefined, 1);
 		this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), newTileset ?? [], 0, 0, details.width, details.height);
