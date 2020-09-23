@@ -5,12 +5,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [0.8.0] - 2020-09-21
+
 ### Added
 - 3d view for all maps
 
 ### Fixed
 - Unnecessary files in binary
 - Updated dependencies
+- Generate unique mapId's for every new entity
+- Initialize tiles with 0 instead of -1 in new layers, #165
+- Resize and offset should now work properly again
+- Fixed changing layer tileset causes previously made changes to be lost
 
 ## [0.7.1] - 2020-07-17
 
