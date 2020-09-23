@@ -1,7 +1,7 @@
 <button class="event-row-text event-row"
         (click)="leftClick($event)"
-        (dblclick)="doubleClick($event)"
-        (contextmenu)="rightClick($event)"
+        (dblclick)="openAddMenu($event)"
+        (contextmenu)="openAddMenu($event)"
         (keydown)="keyPress($event)">
 	<div *ngIf="text">
 		<mat-icon class="event-row-icon" *ngIf="!hideGreaterSign">fiber_manual_record</mat-icon>

@@ -1,5 +1,7 @@
 @import '~@angular/material/theming'; //mat-elevation
 
+$size: 26px;
+
 :host {
 	height: 100%;
 	overflow-y: auto;
@@ -10,11 +12,12 @@
 	overflow: auto;
 }
 
-.event-inner-container {
+.event-inner-container > .mat-tree {
+	min-height: 100%;
+	height: fit-content;
 	padding-left: 6px;
 	$color1: #3a3a3a;
 	$color2: #343434;
-	$size: 26px;
 	background: repeating-linear-gradient(
 			180deg,
 			$color1,
@@ -24,20 +27,21 @@
 	);
 }
 
-.event-inner-container > .mat-tree-node {
+.event-inner-container .mat-tree-node {
 	display: block;
 	flex: none;
 	min-height: auto;
-}
+	max-height: $size;
+	overflow: hidden;
+	white-space: nowrap;
 
-.mat-tree-node {
-  cursor: move;
-  &.cdk-drag-preview {
-    @include mat-elevation(12);
-  }
-  &.cdk-drag-placeholder {
-    opacity: 0;
-  }
+	cursor: move;
+	&.cdk-drag-preview {
+	  @include mat-elevation(12);
+	}
+	&.cdk-drag-placeholder {
+	  opacity: 0;
+	}
 }
 
 .cdk-drop-list-dragging .mat-tree-node:not(.cdk-drag-placeholder) {

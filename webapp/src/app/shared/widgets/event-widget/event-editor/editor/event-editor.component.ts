@@ -31,11 +31,11 @@ export class EventEditorComponent implements OnChanges {
 
 	workingData?: AbstractEvent<any>[];
 
-	treeControl = new FlatTreeControl<EventDisplay>(e => e.level, e => e.children != null && e.children.length > 0);
+	treeControl = new FlatTreeControl<EventDisplay>(e => e.level, e => e.children != null);
 	treeFlattener = new MatTreeFlattener(
 		(node: EventDisplay, level: number) => this.setLevel(node, level), 
 		e => e.level, 
-		e => e.children != null && e.children.length > 0, 
+		e => e.children != null, 
 		e => this.convertNodes(e.children!));
 	dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
@@ -67,9 +67,14 @@ export class EventEditorComponent implements OnChanges {
 		this.treeControl.expandAll();
 	}
 
-	refresh() {
-		this.dataSource.data = this.convertNodes(this.workingData!);
-		this.treeControl.expandAll();
+	refresh(event?: AbstractEvent<any>) {
+		const display = this.treeControl.dataNodes.find(node => node.data === event);
+		if (!event || !display) {
+			this.dataSource.data = this.convertNodes(this.workingData!);
+			this.treeControl.expandAll();
+		} else {
+			display.text = event.info;
+		}
 	}
 
 	export() {
@@ -100,21 +105,25 @@ export class EventEditorComponent implements OnChanges {
 
 	drop(event: CdkDragDrop<EventDisplay>) {
 		const moved = event.item.data as EventDisplay;
+		const fromParent = this.getParent(moved) || this.workingData!;
 
 		if (event.currentIndex === 0) {
 			this.workingData!.unshift(moved.data!);
 		} else {
 			const toTop = event.currentIndex > event.previousIndex ? this.treeControl.dataNodes[event.currentIndex] : this.treeControl.dataNodes[event.currentIndex - 1];
-			if (toTop.children && toTop.children.length > 0) {
+			if (toTop.children != null) {
 				toTop.children.unshift(moved.data!);
 			} else {
 				const toParent = this.getParent(toTop) || this.workingData!;
 				const toIndex = toParent.indexOf(toTop.data!);
-				toParent.splice(toIndex + 1, 0, moved.data!);
+				if (toIndex >= 0) {
+					toParent.splice(toIndex + 1, 0, moved.data!);
+				} else {
+					toParent.push(moved.data!);
+				}
 			}
 		}
 
-		const fromParent = this.getParent(moved) || this.workingData!;
 		if (event.currentIndex > event.previousIndex) {
 			fromParent.splice(fromParent.indexOf(moved.data!), 1);
 		} else {

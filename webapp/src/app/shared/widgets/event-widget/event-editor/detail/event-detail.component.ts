@@ -3,6 +3,7 @@ import {
 	ComponentFactoryResolver,
 	EventEmitter,
 	Input,
+	OnDestroy,
 	OnInit,
 	Output,
 	ViewChild,
@@ -16,6 +17,7 @@ import {AbstractWidget} from '../../../abstract-widget';
 import {WidgetRegistryService} from '../../../widget-registry.service';
 import {JsonWidgetComponent} from '../../../json-widget/json-widget.component';
 import {EventHelperService} from '../event-helper.service';
+import { Subscription } from 'rxjs';
 
 const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 
@@ -31,29 +33,39 @@ const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 	templateUrl: './event-detail.component.html',
 	styleUrls: ['./event-detail.component.scss']
 })
-export class EventDetailComponent implements OnInit {
+export class EventDetailComponent implements OnInit, OnDestroy {
 	@ViewChild(HostDirective, {static: true}) appHost!: HostDirective;
 	
 	@Input() event!: AbstractEvent<any>;
-	@Output() exit: EventEmitter<AbstractEvent<any>> = new EventEmitter<any>();
+	@Output() exit = new EventEmitter<AbstractEvent<any>>();
+	@Output() refresh = new EventEmitter<AbstractEvent<any>>();
 	
 	animState = 'enter';
 	newData: any;
 	unknownObj?: { data: any };
 	warning = false;
+
+	private changeSubscriptions: Subscription[] = [];
 	
 	constructor(private componentFactoryResolver: ComponentFactoryResolver,
 				private widgetRegistry: WidgetRegistryService,
 				private helper: EventHelperService) {
 	}
-	
-	ngOnInit(): void {
-		this.loadSettings();
+
+	ngOnDestroy(): void {
+		for (const sub of this.changeSubscriptions) {
+			sub.unsubscribe();
+		}
+		this.changeSubscriptions = [];
 	}
 	
-	save() {
-		this.event.data = this.unknownObj ? this.unknownObj.data : this.newData;
-		this.exit.emit(this.event);
+	ngOnInit(): void {
+		this.helper.selectedEvent.subscribe(selected => {
+			if (selected) {
+				this.event = selected;
+				this.loadSettings();
+			}
+		});
 	}
 	
 	cancel() {
@@ -62,6 +74,9 @@ export class EventDetailComponent implements OnInit {
 	
 	private loadSettings() {
 		const ref = this.appHost.viewContainerRef;
+
+		ref.clear();
+
 		const exported = this.event.export();
 		this.newData = this.helper.getEventFromType(exported, this.event.actionStep).data;
 		
@@ -92,6 +107,14 @@ export class EventDetailComponent implements OnInit {
 		instance.custom = data;
 		instance.key = key;
 		instance.attribute = val;
+		const sub = instance.onChange.subscribe((value: any) => this.update(value));
+		this.changeSubscriptions.push(sub);
 		return instance;
+	}
+
+	private update(value: any) {
+		this.event.data = this.unknownObj ? this.unknownObj.data : this.newData;
+		this.event.update();
+		this.refresh.emit(this.event);
 	}
 }

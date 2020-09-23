@@ -37,38 +37,13 @@ export class RowTextComponent {
 	
 	leftClick(event: MouseEvent) {
 		event.stopPropagation();
-		this.storage.selectedEvent.next(this);
+		if (this.data) {
+			this.storage.selectedEvent.next(this.data);
+		}
 		this.click.emit(this);
 	}
 	
-	rightClick(event: MouseEvent) {
-		if (!this.data) {
-			return false;
-		}
-		this.leftClick(event);
-		
-		const obj = this.overlayService.open(EventDetailComponent, {
-			positionStrategy: this.overlay.position().global()
-				.left('calc(28vw - 110px)')
-				.top('calc((64px + 6vh / 2) + 60px)'),
-			hasBackdrop: true,
-			// backdropClass: '',
-			backdropClickClose: true,
-		});
-		
-		
-		obj.instance.event = this.data;
-		obj.instance.exit.subscribe((v: AbstractEvent<any>) => {
-			obj.ref.close();
-			this.data = v;
-			v.update();
-			this.dataChange.emit();
-		}, () => obj.ref.close());
-		
-		return false;
-	}
-	
-	doubleClick(event: MouseEvent) {
+	openAddMenu(event: MouseEvent) {
 		event.stopPropagation();
 		this.dblClick.emit(this);
 		

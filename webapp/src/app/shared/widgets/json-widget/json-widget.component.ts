@@ -40,7 +40,7 @@ export class JsonWidgetComponent extends AbstractWidget {
 		this.timer = window.setTimeout(() => {
 			value = JSON.parse(value);
 			this.settings[key] = value;
-			this.updateType();
+			this.updateType(value);
 		}, 500);
 	}
 }
