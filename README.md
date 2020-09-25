@@ -1,11 +1,11 @@
-[![Discord Server](https://img.shields.io/discord/382339402338402315.svg?label=Discord%20Server)](https://discord.gg/SJmMZKy)  [![Build Status](https://travis-ci.org/CCDirectLink/crosscode-map-editor.svg?branch=master)](https://travis-ci.org/CCDirectLink/crosscode-map-editor) [![GitHub release](https://img.shields.io/github/release/CCDirectLink/crosscode-map-editor.svg)](https://GitHub.com/CCDirectLink/crosscode-map-editor/releases/)
+[![Discord Server](https://img.shields.io/discord/382339402338402315.svg?label=Discord%20Server)](https://discord.gg/TFs6n5v)  [![Build Status](https://travis-ci.org/CCDirectLink/crosscode-map-editor.svg?branch=master)](https://travis-ci.org/CCDirectLink/crosscode-map-editor) [![GitHub release](https://img.shields.io/github/release/CCDirectLink/crosscode-map-editor.svg)](https://GitHub.com/CCDirectLink/crosscode-map-editor/releases/)
 
 # CrossCode Map Editor
 
 
 A Map Editor for the game [CrossCode](http://www.cross-code.com/en/home), build with [Angular](https://angular.io/) and [Phaser](https://phaser.io/).
 
-![editor](https://user-images.githubusercontent.com/9483499/29732155-acc24a46-89e7-11e7-9500-7fd1066a01a0.png)
+![editor](https://user-images.githubusercontent.com/9483499/94266096-eb0df280-ff39-11ea-907c-7b6a40c983cb.png)
 
 ## Changelog
 [Learn about the latest improvements](CHANGELOG.md).
