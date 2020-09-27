@@ -111,6 +111,10 @@ export class EventEditorComponent implements OnChanges {
 			this.workingData!.unshift(moved.data!);
 		} else {
 			const toTop = event.currentIndex > event.previousIndex ? this.treeControl.dataNodes[event.currentIndex] : this.treeControl.dataNodes[event.currentIndex - 1];
+			if (this.isChildOf(toTop, moved)) {
+				return;
+			}
+
 			if (toTop.children != null) {
 				toTop.children.unshift(moved.data!);
 			} else {
@@ -132,6 +136,28 @@ export class EventEditorComponent implements OnChanges {
 		
 		this.refresh();
 	}
+
+	private isChildOf(child: EventDisplay, parent: EventDisplay): boolean {
+		let currentLevel = this.treeControl.getLevel(child);
+		if (currentLevel <= 0) {
+			return false;
+		}
+
+		const currentIndex = this.treeControl.dataNodes.indexOf(child);
+		for (let i = currentIndex - 1; i >= 0; i--) {
+			const node = this.treeControl.dataNodes[i];
+			const nodeLevel = this.treeControl.getLevel(node);
+
+			if (node === parent) {
+				return nodeLevel === currentLevel - 1;
+			}
+
+			currentLevel = Math.min(currentLevel, nodeLevel);
+		}
+		
+		return false;
+	}
+
 
 	private setLevel(node: EventDisplay, level: number): EventDisplay {
 		node.level = level;
