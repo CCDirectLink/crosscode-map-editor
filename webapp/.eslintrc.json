@@ -102,6 +102,7 @@
         "no-unused-labels": "error",
         "no-unused-vars": "off",
 		"no-var": "error",
+		"no-constant-condition": "off",
 		"prefer-const": "error",
         "radix": "error",
         "quote-props": "off",
