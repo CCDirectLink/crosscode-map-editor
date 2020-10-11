@@ -1,12 +1,13 @@
-import {CCMapLayer} from './cc-map-layer';
-import {Globals} from '../../globals';
-import {Helper} from '../helper';
-import {Point} from '../../../models/cross-code-map';
-import {Vec2} from '../vec2';
-import {SelectedTile} from '../../../models/tile-selector';
+import { CCMapLayer } from './cc-map-layer';
+import { Globals } from '../../globals';
+import { Helper } from '../helper';
+import { Point } from '../../../models/cross-code-map';
+import { Vec2 } from '../vec2';
+import { SelectedTile } from '../../../models/tile-selector';
 import * as Phaser from 'phaser';
-import {Filler} from './fill';
-import {BaseObject} from '../base-object';
+import { Filler } from './fill';
+import { BaseObject } from '../base-object';
+import { pointsInLine } from './points-in-line';
 
 export class TileDrawer extends BaseObject {
 	
@@ -29,6 +30,8 @@ export class TileDrawer extends BaseObject {
 	private shiftKey!: Phaser.Input.Keyboard.Key;
 	private fillKey!: Phaser.Input.Keyboard.Key;
 	private lastDraw: Point = {x: -1, y: -1};
+	
+	private dirty = false;
 	
 	constructor(scene: Phaser.Scene) {
 		super(scene, 'tileDrawer');
@@ -147,29 +150,39 @@ export class TileDrawer extends BaseObject {
 		// trigger only when mouse is over canvas element (the renderer), avoids triggering when interacting with ui
 		if (pointer.leftButtonDown() && pointer.downElement.nodeName === 'CANVAS' && this.layer) {
 			const finalPos = {x: 0, y: 0};
+			const startPos = {x: 0, y: 0};
 			
 			// skip drawing if last frame was the same
 			if (this.lastDraw.x === p.x && this.lastDraw.y === p.y) {
 				return;
 			}
-			Vec2.assign(this.lastDraw, p);
+			this.dirty = true;
 			for (const tile of this.selectedTiles) {
+				
 				finalPos.x = p.x + tile.offset.x;
 				finalPos.y = p.y + tile.offset.y;
 				
-				if (Helper.isInBounds(this.layer, finalPos)) {
-					const phaserLayer = this.layer.getPhaserLayer();
-					if (!phaserLayer) {
-						return;
-					}
-					
-					phaserLayer.putTileAt(tile.id, finalPos.x, finalPos.y, false);
-					
-					if (!this.shiftKey.isDown) {
-						Globals.autotileService.drawTile(this.layer, finalPos.x, finalPos.y, tile.id);
+				startPos.x = this.lastDraw.x + tile.offset.x;
+				startPos.y = this.lastDraw.y + tile.offset.y;
+				
+				const points = this.lastDraw.x < 0 ? [finalPos] : pointsInLine(startPos, finalPos);
+				for (const point of points) {
+					if (Helper.isInBounds(this.layer, point)) {
+						const phaserLayer = this.layer.getPhaserLayer();
+						if (!phaserLayer) {
+							return;
+						}
+						
+						phaserLayer.putTileAt(tile.id, point.x, point.y, false);
+						
+						if (!this.shiftKey.isDown) {
+							Globals.autotileService.drawTile(this.layer, point.x, point.y, tile.id);
+						}
 					}
 				}
 			}
+			Vec2.assign(this.lastDraw, p);
+			
 		}
 	}
 	
@@ -222,12 +235,20 @@ export class TileDrawer extends BaseObject {
 				return;
 			}
 			
+			this.lastDraw.x = -1;
+			
+			if (!this.dirty) {
+				return;
+			}
+			this.dirty = false;
+			
 			Globals.stateHistoryService.saveState({
 				name: 'Tile Drawer',
 				icon: 'create',
 			});
 		};
 		this.addKeybinding({event: 'pointerup', fun: leftUp, emitter: this.scene.input});
+		this.addKeybinding({event: 'pointerupoutside', fun: leftUp, emitter: this.scene.input});
 		
 		const transparent = () => {
 			if (!Helper.isInputFocused()) {
