@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 
 /**
- * Used to display an overlay with the basic styles (dragable toolbar, scrollable content and buttons at the bottom)
+ * Used to display an overlay with the basic styles (draggable toolbar, scrollable content and buttons at the bottom)
  * example usage:
  * ```html
  * <cc-overlay-panel title="Panel Title">

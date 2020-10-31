@@ -8,7 +8,7 @@ export interface EventType {
 
 export interface EventTypeChild {
 	title?: string;
-	hideGreaterSign?: boolean;
+	draggable?: boolean;
 	events: AbstractEvent<any>[];
 }
 

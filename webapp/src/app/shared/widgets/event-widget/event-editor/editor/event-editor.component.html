@@ -1,7 +1,7 @@
 <div class="event-container" fxLayout="row">
 	<div class="event-inner-container dark-scrollbar" fxFlex="1 0 40%" cdkDropList (cdkDropListDropped)="drop($event)">
 		<mat-tree fxLayout="column" [dataSource]="dataSource" [treeControl]="treeControl">
-			<mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding [matTreeNodePaddingIndent]="16" cdkDrag [cdkDragData]="node" [cdkDragDisabled]="!node.isActionStep" cdkDragHandle>
+			<mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding [matTreeNodePaddingIndent]="16" cdkDrag [cdkDragData]="node" [cdkDragDisabled]="!node.draggable" cdkDragHandle>
 				<app-row-text [text]="node.text" [data]="node.data" [parent]="getParent(node)" [actionStep]="node.isActionStep" (dataChange)="refresh()"></app-row-text>
 			</mat-tree-node>
 		</mat-tree>

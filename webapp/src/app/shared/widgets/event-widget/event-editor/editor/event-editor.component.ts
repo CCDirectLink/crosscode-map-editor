@@ -11,7 +11,7 @@ import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 
 interface EventDisplay {
 	text: string;
-	hideIcon: boolean;
+	draggable: boolean;
 	isActionStep: boolean;
 	data?: AbstractEvent<any>;
 	children?: AbstractEvent<any>[];
@@ -88,7 +88,7 @@ export class EventEditorComponent implements OnChanges {
 	getParent(node: EventDisplay): AbstractEvent<any>[] | null {
 		const currentLevel = this.treeControl.getLevel(node);
 		if (currentLevel <= 0) {
-			return null;
+			return this.workingData!;
 		}
 
 		const currentIndex = this.treeControl.dataNodes.indexOf(node);
@@ -100,7 +100,7 @@ export class EventEditorComponent implements OnChanges {
 			}
 		}
 		
-		return null;
+		return this.workingData!;
 	}
 
 	drop(event: CdkDragDrop<EventDisplay>) {
@@ -169,8 +169,8 @@ export class EventEditorComponent implements OnChanges {
 		for (const node of nodes) {
 			const entry: EventDisplay = {
 				text: node.info,
-				hideIcon: false,
-				isActionStep: true,
+				draggable: true,
+				isActionStep: this.actionStep,
 				data: node,
 				level: 0,
 			};
@@ -194,8 +194,8 @@ export class EventEditorComponent implements OnChanges {
 
 				result.push({
 					text: child.title,
-					hideIcon: child.hideGreaterSign || false,
-					isActionStep: false,
+					draggable: child.draggable || false,
+					isActionStep: this.actionStep,
 					level: 0,
 					children: child.events,
 				});
@@ -204,8 +204,8 @@ export class EventEditorComponent implements OnChanges {
 
 		result.push({
 			text: ' ',
-			hideIcon: false,
-			isActionStep: false,
+			draggable: false,
+			isActionStep: this.actionStep,
 			level: 0
 		});
 

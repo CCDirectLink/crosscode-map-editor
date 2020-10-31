@@ -4,7 +4,7 @@
         (contextmenu)="openAddMenu($event)"
         (keydown)="keyPress($event)">
 	<div *ngIf="text">
-		<mat-icon class="event-row-icon" *ngIf="!hideGreaterSign">fiber_manual_record</mat-icon>
+		<mat-icon class="event-row-icon">fiber_manual_record</mat-icon>
 		<span class="no-click" [innerHTML]="text | keepHtml"></span>
 	</div>
 	<ng-content></ng-content>
