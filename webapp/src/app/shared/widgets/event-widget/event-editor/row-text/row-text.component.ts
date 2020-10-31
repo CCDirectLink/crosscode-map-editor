@@ -1,10 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {EventHelperService} from '../event-helper.service';
 import {AbstractEvent} from '../../event-registry/abstract-event';
-import {OverlayService} from '../../../../overlay/overlay.service';
-import {Overlay} from '@angular/cdk/overlay';
-import {EventDetailComponent} from '../detail/event-detail.component';
-import {OverlayRefControl} from '../../../../overlay/overlay-ref-control';
 import {AddEventService} from '../add/add-event.service';
 
 @Component({
@@ -16,20 +12,14 @@ export class RowTextComponent {
 	private static clipboard: any;
 	
 	@Input() text?: string;
-	@Input() hideGreaterSign = false;
 	@Input() actionStep = false;
 	
 	@Input() data?: AbstractEvent<any>;
 	@Input() parent!: AbstractEvent<any>[];
 
 	@Output() dataChange = new EventEmitter<void>();
-	@Output() dblClick = new EventEmitter();
-	@Output() click = new EventEmitter();
 	
 	constructor(
-		private storage: EventHelperService,
-		private overlayService: OverlayService,
-		private overlay: Overlay,
 		private helper: EventHelperService,
 		private addEvent: AddEventService
 	) {
@@ -38,14 +28,12 @@ export class RowTextComponent {
 	leftClick(event: MouseEvent) {
 		event.stopPropagation();
 		if (this.data) {
-			this.storage.selectedEvent.next(this.data);
+			this.helper.selectedEvent.next(this.data);
 		}
-		this.click.emit(this);
 	}
 	
 	openAddMenu(event: MouseEvent) {
 		event.stopPropagation();
-		this.dblClick.emit(this);
 		
 		this.addEvent.showAddEventMenu({
 			left: 'calc(18vw)',
@@ -54,6 +42,7 @@ export class RowTextComponent {
 			const index = this.getIndex();
 			this.parent.splice(index, 0, event);
 			this.dataChange.emit();
+			this.helper.selectedEvent.next(event);
 		});
 	}
 	
