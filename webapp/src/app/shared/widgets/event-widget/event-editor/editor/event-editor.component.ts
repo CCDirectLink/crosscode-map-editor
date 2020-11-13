@@ -39,8 +39,11 @@ export class EventEditorComponent implements OnChanges {
 		e => this.convertNodes(e.children!));
 	dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
+	detailsShown = false;
+
 	constructor(private helper: EventHelperService) {
 		helper.selectedEvent.subscribe(v => {
+			this.detailsShown = !!v;
 			if (v) {
 				// TODO: remove event?
 				// console.log(v.text);
@@ -49,6 +52,7 @@ export class EventEditorComponent implements OnChanges {
 	}
 
 	show() {
+		this.detailsShown = false;
 		console.log(this.workingData);
 	}
 
@@ -75,6 +79,10 @@ export class EventEditorComponent implements OnChanges {
 		} else {
 			display.text = event.info;
 		}
+	}
+
+	hideDetails(): void {
+		this.detailsShown = false;
 	}
 
 	export() {
