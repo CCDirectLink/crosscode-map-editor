@@ -3,6 +3,10 @@
 $primary: map-get($theme, primary);
 $accent: map-get($theme, accent);
 
+:host {
+	cursor: auto; //For some reason the draggable of the parent affects the cursor otherwise
+}
+
 .detail-container {
 	overflow-y: auto;
 	overflow-x: hidden;
