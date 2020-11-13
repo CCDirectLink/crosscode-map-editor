@@ -1,14 +1,15 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, Output, ViewChild} from '@angular/core';
 import {EventHelperService} from '../event-helper.service';
 import {AbstractEvent} from '../../event-registry/abstract-event';
 import {AddEventService} from '../add/add-event.service';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-row-text',
 	templateUrl: './row-text.component.html',
 	styleUrls: ['./row-text.component.scss']
 })
-export class RowTextComponent {
+export class RowTextComponent implements OnDestroy {
 	private static clipboard: any;
 	
 	@Input() text?: string;
@@ -18,11 +19,21 @@ export class RowTextComponent {
 	@Input() parent!: AbstractEvent<any>[];
 
 	@Output() dataChange = new EventEmitter<void>();
+
+	selected = false;
+	selectedSubscription: Subscription;
 	
 	constructor(
 		private helper: EventHelperService,
 		private addEvent: AddEventService
 	) {
+		this.selectedSubscription = this.helper.selectedEvent.subscribe(event => {
+			this.selected = !!event && event === this.data;
+		});
+	}
+
+	ngOnDestroy(): void {
+		this.selectedSubscription.unsubscribe();
 	}
 	
 	leftClick(event: MouseEvent) {
@@ -81,8 +92,10 @@ export class RowTextComponent {
 		if (clipboard) {
 			const index = this.getIndex();
 			const cpy = JSON.parse(JSON.stringify(clipboard));
-			this.parent.splice(index, 0, this.helper.getEventFromType(cpy, this.actionStep));
+			const event = this.helper.getEventFromType(cpy, this.actionStep);
+			this.parent.splice(index, 0, event);
 			this.dataChange.emit();
+			this.helper.selectedEvent.next(event);
 		}
 	}
 	
@@ -93,6 +106,7 @@ export class RowTextComponent {
 		const index = this.getIndex();
 		this.parent.splice(index, 1);
 		this.dataChange.emit();
+		this.helper.selectedEvent.next(null);
 	}
 	
 	// endregion

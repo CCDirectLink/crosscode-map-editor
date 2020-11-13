@@ -1,4 +1,5 @@
 <button class="event-row-text event-row"
+		[ngClass]="{'event-row-focused': selected}"
         (click)="leftClick($event)"
         (dblclick)="openAddMenu($event)"
         (contextmenu)="openAddMenu($event)"

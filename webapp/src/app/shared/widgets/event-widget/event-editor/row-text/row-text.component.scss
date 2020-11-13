@@ -34,13 +34,19 @@ $config: mat-typography-config();
 	&:focus {
 		border: none;
 		outline: none;
-		background-color: rgb(38, 78, 100);
+		background-color: rgba(38, 78, 100, 0.5);
 	}
 
 	&.last-row {
 		position: relative;
 		min-height: 30px;
 	}
+}
+
+.event-row-focused {
+	border: none;
+	outline: none;
+	background-color: rgb(38, 78, 100) !important;
 }
 
 button {
