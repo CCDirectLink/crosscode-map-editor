@@ -37,7 +37,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 	@ViewChild(HostDirective, {static: true}) appHost!: HostDirective;
 	
 	@Input() event!: AbstractEvent<any>;
-	@Output() exit = new EventEmitter<AbstractEvent<any>>();
+	@Output() close = new EventEmitter<void>();
 	@Output() refresh = new EventEmitter<AbstractEvent<any>>();
 	
 	animState = 'enter';
@@ -67,9 +67,9 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-	
-	cancel() {
-		this.exit.error('cancel');
+
+	closeDetails(): void {
+		this.close.emit();
 	}
 	
 	private loadSettings() {

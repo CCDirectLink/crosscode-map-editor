@@ -1,4 +1,7 @@
 <div class="content">
+	<button mat-icon-button (click)="closeDetails()">
+		<mat-icon>close</mat-icon>
+	</button>
 	<h2 class="mat-title">{{event?.data?.type}}</h2>
 	<div *ngIf="warning">
 		<span>WARNING: type cannot be changed</span>
