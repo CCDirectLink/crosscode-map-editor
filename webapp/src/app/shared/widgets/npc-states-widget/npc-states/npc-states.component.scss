@@ -33,9 +33,15 @@ $accent: map-get($theme, accent);
 }
 
 .tab-content {
+	flex-direction: column;
+	min-height: 0;
+}
+
+.tab-content-inner {
 	padding-left: 12px;
 	padding-right: 12px;
-	flex-direction: column;
+	border-bottom: 1px solid mat-color($mat-gray, 600);
+	border-top: 1px solid mat-color($mat-gray, 600);
 }
 
 .condition-label {
@@ -67,5 +73,9 @@ $accent: map-get($theme, accent);
 }
 
 .event-block {
-	margin: 10px;
+	margin: 0 10px 0px 10px;
+}
+
+.event-container {
+	overflow: hidden;
 }

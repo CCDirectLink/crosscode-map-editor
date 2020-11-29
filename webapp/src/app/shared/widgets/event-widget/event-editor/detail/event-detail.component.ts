@@ -2,6 +2,7 @@ import {
 	Component,
 	ComponentFactoryResolver,
 	EventEmitter,
+	HostBinding,
 	Input,
 	OnDestroy,
 	OnInit,
@@ -9,23 +10,27 @@ import {
 	ViewChild,
 	ViewContainerRef
 } from '@angular/core';
-import {AbstractEvent} from '../../event-registry/abstract-event';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {HostDirective} from '../../../../host.directive';
-import {AttributeValue} from '../../../../phaser/entities/cc-entity';
-import {AbstractWidget} from '../../../abstract-widget';
-import {WidgetRegistryService} from '../../../widget-registry.service';
-import {JsonWidgetComponent} from '../../../json-widget/json-widget.component';
-import {EventHelperService} from '../event-helper.service';
+import { AbstractEvent } from '../../event-registry/abstract-event';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { HostDirective } from '../../../../host.directive';
+import { AttributeValue } from '../../../../phaser/entities/cc-entity';
+import { AbstractWidget } from '../../../abstract-widget';
+import { WidgetRegistryService } from '../../../widget-registry.service';
+import { JsonWidgetComponent } from '../../../json-widget/json-widget.component';
+import { EventHelperService } from '../event-helper.service';
 import { Subscription } from 'rxjs';
 
-const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
+const ANIMATION_TIMING = '200ms ease';
 
 @Component({
 	animations: [
 		trigger('slideContent', [
-			state('void', style({transform: 'scale(0.7)', opacity: 0})),
-			state('enter', style({transform: 'scale(1)', opacity: 1})),
+			state('void', style({
+				flex: '0 0 0',
+			})),
+			state('enter', style({
+				flex: '1 1 0',
+			})),
 			transition('* => *', animate(ANIMATION_TIMING)),
 		])
 	],
@@ -40,18 +45,23 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 	@Output() close = new EventEmitter<void>();
 	@Output() refresh = new EventEmitter<AbstractEvent<any>>();
 	
-	animState = 'enter';
+	@HostBinding('@slideContent') get getSlideContent() {
+		return 'enter';
+	}
+	
 	newData: any;
 	unknownObj?: { data: any };
 	warning = false;
-
+	
 	private changeSubscriptions: Subscription[] = [];
 	
-	constructor(private componentFactoryResolver: ComponentFactoryResolver,
-				private widgetRegistry: WidgetRegistryService,
-				private helper: EventHelperService) {
+	constructor(
+		private componentFactoryResolver: ComponentFactoryResolver,
+		private widgetRegistry: WidgetRegistryService,
+		private helper: EventHelperService
+	) {
 	}
-
+	
 	ngOnDestroy(): void {
 		for (const sub of this.changeSubscriptions) {
 			sub.unsubscribe();
@@ -67,16 +77,16 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 			}
 		});
 	}
-
+	
 	closeDetails(): void {
 		this.close.emit();
 	}
 	
 	private loadSettings() {
 		const ref = this.appHost.viewContainerRef;
-
+		
 		ref.clear();
-
+		
 		const exported = this.event.export();
 		this.newData = this.helper.getEventFromType(exported, this.event.actionStep).data;
 		
@@ -111,7 +121,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 		this.changeSubscriptions.push(sub);
 		return instance;
 	}
-
+	
 	private update(value: any) {
 		this.event.data = this.unknownObj ? this.unknownObj.data : this.newData;
 		this.event.update();

@@ -29,6 +29,7 @@ export class OverlayPanelComponent implements OnInit {
 	@Input() title = '';
 	@Input() allowDrag = true;
 	@Input() customSize?: { width: string, height: string };
+	@Input() showButtonDivider = false;
 	
 	classes: { [key: string]: boolean } = {};
 	
