@@ -22,7 +22,8 @@ $toolbarHeight: 54px;
 }
 
 
-.ng-draggable {
+// TODO: should switch to angular cdk dragable
+.ng-draggable:not(.container) {
 	cursor: move;
 }
 
