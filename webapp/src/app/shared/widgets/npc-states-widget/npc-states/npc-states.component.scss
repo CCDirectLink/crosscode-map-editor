@@ -76,6 +76,10 @@ $accent: map-get($theme, accent);
 	margin: 0 10px 0px 10px;
 }
 
-.event-container {
+.middle-container {
 	overflow: hidden;
+}
+
+.event-container {
+	min-width: 0;
 }
