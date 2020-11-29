@@ -25,6 +25,8 @@ import {EntityRegistryService} from './phaser/entities/registry/entity-registry.
 import {ListSearchOverlayComponent} from './list-search-overlay/list-search-overlay.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import { BrowserService } from '../services/browser.service';
+import { SplitPaneComponent } from './split-pane/split-pane.component';
+import { SplitPaneModule } from './split-pane/split-pane.module';
 
 @NgModule({
 	imports: [
@@ -35,7 +37,8 @@ import { BrowserService } from '../services/browser.service';
 		MaterialModule,
 		AngularDraggableModule,
 		OverlayModule,
-		ScrollingModule
+		ScrollingModule,
+		SplitPaneModule
 	],
 	declarations: [
 		HostDirective,
@@ -79,7 +82,8 @@ import { BrowserService } from '../services/browser.service';
 		OverlayModule,
 		KeepHtmlPipe,
 		SettingsComponent,
-		HighlightDirective
+		HighlightDirective,
+		SplitPaneComponent
 	]
 })
 export class SharedModule {

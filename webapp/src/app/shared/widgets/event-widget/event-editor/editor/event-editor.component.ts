@@ -1,13 +1,10 @@
-import {
-	Component,
-	Input,
-	ChangeDetectionStrategy, OnChanges
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { AbstractEvent, EventType } from '../../event-registry/abstract-event';
 import { EventHelperService } from '../event-helper.service';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { SplitPaneComponent } from '../../../../split-pane/split-pane.component';
 
 interface EventDisplay {
 	text: string;
@@ -15,7 +12,7 @@ interface EventDisplay {
 	isActionStep: boolean;
 	data?: AbstractEvent<any>;
 	children?: AbstractEvent<any>[];
-
+	
 	level: number;
 }
 
@@ -26,21 +23,29 @@ interface EventDisplay {
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventEditorComponent implements OnChanges {
+	@ViewChild('splitpane') splitPane?: SplitPaneComponent;
+	
 	@Input() eventData: EventType[] = [];
 	@Input() actionStep = false;
-
+	
 	workingData?: AbstractEvent<any>[];
-
+	
 	treeControl = new FlatTreeControl<EventDisplay>(e => e.level, e => e.children != null);
 	treeFlattener = new MatTreeFlattener(
-		(node: EventDisplay, level: number) => this.setLevel(node, level), 
-		e => e.level, 
-		e => e.children != null, 
+		(node: EventDisplay, level: number) => this.setLevel(node, level),
+		e => e.level,
+		e => e.children != null,
 		e => this.convertNodes(e.children!));
 	dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-
-	detailsShown = false;
-
+	
+	set detailsShown(val: boolean) {
+		if (val) {
+			this.splitPane?.openRight();
+		} else {
+			this.splitPane?.closeRight();
+		}
+	}
+	
 	constructor(private helper: EventHelperService) {
 		helper.selectedEvent.subscribe(v => {
 			this.detailsShown = !!v;
@@ -50,12 +55,12 @@ export class EventEditorComponent implements OnChanges {
 			}
 		});
 	}
-
+	
 	show() {
 		this.detailsShown = false;
 		console.log(this.workingData);
 	}
-
+	
 	ngOnChanges() {
 		let cpy = JSON.parse(JSON.stringify(this.eventData));
 		if (!cpy.map) {
@@ -70,7 +75,7 @@ export class EventEditorComponent implements OnChanges {
 		this.dataSource.data = this.convertNodes(this.workingData!);
 		this.treeControl.expandAll();
 	}
-
+	
 	refresh(event?: AbstractEvent<any>) {
 		const display = this.treeControl.dataNodes.find(node => node.data === event);
 		if (!event || !display) {
@@ -80,11 +85,11 @@ export class EventEditorComponent implements OnChanges {
 			display.text = event.info;
 		}
 	}
-
+	
 	hideDetails(): void {
 		this.detailsShown = false;
 	}
-
+	
 	export() {
 		if (this.workingData) {
 			return this.workingData.map(event => event.export());
@@ -92,17 +97,17 @@ export class EventEditorComponent implements OnChanges {
 			return this.eventData;
 		}
 	}
-
+	
 	getParent(node: EventDisplay): AbstractEvent<any>[] | null {
 		const currentLevel = this.treeControl.getLevel(node);
 		if (currentLevel <= 0) {
 			return this.workingData!;
 		}
-
+		
 		const currentIndex = this.treeControl.dataNodes.indexOf(node);
 		for (let i = currentIndex - 1; i >= 0; i--) {
 			const node = this.treeControl.dataNodes[i];
-
+			
 			if (this.treeControl.getLevel(node) < currentLevel) {
 				return node.children as AbstractEvent<any>[];
 			}
@@ -110,11 +115,11 @@ export class EventEditorComponent implements OnChanges {
 		
 		return this.workingData!;
 	}
-
+	
 	drop(event: CdkDragDrop<EventDisplay>) {
 		const moved = event.item.data as EventDisplay;
 		const fromParent = this.getParent(moved) || this.workingData!;
-
+		
 		if (event.currentIndex === 0) {
 			this.workingData!.unshift(moved.data!);
 		} else {
@@ -122,7 +127,7 @@ export class EventEditorComponent implements OnChanges {
 			if (this.isChildOf(toTop, moved)) {
 				return;
 			}
-
+			
 			if (toTop.children != null) {
 				toTop.children.unshift(moved.data!);
 			} else {
@@ -135,7 +140,7 @@ export class EventEditorComponent implements OnChanges {
 				}
 			}
 		}
-
+		
 		if (event.currentIndex > event.previousIndex) {
 			fromParent.splice(fromParent.indexOf(moved.data!), 1);
 		} else {
@@ -144,34 +149,34 @@ export class EventEditorComponent implements OnChanges {
 		
 		this.refresh();
 	}
-
+	
 	private isChildOf(child: EventDisplay, parent: EventDisplay): boolean {
 		let currentLevel = this.treeControl.getLevel(child);
 		if (currentLevel <= 0) {
 			return false;
 		}
-
+		
 		const currentIndex = this.treeControl.dataNodes.indexOf(child);
 		for (let i = currentIndex - 1; i >= 0; i--) {
 			const node = this.treeControl.dataNodes[i];
 			const nodeLevel = this.treeControl.getLevel(node);
-
+			
 			if (node === parent) {
 				return nodeLevel === currentLevel - 1;
 			}
-
+			
 			currentLevel = Math.min(currentLevel, nodeLevel);
 		}
 		
 		return false;
 	}
-
-
+	
+	
 	private setLevel(node: EventDisplay, level: number): EventDisplay {
 		node.level = level;
 		return node;
 	}
-
+	
 	private convertNodes(nodes: AbstractEvent<any>[]): EventDisplay[] {
 		const result: EventDisplay[] = [];
 		for (const node of nodes) {
@@ -182,24 +187,24 @@ export class EventEditorComponent implements OnChanges {
 				data: node,
 				level: 0,
 			};
-
-			if (node.children 
+			
+			if (node.children
 				&& node.children.length > 0
 				&& node.children[0].title == null) {
 				entry.children = node.children[0].events;
 			}
-
+			
 			result.push(entry);
-
+			
 			if (node.children == null) {
 				continue;
 			}
-
+			
 			for (const child of node.children) {
 				if (!child.title) {
 					continue;
 				}
-
+				
 				result.push({
 					text: child.title,
 					draggable: child.draggable || false,
@@ -209,14 +214,14 @@ export class EventEditorComponent implements OnChanges {
 				});
 			}
 		}
-
+		
 		result.push({
 			text: ' ',
 			draggable: false,
 			isActionStep: this.actionStep,
 			level: 0
 		});
-
+		
 		return result;
 	}
 }
