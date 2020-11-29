@@ -23,17 +23,6 @@ import { Subscription } from 'rxjs';
 const ANIMATION_TIMING = '200ms ease';
 
 @Component({
-	animations: [
-		trigger('slideContent', [
-			state('void', style({
-				flex: '0 0 0',
-			})),
-			state('enter', style({
-				flex: '1 1 0',
-			})),
-			transition('* => *', animate(ANIMATION_TIMING)),
-		])
-	],
 	selector: 'app-event-detail',
 	templateUrl: './event-detail.component.html',
 	styleUrls: ['./event-detail.component.scss']
@@ -44,10 +33,6 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 	@Input() event!: AbstractEvent<any>;
 	@Output() close = new EventEmitter<void>();
 	@Output() refresh = new EventEmitter<AbstractEvent<any>>();
-	
-	@HostBinding('@slideContent') get getSlideContent() {
-		return 'enter';
-	}
 	
 	newData: any;
 	unknownObj?: { data: any };
