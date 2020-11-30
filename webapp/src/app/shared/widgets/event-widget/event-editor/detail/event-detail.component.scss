@@ -4,7 +4,8 @@ $primary: map-get($theme, primary);
 $accent: map-get($theme, accent);
 
 :host {
-	cursor: auto; //For some reason the draggable of the parent affects the cursor otherwise
+	min-width: 0;
+	overflow: hidden;
 }
 
 .detail-container {
@@ -18,6 +19,17 @@ $accent: map-get($theme, accent);
 
 .content {
 	padding: 16px 16px 16px 16px;
+
+}
+
+.top-row{
+	margin-bottom: 14px;
+}
+
+.title{
+	font-weight: 500;
+	font-size: 1.2em;
+	text-align: center;
 }
 
 .header {

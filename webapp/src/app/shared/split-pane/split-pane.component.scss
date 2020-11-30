@@ -1,0 +1,33 @@
+:host {
+	width: 100%;
+	height: 100%;
+	overflow-x: hidden;
+}
+
+.full-size {
+	width: 100%;
+	height: 100%;
+}
+
+.panel {
+	min-width: 0;
+	flex: 1 1 0;
+}
+
+.content {
+	overflow: hidden;
+}
+
+.right {
+	position: relative;
+}
+
+.gutter {
+	position: absolute;
+	cursor: col-resize;
+	width: 8px;
+	margin-left: -4px;
+	height: 100%;
+	opacity: 0;
+}
+

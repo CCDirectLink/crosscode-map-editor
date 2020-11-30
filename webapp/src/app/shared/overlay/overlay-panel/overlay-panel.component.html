@@ -1,9 +1,8 @@
 <div
-	class="container mat-elevation-z8"
+	class="container mat-elevation-z8 container-default-size"
 	fxLayout="column"
 	[ngDraggable]="allowDrag"
 	[handle]="handle"
-	[ngClass]="{'container-default-size': !customSize}"
 	[style.width]="customSize?.width"
 	[style.height]="customSize?.height"
 >
@@ -22,8 +21,8 @@
 			<ng-content select="content"></ng-content>
 		</div>
 	</div>
-		
-	<div fxFlex="0 0 60px" fxLayout="row" [ngClass]="{'no-buttons': actionsRef.children.length == 0}">
+	
+	<div fxFlex="0 0 60px" fxLayout="row" [ngClass]="{'no-buttons': actionsRef.children.length == 0}" [class.bottom-border]="showButtonDivider">
 		<div class="buttons" fxFlexAlign="center" fxLayoutAlign="end" fxFlex #actionsRef>
 			<ng-content select="actions"></ng-content>
 		</div>

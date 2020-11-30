@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
 /**
  * Used to display an overlay with the basic styles (draggable toolbar, scrollable content and buttons at the bottom)
@@ -28,7 +28,8 @@ export class OverlayPanelComponent implements OnInit {
 	
 	@Input() title = '';
 	@Input() allowDrag = true;
-	@Input() customSize?: { width: string, height: string };
+	@Input() customSize?: { width?: string, height?: string };
+	@Input() showButtonDivider = false;
 	
 	classes: { [key: string]: boolean } = {};
 	

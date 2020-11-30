@@ -1,0 +1,24 @@
+<div fxLayout="row" class="full-size" #container>
+	<div
+		class="panel left"
+		[style.flex-basis]="basisLeft + '%'"
+	>
+		<div class="content" fxFlex="auto">
+			<ng-content select="left"></ng-content>
+		</div>
+	</div>
+	<div
+		class="panel right"
+		[style.flex-basis]="basisRight + '%'"
+	>
+		<div
+			class="gutter"
+			[style.display]="isOpen ? 'inherit' : 'none'"
+			(mousedown)="dragStart($event)"
+		></div>
+		<div class="content" fxFlex="auto">
+			<ng-content select="right"></ng-content>
+		</div>
+	
+	</div>
+</div>
