@@ -2,7 +2,8 @@
 	<app-split-pane
 		#splitpane
 		[bounds]="{left: 10, right: 10}"
-		[base]="100"
+		[opened]="detailsShown"
+		[base]="0"
 	>
 		<ng-container ngProjectAs="left">
 			<div class="event-inner-container dark-scrollbar" fxFlex="1 1 0" cdkDropList (cdkDropListDropped)="drop($event)">

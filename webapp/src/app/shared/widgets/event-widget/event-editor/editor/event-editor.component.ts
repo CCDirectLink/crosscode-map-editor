@@ -38,13 +38,7 @@ export class EventEditorComponent implements OnChanges {
 		e => this.convertNodes(e.children!));
 	dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 	
-	set detailsShown(val: boolean) {
-		if (val) {
-			this.splitPane?.openRight();
-		} else {
-			this.splitPane?.closeRight();
-		}
-	}
+	detailsShown = false;
 	
 	constructor(private helper: EventHelperService) {
 		helper.selectedEvent.subscribe(v => {

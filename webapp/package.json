@@ -98,7 +98,6 @@
 		"@typescript-eslint/eslint-plugin": "^4.9.0",
 		"@typescript-eslint/parser": "^4.9.0",
 		"angular2-draggable": "^2.3.2",
-		"bezier-easing": "^2.1.0",
 		"cc-map-editor-common": "../common",
 		"core-js": "^3.8.0",
 		"earcut": "^2.2.2",

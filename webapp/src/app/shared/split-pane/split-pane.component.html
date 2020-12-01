@@ -2,6 +2,8 @@
 	<div
 		class="panel left"
 		[style.flex-basis]="basisLeft + '%'"
+		[class.fully-opened]="!opened"
+		[class.no-transition]="noAnims"
 	>
 		<div class="content" fxFlex="auto">
 			<ng-content select="left"></ng-content>
@@ -10,10 +12,12 @@
 	<div
 		class="panel right"
 		[style.flex-basis]="basisRight + '%'"
+		[class.fully-closed]="!opened"
+		[class.no-transition]="noAnims"
 	>
 		<div
 			class="gutter"
-			[style.display]="isOpen ? 'inherit' : 'none'"
+			[style.display]="opened ? 'inherit' : 'none'"
 			(mousedown)="dragStart($event)"
 		></div>
 		<div class="content" fxFlex="auto">

@@ -9,9 +9,22 @@
 	height: 100%;
 }
 
+.fully-opened {
+	flex-basis: 100% !important;
+}
+
+.fully-closed {
+	flex-basis: 0 !important;
+}
+
 .panel {
 	min-width: 0;
 	flex: 1 1 0;
+	transition: flex-basis 0.2s ease;
+
+	&.no-transition {
+		transition: none;
+	}
 }
 
 .content {
