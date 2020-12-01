@@ -1,5 +1,5 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {animate, state, style, transition, trigger} from '@angular/animations';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 
@@ -38,18 +38,25 @@ const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 export class ListSearchOverlayComponent implements OnInit {
 	@ViewChild('filterInput', {static: true}) filterInput!: ElementRef<HTMLInputElement>;
 	
-	
 	@Input() list: string[] = [];
 	@Input() animation: 'slide' | 'scale' | 'none' = 'slide';
 	@Output() selected = new EventEmitter<string>();
+	
+	currentIndex = 0;
 	filteredList: string[] = [];
-	_filterText = ' ';
+	
+	private _filterText = ' ';
+	
+	get filterText() {
+		return this._filterText;
+	}
 	
 	set filterText(text) {
 		if (text === this._filterText) {
 			return;
 		}
 		
+		this.currentIndex = 0;
 		this._filterText = text;
 		
 		if (!text || !text.trim()) {
@@ -65,10 +72,6 @@ export class ListSearchOverlayComponent implements OnInit {
 		});
 	}
 	
-	get filterText() {
-		return this._filterText;
-	}
-	
 	constructor() {
 	}
 	
@@ -76,15 +79,34 @@ export class ListSearchOverlayComponent implements OnInit {
 		this.filterInput.nativeElement.focus();
 		this.filterText = '';
 		
-		this.filterInput.nativeElement.addEventListener('keyup', event => {
-			if (event.code === 'Enter' && this.filteredList.length > 0) {
-				this.selected.emit(this.filteredList[0]);
-			}
-		});
+		// this.filterInput.nativeElement.addEventListener('keyup', event => {
+		// 	if (event.code === 'Enter' && this.filteredList.length > 0) {
+		// 		this.selected.emit(this.filteredList[0]);
+		// 	}
+		// });
 	}
-	
 	
 	select(item: string) {
 		this.selected.emit(item);
+	}
+	
+	onKeyDown(event: KeyboardEvent) {
+		if (event.key === 'Enter') {
+			const item = this.filteredList[this.currentIndex];
+			if (item) {
+				this.select(item);
+			}
+			return;
+		}
+		
+		if (event.key === 'ArrowDown') {
+			this.currentIndex += 1;
+			this.currentIndex %= this.filteredList.length;
+		} else if (event.key === 'ArrowUp') {
+			this.currentIndex -= 1;
+			if (this.currentIndex < 0) {
+				this.currentIndex += this.filteredList.length;
+			}
+		}
 	}
 }
