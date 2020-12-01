@@ -78,12 +78,6 @@ export class ListSearchOverlayComponent implements OnInit {
 	ngOnInit() {
 		this.filterInput.nativeElement.focus();
 		this.filterText = '';
-		
-		// this.filterInput.nativeElement.addEventListener('keyup', event => {
-		// 	if (event.code === 'Enter' && this.filteredList.length > 0) {
-		// 		this.selected.emit(this.filteredList[0]);
-		// 	}
-		// });
 	}
 	
 	select(item: string) {
