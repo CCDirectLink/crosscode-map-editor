@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input, OnChanges, ViewChild } from 
 import { AbstractEvent, EventType } from '../../event-registry/abstract-event';
 import { EventHelperService } from '../event-helper.service';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { SplitPaneComponent } from '../../../../split-pane/split-pane.component';
 
@@ -69,7 +69,11 @@ export class EventEditorComponent implements OnChanges {
 		this.dataSource.data = this.convertNodes(this.workingData!);
 		this.treeControl.expandAll();
 	}
-	
+
+	sortPredicate(index: number, item: CdkDrag<EventDisplay>, drop: CdkDropList) {
+		return index < this.treeControl.dataNodes.length - 1;
+	}
+
 	refresh(event?: AbstractEvent<any>) {
 		const display = this.treeControl.dataNodes.find(node => node.data === event);
 		if (!event || !display) {

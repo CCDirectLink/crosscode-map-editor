@@ -12,12 +12,12 @@ $size: 26px;
 	overflow: auto;
 }
 
+$color1: #3a3a3a;
+$color2: #343434;
 .event-inner-container > .mat-tree {
 	min-height: 100%;
 	height: fit-content;
 	padding-left: 6px;
-	$color1: #3a3a3a;
-	$color2: #343434;
 	background: repeating-linear-gradient(
 			180deg,
 			$color1,
@@ -36,18 +36,27 @@ $size: 26px;
 	white-space: nowrap;
 
 	cursor: move;
-	&.cdk-drag-preview {
-	  @include mat-elevation(12);
-	}
 	&.cdk-drag-placeholder {
 	  opacity: 0;
 	}
 }
 
 .cdk-drop-list-dragging .mat-tree-node:not(.cdk-drag-placeholder) {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+	transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .cdk-drag-animating {
-  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+	transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-preview {
+	@include mat-elevation(12);
+	max-height: $size;
+	min-height: $size; //Overrides material tree node default
+	height: $size;
+	width: auto !important;
+	overflow: hidden;
+	white-space: nowrap;
+	background-color: rgba($color2, 0.5);
+	padding-right: 16px;
 }
