@@ -1,13 +1,14 @@
-import {Component, EventEmitter, Input, OnDestroy, Output, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output, ViewChild} from '@angular/core';
 import {EventHelperService} from '../event-helper.service';
 import {AbstractEvent} from '../../event-registry/abstract-event';
 import {AddEventService} from '../add/add-event.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-row-text',
 	templateUrl: './row-text.component.html',
-	styleUrls: ['./row-text.component.scss']
+	styleUrls: ['./row-text.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RowTextComponent implements OnDestroy {
 	private static clipboard: any;
