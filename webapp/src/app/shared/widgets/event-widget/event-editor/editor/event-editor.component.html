@@ -10,23 +10,37 @@
 				cdkDropList 
 				(cdkDropListDropped)="drop($event)">
 				<!--Add [cdkDropListSortPredicate]="sortPredicate" once Anglular is upraded to 11 or higher-->
-				<mat-tree fxLayout="column" [dataSource]="dataSource" [treeControl]="treeControl">
+				<mat-tree 
+					#eventTree
+					fxLayout="column" 
+					[dataSource]="dataSource"
+					[treeControl]="treeControl"
+
+					(dblclick)="openAddMenu($event, null)"
+					(contextmenu)="openAddMenu($event, null)"
+					(keydown)="keyPress($event)"
+					tabindex="0">
 					<mat-tree-node 
 						*matTreeNodeDef="let node" 
 						matTreeNodePadding 
 						[matTreeNodePaddingIndent]="16" 
+
 						cdkDrag 
 						cdkDragLockAxis="y" 
 						[cdkDragData]="node" 
 						[cdkDragDisabled]="!node.draggable" 
-						cdkDragHandle>
-						<app-row-text [text]="node.text" [data]="node.data" [parent]="getParent(node)" [actionStep]="node.isActionStep" (dataChange)="refresh()"></app-row-text>
+						cdkDragHandle
+						
+						(click)="eventClicked($event, node)"
+						(dblclick)="openAddMenu($event, node)"
+						(contextmenu)="openAddMenu($event, node)">
+						<app-row-text [display]="node"></app-row-text>
 					</mat-tree-node>
 				</mat-tree>
 			</div>
 		</ng-container>
 		<ng-container ngProjectAs="right">
-			<app-event-detail (refresh)="refresh($event)" (close)="hideDetails()"></app-event-detail>
+			<app-event-detail (refresh)="refresh()" (close)="hideDetails()"></app-event-detail>
 		</ng-container>
 	</app-split-pane>
 </div>

@@ -20,8 +20,6 @@ import { JsonWidgetComponent } from '../../../json-widget/json-widget.component'
 import { EventHelperService } from '../event-helper.service';
 import { Subscription } from 'rxjs';
 
-const ANIMATION_TIMING = '200ms ease';
-
 @Component({
 	selector: 'app-event-detail',
 	templateUrl: './event-detail.component.html',

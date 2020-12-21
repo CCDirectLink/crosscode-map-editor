@@ -1,12 +1,5 @@
-<button class="event-row-text event-row"
-		[ngClass]="{'event-row-focused': selected}"
-        (click)="leftClick($event)"
-        (dblclick)="openAddMenu($event)"
-        (contextmenu)="openAddMenu($event)"
-        (keydown)="keyPress($event)">
-	<div *ngIf="text">
-		<mat-icon class="event-row-icon">fiber_manual_record</mat-icon>
-		<span class="no-click" [innerHTML]="text | keepHtml"></span>
-	</div>
+<button class="event-row-text event-row" [ngClass]="{'event-row-focused': display.isSelected}">
+	<mat-icon class="event-row-icon">fiber_manual_record</mat-icon>
+	<span class="no-click" [innerHTML]="display.text | keepHtml"></span>
 	<ng-content></ng-content>
 </button>

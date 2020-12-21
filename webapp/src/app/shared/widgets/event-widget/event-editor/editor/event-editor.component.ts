@@ -1,20 +1,13 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
 import { AbstractEvent, EventType } from '../../event-registry/abstract-event';
 import { EventHelperService } from '../event-helper.service';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { SplitPaneComponent } from '../../../../split-pane/split-pane.component';
+import { EventDisplay } from '../event-display.model';
+import { AddEventService } from '../add/add-event.service';
 
-interface EventDisplay {
-	text: string;
-	draggable: boolean;
-	isActionStep: boolean;
-	data?: AbstractEvent<any>;
-	children?: AbstractEvent<any>[];
-	
-	level: number;
-}
 
 @Component({
 	selector: 'app-event-editor',
@@ -24,35 +17,36 @@ interface EventDisplay {
 })
 export class EventEditorComponent implements OnChanges {
 	@ViewChild('splitpane') splitPane?: SplitPaneComponent;
+	@ViewChild('eventTree', {read: ElementRef}) eventTree?: ElementRef<HTMLElement>;
 	
 	@Input() eventData: EventType[] = [];
 	@Input() actionStep = false;
 	
-	workingData?: AbstractEvent<any>[];
-	
+	detailsShown = false;
+
 	treeControl = new FlatTreeControl<EventDisplay>(e => e.level, e => e.children != null);
-	treeFlattener = new MatTreeFlattener(
-		(node: EventDisplay, level: number) => this.setLevel(node, level),
+	private treeFlattener = new MatTreeFlattener(
+		(node: EventDisplay, level: number) => {
+			node.level = level; return node; 
+		},
 		e => e.level,
 		e => e.children != null,
 		e => this.convertNodes(e.children!));
 	dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 	
-	detailsShown = false;
-	
-	constructor(private helper: EventHelperService) {
-		helper.selectedEvent.subscribe(v => {
-			this.detailsShown = !!v;
-			if (v) {
-				// TODO: remove event?
-				// console.log(v.text);
-			}
-		});
-	}
+		
+	private workingData!: AbstractEvent<any>[];
+	private selectedNode?: EventDisplay;
+	private shownNode?: EventDisplay;
+	private copiedNode?: EventDisplay;
+
+	constructor(
+		private helper: EventHelperService,
+		private addEvent: AddEventService,
+	) { }
 	
 	show() {
 		this.detailsShown = false;
-		console.log(this.workingData);
 	}
 	
 	ngOnChanges() {
@@ -66,22 +60,23 @@ export class EventEditorComponent implements OnChanges {
 		} else {
 			this.workingData = [];
 		}
-		this.dataSource.data = this.convertNodes(this.workingData!);
-		this.treeControl.expandAll();
+		this.refreshTree();
 	}
 
 	sortPredicate(index: number, item: CdkDrag<EventDisplay>, drop: CdkDropList) {
 		return index < this.treeControl.dataNodes.length - 1;
 	}
 
-	refresh(event?: AbstractEvent<any>) {
-		const display = this.treeControl.dataNodes.find(node => node.data === event);
-		if (!event || !display) {
-			this.dataSource.data = this.convertNodes(this.workingData!);
-			this.treeControl.expandAll();
-		} else {
-			display.text = event.info;
+	refresh() {
+		if (this.shownNode) {
+			this.shownNode.text = this.shownNode.data?.info ?? ' ';
+			this.shownNode.changeDetector?.detectChanges();
 		}
+	}
+
+	refreshTree() {
+		this.dataSource.data = this.convertNodes(this.workingData);
+		this.treeControl.expandAll();
 	}
 	
 	hideDetails(): void {
@@ -89,37 +84,15 @@ export class EventEditorComponent implements OnChanges {
 	}
 	
 	export() {
-		if (this.workingData) {
-			return this.workingData.map(event => event.export());
-		} else {
-			return this.eventData;
-		}
-	}
-	
-	getParent(node: EventDisplay): AbstractEvent<any>[] | null {
-		const currentLevel = this.treeControl.getLevel(node);
-		if (currentLevel <= 0) {
-			return this.workingData!;
-		}
-		
-		const currentIndex = this.treeControl.dataNodes.indexOf(node);
-		for (let i = currentIndex - 1; i >= 0; i--) {
-			const node = this.treeControl.dataNodes[i];
-			
-			if (this.treeControl.getLevel(node) < currentLevel) {
-				return node.children as AbstractEvent<any>[];
-			}
-		}
-		
-		return this.workingData!;
+		return this.workingData?.map(event => event.export()) ?? this.eventData;
 	}
 	
 	drop(event: CdkDragDrop<EventDisplay>) {
 		const moved = event.item.data as EventDisplay;
-		const fromParent = this.getParent(moved) || this.workingData!;
+		const fromParent = this.getParent(moved);
 		
 		if (event.currentIndex === 0) {
-			this.workingData!.unshift(moved.data!);
+			this.workingData.unshift(moved.data!);
 		} else {
 			const toTop = event.currentIndex > event.previousIndex ? this.treeControl.dataNodes[event.currentIndex] : this.treeControl.dataNodes[event.currentIndex - 1];
 			if (this.isChildOf(toTop, moved)) {
@@ -129,7 +102,7 @@ export class EventEditorComponent implements OnChanges {
 			if (toTop.children != null) {
 				toTop.children.unshift(moved.data!);
 			} else {
-				const toParent = this.getParent(toTop) || this.workingData!;
+				const toParent = this.getParent(toTop);
 				const toIndex = toParent.indexOf(toTop.data!);
 				if (toIndex >= 0) {
 					toParent.splice(toIndex + 1, 0, moved.data!);
@@ -145,9 +118,187 @@ export class EventEditorComponent implements OnChanges {
 			fromParent.splice(fromParent.lastIndexOf(moved.data!), 1);
 		}
 		
-		this.refresh();
+		this.refreshTree();
+		if (this.selectedNode) {
+			this.selectAbstractEvent(this.selectedNode.data!);
+		}
+	}
+
+	eventClicked(_: MouseEvent, node: EventDisplay | null) {
+		this.select(node);
+	}
+
+	openAddMenu(event: Event, node: EventDisplay | null) {
+		this.select(node);
+
+		event.stopPropagation();
+		if (event.cancelable) {
+			event.preventDefault();
+		}
+
+		this.addEvent.showAddEventMenu({
+			left: 'calc(18vw)',
+			top: '6vh'
+		}, this.actionStep).subscribe(newEvent => {
+			const index = this.getIndex(this.selectedNode);
+			const parent = this.getParent(this.selectedNode);
+			parent.splice(index, 0, newEvent);
+
+			this.refreshTree();
+			this.selectAbstractEvent(newEvent);
+			this.select(node);
+			this.focus();
+		});
 	}
 	
+	keyPress(event: KeyboardEvent) {
+		if (event.cancelable) {
+			event.preventDefault();
+		}
+
+		switch (event.code) {
+		case 'ArrowUp':
+		case 'ArrowLeft':
+			this.selectUp();
+			return;
+		case 'ArrowDown':
+		case 'ArrowRight':
+			this.selectDown();
+			return;
+		case 'Enter':
+			this.openAddMenu(event, null);
+			return;
+		case 'Delete':
+			this.delete();
+			return;
+		case 'Escape':
+			this.deselect();
+			return;
+		}
+
+		if (event.ctrlKey) {
+			switch (event.key.toLowerCase()) {
+			case 'c':
+				this.copy();
+				return;
+			case 'x':
+				this.copy();
+				this.delete();
+				return;
+			case 'v':
+				this.paste();
+				return;
+			}
+		}
+	}
+
+	private focus() {
+		this.eventTree?.nativeElement.focus();
+	}
+	
+	private getParent(node: EventDisplay | null | undefined): AbstractEvent<any>[] {
+		return node?.parent ?? this.workingData;
+	}
+
+	private select(node: EventDisplay | null | undefined) {
+		if (!node) {
+			return;
+		}
+
+		if (this.selectedNode) {
+			this.selectedNode.isSelected = false;
+			this.selectedNode.changeDetector?.detectChanges();
+		}
+		
+		node.isSelected = true;
+		node.changeDetector?.detectChanges();
+		this.selectedNode = node;
+
+		if (node.data) {
+			this.helper.selectedEvent.next(node.data);
+			this.shownNode = node;
+			this.detailsShown = true;
+		}
+	}
+
+	private selectAbstractEvent(event: AbstractEvent<any>) {
+		const node = this.treeControl.dataNodes.find(n => n.data === event)!;
+		this.select(node);
+	}
+
+	private selectUp() {
+		const index = this.treeControl.dataNodes.indexOf(this.selectedNode!);
+		const finalIndex = index <= 0 ? this.treeControl.dataNodes.length - 1 : index - 1;
+		this.select(this.treeControl.dataNodes[finalIndex]);
+	}
+
+	private selectDown() {
+		const index = this.treeControl.dataNodes.indexOf(this.selectedNode!);
+		const finalIndex = index < 0 || index === this.treeControl.dataNodes.length - 1 ? 0 : index + 1;
+		this.select(this.treeControl.dataNodes[finalIndex]);
+	}
+
+	private deselect() {
+		this.detailsShown = false;
+		this.shownNode = undefined;
+		
+		if (this.selectedNode) {
+			this.selectedNode.isSelected = false;
+			this.selectedNode.changeDetector?.detectChanges();
+			this.selectedNode = undefined;
+		}
+	}
+
+	private delete() {
+		if (!this.selectedNode?.data) {
+			return;
+		}
+		
+		const globalIndex = this.treeControl.dataNodes.findIndex(n => n === this.selectedNode);
+
+		const index = this.getIndex(this.selectedNode);
+		const parent = this.getParent(this.selectedNode);
+		parent.splice(index, 1);
+
+		this.refreshTree();
+
+		if (this.shownNode === this.selectedNode) {
+			this.detailsShown = false;
+			this.shownNode = undefined;
+		}
+
+		const selectIndex = globalIndex >= this.treeControl.dataNodes.length ? 0 : globalIndex;
+		this.select(this.treeControl.dataNodes[selectIndex]);
+		
+		this.focus();
+	}
+
+	private copy() {
+		if (this.selectedNode?.data) {
+			this.copiedNode = this.selectedNode;
+		}
+	}
+	
+	private paste() {
+		if (this.copiedNode) {
+			const cpy = JSON.parse(JSON.stringify(this.copiedNode.data?.data));
+			const event = this.helper.getEventFromType(cpy, this.actionStep);
+
+			const index = !this.selectedNode ? 0 : this.getIndex(this.selectedNode!);
+			const parent = this.getParent(this.selectedNode);
+			parent.splice(index, 0, event);
+
+			this.refreshTree();
+			this.selectAbstractEvent(event);
+		}
+	}
+
+	private getIndex(event: EventDisplay | null | undefined) {
+		const parent = this.getParent(event);
+		const index = parent.indexOf(event?.data!);
+		return index === -1 ? parent.length : index;
+	}
+
 	private isChildOf(child: EventDisplay, parent: EventDisplay): boolean {
 		let currentLevel = this.treeControl.getLevel(child);
 		if (currentLevel <= 0) {
@@ -169,12 +320,6 @@ export class EventEditorComponent implements OnChanges {
 		return false;
 	}
 	
-	
-	private setLevel(node: EventDisplay, level: number): EventDisplay {
-		node.level = level;
-		return node;
-	}
-	
 	private convertNodes(nodes: AbstractEvent<any>[]): EventDisplay[] {
 		const result: EventDisplay[] = [];
 		for (const node of nodes) {
@@ -182,7 +327,9 @@ export class EventEditorComponent implements OnChanges {
 				text: node.info,
 				draggable: true,
 				isActionStep: this.actionStep,
+				isSelected: false,
 				data: node,
+				parent: nodes,
 				level: 0,
 			};
 			
@@ -207,8 +354,10 @@ export class EventEditorComponent implements OnChanges {
 					text: child.title,
 					draggable: child.draggable || false,
 					isActionStep: this.actionStep,
+					isSelected: false,
 					level: 0,
 					children: child.events,
+					parent: nodes,
 				});
 			}
 		}
@@ -217,7 +366,9 @@ export class EventEditorComponent implements OnChanges {
 			text: ' ',
 			draggable: false,
 			isActionStep: this.actionStep,
-			level: 0
+			isSelected: false,
+			level: 0,
+			parent: nodes,
 		});
 		
 		return result;
