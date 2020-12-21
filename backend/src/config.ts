@@ -1,4 +1,4 @@
 export const config = {
-	pathToCrosscode: 'I:/ccloader/assets/'
+	pathToCrosscode: 'C:/Program Files (x86)/Steam/steamapps/common/CrossCode/assets/'
 };
 
