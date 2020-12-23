@@ -46,10 +46,7 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 	}
 	
 	ngOnDestroy(): void {
-		for (const sub of this.changeSubscriptions) {
-			sub.unsubscribe();
-		}
-		this.changeSubscriptions = [];
+		this.clearSubscriptions();
 	}
 	
 	ngOnInit(): void {
@@ -65,7 +62,16 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 		this.close.emit();
 	}
 	
+	private clearSubscriptions() {
+		for (const sub of this.changeSubscriptions) {
+			sub.unsubscribe();
+		}
+		this.changeSubscriptions = [];
+	}
+
 	private loadSettings() {
+		this.clearSubscriptions();
+
 		const ref = this.appHost.viewContainerRef;
 		
 		ref.clear();
@@ -100,12 +106,12 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 		instance.custom = data;
 		instance.key = key;
 		instance.attribute = val;
-		const sub = instance.onChange.subscribe((value: any) => this.update(value));
+		const sub = instance.onChange.subscribe(() => this.update());
 		this.changeSubscriptions.push(sub);
 		return instance;
 	}
 	
-	private update(value: any) {
+	private update() {
 		this.event.data = this.unknownObj ? this.unknownObj.data : this.newData;
 		this.event.update();
 		this.refresh.emit(this.event);
