@@ -39,6 +39,7 @@ $color2: #343434;
 	cursor: move;
 	&.cdk-drag-placeholder {
 	  opacity: 0;
+	  transition-duration: 0s; //The placeholder should move instantly so the dragged element can transition to the correct position on release
 	}
 }
 

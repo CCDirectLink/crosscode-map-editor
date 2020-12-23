@@ -88,36 +88,26 @@ export class EventEditorComponent implements OnChanges {
 	}
 	
 	drop(event: CdkDragDrop<EventDisplay>) {
+		if (event.currentIndex === event.previousIndex) {
+			return;
+		}
+
 		const moved = event.item.data as EventDisplay;
+		const belowIndex = event.currentIndex + (event.currentIndex > event.previousIndex ? 1 : 0); //Add 1 to compensate for a missing this.treeControl.dataNodes.splice
+		const below = this.treeControl.dataNodes[belowIndex];
+
+		if (this.isChildOf(below, moved)) {
+			return;
+		}
+
 		const fromParent = this.getParent(moved);
-		
-		if (event.currentIndex === 0) {
-			this.workingData.unshift(moved.data!);
-		} else {
-			const toTop = event.currentIndex > event.previousIndex ? this.treeControl.dataNodes[event.currentIndex] : this.treeControl.dataNodes[event.currentIndex - 1];
-			if (this.isChildOf(toTop, moved)) {
-				return;
-			}
-			
-			if (toTop.children != null) {
-				toTop.children.unshift(moved.data!);
-			} else {
-				const toParent = this.getParent(toTop);
-				const toIndex = toParent.indexOf(toTop.data!);
-				if (toIndex >= 0) {
-					toParent.splice(toIndex + 1, 0, moved.data!);
-				} else {
-					toParent.push(moved.data!);
-				}
-			}
-		}
-		
-		if (event.currentIndex > event.previousIndex) {
-			fromParent.splice(fromParent.indexOf(moved.data!), 1);
-		} else {
-			fromParent.splice(fromParent.lastIndexOf(moved.data!), 1);
-		}
-		
+		const toParent = this.getParent(below);
+
+		fromParent.splice(fromParent.indexOf(moved.data!), 1);
+
+		const toIndex = toParent.indexOf(below?.data!);
+		toParent.splice(toIndex >= 0 ? toIndex : toParent.length, 0, moved.data!);
+
 		this.refreshTree();
 		if (this.selectedNode) {
 			this.selectAbstractEvent(this.selectedNode.data!);
@@ -300,23 +290,23 @@ export class EventEditorComponent implements OnChanges {
 	}
 
 	private isChildOf(child: EventDisplay, parent: EventDisplay): boolean {
-		let currentLevel = this.treeControl.getLevel(child);
-		if (currentLevel <= 0) {
-			return false;
-		}
-		
-		const currentIndex = this.treeControl.dataNodes.indexOf(child);
-		for (let i = currentIndex - 1; i >= 0; i--) {
-			const node = this.treeControl.dataNodes[i];
-			const nodeLevel = this.treeControl.getLevel(node);
-			
+		let node: EventDisplay | undefined = child;
+		while (node) {
 			if (node === parent) {
-				return nodeLevel === currentLevel - 1;
+				return true;
 			}
-			
-			currentLevel = Math.min(currentLevel, nodeLevel);
+
+			if (!node.data) {
+				//Else blocks, etc
+				const level = this.treeControl.dataNodes.filter(n => n.level === node!.level);
+				while (!node.data) {
+					node = level[level.indexOf(node) - 1];
+				}
+			} else {
+				node = this.treeControl.dataNodes.find(n => n.children === node!.parent);
+			}
 		}
-		
+
 		return false;
 	}
 	
