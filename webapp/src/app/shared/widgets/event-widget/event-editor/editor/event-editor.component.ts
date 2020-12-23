@@ -64,7 +64,7 @@ export class EventEditorComponent implements OnChanges {
 	}
 
 	sortPredicate(index: number, item: CdkDrag<EventDisplay>, drop: CdkDropList<EventDisplay>) {
-		//TODO: Prevent placeholder if element cannot go there
+		//TODO: Prevent placeholder if element cannot go there (this.isChildOf(...))
 		return index < this.treeControl.dataNodes.length - 1;
 	}
 
@@ -72,6 +72,10 @@ export class EventEditorComponent implements OnChanges {
 		if (this.shownNode) {
 			this.shownNode.text = this.shownNode.data?.info ?? ' ';
 			this.shownNode.changeDetector?.detectChanges();
+
+			if (this.shownNode.children) {
+				this.refreshTree();
+			}
 		}
 	}
 
