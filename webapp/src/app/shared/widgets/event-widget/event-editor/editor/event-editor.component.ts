@@ -63,7 +63,8 @@ export class EventEditorComponent implements OnChanges {
 		this.refreshTree();
 	}
 
-	sortPredicate(index: number, item: CdkDrag<EventDisplay>, drop: CdkDropList) {
+	sortPredicate(index: number, item: CdkDrag<EventDisplay>, drop: CdkDropList<EventDisplay>) {
+		//TODO: Prevent placeholder if element cannot go there
 		return index < this.treeControl.dataNodes.length - 1;
 	}
 
