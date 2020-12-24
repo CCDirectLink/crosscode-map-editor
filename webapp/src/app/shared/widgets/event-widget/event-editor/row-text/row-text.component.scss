@@ -26,6 +26,7 @@ $config: mat-typography-config();
 
 .event-row {
 	user-select: none;
+	margin-right: 8px;
 
 	// used to grow last element in list, but makes elements not full width
 	//flex-grow: 1;
