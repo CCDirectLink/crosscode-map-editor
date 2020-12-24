@@ -293,6 +293,7 @@ export class EventEditorComponent implements OnChanges {
 
 			this.refreshTree();
 			this.selectAbstractEvent(event);
+			this.focus();
 		}
 	}
 
