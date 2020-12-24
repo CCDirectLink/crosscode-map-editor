@@ -330,19 +330,11 @@ export class EventEditorComponent implements OnChanges {
 	private isChildOf(child: EventDisplay, parent: EventDisplay): boolean {
 		let node: EventDisplay | undefined = child;
 		while (node) {
-			if (node === parent) {
+			if (node === parent || (node.data && node.data === parent.data)) {
 				return true;
 			}
 
-			if (!node.data) {
-				//Else blocks, etc
-				const level = this.treeControl.dataNodes.filter(n => n.level === node!.level);
-				while (!node.data) {
-					node = level[level.indexOf(node) - 1];
-				}
-			} else {
-				node = this.treeControl.dataNodes.find(n => n.children === node!.parent);
-			}
+			node = this.treeControl.dataNodes.find(n => n.children === node!.parent);
 		}
 
 		return false;
@@ -383,6 +375,7 @@ export class EventEditorComponent implements OnChanges {
 					draggable: child.draggable || false,
 					isActionStep: this.actionStep,
 					isSelected: false,
+					data: node,
 					level: 0,
 					children: child.events,
 					parent: nodes,
