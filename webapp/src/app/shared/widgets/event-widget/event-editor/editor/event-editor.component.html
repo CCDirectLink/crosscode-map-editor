@@ -40,7 +40,7 @@
 			</div>
 		</ng-container>
 		<ng-container ngProjectAs="right">
-			<app-event-detail (refresh)="refresh()" (close)="hideDetails()"></app-event-detail>
+			<app-event-detail #eventDetail (refresh)="refresh()" (close)="hideDetails()"></app-event-detail>
 		</ng-container>
 	</app-split-pane>
 </div>

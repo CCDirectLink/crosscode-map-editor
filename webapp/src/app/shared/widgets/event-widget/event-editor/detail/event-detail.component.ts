@@ -25,7 +25,7 @@ import { Subscription } from 'rxjs';
 	templateUrl: './event-detail.component.html',
 	styleUrls: ['./event-detail.component.scss']
 })
-export class EventDetailComponent implements OnInit, OnDestroy {
+export class EventDetailComponent implements OnDestroy {
 	@ViewChild(HostDirective, {static: true}) appHost!: HostDirective;
 	
 	@Input() event!: AbstractEvent<any>;
@@ -49,17 +49,13 @@ export class EventDetailComponent implements OnInit, OnDestroy {
 		this.clearSubscriptions();
 	}
 	
-	ngOnInit(): void {
-		this.helper.selectedEvent.subscribe(selected => {
-			if (selected) {
-				this.event = selected;
-				this.loadSettings();
-			}
-		});
-	}
-	
 	closeDetails(): void {
 		this.close.emit();
+	}
+
+	public loadEvent(event: AbstractEvent<any>) {
+		this.event = event;
+		this.loadSettings();
 	}
 	
 	private clearSubscriptions() {

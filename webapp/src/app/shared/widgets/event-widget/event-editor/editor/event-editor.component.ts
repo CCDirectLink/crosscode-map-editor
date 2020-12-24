@@ -8,6 +8,7 @@ import { SplitPaneComponent } from '../../../../split-pane/split-pane.component'
 import { EventDisplay } from '../event-display.model';
 import { AddEventService } from '../add/add-event.service';
 import { EventHistory } from './event-history';
+import { EventDetailComponent } from '../detail/event-detail.component';
 
 @Component({
 	selector: 'app-event-editor',
@@ -17,6 +18,7 @@ import { EventHistory } from './event-history';
 })
 export class EventEditorComponent implements OnChanges {
 	@ViewChild('splitpane') splitPane?: SplitPaneComponent;
+	@ViewChild('eventDetail', {static: true}) eventDetail?: unknown; //EventDetailComponent but it errors for some reason
 	@ViewChild('eventTree', {read: ElementRef}) eventTree?: ElementRef<HTMLElement>;
 	
 	@Input() eventData: EventType[] = [];
@@ -141,7 +143,6 @@ export class EventEditorComponent implements OnChanges {
 
 			this.refreshTree();
 			this.selectAbstractEvent(newEvent);
-			this.select(node);
 			this.focus();
 		});
 	}
@@ -215,9 +216,12 @@ export class EventEditorComponent implements OnChanges {
 		node.isSelected = true;
 		node.changeDetector?.detectChanges();
 		this.selectedNode = node;
+		this.showEvent(node);
+	}
 
+	private showEvent(node: EventDisplay) {
 		if (node.data) {
-			this.helper.selectedEvent.next(node.data);
+			(this.eventDetail as EventDetailComponent).loadEvent(node.data);
 			this.shownNode = node;
 			this.detailsShown = true;
 			this.history.select(node.data);
