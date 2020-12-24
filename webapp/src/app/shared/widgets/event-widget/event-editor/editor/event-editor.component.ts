@@ -7,7 +7,7 @@ import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 import { SplitPaneComponent } from '../../../../split-pane/split-pane.component';
 import { EventDisplay } from '../event-display.model';
 import { AddEventService } from '../add/add-event.service';
-
+import { EventHistory } from './event-history';
 
 @Component({
 	selector: 'app-event-editor',
@@ -34,7 +34,7 @@ export class EventEditorComponent implements OnChanges {
 		e => this.convertNodes(e.children!));
 	dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 	
-		
+	private history = new EventHistory();
 	private workingData!: AbstractEvent<any>[];
 	private selectedNode?: EventDisplay;
 	private shownNode?: EventDisplay;
@@ -108,15 +108,15 @@ export class EventEditorComponent implements OnChanges {
 		const fromParent = this.getParent(moved);
 		const toParent = this.getParent(below);
 
+		this.history.move(fromParent, toParent);
+
 		fromParent.splice(fromParent.indexOf(moved.data!), 1);
 
 		const toIndex = toParent.indexOf(below?.data!);
 		toParent.splice(toIndex >= 0 ? toIndex : toParent.length, 0, moved.data!);
 
-		this.refreshTree();
-		if (this.selectedNode) {
-			this.selectAbstractEvent(this.selectedNode.data!);
-		}
+		this.refreshAll();
+		this.focus();
 	}
 
 	eventClicked(_: MouseEvent, node: EventDisplay | null) {
@@ -183,6 +183,13 @@ export class EventEditorComponent implements OnChanges {
 			case 'v':
 				this.paste();
 				return;
+			case 'z':
+				if (event.shiftKey) {
+					this.redo();
+				} else {
+					this.undo();
+				}
+				return;
 			}
 		}
 	}
@@ -213,6 +220,7 @@ export class EventEditorComponent implements OnChanges {
 			this.helper.selectedEvent.next(node.data);
 			this.shownNode = node;
 			this.detailsShown = true;
+			this.history.select(node.data);
 		}
 	}
 
@@ -285,6 +293,31 @@ export class EventEditorComponent implements OnChanges {
 
 			this.refreshTree();
 			this.selectAbstractEvent(event);
+		}
+	}
+
+	private undo() {
+		this.history.undo();
+		this.refreshAll();
+	}
+
+	private redo() {
+		this.history.redo();
+		this.refreshTree();
+	}
+
+	private refreshAll() {
+		const selected = this.treeControl.dataNodes.indexOf(this.selectedNode!);
+		this.refreshTree();
+		if (this.shownNode) {
+			this.selectAbstractEvent(this.shownNode.data!);
+		}
+		if (selected >= 0) {
+			this.deselect();
+			this.detailsShown = true;
+			this.selectedNode = this.treeControl.dataNodes[selected];
+			this.selectedNode.isSelected = true;
+			this.selectedNode.changeDetector?.detectChanges();
 		}
 	}
 
