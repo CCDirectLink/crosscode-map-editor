@@ -4,16 +4,17 @@ runs:
   using: "composite"
   steps:
     - working-directory: common
-      run: npm ci
-    - working-directory: backend
-      run: npm ci
-    - working-directory: webapp
-      run: npm ci
-    - working-directory: common
+      shell: bash
       run: |
+        npm ci
         npm run lint
         npm run build
     - working-directory: webapp
+      shell: bash
       run: |
+        npm ci
         npm run lint
         npm run dist
+    - working-directory: backend
+      shell: bash
+      run: npm ci
