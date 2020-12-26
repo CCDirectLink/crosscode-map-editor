@@ -62,7 +62,7 @@ export class EventEditorComponent implements OnChanges {
 		} else {
 			this.workingData = [];
 		}
-		this.refreshTree();
+		this.refreshAll();
 	}
 
 	sortPredicate(index: number, item: CdkDrag<EventDisplay>, drop: CdkDropList<EventDisplay>) {
@@ -76,14 +76,9 @@ export class EventEditorComponent implements OnChanges {
 			this.shownNode.changeDetector?.detectChanges();
 
 			if (this.shownNode.children) {
-				this.refreshTree();
+				this.refreshAll();
 			}
 		}
-	}
-
-	refreshTree() {
-		this.dataSource.data = this.convertNodes(this.workingData);
-		this.treeControl.expandAll();
 	}
 	
 	hideDetails(): void {
@@ -141,7 +136,7 @@ export class EventEditorComponent implements OnChanges {
 			const parent = this.getParent(this.selectedNode);
 			parent.splice(index, 0, newEvent);
 
-			this.refreshTree();
+			this.refreshAll();
 			this.selectAbstractEvent(newEvent);
 			this.focus();
 		});
@@ -193,6 +188,11 @@ export class EventEditorComponent implements OnChanges {
 				return;
 			}
 		}
+	}
+
+	private refreshTree() {
+		this.dataSource.data = this.convertNodes(this.workingData);
+		this.treeControl.expandAll();
 	}
 
 	private focus() {
@@ -267,7 +267,7 @@ export class EventEditorComponent implements OnChanges {
 		const parent = this.getParent(this.selectedNode);
 		parent.splice(index, 1);
 
-		this.refreshTree();
+		this.refreshAll();
 
 		if (this.shownNode === this.selectedNode) {
 			this.detailsShown = false;
@@ -295,7 +295,7 @@ export class EventEditorComponent implements OnChanges {
 			const parent = this.getParent(this.selectedNode);
 			parent.splice(index, 0, event);
 
-			this.refreshTree();
+			this.refreshAll();
 			this.selectAbstractEvent(event);
 			this.focus();
 		}
@@ -308,7 +308,7 @@ export class EventEditorComponent implements OnChanges {
 
 	private redo() {
 		this.history.redo();
-		this.refreshTree();
+		this.refreshAll();
 	}
 
 	private refreshAll() {
