@@ -1,4 +1,5 @@
 import {
+	ChangeDetectorRef,
 	Component,
 	ComponentFactoryResolver,
 	EventEmitter,
@@ -41,7 +42,8 @@ export class EventDetailComponent implements OnDestroy {
 	constructor(
 		private componentFactoryResolver: ComponentFactoryResolver,
 		private widgetRegistry: WidgetRegistryService,
-		private helper: EventHelperService
+		private helper: EventHelperService,
+		private ref: ChangeDetectorRef,
 	) {
 	}
 	
@@ -93,6 +95,8 @@ export class EventDetailComponent implements OnDestroy {
 			}, ref) as JsonWidgetComponent;
 			instance.noPropName = true;
 		}
+
+		this.ref.detectChanges();
 	}
 	
 	private generateWidget(data: any, key: string, val: AttributeValue, ref: ViewContainerRef) {
