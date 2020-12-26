@@ -1,0 +1,19 @@
+name: 'build'
+description: 'tests and builds all projects'
+runs:
+  using: "composite"
+  steps:
+    - working-directory: common
+      run: npm ci
+    - working-directory: backend
+      run: npm ci
+    - working-directory: webapp
+      run: npm ci
+    - working-directory: common
+      run: |
+        npm run lint
+        npm run build
+    - working-directory: webapp
+      run: |
+        npm run lint
+        npm run dist
