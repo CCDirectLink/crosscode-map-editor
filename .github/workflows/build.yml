@@ -1,0 +1,10 @@
+name: build
+on: [push]
+jobs:
+  install:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    steps:
+     - uses: actions/checkout@v1
