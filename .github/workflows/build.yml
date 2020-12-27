@@ -1,5 +1,8 @@
 name: build
-on: [push, pull_request]
+on:
+  push:
+    branches-ignore:
+      - master
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -13,13 +16,6 @@ jobs:
         node-version: '14'
     - uses: actions/checkout@v2
     - uses: ./.github/actions/build
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: dist-${{ matrix.os }}
-        path: webapp/dist/*
-
-
 
 
 
