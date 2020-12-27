@@ -25,12 +25,6 @@ jobs:
           sed '/\[Unreleased\]/a ## [${{steps.bumpr.outputs.next_version}}] newDateHere' CHANGELOG.md -i
           sed "s/newDateHere/$(date '+%Y-%m-%d')/g" CHANGELOG.md -i
 
-      - uses: EndBug/add-and-commit@v6
-        if: '!steps.bumpr.outputs.skip'
-        with:
-          push: false
-          message: 'prepare changelog for release (from GitHub Actions)'
-
       - name: commit changelog
         if: '!steps.bumpr.outputs.skip'
         run: |
