@@ -5,7 +5,8 @@ on:
 
 jobs:
   # Enforces the update of a changelog file on every pull request
-  changelog:
+  require_changelog:
+    name: require changelog
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -13,3 +14,10 @@ jobs:
         with:
           changeLogPath: 'CHANGELOG.md'
           skipLabels: 'Skip-Changelog'
+  release-check:
+    if: github.event.action == 'labeled'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Post bumpr status comment
+        uses: haya14busa/action-bumpr@v1
