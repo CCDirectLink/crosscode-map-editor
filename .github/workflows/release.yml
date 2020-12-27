@@ -24,6 +24,7 @@ jobs:
         shell: bash
 
       - name: Get Changelog Entry
+        if: matrix.os == 'ubuntu-latest'
         id: changelog_reader
         uses: mindsers/changelog-reader-action@v2
         with:
