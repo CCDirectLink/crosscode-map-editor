@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
 
       - id: bumpr
         uses: haya14busa/action-bumpr@v1
@@ -33,8 +36,8 @@ jobs:
       - name: commit changelog
         if: '!steps.bumpr.outputs.skip'
         run: |
-          git config --global user.name 'prepare_release github action'
-          git config --global user.email 'prepare_release@github.com'
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
           git commit -am "prepare changelog for release (from GitHub Actions)"
 
       - name: make version tag
