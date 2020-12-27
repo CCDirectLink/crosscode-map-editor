@@ -1,0 +1,46 @@
+name: prepare_release
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    name: prepare release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - id: bumpr
+        uses: haya14busa/action-bumpr@v1
+        with:
+          dry-run: true
+
+      - name: update changelog
+        if: '!steps.bumpr.outputs.skip'
+        run: |
+          sed '/\[Unreleased\]/a ## [${{steps.bumpr.outputs.next_version}}] newDateHere' CHANGELOG.md -i
+          sed "s/newDateHere/$(date '+%Y-%m-%d')/g" CHANGELOG.md -i
+
+      - uses: EndBug/add-and-commit@v6
+        if: '!steps.bumpr.outputs.skip'
+        with:
+          push: false
+          message: 'prepare changelog for release (from GitHub Actions)'
+
+      - name: commit changelog
+        run: |
+          git config --global user.name 'prepare_release github action'
+          git config --global user.email 'prepare_release@github.com'
+          git commit -am "prepare changelog for release (from GitHub Actions)"
+
+      - name: make version tag and push
+        working-directory: webapp
+        run: |
+          npm version ${{steps.bumpr.outputs.next_version}}
+          git push
+
+# if: "!steps.bumpr.outputs.skip"
