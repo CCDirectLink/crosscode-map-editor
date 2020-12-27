@@ -32,12 +32,14 @@ jobs:
           message: 'prepare changelog for release (from GitHub Actions)'
 
       - name: commit changelog
+        if: '!steps.bumpr.outputs.skip'
         run: |
           git config --global user.name 'prepare_release github action'
           git config --global user.email 'prepare_release@github.com'
           git commit -am "prepare changelog for release (from GitHub Actions)"
 
       - name: make version tag and push
+        if: '!steps.bumpr.outputs.skip'
         working-directory: webapp
         run: |
           npm version ${{steps.bumpr.outputs.next_version}}
