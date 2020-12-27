@@ -37,6 +37,6 @@ jobs:
         working-directory: webapp
         run: |
           npm version ${{steps.bumpr.outputs.next_version}}
-          git push
+          git push --follow-tags
 
 # if: "!steps.bumpr.outputs.skip"
