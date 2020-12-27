@@ -4,13 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-## [v1.0.0] 2020-12-27
 
 ### Changed
 - Improved tile drawing by drawing a line of points instead of single points. Avoids holes when drawing fast. [#189](https://github.com/CCDirectLink/crosscode-map-editor/pull/189)
 - Added keyboard controls to list search overlay (add new entity / add new event)
 - Changed Continuous Integration to Github Actions
-- added random comment to .gitignore  asd
+- added random comment to .gitignore  asdasd
 
 ## [0.8.0] - 2020-09-21
 
