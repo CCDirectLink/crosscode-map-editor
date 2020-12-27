@@ -10,20 +10,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
 
       - id: bumpr
         uses: haya14busa/action-bumpr@v1
         with:
           dry_run: true
 
+      - name: setup node
+        if: '!steps.bumpr.outputs.skip'
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
       - name: update changelog
         if: '!steps.bumpr.outputs.skip'
         run: |
-          sed '/\[Unreleased\]/a ## [${{ steps.bumpr.outputs.next_version }}] newDateHere' CHANGELOG.md -i
-          sed "s/newDateHere/$(date '+%Y-%m-%d')/g" CHANGELOG.md -i
+          export NEXT_VERSION_V=${{ steps.bumpr.outputs.next_version }}
+          export NEXT_VERSION=${NEXT_VERSION_V:1}
+          sed -i "/\[Unreleased\]/a ## [$NEXT_VERSION] newDateHere" CHANGELOG.md
+          sed -i "s/newDateHere/$(date '+%Y-%m-%d')/g" CHANGELOG.md
 
       - name: commit changelog
         if: '!steps.bumpr.outputs.skip'
@@ -32,10 +37,16 @@ jobs:
           git config --global user.email 'prepare_release@github.com'
           git commit -am "prepare changelog for release (from GitHub Actions)"
 
-      - name: make version tag and push
+      - name: make version tag
         if: '!steps.bumpr.outputs.skip'
         working-directory: webapp
         run: |
           mkdir .git
           npm version ${{ steps.bumpr.outputs.next_version }}
-          git push --follow-tags
+
+      - name: Push changes
+        if: '!steps.bumpr.outputs.skip'
+        uses: ad-m/github-push-action@master
+        with:
+          tags: true
+          github_token: ${{ secrets.PAT}}
