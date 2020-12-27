@@ -19,16 +19,10 @@ jobs:
         with:
           dry_run: true
 
-      - name: get version without v prefix
-        id: tag_name
-        run: |
-          echo ::set-output name=current_version::${${{ steps.bumpr.outputs.next_version }}:1}
-        shell: bash
-
       - name: update changelog
         if: '!steps.bumpr.outputs.skip'
         run: |
-          sed '/\[Unreleased\]/a ## [${{steps.tag_name.outputs.current_version}}] newDateHere' CHANGELOG.md -i
+          sed '/\[Unreleased\]/a ## [${{ steps.bumpr.outputs.next_version }}] newDateHere' CHANGELOG.md -i
           sed "s/newDateHere/$(date '+%Y-%m-%d')/g" CHANGELOG.md -i
 
       - name: commit changelog
@@ -42,7 +36,7 @@ jobs:
         if: '!steps.bumpr.outputs.skip'
         working-directory: webapp
         run: |
-          npm version ${{steps.tag_name.outputs.current_version}}
+          npm version ${{ steps.bumpr.outputs.next_version }}
           git push --follow-tags
 
 # if: "!steps.bumpr.outputs.skip"
