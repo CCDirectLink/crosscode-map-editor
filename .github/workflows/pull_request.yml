@@ -1,7 +1,7 @@
 name: pull request
 on:
   pull_request:
-    types: [ opened, synchronize, reopened, ready_for_review, labeled, unlabeled ]
+    types: [ opened, synchronize, reopened ]
 
 jobs:
   # Enforces the update of a changelog file on every pull request
@@ -14,10 +14,3 @@ jobs:
         with:
           changeLogPath: 'CHANGELOG.md'
           skipLabels: 'Skip-Changelog'
-  release-check:
-    if: github.event.action == 'labeled'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Post bumpr status comment
-        uses: haya14busa/action-bumpr@v1
