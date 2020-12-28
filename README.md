@@ -24,7 +24,7 @@ For development you need to do in order:
 
 ### common 
 
-move into the `common` folder and then install dependencies via `npm`
+Move into the `common` folder and then install dependencies via `npm`
 ```
 npm install
 ```
@@ -34,7 +34,7 @@ npm start
 ```
 
 ### backend
-move into the `backend` folder and then install dependencies via `npm`
+Move into the `backend` folder and then install dependencies via `npm`
 ```
 npm install
 ```
@@ -45,7 +45,7 @@ npm start
 ```
 
 ### webapp
-move into the `webapp` folder and then install dependencies via `npm`
+Move into the `webapp` folder and then install dependencies via `npm`
 | :warning: Dependencies are required only for Electron, devDependencies are included in the Angular build. |
 |---|
 ```
