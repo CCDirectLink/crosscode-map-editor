@@ -1,0 +1,55 @@
+name: prepare_release
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  check:
+    name: check release version
+    runs-on: ubuntu-latest
+    outputs:
+      skip: ${{ steps.bumpr.outputs.skip }}
+      version: ${{ steps.bumpr.outputs.next_version }}
+    steps:
+      - uses: actions/checkout@v2
+      - id: bumpr
+        uses: haya14busa/action-bumpr@v1
+        with:
+          dry_run: true
+  prepare:
+    name: prepare release
+    needs: check
+    if: '!needs.check.outputs.skip'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: update changelog
+        run: |
+          export NEXT_VERSION_V=${{ needs.check.outputs.version }}
+          export NEXT_VERSION=${NEXT_VERSION_V:1}
+          sed -i "/\[Unreleased\]/a ## [$NEXT_VERSION] newDateHere" CHANGELOG.md
+          sed -i "s/newDateHere/$(date '+%Y-%m-%d')/g" CHANGELOG.md
+      - name: commit changelog
+        run: |
+          git config --global user.name 'GitHub Action'
+          git config --global user.email 'action@github.com'
+          git commit -am "prepare changelog for release (from GitHub Actions)"
+      - name: make version tag
+        working-directory: webapp
+        run: |
+          mkdir .git
+          npm version ${{ needs.check.outputs.version }}
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          tags: true
+          github_token: ${{ secrets.PAT}}
+
