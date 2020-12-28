@@ -314,17 +314,21 @@ export class EventEditorComponent implements OnChanges {
 	private refreshAll() {
 		const selected = this.selectedNode?.data;
 		const selectedParent = this.selectedNode?.parent;
+		const shown = this.detailsShown;
+		const shownData = this.shownNode?.data;
+
 		this.refreshTree();
-		if (this.shownNode) {
-			this.selectAbstractEvent(this.shownNode.data!);
+		this.deselect();
+		if (shownData) {
+			this.selectAbstractEvent(shownData);
 		}
 		if (selectedParent) {
-			this.deselect();
-			this.detailsShown = true;
+			//Similar to this.selectAbstractEvent but also handles undefined as data
 			this.selectedNode = this.treeControl.dataNodes.find(n => n.parent === selectedParent && n.data === selected)!;
 			this.selectedNode.isSelected = true;
 			this.selectedNode.changeDetector?.detectChanges();
 		}
+		this.detailsShown = shown;
 	}
 
 	private getIndex(event: EventDisplay | null | undefined) {
