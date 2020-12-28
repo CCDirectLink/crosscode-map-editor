@@ -132,6 +132,8 @@ export class EventEditorComponent implements OnChanges {
 			left: 'calc(18vw)',
 			top: '6vh'
 		}, this.actionStep).subscribe(newEvent => {
+			this.history.add(this.getParent(this.selectedNode));
+
 			const index = this.getIndex(this.selectedNode);
 			const parent = this.getParent(this.selectedNode);
 			parent.splice(index, 0, newEvent);
@@ -260,6 +262,8 @@ export class EventEditorComponent implements OnChanges {
 		if (!this.selectedNode?.data) {
 			return;
 		}
+
+		this.history.delete(this.selectedNode.parent);
 		
 		const globalIndex = this.treeControl.dataNodes.findIndex(n => n === this.selectedNode);
 

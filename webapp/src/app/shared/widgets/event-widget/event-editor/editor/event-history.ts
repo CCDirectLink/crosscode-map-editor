@@ -14,7 +14,13 @@ interface MoveRestorePoint {
 	toRef: AbstractEvent<any>[];
 }
 
-type RestorePoint = EditRestorePoint | MoveRestorePoint;
+interface AddDeleteRestorePoint {
+	type: 'addDelete';
+	from: AbstractEvent<any>[];
+	fromRef: AbstractEvent<any>[];
+}
+
+type RestorePoint = EditRestorePoint | MoveRestorePoint | AddDeleteRestorePoint;
 
 export class EventHistory {
 	private history: RestorePoint[] = [];
@@ -23,19 +29,12 @@ export class EventHistory {
 	private selected: EditRestorePoint | undefined;
 
 	public select(node: AbstractEvent<any>): void {
-		if (this.hasChanged(this.selected)) {
-			this.history.push(this.selected);
-			this.undoHistory = [];
-		}
-
+		this.commitEdits();
 		this.selected = this.createRestorePoint(node);
 	}
 
-	public move(from: AbstractEvent<any>[], to: AbstractEvent<any>[]) {
-		if (this.hasChanged(this.selected)) {
-			this.history.push(this.selected);
-			this.selected = this.createRestorePoint(this.selected.ref);
-		}
+	public move(from: AbstractEvent<any>[], to: AbstractEvent<any>[]): void {
+		this.commitEdits();
 
 		this.history.push({
 			type: 'move',
@@ -47,16 +46,26 @@ export class EventHistory {
 
 		this.undoHistory = [];
 	}
+
+	public add(from: AbstractEvent<any>[]): void {
+		this.delete(from); //Adding is the same as removing from the viewpoint of the history
+	}
+
+	public delete(from: AbstractEvent<any>[]): void {
+		this.commitEdits();
+
+		this.history.push({
+			type: 'addDelete',
+			from: Object.assign([], from),
+			fromRef: from,
+		});
+
+		this.undoHistory = [];
+
+	}
 	
 	public undo(): void {
-		if (this.hasChanged(this.selected)) {
-			const rp = this.invertRestorePoint(this.selected);
-			this.undoHistory.push(rp);
-
-			this.applyRestorePoint(this.selected);
-			this.selected = this.createRestorePoint(this.selected.ref);
-			return;
-		}
+		this.commitEdits();
 
 		if (this.history.length <= 0) {
 			return;
@@ -79,8 +88,20 @@ export class EventHistory {
 		this.applyRestorePoint(last);
 
 		this.history.push(rp);
+	}
 
-		//TODO: is this.selected correct here?
+	private commitEdits(): void {
+		if (this.hasChanged(this.selected)) {
+			const last = this.history[this.history.length - 1];
+			if (last?.type === 'edit' && last.ref === this.selected.ref) {
+				return; //Already commited
+			}
+
+			this.history.push(this.selected);
+			this.undoHistory = [];
+
+			this.selected = this.createRestorePoint(this.selected.ref);
+		}
 	}
 
 	private createRestorePoint(node: AbstractEvent<any>): EditRestorePoint {
@@ -100,6 +121,12 @@ export class EventHistory {
 		case 'move':
 			Object.assign(rp.toRef, rp.to);
 			Object.assign(rp.fromRef, rp.from);
+			rp.toRef.length = rp.to.length;
+			rp.fromRef.length = rp.from.length;
+			break;
+		case 'addDelete':
+			Object.assign(rp.fromRef, rp.from);
+			rp.fromRef.length = rp.from.length;
 			break;
 		}
 	}
@@ -115,6 +142,12 @@ export class EventHistory {
 				fromRef: rp.fromRef,
 				to: Object.assign([], rp.toRef),
 				toRef: rp.toRef,
+			};
+		case 'addDelete':
+			return {
+				type: 'addDelete',
+				from: Object.assign([], rp.fromRef),
+				fromRef: rp.fromRef,
 			};
 		}
 	}
