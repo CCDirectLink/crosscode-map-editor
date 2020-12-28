@@ -1,34 +1,17 @@
 name: build
-on: [push, pull_request]
+on:
+  push:
+    branches-ignore:
+      - master
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [ windows-latest, ubuntu-latest, macos-latest ]
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-    - run: npm ci
-      working-directory: common
-    - run: npm ci
-      working-directory: backend
-    - run: npm ci
-      working-directory: webapp
-    - run: npm run lint
-      working-directory: common
-    - run: npm run build
-      working-directory: common
-    - run: npm run lint
-      working-directory: webapp
-    - run: npm run dist
-      working-directory: webapp
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        files: webapp/dist/*
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - uses: ./.github/actions/build
