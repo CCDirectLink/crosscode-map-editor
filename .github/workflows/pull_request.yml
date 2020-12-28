@@ -1,0 +1,16 @@
+name: pull request
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+jobs:
+  # Enforces the update of a changelog file on every pull request
+  require_changelog:
+    name: require changelog
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: dangoslen/changelog-enforcer@v1.6.1
+        with:
+          changeLogPath: 'CHANGELOG.md'
+          skipLabels: 'Skip-Changelog'
