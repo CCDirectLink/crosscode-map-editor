@@ -308,11 +308,13 @@ export class EventEditorComponent implements OnChanges {
 	private undo() {
 		this.history.undo();
 		this.refreshAll();
+		this.focus();
 	}
 
 	private redo() {
 		this.history.redo();
 		this.refreshAll();
+		this.focus();
 	}
 
 	private refreshAll() {
