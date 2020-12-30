@@ -117,6 +117,9 @@ export class EventHistory {
 		case 'edit':
 			rp.ref.data = JSON.parse(rp.data);
 			rp.ref.update();
+			if (this.selected?.ref === rp.ref) {
+				this.selected = rp;
+			}
 			break;
 		case 'move':
 			Object.assign(rp.toRef, rp.to);
