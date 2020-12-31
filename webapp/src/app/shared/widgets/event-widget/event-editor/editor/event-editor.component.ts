@@ -330,9 +330,8 @@ export class EventEditorComponent implements OnChanges {
 		}
 		if (selectedParent) {
 			//Similar to this.selectAbstractEvent but also handles undefined as data
-			this.selectedNode = this.treeControl.dataNodes.find(n => n.parent === selectedParent && n.data === selected)!;
-			this.selectedNode.isSelected = true;
-			this.selectedNode.changeDetector?.detectChanges();
+			const node = this.treeControl.dataNodes.find(n => n.parent === selectedParent && n.data === selected);
+			this.select(node);
 		}
 		this.detailsShown = shown;
 	}
