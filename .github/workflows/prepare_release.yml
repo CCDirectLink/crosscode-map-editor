@@ -39,8 +39,8 @@ jobs:
           sed -i "s/newDateHere/$(date '+%Y-%m-%d')/g" CHANGELOG.md
       - name: commit changelog
         run: |
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'action@github.com'
+          git config --global user.name 'CCDirectLink Bot'
+          git config --global user.email 'keanucode@c2dl.info'
           git commit -am "prepare changelog for release (from GitHub Actions)"
       - name: make version tag
         working-directory: webapp
@@ -51,5 +51,4 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           tags: true
-          github_token: ${{ secrets.PAT}}
-
+          github_token: ${{ secrets.PAT }}
