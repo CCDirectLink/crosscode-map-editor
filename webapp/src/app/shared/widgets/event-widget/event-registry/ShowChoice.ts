@@ -53,7 +53,7 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 			this.children[index] = {
 				title: this.getColoredString('Choice. ' + option.label.en_US, '#838383'),
 				events: this.data[index] || [],
-				hideGreaterSign: true
+				draggable: false
 			};
 		});
 	}

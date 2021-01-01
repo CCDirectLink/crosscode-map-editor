@@ -6,14 +6,16 @@ export interface EventType {
 	type: string;
 }
 
+export interface EventTypeChild {
+	title?: string;
+	draggable?: boolean;
+	events: AbstractEvent<any>[];
+}
+
 export abstract class AbstractEvent<T extends EventType> {
 	
 	public info = '---';
-	public children: {
-		title?: string;
-		hideGreaterSign?: boolean;
-		events: AbstractEvent<any>[];
-	}[] = [];
+	public children: EventTypeChild[] = [];
 	
 	constructor(
 		private domSanitizer: DomSanitizer,

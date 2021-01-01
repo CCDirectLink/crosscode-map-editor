@@ -22,7 +22,8 @@ $toolbarHeight: 54px;
 }
 
 
-.ng-draggable {
+// TODO: should switch to angular cdk dragable
+.ng-draggable:not(.container) {
 	cursor: move;
 }
 
@@ -37,13 +38,19 @@ $toolbarHeight: 54px;
 	}
 }
 
+.bottom-border {
+	border-top: 1px solid mat-color($mat-gray, 600);
+}
+
 .no-buttons {
 	flex-basis: 0 !important;
 	min-height: 0 !important;
+	border: none;
 }
 
 .content {
 	height: 100%;
+	min-height: 0;
 }
 
 .scrollable-content {

@@ -48,6 +48,7 @@ export class NpcStatesComponent implements OnInit {
 				throw new Error('event editor is not defined');
 			}
 			this.currentState.event = this.eventEditor.export();
+			this.eventEditor.show();
 		}
 		this.currentState = this.states[index];
 		

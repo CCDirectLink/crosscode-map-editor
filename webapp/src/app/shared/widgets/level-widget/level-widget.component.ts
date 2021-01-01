@@ -29,6 +29,7 @@ export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDe
 		if (this.entity) {
 			this.entity.updateLevel();
 		}
+		this.updateType(level);
 	}
 	
 	setOffset(offset: number) {
@@ -36,6 +37,7 @@ export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDe
 		if (this.entity) {
 			this.entity.updateLevel();
 		}
+		this.updateType(offset);
 	}
 	
 }
