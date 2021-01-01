@@ -32,7 +32,7 @@ $config: mat-typography-config();
 	//flex-grow: 1;
 	//flex-direction: column;
 
-	&:focus {
+	&:active {
 		border: none;
 		outline: none;
 		background-color: rgba(38, 78, 100, 0.5);
