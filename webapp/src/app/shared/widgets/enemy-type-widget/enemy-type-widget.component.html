@@ -6,35 +6,35 @@
 	<input class="default-input"
 			id="type"
 			[ngModel]="settings[key]['type']"
-			(input)="setSubSetting([key,'type'], $event.target.value)">
+			(input)="setSetting([key,'type'], $event.target.value)">
 </div>
 <div fxLayout="row" class="property-container">
 	<label for="group" class="property-name">group:</label>
 	<input class="default-input"
 			id="group"
 			[ngModel]="settings[key]['group']"
-			(input)="setSubSetting([key,'group'], $event.target.value)">
+			(input)="setSetting([key,'group'], $event.target.value)">
 </div>
 <div fxLayout="row" class="property-container">
 	<label for="state" class="property-name">state:</label>
 	<input class="default-input"
 			id="state"
 			[ngModel]="settings[key]['state']"
-			(input)="setSubSetting([key,'state'], $event.target.value)">
+			(input)="setSetting([key,'state'], $event.target.value)">
 </div>
 <div fxLayout="row" class="property-container">
 	<label for="startEffect" class="property-name">startEffect:</label>
 	<input class="default-input"
 			id="startEffect"
 			[ngModel]="settings[key]['startEffect']"
-			(input)="setSubSetting([key,'startEffect'], $event.target.value)">
+			(input)="setSetting([key,'startEffect'], $event.target.value)">
 </div>
 <div fxLayout="row" class="property-container">
 	<label for="hideEffect" class="property-name">hideEffect:</label>
 	<input class="default-input"
 			id="hideEffect"
 			[ngModel]="settings[key]['hideEffect']"
-			(input)="setSubSetting([key,'hideEffect'], $event.target.value)">
+			(input)="setSetting([key,'hideEffect'], $event.target.value)">
 </div>
 <!--TODO: varIncrease-->
 <!--TODO: attribs-->
@@ -43,7 +43,7 @@
 	<mat-checkbox id="targetOnSpawn"
 				color="primary"
 				[checked]="settings[key]['targetOnSpawn']"
-				(change)="setSubSetting([key,'targetOnSpawn'], $event.checked)">
+				(change)="setSetting([key,'targetOnSpawn'], $event.checked)">
 		<div style="width: 150px"></div>
 	</mat-checkbox>
 </div>
@@ -52,7 +52,7 @@
 	<mat-checkbox id="disableNoScale"
 				color="primary"
 				[checked]="settings[key]['disableNoScale']"
-				(change)="setSubSetting([key,'disableNoScale'], $event.checked)">
+				(change)="setSetting([key,'disableNoScale'], $event.checked)">
 		<div style="width: 150px"></div>
 	</mat-checkbox>
 </div>
@@ -60,13 +60,13 @@
 	<label for="level" class="property-name">level:</label>
 	<input type="number"  class="default-input" id="level"
 			[ngModel]="settings[key]['level']"
-			(input)="setSubSetting([key,'level'], $event.target.value)">
+			(input)="setSetting([key,'level'], $event.target.value)">
 </div>
 <div fxLayout="row" class="property-container">
 	<label for="party" class="property-name">party:</label>
 	<mat-select id="party"
 				[ngModel]="settings[key]['party']"
-				(selectionChange)="setSubSetting([key,'party'], $event.value)">
+				(selectionChange)="setSetting([key,'party'], $event.value)">
 		<mat-option *ngFor="let option of partyOptions" [value]="option">{{option}}</mat-option>
 	</mat-select>
 </div>
@@ -74,7 +74,7 @@
 	<label for="face" class="property-name">face:</label>
 	<mat-select id="face"
 				[ngModel]="settings[key]['face']"
-				(selectionChange)="setSubSetting([key,'face'], $event.value)">
+				(selectionChange)="setSetting([key,'face'], $event.value)">
 		<mat-option *ngFor="let option of faceOptions" [value]="option">{{option}}</mat-option>
 	</mat-select>
 </div>

@@ -2,8 +2,8 @@ import { DefaultEntity } from './default-entity';
 import { Helper } from '../../helper';
 import { EnemyData } from '../../../../models/enemy';
 import { PathResolver, BasePath, FileExtension } from '../../../path-resolver';
-import { Point3 } from '../../../../models/cross-code-map';
-import { Point } from 'electron';
+import { MultiDirAnimation } from '../../../../models/multi-dir-animation';
+import { MultiEntityAnimation } from '../../../../models/multi-entity-animation';
 
 export class Enemy extends DefaultEntity {
 	protected async setupType(settings: any) {
@@ -23,31 +23,22 @@ export class Enemy extends DefaultEntity {
 			return;
 		}
 
-		const sheet = this.resolveSUB(rawSheet) as any[]; //TODO: type
-
-		//TODO: proper rendering
-		const first = sheet[0];
-		const named = first.namedSheets[first.sheet];
-
-		if (!await Helper.loadTexture(named.src, this.scene)) {
+		const sheet = this.resolveSUB(rawSheet) as MultiDirAnimation[] | [MultiEntityAnimation];
+		if (!sheet || sheet.length === 0) {
 			this.generateErrorImage();
 			return;
 		}
 
-		this.entitySettings.sheets = {
-			fix: [{
-				gfx: named.src,
-				h: named.height,
-				w: named.width,
-				x: named.x,
-				y: named.y,
-				offsetX: named.offX,
-				offsetY: named.offY,
-			}]
+		if (this.isMultiDir(sheet)) {
+			if(!await this.renderMultiDirAnim(sheet.find(s => s.name === 'idle') ?? sheet[0])) {
+				this.generateErrorImage();
+				return;
+			}
+		} else {
+			this.generateErrorImage(); //TODO multi entity
 		}
 
 		this.entitySettings.baseSize = enemyData.size;
-
 		this.updateSettings();
 	}
 
@@ -67,5 +58,31 @@ export class Enemy extends DefaultEntity {
 		}
 
 		return result;
+	}
+
+	private isMultiDir(sheet: MultiDirAnimation[] | [MultiEntityAnimation]): sheet is MultiDirAnimation[] {
+		return sheet[0].DOCTYPE === 'MULTI_DIR_ANIMATION';
+	}
+
+	private async renderMultiDirAnim(anim: MultiDirAnimation): Promise<boolean> {
+		const tileSheet = typeof anim.sheet === 'string' ? anim.namedSheets[anim.sheet] : anim.sheet;
+
+		if (!await Helper.loadTexture(tileSheet.src, this.scene)) {
+			return false;
+		}
+
+		this.entitySettings.sheets = {
+			fix: [{
+				gfx: tileSheet.src,
+				h: tileSheet.height,
+				w: tileSheet.width,
+				x: 0, // tileSheet.x,
+				y: 0, // tileSheet.y,
+				offsetX: tileSheet.offX,
+				offsetY: tileSheet.offY,
+			}]
+		};
+
+		return true;
 	}
 }

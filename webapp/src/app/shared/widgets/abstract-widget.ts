@@ -41,6 +41,10 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 			}
 			node[key[key.length - 1]] = value;
 		}
+
+		if (updateType) {
+			this.updateType(value);
+		}
 	}
 	
 	updateSettings() {

@@ -13,15 +13,15 @@ export class EnemyTypeWidgetComponent extends AbstractWidget implements OnInit {
 		'OTHER'
 	];
 	readonly faceOptions = [
-        'NORTH',
-        'EAST',
-        'SOUTH',
-        'WEST',
-        'NORTH_EAST',
-        'SOUTH_EAST',
-        'SOUTH_WEST',
-        'NORTH_WEST'
-	]
+		'NORTH',
+		'EAST',
+		'SOUTH',
+		'WEST',
+		'NORTH_EAST',
+		'SOUTH_EAST',
+		'SOUTH_WEST',
+		'NORTH_WEST'
+	];
 
 	constructor() {
 		super();

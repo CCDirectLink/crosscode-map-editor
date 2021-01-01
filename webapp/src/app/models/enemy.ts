@@ -1,4 +1,4 @@
-import { Point3, Point } from "./cross-code-map";
+import { Point3, Point } from './cross-code-map';
 
 export interface EnemyData {
     name: string;
