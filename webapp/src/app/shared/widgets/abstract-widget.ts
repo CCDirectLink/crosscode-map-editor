@@ -1,4 +1,4 @@
-import {Input, OnChanges, OnInit, Directive} from '@angular/core';
+import {Input, OnChanges, OnInit, Directive, Output, EventEmitter} from '@angular/core';
 import {AttributeValue, CCEntity} from '../phaser/entities/cc-entity';
 
 @Directive()
@@ -8,6 +8,8 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 	@Input() attribute!: AttributeValue;
 	@Input() entity?: CCEntity;
 	@Input() custom?: CCEntity;
+
+	@Output() onChange = new EventEmitter<any>();
 	
 	settings: any;
 	
@@ -25,25 +27,27 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 		}
 	}
 	
-	setSetting(key: string, value: any, updateType = true, parse = false) {
+	setSetting(key: string | string[], value: any, updateType = true, parse = false) {
 		if (parse) {
 			value = JSON.parse(value);
 		}
-		this.settings[key] = value;
+
+		if (typeof key === 'string') {
+			this.settings[key] = value;
+		} else {
+			let node = this.settings;
+			for (let i = 0; i < key.length - 1; i++) {
+				node = node[key[i]];
+			}
+			node[key[key.length - 1]] = value;
+		}
 		if (updateType) {
-			this.updateType();
+			this.updateType(value);
 		}
 	}
 	
-	updateSettings() {
-		if (this.entity) {
-			this.entity.updateSettings();
-		}
-	}
-	
-	updateType() {
-		if (this.entity) {
-			this.entity.updateType();
-		}
+	updateType(value: any) {
+		this.entity?.updateType();
+		this.onChange.emit(value);
 	}
 }

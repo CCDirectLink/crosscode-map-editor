@@ -1,17 +1,46 @@
-<div class="event-container dark-scrollbar" fxLayout="column">
-	<div class="event-inner-container" fxFlex="1 0 100%" fxLayout="column">
-		<app-event-row
-			[data]="data"
-			[parent]="workingData"
-			*ngFor="let data of workingData"
-			[actionStep]="actionStep"
-		></app-event-row>
-		<app-row-text
-			fxFlex="auto"
-			fxLayout="column"
-			text=" "
-			[(parent)]="workingData"
-			[actionStep]="actionStep"
-		></app-row-text>
-	</div>
+<div class="event-container" fxLayout="row">
+	<app-split-pane
+		#splitpane
+		[bounds]="{left: 10, right: 10}"
+		[opened]="detailsShown"
+		[base]="0">
+		<ng-container ngProjectAs="left">
+			<div class="event-inner-container dark-scrollbar" 
+				fxFlex="1 1 0" 
+				cdkDropList 
+				(cdkDropListDropped)="drop($event)">
+				<!--Add [cdkDropListSortPredicate]="sortPredicate" once Anglular is upraded to 11 or higher-->
+				<mat-tree 
+					#eventTree
+					fxLayout="column" 
+					[dataSource]="dataSource"
+					[treeControl]="treeControl"
+
+					(dblclick)="openAddMenu($event, null)"
+					(contextmenu)="openAddMenu($event, null)"
+					(keydown)="keyPress($event)"
+					tabindex="0">
+					<mat-tree-node 
+						*matTreeNodeDef="let node" 
+						matTreeNodePadding 
+						[matTreeNodePaddingIndent]="16" 
+
+						cdkDrag 
+						cdkDragLockAxis="y" 
+						[cdkDragData]="node" 
+						[cdkDragDisabled]="!node.draggable" 
+						cdkDragHandle
+						
+						(click)="eventClicked($event, node)"
+						(dblclick)="openAddMenu($event, node)"
+						(contextmenu)="openAddMenu($event, node)">
+						<app-row-text [display]="node"></app-row-text>
+					</mat-tree-node>
+				</mat-tree>
+			</div>
+		</ng-container>
+		<ng-container ngProjectAs="right">
+			<app-event-detail #eventDetail (refresh)="refresh()" (close)="hideDetails()"></app-event-detail>
+		</ng-container>
+	</app-split-pane>
 </div>

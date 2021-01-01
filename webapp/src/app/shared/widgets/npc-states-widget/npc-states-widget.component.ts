@@ -72,7 +72,7 @@ export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, 
 			obj.ref.close();
 			this.settings[this.key] = v;
 			this.npcStates = v;
-			this.updateType();
+			this.updateType(v);
 		}, () => obj.ref.close());
 	}
 	

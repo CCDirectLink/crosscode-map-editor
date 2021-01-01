@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+## [0.9.0] 2021-01-01
+
+### Added
+- Reworked event editor. It now features drag and drop, edit history, live updates and more.
+
 ## [0.8.1] 2020-12-28
 
 ### Changed

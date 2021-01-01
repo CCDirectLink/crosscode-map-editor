@@ -1,0 +1,46 @@
+:host {
+	width: 100%;
+	height: 100%;
+	overflow-x: hidden;
+}
+
+.full-size {
+	width: 100%;
+	height: 100%;
+}
+
+.fully-opened {
+	flex-basis: 100% !important;
+}
+
+.fully-closed {
+	flex-basis: 0 !important;
+}
+
+.panel {
+	min-width: 0;
+	flex: 1 1 0;
+	transition: flex-basis 0.2s ease;
+
+	&.no-transition {
+		transition: none;
+	}
+}
+
+.content {
+	overflow: hidden;
+}
+
+.right {
+	position: relative;
+}
+
+.gutter {
+	position: absolute;
+	cursor: col-resize;
+	width: 8px;
+	margin-left: -4px;
+	height: 100%;
+	opacity: 0;
+}
+
