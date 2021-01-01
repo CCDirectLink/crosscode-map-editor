@@ -55,18 +55,19 @@ export class ToolbarComponent implements OnInit {
 		// Use this to automatically load a map on startup for faster testing
 		if (!environment.production) {
 			this.events.loadComplete.subscribe(async () => {
-				await this.mapLoader.tileMap.pipe(take(1)).toPromise();
-				this.mapLoader.loadMapByName('autumn/entrance');
-				// TODO: remove, automatically opens npc event editor
-				console.log('after map load');
-				await new Promise(r => setTimeout(r, 500));
-				const npc = this.map?.entityManager.entities.find(e => e.details.type === 'NPC');
-				this.events.currentView.next(EditorView.Entities);
-				await new Promise(r => setTimeout(r, 300));
-				this.events.selectedEntity.next(npc);
-				await new Promise(r => setTimeout(r, 400));
-				const el = document.getElementsByTagName('app-npcstates-widget');
-				el[0].getElementsByTagName('input')[0].click();
+				// await this.mapLoader.tileMap.pipe(take(1)).toPromise();
+				// this.mapLoader.loadMapByName('autumn/entrance');
+				
+				// automatically opens npc event editor
+				// console.log('after map load');
+				// await new Promise(r => setTimeout(r, 500));
+				// const npc = this.map?.entityManager.entities.find(e => e.details.type === 'NPC');
+				// this.events.currentView.next(EditorView.Entities);
+				// await new Promise(r => setTimeout(r, 300));
+				// this.events.selectedEntity.next(npc);
+				// await new Promise(r => setTimeout(r, 400));
+				// const el = document.getElementsByTagName('app-npcstates-widget');
+				// el[0].getElementsByTagName('input')[0].click();
 			});
 		}
 
