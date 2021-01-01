@@ -292,6 +292,8 @@ export class EventEditorComponent implements OnChanges {
 	
 	private paste() {
 		if (this.copiedNode) {
+			this.history.add(this.getParent(this.selectedNode));
+
 			const cpy = JSON.parse(JSON.stringify(this.copiedNode.data?.data));
 			const event = this.helper.getEventFromType(cpy, this.actionStep);
 
