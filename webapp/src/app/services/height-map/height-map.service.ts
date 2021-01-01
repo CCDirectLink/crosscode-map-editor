@@ -210,7 +210,7 @@ export class HeightMapService {
 		}
 	}
 	
-	private getLevelHeight(levelIdx: number, layer: CCMapLayer) {
+	private getLevelHeight(levelIdx: number) {
 		if (levelIdx < 1) {
 			levelIdx = 1;
 		}
@@ -223,8 +223,8 @@ export class HeightMapService {
 		return (maxLevel.height / Globals.TILE_SIZE) + (levelIdx - levels.length) * 2;
 	}
 	
-	private getLevelDistance(levelStart: number, levelEnd: number, layer: CCMapLayer) {
-		return this.getLevelHeight(levelEnd, layer) - this.getLevelHeight(levelStart, layer);
+	private getLevelDistance(levelStart: number, levelEnd: number) {
+		return this.getLevelHeight(levelEnd) - this.getLevelHeight(levelStart);
 	}
 	
 	private applyOnBackground(layer: CCMapLayer, forceAll: boolean) {
@@ -283,8 +283,8 @@ export class HeightMapService {
 					if (!forceAll && !this.hasTileLineChanged(x, y, actualYHeight)) {
 						continue;
 					}
-					c_wallProps.start = this.getLevelDistance(masterLevelIdx, levelIdx, layer);
-					c_wallProps.end = this.getLevelDistance(levelIdx, entry.lowerLevel, layer) - 1;
+					c_wallProps.start = this.getLevelDistance(masterLevelIdx, levelIdx);
+					c_wallProps.end = this.getLevelDistance(levelIdx, entry.lowerLevel) - 1;
 					for (let yAdd = 0; yAdd < actualYHeight; ++yAdd) {
 						const gfxType = yAdd === 0 && masterLevelIdx === levelIdx ? wallLink.base : wallLink.wall;
 						const newTile = gfxMapper.getGfx(gfxType, x, y - yOff - yAdd + deltaY, SUB_TYPE.BACK_WALL, entry.lowerTerrain, -1, c_wallProps);
@@ -310,11 +310,11 @@ export class HeightMapService {
 					const chasmPadding = gfxMapper.getChasmTileAdd(entry.terrain);
 					
 					if (doChasm) {
-						yStart = this.getLevelDistance(levelIdx, masterLevelIdx, layer) - chasmHeight - chasmPadding;
+						yStart = this.getLevelDistance(levelIdx, masterLevelIdx) - chasmHeight - chasmPadding;
 					} else if (doShadow && levelIdx === masterLevelIdx) {
-						actualYHeight = this.getLevelDistance(levelIdx, entry.level, layer);
+						actualYHeight = this.getLevelDistance(levelIdx, entry.level);
 						doShadowWall = true;
-						yStart = this.getLevelDistance(levelIdx, entry.lowerLevel, layer);
+						yStart = this.getLevelDistance(levelIdx, entry.lowerLevel);
 					}
 					
 					if (!forceAll && !this.hasTileLineChanged(x, y, actualYHeight)) {
@@ -329,8 +329,8 @@ export class HeightMapService {
 						continue;
 					}
 					
-					c_wallProps.start = this.getLevelDistance(entry.lowerLevel, levelIdx, layer);
-					c_wallProps.end = this.getLevelDistance(levelIdx, entry.level, layer) - 1 - yStart;
+					c_wallProps.start = this.getLevelDistance(entry.lowerLevel, levelIdx);
+					c_wallProps.end = this.getLevelDistance(levelIdx, entry.level) - 1 - yStart;
 					if (doChasm) {
 						c_wallProps.start = Math.max(-yStart, 0);
 					}
@@ -412,7 +412,7 @@ export class HeightMapService {
 					}
 					this.setLayerTile(layer, x, y - yOff, newTile);
 				} else {
-					if (!forceAll && !this.hasTileLineShadowChanged(x, y, layer)) {
+					if (!forceAll && !this.hasTileLineShadowChanged(x, y)) {
 						continue;
 					}
 					let newTile = 0;
@@ -497,7 +497,7 @@ export class HeightMapService {
 		return false;
 	}
 	
-	private hasTileLineShadowChanged(x: number, y: number, layer: CCMapLayer) {
+	private hasTileLineShadowChanged(x: number, y: number) {
 		const ySub = 10;
 		let i = ySub + 1;
 		const levels = Globals.map.levels;
@@ -511,7 +511,7 @@ export class HeightMapService {
 					throw new Error('entry should be defined. x: ' + x + ' y: ' + (y + 1));
 				}
 				if (entry.level > levels.length) {
-					let height = this.getLevelDistance(Globals.map.masterLevel + 1, levels.length, layer);
+					let height = this.getLevelDistance(Globals.map.masterLevel + 1, levels.length);
 					const delta = entry.level - levels.length;
 					height += delta * 2;
 					if (i <= height) {

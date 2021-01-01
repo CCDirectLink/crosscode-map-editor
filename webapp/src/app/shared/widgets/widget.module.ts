@@ -17,7 +17,6 @@ import {EventWidgetComponent} from './event-widget/event-widget.component';
 import {EventRegistryService} from './event-widget/event-registry/event-registry.service';
 import {SharedModule} from '../shared.module';
 import {EventEditorComponent} from './event-widget/event-editor/editor/event-editor.component';
-import {EventRowComponent} from './event-widget/event-editor/row/event-row.component';
 import {RowTextComponent} from './event-widget/event-editor/row-text/row-text.component';
 import {EventHelperService} from './event-widget/event-editor/event-helper.service';
 import {EventDetailComponent} from './event-widget/event-editor/detail/event-detail.component';
@@ -27,6 +26,7 @@ import {CharacterNamesService} from './character-widget/character-names.service'
 import {PersonExpressionWidgetComponent} from './person-expression-widget/person-expression-widget.component';
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {AddEventService} from './event-widget/event-editor/add/add-event.service';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EnemyTypeWidgetComponent } from './enemy-type-widget/enemy-type-widget.component';
 
 const COMPONENTS = [
@@ -46,7 +46,6 @@ const COMPONENTS = [
 ];
 
 const PRIVATE_COMPONENTS = [
-	EventRowComponent,
 	EventWindowComponent,
 	RowTextComponent,
 	EventDetailComponent,
@@ -60,6 +59,7 @@ const PRIVATE_COMPONENTS = [
 		MaterialModule,
 		OverlayModule,
 		AngularDraggableModule,
+		DragDropModule,
 		ScrollingModule,
 		SharedModule
 	],

@@ -5,8 +5,8 @@
   "scripts": {
     "start": "npm run serve",
     "startWithCommon": "cd ../common && npm run build && cd ../backend && npm start",
-    "tslint": "tslint -c ./tslint.json -p tsconfig.json",
-    "build": "tsc && npm run tslint",
+    "lint": "eslint src/**/*.ts",
+    "build": "tsc && npm run lint",
     "watch": "tsc -w",
     "serve": "nodemon -e ts --watch src --watch ../common --exec \"npm run build && node dist/server.js\"",
     "debug": "nodemon -e ts --watch src --watch ../common --exec \"npm run build && node --inspect dist/server.js\""
@@ -17,16 +17,18 @@
     "cors": "^2.8.5",
     "errorhandler": "^1.5.1",
     "express": "^4.17.1",
-    "morgan": "^1.9.1"
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "@types/body-parser": "^1.17.0",
-    "@types/errorhandler": "0.0.32",
-    "@types/express": "^4.17.0",
-    "@types/morgan": "^1.7.35",
-    "@types/node": "12.0.7",
-    "nodemon": "^1.19.1",
-    "tslint": "^5.17.0",
-    "typescript": "^3.5.1"
+    "@types/body-parser": "^1.19.0",
+    "@types/errorhandler": "1.5.0",
+    "@types/express": "^4.17.9",
+    "@types/morgan": "^1.9.2",
+    "@types/node": "^14.14.10",
+    "@typescript-eslint/eslint-plugin": "^4.9.0",
+    "@typescript-eslint/parser": "^4.9.0",
+    "eslint": "^7.14.0",
+    "nodemon": "^2.0.6",
+    "typescript": "^3.9.7"
   }
 }

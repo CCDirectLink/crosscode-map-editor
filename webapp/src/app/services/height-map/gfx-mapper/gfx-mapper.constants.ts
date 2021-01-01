@@ -47,7 +47,7 @@ export interface GfxMaps {
 }
 
 type GfxBaseMap = { [key in GFX_TYPE]: number[][]; } & {
-	offset?: Point
+	offset?: Point;
 };
 
 export type GfxMap = GfxBaseMap & {
@@ -55,9 +55,9 @@ export type GfxMap = GfxBaseMap & {
 		[key in GFX_TYPE]: {
 			loop: number[];
 			end: number[];
-			start?: number[]
+			start?: number[];
 		}
-	}
+	};
 };
 
 export type GfxMapChasm = GfxBaseMap & {
@@ -65,7 +65,7 @@ export type GfxMapChasm = GfxBaseMap & {
 		[key in GFX_TYPE]: {
 			start: number[];
 		}
-	}
+	};
 };
 
 export const GFX_MAPS: { [key: string]: GfxMaps } = {};
@@ -286,7 +286,16 @@ map['BACK_WALL'].wallYVariance![GFX_TYPE.WALL_SW] = {loop: [1], end: [0]};
 map['BACK_WALL'].wallYVariance![GFX_TYPE.WALL_SQR_SE] = {loop: [1], end: [0]};
 map['BACK_WALL'].wallYVariance![GFX_TYPE.WALL_SQR_SW] = {loop: [1], end: [0]};
 
-map['SUB'].ignoreTerrain = [GFX_TYPE.WALL_SOUTH, GFX_TYPE.WALL_SOUTH_BASE, GFX_TYPE.WALL_SE, GFX_TYPE.WALL_SW, GFX_TYPE.WALL_SQR_SE, GFX_TYPE.WALL_SQR_SE_BASE, GFX_TYPE.WALL_SQR_SW, GFX_TYPE.WALL_SQR_SW_BASE];
+map['SUB'].ignoreTerrain = [
+	GFX_TYPE.WALL_SOUTH,
+	GFX_TYPE.WALL_SOUTH_BASE,
+	GFX_TYPE.WALL_SE,
+	GFX_TYPE.WALL_SW,
+	GFX_TYPE.WALL_SQR_SE,
+	GFX_TYPE.WALL_SQR_SE_BASE,
+	GFX_TYPE.WALL_SQR_SW,
+	GFX_TYPE.WALL_SQR_SW_BASE
+];
 map['SUB'].ignoreTerrainKeepWallBase = [GFX_TYPE.WALL_SOUTH, GFX_TYPE.WALL_SE, GFX_TYPE.WALL_SW, GFX_TYPE.WALL_SQR_SE, GFX_TYPE.WALL_SQR_SW];
 map['SUB']['BASE'][GFX_TYPE.WALL_SE_BASE] = [[2, 4]];
 map['SUB']['BASE'][GFX_TYPE.WALL_SW_BASE] = [[0, 4]];

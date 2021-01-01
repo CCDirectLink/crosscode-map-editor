@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 import {Point} from '../../../models/cross-code-map';
 import {ScaleSettings} from '../../phaser/entities/cc-entity';
@@ -20,16 +20,17 @@ export class Vec2WidgetComponent extends AbstractWidget implements OnChanges {
 		this.scaleSettings = this.updateScaleSettings();
 	}
 	
-	ngOnChanges(changes?: SimpleChanges): void {
-		super.ngOnChanges(changes);
+	ngOnChanges(): void {
+		super.ngOnChanges();
 		this.scaleSettings = this.updateScaleSettings();
 		if (!this.settings[this.key]) {
 			const minSize = this.scaleSettings.baseSize;
-			this.settings[this.key] = {
+			const value = {
 				x: minSize.x > 0 ? minSize.x : 1,
 				y: minSize.y > 0 ? minSize.y : 1
 			};
-			this.updateType();
+			this.settings[this.key] = value;
+			this.updateType(value);
 		}
 	}
 	
@@ -40,8 +41,9 @@ export class Vec2WidgetComponent extends AbstractWidget implements OnChanges {
 	setVal(key: keyof Point, val: number) {
 		val -= val % this.scaleSettings.scalableStep;
 		const setting = this.settings[this.key];
-		setting[key] = Math.max(val, this.scaleSettings.baseSize[key]);
-		this.updateType();
+		const value = Math.max(val, this.scaleSettings.baseSize[key]);
+		setting[key] = value;
+		this.updateType(value);
 	}
 	
 	private updateScaleSettings(): ScaleSettings {

@@ -1,11 +1,15 @@
-import {Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+import {Input, OnChanges, OnInit, Directive, Output, EventEmitter} from '@angular/core';
 import {AttributeValue, CCEntity} from '../phaser/entities/cc-entity';
 
+@Directive()
+// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class AbstractWidget implements OnInit, OnChanges {
 	@Input() key!: string;
 	@Input() attribute!: AttributeValue;
 	@Input() entity?: CCEntity;
 	@Input() custom?: CCEntity;
+
+	@Output() onChange = new EventEmitter<any>();
 	
 	settings: any;
 	
@@ -13,7 +17,7 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 		this.ngOnChanges();
 	}
 	
-	ngOnChanges(changes?: SimpleChanges): void {
+	ngOnChanges(): void {
 		if (this.custom) {
 			this.settings = this.custom;
 		} else if (this.entity) {
@@ -23,27 +27,19 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 		}
 	}
 	
-	setSetting(key: string, value: any, updateType = true, parse = false) {
+	setSetting(key: string | string[], value: any, updateType = true, parse = false) {
 		if (parse) {
 			value = JSON.parse(value);
 		}
-		this.settings[key] = value;
-		if (updateType) {
-			this.updateType();
-		}
-	}
 
-	setSubSetting(keys: string[], value: any, updateType = true, parse = false) {
-		if (parse) {
-			value = JSON.parse(value);
-		}
-		let node = this.settings;
-		for (let i = 0; i < keys.length - 1; i++) {
-			node = node[keys[i]];
-		}
-		node[keys[keys.length - 1]] = value;
-		if (updateType) {
-			this.updateType();
+		if (typeof key === 'string') {
+			this.settings[key] = value;
+		} else {
+			let node = this.settings;
+			for (let i = 0; i < key.length - 1; i++) {
+				node = node[key[i]];
+			}
+			node[key[key.length - 1]] = value;
 		}
 	}
 	
@@ -53,9 +49,8 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 		}
 	}
 	
-	updateType() {
-		if (this.entity) {
-			this.entity.updateType();
-		}
+	updateType(value: any) {
+		this.entity?.updateType();
+		this.onChange.emit(value);
 	}
 }

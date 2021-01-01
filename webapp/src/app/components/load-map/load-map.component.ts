@@ -1,6 +1,7 @@
-import {Component, ElementRef, Input, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, ViewChild} from '@angular/core';
 import {NestedTreeControl} from '@angular/cdk/tree';
-import {MatSidenav, MatTreeNestedDataSource} from '@angular/material';
+import {MatSidenav} from '@angular/material/sidenav';
+import {MatTreeNestedDataSource} from '@angular/material/tree';
 import {HttpClientService} from '../../services/http-client.service';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {MapNode, MapNodeRoot} from './mapNode.model';
@@ -10,7 +11,8 @@ import {VirtualMapNode} from './virtualMapNode.model';
 @Component({
 	selector: 'app-load-map',
 	templateUrl: './load-map.component.html',
-	styleUrls: ['./load-map.component.scss']
+	styleUrls: ['./load-map.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoadMapComponent {
 	
@@ -35,6 +37,7 @@ export class LoadMapComponent {
 	constructor(
 		private mapLoader: MapLoaderService,
 		private http: HttpClientService,
+		private ref: ChangeDetectorRef
 	) {
 		this.mapsSource.data = [];
 		this.refresh();
@@ -59,6 +62,7 @@ export class LoadMapComponent {
 		}
 		this.mapsSource.data = [];
 		this.mapsSource.data = this.virtualRoot.children || [];
+		this.ref.detectChanges();
 	}
 	
 	loadMap(event: Event) {

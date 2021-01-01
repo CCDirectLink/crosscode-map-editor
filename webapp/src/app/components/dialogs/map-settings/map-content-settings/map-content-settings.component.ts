@@ -3,9 +3,9 @@ import {CrossCodeMap} from '../../../../models/cross-code-map';
 import * as mapSettingsjson from '../../../../../assets/map-settings.json';
 
 @Component({
-  selector: 'app-map-content-settings',
-  templateUrl: './map-content-settings.component.html',
-  styleUrls: ['./map-content-settings.component.scss']
+	selector: 'app-map-content-settings',
+	templateUrl: './map-content-settings.component.html',
+	styleUrls: ['./map-content-settings.component.scss']
 })
 export class MapContentSettingsComponent implements OnInit {
 	@Input() settings!: CrossCodeMap;
@@ -14,8 +14,8 @@ export class MapContentSettingsComponent implements OnInit {
 	//  All other components using this event just set the setting to the object,
 	//  this could be handled here without emitting an event
 	@Output() onSettingsChange = new EventEmitter<{
-		property: any,
-		value: any
+		property: any;
+		value: any;
 	}>();
 	mapSettings = mapSettingsjson.default;
 	

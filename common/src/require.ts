@@ -13,13 +13,13 @@ if (typeof window !== 'undefined' &&
 } else {
 	// Not a supported plattform. Return dummy, do not fail on execute of the lambda.
 	result = (() => new Proxy({}, {
-        get() {
-            throw new Error('This platform is not supported');
-        },
-        set() {
-            throw new Error('This platform is not supported');
-        }
-    })) as unknown as NodeRequire;
+		get() {
+			throw new Error('This platform is not supported');
+		},
+		set() {
+			throw new Error('This platform is not supported');
+		}
+	})) as unknown as NodeRequire;
 }
 
 export const requireLocal = result;

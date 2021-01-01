@@ -74,19 +74,11 @@ async function searchSubFolder(dir: string, file: string): Promise<string[]> {
 			if (stat.isFile()) {
 				result.push(path.join(dir, folder, file));
 			}
-		} catch { }
+		} catch (e) {
+			console.error(e);
+		}
 	}
 	return result;
-}
-
-/**
- * Searches a single directory for files with the given ending. This fuction is NOT recursive.
- * @param dir 		The directory to be searched
- * @param ending 	The ending of the files to be searched
- */
-async function searchTopFolder(dir: string, ending: string): Promise<string[]> {
-	return (await tryReadDir(dir))
-		.filter(f => f.endsWith(ending));
 }
 
 function selectMod(name: string, packages: Map<string, {folderName: string, ccmodDependencies?: Map<string, string>}>, result: string[]) {
@@ -111,7 +103,9 @@ async function getAsync(file: string): Promise<Buffer | null> {
 		if (stat.isFile()) {
 			return fs.promises.readFile(file);
 		}
-	} catch {}
+	} catch (e) {
+		console.error(e);
+	}
 	return null;
 }
 
@@ -121,7 +115,9 @@ async function resolveAsync(file: string): Promise<string | null> {
 		if (stat.isFile()) {
 			return file;
 		}
-	} catch {}
+	} catch (e) {
+		console.error(e);
+	}
 	return null;
 }
 

@@ -1,6 +1,6 @@
-import {AfterViewInit, Component, ElementRef, Inject, Input, OnInit, Optional, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Inject, Optional, ViewChild} from '@angular/core';
 import JSONEditor, {JSONEditorOptions} from 'jsoneditor';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {Globals} from '../../shared/globals';
 
 @Component({
@@ -18,7 +18,7 @@ export class JsonEditorComponent implements AfterViewInit {
 	json = JSON;
 	
 	constructor(@Optional() @Inject(MAT_DIALOG_DATA) data: { key: string, val: any },
-	            public ref: MatDialogRef<JsonEditorComponent>) {
+				public ref: MatDialogRef<JsonEditorComponent>) {
 		this.data = data.val;
 		this.key = data.key;
 		ref.afterClosed().subscribe(() => {

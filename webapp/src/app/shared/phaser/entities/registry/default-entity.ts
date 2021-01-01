@@ -1,42 +1,42 @@
-import {CCEntity, EntityAttributes, ScaleSettings} from '../cc-entity';
+import { CCEntity, EntityAttributes, ScaleSettings } from '../cc-entity';
 import entities from '../../../../../assets/entities.json';
-import {CCMap} from '../../tilemap/cc-map';
+import { CCMap } from '../../tilemap/cc-map';
 
 interface JsonEntityType {
 	attributes: EntityAttributes;
-
+	
 	spawnable?: boolean;
-
+	
 	drawBox?: boolean;
 	borderColor?: string;
 	boxColor?: string;
 	circleColor?: string;
 	frontColor?: string;
-
+	
 	scalableX?: boolean;
 	scalableY?: boolean;
 	scalableStep?: number;
-
+	
 	alwaysRecreate?: boolean;
 	noZLine?: boolean;
 }
 
 export class DefaultEntity extends CCEntity {
-
-	constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string, settings: any) {
+	
+	constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
 		super(scene, map, x, y, typeName);
 		this.typeDef = entities[typeName];
 	}
-
+	
 	private readonly typeDef?: JsonEntityType;
 	private settings: any = {};
 	private scaleSettings?: ScaleSettings;
-
+	
 	getAttributes(): EntityAttributes {
 		if (this.typeDef) {
 			return this.typeDef.attributes;
 		}
-
+		
 		const out: EntityAttributes = {};
 		Object.keys(this.settings).forEach(key => {
 			out[key] = {
@@ -46,41 +46,41 @@ export class DefaultEntity extends CCEntity {
 		});
 		return out;
 	}
-
+	
 	getScaleSettings(): ScaleSettings | undefined {
 		if (this.scaleSettings) {
 			return this.scaleSettings;
 		}
-
+		
 		if (!this.typeDef) {
 			return undefined;
 		}
-
+		
 		const step = this.typeDef.scalableStep || 1;
-
+		
 		this.scaleSettings = {
 			scalableX: !!this.typeDef.scalableX,
 			scalableY: !!this.typeDef.scalableY,
 			scalableStep: step,
 			baseSize: {x: step, y: step}
 		};
-
+		
 		return this.scaleSettings;
 	}
-
+	
 	protected async setupType(settings: any) {
 		this.settings = settings;
 		if (!this.typeDef) {
 			this.generateNoImageType();
 			return;
 		}
-
+		
 		const boxColor = this.convertToColor(this.typeDef.boxColor);
 		const frontColor = this.convertToColor(this.typeDef.frontColor);
 		this.generateNoImageType(boxColor.rgb, boxColor.a, frontColor.rgb, frontColor.a);
-
+		
 	}
-
+	
 	private convertToColor(rgba?: string) {
 		if (!rgba) {
 			return {};

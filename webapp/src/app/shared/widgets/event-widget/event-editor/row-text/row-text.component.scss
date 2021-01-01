@@ -10,27 +10,49 @@ $config: mat-typography-config();
 	pointer-events: none;
 }
 
+.event-row-icon {
+	color: #b8b8b8;
+	float: left;
+	margin-right: 5px;
+	font-size: 14px;
+	line-height: 26px;
+	height: 26px; //Force default height even if icon is smaller
+	text-align: center;
+}
+
 .event-row-text {
 	line-height: 26px;
 }
 
 .event-row {
 	user-select: none;
+	margin-right: 8px;
 
 	// used to grow last element in list, but makes elements not full width
 	//flex-grow: 1;
 	//flex-direction: column;
-
+	
 	&:focus {
 		border: none;
 		outline: none;
-		background-color: rgb(38, 78, 100);
+	}
+
+	&:active {
+		border: none;
+		outline: none;
+		background-color: rgba(38, 78, 100, 0.5);
 	}
 
 	&.last-row {
 		position: relative;
 		min-height: 30px;
 	}
+}
+
+.event-row-focused {
+	border: none;
+	outline: none;
+	background-color: rgb(38, 78, 100) !important;
 }
 
 button {

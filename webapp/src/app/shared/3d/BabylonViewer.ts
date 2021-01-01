@@ -201,7 +201,6 @@ export class BabylonViewer {
 		
 		this.textureGenerator.destroy();
 		if (this.cam) {
-			const camPos = this.cam.position;
 			const store: CamStore = {
 				rotation: this.cam.rotation,
 				position: this.cam.position

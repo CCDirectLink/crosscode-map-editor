@@ -1,6 +1,6 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges} from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
-import {CrossCodeMap, Point} from '../../../models/cross-code-map';
+import {CrossCodeMap} from '../../../models/cross-code-map';
 import {MapLoaderService} from '../../map-loader.service';
 import {Subscription} from 'rxjs';
 
@@ -29,6 +29,7 @@ export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDe
 		if (this.entity) {
 			this.entity.updateLevel();
 		}
+		this.updateType(level);
 	}
 	
 	setOffset(offset: number) {
@@ -36,6 +37,7 @@ export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDe
 		if (this.entity) {
 			this.entity.updateLevel();
 		}
+		this.updateType(offset);
 	}
 	
 }

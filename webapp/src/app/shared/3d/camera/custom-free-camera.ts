@@ -1,4 +1,4 @@
-import {FreeCamera, Scene, Tools, UniversalCamera, Vector3} from '@babylonjs/core';
+import {Scene, UniversalCamera, Vector3} from '@babylonjs/core';
 import {WasdCamInput} from './wasd-cam-input';
 
 /**
@@ -6,7 +6,7 @@ import {WasdCamInput} from './wasd-cam-input';
  */
 export class CustomFreeCamera extends UniversalCamera {
 
-	constructor(name: string, position: Vector3, scene: Scene, setActiveOnSceneIfNoneActive?: boolean) {
+	constructor(name: string, position: Vector3, scene: Scene) {
 		super(name, position, scene);
 		this.inertia = 0;
 		this.angularSensibility = 490;

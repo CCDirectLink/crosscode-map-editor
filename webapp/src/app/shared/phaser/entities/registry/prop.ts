@@ -45,13 +45,13 @@ export interface Anims {
 		repeat?: boolean;
 		renderMode?: string;
 		framesAlpha?: number[];
-		SUB?: SubJsonInstance | JsonTemplate[]
+		SUB?: SubJsonInstance | JsonTemplate[];
 	}[];
 	offset?: Point3;
 	frames: any[];
 	framesGfxOffset: any[];
 	namedSheets: {
-		[key: string]: AnimSheet
+		[key: string]: AnimSheet;
 	};
 	renderMode?: string;
 	repeat: boolean;
@@ -81,7 +81,7 @@ export interface PropDef {
 	size: {
 		x: number;
 		y: number;
-		z: number
+		z: number;
 	};
 	collType: string;
 	fix?: Fix;
@@ -217,7 +217,7 @@ export class Prop extends CCEntity {
 			tileOffset: number;
 			alpha: number;
 			offset?: Point3;
-			renderMode?: string
+			renderMode?: string;
 		}[] = [];
 		
 		
@@ -243,7 +243,7 @@ export class Prop extends CCEntity {
 		for (const sprite of sprites) {
 			
 			if (!sprite.sheet) {
-				console.error(`prop sheet not found, `, propDef.name);
+				console.error('prop sheet not found, ', propDef.name);
 				return this.generateErrorImage();
 			}
 			
@@ -274,7 +274,7 @@ export class Prop extends CCEntity {
 		tileOffset: number;
 		alpha: number;
 		offset?: Point3;
-		renderMode?: string
+		renderMode?: string;
 	}[]) {
 		if (anims.namedSheets) {
 			let template: JsonTemplate | undefined;

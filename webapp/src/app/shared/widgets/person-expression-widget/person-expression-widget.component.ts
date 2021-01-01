@@ -1,4 +1,4 @@
-import {Component, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, OnChanges,} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 
 @Component({
@@ -12,8 +12,8 @@ export class PersonExpressionWidgetComponent extends AbstractWidget implements O
 		super();
 	}
 	
-	ngOnChanges(changes?: SimpleChanges): void {
-		super.ngOnChanges(changes);
+	ngOnChanges(): void {
+		super.ngOnChanges();
 		if (!this.settings[this.key]) {
 			this.settings[this.key] = {
 				person: '',

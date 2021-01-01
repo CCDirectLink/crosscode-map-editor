@@ -92,14 +92,13 @@
 					}
 				},
 				"lint": {
-					"builder": "@angular-devkit/build-angular:tslint",
+					"builder": "@angular-eslint/builder:lint",
 					"options": {
-						"tsConfig": [
-							"src/tsconfig.app.json",
-							"src/tsconfig.spec.json"
-						],
+						"lintFilePatterns": ["src/**/*.ts"],
+						"eslintConfig": "./.eslintrc.json",
 						"exclude": [
-							"**/node_modules/**"
+							"**/node_modules/**",
+							"**/*.html"
 						]
 					}
 				}
@@ -115,5 +114,8 @@
 		"@schematics/angular:directive": {
 			"prefix": "app"
 		}
+	},
+	"cli": {
+		"analytics": false
 	}
 }

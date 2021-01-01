@@ -1,15 +1,15 @@
-import {Component, ElementRef, HostListener, OnInit} from '@angular/core';
-import {MapLoaderService} from '../../shared/map-loader.service';
-import {GlobalEventsService} from '../../shared/global-events.service';
-import {Globals} from '../../shared/globals';
-import {HttpClientService} from '../../services/http-client.service';
-import {StateHistoryService} from '../../shared/history/state-history.service';
-import {PhaserEventsService} from '../../shared/phaser/phaser-events.service';
+import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { MapLoaderService } from '../../shared/map-loader.service';
+import { GlobalEventsService } from '../../shared/global-events.service';
+import { Globals } from '../../shared/globals';
+import { HttpClientService } from '../../services/http-client.service';
+import { StateHistoryService } from '../../shared/history/state-history.service';
+import { PhaserEventsService } from '../../shared/phaser/phaser-events.service';
 import * as Phaser from 'phaser';
-import {MainScene} from '../../shared/phaser/main-scene';
-import {HeightMapService} from '../../services/height-map/height-map.service';
-import {AutotileService} from '../../services/autotile/autotile.service';
-import {EntityRegistryService} from '../../shared/phaser/entities/registry/entity-registry.service';
+import { MainScene } from '../../shared/phaser/main-scene';
+import { HeightMapService } from '../../services/height-map/height-map.service';
+import { AutotileService } from '../../services/autotile/autotile.service';
+import { EntityRegistryService } from '../../shared/phaser/entities/registry/entity-registry.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -17,7 +17,7 @@ import {EntityRegistryService} from '../../shared/phaser/entities/registry/entit
 	styleUrls: ['./phaser.component.scss']
 })
 export class PhaserComponent implements OnInit {
-	
+
 	constructor(
 		private element: ElementRef,
 		private mapLoader: MapLoaderService,
@@ -37,8 +37,8 @@ export class PhaserComponent implements OnInit {
 		Globals.entityRegistry = registry;
 		Globals.httpService = http;
 	}
-	
-	
+
+
 	ngOnInit() {
 		this.heightMap.init();
 		const scene = new MainScene();
@@ -53,6 +53,7 @@ export class PhaserComponent implements OnInit {
 				zoom: 1 / window.devicePixelRatio
 			},
 			render: {
+				antialiasGL: false,
 				pixelArt: true
 			},
 			zoom: 1,
@@ -60,9 +61,9 @@ export class PhaserComponent implements OnInit {
 		});
 		Globals.scene = scene;
 	}
-	
+
 	@HostListener('window:resize', ['$event'])
-	onResize(event: Event) {
+	onResize() {
 		if (!Globals.game) {
 			return;
 		}
@@ -72,7 +73,7 @@ export class PhaserComponent implements OnInit {
 			scale.height
 		);
 	}
-	
+
 	private getScale() {
 		return {
 			width: window.innerWidth * window.devicePixelRatio,

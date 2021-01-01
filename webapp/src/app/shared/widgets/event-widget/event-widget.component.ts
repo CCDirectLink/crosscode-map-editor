@@ -1,4 +1,4 @@
-import {Component, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, OnChanges} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 import {OverlayRefControl} from '../../overlay/overlay-ref-control';
 import {OverlayService} from '../../overlay/overlay.service';
@@ -22,8 +22,8 @@ export class EventWidgetComponent extends AbstractWidget implements OnChanges {
 		super();
 	}
 	
-	ngOnChanges(changes?: SimpleChanges): void {
-		super.ngOnChanges(changes);
+	ngOnChanges(): void {
+		super.ngOnChanges();
 		if (!this.settings[this.key] && !this.attribute.optional) {
 			this.settings[this.key] = [];
 		}
@@ -35,7 +35,7 @@ export class EventWidgetComponent extends AbstractWidget implements OnChanges {
 		}
 		const obj = this.overlayService.open(EventWindowComponent, {
 			positionStrategy: this.overlay.position().global()
-				.left('23vw')
+				.left('13vw')
 				.top('calc(64px + 6vh / 2)'),
 			hasBackdrop: true,
 			disablePhaserInput: true
@@ -51,7 +51,7 @@ export class EventWidgetComponent extends AbstractWidget implements OnChanges {
 			if (v && v.length === 0 && this.attribute.optional) {
 				this.settings[this.key] = undefined;
 			}
-			this.updateType();
+			this.updateType(this.settings[this.key]);
 			
 		}, () => this.close());
 	}

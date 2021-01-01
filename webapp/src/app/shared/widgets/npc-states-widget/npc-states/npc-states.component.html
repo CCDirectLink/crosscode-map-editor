@@ -18,7 +18,7 @@
 				</mat-tab>
 			</mat-tab-group>
 			
-			<div class="tab-content" fxLayout="column" fxFlex="auto" *ngIf="currentState">
+			<div class="tab-content" fxLayout="column" fxFlex="1 1 0" *ngIf="currentState">
 				
 				<!-- condition -->
 				<div fxFlex="0 0 54px" fxLayout="row">
@@ -31,7 +31,7 @@
 						</div>
 					</div>
 				</div>
-				<div fxFlex="auto" fxLayout="row">
+				<div fxFlex="1 1 0" fxLayout="row" class="middle-container tab-content-inner">
 					<div class="content-left" fxFlex="0 0 200px" fxLayout="column">
 						
 						<!-- Position -->
@@ -82,7 +82,7 @@
 							</select>
 						</div>
 					</div>
-					<div fxFlex="1 1 auto" fxLayout="column">
+					<div fxFlex="1 1 0" fxLayout="column" class="event-container">
 						<!-- Event Editor -->
 						<app-event-editor #eventEditor class="event-block" fxLayout="column"
 						                  [eventData]="currentState.event"></app-event-editor>

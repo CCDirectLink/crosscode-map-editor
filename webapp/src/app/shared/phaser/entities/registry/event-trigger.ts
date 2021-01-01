@@ -5,7 +5,8 @@ export class EventTrigger extends CCEntity {
 	private attributes: EntityAttributes = {
 		eventType: {
 			type: 'String',
-			description: 'Type of event. Cutscenes will stop the movement of the player and can\'t be executed in parallel. Auto Control events will take over the player\'s control.',
+			description: 'Type of event. Cutscenes will stop the movement of the player and can\'t be executed in parallel. '
+							+ 'Auto Control events will take over the player\'s control.',
 			options: {
 				PARALLEL: 1,
 				CUTSCENE: 2,
@@ -54,7 +55,7 @@ export class EventTrigger extends CCEntity {
 		return undefined;
 	}
 	
-	protected async setupType(settings: any) {
+	protected async setupType() {
 		this.generateNoImageType(0x0032ff, 0.7);
 	}
 }

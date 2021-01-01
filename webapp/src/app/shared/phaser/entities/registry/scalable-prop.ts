@@ -5,10 +5,10 @@ import {Helper} from '../../helper';
 interface ScalablePropSheet {
 	DOCTYPE: string;
 	entries: {
-		[key: string]: ScalablePropDef
+		[key: string]: ScalablePropDef;
 	};
 	jsonTEMPLATES?: {
-		[key: string]: ScalablePropDef
+		[key: string]: ScalablePropDef;
 	};
 }
 
@@ -120,7 +120,7 @@ export class ScalableProp extends CCEntity {
 		if (prop.jsonINSTANCE && sheet.jsonTEMPLATES) {
 			const jsonInstance = sheet.jsonTEMPLATES[prop.jsonINSTANCE];
 			// TODO: patterns currently ignored
-			const p = jsonInstance.patterns;
+			//const p = jsonInstance.patterns;
 			this.replaceJsonParams(jsonInstance, prop);
 			prop = jsonInstance;
 		}

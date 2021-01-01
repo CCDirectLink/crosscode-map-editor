@@ -1,7 +1,6 @@
-import {Component, OnChanges, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {NPCState} from '../npc-states-widget.component';
 import * as settingsJson from '../../../../../assets/npc-settings.json';
-import {Globals} from '../../../globals';
 import {EventEditorComponent} from '../../event-widget/event-editor/editor/event-editor.component';
 
 @Component({
@@ -49,6 +48,7 @@ export class NpcStatesComponent implements OnInit {
 				throw new Error('event editor is not defined');
 			}
 			this.currentState.event = this.eventEditor.export();
+			this.eventEditor.show();
 		}
 		this.currentState = this.states[index];
 		

@@ -147,7 +147,7 @@ export class GfxMapper {
 			}
 		}
 		
-		const offX = offset && offset.x || 0;
+		// const offX = offset && offset.x || 0;
 		let offY = offset && offset.y || 0;
 		
 		if (this.isFill(gfxType)) {

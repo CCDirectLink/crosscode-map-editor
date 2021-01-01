@@ -26,6 +26,10 @@ $accent: map-get($theme, accent);
 	height: 100%;
 }
 
+.active-item {
+	background: rgba(255, 255, 255, 0.04);
+}
+
 :host ::ng-deep .cdk-virtual-scroll-content-wrapper {
 	width: 100%;
 }

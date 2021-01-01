@@ -4,12 +4,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+## [0.9.0] 2021-01-01
+## [0.8.1] 2020-12-28
+
+### Added
+- Event editor rework
+
+### Changed
+- Improved tile drawing by drawing a line of points instead of single points. Avoids holes when drawing fast. [#189](https://github.com/CCDirectLink/crosscode-map-editor/pull/189)
+- Added keyboard controls to list search overlay (add new entity / add new event)
+- Changed Continuous Integration to Github Actions
+- Automated release build. Should result in more frequent releases.
+
+## [0.8.0] - 2020-09-21
 
 ### Added
 - 3d view for all maps
 
 ### Fixed
 - Unnecessary files in binary
+- Updated dependencies
+- Generate unique mapId's for every new entity
+- Initialize tiles with 0 instead of -1 in new layers, #165
+- Resize and offset should now work properly again
+- Fixed changing layer tileset causes previously made changes to be lost
 
 ## [0.7.1] - 2020-07-17
 

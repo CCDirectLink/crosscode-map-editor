@@ -32,7 +32,7 @@ interface JsonType {
 export class GfxMapper {
 	
 	private AUTOTILE_CONFIG: {
-		[key: string]: AutotileConfig[] | undefined
+		[key: string]: AutotileConfig[] | undefined;
 	} = {};
 	
 	private mapping: { [key in AutotileType]: Map<number, keyof FillType> } = <any>{};
@@ -43,7 +43,7 @@ export class GfxMapper {
 	constructor() {
 		this.generateAutotileConfig();
 		
-		const enumVals = Object.values(AutotileType).filter(v => !isNaN(v));
+		const enumVals = Object.values(AutotileType).filter(v => !isNaN(Number(v)));
 		
 		for (const type of enumVals as AutotileType[]) {
 			const map = new Map<number, keyof FillType>();

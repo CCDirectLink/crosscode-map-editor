@@ -72,42 +72,43 @@ export class LayerMeshGenerator {
 						aboveIndex = aboveTile.index;
 					}
 				}
-				tile.index = reverseTileIndex(tile.index);
+				tile.index = this.reverseTileIndex(tile.index);
 				if (tile.index === 2 && [1, 4, 5, 6, 7].includes(aboveIndex)) {
-					tile.index = reverseTileIndex(aboveIndex);
+					tile.index = this.reverseTileIndex(aboveIndex);
 				}
 				
-				function reverseTileIndex(index: number) {
-					switch (index) {
-						// empty
-						case 0:
-							return 2;
-						
-						// ■
-						case 1:
-							return 0;
-						
-						// ◣
-						case 4:
-							return 10;
-						
-						// ◤
-						case 5:
-							return 11;
-						
-						// ◥
-						case 6:
-							return 8;
-						
-						// ◢
-						case 7:
-							return 9;
-						
-						default:
-							return index;
-					}
-				}
 			}
+		}
+	}
+
+	private reverseTileIndex(index: number) {
+		switch (index) {
+		// empty
+		case 0:
+			return 2;
+			
+			// ■
+		case 1:
+			return 0;
+			
+			// ◣
+		case 4:
+			return 10;
+			
+			// ◤
+		case 5:
+			return 11;
+			
+			// ◥
+		case 6:
+			return 8;
+			
+			// ◢
+		case 7:
+			return 9;
+			
+		default:
+			return index;
 		}
 	}
 	

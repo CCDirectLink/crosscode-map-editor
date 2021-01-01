@@ -1,5 +1,4 @@
 import {Point} from '../../models/cross-code-map';
-import {Helper} from './helper';
 import {Vec2} from './vec2';
 import {Globals} from '../globals';
 
@@ -20,7 +19,7 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 			gameObjects: any,
 			deltaX: number,
 			deltaY: number,
-			deltaZ: number
+			//deltaZ: number
 		) => this.onMouseWheel(deltaY));
 		scene.input.on('pointerdown', () => this.onMouseDown());
 		scene.input.on('pointerup', () => this.onMouseUp());
@@ -49,7 +48,6 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 		
 		const cam = this.scene.cameras.main;
 		
-		const prevScale = cam.zoom;
 		let zoom = delta > 0 ? 0.8 : 1.25;
 		zoom *= cam.zoom;
 		if (zoom > 0.4 && zoom < 8) {

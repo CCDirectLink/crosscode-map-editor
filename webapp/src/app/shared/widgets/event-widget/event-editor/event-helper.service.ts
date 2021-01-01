@@ -7,7 +7,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 @Injectable()
 export class EventHelperService {
 	
-	selectedEvent: BehaviorSubject<any> = new BehaviorSubject(null);
+	selectedEvent: BehaviorSubject<AbstractEvent<any> | null> = new BehaviorSubject<AbstractEvent<any> | null> (null);
 	
 	constructor(
 		private eventRegistry: EventRegistryService,

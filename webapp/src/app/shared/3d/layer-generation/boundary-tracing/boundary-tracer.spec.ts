@@ -1,7 +1,6 @@
 import {SimpleTileLayer} from '../simple-tile-layer';
 import {Point} from '../../../../models/cross-code-map';
-import {NodeGrid, NodeTracer} from './node-grid';
-import Tile = Phaser.Tilemaps.Tile;
+import {NodeTracer} from './node-grid';
 import {BoundaryTracer} from './boundary-tracer';
 
 describe('boundary tracing', () => {

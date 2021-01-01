@@ -1,15 +1,29 @@
-<cc-overlay-panel class="overlay-panel" [customSize]="{width: '300px', height: '100%'}" [allowDrag]="false" [@slideContent]="animation">
+<cc-overlay-panel class="overlay-panel"
+                  [customSize]="{width: '300px', height: '100%'}"
+                  [allowDrag]="false"
+                  [@slideContent]="animation"
+>
 	<ng-container ngProjectAs="toolbar">
 		<label class="header" fxLayoutAlign="center" fxLayout="column">
 			<mat-form-field>
-				<input matInput #filterInput [(ngModel)]="filterText">
+				<input matInput
+				       autocomplete="off"
+				       #filterInput
+				       [(ngModel)]="filterText"
+				       (keydown)="onKeyDown($event)"
+				>
 			</mat-form-field>
 		</label>
 	</ng-container>
 	<ng-container ngProjectAs="content">
 		<mat-nav-list class="scroll-viewport">
-			<cdk-virtual-scroll-viewport itemSize="48" class="scroll-viewport dark-scrollbar">
-				<a mat-list-item *cdkVirtualFor="let item of filteredList" (click)="select(item)">
+			<cdk-virtual-scroll-viewport itemSize="48" class="scroll-viewport dark-scrollbar" role="listbox">
+				<a
+					mat-list-item
+					*cdkVirtualFor="let item of filteredList; index as i"
+					(click)="select(item)"
+					[class.active-item]="i === currentIndex"
+				>
 					<span class="list-item" appHighlight [highlightText]="item" [highlightMatch]="filterText"></span>
 					<mat-divider></mat-divider>
 				</a>

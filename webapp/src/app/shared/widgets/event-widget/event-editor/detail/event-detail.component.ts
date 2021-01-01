@@ -1,67 +1,79 @@
 import {
+	ChangeDetectorRef,
 	Component,
 	ComponentFactoryResolver,
 	EventEmitter,
+	HostBinding,
 	Input,
+	OnDestroy,
 	OnInit,
 	Output,
 	ViewChild,
 	ViewContainerRef
 } from '@angular/core';
-import {AbstractEvent} from '../../event-registry/abstract-event';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {HostDirective} from '../../../../host.directive';
-import {AttributeValue} from '../../../../phaser/entities/cc-entity';
-import {AbstractWidget} from '../../../abstract-widget';
-import {WidgetRegistryService} from '../../../widget-registry.service';
-import {JsonWidgetComponent} from '../../../json-widget/json-widget.component';
-import {EventHelperService} from '../event-helper.service';
-
-const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
+import { AbstractEvent } from '../../event-registry/abstract-event';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { HostDirective } from '../../../../host.directive';
+import { AttributeValue } from '../../../../phaser/entities/cc-entity';
+import { AbstractWidget } from '../../../abstract-widget';
+import { WidgetRegistryService } from '../../../widget-registry.service';
+import { JsonWidgetComponent } from '../../../json-widget/json-widget.component';
+import { EventHelperService } from '../event-helper.service';
+import { Subscription } from 'rxjs';
 
 @Component({
-	animations: [
-		trigger('slideContent', [
-			state('void', style({transform: 'scale(0.7)', opacity: 0})),
-			state('enter', style({transform: 'scale(1)', opacity: 1})),
-			transition('* => *', animate(ANIMATION_TIMING)),
-		])
-	],
 	selector: 'app-event-detail',
 	templateUrl: './event-detail.component.html',
 	styleUrls: ['./event-detail.component.scss']
 })
-export class EventDetailComponent implements OnInit {
+export class EventDetailComponent implements OnDestroy {
 	@ViewChild(HostDirective, {static: true}) appHost!: HostDirective;
 	
 	@Input() event!: AbstractEvent<any>;
-	@Output() exit: EventEmitter<AbstractEvent<any>> = new EventEmitter<any>();
+	@Output() close = new EventEmitter<void>();
+	@Output() refresh = new EventEmitter<AbstractEvent<any>>();
 	
-	animState = 'enter';
 	newData: any;
 	unknownObj?: { data: any };
 	warning = false;
 	
-	constructor(private componentFactoryResolver: ComponentFactoryResolver,
-	            private widgetRegistry: WidgetRegistryService,
-	            private helper: EventHelperService) {
+	private changeSubscriptions: Subscription[] = [];
+	
+	constructor(
+		private componentFactoryResolver: ComponentFactoryResolver,
+		private widgetRegistry: WidgetRegistryService,
+		private helper: EventHelperService,
+		private ref: ChangeDetectorRef,
+	) {
 	}
 	
-	ngOnInit(): void {
+	ngOnDestroy(): void {
+		this.clearSubscriptions();
+	}
+	
+	closeDetails(): void {
+		this.close.emit();
+	}
+
+	public loadEvent(event: AbstractEvent<any>) {
+		this.event = event;
 		this.loadSettings();
 	}
 	
-	save() {
-		this.event.data = this.unknownObj ? this.unknownObj.data : this.newData;
-		this.exit.emit(this.event);
+	private clearSubscriptions() {
+		for (const sub of this.changeSubscriptions) {
+			sub.unsubscribe();
+		}
+		this.changeSubscriptions = [];
 	}
-	
-	cancel() {
-		this.exit.error('cancel');
-	}
-	
+
 	private loadSettings() {
+		this.clearSubscriptions();
+
 		const ref = this.appHost.viewContainerRef;
+		
+		ref.clear();
+		
 		const exported = this.event.export();
 		this.newData = this.helper.getEventFromType(exported, this.event.actionStep).data;
 		
@@ -83,6 +95,8 @@ export class EventDetailComponent implements OnInit {
 			}, ref) as JsonWidgetComponent;
 			instance.noPropName = true;
 		}
+
+		this.ref.detectChanges();
 	}
 	
 	private generateWidget(data: any, key: string, val: AttributeValue, ref: ViewContainerRef) {
@@ -92,6 +106,14 @@ export class EventDetailComponent implements OnInit {
 		instance.custom = data;
 		instance.key = key;
 		instance.attribute = val;
+		const sub = instance.onChange.subscribe(() => this.update());
+		this.changeSubscriptions.push(sub);
 		return instance;
+	}
+	
+	private update() {
+		this.event.data = this.unknownObj ? this.unknownObj.data : this.newData;
+		this.event.update();
+		this.refresh.emit(this.event);
 	}
 }
