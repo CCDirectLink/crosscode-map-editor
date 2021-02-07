@@ -9,6 +9,7 @@ import { HttpClientService } from '../services/http-client.service';
 
 export class Globals {
 	static isElectron = false;
+	static panning = false;
 	static game: Phaser.Game;
 	static scene: Phaser.Scene;
 	static map: CCMap;

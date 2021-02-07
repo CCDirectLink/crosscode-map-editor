@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- Add CTRL as a control to pan the camera
+
 ## [0.9.0] 2021-01-01
 
 ### Added
