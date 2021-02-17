@@ -99,12 +99,15 @@ export class Helper {
 	/**
 	 * returns true if texture exists, false otherwise
 	 */
-	public static async loadTexture(key: string | undefined, scene: Scene): Promise<boolean> {
-		
-		if (!key) {
+	public static async loadTexture(name: string | undefined, scene: Scene): Promise<boolean> {
+		if (!name) {
 			return false;
 		}
-		
+
+		//Sometimes RFG adds a whitespace after (or even in front) of the name.
+		//This is invalid behaviour for loading a file but the game trims it as well.
+		const key = name.trim();  
+
 		if (scene.textures.exists(key)) {
 			return true;
 		}
