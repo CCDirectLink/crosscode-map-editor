@@ -79,7 +79,7 @@ export class VirtualMapNode {
 		const bIsDir = b.children !== undefined;
 
 		if (aIsDir !== bIsDir) {
-			return aIsDir ? 1 : -1;
+			return aIsDir ? -1 : 1;
 		}
 
 		return a.name.localeCompare(b.name);
