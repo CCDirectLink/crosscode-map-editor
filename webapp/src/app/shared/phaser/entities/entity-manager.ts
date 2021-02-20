@@ -144,12 +144,7 @@ export class EntityManager extends BaseObject {
 				if (pointer.rightButtonReleased()) {
 					this.selectEntity();
 					this.showAddEntityMenu();
-				} else if (pointer.leftButtonReleased()) {
-
-					// if panning do not deselect entities
-					if (Globals.panning) {
-						return;
-					}
+				} else if (pointer.leftButtonReleased()) {			
 
 					this.selectedEntities.forEach(entity => {
 						entity.isDragged = false;
@@ -159,6 +154,12 @@ export class EntityManager extends BaseObject {
 						this.gameObjectDown = false;
 					} else {
 						const entities = this.selectionBox.onInputUp();
+
+						// if panning do not deselect entities
+						if (Globals.panning) {
+							return;
+						}
+
 						if (!this.multiSelectKey.isDown) {
 							this.selectEntity();
 						}
