@@ -81,11 +81,7 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 	
 	preUpdate() {
 
-		if (this.panKey.isDown || this.scene.input.activePointer.middleButtonDown()) {
-			Globals.panning = true;
-		} else {
-			Globals.panning = false;
-		}
+		Globals.panning = this.panKey.isDown || this.scene.input.activePointer.middleButtonDown();
 
 		const pointer = this.scene.input.activePointer;
 
