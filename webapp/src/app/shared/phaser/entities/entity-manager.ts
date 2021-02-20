@@ -149,16 +149,16 @@ export class EntityManager extends BaseObject {
 					this.selectedEntities.forEach(entity => {
 						entity.isDragged = false;
 					});
+
+					// if panning do not deselect entities
+					if (Globals.panning) {
+						return;
+					}
 					
 					if (this.gameObjectDown) {
 						this.gameObjectDown = false;
 					} else {
 						const entities = this.selectionBox.onInputUp();
-
-						// if panning do not deselect entities
-						if (Globals.panning) {
-							return;
-						}
 
 						if (!this.multiSelectKey.isDown) {
 							this.selectEntity();
