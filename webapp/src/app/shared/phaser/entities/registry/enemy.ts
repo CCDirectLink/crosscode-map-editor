@@ -79,7 +79,9 @@ export class Enemy extends DefaultEntity {
 			return false;
 		}
 
-		this.render(tileSheet, {x: 0, y: 0}, anim.frames[0]);
+		const tileOffset = (anim.dirs && anim.tileOffsets) ? anim.tileOffsets[Math.floor(anim.dirs / 2)] : 0;
+		
+		this.render(tileSheet, {x: 0, y: 0}, anim.frames[0] + tileOffset);
 
 		return true;
 	}

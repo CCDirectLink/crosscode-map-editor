@@ -6,4 +6,6 @@ export interface MultiDirAnimation {
     namedSheets: Record<string, TileSheet>;
     frames: number[];
     sheet: TileSheet | string;
+    dirs: number;
+    tileOffsets?: number[];
 }
