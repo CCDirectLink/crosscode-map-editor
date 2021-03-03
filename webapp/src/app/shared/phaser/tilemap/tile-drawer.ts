@@ -156,6 +156,12 @@ export class TileDrawer extends BaseObject {
 			if (this.lastDraw.x === p.x && this.lastDraw.y === p.y) {
 				return;
 			}
+
+			// skip drawing if panning key is down
+			if (Globals.panning) {
+				return;
+			}
+
 			this.dirty = true;
 			for (const tile of this.selectedTiles) {
 				

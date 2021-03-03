@@ -8,11 +8,13 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 	private startCam: Point = {x: 0, y: 0};
 	
 	private zoomKey: Phaser.Input.Keyboard.Key;
+	private panKey: Phaser.Input.Keyboard.Key;
 	
 	constructor(scene: Phaser.Scene, type: string) {
 		super(scene, type);
 		
 		this.zoomKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ALT, false);
+		this.panKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL, false);
 		// game.input.mouseWheel.callback = (v) => this.onMouseWheel(v);
 		scene.input.on('wheel', (
 			pointer: Phaser.Input.Pointer,
@@ -29,6 +31,15 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 		if (!this.active) {
 			return;
 		}
+
+		// set global panning state when the panKey is down
+		if (this.panKey.isDown || this.scene.input.activePointer.middleButtonDown()) {
+			Globals.panning = true;
+		} else {
+			Globals.panning = false;
+			return;
+		}
+
 		this.isScrolling = true;
 		const cam = this.scene.cameras.main;
 		Vec2.assign(this.startMouse, this.scene.input.activePointer);
@@ -69,8 +80,12 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 	}
 	
 	preUpdate() {
+
 		const pointer = this.scene.input.activePointer;
-		if (pointer.middleButtonDown() && this.isScrolling && this.active) {
+		
+		Globals.panning = this.panKey.isDown || pointer.middleButtonDown();
+
+		if (Globals.panning && this.isScrolling && this.active && pointer.isDown) {
 			const dx = pointer.x - this.startMouse.x;
 			const dy = pointer.y - this.startMouse.y;
 			

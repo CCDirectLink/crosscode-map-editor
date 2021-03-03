@@ -9,6 +9,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Support for enemies.
 
+## [0.9.2] 2021-03-02
+
+### Added
+- Add CTRL as a control to pan the camera
+
 ## [0.9.1] 2021-02-21
 
 ### Changed
