@@ -112,7 +112,10 @@ export class Helper {
 			return true;
 		}
 		
-		const file = await Globals.httpService.resolveFile(key).toPromise();
+		const file = await Globals.httpService.resolveFile(key).toPromise().catch(() => false);
+		if (!file) {
+			return false;
+		}
 		
 		return new Promise(res => {
 			scene.load.image(key, Globals.URL + file);
