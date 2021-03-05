@@ -35,7 +35,7 @@ export class Enemy extends DefaultEntity {
 		this.entitySettings.sheets = { fix: [] };
 
 		if (this.isMultiDir(sheet)) {
-			if(!await this.renderMultiDirAnim(sheet.find(s => s.name === 'idle') ?? sheet[0])) {
+			if(!await this.renderMultiDirAnims(sheet.filter(s => s.name === 'idle') ?? [sheet[0]])) {
 				this.generateErrorImage();
 				return;
 			}
@@ -70,6 +70,12 @@ export class Enemy extends DefaultEntity {
 
 	private isMultiDir(sheet: MultiDirAnimation[] | [MultiEntityAnimation]): sheet is MultiDirAnimation[] {
 		return sheet[0].DOCTYPE === 'MULTI_DIR_ANIMATION';
+	}
+
+	
+	private async renderMultiDirAnims(anims: MultiDirAnimation[]): Promise<boolean> {
+		const results = await Promise.all(anims.map(anim => this.renderMultiDirAnim(anim)));
+		return results.every(r => r); //All results true
 	}
 
 	private async renderMultiDirAnim(anim: MultiDirAnimation): Promise<boolean> {
