@@ -35,7 +35,8 @@ export class Enemy extends DefaultEntity {
 		this.entitySettings.sheets = { fix: [] };
 
 		if (this.isMultiDir(sheet)) {
-			if(!await this.renderMultiDirAnims(sheet.filter(s => s.name === 'idle') ?? [sheet[0]])) {
+			const anims = sheet.filter(s => s.name === 'idle');
+			if(!await this.renderMultiDirAnims(anims.length > 0 ? anims : [sheet[0]])) {
 				this.generateErrorImage();
 				return;
 			}
