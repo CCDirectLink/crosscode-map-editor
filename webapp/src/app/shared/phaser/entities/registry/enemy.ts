@@ -98,7 +98,7 @@ export class Enemy extends DefaultEntity {
 		const offsetY = (anim.offY || 0) + (anim.xCount ? (Math.floor(frame / anim.xCount) * anim.height) : 0);
 
 		this.entitySettings.sheets.fix.push({
-			gfx: anim.src,
+			gfx: anim.src.trim(),
 			h: anim.height,
 			w: anim.width,
 			x: offsetX,
@@ -211,7 +211,7 @@ export class Enemy extends DefaultEntity {
 			+ (sheet.xCount ? (Math.floor(anim.frames[0] / sheet.xCount) * sheet.height) : 0);
 
 		this.entitySettings.sheets.fix.push({
-			gfx: sheet.src,
+			gfx: sheet.src.trim(),
 			h: sheet.height,
 			w: sheet.width,
 			x: offsetX,
