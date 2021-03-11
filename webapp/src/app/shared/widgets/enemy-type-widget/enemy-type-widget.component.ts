@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Component, OnChanges, OnDestroy } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { OverlayRefControl } from '../../overlay/overlay-ref-control';
 import { OverlayService } from '../../overlay/overlay.service';
 import { AbstractWidget } from '../abstract-widget';
@@ -10,14 +10,23 @@ import { EnemyTypeWidgetOverlayComponent } from './enemy-type-overlay/enemy-type
 	templateUrl: './enemy-type-widget.component.html',
 	styleUrls: ['./enemy-type-widget.component.scss', '../widget.scss']
 })
-export class EnemyTypeWidgetComponent extends AbstractWidget implements OnChanges, OnDestroy {
+export class EnemyTypeWidgetComponent extends AbstractWidget implements OnInit, OnChanges, OnDestroy {
 	private ref?: OverlayRefControl;
+	
+	private static overlayOpen = false;
 	
 	constructor(
 		private overlayService: OverlayService,
 		private overlay: Overlay
 	) {
 		super();
+	}
+	
+	ngOnInit() {
+		super.ngOnInit();
+		if (EnemyTypeWidgetComponent.overlayOpen) {
+			this.open();
+		}
 	}
 	
 	ngOnChanges(): void {
@@ -28,12 +37,13 @@ export class EnemyTypeWidgetComponent extends AbstractWidget implements OnChange
 	}
 	
 	ngOnDestroy() {
-		if (this.ref && this.ref.isOpen()) {
+		if (this.ref) {
 			this.ref.close();
 		}
 	}
 	
 	open() {
+		EnemyTypeWidgetComponent.overlayOpen = true;
 		if (this.ref && this.ref.isOpen()) {
 			return;
 		}
@@ -57,5 +67,6 @@ export class EnemyTypeWidgetComponent extends AbstractWidget implements OnChange
 		if (this.ref) {
 			this.ref.close();
 		}
+		EnemyTypeWidgetComponent.overlayOpen = false;
 	}
 }
