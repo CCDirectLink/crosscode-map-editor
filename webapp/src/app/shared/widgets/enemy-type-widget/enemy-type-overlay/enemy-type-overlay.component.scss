@@ -1,0 +1,16 @@
+.mat-select-container {
+	width: 480px;
+	padding: 6px;
+	outline: solid 1px #c9c9c9;
+}
+
+.enemy-settings-container {
+	padding: 16px 16px 16px 16px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+textarea {
+	height: 100px;
+	resize: vertical;
+}
