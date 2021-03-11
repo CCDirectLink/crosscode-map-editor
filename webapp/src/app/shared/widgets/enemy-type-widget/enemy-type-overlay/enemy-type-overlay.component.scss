@@ -14,3 +14,7 @@ textarea {
 	height: 100px;
 	resize: vertical;
 }
+
+:host {
+	pointer-events: none;
+}

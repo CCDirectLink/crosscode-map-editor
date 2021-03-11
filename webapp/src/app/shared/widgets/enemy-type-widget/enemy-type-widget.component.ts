@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Component, OnChanges } from '@angular/core';
+import { Component, OnChanges, OnDestroy } from '@angular/core';
 import { OverlayRefControl } from '../../overlay/overlay-ref-control';
 import { OverlayService } from '../../overlay/overlay.service';
 import { AbstractWidget } from '../abstract-widget';
@@ -10,7 +10,7 @@ import { EnemyTypeWidgetOverlayComponent } from './enemy-type-overlay/enemy-type
 	templateUrl: './enemy-type-widget.component.html',
 	styleUrls: ['./enemy-type-widget.component.scss', '../widget.scss']
 })
-export class EnemyTypeWidgetComponent extends AbstractWidget implements OnChanges {
+export class EnemyTypeWidgetComponent extends AbstractWidget implements OnChanges, OnDestroy {
 	private ref?: OverlayRefControl;
 	
 	constructor(
@@ -27,23 +27,29 @@ export class EnemyTypeWidgetComponent extends AbstractWidget implements OnChange
 		}
 	}
 	
+	ngOnDestroy() {
+		if (this.ref && this.ref.isOpen()) {
+			this.ref.close();
+		}
+	}
+	
 	open() {
 		if (this.ref && this.ref.isOpen()) {
 			return;
 		}
 		const obj = this.overlayService.open(EnemyTypeWidgetOverlayComponent, {
 			positionStrategy: this.overlay.position().global()
-				.left('13vw')
+				.left('330px')
 				.top('calc(64px + 6vh / 2)'),
-			hasBackdrop: true,
+			hasBackdrop: false,
 			disablePhaserInput: true
 		});
 		this.ref = obj.ref;
-
+		
 		obj.instance.entity = this.entity;
 		obj.instance.key = this.key;
 		obj.instance.attribute = this.attribute;
-
+		
 		obj.instance.exit.subscribe(() => this.close());
 	}
 	
