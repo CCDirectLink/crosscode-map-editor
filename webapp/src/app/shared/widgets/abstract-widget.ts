@@ -1,5 +1,5 @@
-import {Input, OnChanges, OnInit, Directive, Output, EventEmitter} from '@angular/core';
-import {AttributeValue, CCEntity} from '../phaser/entities/cc-entity';
+import { Directive, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { AttributeValue, CCEntity } from '../phaser/entities/cc-entity';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
@@ -8,7 +8,7 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 	@Input() attribute!: AttributeValue;
 	@Input() entity?: CCEntity;
 	@Input() custom?: CCEntity;
-
+	
 	@Output() onChange = new EventEmitter<any>();
 	
 	settings: any;
@@ -31,7 +31,7 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 		if (parse) {
 			value = JSON.parse(value);
 		}
-
+		
 		if (typeof key === 'string') {
 			this.settings[key] = value;
 		} else {
@@ -41,15 +41,9 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 			}
 			node[key[key.length - 1]] = value;
 		}
-
+		
 		if (updateType) {
 			this.updateType(value);
-		}
-	}
-	
-	updateSettings() {
-		if (this.entity) {
-			this.entity.updateSettings();
 		}
 	}
 	
