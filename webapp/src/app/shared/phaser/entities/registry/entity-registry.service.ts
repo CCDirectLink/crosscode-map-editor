@@ -7,6 +7,7 @@ import { EventTrigger } from './event-trigger';
 import { Injectable } from '@angular/core';
 import { Destructible } from './destructible';
 import { CCEntity } from '../cc-entity';
+import { Enemy } from './enemy';
 
 @Injectable()
 export class EntityRegistryService {
@@ -19,6 +20,7 @@ export class EntityRegistryService {
 		this.register('Destructible', Destructible);
 		this.register('NPC', NPC);
 		this.register('EventTrigger', EventTrigger);
+		this.register('Enemy', Enemy);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {
@@ -28,7 +30,7 @@ export class EntityRegistryService {
 	public getDefaultEntity(): typeof DefaultEntity {
 		return DefaultEntity;
 	}
-	
+
 	public getAll() {
 		return this.entities;
 	}

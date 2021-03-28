@@ -267,9 +267,12 @@ export class EntityManager extends BaseObject {
 			return;
 		}
 		
+		// concurrent entity loading
+		const promises: Promise<any>[] = []; 
 		for (const entity of map.entities) {
-			await this.generateEntity(entity);
+			promises.push(this.generateEntity(entity));
 		}
+		await Promise.all(promises);
 	}
 	
 	

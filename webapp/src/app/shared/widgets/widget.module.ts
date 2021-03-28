@@ -27,6 +27,8 @@ import {PersonExpressionWidgetComponent} from './person-expression-widget/person
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {AddEventService} from './event-widget/event-editor/add/add-event.service';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { EnemyTypeWidgetComponent } from './enemy-type-widget/enemy-type-widget.component';
+import { EnemyTypeWidgetOverlayComponent } from './enemy-type-widget/enemy-type-overlay/enemy-type-overlay.component';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -41,12 +43,14 @@ const COMPONENTS = [
 	EventEditorComponent,
 	CharacterWidgetComponent,
 	PersonExpressionWidgetComponent,
+	EnemyTypeWidgetComponent,
 ];
 
 const PRIVATE_COMPONENTS = [
 	EventWindowComponent,
 	RowTextComponent,
 	EventDetailComponent,
+	EnemyTypeWidgetOverlayComponent,
 ];
 
 @NgModule({
