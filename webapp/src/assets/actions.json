@@ -102,6 +102,23 @@
 			"branches": {}
 		}
 	},
+	"SELECT_FIRST": {
+		"attributes": {
+			"options": {
+				"type": "Array",
+				"sub": {
+					"_type": "VarCondition",
+					"_popup": true
+				},
+				"description": "Face direction options"
+			}
+		},
+		"width": 600,
+		"initialObject": {
+			"options": [],
+			"branches": {}
+		}
+	},
 	"RESET_ACTOR": {
 		"attributes": {},
 		"initialObject": {}
@@ -121,6 +138,15 @@
 				"type": "Boolean",
 				"optional": true,
 				"description": "If true: Slow down in Assist Mode"
+			},
+			"guardTrap": {
+				"type": "String",
+				"optional": true,
+				"description": "Select how guard trap time should be modified ",
+				"options": {
+					"INCREASE": 0,
+					"INCREASE_AND_CLEAR": 0
+				}
 			}
 		},
 		"initialObject": {
@@ -391,6 +417,21 @@
 			"value": null
 		}
 	},
+	"SCALE_VEL": {
+		"attributes": {
+			"value": {
+				"type": "Vec2",
+				"actorOption": true,
+				"description": "Values multiplied with velocity"
+			}
+		},
+		"initialObject": {
+			"value": {
+				"x": 0,
+				"y": 0
+			}
+		}
+	},
 	"SET_FLOAT_HEIGHT": {
 		"attributes": {
 			"value": {
@@ -617,6 +658,17 @@
 			"config": null
 		}
 	},
+	"SET_TARGET_WALK_ANIMS": {
+		"attributes": {
+			"config": {
+				"type": "WalkAnimConfig",
+				"description": "Name of walk anim config"
+			}
+		},
+		"initialObject": {
+			"config": null
+		}
+	},
 	"STOP_XY": {
 		"attributes": {},
 		"initialObject": {}
@@ -733,6 +785,17 @@
 		}
 	},
 	"SET_SPEED": {
+		"attributes": {
+			"value": {
+				"type": "NumberExpression",
+				"description": "New speed value"
+			}
+		},
+		"initialObject": {
+			"value": 0
+		}
+	},
+	"SET_MAX_ZVEL": {
 		"attributes": {
 			"value": {
 				"type": "NumberExpression",
@@ -967,6 +1030,16 @@
 			"random": {
 				"type": "Number",
 				"description": "If defined, rotate face randomly. 1=100% random. 0.5= at least 50%, rest random"
+			},
+			"towardTarget": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: always rotate face to end up closer towards target direction if rotation is positive. If negative: will always rotate away!"
+			},
+			"notPastTarget": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: do not rotate past the target"
 			}
 		},
 		"initialObject": {
@@ -1304,7 +1377,7 @@
 	"SET_ATTRIB_VEC2": {
 		"attributes": {
 			"name": {
-				"type": "String",
+				"type": "StringExpression",
 				"description": "Name of actor attribute to set"
 			},
 			"value": {
@@ -1332,7 +1405,7 @@
 	"SET_ATTRIB_BOOL": {
 		"attributes": {
 			"name": {
-				"type": "String",
+				"type": "StringExpression",
 				"description": "Name of actor attribute to set"
 			},
 			"value": {
@@ -1358,7 +1431,7 @@
 	"SET_ATTRIB_STRING": {
 		"attributes": {
 			"name": {
-				"type": "String",
+				"type": "StringExpression",
 				"description": "Name of actor attribute to set"
 			},
 			"value": {
@@ -1394,7 +1467,7 @@
 	"SET_ATTRIB_NUMBER": {
 		"attributes": {
 			"attribName": {
-				"type": "String",
+				"type": "StringExpression",
 				"description": "Name of Var"
 			},
 			"changeType": {
@@ -1530,6 +1603,15 @@
 				"type": "Integer",
 				"optional": true,
 				"description": "If defined: round face direction to fixed number of directions"
+			},
+			"selfFaceDistance": {
+				"type": "Number",
+				"description": "Distance applied along face direction of entity"
+			},
+			"checkCollision": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: Check navmap collision and only set if correct"
 			}
 		},
 		"initialObject": {
@@ -1666,6 +1748,11 @@
 			"zDelta": {
 				"type": "NumberVary",
 				"description": "Delta to add to z pos instantly"
+			},
+			"zMultiply": {
+				"type": "Number",
+				"optional": true,
+				"description": "Factor by which current z value is multiplied"
 			}
 		},
 		"initialObject": {
@@ -1708,7 +1795,9 @@
 					"LINEAR": 0,
 					"JUMPY": 0,
 					"EASE_OUT_STRONG": 0,
-					"EASE_IN_STRONG": 0
+					"EASE_IN_STRONG": 0,
+					"LINEAR_EASE_OUT": 0,
+					"LINEAR_EASE_IN_OUT": 0
 				}
 			},
 			"timePerTile": {
@@ -1719,6 +1808,42 @@
 		},
 		"initialObject": {
 			"newPos": null,
+			"duration": 0,
+			"keySpline": null,
+			"timePerTile": false
+		}
+	},
+	"INTERPOLATE_RELATIVE": {
+		"attributes": {
+			"delta": {
+				"type": "Offset",
+				"actorOption": true,
+				"description": "Delta applied on current position"
+			},
+			"duration": {
+				"type": "NumberVary",
+				"description": "Time the movement should take."
+			},
+			"keySpline": {
+				"type": "String",
+				"description": "The KEYSPLINE to use.",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0,
+					"LINEAR_EASE_OUT": 0,
+					"LINEAR_EASE_IN_OUT": 0
+				}
+			}
+		},
+		"initialObject": {
+			"delta": null,
 			"duration": 0,
 			"keySpline": null,
 			"timePerTile": false
@@ -1746,7 +1871,9 @@
 					"LINEAR": 0,
 					"JUMPY": 0,
 					"EASE_OUT_STRONG": 0,
-					"EASE_IN_STRONG": 0
+					"EASE_IN_STRONG": 0,
+					"LINEAR_EASE_OUT": 0,
+					"LINEAR_EASE_IN_OUT": 0
 				}
 			}
 		},
@@ -1840,7 +1967,9 @@
 					"LINEAR": 0,
 					"JUMPY": 0,
 					"EASE_OUT_STRONG": 0,
-					"EASE_IN_STRONG": 0
+					"EASE_IN_STRONG": 0,
+					"LINEAR_EASE_OUT": 0,
+					"LINEAR_EASE_IN_OUT": 0
 				}
 			},
 			"wait": {
@@ -1921,7 +2050,9 @@
 					"LINEAR": 0,
 					"JUMPY": 0,
 					"EASE_OUT_STRONG": 0,
-					"EASE_IN_STRONG": 0
+					"EASE_IN_STRONG": 0,
+					"LINEAR_EASE_OUT": 0,
+					"LINEAR_EASE_IN_OUT": 0
 				}
 			},
 			"wait": {
@@ -1963,7 +2094,9 @@
 					"LINEAR": 0,
 					"JUMPY": 0,
 					"EASE_OUT_STRONG": 0,
-					"EASE_IN_STRONG": 0
+					"EASE_IN_STRONG": 0,
+					"LINEAR_EASE_OUT": 0,
+					"LINEAR_EASE_IN_OUT": 0
 				}
 			}
 		},
@@ -2388,6 +2521,66 @@
 			"planOnly": false
 		}
 	},
+	"NAVIGATE_RANGE_TARGET": {
+		"attributes": {
+			"maxTime": {
+				"type": "Number",
+				"description": "Maximum time spent on navigation"
+			},
+			"maxTimeAggro": {
+				"type": "Number",
+				"optional": true,
+				"description": "Maximum time spent on navigation, when harder enemies is true."
+			},
+			"forceTime": {
+				"type": "Boolean",
+				"description": "Keep moving, never stop until maxTime has been reached"
+			},
+			"moveDist": {
+				"type": "Number",
+				"description": "The (maximum) movement dist"
+			},
+			"minMoveDist": {
+				"type": "Number",
+				"optional": true,
+				"description": "The minimum movement dist"
+			},
+			"targetDistGoal": {
+				"type": "Number",
+				"description": "Preferred distance to target"
+			},
+			"throwing": {
+				"type": "Boolean",
+				"description": "True if after escape, entity should be able to throw at target"
+			},
+			"avoidSideway": {
+				"type": "Boolean",
+				"description": "If true: avoid sideway motion by reducing movement distance"
+			},
+			"planOnly": {
+				"type": "Boolean",
+				"description": "If true, only plan navigation, but don't execute it"
+			},
+			"direction": {
+				"type": "String",
+				"withNull": true,
+				"description": "Which direciton to go sideway in",
+				"options": {
+					"KEEP": 0,
+					"CLOCKWISE": 0,
+					"COUNTERCLOCKWISE": 0
+				}
+			}
+		},
+		"initialObject": {
+			"maxTime": 0,
+			"maxTimeAggro": 0,
+			"distance": 0,
+			"throwing": false,
+			"planOnly": false,
+			"targetType": 0
+		}
+	},
 	"NAVIGATE_TO_ENTITY": {
 		"attributes": {
 			"entity": {
@@ -2601,6 +2794,53 @@
 			"searchType": null
 		}
 	},
+	"SET_ATTRIB_TARGET_DELTA_POS": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of actor attribute to set"
+			},
+			"searchType": {
+				"type": "Number",
+				"description": "Determines where position is searched relative to target",
+				"options": {
+					"RANDOM": 0,
+					"BEHIND": 0,
+					"FRONT": 0,
+					"BEHIND_FACE": 0,
+					"FRONT_FACE": 0
+				}
+			},
+			"distance": {
+				"type": "Number",
+				"description": "Preferred distance to target. Might end up being smaller"
+			},
+			"centralAngle": {
+				"type": "Number",
+				"default": 0.7,
+				"description": "How much to circle around preferred position. 1 = full circle"
+			},
+			"dirRotate": {
+				"type": "Number",
+				"optional": true,
+				"description": "Additional rotation to preferred placement direction (relative to target)"
+			},
+			"throwing": {
+				"type": "Boolean",
+				"description": "True entity should be able to throw at target from found position"
+			},
+			"offset": {
+				"type": "Offset",
+				"optional": true,
+				"description": "Offset to position"
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"distance": 0,
+			"searchType": null
+		}
+	},
 	"SET_ATTRIB_NAV_TARGET_POS": {
 		"attributes": {
 			"name": {
@@ -2620,6 +2860,7 @@
 				"type": "String",
 				"description": "Type of Zoom Blur effect",
 				"options": {
+					"LIGHTEST": 0,
 					"LIGHTER": 0,
 					"LIGHT": 0,
 					"MEDIUM": 0,
@@ -2646,6 +2887,25 @@
 				"type": "String",
 				"optional": true,
 				"description": "Name of zoom blur. Can be used to fadeOut permanent zoom blurs"
+			},
+			"align": {
+				"type": "String",
+				"optional": true,
+				"description": "Alignment on how to get pos from target",
+				"options": {
+					"BOTTOM": 0,
+					"CENTER": 0,
+					"TOP": 0,
+					"FACE": 0,
+					"BASE": 0,
+					"WALL_HIT": 0,
+					"FACE_BASE": 0
+				}
+			},
+			"offset": {
+				"type": "Offset",
+				"optional": true,
+				"description": "Offset to position"
 			}
 		},
 		"initialObject": {
@@ -2690,7 +2950,11 @@
 					"COLD_CRYSTALS": 0,
 					"SAND_OUTSIDE": 0,
 					"SANDSTORM": 0,
-					"SAND": 0,
+					"BEACH_GLOW": 0,
+					"BEACH_GLOW_BIG": 0,
+					"FINAL_GLOW": 0,
+					"FINAL_WHIRL": 0,
+					"FINAL_WHIRL_FAST": 0,
 					"COAL_SPARKS": 0,
 					"COAL_SPARKS_FAST": 0,
 					"INFESTED_DUST": 0,
@@ -2739,7 +3003,11 @@
 					"COLD_CRYSTALS": 0,
 					"SAND_OUTSIDE": 0,
 					"SANDSTORM": 0,
-					"SAND": 0,
+					"BEACH_GLOW": 0,
+					"BEACH_GLOW_BIG": 0,
+					"FINAL_GLOW": 0,
+					"FINAL_WHIRL": 0,
+					"FINAL_WHIRL_FAST": 0,
 					"COAL_SPARKS": 0,
 					"COAL_SPARKS_FAST": 0,
 					"INFESTED_DUST": 0,
@@ -2842,6 +3110,16 @@
 				"type": "TrackerRef",
 				"optional": true,
 				"description": "If defined: bind time value of AR message to enemy tracker"
+			},
+			"varFill": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Filling of AR Message depends on value of variable"
+			},
+			"varFillMax": {
+				"type": "NumberExpression",
+				"optional": true,
+				"description": "Maximum Number of variable to fill bar"
 			}
 		},
 		"initialObject": {
@@ -2850,7 +3128,9 @@
 			"mode": false,
 			"color": null,
 			"actionDetached": false,
-			"partName": null
+			"partName": null,
+			"varFill": null,
+			"varFillMax": null
 		}
 	},
 	"CLEAR_AR_MSG": {
@@ -2966,6 +3246,11 @@
 				"type": "Boolean",
 				"optional": true,
 				"description": "True if enemy should always look at the target IMMEDIATLY."
+			},
+			"posOffset": {
+				"type": "Vec2",
+				"optional": true,
+				"description": "Offset to target position used to set face target (will only be used for immediate face setting)"
 			}
 		},
 		"initialObject": {
@@ -3013,6 +3298,17 @@
 			"value": false
 		}
 	},
+	"SET_FACE_TARGET_PREDICT": {
+		"attributes": {
+			"projectileSpeed": {
+				"type": "Number",
+				"description": "Speed of projectile to be thrown"
+			}
+		},
+		"initialObject": {
+			"projectileSpeed": false
+		}
+	},
 	"FACE_ALIGN": {
 		"attributes": {
 			"target": {
@@ -3036,6 +3332,14 @@
 			"charged": {
 				"type": "Boolean",
 				"description": "If true: show charged effect"
+			},
+			"charClass": {
+				"type": "String",
+				"optional": true,
+				"description": "If true: show charged effect",
+				"options": {
+					"HEXACAST": 0
+				}
 			}
 		},
 		"initialObject": {}
@@ -3102,6 +3406,21 @@
 			"stopBeforeEdge": {
 				"type": "Boolean",
 				"description": "If true: Stop before falling down from edge when further moving forward"
+			},
+			"flipOffsetLeft": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: Flip offset x when facing left."
+			},
+			"keepFace": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: Keep face direction the same, even with rotateSpeed on"
+			},
+			"waitUntil": {
+				"type": "VarCondition",
+				"optional": true,
+				"description": "If defined: Keep moving until condition evaluates to false"
 			}
 		},
 		"initialObject": {
@@ -3155,6 +3474,51 @@
 		"initialObject": {
 			"maxTime": 0,
 			"offset": null,
+			"forceTime": false
+		}
+	},
+	"MOVE_ALIGN_DIR": {
+		"attributes": {
+			"moveTime": {
+				"type": "Number",
+				"description": "Time of movement. Entity will move to target position projected along alignDir"
+			},
+			"alignDir": {
+				"type": "Number",
+				"optional": true,
+				"description": "Dir among which entity can move. If not defined: Use entity face dir"
+			},
+			"aimFaceRotate": {
+				"type": "Number",
+				"optional": true,
+				"description": "Position will be calculated based on an aiming direction of alignDir rotated toward the target by THIS much (1=full rotation). 0.25 by default"
+			},
+			"maxDist": {
+				"type": "Number",
+				"description": "Maximum Distance to go along alignDir"
+			},
+			"maxOppDist": {
+				"type": "Number",
+				"description": "Maximum Distance to go along opposite alignDir"
+			},
+			"offset": {
+				"type": "Vec2",
+				"optional": true,
+				"description": "Offset to target."
+			},
+			"interpolate": {
+				"type": "Boolean",
+				"description": "If true: Interpolate position to reach destination at end of moveTime. Otherwise: Always be set at destination"
+			},
+			"waitUntil": {
+				"type": "VarCondition",
+				"optional": true,
+				"description": "If defined: continue spinning until condition evaluates to true. Duration is minimum wait"
+			}
+		},
+		"initialObject": {
+			"maxTime": 0,
+			"dir": null,
 			"forceTime": false
 		}
 	},
@@ -3215,6 +3579,11 @@
 			"orthogonalDist": {
 				"type": "Number",
 				"description": "Orthogonal distance (Sideways) - can also be negative for opposite direction."
+			},
+			"maxOrthDelta": {
+				"type": "Number",
+				"optional": true,
+				"description": "Maximum Delta Value for orthogonal movement"
 			},
 			"adjustTarget": {
 				"type": "Boolean",
@@ -3285,6 +3654,31 @@
 			"offset": null
 		}
 	},
+	"SET_Z_VEL_TO_TARGET": {
+		"attributes": {
+			"speed": {
+				"type": "Number",
+				"description": "Speed with which entity should jump towards target"
+			},
+			"distance": {
+				"type": "Number",
+				"description": "Distance to arrive to before target."
+			},
+			"minZVel": {
+				"type": "Number",
+				"optional": true,
+				"description": "Minimum z Vel"
+			},
+			"maxZVel": {
+				"type": "Number",
+				"optional": true,
+				"description": "Maximum z Vel"
+			}
+		},
+		"initialObject": {
+			"value": null
+		}
+	},
 	"JUMP_TARGET_MOVEMENT": {
 		"attributes": {
 			"stopType": {
@@ -3307,6 +3701,11 @@
 				"type": "Vec2",
 				"optional": true,
 				"description": "Offset to target."
+			},
+			"faceAlignOffset": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: use face align offset"
 			},
 			"rotateSpeed": {
 				"type": "Number",
@@ -3419,6 +3818,42 @@
 			"maxTime": 0
 		}
 	},
+	"NEW_CIRCLE_TARGET": {
+		"attributes": {
+			"time": {
+				"type": "Number",
+				"description": "Time to circle target"
+			},
+			"ccw": {
+				"type": "Boolean",
+				"description": "If true: Circle Counter clockwise"
+			},
+			"targetDistance": {
+				"type": "Number",
+				"description": "Best distance to target"
+			},
+			"yScale": {
+				"type": "Number",
+				"description": "Y scale circle movement"
+			},
+			"relativeVel": {
+				"type": "Number",
+				"description": "Relative Vel when circling"
+			},
+			"dodgeVel": {
+				"type": "Number",
+				"description": "Relative Vel when dodging"
+			},
+			"avoidEnemyRadius": {
+				"type": "Number",
+				"description": "Radius to check for other enemies to avoid them"
+			}
+		},
+		"initialObject": {
+			"minTime": 0,
+			"maxTime": 0
+		}
+	},
 	"STICK_TO_TARGET": {
 		"attributes": {
 			"target": {
@@ -3475,7 +3910,7 @@
 				}
 			},
 			"distance": {
-				"type": "Number",
+				"type": "NumberExpression",
 				"default": 32,
 				"optional": true,
 				"description": "Distance to target"
@@ -3630,6 +4065,12 @@
 			"radius": {
 				"type": "Number",
 				"description": "Radius of circle attack"
+			},
+			"dir": {
+				"type": "Vec2",
+				"actorOption": true,
+				"optional": true,
+				"description": "Direction to go to"
 			},
 			"yScale": {
 				"type": "Number",
@@ -3848,12 +4289,18 @@
 				"type": "Number",
 				"optional": true,
 				"description": "Define to overwrite. If 0: proxy will ignore attack. -1: will take hits but is never destroyed (stops balls) >0: takes hits and can be destroyed"
+			},
+			"threat": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true, consider proxy a threat (true by default)"
 			}
 		},
 		"initialObject": {
 			"killEffect": null,
 			"clearKillEffect": false,
-			"hp": null
+			"hp": null,
+			"threat": null
 		}
 	},
 	"CONNECT_PROXY_TO_TARGET": {
@@ -3985,6 +4432,11 @@
 			"enemyState": {
 				"type": "EnemyState",
 				"description": "State of Enemy to switch to"
+			},
+			"switchConfig": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true, immediately switch default config. Makes sure correct damage pose is displayed etc."
 			}
 		},
 		"initialObject": {
@@ -4143,7 +4595,7 @@
 				"description": "Randomly vary each angle with the provided range"
 			},
 			"startDist": {
-				"type": "Number",
+				"type": "NumberExpression",
 				"optional": true,
 				"description": "Start Distance of ball in throw direction"
 			},
@@ -4172,7 +4624,7 @@
 				"description": "Spawn each Proxy in random direction within range"
 			},
 			"count": {
-				"type": "Number",
+				"type": "NumberExpression",
 				"description": "The number of proxies thrown"
 			},
 			"duration": {
@@ -4234,6 +4686,9 @@
 						"METAL_HOLLOW": 19,
 						"SPIDERWEB": 20,
 						"HIGHWAY": 21,
+						"CRYSTAL": 22,
+						"BEACH_WATER": 23,
+						"BEACH_SAND": 24,
 						"undefined": 0
 					}
 				},
@@ -4261,6 +4716,11 @@
 				"optional": true,
 				"default": 1,
 				"description": "Scale of y dimension relative to x. 1 = equally scaled. 0.5 = half y extend."
+			},
+			"aimAtTarget": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: set direction to aim directly at target"
 			}
 		},
 		"initialObject": {
@@ -4319,6 +4779,17 @@
 				"type": "Number",
 				"optional": true,
 				"description": "If defined guarantee a minimum delay between each spawned proxy"
+			},
+			"posEntity": {
+				"type": "String",
+				"optional": true,
+				"description": "If selected: use alternatice entity for spawn center position",
+				"options": {
+					"SELF": 0,
+					"PROXY_OWNER": 0,
+					"PROXY_SRC": 0,
+					"TARGET": 0
+				}
 			}
 		},
 		"initialObject": {}
@@ -4356,6 +4827,10 @@
 				"type": "Number",
 				"optional": true,
 				"description": "If defined: keep this many proxies and only remove proxies beyond that number"
+			},
+			"ignoreSelf": {
+				"type": "Boolean",
+				"description": "If true: don't remove itself"
 			}
 		},
 		"initialObject": {}
@@ -5527,11 +6002,16 @@
 				"description": "Kind of temp target",
 				"options": {
 					"PLAYER": 0,
+					"PARTY_0": 0,
+					"PARTY_1": 0,
 					"COLLAB_ENTITY": 0,
+					"COLLAB_LABELED_ENTITY": 0,
 					"CLOSEST_ENEMY": 0,
 					"GUARDED_ATTACKER": 0,
 					"FIRST_HIT": 0,
 					"PROXY_OWNER": 0,
+					"ENEMY_OWNER": 0,
+					"ENEMY_OWNER_ACTION_PROXY": 0,
 					"PROXY_SRC": 0,
 					"ACTION_PROXY": 0,
 					"PROXY": 0,
@@ -5599,6 +6079,10 @@
 		"attributes": {},
 		"initialObject": {}
 	},
+	"SET_TARGET_REPLACE_TARGET": {
+		"attributes": {},
+		"initialObject": {}
+	},
 	"SET_POI_TEMP_TARGET": {
 		"attributes": {
 			"poiFilter": {
@@ -5609,6 +6093,10 @@
 			"distance": {
 				"type": "Number",
 				"description": "Maximum distance to POI. Only used if poiFilter is defined."
+			},
+			"furthest": {
+				"type": "Boolean",
+				"description": "If true: select POI that is furthest away"
 			}
 		},
 		"initialObject": {}
@@ -5700,6 +6188,15 @@
 							"value": 1.2,
 							"icon": "stat-hp",
 							"grade": "stat-rank-3"
+						},
+						"HP-MINUS-1": {
+							"change": 0,
+							"type": {
+								"key": "hp"
+							},
+							"value": 0.5,
+							"icon": "stat-hp",
+							"grade": "stat-rank-1"
 						},
 						"ATTACK-1": {
 							"change": 0,
@@ -6231,6 +6728,15 @@
 							"negative": true,
 							"icon": "stat-money",
 							"grade": "stat-rank-down-3"
+						},
+						"DASH-STEP-1": {
+							"change": 1,
+							"type": {
+								"key": "DASH_STEP"
+							},
+							"value": 1,
+							"icon": "stat-dash",
+							"grade": "stat-rank-1"
 						}
 					}
 				},
@@ -6289,6 +6795,30 @@
 			}
 		},
 		"initialObject": {}
+	},
+	"SET_VAR_COMBAT_STAT": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to store relative hp in"
+			},
+			"stat": {
+				"type": "String",
+				"description": "Type of Stat",
+				"options": {
+					"RELATIVE_HP": 0,
+					"CURRENT_HP": 0,
+					"MAX_HP": 0,
+					"ATTACK": 0,
+					"DEFENSE": 0,
+					"FOCUS": 0
+				}
+			}
+		},
+		"initialObject": {
+			"varName": null,
+			"stat": null
+		}
 	},
 	"SET_ATTRIB_POS_COMBAT": {
 		"attributes": {
@@ -6474,6 +7004,11 @@
 			"text": null,
 			"time": 0
 		}
+	},
+	"CLEAR_DREAM_MSG": {
+		"attributes": {},
+		"width": 500,
+		"initialObject": {}
 	},
 	"RESET_NPC": {
 		"attributes": {},
@@ -6733,7 +7268,8 @@
 					"BEAT_ZERO": 0,
 					"WEREWOLF_STICK": 0,
 					"MOONCAKE": 0,
-					"GUACAMOLE_TOAST": 0
+					"GUACAMOLE_TOAST": 0,
+					"WILLI_BUN": 0
 				}
 			},
 			"offset": {
@@ -7070,5 +7606,42 @@
 			}
 		},
 		"initialObject": {}
+	},
+	"SET_TARGET_TO_PARTYMEMBER": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"0": 0,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 0,
+					"6": 0,
+					"7": 0,
+					"8": 0,
+					"9": 0,
+					"10": 0,
+					"11": 0,
+					"12": 0,
+					"13": 0,
+					"14": 0
+				}
+			}
+		},
+		"initialObject": {}
+	},
+	"ADD_ARENA_IGNORE_TYPE": {
+		"attributes": {
+			"enemy": {
+				"type": "EnemySearch",
+				"description": "Enemy to ignore. Will be cleared each round."
+			}
+		},
+		"initialObject": {
+			"enemy": null
+		}
 	}
 }
