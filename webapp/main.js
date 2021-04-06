@@ -34,7 +34,8 @@ function openWindow() {
 			webPreferences: {
 				webSecurity: false,
 				nodeIntegration: true,
-				enableRemoteModule: true
+				enableRemoteModule: true,
+				contextIsolation: false
 			}
 		});
 		
