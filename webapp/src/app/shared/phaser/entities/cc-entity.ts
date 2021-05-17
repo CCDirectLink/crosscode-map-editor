@@ -410,7 +410,7 @@ export abstract class CCEntity extends BaseObject {
 	
 	public abstract getAttributes(): EntityAttributes;
 	
-	protected async abstract setupType(settings: any): Promise<void>;
+	protected abstract setupType(settings: any): Promise<void>;
 	
 	public async updateType() {
 		const settings = this.details.settings;
