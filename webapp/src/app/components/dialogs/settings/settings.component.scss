@@ -1,4 +1,4 @@
-@import "~@angular/material/theming";
+@use '~@angular/material' as mat;
 
 .content-container {
 	padding: 16px;
@@ -22,13 +22,13 @@
 }
 
 .icon-undefined {
-	color: mat-color($mat-blue, 500);
+	color: mat.get-color-from-palette(mat.$blue-palette, 500);
 }
 
 .icon-valid {
-	color: mat-color($mat-green, 500);
+	color: mat.get-color-from-palette(mat.$green-palette, 500);
 }
 
 .icon-invalid {
-	color: mat-color($mat-red, 500);
+	color: mat.get-color-from-palette(mat.$red-palette, 500);
 }

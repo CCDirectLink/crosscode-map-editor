@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import "theme";
 
 $primary: map-get($theme, primary);
@@ -21,11 +22,11 @@ $toolbarHeight: 32px;
 
 .toolbar {
 	padding-left: 16px;
-	background-color: mat-color(map-get($theme, background), app-bar);
+	background-color: mat.get-color-from-palette(map-get($theme, background), app-bar);
 	height: $toolbarHeight !important;
 
 	.toolbar-button {
-		//background-color: mat-color($primary, 700);
+		//background-color: mat.get-color-from-palette($primary, 700);
 		width: $btnWidth;
 		height: 100%;
 		line-height: normal;

@@ -1,4 +1,4 @@
-@import "~@angular/material/theming";
+@use '~@angular/material' as mat;
 @import "theme";
 
 $primary: map-get($theme, primary);
@@ -8,7 +8,7 @@ $listItemHeight: 28px;
 
 .history-container {
 	position: relative;
-	background-color: mat-color($accent, 800);
+	background-color: mat.get-color-from-palette($accent, 800);
 	height: 100%;
 	width: 100%;
 }
@@ -34,11 +34,11 @@ $listItemHeight: 28px;
 }
 
 .history-is-future{
-	color: mat-color($mat-grey, 500);
+	color: mat.get-color-from-palette(mat.$grey-palette, 500);
 }
 
 .item-selected {
-	background-color: mat-color($mat-grey, 700) !important;
+	background-color: mat.get-color-from-palette(mat.$grey-palette, 700) !important;
 }
 
 .history-list-icon {
