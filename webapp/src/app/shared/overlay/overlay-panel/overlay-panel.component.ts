@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 /**
  * Used to display an overlay with the basic styles (draggable toolbar, scrollable content and buttons at the bottom)
@@ -24,7 +24,7 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 	styleUrls: ['./overlay-panel.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OverlayPanelComponent implements OnInit {
+export class OverlayPanelComponent {
 	
 	@Input() title = '';
 	@Input() allowDrag = true;
@@ -34,9 +34,6 @@ export class OverlayPanelComponent implements OnInit {
 	classes: { [key: string]: boolean } = {};
 	
 	constructor() {
-	}
-	
-	ngOnInit() {
 	}
 	
 }

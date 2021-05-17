@@ -87,7 +87,7 @@ export class GfxMapper {
 		return (upperTerrain && upperTerrain.wallTerrainPrio || 0) > (lowerTerrain && lowerTerrain.wallTerrainPrio || 0);
 	}
 	
-	getGfx(gfxType: GFX_TYPE, x: number, y: number, subType: keyof GfxMaps | null, terrain: number, terrainBorder: number = -1, wallProps?: { start: number, end: number }) {
+	getGfx(gfxType: GFX_TYPE, x: number, y: number, subType: keyof GfxMaps | null, terrain: number, terrainBorder = -1, wallProps?: { start: number, end: number }) {
 		if (terrain && !this.terrains[terrain - 1]) {
 			terrain = 0;
 		}

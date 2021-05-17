@@ -1,21 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {CrossCodeMap} from '../../../models/cross-code-map';
-import {OverlayRefControl} from '../../../shared/overlay/overlay-ref-control';
-import {MapLoaderService} from '../../../shared/map-loader.service';
+import { Component } from '@angular/core';
+import { CrossCodeMap } from '../../../models/cross-code-map';
+import { OverlayRefControl } from '../../../shared/overlay/overlay-ref-control';
+import { MapLoaderService } from '../../../shared/map-loader.service';
 
 @Component({
 	selector: 'app-new-map',
 	templateUrl: './new-map.component.html',
 	styleUrls: ['./new-map.component.scss']
 })
-export class NewMapComponent implements OnInit {
+export class NewMapComponent {
 	map: CrossCodeMap;
 	
 	constructor(private mapLoader: MapLoaderService, public ref: OverlayRefControl) {
 		this.map = this.createDefaultMap();
-	}
-	
-	ngOnInit() {
 	}
 	
 	onSettingsChange(obj: { property: keyof CrossCodeMap, value: any }) {
