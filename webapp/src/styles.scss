@@ -1,13 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+@use '~@angular/material' as mat;
 @import "reset";
-@import "~@angular/material/theming";
 @import "jsoneditor/darktheme";
 
-@include mat-core();
+@include mat.core();
 
 @import "theme";
 
-$config: mat-typography-config();
+$config: mat.define-typography-config();
 
 html * {
 	font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -23,7 +23,7 @@ body {
 }
 
 .theme {
-	@include angular-material-theme($theme)
+	@include mat.all-component-themes($theme)
 }
 
 .theme .mat-drawer-backdrop.mat-drawer-shown {
@@ -32,9 +32,9 @@ body {
 
 .default-input {
 	$font-type: subheading-1;
-	font-family: mat-font-family($config);
-	font-size: mat-font-size($config, $font-type);
-	font-weight: mat-font-weight($config, $font-type);
+	font-family: mat.font-family($config);
+	font-size: mat.font-size($config, $font-type);
+	font-weight: mat.font-weight($config, $font-type);
 	height: 24px;
 	color: white;
 	outline: solid 1px #c9c9c9;
@@ -58,7 +58,7 @@ input[type=text].default-input, input:not([type]).default-input {
 .default-input:focus,
 .default-input.focus {
 	outline-offset: 0;
-	outline: solid 1px mat-color($mat-blue, 500);
+	outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500);
 }
 
 
@@ -73,7 +73,7 @@ input[type=text].default-input, input:not([type]).default-input {
 
 .default-input.mat-select:focus,
 .default-input.mat-select.focus {
-	outline: solid 1px mat-color($mat-blue, 500)  !important;
+	outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500)  !important;
 }
 
 .default-input.mat-select .mat-select-value-text {
@@ -104,7 +104,7 @@ button {
 // sick scrollbar
 .dark-scrollbar {
 	&::-webkit-scrollbar-track {
-		background-color: mat-color($accent, 800);
+		background-color: mat.get-color-from-palette($accent, 800);
 	}
 
 	&::-webkit-scrollbar {
@@ -113,7 +113,7 @@ button {
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background-color: mat-color($accent, 600);
+		background-color: mat.get-color-from-palette($accent, 600);
 	}
 
 	// non standard value, makes scrollbar not take additional space.

@@ -1,4 +1,4 @@
-@import '~@angular/material/theming'; //mat-elevation
+@use '~@angular/material' as mat;
 
 $size: 26px;
 
@@ -52,7 +52,7 @@ $color2: #343434;
 }
 
 .cdk-drag-preview {
-	@include mat-elevation(12);
+	@include mat.elevation(12);
 	max-height: $size;
 	min-height: $size; //Overrides material tree node default
 	height: $size;

@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import "theme";
 
 $primary: map-get($theme, primary);
@@ -13,7 +14,7 @@ $toolbarHeight: 54px;
 
 .container {
 	color: white;
-	background: mat-color($accent, 800);
+	background: mat.get-color-from-palette($accent, 800);
 	pointer-events: auto;
 }
 
@@ -29,7 +30,7 @@ $toolbarHeight: 54px;
 }
 
 .toolbar {
-	background-color: mat-color(map-get($theme, background), app-bar);
+	background-color: mat.get-color-from-palette(map-get($theme, background), app-bar);
 	height: $toolbarHeight;
 }
 
@@ -40,7 +41,7 @@ $toolbarHeight: 54px;
 }
 
 .bottom-border {
-	border-top: 1px solid mat-color($mat-gray, 600);
+	border-top: 1px solid mat.get-color-from-palette(mat.$gray-palette, 600);
 }
 
 .no-buttons {

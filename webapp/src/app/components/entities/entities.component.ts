@@ -13,7 +13,7 @@ import {MapLoaderService} from '../../shared/map-loader.service';
 	templateUrl: './entities.component.html',
 	styleUrls: ['./entities.component.scss']
 })
-export class EntitiesComponent implements OnInit {
+export class EntitiesComponent {
 	@ViewChild(HostDirective, {static: false}) appHost?: HostDirective;
 	entity?: CCEntity;
 	map?: CCMap;
@@ -39,9 +39,6 @@ export class EntitiesComponent implements OnInit {
 			this.map = map;
 			this.filter = '';
 		});
-	}
-	
-	ngOnInit() {
 	}
 	
 	loadSettings(entity?: CCEntity) {

@@ -1,6 +1,6 @@
-@import "~@angular/material/theming";
+@use '~@angular/material' as mat;
 
-$config: mat-typography-config();
+$config: mat.define-typography-config();
 
 .property-container {
 	margin-bottom: 14px;
@@ -23,9 +23,9 @@ $config: mat-typography-config();
 	align-items: center;
 
 	$font-type: body-1;
-	font-family: mat-font-family($config);
-	font-size: mat-font-size($config, $font-type);
-	font-weight: mat-font-weight($config, $font-type);
+	font-family: mat.font-family($config);
+	font-size: mat.font-size($config, $font-type);
+	font-weight: mat.font-weight($config, $font-type);
 
 	width: 100px;
 	height: 24px;

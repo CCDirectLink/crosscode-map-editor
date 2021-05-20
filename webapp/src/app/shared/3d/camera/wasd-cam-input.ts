@@ -29,7 +29,9 @@ export class WasdCamInput implements ICameraInput<CustomFreeCamera> {
 	];
 	private sensibility = 11.8;
 	
-	attachControl(element: HTMLElement, noPreventDefault?: boolean): void {
+	attachControl(noPreventDefault?: boolean): void {
+		const engine = this.camera!.getEngine();
+		const element = engine.getInputElement()!;
 		if (!this.onKeyDown) {
 			element.tabIndex = 1;
 			this.onKeyDown = evt => {
@@ -54,7 +56,9 @@ export class WasdCamInput implements ICameraInput<CustomFreeCamera> {
 		}
 	}
 	
-	detachControl(element: HTMLElement): void {
+	detachControl(): void {
+		const engine = this.camera!.getEngine();
+		const element = engine.getInputElement()!;
 		if (this.onKeyDown) {
 			element.removeEventListener('keydown', this.onKeyDown);
 			element.removeEventListener('keyup', this.onKeyUp!);

@@ -1,7 +1,7 @@
-@import "~@angular/material/theming";
+@use '~@angular/material' as mat;
 @import "theme";
 
-$config: mat-typography-config();
+$config: mat.define-typography-config();
 $background: map_get($theme, background);
 
 mat-expansion-panel-header {
@@ -15,23 +15,23 @@ $type-hue: A200;
 $brightness: 60%;
 
 .type-Background {
-	background-color: mat-color($mat-green, $type-hue);
+	background-color: mat.get-color-from-palette(mat.$green-palette, $type-hue);
 }
 
 .type-Collision {
-	background-color: mat-color($mat-red, $type-hue);
+	background-color: mat.get-color-from-palette(mat.$red-palette, $type-hue);
 }
 
 .type-Navigation {
-	background-color: mat-color($mat-blue, $type-hue);
+	background-color: mat.get-color-from-palette(mat.$blue-palette, $type-hue);
 }
 
 .type-HeightMap {
-	background-color: mat-color($mat-orange, $type-hue);
+	background-color: mat.get-color-from-palette(mat.$orange-palette, $type-hue);
 }
 
 .type-Light {
-	background-color: mat-color($mat-yellow, $type-hue);
+	background-color: mat.get-color-from-palette(mat.$yellow-palette, $type-hue);
 }
 
 .item-selected-bg {
@@ -44,7 +44,7 @@ $brightness: 60%;
 }
 
 .item-selected {
-	background-color: mat-color($mat-grey, 700);
+	background-color: mat.get-color-from-palette(mat.$grey-palette, 700);
 }
 
 mat-nav-list {
