@@ -97,6 +97,7 @@
     "@types/node": "^14.14.10",
     "@typescript-eslint/eslint-plugin": "^4.24.0",
     "@typescript-eslint/parser": "^4.24.0",
+    "ajv-formats": "^2.0.2",
     "angular2-draggable": "^2.3.2",
     "cc-map-editor-common": "../common",
     "core-js": "^3.8.0",
