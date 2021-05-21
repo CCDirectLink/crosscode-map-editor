@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Angular update (10.2 -> 12.0)
 - reset camera position on map load
 - moved button "New Map" to "File/New Map"
+- remember event detail width after closing/opening the event editor
 
 ### Fixed
 - Fixed wrong click area in string widgets: [#211](https://github.com/CCDirectLink/crosscode-map-editor/issues/211)

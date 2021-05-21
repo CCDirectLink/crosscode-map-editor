@@ -3,16 +3,17 @@
 		#splitpane
 		[bounds]="{left: 10, right: 10}"
 		[opened]="detailsShown"
-		[base]="0">
+		[(base)]="base"
+	>
 		<ng-container ngProjectAs="left">
-			<div class="event-inner-container dark-scrollbar" 
-				fxFlex="1 1 0" 
-				cdkDropList 
+			<div class="event-inner-container dark-scrollbar"
+				fxFlex="1 1 0"
+				cdkDropList
 				(cdkDropListDropped)="drop($event)">
 				<!--Add [cdkDropListSortPredicate]="sortPredicate" once Anglular is upraded to 11 or higher-->
-				<mat-tree 
+				<mat-tree
 					#eventTree
-					fxLayout="column" 
+					fxLayout="column"
 					[dataSource]="dataSource"
 					[treeControl]="treeControl"
 
@@ -20,15 +21,15 @@
 					(contextmenu)="openAddMenu($event, null)"
 					(keydown)="keyPress($event)"
 					tabindex="0">
-					<mat-tree-node 
-						*matTreeNodeDef="let node" 
-						matTreeNodePadding 
-						[matTreeNodePaddingIndent]="16" 
+					<mat-tree-node
+						*matTreeNodeDef="let node"
+						matTreeNodePadding
+						[matTreeNodePaddingIndent]="16"
 
-						cdkDrag 
-						cdkDragLockAxis="y" 
-						[cdkDragData]="node" 
-						[cdkDragDisabled]="!node.draggable" 
+						cdkDrag
+						cdkDragLockAxis="y"
+						[cdkDragData]="node"
+						[cdkDragDisabled]="!node.draggable"
 						cdkDragHandle
 						
 						(click)="eventClicked($event, node)"
