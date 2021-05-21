@@ -4,9 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+### Changed
 - Angular update (10.2 -> 12.0)
 - reset camera position on map load
 - moved button "New Map" to "File/New Map"
+
+### Fixed
+- Fixed wrong click area in string widgets: [#211](https://github.com/CCDirectLink/crosscode-map-editor/issues/211)
 
 ## [0.10.2] 2021-04-09
 
