@@ -54,9 +54,12 @@ export class MainScene extends Phaser.Scene {
 				
 				// reset camera position on map load
 				const cam = this.cameras.main;
-				cam.scrollX = 0;
-				cam.scrollY = 0;
 				cam.zoom = 1;
+				
+				// offset tile selector
+				const s = Globals.TILE_SIZE;
+				const offset = 400 * window.devicePixelRatio;
+				cam.centerOn(map.mapWidth * s / 2 + offset, map.mapHeight * s / 2);
 			}
 		});
 		Globals.phaserEventsService.updateMapBorder.subscribe(() => this.rescaleBorder());

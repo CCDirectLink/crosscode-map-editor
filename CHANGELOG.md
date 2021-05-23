@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 - Angular update (10.2 -> 12.0)
-- reset camera position on map load
+- reset camera position on map load (centers map)
 - moved button "New Map" to "File/New Map"
 - increase max zoom for high res displays 
 - remember event detail width after closing/opening the event editor
