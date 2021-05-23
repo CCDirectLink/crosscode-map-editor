@@ -16,7 +16,7 @@ import { EventDetailComponent } from '../detail/event-detail.component';
 	styleUrls: ['./event-editor.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EventEditorComponent implements OnChanges, OnDestroy {
+export class EventEditorComponent implements OnChanges {
 	private static globalBase = 0;
 	
 	@ViewChild('splitpane') splitPane?: SplitPaneComponent;
@@ -26,7 +26,13 @@ export class EventEditorComponent implements OnChanges, OnDestroy {
 	@Input() eventData: EventType[] = [];
 	@Input() actionStep = false;
 	
-	base = EventEditorComponent.globalBase;
+	get base() {
+		return EventEditorComponent.globalBase;
+	}
+	set base(value: number) {
+		EventEditorComponent.globalBase = value;
+	}
+	
 	detailsShown = false;
 	
 	treeControl = new FlatTreeControl<EventDisplay>(e => e.level, e => e.children != null);
@@ -64,10 +70,6 @@ export class EventEditorComponent implements OnChanges, OnDestroy {
 			this.workingData = [];
 		}
 		this.refreshAll();
-	}
-	
-	ngOnDestroy() {
-		EventEditorComponent.globalBase = this.base;
 	}
 	
 	show() {
