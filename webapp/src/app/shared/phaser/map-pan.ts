@@ -61,7 +61,7 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 		
 		let zoom = delta > 0 ? 0.8 : 1.25;
 		zoom *= cam.zoom;
-		if (zoom > 0.4 && zoom < 8) {
+		if (zoom > 0.4 && zoom < 50) {
 			
 			const pointer = this.scene.input.activePointer;
 			

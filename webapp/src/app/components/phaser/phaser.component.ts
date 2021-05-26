@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MapLoaderService } from '../../shared/map-loader.service';
 import { GlobalEventsService } from '../../shared/global-events.service';
 import { Globals } from '../../shared/globals';
@@ -17,7 +17,9 @@ import { EntityRegistryService } from '../../shared/phaser/entities/registry/ent
 	styleUrls: ['./phaser.component.scss']
 })
 export class PhaserComponent implements OnInit {
-
+	
+	@ViewChild('content', {static: true}) content!: ElementRef<HTMLElement>;
+	
 	constructor(
 		private element: ElementRef,
 		private mapLoader: MapLoaderService,
@@ -37,8 +39,8 @@ export class PhaserComponent implements OnInit {
 		Globals.entityRegistry = registry;
 		Globals.httpService = http;
 	}
-
-
+	
+	
 	ngOnInit() {
 		this.heightMap.init();
 		const scene = new MainScene();
@@ -61,7 +63,7 @@ export class PhaserComponent implements OnInit {
 		});
 		Globals.scene = scene;
 	}
-
+	
 	@HostListener('window:resize', ['$event'])
 	onResize() {
 		if (!Globals.game) {
@@ -73,11 +75,12 @@ export class PhaserComponent implements OnInit {
 			scale.height
 		);
 	}
-
+	
 	private getScale() {
+		const rect = this.content.nativeElement.getBoundingClientRect();
 		return {
-			width: window.innerWidth * window.devicePixelRatio,
-			height: window.innerHeight * window.devicePixelRatio - 64
+			width: (rect.width + 5) * window.devicePixelRatio,
+			height: (rect.height + 5) * window.devicePixelRatio
 		};
 	}
 }

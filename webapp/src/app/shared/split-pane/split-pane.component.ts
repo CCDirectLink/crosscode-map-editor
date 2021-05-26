@@ -5,8 +5,9 @@ import {
 	ElementRef,
 	HostListener,
 	Input,
-	OnInit,
-	ViewChild
+	OnInit, Output,
+	ViewChild,
+	EventEmitter
 } from '@angular/core';
 
 /** values in % [0, 100] */
@@ -45,6 +46,7 @@ export class SplitPaneComponent implements OnInit {
 	 * gutter position, range [-100, 100], 0 is center
 	 * */
 	@Input() base = 0;
+	@Output() baseChange = new EventEmitter<number>();
 	
 	@Input() opened = true;
 	
@@ -79,6 +81,8 @@ export class SplitPaneComponent implements OnInit {
 		this.basisLeft = Math.max(0, val);
 		this.basisRight = Math.max(0, -val);
 		this.base = val;
+		
+		this.baseChange.emit(this.base);
 	}
 	
 	dragStart(event: MouseEvent) {

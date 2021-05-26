@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
 import { AbstractEvent, EventType } from '../../event-registry/abstract-event';
 import { EventHelperService } from '../event-helper.service';
 import { FlatTreeControl } from '@angular/cdk/tree';
@@ -17,6 +17,8 @@ import { EventDetailComponent } from '../detail/event-detail.component';
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EventEditorComponent implements OnChanges {
+	private static globalBase = 0;
+	
 	@ViewChild('splitpane') splitPane?: SplitPaneComponent;
 	@ViewChild('eventDetail', {static: true}) eventDetail?: unknown; //EventDetailComponent but it errors for some reason
 	@ViewChild('eventTree', {read: ElementRef}) eventTree?: ElementRef<HTMLElement>;
@@ -24,12 +26,20 @@ export class EventEditorComponent implements OnChanges {
 	@Input() eventData: EventType[] = [];
 	@Input() actionStep = false;
 	
+	get base() {
+		return EventEditorComponent.globalBase;
+	}
+	set base(value: number) {
+		EventEditorComponent.globalBase = value;
+	}
+	
 	detailsShown = false;
-
+	
 	treeControl = new FlatTreeControl<EventDisplay>(e => e.level, e => e.children != null);
 	private treeFlattener = new MatTreeFlattener(
 		(node: EventDisplay, level: number) => {
-			node.level = level; return node; 
+			node.level = level;
+			return node;
 		},
 		e => e.level,
 		e => e.children != null,
@@ -41,14 +51,11 @@ export class EventEditorComponent implements OnChanges {
 	private selectedNode?: EventDisplay;
 	private shownNode?: EventDisplay;
 	private copiedNode?: EventDisplay;
-
+	
 	constructor(
 		private helper: EventHelperService,
 		private addEvent: AddEventService,
-	) { }
-	
-	show() {
-		this.detailsShown = false;
+	) {
 	}
 	
 	ngOnChanges() {
@@ -64,17 +71,21 @@ export class EventEditorComponent implements OnChanges {
 		}
 		this.refreshAll();
 	}
-
+	
+	show() {
+		this.detailsShown = false;
+	}
+	
 	sortPredicate(index: number, item: CdkDrag<EventDisplay>, drop: CdkDropList<EventDisplay>) {
 		//TODO: Prevent placeholder if element cannot go there (this.isChildOf(...))
 		return index < this.treeControl.dataNodes.length - 1;
 	}
-
+	
 	refresh() {
 		if (this.shownNode) {
 			this.shownNode.text = this.shownNode.data?.info ?? ' ';
 			this.shownNode.changeDetector?.detectChanges();
-
+			
 			if (this.shownNode.children) {
 				this.refreshAll();
 			}
@@ -93,51 +104,51 @@ export class EventEditorComponent implements OnChanges {
 		if (event.currentIndex === event.previousIndex) {
 			return;
 		}
-
+		
 		const moved = event.item.data as EventDisplay;
 		const belowIndex = event.currentIndex + (event.currentIndex > event.previousIndex ? 1 : 0); //Add 1 to compensate for a missing this.treeControl.dataNodes.splice
 		const below = this.treeControl.dataNodes[belowIndex];
-
+		
 		if (this.isChildOf(below, moved)) {
 			return;
 		}
-
+		
 		const fromParent = this.getParent(moved);
 		const toParent = this.getParent(below);
-
+		
 		this.history.move(fromParent, toParent);
-
+		
 		fromParent.splice(fromParent.indexOf(moved.data!), 1);
-
+		
 		const toIndex = toParent.indexOf(below?.data!);
 		toParent.splice(toIndex >= 0 ? toIndex : toParent.length, 0, moved.data!);
-
+		
 		this.refreshAll();
 		this.focus();
 	}
-
+	
 	eventClicked(_: MouseEvent, node: EventDisplay | null) {
 		this.select(node);
 	}
-
+	
 	openAddMenu(event: Event, node: EventDisplay | null) {
 		this.select(node);
-
+		
 		event.stopPropagation();
 		if (event.cancelable) {
 			event.preventDefault();
 		}
-
+		
 		this.addEvent.showAddEventMenu({
 			left: 'calc(18vw)',
 			top: '6vh'
 		}, this.actionStep).subscribe(newEvent => {
 			this.history.add(this.getParent(this.selectedNode));
-
+			
 			const index = this.getIndex(this.selectedNode);
 			const parent = this.getParent(this.selectedNode);
 			parent.splice(index, 0, newEvent);
-
+			
 			this.refreshAll();
 			this.selectAbstractEvent(newEvent);
 			this.focus();
@@ -191,12 +202,12 @@ export class EventEditorComponent implements OnChanges {
 			}
 		}
 	}
-
+	
 	private refreshTree() {
 		this.dataSource.data = this.convertNodes(this.workingData);
 		this.treeControl.expandAll();
 	}
-
+	
 	private focus() {
 		this.eventTree?.nativeElement.focus();
 	}
@@ -204,12 +215,12 @@ export class EventEditorComponent implements OnChanges {
 	private getParent(node: EventDisplay | null | undefined): AbstractEvent<any>[] {
 		return node?.parent ?? this.workingData;
 	}
-
+	
 	private select(node: EventDisplay | null | undefined) {
 		if (!node) {
 			return;
 		}
-
+		
 		if (this.selectedNode) {
 			this.selectedNode.isSelected = false;
 			this.selectedNode.changeDetector?.detectChanges();
@@ -220,7 +231,7 @@ export class EventEditorComponent implements OnChanges {
 		this.selectedNode = node;
 		this.showEvent(node);
 	}
-
+	
 	private showEvent(node: EventDisplay) {
 		if (node.data) {
 			(this.eventDetail as EventDetailComponent).loadEvent(node.data);
@@ -229,24 +240,24 @@ export class EventEditorComponent implements OnChanges {
 			this.history.select(node.data);
 		}
 	}
-
+	
 	private selectAbstractEvent(event: AbstractEvent<any>) {
 		const node = this.treeControl.dataNodes.find(n => n.data === event)!;
 		this.select(node);
 	}
-
+	
 	private selectUp() {
 		const index = this.treeControl.dataNodes.indexOf(this.selectedNode!);
 		const finalIndex = index <= 0 ? this.treeControl.dataNodes.length - 1 : index - 1;
 		this.select(this.treeControl.dataNodes[finalIndex]);
 	}
-
+	
 	private selectDown() {
 		const index = this.treeControl.dataNodes.indexOf(this.selectedNode!);
 		const finalIndex = index < 0 || index === this.treeControl.dataNodes.length - 1 ? 0 : index + 1;
 		this.select(this.treeControl.dataNodes[finalIndex]);
 	}
-
+	
 	private deselect() {
 		this.detailsShown = false;
 		this.shownNode = undefined;
@@ -257,33 +268,33 @@ export class EventEditorComponent implements OnChanges {
 			this.selectedNode = undefined;
 		}
 	}
-
+	
 	private delete() {
 		if (!this.selectedNode?.data) {
 			return;
 		}
-
+		
 		this.history.delete(this.selectedNode.parent);
 		
 		const globalIndex = this.treeControl.dataNodes.findIndex(n => n === this.selectedNode);
-
+		
 		const index = this.getIndex(this.selectedNode);
 		const parent = this.getParent(this.selectedNode);
 		parent.splice(index, 1);
-
+		
 		this.refreshAll();
-
+		
 		if (this.shownNode === this.selectedNode) {
 			this.detailsShown = false;
 			this.shownNode = undefined;
 		}
-
+		
 		const selectIndex = globalIndex >= this.treeControl.dataNodes.length ? 0 : globalIndex;
 		this.select(this.treeControl.dataNodes[selectIndex]);
 		
 		this.focus();
 	}
-
+	
 	private copy() {
 		if (this.selectedNode?.data) {
 			this.copiedNode = this.selectedNode;
@@ -293,38 +304,38 @@ export class EventEditorComponent implements OnChanges {
 	private paste() {
 		if (this.copiedNode) {
 			this.history.add(this.getParent(this.selectedNode));
-
+			
 			const cpy = JSON.parse(JSON.stringify(this.copiedNode.data?.data));
 			const event = this.helper.getEventFromType(cpy, this.actionStep);
-
+			
 			const index = !this.selectedNode ? 0 : this.getIndex(this.selectedNode!);
 			const parent = this.getParent(this.selectedNode);
 			parent.splice(index, 0, event);
-
+			
 			this.refreshAll();
 			this.selectAbstractEvent(event);
 			this.focus();
 		}
 	}
-
+	
 	private undo() {
 		this.history.undo();
 		this.refreshAll();
 		this.focus();
 	}
-
+	
 	private redo() {
 		this.history.redo();
 		this.refreshAll();
 		this.focus();
 	}
-
+	
 	private refreshAll() {
 		const selected = this.selectedNode?.data;
 		const selectedParent = this.selectedNode?.parent;
 		const shown = this.detailsShown;
 		const shownData = this.shownNode?.data;
-
+		
 		this.refreshTree();
 		this.deselect();
 		if (shownData) {
@@ -337,23 +348,23 @@ export class EventEditorComponent implements OnChanges {
 		}
 		this.detailsShown = shown;
 	}
-
+	
 	private getIndex(event: EventDisplay | null | undefined) {
 		const parent = this.getParent(event);
 		const index = parent.indexOf(event?.data!);
 		return index === -1 ? parent.length : index;
 	}
-
+	
 	private isChildOf(child: EventDisplay, parent: EventDisplay): boolean {
 		let node: EventDisplay | undefined = child;
 		while (node) {
 			if (node === parent || (node.data && node.data === parent.data)) {
 				return true;
 			}
-
+			
 			node = this.treeControl.dataNodes.find(n => n.children === node!.parent);
 		}
-
+		
 		return false;
 	}
 	
