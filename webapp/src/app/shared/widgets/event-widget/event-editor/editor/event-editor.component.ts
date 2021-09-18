@@ -25,6 +25,7 @@ export class EventEditorComponent implements OnChanges {
 	
 	@Input() eventData: EventType[] = [];
 	@Input() actionStep = false;
+	@Input() wrapText = false;
 	
 	get base() {
 		return EventEditorComponent.globalBase;
