@@ -24,6 +24,7 @@ $config: mat.define-typography-config();
 	margin-bottom: auto;
 }
 
+
 .event-row-text {
 	line-height: 26px;
 	display: flex;
@@ -64,6 +65,8 @@ $config: mat.define-typography-config();
 }
 
 button {
+	display: flex;
+	flex-direction: row;
 	width: 100%;
 	text-transform: none;
 	$font-type: subheading-1;
@@ -72,7 +75,7 @@ button {
 	font-weight: mat.font-weight($config, $font-type);
 	background: none;
 	color: white;
-	display: block;
+	//display: block;
 	border: none;
 	padding: 0;
 	margin: 0;
@@ -80,4 +83,3 @@ button {
 	cursor: pointer;
 	text-align: start;
 }
-
