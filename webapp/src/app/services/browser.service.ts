@@ -5,6 +5,7 @@ import { SharedService } from './sharedService';
 @Injectable()
 export class BrowserService implements SharedService {
 	private static readonly modName = 'selectedMod';
+	private static readonly wrapName = 'wrapEventEditorLines';
 	
 	constructor() {
 		if (Globals.isElectron) {
@@ -45,6 +46,14 @@ export class BrowserService implements SharedService {
 
 	public getSelectedMod(): string {
 		return localStorage.getItem(BrowserService.modName) || '';
+	}
+	
+	public saveWrap (wrap: boolean): void {
+		localStorage.setItem (BrowserService.wrapName, wrap? 'true' : 'false');
+	}
+	
+	public getWrap (): boolean {
+		return localStorage.getItem (BrowserService.wrapName) === 'true';
 	}
 	
 	public relaunch(): void {

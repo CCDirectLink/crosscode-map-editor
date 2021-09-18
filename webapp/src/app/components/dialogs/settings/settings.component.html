@@ -29,6 +29,13 @@
 					<mat-hint>Maps will be stored on loaded from the selected mod</mat-hint>
 				</mat-form-field>
 			</div>
+			<div fxLayout="row" class="option-row">
+				<!-- <mat-form-field fxFlex="auto"> -->
+				<mat-label>Wrap event editor lines</mat-label> 
+				<mat-checkbox [(checked)]="wrapEventEditorLines" (change)="wrapEventEditorLines = $event.checked"></mat-checkbox>
+				<!-- <mat-hint>Checking this box will make long lines in the event editor wrap into multiple lines instead of overflowing</mat-hint> -->
+				<!-- </mat-form-field> -->
+			</div>
 		</div>
 	</ng-container>
 	<ng-container ngProjectAs="actions">

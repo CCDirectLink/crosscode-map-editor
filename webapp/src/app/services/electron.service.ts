@@ -9,8 +9,10 @@ import { SharedService } from './sharedService';
 export class ElectronService implements SharedService {
 	private static readonly storageName = 'assetsPath';
 	private static readonly modName = 'selectedMod';
+	private static readonly wrapName = 'wrapEventEditorLines';
 	private static assetsPath = '';
 	private static selectedMod = '';
+	private static wrapEventEditorLines = true;
 	
 	private readonly fs?: typeof nodeFs;
 	private readonly remote?: Remote;
@@ -36,6 +38,7 @@ export class ElectronService implements SharedService {
 		ElectronService.updateURL();
 		ElectronService.selectedMod = localStorage.getItem(this.modName) || '';
 		await ElectronService.updateMod();
+		ElectronService.wrapEventEditorLines = (localStorage.getItem(this.wrapName) === 'true') || ElectronService.wrapEventEditorLines;
 	}
 	
 	private static normalizePath(p: string) {
@@ -104,11 +107,20 @@ export class ElectronService implements SharedService {
 		await ElectronService.updateMod();
 	}
 	
+	public saveWrap (wrap: boolean) {
+		localStorage.setItem (ElectronService.wrapName, wrap? 'true' : 'false');
+		ElectronService.wrapEventEditorLines = wrap;
+	}
+	
 	public getAssetsPath() {
 		return ElectronService.assetsPath;
 	}
 
 	public getSelectedMod() {
 		return ElectronService.selectedMod;
+	}
+	
+	public getWrap () {
+		return ElectronService.wrapEventEditorLines;
 	}
 }
