@@ -1,0 +1,16 @@
+div.language-row {
+	flex: 1 1 0;
+	margin-bottom: 4px;
+	
+	& > label {
+		width: 65px;
+	}
+	& > textarea {
+		resize: none;
+		padding: 4px;
+	}
+}
+
+div.language-string-container {
+	flex: 1 1 0;
+}
