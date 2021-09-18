@@ -17,30 +17,31 @@ $color2: #343434;
 .event-inner-container > .mat-tree {
 	min-height: 100%;
 	height: fit-content;
-	padding-left: 6px;
+	padding-left: 0px;
 	outline: none;
-	background: repeating-linear-gradient(
-			180deg,
-			$color1,
-			$color1 $size,
-			$color2 $size,
-			$color2 $size * 2
-	);
+	background-color: #2a2a2a;
 }
 
 .event-inner-container .mat-tree-node {
 	display: block;
 	flex: none;
 	min-height: auto;
-	max-height: $size;
 	overflow: hidden;
-	white-space: nowrap;
 
 	cursor: move;
 	&.cdk-drag-placeholder {
 	  opacity: 0;
 	  transition-duration: 0s; //The placeholder should move instantly so the dragged element can transition to the correct position on release
 	}
+}
+
+.mat-tree-node:nth-child(even) {
+	background-color: $color2; //Starts with brighter color (which happens to be $color2)
+	//repeating-linear-gradient(180deg, #3a3a3a, #3a3a3a 26px, #343434 26px, #343434 52px)
+}
+
+.mat-tree-node:nth-child(odd) {
+	background-color: $color1;
 }
 
 .cdk-drop-list-dragging .mat-tree-node:not(.cdk-drag-placeholder) {
@@ -53,11 +54,12 @@ $color2: #343434;
 
 .cdk-drag-preview {
 	@include mat.elevation(12);
-	max-height: $size;
+	//max-height: $size;
 	min-height: $size; //Overrides material tree node default
-	height: $size;
-	width: auto !important;
+	//height: $size;
+	width: 100%;
+	//width: auto !important;
 	overflow: hidden;
-	white-space: nowrap;
+	//white-space: nowrap;
 	background-color: rgba($color2, 0.5);
 }

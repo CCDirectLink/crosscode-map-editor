@@ -19,10 +19,17 @@ $config: mat.define-typography-config();
 	line-height: 26px;
 	height: 26px; //Force default height even if icon is smaller
 	text-align: center;
+	flex-shrink: 0; //Keeps icon at fixed size no matter width of the parent
+	margin-top: auto;
+	margin-bottom: auto;
 }
 
 .event-row-text {
 	line-height: 26px;
+	display: flex;
+	flex-direction: row;
+	padding-right: 15px; //Padding has to be greater than the width of the scrollbar otherwise the scrollbar covers the text inside when it's visible
+	padding-left: 6px;
 }
 
 .event-row {
