@@ -9,6 +9,10 @@ import { EventDisplay } from '../event-display.model';
 import { AddEventService } from '../add/add-event.service';
 import { EventHistory } from './event-history';
 import { EventDetailComponent } from '../detail/event-detail.component';
+import { ElectronService } from '../../../../../services/electron.service';
+import { BrowserService } from '../../../../../services/browser.service';
+import { SharedService } from '../../../../../services/sharedService';
+import { Globals } from '../../../../../shared/globals';
 
 @Component({
 	selector: 'app-event-editor',
@@ -25,13 +29,21 @@ export class EventEditorComponent implements OnChanges {
 	
 	@Input() eventData: EventType[] = [];
 	@Input() actionStep = false;
-	@Input() wrapText = false;
+	@Input() wrapTextOverride?: boolean; //If assigned uses the assigned value, if undefined uses the value from the settings
 	
 	get base() {
 		return EventEditorComponent.globalBase;
 	}
 	set base(value: number) {
 		EventEditorComponent.globalBase = value;
+	}
+	
+	get wrapText (): boolean {
+		const result = this.wrapTextOverride === undefined?
+			this.sharedService.getWrap () :
+			this.wrapTextOverride;
+		
+		return result;
 	}
 	
 	detailsShown = false;
@@ -52,11 +64,15 @@ export class EventEditorComponent implements OnChanges {
 	private selectedNode?: EventDisplay;
 	private shownNode?: EventDisplay;
 	private copiedNode?: EventDisplay;
+	private sharedService: SharedService;
 	
 	constructor(
 		private helper: EventHelperService,
 		private addEvent: AddEventService,
+		private electron: ElectronService,
+		private browser: BrowserService
 	) {
+		this.sharedService = Globals.isElectron? electron : browser;
 	}
 	
 	ngOnChanges() {
