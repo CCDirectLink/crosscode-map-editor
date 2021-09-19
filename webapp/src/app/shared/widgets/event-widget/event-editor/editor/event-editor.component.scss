@@ -28,7 +28,7 @@ $color2: #343434;
 	);
 }
 
-.wrapping *.event-inner-container > .mat-tree {
+.wrapping .event-inner-container > .mat-tree {
 	padding-left: 0px !important;
 	background: #2a2a2a !important;
 }
@@ -47,12 +47,13 @@ $color2: #343434;
 	  transition-duration: 0s; //The placeholder should move instantly so the dragged element can transition to the correct position on release
 	}
 }
-.wrapping *.event-inner-container .mat-tree-node {
+
+.wrapping .event-inner-container .mat-tree-node {
 	white-space: unset !important;
 	max-height: unset !important;
 }
 
-.wrapping *.mat-tree-node {
+.wrapping.mat-tree-node {
 	&:nth-child(even) {
 		background-color: $color2; //Starts with brighter color (which happens to be $color2)
 		//repeating-linear-gradient(180deg, #3a3a3a, #3a3a3a 26px, #343434 26px, #343434 52px)
@@ -72,56 +73,15 @@ $color2: #343434;
 }
 
 .cdk-drag-preview {
-	//Known good
-	/*@include mat.elevation(12);
-	//max-height: $size;
-	min-height: $size; //Overrides material tree node default
-	//height: $size;
-	width: 100%;
-	//width: auto !important;
-	overflow: hidden;
-	//white-space: nowrap;
-	background-color: rgba($color2, 0.5);*/
-	
-	//WIP
-	/*@include mat.elevation(12);
-	min-height: $size; //Overrides material tree node default
-	width: 100%;
-	overflow: hidden;
-	background-color: rgba($color2, 0.5);
-	max-height: unset;
-	height: unset;
-	width: unset;
-	white-space: unset;*/
-	
-	//overriding
 	@include mat.elevation(12);
-	max-height: $size;
 	min-height: $size; //Overrides material tree node default
-	height: $size;
 	overflow: hidden;
-	white-space: nowrap;
 	background-color: rgba($color2, 0.5);
-	
-	//Original
-	/*@include mat.elevation(12);
-	max-height: $size;
-	min-height: $size; //Overrides material tree node default
-	height: $size;
-	width: auto !important;
-	overflow: hidden;
-	white-space: nowrap;
-	background-color: rgba($color2, 0.5);*/
 }
 
 :not(.wrapping).cdk-drag-preview {
-	//If the !imporant is here then drag and drop works correctly with overflowing text, but it's busted with wrapping text,
-	//if it isn't then wrapped text works properly but overflow text is busted instead.
-	//Solution: use :not
+	height: $size;
+	max-height: $size;
 	width: auto !important;
-}
-
-/*.wrapping *.cdk-drag-preview, */.wrapping.cdk-drag-preview {
-	max-height: unset !important;
-	white-space: unset !important;
+	white-space: nowrap;
 }
