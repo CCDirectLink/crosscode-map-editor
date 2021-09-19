@@ -121,6 +121,6 @@ export class ElectronService implements SharedService {
 	}
 	
 	public getWrap () {
-		return ElectronService.wrapEventEditorLines;
+		return localStorage.getItem (ElectronService.wrapName) === 'true';
 	}
 }
