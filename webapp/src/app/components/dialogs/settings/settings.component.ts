@@ -40,7 +40,7 @@ export class SettingsComponent implements OnInit {
 
 		http.getMods().subscribe(mods => this.mods = mods);
 		this.mod = this.sharedService.getSelectedMod();
-		this.wrapEventEditorLines = this.sharedService.getWrap ();
+		this.wrapEventEditorLines = this.sharedService.getWrapEventEditorLinesSetting();
 	}
 
 	ngOnInit() {
@@ -50,10 +50,6 @@ export class SettingsComponent implements OnInit {
 		}
 
 		this.check();
-		
-		setInterval (() => {
-			console.log (this.wrapEventEditorLines);
-		}, 1000);
 	}
 
 	private resetIcon() {
@@ -95,7 +91,7 @@ export class SettingsComponent implements OnInit {
 			this.electron.saveAssetsPath(this.folderFormControl.value);
 		}
 		this.sharedService.saveModSelect(this.mod);
-		this.sharedService.saveWrap(this.wrapEventEditorLines);
+		this.sharedService.saveWrapEventEditorLinesSetting(this.wrapEventEditorLines);
 		this.close();
 		const ref = this.snackBar.open('Changing the path requires to restart the editor', 'Restart', {
 			duration: 6000

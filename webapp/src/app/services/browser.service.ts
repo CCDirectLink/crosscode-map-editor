@@ -48,12 +48,12 @@ export class BrowserService implements SharedService {
 		return localStorage.getItem(BrowserService.modName) || '';
 	}
 	
-	public saveWrap (wrap: boolean): void {
 		localStorage.setItem (BrowserService.wrapName, wrap? 'true' : 'false');
+	public saveWrapEventEditorLinesSetting(wrap: boolean): void {
 	}
 	
-	public getWrap (): boolean {
 		return localStorage.getItem (BrowserService.wrapName) === 'true';
+	public getWrapEventEditorLinesSetting(): boolean {
 	}
 	
 	public relaunch(): void {

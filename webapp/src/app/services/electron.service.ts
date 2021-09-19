@@ -9,7 +9,7 @@ import { SharedService } from './sharedService';
 export class ElectronService implements SharedService {
 	private static readonly storageName = 'assetsPath';
 	private static readonly modName = 'selectedMod';
-	private static readonly wrapName = 'wrapEventEditorLines';
+	private static readonly wrapLinesName = 'wrapEventEditorLines';
 	private static assetsPath = '';
 	private static selectedMod = '';
 	private static wrapEventEditorLines = true;
@@ -107,9 +107,9 @@ export class ElectronService implements SharedService {
 		await ElectronService.updateMod();
 	}
 	
-	public saveWrap (wrap: boolean) {
 		localStorage.setItem (ElectronService.wrapName, wrap? 'true' : 'false');
 		ElectronService.wrapEventEditorLines = wrap;
+	public saveWrapEventEditorLinesSetting(wrap: boolean) {
 	}
 	
 	public getAssetsPath() {
@@ -120,7 +120,7 @@ export class ElectronService implements SharedService {
 		return ElectronService.selectedMod;
 	}
 	
-	public getWrap () {
 		return localStorage.getItem (ElectronService.wrapName) === 'true';
+	public getWrapEventEditorLinesSetting() {
 	}
 }

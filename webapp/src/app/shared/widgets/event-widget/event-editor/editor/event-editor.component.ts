@@ -38,12 +38,10 @@ export class EventEditorComponent implements OnChanges {
 		EventEditorComponent.globalBase = value;
 	}
 	
-	get wrapText (): boolean {
-		const result = this.wrapTextOverride === undefined?
-			this.sharedService.getWrap () :
+	get wrapText(): boolean {
+		return this.wrapTextOverride === undefined?
+			this.sharedService.getWrapEventEditorLinesSetting() :
 			this.wrapTextOverride;
-		
-		return result;
 	}
 	
 	detailsShown = false;
