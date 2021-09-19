@@ -6,6 +6,7 @@ import { SharedService } from './sharedService';
 export class BrowserService implements SharedService {
 	private static readonly modName = 'selectedMod';
 	private static readonly wrapName = 'wrapEventEditorLines';
+	private static readonly wrapLinesDefault = true;
 	
 	constructor() {
 		if (Globals.isElectron) {
@@ -48,12 +49,12 @@ export class BrowserService implements SharedService {
 		return localStorage.getItem(BrowserService.modName) || '';
 	}
 	
-		localStorage.setItem (BrowserService.wrapName, wrap? 'true' : 'false');
 	public saveWrapEventEditorLinesSetting(wrap: boolean): void {
+		localStorage.setItem(BrowserService.wrapName, wrap? 'true' : 'false');
 	}
 	
-		return localStorage.getItem (BrowserService.wrapName) === 'true';
 	public getWrapEventEditorLinesSetting(): boolean {
+		return (localStorage.getItem(BrowserService.wrapName) || BrowserService.wrapLinesDefault.toString()) === 'true';
 	}
 	
 	public relaunch(): void {
