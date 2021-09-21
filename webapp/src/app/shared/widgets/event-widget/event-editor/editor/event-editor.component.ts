@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { AbstractEvent, EventType } from '../../event-registry/abstract-event';
 import { EventHelperService } from '../event-helper.service';
 import { FlatTreeControl } from '@angular/cdk/tree';
@@ -20,7 +20,7 @@ import { Globals } from '../../../../../shared/globals';
 	styleUrls: ['./event-editor.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EventEditorComponent implements OnChanges {
+export class EventEditorComponent implements OnChanges, OnInit {
 	private static globalBase = 0;
 	
 	@ViewChild('splitpane') splitPane?: SplitPaneComponent;
@@ -37,11 +37,8 @@ export class EventEditorComponent implements OnChanges {
 		EventEditorComponent.globalBase = value;
 	}
 	
-	get wrapText(): boolean {
-		return this.sharedService.getWrapEventEditorLinesSetting();
-	}
-	
 	detailsShown = false;
+	wrapText!: boolean;
 	
 	treeControl = new FlatTreeControl<EventDisplay>(e => e.level, e => e.children != null);
 	private treeFlattener = new MatTreeFlattener(
@@ -68,6 +65,10 @@ export class EventEditorComponent implements OnChanges {
 		private browser: BrowserService
 	) {
 		this.sharedService = Globals.isElectron? electron : browser;
+	}
+	
+	ngOnInit() {
+		this.wrapText = this.sharedService.getWrapEventEditorLinesSetting();
 	}
 	
 	ngOnChanges() {
