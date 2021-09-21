@@ -29,7 +29,6 @@ export class EventEditorComponent implements OnChanges {
 	
 	@Input() eventData: EventType[] = [];
 	@Input() actionStep = false;
-	@Input() wrapTextOverride?: boolean; //If assigned uses the assigned value, if undefined uses the value from the settings
 	
 	get base() {
 		return EventEditorComponent.globalBase;
@@ -39,9 +38,7 @@ export class EventEditorComponent implements OnChanges {
 	}
 	
 	get wrapText(): boolean {
-		return this.wrapTextOverride === undefined?
-			this.sharedService.getWrapEventEditorLinesSetting() :
-			this.wrapTextOverride;
+		return this.sharedService.getWrapEventEditorLinesSetting();
 	}
 	
 	detailsShown = false;
