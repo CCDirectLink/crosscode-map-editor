@@ -9,10 +9,7 @@ import { EventDisplay } from '../event-display.model';
 import { AddEventService } from '../add/add-event.service';
 import { EventHistory } from './event-history';
 import { EventDetailComponent } from '../detail/event-detail.component';
-import { ElectronService } from '../../../../../services/electron.service';
-import { BrowserService } from '../../../../../services/browser.service';
-import { SharedService } from '../../../../../services/sharedService';
-import { Globals } from '../../../../../shared/globals';
+import { SettingsService } from '../../../../settings.service';
 
 @Component({
 	selector: 'app-event-editor',
@@ -56,19 +53,16 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	private selectedNode?: EventDisplay;
 	private shownNode?: EventDisplay;
 	private copiedNode?: EventDisplay;
-	private sharedService: SharedService;
 	
 	constructor(
 		private helper: EventHelperService,
 		private addEvent: AddEventService,
-		private electron: ElectronService,
-		private browser: BrowserService
+		private settingsService: SettingsService
 	) {
-		this.sharedService = Globals.isElectron? electron : browser;
 	}
 	
 	ngOnInit() {
-		this.wrapText = this.sharedService.getWrapEventEditorLinesSetting();
+		this.wrapText = this.settingsService.wrapEventEditorLines;
 	}
 	
 	ngOnChanges() {
