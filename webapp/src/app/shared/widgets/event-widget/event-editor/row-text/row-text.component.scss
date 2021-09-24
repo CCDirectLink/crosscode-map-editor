@@ -20,7 +20,7 @@ $config: mat.define-typography-config();
 	height: 26px; //Force default height even if icon is smaller
 	text-align: center;
 	flex-shrink: 0; //Keeps icon at fixed size no matter width of the parent
-	margin-top: auto;
+	margin-top: 0;
 	margin-bottom: auto;
 }
 
