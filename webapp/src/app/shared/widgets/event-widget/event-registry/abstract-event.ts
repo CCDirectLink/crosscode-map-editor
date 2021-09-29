@@ -88,7 +88,7 @@ export abstract class AbstractEvent<T extends EventType> {
 	}
 	
 	protected getColorRectangle(color: string): string {
-		return `<span style="background-color: ${this.sanitize(color)};">&nbsp &nbsp &nbsp &nbsp</span>`;
+		return `<span style="background-color: ${this.sanitize(color)};">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</span>`;
 	}
 	
 	private sanitize(val: string | number) {
