@@ -67,7 +67,10 @@ export abstract class AbstractEvent<T extends EventType> {
 				value = '[' + value.name + ']';
 			}
 		}
-		return `<span style="color: #858585">${key}</span>: ${value}`;
+		
+		//Wrapping the key-value pair in a display-block span makes it so that long events get first split across different properties,
+		//while the individual property's text only gets split when it's too long to fit in a single line
+		return `<span style="display: inline-block;"><span style="color: #858585">${key}</span>: ${value}</span>`;
 	}
 	
 	protected getVec2String(x: number, y: number): string {
