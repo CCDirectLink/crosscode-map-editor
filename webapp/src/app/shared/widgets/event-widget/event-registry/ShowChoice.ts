@@ -46,7 +46,7 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 		this.children = [];
 		this.info = this.combineStrings(
 			this.getTypeString('#7ea3ff'),
-			this.getPropString('person', this.data.person.person + '>' + this.data.person.expression)
+			this.getPropString('person', this.data.person.person + '><wbr>' + this.data.person.expression)
 		);
 		
 		this.data.options.forEach((option, index) => {
