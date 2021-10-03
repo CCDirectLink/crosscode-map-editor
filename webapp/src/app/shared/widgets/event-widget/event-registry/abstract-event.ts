@@ -74,7 +74,7 @@ export abstract class AbstractEvent<T extends EventType> {
 	}
 	
 	protected getVec2String(x: number, y: number): string {
-		return `(${this.sanitize(x)},&nbsp${this.sanitize(y)})`;
+		return `(${this.sanitize(x)}, ${this.sanitize(y)})`;
 	}
 	
 	protected getTypeString(color: string): string {
