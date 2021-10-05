@@ -1,4 +1,5 @@
-<div class="event-container" fxLayout="row">
+<!-- This 'wrapping' controls whether text is wrapped in multiple lines or is left to overflow -->
+<div class="event-container" [ngClass]="{'wrapping': wrapText}" fxLayout="row">
 	<app-split-pane
 		#splitpane
 		[bounds]="{left: 10, right: 10}"
@@ -21,7 +22,9 @@
 					(contextmenu)="openAddMenu($event, null)"
 					(keydown)="keyPress($event)"
 					tabindex="0">
+					<!-- This 'wrapping' controls how things look like when dragged, only works when top div also has 'wrapping' -->
 					<mat-tree-node
+						[ngClass]="{'wrapping': wrapText}"
 						*matTreeNodeDef="let node"
 						matTreeNodePadding
 						[matTreeNodePaddingIndent]="16"
