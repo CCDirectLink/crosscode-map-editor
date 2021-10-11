@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { AbstractEvent, EventType } from '../../event-registry/abstract-event';
 import { EventHelperService } from '../event-helper.service';
 import { FlatTreeControl } from '@angular/cdk/tree';
@@ -9,6 +9,7 @@ import { EventDisplay } from '../event-display.model';
 import { AddEventService } from '../add/add-event.service';
 import { EventHistory } from './event-history';
 import { EventDetailComponent } from '../detail/event-detail.component';
+import { SettingsService } from '../../../../settings.service';
 
 @Component({
 	selector: 'app-event-editor',
@@ -16,7 +17,7 @@ import { EventDetailComponent } from '../detail/event-detail.component';
 	styleUrls: ['./event-editor.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EventEditorComponent implements OnChanges {
+export class EventEditorComponent implements OnChanges, OnInit {
 	private static globalBase = 0;
 	
 	@ViewChild('splitpane') splitPane?: SplitPaneComponent;
@@ -25,7 +26,6 @@ export class EventEditorComponent implements OnChanges {
 	
 	@Input() eventData: EventType[] = [];
 	@Input() actionStep = false;
-	@Input() wrapText = false;
 	
 	get base() {
 		return EventEditorComponent.globalBase;
@@ -35,6 +35,7 @@ export class EventEditorComponent implements OnChanges {
 	}
 	
 	detailsShown = false;
+	wrapText!: boolean;
 	
 	treeControl = new FlatTreeControl<EventDisplay>(e => e.level, e => e.children != null);
 	private treeFlattener = new MatTreeFlattener(
@@ -56,7 +57,12 @@ export class EventEditorComponent implements OnChanges {
 	constructor(
 		private helper: EventHelperService,
 		private addEvent: AddEventService,
+		private settingsService: SettingsService
 	) {
+	}
+	
+	ngOnInit() {
+		this.wrapText = this.settingsService.wrapEventEditorLines;
 	}
 	
 	ngOnChanges() {

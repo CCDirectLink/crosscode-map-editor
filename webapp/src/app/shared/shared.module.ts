@@ -4,6 +4,7 @@ import {HostDirective} from './host.directive';
 import {HttpClientService} from '../services/http-client.service';
 import {ElectronService} from '../services/electron.service';
 import {MapLoaderService} from './map-loader.service';
+import {SettingsService} from './settings.service';
 import {MapSettingsComponent} from '../components/dialogs/map-settings/map-settings.component';
 import {NewMapComponent} from '../components/dialogs/new-map/new-map.component';
 import {FloatingWindowComponent} from '../components/floating-window/floating-window.component';
@@ -61,6 +62,7 @@ import { SplitPaneModule } from './split-pane/split-pane.module';
 		MapLoaderService,
 		GlobalEventsService,
 		EntityRegistryService,
+		SettingsService,
 	],
 	entryComponents: [
 		JsonEditorComponent,

@@ -7,6 +7,7 @@ import { HttpClientService } from '../../../services/http-client.service';
 import { Globals } from '../../../shared/globals';
 import { BrowserService } from '../../../services/browser.service';
 import { SharedService } from '../../../services/sharedService';
+import { SettingsService } from '../../../shared/settings.service';
 
 @Component({
 	selector: 'app-settings',
@@ -29,6 +30,7 @@ export class SettingsComponent implements OnInit {
 		private ref: OverlayRefControl,
 		private electron: ElectronService,
 		private browser: BrowserService,
+		private settingsService: SettingsService,
 		private snackBar: MatSnackBar,
 		http: HttpClientService
 	) {
@@ -40,7 +42,7 @@ export class SettingsComponent implements OnInit {
 
 		http.getMods().subscribe(mods => this.mods = mods);
 		this.mod = this.sharedService.getSelectedMod();
-		this.wrapEventEditorLines = this.sharedService.getWrap ();
+		this.wrapEventEditorLines = this.settingsService.wrapEventEditorLines;
 	}
 
 	ngOnInit() {
@@ -50,10 +52,6 @@ export class SettingsComponent implements OnInit {
 		}
 
 		this.check();
-		
-		setInterval (() => {
-			console.log (this.wrapEventEditorLines);
-		}, 1000);
 	}
 
 	private resetIcon() {
@@ -95,7 +93,7 @@ export class SettingsComponent implements OnInit {
 			this.electron.saveAssetsPath(this.folderFormControl.value);
 		}
 		this.sharedService.saveModSelect(this.mod);
-		this.sharedService.saveWrap(this.wrapEventEditorLines);
+		this.settingsService.wrapEventEditorLines = this.wrapEventEditorLines;
 		this.close();
 		const ref = this.snackBar.open('Changing the path requires to restart the editor', 'Restart', {
 			duration: 6000
