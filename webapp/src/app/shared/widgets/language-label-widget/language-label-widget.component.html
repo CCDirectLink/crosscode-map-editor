@@ -1,4 +1,4 @@
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
+<div #rootDiv fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
 	<label [for]="key" class="property-name">{{key}}:</label>
 	<div fxLayout="column" class="language-string-container">
 		<div *ngFor="let language of languages" fxLayout="row" class="language-row">

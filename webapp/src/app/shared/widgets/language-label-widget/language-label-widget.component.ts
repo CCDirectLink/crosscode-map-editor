@@ -1,5 +1,5 @@
-import {Component, OnInit, QueryList, ViewChildren} from '@angular/core';
-import { NgControl, NgModel } from '@angular/forms';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import {Component, OnInit, DoCheck, ElementRef, QueryList, ViewChild, ViewChildren, ChangeDetectorRef} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 
 @Component({
@@ -7,8 +7,9 @@ import {AbstractWidget} from '../abstract-widget';
 	templateUrl: './language-label-widget.component.html',
 	styleUrls: ['./language-label-widget.component.scss', '../widget.scss']
 })
-export class LanguageLabelWidgetComponent extends AbstractWidget implements OnInit {
-	//@ViewChildren('languageStringInput') inputTextareas!: QueryList<NgModel>;
+export class LanguageLabelWidgetComponent extends AbstractWidget implements OnInit, DoCheck {
+	@ViewChildren(CdkTextareaAutosize) inputTextareas?: QueryList<CdkTextareaAutosize>;
+	@ViewChild('rootDiv', {static: true}) rootDiv!: ElementRef<HTMLDivElement>;
 	languages: string[] = [
 		'en_US',
 		'de_DE',
@@ -18,8 +19,9 @@ export class LanguageLabelWidgetComponent extends AbstractWidget implements OnIn
 		'zh_TW'
 	];
 	keys: string[] = [];
+	previousWidth = 0;
 	
-	constructor() {
+	constructor(private readonly element: ElementRef, private readonly changeDetector: ChangeDetectorRef) {
 		super();
 	}
 	
@@ -45,4 +47,14 @@ export class LanguageLabelWidgetComponent extends AbstractWidget implements OnIn
 			});
 		}, 500);*/
 	}
+	
+	ngDoCheck() {
+		const width = this.rootDiv.nativeElement.offsetWidth;
+		if (width !== this.previousWidth) {
+			//https://v7.material.angular.io/cdk/text-field/api#CdkTextareaAutosize
+			this.inputTextareas?.forEach (element => element.resizeToFitContent(true));
+		}
+		this.previousWidth = width;
+	}
+
 }
