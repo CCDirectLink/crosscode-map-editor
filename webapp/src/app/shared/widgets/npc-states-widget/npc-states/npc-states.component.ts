@@ -145,7 +145,7 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 	set currentEventType(newType: EventArrayType) {
 		const currentEvent = destructureEventArray(this.currentState!.event);
 		if (currentEvent.type !== newType) {
-			this.currentState!.event = createEventArray(currentEvent.events, newType, this.trader);
+			this.currentState!.event = createEventArray(currentEvent.events ?? [], newType, this.trader);
 		}
 	}
 	

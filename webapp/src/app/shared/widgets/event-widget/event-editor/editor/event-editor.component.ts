@@ -72,13 +72,9 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	ngOnChanges() {
 		const eventCopy: EventArray = JSON.parse(JSON.stringify(this.eventData));
 		const destructuredEvents = destructureEventArray(eventCopy);
-		if (destructuredEvents !== undefined) {
-			this.inputtedEventType = destructuredEvents.type;
-		} else {
-			console.error('Loaded map has invalid format.');
-		}
 		
-		this.workingData = destructuredEvents.events.map((val: EventType) => this.helper.getEventFromType(val, this.actionStep));
+		this.inputtedEventType = destructuredEvents.type;
+		this.workingData = destructuredEvents.events?.map((val: EventType) => this.helper.getEventFromType(val, this.actionStep)) ?? [];
 		
 		this.refreshAll();
 	}

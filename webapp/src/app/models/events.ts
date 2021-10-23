@@ -24,7 +24,7 @@ export enum EventArrayType {
 }
 
 export interface TraderEvent {
-	event: EventType[];
+	event?: EventType[];
 	trader?: string; //Maps have it but it's a pain to handle type set and trader set at the same time in the UI
 }
 
@@ -36,7 +36,7 @@ export type EventArray =
 	{trade: TraderEvent}
 ;
 
-export function destructureEventArray(events: EventArray): {events: EventType[], type: EventArrayType, trader?: string} {
+export function destructureEventArray(events: EventArray): {events?: EventType[], type: EventArrayType, trader?: string} {
 	if (Array.isArray(events)) {
 		return {events: events, type: EventArrayType.Simple};
 	} else if ('quest' in events) {
@@ -67,7 +67,7 @@ export function createEventArray(events: EventType[], type: EventArrayType, trad
 	case 'trade':
 		return {
 			trade: {
-				event: events,
+				event: events.length > 0? events : undefined,
 				trader: trader
 			}
 		};
