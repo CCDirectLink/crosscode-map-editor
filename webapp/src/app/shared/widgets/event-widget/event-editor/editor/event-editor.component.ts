@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { AbstractEvent, EventType } from '../../event-registry/abstract-event';
+import { EventArray, EventArrayType, destructureEventArray, createEventArray } from '../../../../../models/events';
 import { EventHelperService } from '../event-helper.service';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
@@ -24,8 +25,10 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	@ViewChild('eventDetail', {static: true}) eventDetail?: unknown; //EventDetailComponent but it errors for some reason
 	@ViewChild('eventTree', {read: ElementRef}) eventTree?: ElementRef<HTMLElement>;
 	
-	@Input() eventData: EventType[] = [];
+	@Input() eventData: EventArray | unknown = [];
 	@Input() actionStep = false;
+	@Input() exportedEventType?: EventArrayType;
+	@Input() trader?: string;
 	
 	get base() {
 		return EventEditorComponent.globalBase;
@@ -36,6 +39,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	
 	detailsShown = false;
 	wrapText!: boolean;
+	inputtedEventType: EventArrayType = EventArrayType.Simple;
 	
 	treeControl = new FlatTreeControl<EventDisplay>(e => e.level, e => e.children != null);
 	private treeFlattener = new MatTreeFlattener(
@@ -49,7 +53,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 	
 	private history = new EventHistory();
-	private workingData!: AbstractEvent<any>[];
+	private workingData: AbstractEvent<any>[] = [];
 	private selectedNode?: EventDisplay;
 	private shownNode?: EventDisplay;
 	private copiedNode?: EventDisplay;
@@ -66,16 +70,16 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	}
 	
 	ngOnChanges() {
-		let cpy = JSON.parse(JSON.stringify(this.eventData));
-		if (!cpy.map) {
-			// TODO: find out how to properly handle quests
-			cpy = cpy.quest;
-		}
-		if (cpy.map) {
-			this.workingData = cpy.map((val: EventType) => this.helper.getEventFromType(val, this.actionStep));
+		const eventCopy: EventArray = JSON.parse(JSON.stringify(this.eventData));
+		const destructuredEvents = destructureEventArray(eventCopy);
+		if (destructuredEvents !== undefined) {
+			this.inputtedEventType = destructuredEvents.type;
 		} else {
-			this.workingData = [];
+			console.error('Loaded map has invalid format.');
 		}
+		
+		this.workingData = destructuredEvents.events.map((val: EventType) => this.helper.getEventFromType(val, this.actionStep));
+		
 		this.refreshAll();
 	}
 	
@@ -103,8 +107,10 @@ export class EventEditorComponent implements OnChanges, OnInit {
 		this.detailsShown = false;
 	}
 	
-	export() {
-		return this.workingData?.map(event => event.export()) ?? this.eventData;
+	export(): EventArray {
+		const exportedArray = this.workingData.map(event => event.export());
+		return createEventArray(exportedArray, this.exportedEventType ?? this.inputtedEventType, this.trader);
+		//return this.workingData?.map(event => event.export()) ?? this.eventData;
 	}
 	
 	drop(event: CdkDragDrop<EventDisplay>) {

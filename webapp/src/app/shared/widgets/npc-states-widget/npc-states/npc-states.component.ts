@@ -1,15 +1,15 @@
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild, DoCheck} from '@angular/core';
 import {NPCState} from '../npc-states-widget.component';
 import * as settingsJson from '../../../../../assets/npc-settings.json';
 import {EventEditorComponent} from '../../event-widget/event-editor/editor/event-editor.component';
+import {destructureEventArray, createEventArray, EventArrayType} from '../../../../models/events';
 
 @Component({
 	selector: 'app-npc-states',
 	templateUrl: './npc-states.component.html',
 	styleUrls: ['./npc-states.component.scss', '../../widget.scss'],
 })
-export class NpcStatesComponent implements OnInit {
-	
+export class NpcStatesComponent implements OnInit, DoCheck {	
 	@ViewChild('eventEditor', {static: false}) eventEditor?: EventEditorComponent;
 	
 	@Input() states: NPCState[] = [];
@@ -18,6 +18,7 @@ export class NpcStatesComponent implements OnInit {
 	index = 0;
 	
 	props = settingsJson.default;
+	warnings: string[] = ['A test warning'];
 	positionActive = false;
 	
 	// TODO: move to global events service
@@ -40,6 +41,13 @@ export class NpcStatesComponent implements OnInit {
 			}
 		});
 		this.selectTab(this.index);
+	}
+	
+	ngDoCheck() {
+		this.warnings.length = 0;
+		if (this.isTradeEvent && !this.trader) {
+			this.warnings.push('Missing trader name');
+		}
 	}
 	
 	selectTab(index: number) {
@@ -124,5 +132,43 @@ export class NpcStatesComponent implements OnInit {
 	
 	cancel() {
 		this.exit.error('cancel');
+	}
+	
+	get isTradeEvent() {
+		return this.currentEventType === EventArrayType.Trade;
+	}
+	
+	get currentEventType(): EventArrayType {
+		return destructureEventArray(this.currentState!.event).type;
+	}
+	
+	set currentEventType(newType: EventArrayType) {
+		const currentEvent = destructureEventArray(this.currentState!.event);
+		if (currentEvent.type !== newType) {
+			this.currentState!.event = createEventArray(currentEvent.events, newType, this.trader);
+		}
+	}
+	
+	get trader(): string | undefined {
+		const event = this.currentState!.event;
+		return 'trade' in event ? event.trade.trader : undefined;
+	}
+	
+	set trader(trader: string | undefined) {
+		const event = this.currentState!.event;
+		if ('trade' in event) {
+			event.trade.trader = trader;
+		} else {
+			console.warn(`Attempted to set "trader" property on event of type "${destructureEventArray(event).type}". Failing silently.`);
+		}
+	}
+	
+	get eventTypes(): string[] {
+		const values = [];
+		// eslint-disable-next-line guard-for-in
+		for (const type in EventArrayType) {
+			values.push((EventArrayType as any)[type]);
+		}
+		return values;
 	}
 }

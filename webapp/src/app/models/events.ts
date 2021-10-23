@@ -1,3 +1,5 @@
+import { EventType } from '../shared/widgets/event-widget/event-registry/abstract-event';
+
 export interface Person {
 	person: string;
 	expression: string;
@@ -11,4 +13,64 @@ export interface Label {
 	ja_JP: string;
 	ko_KR: string;
 	langUid: number;
+}
+
+export enum EventArrayType {
+	Simple = 'simple',
+	Quest = 'quest',
+	Shop = 'shop',
+	Arena = 'arena',
+	Trade = 'trade'
+}
+
+export interface TraderEvent {
+	event: EventType[];
+	trader?: string; //Maps have it but it's a pain to handle type set and trader set at the same time in the UI
+}
+
+export type EventArray = 
+	EventType[] |
+	{quest: EventType[]} |
+	{shop: EventType[]} |
+	{arena: EventType[]} |
+	{trade: TraderEvent}
+;
+
+export function destructureEventArray(events: EventArray): {events: EventType[], type: EventArrayType, trader?: string} {
+	if (Array.isArray(events)) {
+		return {events: events, type: EventArrayType.Simple};
+	} else if ('quest' in events) {
+		return {events: events.quest, type: EventArrayType.Quest};
+	} else if ('shop' in events) {
+		return {events: events.shop, type: EventArrayType.Shop};
+	} else if ('arena' in events) {
+		return {events: events.arena, type: EventArrayType.Arena};
+	} else if ('trade' in events) {
+		return {events: events.trade.event, type: EventArrayType.Trade, trader: events.trade.trader};
+	}
+	throw new TypeError('Argument passed to ' + destructureEventArray.name + ' is not of type EventArray.');
+}
+
+/**
+ * 
+ * @param events 
+ * @param type 
+ * @param trader Required only when `type` is `Trade`
+ * @returns 
+ */
+export function createEventArray(events: EventType[], type: EventArrayType, trader?: string): EventArray {
+	switch (type) {
+	case 'simple': return events;
+	case 'arena': return {arena: events};
+	case 'quest': return {quest: events};
+	case 'shop': return {shop: events};
+	case 'trade':
+		return {
+			trade: {
+				event: events,
+				trader: trader
+			}
+		};
+	default: return [];
+	}
 }

@@ -4,6 +4,7 @@ import {NpcStatesComponent} from './npc-states/npc-states.component';
 import {OverlayService} from '../../overlay/overlay.service';
 import {OverlayRefControl} from '../../overlay/overlay-ref-control';
 import {Overlay} from '@angular/cdk/overlay';
+import {EventArray} from '../../../models/events';
 
 export interface NPCState {
 	reactType: string;
@@ -19,7 +20,7 @@ export interface NPCState {
 	};
 	condition: string;
 	config: string;
-	event: any;
+	event: EventArray;
 }
 
 @Component({
