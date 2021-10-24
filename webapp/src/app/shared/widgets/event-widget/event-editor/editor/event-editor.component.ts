@@ -80,7 +80,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 		} catch (destructuringError) {
 			this.workingData = [];
 			if (destructuringError instanceof TypeError) {
-				console.error(`Error while reading map, invalid format. Using empty array as default.\n\nException:\n${destructuringError.stack}`);
+				console.error(`Error while reading events, invalid format. Using empty event array as fallback.\n\nException:\n${destructuringError.stack}`);
 			} else {
 				throw destructuringError;
 			}
