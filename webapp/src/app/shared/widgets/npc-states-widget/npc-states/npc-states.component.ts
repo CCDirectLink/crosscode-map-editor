@@ -19,8 +19,7 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 	
 	props = settingsJson.default;
 	warnings: string[] = [];
-	missingTradeEvent = false;
-	positionActive = false;
+	private missingTradeEvent = false;
 	
 	eventType: EventArrayType = EventArrayType.Simple;
 	trader?: string;
@@ -66,9 +65,6 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 			this.eventEditor.show();
 		}
 		this.currentState = this.states[index];
-		
-		const active = this.currentState && this.currentState.position && this.currentState.position.active;
-		this.positionActive = !!active;
 		this.index = index;
 		({type: this.eventType, trader: this.trader} = destructureEventArray(this.currentState.event));
 	}
@@ -143,7 +139,6 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 	}
 	
 	updateEventWarnings(updatedEvents: EventArray) {
-		//TODO: warning is still visible when changing event type to a different kind from trade.
 		function hasEventOfTypeRecursive(object: any, type: string): boolean {
 			if (typeof object !== 'object') {
 				return false;
