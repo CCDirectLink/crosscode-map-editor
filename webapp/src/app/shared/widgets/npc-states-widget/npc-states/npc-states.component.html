@@ -75,7 +75,7 @@
 						<!-- Event type -->
 						<div fxLayout="row" class="attribute" fxFlex="0 0 auto">
 							<span fxFlex="0 0 87px" fxFlexAlign="center">Event type: </span>
-							<select class="default-input select-input" [(ngModel)]="currentEventType">
+							<select class="default-input select-input" [(ngModel)]="eventType">
 								<option *ngFor="let type of eventTypes" [value]="type">
 									{{type}}
 								</option>
@@ -99,18 +99,16 @@
 						</div>
 						
 						<!-- Warnings -->
-						<div>
-							<div fxLayout="row" class="warning-message" *ngFor="let warning of warnings">
-								<mat-icon>warning</mat-icon>
-								<span fxFlexAlign="center">{{warning}}</span>
-							</div>
+						<div fxLayout="row" class="warning-message" *ngFor="let warning of warnings">
+							<mat-icon>warning</mat-icon>
+							<span fxFlexAlign="center">{{warning}}</span>
 						</div>
 					</div>
 					<div fxFlex="1 1 0" fxLayout="column" class="event-container">
 						<!-- Event Editor -->
 						<app-event-editor #eventEditor class="event-block" fxLayout="column"
 						                  [eventData]="currentState.event"
-										  [exportedEventType]="currentEventType"
+										  [exportedEventType]="eventType"
 										  [trader]="trader"
 										  ></app-event-editor>
 					</div>

@@ -71,11 +71,18 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	
 	ngOnChanges() {
 		const eventCopy: EventArray = JSON.parse(JSON.stringify(this.eventData));
-		const destructuredEvents = destructureEventArray(eventCopy);
-		
-		this.inputtedEventType = destructuredEvents.type;
-		this.workingData = destructuredEvents.events?.map((val: EventType) => this.helper.getEventFromType(val, this.actionStep)) ?? [];
-		
+		try {
+			const destructuredEvents = destructureEventArray(eventCopy);
+			this.inputtedEventType = destructuredEvents.type;
+			this.workingData = destructuredEvents.events?.map((val: EventType) => this.helper.getEventFromType(val, this.actionStep)) ?? [];
+		} catch (destructuringError) {
+			this.workingData = [];
+			if (destructuringError instanceof TypeError) {
+				console.error(`Error while reading map, invalid format. Using empty array as default.\n\nException:\n${destructuringError.stack}`);
+			} else {
+				throw destructuringError;
+			}
+		}
 		this.refreshAll();
 	}
 	
@@ -106,7 +113,6 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	export(): EventArray {
 		const exportedArray = this.workingData.map(event => event.export());
 		return createEventArray(exportedArray, this.exportedEventType ?? this.inputtedEventType, this.trader);
-		//return this.workingData?.map(event => event.export()) ?? this.eventData;
 	}
 	
 	drop(event: CdkDragDrop<EventDisplay>) {

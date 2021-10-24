@@ -46,18 +46,16 @@ export function destructureEventArray(events: EventArray): {events?: EventType[]
 	} else if ('arena' in events) {
 		return {events: events.arena, type: EventArrayType.Arena};
 	} else if ('trade' in events) {
-		return {events: events.trade.event, type: EventArrayType.Trade, trader: events.trade.trader};
+		const event = events.trade.event;
+		return {
+			events: event === undefined ? undefined : (event.length > 0 ? event : undefined),
+			type: EventArrayType.Trade,
+			trader: events.trade.trader
+		};
 	}
 	throw new TypeError('Argument passed to ' + destructureEventArray.name + ' is not of type EventArray.');
 }
 
-/**
- * 
- * @param events 
- * @param type 
- * @param trader Required only when `type` is `Trade`
- * @returns 
- */
 export function createEventArray(events: EventType[], type: EventArrayType, trader?: string): EventArray {
 	switch (type) {
 	case 'simple': return events;
@@ -71,6 +69,6 @@ export function createEventArray(events: EventType[], type: EventArrayType, trad
 				trader: trader
 			}
 		};
-	default: return [];
+	default: throw new TypeError(`'type' argument passed to ${createEventArray.name} must be of type EventArrayType. Received ${type} instead.`);
 	}
 }

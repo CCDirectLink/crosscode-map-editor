@@ -85,7 +85,9 @@ $accent: map-get($theme, accent);
 	min-width: 0;
 }
 
-.warning-message > mat-icon {
-	color: orange;
-	margin-right: 4px;
+.warning-message {
+	& > mat-icon {
+		color: orange;
+		margin-right: 4px;
+	}
 }

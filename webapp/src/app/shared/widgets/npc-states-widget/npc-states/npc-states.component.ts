@@ -18,8 +18,11 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 	index = 0;
 	
 	props = settingsJson.default;
-	warnings: string[] = ['A test warning'];
+	warnings: string[] = [];
 	positionActive = false;
+	
+	eventType: EventArrayType = EventArrayType.Simple;
+	trader?: string;
 	
 	// TODO: move to global events service
 	clipboard = '';
@@ -63,6 +66,7 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 		const active = this.currentState && this.currentState.position && this.currentState.position.active;
 		this.positionActive = !!active;
 		this.index = index;
+		({type: this.eventType, trader: this.trader} = destructureEventArray(this.currentState.event));
 	}
 	
 	newPage() {
@@ -134,41 +138,13 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 		this.exit.error('cancel');
 	}
 	
+	}
+	
 	get isTradeEvent() {
-		return this.currentEventType === EventArrayType.Trade;
-	}
-	
-	get currentEventType(): EventArrayType {
-		return destructureEventArray(this.currentState!.event).type;
-	}
-	
-	set currentEventType(newType: EventArrayType) {
-		const currentEvent = destructureEventArray(this.currentState!.event);
-		if (currentEvent.type !== newType) {
-			this.currentState!.event = createEventArray(currentEvent.events ?? [], newType, this.trader);
-		}
-	}
-	
-	get trader(): string | undefined {
-		const event = this.currentState!.event;
-		return 'trade' in event ? event.trade.trader : undefined;
-	}
-	
-	set trader(trader: string | undefined) {
-		const event = this.currentState!.event;
-		if ('trade' in event) {
-			event.trade.trader = trader;
-		} else {
-			console.warn(`Attempted to set "trader" property on event of type "${destructureEventArray(event).type}". Failing silently.`);
-		}
+		return this.eventType === EventArrayType.Trade;
 	}
 	
 	get eventTypes(): string[] {
-		const values = [];
-		// eslint-disable-next-line guard-for-in
-		for (const type in EventArrayType) {
-			values.push((EventArrayType as any)[type]);
-		}
-		return values;
+		return Object.keys(EventArrayType).map(name => (EventArrayType as any)[name]);
 	}
 }
