@@ -27,8 +27,6 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	
 	@Input() eventData: EventArray | unknown = [];
 	@Input() actionStep = false;
-	@Input() exportedEventType?: EventArrayType;
-	@Input() trader?: string;
 	
 	get base() {
 		return EventEditorComponent.globalBase;
@@ -39,7 +37,6 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	
 	detailsShown = false;
 	wrapText!: boolean;
-	inputtedEventType: EventArrayType = EventArrayType.Simple;
 	
 	treeControl = new FlatTreeControl<EventDisplay>(e => e.level, e => e.children != null);
 	private treeFlattener = new MatTreeFlattener(
@@ -57,6 +54,8 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	private selectedNode?: EventDisplay;
 	private shownNode?: EventDisplay;
 	private copiedNode?: EventDisplay;
+	private inputtedEventType: EventArrayType = EventArrayType.Simple;
+	private inputtedTrader?: string;
 	
 	constructor(
 		private helper: EventHelperService,
@@ -74,6 +73,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 		try {
 			const destructuredEvents = destructureEventArray(eventCopy);
 			this.inputtedEventType = destructuredEvents.type;
+			this.inputtedTrader = destructuredEvents.trader;
 			this.workingData = destructuredEvents.events?.map((val: EventType) => this.helper.getEventFromType(val, this.actionStep)) ?? [];
 		} catch (destructuringError) {
 			this.workingData = [];
@@ -110,9 +110,9 @@ export class EventEditorComponent implements OnChanges, OnInit {
 		this.detailsShown = false;
 	}
 	
-	export(): EventArray {
+	export(eventType?: EventArrayType, trader?: string): EventArray {
 		const exportedArray = this.workingData.map(event => event.export());
-		return createEventArray(exportedArray, this.exportedEventType ?? this.inputtedEventType, this.trader);
+		return createEventArray(exportedArray, eventType ?? this.inputtedEventType, trader ?? this.inputtedTrader);
 	}
 	
 	drop(event: CdkDragDrop<EventDisplay>) {

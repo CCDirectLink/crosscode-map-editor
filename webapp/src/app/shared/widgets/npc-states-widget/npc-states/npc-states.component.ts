@@ -116,7 +116,7 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 			throw new Error('event editor is not defined');
 		}
 		if (this.currentState) {
-			this.currentState.event = this.eventEditor.export();
+			this.currentState.event = this.eventEditor.export(this.eventType, this.trader);
 		}
 		const out = this.states;
 		out.forEach(state => {
