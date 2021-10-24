@@ -32,7 +32,7 @@
 					</div>
 				</div>
 				<div fxFlex="1 1 0" fxLayout="row" class="middle-container tab-content-inner">
-					<div class="content-left" fxFlex="0 0 200px" fxLayout="column">
+					<div class="content-left" fxFlex="0 0 225px" fxLayout="column">
 						
 						<!-- Position -->
 						<div fxFlex="0 0 auto">
@@ -108,6 +108,7 @@
 						<!-- Event Editor -->
 						<app-event-editor #eventEditor class="event-block" fxLayout="column"
 						                  [eventData]="currentState.event"
+										  (eventsChanged)="updateEventWarnings($event)"
 										  ></app-event-editor>
 					</div>
 				</div>

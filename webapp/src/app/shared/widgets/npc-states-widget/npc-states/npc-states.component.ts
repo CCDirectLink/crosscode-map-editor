@@ -2,7 +2,7 @@ import {Component, OnInit, Input, Output, EventEmitter, ViewChild, DoCheck} from
 import {NPCState} from '../npc-states-widget.component';
 import * as settingsJson from '../../../../../assets/npc-settings.json';
 import {EventEditorComponent} from '../../event-widget/event-editor/editor/event-editor.component';
-import {destructureEventArray, createEventArray, EventArrayType} from '../../../../models/events';
+import {destructureEventArray, createEventArray, EventArray, EventArrayType} from '../../../../models/events';
 
 @Component({
 	selector: 'app-npc-states',
@@ -19,6 +19,7 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 	
 	props = settingsJson.default;
 	warnings: string[] = [];
+	missingTradeEvent = false;
 	positionActive = false;
 	
 	eventType: EventArrayType = EventArrayType.Simple;
@@ -51,6 +52,9 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 		if (this.isTradeEvent && !this.trader) {
 			this.warnings.push('Missing trader name');
 		}
+		if (this.eventType === EventArrayType.Trade && this.missingTradeEvent) {
+			this.warnings.push('START_NPC_TRADE_MENU event is missing, trade popup will not appear');
+		}
 	}
 	
 	selectTab(index: number) {
@@ -58,7 +62,7 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 			if (!this.eventEditor) {
 				throw new Error('event editor is not defined');
 			}
-			this.currentState.event = this.eventEditor.export();
+			this.currentState.event = this.eventEditor.export(this.eventType, this.trader);
 			this.eventEditor.show();
 		}
 		this.currentState = this.states[index];
@@ -138,6 +142,23 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 		this.exit.error('cancel');
 	}
 	
+	updateEventWarnings(updatedEvents: EventArray) {
+		//TODO: warning is still visible when changing event type to a different kind from trade.
+		function hasEventOfTypeRecursive(object: any, type: string): boolean {
+			if (typeof object !== 'object') {
+				return false;
+			}
+			for (const key of Object.keys(object)) {
+				if ((key === 'type' && object[key] === type) || hasEventOfTypeRecursive(object[key], type)) {
+					return true;
+				}
+			}
+			return false;
+		}
+		const {events} = destructureEventArray(updatedEvents);
+		this.missingTradeEvent =
+			events !== undefined &&
+			!hasEventOfTypeRecursive(events, 'START_NPC_TRADE_MENU');
 	}
 	
 	get isTradeEvent() {

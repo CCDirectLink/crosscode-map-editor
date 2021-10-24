@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnChanges, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, Output, OnChanges, OnInit, OnDestroy, ViewChild, EventEmitter } from '@angular/core';
 import { AbstractEvent, EventType } from '../../event-registry/abstract-event';
 import { EventArray, EventArrayType, destructureEventArray, createEventArray } from '../../../../../models/events';
 import { EventHelperService } from '../event-helper.service';
@@ -27,6 +27,8 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	
 	@Input() eventData: EventArray | unknown = [];
 	@Input() actionStep = false;
+	
+	@Output() eventsChanged = new EventEmitter<EventArray>();
 	
 	get base() {
 		return EventEditorComponent.globalBase;
@@ -362,6 +364,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 			this.select(node);
 		}
 		this.detailsShown = shown;
+		this.eventsChanged.emit(this.export());
 	}
 	
 	private getIndex(event: EventDisplay | null | undefined) {

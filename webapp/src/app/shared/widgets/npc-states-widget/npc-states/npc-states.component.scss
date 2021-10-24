@@ -86,6 +86,7 @@ $accent: map-get($theme, accent);
 }
 
 .warning-message {
+	margin-bottom: 14px;
 	& > mat-icon {
 		color: orange;
 		margin-right: 4px;
