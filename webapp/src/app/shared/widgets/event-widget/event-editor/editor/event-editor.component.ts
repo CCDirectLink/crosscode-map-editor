@@ -82,7 +82,8 @@ export class EventEditorComponent implements OnChanges, OnInit {
 			if (destructuringError instanceof TypeError) {
 				console.error(`Error while reading events, invalid format. Using empty event array as fallback.\n\nException:\n${destructuringError.stack}`);
 			} else {
-				throw destructuringError;
+				console.error('Unknown exception while reading events. Using empty event array as fallback.\n\nException in message below.');
+				console.error(destructuringError);
 			}
 		}
 		this.refreshAll();
