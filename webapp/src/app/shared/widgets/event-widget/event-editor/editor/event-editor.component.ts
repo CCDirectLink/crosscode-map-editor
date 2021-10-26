@@ -28,7 +28,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	@Input() eventData: EventArray | unknown = [];
 	@Input() actionStep = false;
 	
-	@Output() eventsChanged = new EventEmitter<EventArray>();
+	@Output() eventsChanged = new EventEmitter<EventType[]>();
 	
 	get base() {
 		return EventEditorComponent.globalBase;
@@ -114,8 +114,11 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	}
 	
 	export(eventType?: EventArrayType, trader?: string): EventArray {
-		const exportedArray = this.workingData.map(event => event.export());
-		return createEventArray(exportedArray, eventType ?? this.inputtedEventType, trader ?? this.inputtedTrader);
+		return createEventArray(this.exportRaw(), eventType ?? this.inputtedEventType, trader ?? this.inputtedTrader);
+	}
+	
+	exportRaw() {
+		return this.workingData.map(event => event.export());		
 	}
 	
 	drop(event: CdkDragDrop<EventDisplay>) {
@@ -365,7 +368,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 			this.select(node);
 		}
 		this.detailsShown = shown;
-		this.eventsChanged.emit(this.export());
+		this.eventsChanged.emit(this.exportRaw());
 	}
 	
 	private getIndex(event: EventDisplay | null | undefined) {

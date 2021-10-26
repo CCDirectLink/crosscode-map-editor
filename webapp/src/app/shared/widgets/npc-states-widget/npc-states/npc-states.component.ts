@@ -3,6 +3,7 @@ import {NPCState} from '../npc-states-widget.component';
 import * as settingsJson from '../../../../../assets/npc-settings.json';
 import {EventEditorComponent} from '../../event-widget/event-editor/editor/event-editor.component';
 import {destructureEventArray, createEventArray, EventArray, EventArrayType} from '../../../../models/events';
+import { EventType } from '../../event-widget/event-registry/abstract-event';
 
 @Component({
 	selector: 'app-npc-states',
@@ -138,7 +139,7 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 		this.exit.error('cancel');
 	}
 	
-	updateEventWarnings(updatedEvents: EventArray) {
+	updateEventWarnings(updatedEvents: EventType[]) {
 		function hasEventOfTypeRecursive(object: any, type: string): boolean {
 			if (typeof object !== 'object') {
 				return false;
@@ -150,10 +151,10 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 			}
 			return false;
 		}
-		const {events} = destructureEventArray(updatedEvents);
+		
 		this.missingTradeEvent =
-			events !== undefined &&
-			!hasEventOfTypeRecursive(events, 'START_NPC_TRADE_MENU');
+			updatedEvents.length > 0 &&
+			!hasEventOfTypeRecursive(updatedEvents, 'START_NPC_TRADE_MENU');
 	}
 	
 	get isTradeEvent() {

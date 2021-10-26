@@ -36,7 +36,7 @@ export type EventArray =
 	{trade: TraderEvent}
 ;
 
-export function destructureEventArray(events: EventArray): {events?: EventType[], type: EventArrayType, trader?: string} {
+export function destructureEventArray(events: EventArray): {events: EventType[], type: EventArrayType, trader?: string} {
 	if (Array.isArray(events)) {
 		return {events: events, type: EventArrayType.Simple};
 	} else if ('quest' in events) {
@@ -48,7 +48,7 @@ export function destructureEventArray(events: EventArray): {events?: EventType[]
 	} else if ('trade' in events) {
 		const event = events.trade.event;
 		return {
-			events: event === undefined ? undefined : (event.length > 0 ? event : undefined),
+			events: event ?? [],
 			type: EventArrayType.Trade,
 			trader: events.trade.trader
 		};
