@@ -21,4 +21,18 @@ export class LanguageLabelWidgetComponent extends AbstractWidget {
 	constructor() {
 		super();
 	}
+	
+	get hasValue(): boolean {
+		return this.settings[this.key] !== undefined;
+	}
+	
+	set hasValue(value: boolean) {
+		if (value) {
+			this.settings[this.key] = {
+				...this.languages
+			};
+		} else {
+			this.settings[this.key] = undefined;
+		}
+	}
 }

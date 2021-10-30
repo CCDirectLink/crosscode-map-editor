@@ -1,16 +1,23 @@
 <div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
 	<label [for]="key" class="property-name">{{key}}:</label>
-	<div fxLayout="column" class="language-string-container">
-		<div *ngFor="let language of languages" fxLayout="row" class="language-row">
-			<label [for]="key + '.' + language" class="property-name">{{language}}</label>
-			<textarea
-				class="default-input"
-				[id]="key + '.' + language"
-				[ngModel]="settings[key][language]"
-				(ngModelChange)="setSetting([key, language], $event)"
-				cdkTextareaAutosize
-				appAutosizeTextareaOnResize
-			></textarea>
+	
+	<div fxLayout="column" fxFlex="1 1 0">
+		<div fxLayout="row" class="row has-value">
+			<label for=".hasValue" class="property-name">Has value: </label>
+			<mat-checkbox class="material-input" color="primary" id=".hasValue" [(ngModel)]="hasValue"></mat-checkbox>
+		</div>
+		<div *ngIf="hasValue">
+			<div *ngFor="let language of languages" fxLayout="row" class="language row">
+				<label for="{{key}}.{{language}}" class="property-name">{{language}}</label>
+				<textarea
+					class="default-input"
+					id="{{key}}.{{language}}"
+					[ngModel]="settings[key][language]"
+					(ngModelChange)="setSetting([key, language], $event)"
+					cdkTextareaAutosize
+					appAutosizeTextareaOnResize
+				></textarea>
+			</div>
 		</div>
 	</div>
 </div>

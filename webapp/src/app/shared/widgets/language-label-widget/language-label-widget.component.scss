@@ -1,18 +1,22 @@
-div.language-row {
+div.row {
 	flex: 1 1 0;
 	margin-bottom: 4px;
 	
-	& > label {
-		width: 45px;
+	&.language {
+		& label {
+			width: 45px;
+		}
+		
+		& textarea {
+			resize: none;
+			padding: 4px;
+		}
 	}
-	& > textarea {
-		resize: none;
-		padding: 4px;
+	
+	&.has-value {
+		align-items: center;
+		align-self: flex-end;
 	}
-}
-
-div.language-string-container {
-	flex: 1 1 0;
 }
 
 textarea {
