@@ -21,6 +21,16 @@
 					></textarea>
 				</div>
 			</div>
+			<div fxLayout="row" class="row uid">
+				<label for="{{key}}.langUid" class="property-name">langUid</label>
+				<input
+					type="number"
+					[ngModel]="settings[key].langUid"
+					(ngModelChange)="setSetting([key, 'langUid'], $event)"
+					class="default-input"
+					placeholder="undefined"
+				>
+			</div>
 		</div>
 	</div>
 </div>
