@@ -4,7 +4,13 @@
 	<div fxLayout="column" fxFlex="1 1 0">
 		<div fxLayout="row" class="row has-value">
 			<label for=".hasValue" class="property-name">Has value: </label>
-			<mat-checkbox class="material-input" color="primary" id=".hasValue" [(ngModel)]="hasValue"></mat-checkbox>
+			<mat-checkbox
+				[ngModel]="hasValue"
+				(ngModelChange)="setSetting([key], $event? defaultValue : undefined)"
+				class="material-input"
+				color="primary"
+				id=".hasValue"
+			></mat-checkbox>
 		</div>
 		<div *ngIf="hasValue">
 			<div *ngFor="let language of languages" fxLayout="row" class="language row">
