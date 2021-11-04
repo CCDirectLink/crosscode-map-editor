@@ -142,7 +142,7 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 	
 	updateEventWarnings(updatedEvents: EventType[]) {
 		function hasEventOfTypeRecursive(object: any, type: string): boolean {
-			if (typeof object !== 'object') {
+			if (typeof object !== 'object' || object === null) {
 				return false;
 			}
 			for (const key of Object.keys(object)) {
