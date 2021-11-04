@@ -63,7 +63,7 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 			if (!this.eventEditor) {
 				throw new Error('event editor is not defined');
 			}
-			this.currentState.event = this.eventEditor.export(this.eventType, this.trader);
+			this.currentState.event = createEventArray(this.eventEditor.export(), this.eventType, this.trader);
 			this.eventEditor.show();
 		}
 		this.currentState = this.states[index];
@@ -118,7 +118,7 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 			throw new Error('event editor is not defined');
 		}
 		if (this.currentState) {
-			this.currentState.event = this.eventEditor.export(this.eventType, this.trader);
+			this.currentState.event = createEventArray(this.eventEditor.export(), this.eventType, this.trader);
 		}
 		const out = this.states;
 		out.forEach(state => {

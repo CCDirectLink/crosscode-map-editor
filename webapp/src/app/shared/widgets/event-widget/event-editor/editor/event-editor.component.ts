@@ -56,8 +56,6 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	private selectedNode?: EventDisplay;
 	private shownNode?: EventDisplay;
 	private copiedNode?: EventDisplay;
-	private inputtedEventType: EventArrayType = EventArrayType.Simple;
-	private inputtedTrader?: string;
 	
 	constructor(
 		private helper: EventHelperService,
@@ -73,10 +71,8 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	ngOnChanges() {
 		const eventCopy: EventArray = JSON.parse(JSON.stringify(this.eventData));
 		try {
-			const destructuredEvents = destructureEventArray(eventCopy);
-			this.inputtedEventType = destructuredEvents.type;
-			this.inputtedTrader = destructuredEvents.trader;
-			this.workingData = destructuredEvents.events?.map((val: EventType) => this.helper.getEventFromType(val, this.actionStep)) ?? [];
+			const {events} = destructureEventArray(eventCopy);
+			this.workingData = events?.map((val: EventType) => this.helper.getEventFromType(val, this.actionStep)) ?? [];
 		} catch (destructuringError) {
 			this.workingData = [];
 			if (destructuringError instanceof TypeError) {
@@ -113,12 +109,8 @@ export class EventEditorComponent implements OnChanges, OnInit {
 		this.detailsShown = false;
 	}
 	
-	export(eventType?: EventArrayType, trader?: string): EventArray {
-		return createEventArray(this.exportRaw(), eventType ?? this.inputtedEventType, trader ?? this.inputtedTrader);
-	}
-	
-	exportRaw() {
-		return this.workingData.map(event => event.export());		
+	export(): EventType[] {
+		return this.workingData.map(event => event.export());
 	}
 	
 	drop(event: CdkDragDrop<EventDisplay>) {
@@ -368,7 +360,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 			this.select(node);
 		}
 		this.detailsShown = shown;
-		this.eventsChanged.emit(this.exportRaw());
+		this.eventsChanged.emit(this.export());
 	}
 	
 	private getIndex(event: EventDisplay | null | undefined) {
