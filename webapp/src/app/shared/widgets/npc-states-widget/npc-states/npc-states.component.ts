@@ -19,6 +19,7 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 	index = 0;
 	
 	props = settingsJson.default;
+	eventTypes = Object.values(EventArrayType);
 	warnings: string[] = [];
 	private missingTradeEvent = false;
 	
@@ -159,9 +160,5 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 	
 	get isTradeEvent() {
 		return this.eventType === EventArrayType.Trade;
-	}
-	
-	get eventTypes(): string[] {
-		return Object.keys(EventArrayType).map(name => (EventArrayType as any)[name]);
 	}
 }
