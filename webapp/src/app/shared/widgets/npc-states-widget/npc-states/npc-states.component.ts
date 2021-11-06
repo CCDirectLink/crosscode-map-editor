@@ -58,7 +58,9 @@ export class NpcStatesComponent implements OnInit {
 		}
 		this.currentState = this.states[index];
 		this.index = index;
-		({type: this.eventType, trader: this.trader} = destructureEventArray(this.currentState.event));
+		if (this.currentState) { //Undefined if this.states.length is 0
+			({type: this.eventType, trader: this.trader} = destructureEventArray(this.currentState.event));
+		}
 	}
 	
 	newPage() {
