@@ -75,7 +75,7 @@
 						<!-- Event type -->
 						<div fxLayout="row" class="attribute" fxFlex="0 0 auto">
 							<span fxFlex="0 0 87px" fxFlexAlign="center">Event type: </span>
-							<select class="default-input select-input" [(ngModel)]="eventType">
+							<select class="default-input select-input" [(ngModel)]="eventType" (ngModelChange)="updateDisplayedWarnings()">
 								<option *ngFor="let type of eventTypes" [value]="type">
 									{{type}}
 								</option>
@@ -85,7 +85,7 @@
 						<!-- Trader -->
 						<div *ngIf="isTradeEvent" fxLayout="row" class="attribute" fxFlex="0 0 auto">
 							<span fxFlex="0 0 87px" fxFlexAlign="center">Trader: </span>
-							<input class="default-input" [(ngModel)]="trader">
+							<input class="default-input" [(ngModel)]="trader" (ngModelChange)="updateDisplayedWarnings()">
 						</div>
 						
 						<!-- Other -->
@@ -108,7 +108,7 @@
 						<!-- Event Editor -->
 						<app-event-editor #eventEditor class="event-block" fxLayout="column"
 						                  [eventData]="currentState.event"
-						                  (eventsChanged)="updateEventWarnings($event)"
+						                  (eventsChanged)="updateTradeEventWarning($event)"
 						                  ></app-event-editor>
 					</div>
 				</div>

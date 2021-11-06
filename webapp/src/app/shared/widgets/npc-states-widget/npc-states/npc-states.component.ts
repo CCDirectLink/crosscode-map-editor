@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild, DoCheck} from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
 import {NPCState} from '../npc-states-widget.component';
 import * as settingsJson from '../../../../../assets/npc-settings.json';
 import {EventEditorComponent} from '../../event-widget/event-editor/editor/event-editor.component';
@@ -10,7 +10,7 @@ import { EventType } from '../../event-widget/event-registry/abstract-event';
 	templateUrl: './npc-states.component.html',
 	styleUrls: ['./npc-states.component.scss', '../../widget.scss'],
 })
-export class NpcStatesComponent implements OnInit, DoCheck {	
+export class NpcStatesComponent implements OnInit {	
 	@ViewChild('eventEditor', {static: false}) eventEditor?: EventEditorComponent;
 	
 	@Input() states: NPCState[] = [];
@@ -46,16 +46,6 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 			}
 		});
 		this.selectTab(this.index);
-	}
-	
-	ngDoCheck() {
-		this.warnings.length = 0;
-		if (this.isTradeEvent && !this.trader) {
-			this.warnings.push('Missing trader name');
-		}
-		if (this.eventType === EventArrayType.Trade && this.missingTradeEvent) {
-			this.warnings.push('START_NPC_TRADE_MENU event is missing, trade popup will not appear');
-		}
 	}
 	
 	selectTab(index: number) {
@@ -140,13 +130,26 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 		this.exit.error('cancel');
 	}
 	
-	updateEventWarnings(updatedEvents: EventType[]) {
+	updateDisplayedWarnings() {
+		this.warnings.length = 0;
+		if (this.isTradeEvent) {
+			if (!this.trader) {
+				this.warnings.push('Missing trader name');
+			}
+			
+			if (this.missingTradeEvent) {
+				this.warnings.push('START_NPC_TRADE_MENU event is missing, trade popup will not appear');
+			}
+		}
+	}
+	
+	updateTradeEventWarning(updatedEvents: EventType[]) {
 		function hasEventOfTypeRecursive(object: any, type: string): boolean {
 			if (typeof object !== 'object' || object === null) {
 				return false;
 			}
-			for (const key of Object.keys(object)) {
-				if ((key === 'type' && object[key] === type) || hasEventOfTypeRecursive(object[key], type)) {
+			for (const [key, value] of Object.entries(object)) {
+				if ((key === 'type' && value === type) || hasEventOfTypeRecursive(value, type)) {
 					return true;
 				}
 			}
@@ -156,6 +159,8 @@ export class NpcStatesComponent implements OnInit, DoCheck {
 		this.missingTradeEvent =
 			updatedEvents.length > 0 &&
 			!hasEventOfTypeRecursive(updatedEvents, 'START_NPC_TRADE_MENU');
+		
+		this.updateDisplayedWarnings();
 	}
 	
 	get isTradeEvent() {
