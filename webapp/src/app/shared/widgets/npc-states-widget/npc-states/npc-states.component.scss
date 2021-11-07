@@ -84,3 +84,11 @@ $accent: map-get($theme, accent);
 .event-container {
 	min-width: 0;
 }
+
+.warning-message {
+	margin-bottom: 14px;
+	& > mat-icon {
+		color: orange;
+		margin-right: 4px;
+	}
+}

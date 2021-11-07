@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { EventEditorComponent } from '../event-editor/editor/event-editor.component';
 import { EventHelperService } from '../event-editor/event-helper.service';
-import { EventType } from '../event-registry/abstract-event';
+import { EventArray } from '../../../../models/events';
 
 @Component({
 	selector: 'app-event-window',
@@ -12,9 +12,9 @@ export class EventWindowComponent {
 
 	@ViewChild('eventEditor', { static: false }) eventEditor!: EventEditorComponent;
 
-	@Input() event!: EventType[];
+	@Input() event: EventArray | unknown = [];
 	@Input() actionStep = false;
-	@Output() exit = new EventEmitter<EventType[]>();
+	@Output() exit = new EventEmitter<EventArray>();
 
 	constructor(
 		private helper: EventHelperService
