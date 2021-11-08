@@ -1,20 +1,20 @@
-import { EntityAttributes } from '../../../phaser/entities/cc-entity';
+import {EntityAttributes} from '../../../phaser/entities/cc-entity';
 import {AbstractEvent, EventType} from './abstract-event';
 
 export interface OpenQuestDialogData extends EventType {
 	//Attributes
 	quest: string;
-	npc: string;
-	map: string;
-	
-	//Mistery values
-	acceptVar?: string; //Only map that uses a value that is not "tmp.accept" is edge-test, a testing map that the editor doesn't open properly (it uses "tmp.cancel" instead)
-	cancelVar?: string; //Only used in edge-test
-	activate: boolean; //No idea what this does, but no quest has it set to true, poking with it makes no difference either
+	npc?: string;
+	map?: string;
 	
 	//Branches
 	accepted: AbstractEvent<any>[];
 	declined: AbstractEvent<any>[];
+	
+	//Useless values (declared in map files but never used by game code)
+	acceptVar?: string; //Only map that uses a value that is not "tmp.accept" is edge-test, a testing map that the editor doesn't open properly (it uses "tmp.cancel" instead)
+	cancelVar?: string; //Only used in edge-test
+	activate?: boolean; //Set by quests either to false or undefined
 }
 
 export class OpenQuestDialog extends AbstractEvent<OpenQuestDialogData> {
@@ -34,11 +34,6 @@ export class OpenQuestDialog extends AbstractEvent<OpenQuestDialogData> {
 			optional: true,
 			description: 'Map to show instead of the automated one'
 		},
-		acceptVar: {
-			type: 'String',
-			optional: true,
-			description: 'Typically set by quests to either blank or "tmp.accept"'
-		}
 	};
 	
 	getAttributes(): EntityAttributes {
@@ -70,14 +65,20 @@ export class OpenQuestDialog extends AbstractEvent<OpenQuestDialogData> {
 	export(): OpenQuestDialogData {
 		const out: OpenQuestDialogData = {
 			type: this.data.type,
-			quest: this.data.quest,
+			
+			//Attributes
+			quest: this.data.quest ?? '',
 			npc: this.data.npc,
 			map: this.data.map,
+			
+			//Branches
+			accepted: this.data.accepted.map(v => v.export()),
+			declined: this.data.declined.map(v => v.export()),
+			
+			//Useless values (they don't do anything but keep them if the original event has them)
 			acceptVar: this.data.acceptVar,
 			cancelVar: this.data.cancelVar,
-			activate: false,
-			accepted: this.data.accepted.map(v => v.export()),
-			declined: this.data.declined?.map(v => v.export())
+			activate: this.data.activate,
 		};
 		return out;
 	}
@@ -85,13 +86,6 @@ export class OpenQuestDialog extends AbstractEvent<OpenQuestDialogData> {
 	protected generateNewDataInternal() {
 		return {
 			quest: '',
-			npc: undefined,
-			map: undefined,
-			
-			acceptVar: 'tmp.accept',
-			cancelVar: undefined,
-			activate: false, //No idea what activate does, but no quest sets it to true
-			
 			accepted: [],
 			declined: [],
 		};
