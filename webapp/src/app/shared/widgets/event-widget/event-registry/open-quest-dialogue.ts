@@ -71,14 +71,14 @@ export class OpenQuestDialog extends AbstractEvent<OpenQuestDialogData> {
 			npc: this.data.npc,
 			map: this.data.map,
 			
+			//Useless values (they don't do anything but keep them if the original event has them)
+			activate: this.data.activate,
+			acceptVar: this.data.acceptVar,
+			cancelVar: this.data.cancelVar,
+			
 			//Branches
 			accepted: this.data.accepted.map(v => v.export()),
 			declined: this.data.declined.map(v => v.export()),
-			
-			//Useless values (they don't do anything but keep them if the original event has them)
-			acceptVar: this.data.acceptVar,
-			cancelVar: this.data.cancelVar,
-			activate: this.data.activate,
 		};
 		return out;
 	}
