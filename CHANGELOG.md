@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - Full event editor support for `quest`, `shop`, `arena` and `trade` events
+- Ability to view and edit `OPEN_QUEST_DIALOG` event branches
 
 ## [0.12.0] 2021-10-05
 
