@@ -21,6 +21,8 @@ import { JsonWidgetComponent } from '../../../json-widget/json-widget.component'
 import { EventHelperService } from '../event-helper.service';
 import { Subscription } from 'rxjs';
 
+export type RefreshType = 'Node' | 'Full';
+
 @Component({
 	selector: 'app-event-detail',
 	templateUrl: './event-detail.component.html',
@@ -31,7 +33,7 @@ export class EventDetailComponent implements OnDestroy {
 	
 	@Input() event!: AbstractEvent<any>;
 	@Output() close = new EventEmitter<void>();
-	@Output() refresh = new EventEmitter<AbstractEvent<any>>();
+	@Output() refresh = new EventEmitter<RefreshType>();
 	
 	newData: any;
 	unknownObj?: { data: any };
@@ -113,7 +115,9 @@ export class EventDetailComponent implements OnDestroy {
 	
 	private update() {
 		this.event.data = this.unknownObj ? this.unknownObj.data : this.newData;
+		const previousChildCount = this.event.children.length;
 		this.event.update();
-		this.refresh.emit(this.event);
+		const childCount = this.event.children.length;
+		this.refresh.emit((childCount > 0 || previousChildCount !== childCount)? 'Full' : 'Node');
 	}
 }
