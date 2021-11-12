@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 - Full event editor support for `quest`, `shop`, `arena` and `trade` events
+- Ability to view and edit `START_NPC_TRADE_MENU` event branches
+
+### Fixed
+- Changes in the number of choices of `SHOW_CHOICE` events now update the branches visible in the event editor immediately
 
 ## [0.12.0] 2021-10-05
 
