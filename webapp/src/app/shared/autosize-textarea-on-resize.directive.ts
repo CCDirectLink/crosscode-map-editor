@@ -1,13 +1,14 @@
-import {Directive, ViewChild, ElementRef, ChangeDetectorRef, OnInit, DoCheck} from '@angular/core';
+import {Directive, ViewChild, ElementRef, ChangeDetectorRef, OnInit, DoCheck, OnDestroy} from '@angular/core';
 import {CdkTextareaAutosize} from '@angular/cdk/text-field';
 
 
 @Directive({
 	selector: '[appAutosizeTextareaOnResize]'
 })
-export class AutosizeTextareaOnResizeDirective implements OnInit, DoCheck {
+export class AutosizeTextareaOnResizeDirective implements OnInit, DoCheck, OnDestroy {
 	//@ViewChild(CdkTextareaAutosize, {static: true}) autoSize?: CdkTextareaAutosize;
 	private previousWidth = 0;
+	private periodicCheckHandle!: NodeJS.Timeout;
 	
 	constructor(
 		private readonly element: ElementRef,
@@ -24,7 +25,7 @@ export class AutosizeTextareaOnResizeDirective implements OnInit, DoCheck {
 		//This seems to happen because the widget is created with minimum width and
 		//and its height is determined then, but when expanded its height does not get adjusted.
 		//So as a workaround 500ms from when the panel is opened we force a size update of the widget.
-		setInterval (() => {
+		this.periodicCheckHandle = setInterval (() => {
 			//this.changeDetector.detectChanges ();
 			this.updateSize();
 		}, 100);
@@ -32,6 +33,10 @@ export class AutosizeTextareaOnResizeDirective implements OnInit, DoCheck {
 	
 	ngDoCheck() {
 		this.updateSize();
+	}
+	
+	ngOnDestroy() {
+		clearInterval(this.periodicCheckHandle);
 	}
 	
 	private updateSize() {
