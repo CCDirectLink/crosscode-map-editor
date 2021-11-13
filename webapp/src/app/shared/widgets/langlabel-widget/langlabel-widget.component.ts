@@ -3,11 +3,11 @@ import {Component, ElementRef, QueryList, ViewChild, ViewChildren, ChangeDetecto
 import {AbstractWidget} from '../abstract-widget';
 
 @Component({
-	selector: 'app-language-label-widget',
-	templateUrl: './language-label-widget.component.html',
-	styleUrls: ['./language-label-widget.component.scss', '../widget.scss']
+	selector: 'app-langlabel-widget',
+	templateUrl: './langlabel-widget.component.html',
+	styleUrls: ['./langlabel-widget.component.scss', '../widget.scss']
 })
-export class LanguageLabelWidgetComponent extends AbstractWidget {
+export class LangLabelWidgetComponent extends AbstractWidget {
 	@ViewChildren(CdkTextareaAutosize) inputTextareas?: QueryList<CdkTextareaAutosize>;
 	languages: string[] = [
 		'en_US',

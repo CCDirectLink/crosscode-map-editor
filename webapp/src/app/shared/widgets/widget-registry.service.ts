@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {StringWidgetComponent} from './string-widget/string-widget.component';
-import {LanguageLabelWidgetComponent} from './language-label-widget/language-label-widget.component';
+import {LangLabelWidgetComponent} from './langlabel-widget/langlabel-widget.component';
 import {JsonWidgetComponent} from './json-widget/json-widget.component';
 import {NumberWidgetComponent} from './number-widget/number-widget.component';
 import {BooleanWidgetComponent} from './boolean-widget/boolean-widget.component';
@@ -29,7 +29,7 @@ export class WidgetRegistryService {
 		this.register('Character', CharacterWidgetComponent);
 		this.register('PersonExpression', PersonExpressionWidgetComponent);
 		this.register('EnemyType', EnemyTypeWidgetComponent);
-		this.register('LangLabel', LanguageLabelWidgetComponent);
+		this.register('LangLabel', LangLabelWidgetComponent);
 	}
 
 	private setDefaultWidget(widget: any) {
