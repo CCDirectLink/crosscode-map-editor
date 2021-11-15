@@ -1,6 +1,7 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {Component, ElementRef, QueryList, ViewChild, ViewChildren, ChangeDetectorRef} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
+import {ResizedEvent} from 'angular-resize-event';
 
 @Component({
 	selector: 'app-langlabel-widget',
@@ -8,7 +9,7 @@ import {AbstractWidget} from '../abstract-widget';
 	styleUrls: ['./langlabel-widget.component.scss', '../widget.scss']
 })
 export class LangLabelWidgetComponent extends AbstractWidget {
-	@ViewChildren(CdkTextareaAutosize) inputTextareas?: QueryList<CdkTextareaAutosize>;
+	@ViewChildren(CdkTextareaAutosize) inputTextareas!: QueryList<CdkTextareaAutosize>;
 	languages: string[] = [
 		'en_US',
 		'de_DE',
@@ -30,5 +31,9 @@ export class LangLabelWidgetComponent extends AbstractWidget {
 		return {
 			...this.languages
 		};
+	}
+	
+	resizeTextareas() {
+		this.inputTextareas.forEach(autosize => autosize.resizeToFitContent(true));
 	}
 }

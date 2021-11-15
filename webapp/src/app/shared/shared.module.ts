@@ -19,7 +19,6 @@ import {ModalDirective} from './modal.directive';
 import {KeepHtmlPipe} from './keep-html.pipe';
 import {SettingsComponent} from '../components/dialogs/settings/settings.component';
 import {OverlayModule} from './overlay/overlay.module';
-import {AutosizeTextareaOnResizeDirective} from './autosize-textarea-on-resize.directive';
 
 import {MapContentSettingsComponent} from '../components/dialogs/map-settings/map-content-settings/map-content-settings.component';
 import {HighlightDirective} from './highlight.directive';
@@ -55,7 +54,6 @@ import { SplitPaneModule } from './split-pane/split-pane.module';
 		SettingsComponent,
 		HighlightDirective,
 		ListSearchOverlayComponent,
-		AutosizeTextareaOnResizeDirective,
 	],
 	providers: [
 		HttpClientService,
@@ -88,7 +86,6 @@ import { SplitPaneModule } from './split-pane/split-pane.module';
 		SettingsComponent,
 		HighlightDirective,
 		SplitPaneComponent,
-		AutosizeTextareaOnResizeDirective,
 	]
 })
 export class SharedModule {
