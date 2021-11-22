@@ -4,6 +4,7 @@ import {DefaultEvent} from './default-event';
 import {If} from './if';
 import {ShowMsg} from './show-msg';
 import {ShowChoice} from './ShowChoice';
+import {OpenQuestDialog} from './open-quest-dialogue';
 import {SetPlayerCore} from './set-player-core';
 import {ClearSlowMotion} from './clear-slow-motion';
 import {SetOverlay} from './set-overlay';
@@ -46,6 +47,7 @@ export class EventRegistryService {
 		this.register('LABEL', Label);
 		this.register('GOTO_LABEL', GotoLabel);
 		this.register('START_NPC_TRADE_MENU', StartNpcTradeMenu);
+		this.register('OPEN_QUEST_DIALOG', OpenQuestDialog);
 		
 	}
 	

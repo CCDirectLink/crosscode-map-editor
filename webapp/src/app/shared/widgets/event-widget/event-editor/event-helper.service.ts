@@ -36,6 +36,10 @@ export class EventHelperService {
 				valTradeMenu.traded = (valTradeMenu.traded ?? []).map((v: EventType) => this.getEventFromType(v, actionStep));
 				valTradeMenu.canceled = (valTradeMenu.canceled ?? []).map((v: EventType) => this.getEventFromType(v, actionStep));
 			}
+		} else if (val.type === 'OPEN_QUEST_DIALOG') {
+			const valQuestDialog = val as any;
+			valQuestDialog.accepted = valQuestDialog.accepted.map((v: EventType) => this.getEventFromType(v, actionStep));
+			valQuestDialog.declined = valQuestDialog.declined.map((v: EventType) => this.getEventFromType(v, actionStep));
 		}
 		
 		instance.update();
