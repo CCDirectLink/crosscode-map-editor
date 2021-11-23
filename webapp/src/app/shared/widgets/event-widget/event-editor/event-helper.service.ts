@@ -30,6 +30,12 @@ export class EventHelperService {
 			valChoice.options.forEach((option: any, index: number) => {
 				valChoice[index] = valChoice[index].map((v: EventType) => this.getEventFromType(v, actionStep));
 			});
+		} else if (val.type === 'START_NPC_TRADE_MENU') {
+			const valTradeMenu = val as any;
+			if (valTradeMenu.withBranches) {
+				valTradeMenu.traded = (valTradeMenu.traded ?? []).map((v: EventType) => this.getEventFromType(v, actionStep));
+				valTradeMenu.canceled = (valTradeMenu.canceled ?? []).map((v: EventType) => this.getEventFromType(v, actionStep));
+			}
 		} else if (val.type === 'OPEN_QUEST_DIALOG') {
 			const valQuestDialog = val as any;
 			valQuestDialog.accepted = valQuestDialog.accepted.map((v: EventType) => this.getEventFromType(v, actionStep));

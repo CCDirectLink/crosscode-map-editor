@@ -9,7 +9,7 @@ import { SplitPaneComponent } from '../../../../split-pane/split-pane.component'
 import { EventDisplay } from '../event-display.model';
 import { AddEventService } from '../add/add-event.service';
 import { EventHistory } from './event-history';
-import { EventDetailComponent } from '../detail/event-detail.component';
+import { EventDetailComponent, RefreshType } from '../detail/event-detail.component';
 import { SettingsService } from '../../../../settings.service';
 
 @Component({
@@ -94,12 +94,12 @@ export class EventEditorComponent implements OnChanges, OnInit {
 		return index < this.treeControl.dataNodes.length - 1;
 	}
 	
-	refresh() {
+	refresh(refreshType: RefreshType) {
 		if (this.shownNode) {
 			this.shownNode.text = this.shownNode.data?.info ?? ' ';
 			this.shownNode.changeDetector?.detectChanges();
 			
-			if (this.shownNode.children) {
+			if (refreshType === 'Full') {
 				this.refreshAll();
 			}
 		}
