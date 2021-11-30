@@ -1,43 +1,31 @@
 $label-width: 50px;
 
-div.row {
-	flex: 1 1 0;
+.property-row {
 	margin-bottom: 4px;
 	
 	&.has-value {
-		align-items: center;
 		align-self: flex-end;
 	}
 	
-	&.language {
-		& label {
-			width: $label-width;
-		}
-		
-		& div {
-			padding: 4px;
-			display: inline-block;
-			height: unset;
-		}
-		
-		& textarea {
-			resize: none;
-			padding: 0px;
-			width: 100%;
-			height: 100%;
-			outline: none;
-		}
+	&.has-value, &.uid {
+		align-items: center;
 	}
 	
-	&.uid {
-		align-items: center;
-		
-		label {
-			width: $label-width;
-		}
+	&.uid label, &.language label {
+		width: $label-width;
 	}
 }
 
-textarea {
-	overflow: hidden;
+div.padded-autosize-textarea {
+	display: inline-block;
+	padding: 4px;
+	height: unset;
+	
+	textarea {
+		width: 100%;
+		height: 100%;
+		padding: 0px;
+		resize: none;
+		outline: none;
+	}
 }

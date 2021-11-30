@@ -2,7 +2,7 @@
 	<label [for]="key" class="property-name">{{key}}:</label>
 	
 	<div fxLayout="column" fxFlex="1 1 0">
-		<div fxLayout="row" class="row has-value">
+		<div fxLayout="row" class="property-row has-value">
 			<label for=".hasValue" class="property-name">Has value: </label>
 			<mat-checkbox
 				[ngModel]="hasValue"
@@ -13,10 +13,10 @@
 			></mat-checkbox>
 		</div>
 		<div *ngIf="hasValue" (resized)="resizeTextareas()">
-			<div *ngFor="let language of languages" fxLayout="row" class="language row">
+			<div *ngFor="let language of languages" fxLayout="row" class="property-row language">
 				<label for="{{key}}.{{language}}" class="property-name">{{language}}</label>
 				<!-- textarea inside div with padding because autosize does not like textareas with padding -->
-				<div class="default-input">
+				<div class="default-input padded-autosize-textarea">
 					<textarea
 						class="default-input"
 						id="{{key}}.{{language}}"
@@ -26,7 +26,7 @@
 					></textarea>
 				</div>
 			</div>
-			<div fxLayout="row" class="row uid">
+			<div fxLayout="row" class="property-row uid">
 				<label for="{{key}}.langUid" class="property-name">langUid</label>
 				<input
 					type="number"
