@@ -1,5 +1,5 @@
-import { Point } from "../../models/cross-code-map";
-import { Globals } from "../globals";
+import { Point } from '../../models/cross-code-map';
+import { Globals } from '../globals';
 
 export class CoordsHUD extends Phaser.GameObjects.GameObject {
 	private exact: Point = { x: 0, y: 0 };
@@ -18,7 +18,7 @@ export class CoordsHUD extends Phaser.GameObjects.GameObject {
 
 		// the text pos is inited as 0, it'll be properly set in updateText()
 		this.text = scene.add
-			.text(0, 0, "")
+			.text(0, 0, '')
 			.setFontFamily('Roboto, "Helvetica Neue", sans-serif')
 			.setPadding(5, 0, 0, 5)
 			.setDepth(1000);
