@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {EditorView} from '../models/editor-view';
 import {CCEntity} from './phaser/entities/cc-entity';
-import {MapEntity, Point} from '../models/cross-code-map';
-import { CoordsData } from './phaser/coords-reporter';
+import {MapEntity, Point, Point3} from '../models/cross-code-map';
 
 @Injectable()
 export class GlobalEventsService {
@@ -19,7 +18,7 @@ export class GlobalEventsService {
 	toggleVisibility = new Subject<void>();
 	showAddEntityMenu = new Subject<Point>();
 
-  updateCoords = new Subject<CoordsData>();
+  updateCoords = new Subject<Point3 | null>();
 	
 	babylonLoading = new BehaviorSubject<boolean>(false);
 	is3D = new BehaviorSubject<boolean>(false);

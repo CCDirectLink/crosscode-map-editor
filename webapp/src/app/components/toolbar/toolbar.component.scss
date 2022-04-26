@@ -29,6 +29,10 @@ mat-spinner {
 .coords {
   left: 300px; // next to sidebar
   background-color: #0005;
+
+  &.inactive {
+    display: none;
+  }
 }
 
 .load-error{

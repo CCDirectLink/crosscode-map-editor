@@ -75,14 +75,7 @@ export class ToolbarComponent implements OnInit {
 		this.events.babylonLoading.subscribe(val => this.is3dLoading = val);
 
 		this.events.updateCoords.subscribe(coords => {
-			const t = coords.tile;
-			const e = coords.exact;
-			const l = coords.layer;
-
-			this.coords = `Tile: (${t.x}, ${t.y}) Absolute: (${e.x}, ${e.y})`;
-			if (l) {
-				this.coords += ` Layer: (${l.x}, ${l.y})`;
-			}
+			this.coords = coords === null ? '' : `(${coords.x}, ${coords.y}, ${coords.z})`;
 		});
 	}
 
