@@ -79,8 +79,8 @@ export class MainScene extends Phaser.Scene {
 		
 		this.add.existing(entityManager);
 
-		const coordsHud = new CoordsReporter(this, 'coordsHud');
-		this.add.existing(coordsHud);
+		const coordsReporter = new CoordsReporter(this, 'coordsReporter');
+		this.add.existing(coordsReporter);
 		
 		Globals.globalEventsService.currentView.subscribe(view => {
 			tileDrawer.setActive(false);
