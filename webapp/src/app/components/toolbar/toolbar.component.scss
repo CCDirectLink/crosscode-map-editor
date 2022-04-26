@@ -13,12 +13,22 @@ mat-spinner {
 	height: 40px;
 }
 
-.version {
-	bottom: 5px;
-	right: 5px;
+.caption {
+  bottom: 0;
+  padding: 5px;
 	color: white;
 	z-index: 9999;
 	position: absolute;
+  pointer-events: none;
+}
+
+.version {
+	right: 0;
+}
+
+.coords {
+  left: 300px; // next to sidebar
+  background-color: #0005;
 }
 
 .load-error{

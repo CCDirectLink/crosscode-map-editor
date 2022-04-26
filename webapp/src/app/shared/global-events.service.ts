@@ -3,6 +3,7 @@ import {BehaviorSubject, Subject} from 'rxjs';
 import {EditorView} from '../models/editor-view';
 import {CCEntity} from './phaser/entities/cc-entity';
 import {MapEntity, Point} from '../models/cross-code-map';
+import { CoordsData } from './phaser/coords-reporter';
 
 @Injectable()
 export class GlobalEventsService {
@@ -17,6 +18,8 @@ export class GlobalEventsService {
 	offsetMap = new Subject<Point>();
 	toggleVisibility = new Subject<void>();
 	showAddEntityMenu = new Subject<Point>();
+
+  updateCoords = new Subject<CoordsData>();
 	
 	babylonLoading = new BehaviorSubject<boolean>(false);
 	is3D = new BehaviorSubject<boolean>(false);

@@ -29,6 +29,7 @@ export class ToolbarComponent implements OnInit {
 	version = environment.version;
 	is3d = false;
 	is3dLoading = false;
+	coords = '';
 
 	@Output()
 	public loadMapClicked = new EventEmitter<void>(false);
@@ -72,6 +73,17 @@ export class ToolbarComponent implements OnInit {
 		}
 
 		this.events.babylonLoading.subscribe(val => this.is3dLoading = val);
+
+		this.events.updateCoords.subscribe(coords => {
+			const t = coords.tile;
+			const e = coords.exact;
+			const l = coords.layer;
+
+			this.coords = `Tile: (${t.x}, ${t.y}) Absolute: (${e.x}, ${e.y})`;
+			if (l) {
+				this.coords += ` Layer: (${l.x}, ${l.y})`;
+			}
+		});
 	}
 
 	saveMap(saveAs: boolean) {

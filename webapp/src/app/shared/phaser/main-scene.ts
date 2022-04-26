@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { MapPan } from './map-pan';
 import { TileDrawer } from './tilemap/tile-drawer';
 import { EntityManager } from './entities/entity-manager';
-import { CoordsHUD } from './coords-hud';
+import { CoordsReporter } from './coords-reporter';
 
 export class MainScene extends Phaser.Scene {
 	
@@ -79,7 +79,7 @@ export class MainScene extends Phaser.Scene {
 		
 		this.add.existing(entityManager);
 
-		const coordsHud = new CoordsHUD(this, 'coordsHud');
+		const coordsHud = new CoordsReporter(this, 'coordsHud');
 		this.add.existing(coordsHud);
 		
 		Globals.globalEventsService.currentView.subscribe(view => {
