@@ -27,7 +27,8 @@ export class CoordsHUD extends Phaser.GameObjects.GameObject {
 		this.text = scene.add
 			.text(0, 0, '')
 			.setFontFamily('Roboto, "Helvetica Neue", sans-serif')
-			.setPadding(5, 0, 0, 5)
+			.setBackgroundColor('#0006')
+			.setPadding(5, 5, 5, 5)
 			.setDepth(1000);
 	}
 
@@ -36,14 +37,24 @@ export class CoordsHUD extends Phaser.GameObjects.GameObject {
 		const e = this.exact;
 		const oe = this.offsetExact;
 
+		const cam = this.scene.cameras.main;
+
+		// zoom compensation
+		const xZoomComp = (cam.width - cam.displayWidth) / 2;
+		const yZoomComp = (cam.height - cam.displayHeight) / 2;
+
 		this.text
-			.setText(`Tile: (${t.x}, ${t.y}) Absolute: (${e.x}, ${e.y}) Layer: (${oe.x}, ${oe.y})`)
+			.setText(
+				`Tile: (${t.x}, ${t.y}) Absolute: (${e.x}, ${e.y}) Layer: (${oe.x}, ${oe.y})`
+			)
+			.setScale(1 / cam.zoom)
 			// if the camera is 5 units right, move the text 5 units right ETC
-			.setX(this.scene.cameras.main.scrollX)
+			.setX(cam.scrollX + xZoomComp)
 			.setY(
-				this.scene.cameras.main.scrollY + // as above
-					this.scene.cameras.main.height - // move to the bottom of the screen
-					this.text.height // make sure its visible, not just out of view
+				cam.scrollY + // as above
+					cam.displayHeight - // move to the bottom of the screen
+					this.text.displayHeight + // make sure its visible, not just out of view
+					yZoomComp
 			);
 	}
 
