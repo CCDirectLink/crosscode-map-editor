@@ -4,6 +4,13 @@ import { Globals } from '../globals';
 export class CoordsHUD extends Phaser.GameObjects.GameObject {
 	private exact: Point = { x: 0, y: 0 };
 
+	private get offsetExact(): Point {
+		return {
+			x: this.exact.x,
+			y: this.exact.y + this.levelOffset,
+		};
+	}
+
 	private get tile(): Point {
 		return {
 			x: Math.floor(this.exact.x / Globals.TILE_SIZE),
@@ -27,9 +34,10 @@ export class CoordsHUD extends Phaser.GameObjects.GameObject {
 	private updateText() {
 		const t = this.tile;
 		const e = this.exact;
+		const oe = this.offsetExact;
 
 		this.text
-			.setText(`Tile: (${t.x}, ${t.y}) Exact: (${e.x}, ${e.y})`)
+			.setText(`Tile: (${t.x}, ${t.y}) Absolute: (${e.x}, ${e.y}) Layer: (${oe.x}, ${oe.y})`)
 			// if the camera is 5 units right, move the text 5 units right ETC
 			.setX(this.scene.cameras.main.scrollX)
 			.setY(
@@ -37,6 +45,15 @@ export class CoordsHUD extends Phaser.GameObjects.GameObject {
 					this.scene.cameras.main.height - // move to the bottom of the screen
 					this.text.height // make sure its visible, not just out of view
 			);
+	}
+
+	private get levelOffset(): number {
+		const maybeLevel =
+			Globals.mapLoaderService.selectedLayer.value?.details.level;
+
+		return typeof maybeLevel === 'number'
+			? Globals.map.levels[maybeLevel].height
+			: 0;
 	}
 
 	preUpdate() {
