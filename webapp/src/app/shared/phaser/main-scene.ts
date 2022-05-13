@@ -79,7 +79,7 @@ export class MainScene extends Phaser.Scene {
 		
 		this.add.existing(entityManager);
 
-		const coordsReporter = new CoordsReporter(this, 'coordsReporter');
+		const coordsReporter = new CoordsReporter(this);
 		this.add.existing(coordsReporter);
 		
 		Globals.globalEventsService.currentView.subscribe(view => {

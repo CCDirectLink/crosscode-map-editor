@@ -1,9 +1,34 @@
+import { Subscription } from 'rxjs';
 import { Point } from '../../models/cross-code-map';
 import { EditorView } from '../../models/editor-view';
 import { Globals } from '../globals';
+import { BaseObject } from './base-object';
 
-export class CoordsReporter extends Phaser.GameObjects.GameObject {
+export class CoordsReporter extends BaseObject {
 	private rawCoords: Point = { x: 0, y: 0 };
+
+	private sub!: Subscription;
+
+	constructor(scene: Phaser.Scene, active = true) {
+		super(scene, 'coordsReporter', active);
+	}
+
+	protected init() {
+		this.sub = Globals.globalEventsService.currentView.subscribe((view) =>
+			this.setActive(view === EditorView.Entities)
+		);
+	}
+
+	protected activate() {}
+
+	protected deactivate() {
+		Globals.globalEventsService.updateCoords.next();
+	}
+
+	destroy(fromScene?: boolean) {
+		this.sub.unsubscribe();
+		super.destroy(fromScene);
+	}
 
 	private get coords(): Point {
 		return {
@@ -13,7 +38,10 @@ export class CoordsReporter extends Phaser.GameObjects.GameObject {
 	}
 
 	private get isEntityMode() {
-		return Globals.globalEventsService.currentView.value === EditorView.Entities;
+		return (
+			Globals.globalEventsService.currentView.value ===
+			EditorView.Entities
+		);
 	}
 
 	private get entityLevel() {
@@ -28,7 +56,7 @@ export class CoordsReporter extends Phaser.GameObjects.GameObject {
 	// used to help hide coords without firing duplicate events
 	private lastModeWasTile = true;
 
-	private preUpdate() {
+	preUpdate() {
 		const tileMode = !this.isEntityMode;
 		if (tileMode) {
 			if (!this.lastModeWasTile) {
