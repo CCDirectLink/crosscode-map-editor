@@ -75,7 +75,7 @@ export class ToolbarComponent implements OnInit {
 		this.events.babylonLoading.subscribe(val => this.is3dLoading = val);
 
 		this.events.updateCoords.subscribe(coords => {
-			this.coords = coords === null ? '' : `(${coords.x}, ${coords.y}, ${coords.z})`;
+			this.coords = !coords ? '' : `(${coords.x}, ${coords.y}, ${coords.z})`;
 		});
 	}
 

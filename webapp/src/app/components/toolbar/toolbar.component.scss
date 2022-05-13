@@ -5,7 +5,7 @@
 	z-index: 2;
 }
 
-.toggle-3d{
+.toggle-3d {
 	margin-left: 16px;
 }
 
@@ -14,12 +14,12 @@ mat-spinner {
 }
 
 .caption {
-  bottom: 0;
-  padding: 5px;
+	bottom: 0;
+	padding: 5px;
 	color: white;
 	z-index: 9999;
 	position: absolute;
-  pointer-events: none;
+	pointer-events: none;
 }
 
 .version {
@@ -27,14 +27,14 @@ mat-spinner {
 }
 
 .coords {
-  left: 300px; // next to sidebar
-  background-color: #0005;
+	left: 300px; // next to sidebar
+	background-color: #0005;
 
-  &.inactive {
-    display: none;
-  }
+	&.inactive {
+		display: none;
+	}
 }
 
-.load-error{
+.load-error {
 	color: mat.get-color-from-palette(mat.$red-palette, 500);
 }

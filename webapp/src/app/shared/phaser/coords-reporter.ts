@@ -13,10 +13,7 @@ export class CoordsReporter extends Phaser.GameObjects.GameObject {
 	}
 
 	private get isEntityMode() {
-		return (
-			Globals.globalEventsService.currentView.value ===
-			EditorView.Entities
-		);
+		return Globals.globalEventsService.currentView.value === EditorView.Entities;
 	}
 
 	private get entityLevel() {
@@ -35,7 +32,7 @@ export class CoordsReporter extends Phaser.GameObjects.GameObject {
 		const tileMode = !this.isEntityMode;
 		if (tileMode) {
 			if (!this.lastModeWasTile) {
-				Globals.globalEventsService.updateCoords.next(null);
+				Globals.globalEventsService.updateCoords.next(undefined);
 			}
 
 			return;
@@ -49,9 +46,9 @@ export class CoordsReporter extends Phaser.GameObjects.GameObject {
 		};
 
 		// don't send events if we don't have to
-		if (newRaw.x === this.rawCoords.x && newRaw.y === this.rawCoords.y) {
+		/* if (newRaw.x === this.rawCoords.x && newRaw.y === this.rawCoords.y) {
 			return;
-		}
+		} */
 
 		this.rawCoords = newRaw;
 		this.lastModeWasTile = tileMode;

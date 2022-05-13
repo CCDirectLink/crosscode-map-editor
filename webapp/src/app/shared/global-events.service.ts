@@ -1,12 +1,11 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, Subject} from 'rxjs';
-import {EditorView} from '../models/editor-view';
-import {CCEntity} from './phaser/entities/cc-entity';
-import {MapEntity, Point, Point3} from '../models/cross-code-map';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { EditorView } from '../models/editor-view';
+import { CCEntity } from './phaser/entities/cc-entity';
+import { MapEntity, Point, Point3 } from '../models/cross-code-map';
 
 @Injectable()
 export class GlobalEventsService {
-
 	currentView = new BehaviorSubject<EditorView | undefined>(undefined);
 	selectedEntity = new BehaviorSubject<CCEntity | undefined>(undefined);
 	updateEntitySettings = new Subject<CCEntity>();
@@ -18,12 +17,10 @@ export class GlobalEventsService {
 	toggleVisibility = new Subject<void>();
 	showAddEntityMenu = new Subject<Point>();
 
-  updateCoords = new Subject<Point3 | null>();
-	
+	updateCoords = new Subject<Point3 | undefined>();
+
 	babylonLoading = new BehaviorSubject<boolean>(false);
 	is3D = new BehaviorSubject<boolean>(false);
 
-	constructor() {
-	}
-
+	constructor() {}
 }
