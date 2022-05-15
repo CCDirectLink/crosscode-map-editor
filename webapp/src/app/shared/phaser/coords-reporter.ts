@@ -38,10 +38,7 @@ export class CoordsReporter extends BaseObject {
 	}
 
 	private get isEntityMode() {
-		return (
-			Globals.globalEventsService.currentView.value ===
-			EditorView.Entities
-		);
+		return Globals.globalEventsService.currentView.value === EditorView.Entities;
 	}
 
 	private get entityLevel() {
