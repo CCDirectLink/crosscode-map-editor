@@ -8,9 +8,9 @@ import { Globals } from '../../shared/globals';
 	styleUrls: ['./captions.component.scss'],
 })
 export class CaptionsComponent implements OnInit {
-	private version = environment.version;
-	private coords = '';
-	private coordsClass = 'inactive';
+	version = environment.version;
+	coords = '';
+	coordsClass = 'inactive';
 
 	ngOnInit(): void {
 		Globals.globalEventsService.updateCoords.subscribe((coords) => {
