@@ -13,8 +13,6 @@ import { SettingsComponent } from '../dialogs/settings/settings.component';
 import { SaveService } from '../../services/save.service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
-import { take } from 'rxjs/operators';
-import { EditorView } from '../../models/editor-view';
 
 @Component({
 	selector: 'app-toolbar',
@@ -26,10 +24,8 @@ export class ToolbarComponent implements OnInit {
 	map?: CCMap;
 	loaded = false;
 	error = '';
-	version = environment.version;
 	is3d = false;
 	is3dLoading = false;
-	coords = '';
 
 	@Output()
 	public loadMapClicked = new EventEmitter<void>(false);
@@ -73,10 +69,6 @@ export class ToolbarComponent implements OnInit {
 		}
 
 		this.events.babylonLoading.subscribe(val => this.is3dLoading = val);
-
-		this.events.updateCoords.subscribe(coords => {
-			this.coords = !coords ? '' : `(${coords.x}, ${coords.y}, ${coords.z})`;
-		});
 	}
 
 	saveMap(saveAs: boolean) {

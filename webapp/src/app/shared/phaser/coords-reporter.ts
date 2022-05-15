@@ -53,19 +53,7 @@ export class CoordsReporter extends BaseObject {
 			: 0;
 	}
 
-	// used to help hide coords without firing duplicate events
-	private lastModeWasTile = true;
-
 	preUpdate() {
-		const tileMode = !this.isEntityMode;
-		if (tileMode) {
-			if (!this.lastModeWasTile) {
-				Globals.globalEventsService.updateCoords.next(undefined);
-			}
-
-			return;
-		}
-
 		const pointer = this.scene.input.activePointer;
 
 		const newRaw = {
@@ -73,13 +61,7 @@ export class CoordsReporter extends BaseObject {
 			y: Math.floor(pointer.worldY),
 		};
 
-		// don't send events if we don't have to
-		/* if (newRaw.x === this.rawCoords.x && newRaw.y === this.rawCoords.y) {
-			return;
-		} */
-
 		this.rawCoords = newRaw;
-		this.lastModeWasTile = tileMode;
 
 		// send event
 		Globals.globalEventsService.updateCoords.next({
