@@ -13,8 +13,6 @@ import { SettingsComponent } from '../dialogs/settings/settings.component';
 import { SaveService } from '../../services/save.service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
-import { take } from 'rxjs/operators';
-import { EditorView } from '../../models/editor-view';
 
 @Component({
 	selector: 'app-toolbar',
@@ -26,7 +24,6 @@ export class ToolbarComponent implements OnInit {
 	map?: CCMap;
 	loaded = false;
 	error = '';
-	version = environment.version;
 	is3d = false;
 	is3dLoading = false;
 
