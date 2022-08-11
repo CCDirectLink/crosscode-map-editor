@@ -5,7 +5,7 @@
 	z-index: 2;
 }
 
-.toggle-3d{
+.toggle-3d {
 	margin-left: 16px;
 }
 
@@ -13,14 +13,6 @@ mat-spinner {
 	height: 40px;
 }
 
-.version {
-	bottom: 5px;
-	right: 5px;
-	color: white;
-	z-index: 9999;
-	position: absolute;
-}
-
-.load-error{
+.load-error {
 	color: mat.get-color-from-palette(mat.$red-palette, 500);
 }

@@ -4,6 +4,7 @@ import {DefaultEvent} from './default-event';
 import {If} from './if';
 import {ShowMsg} from './show-msg';
 import {ShowChoice} from './ShowChoice';
+import {OpenQuestDialog} from './open-quest-dialogue';
 import {SetPlayerCore} from './set-player-core';
 import {ClearSlowMotion} from './clear-slow-motion';
 import {SetOverlay} from './set-overlay';
@@ -16,6 +17,7 @@ import {SetCameraPos} from './set-camera-pos';
 import {SetCameraBetween} from './set-camera-between';
 import {Label} from './label';
 import {GotoLabel} from './goto-label';
+import {StartNpcTradeMenu} from './start-npc-trade-menu';
 import {AbstractEvent, EventType} from './abstract-event';
 import {DomSanitizer} from '@angular/platform-browser';
 
@@ -44,6 +46,8 @@ export class EventRegistryService {
 		this.register('WAIT', Wait);
 		this.register('LABEL', Label);
 		this.register('GOTO_LABEL', GotoLabel);
+		this.register('START_NPC_TRADE_MENU', StartNpcTradeMenu);
+		this.register('OPEN_QUEST_DIALOG', OpenQuestDialog);
 		
 	}
 	

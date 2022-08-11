@@ -45,7 +45,7 @@
 		</ng-container>
 		<ng-container ngProjectAs="right">
 			<div class="details-container dark-scrollbar">
-				<app-event-detail #eventDetail (refresh)="refresh()" (close)="hideDetails()"></app-event-detail>
+				<app-event-detail #eventDetail (refresh)="refresh($event)" (close)="hideDetails()"></app-event-detail>
 			</div>
 		</ng-container>
 	</app-split-pane>
