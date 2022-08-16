@@ -5830,24 +5830,7 @@
 		"attributes": {
 			"member": {
 				"type": "String",
-				"description": "Party member to change",
-				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
-				}
+				"description": "Party member to change"
 			},
 			"locked": {
 				"type": "Boolean",
@@ -5917,24 +5900,7 @@
 		"attributes": {
 			"member": {
 				"type": "String",
-				"description": "Party member to add",
-				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
-				}
+				"description": "Party member to add"
 			},
 			"npc": {
 				"type": "NPC",
@@ -5959,24 +5925,7 @@
 		"attributes": {
 			"member": {
 				"type": "String",
-				"description": "Party member to add",
-				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
-				}
+				"description": "Party member to add"
 			},
 			"level": {
 				"type": "Integer",
@@ -6002,24 +5951,7 @@
 		"attributes": {
 			"member": {
 				"type": "String",
-				"description": "Party member to modify",
-				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
-				}
+				"description": "Party member to modify"
 			},
 			"noDie": {
 				"type": "Boolean",
@@ -6034,24 +5966,7 @@
 		"attributes": {
 			"member": {
 				"type": "String",
-				"description": "Party member to add",
-				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
-				}
+				"description": "Party member to add"
 			},
 			"level": {
 				"type": "String",
@@ -6071,24 +5986,7 @@
 		"attributes": {
 			"member": {
 				"type": "String",
-				"description": "Party member to add",
-				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
-				}
+				"description": "Party member to add"
 			},
 			"allElements": {
 				"type": "Boolean",
@@ -6101,24 +5999,7 @@
 		"attributes": {
 			"member": {
 				"type": "String",
-				"description": "Party member to add",
-				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
-				}
+				"description": "Party member to add"
 			},
 			"npc": {
 				"type": "NPC",
