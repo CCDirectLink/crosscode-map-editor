@@ -28,9 +28,11 @@ export class LangLabelWidgetComponent extends AbstractWidget {
 	}
 	
 	get defaultValue() {
-		return {
-			...this.languages
-		};
+		const value = Object.create(null);
+		for (const language of this.languages) {
+			value[language] = '';
+		}
+		return value;
 	}
 	
 	resizeTextareas() {
