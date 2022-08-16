@@ -1,13 +1,17 @@
 <div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
 	<label [for]="key" class="property-name">{{key}}:</label>
 	<div class="mat-select-container" *ngIf="attribute?.options; else defaultInput">
-		<mat-select [id]="key"
-		            [ngModel]="settings[key]"
-		            (selectionChange)="setSetting(key, $event.value)">
-			<mat-option *ngFor="let option of keys" [value]="option">
-				{{ option }}
+		<input class="default-input"
+			[id]="key"
+			[matAutocomplete]="auto"
+			[ngModel]="settings[key]"
+			(ngModelChange)="setSetting(key, $event)"
+		>
+		<mat-autocomplete #auto="matAutocomplete">
+			<mat-option *ngFor="let key of keys" [value]="key">
+				<span> {{key}} </span>
 			</mat-option>
-		</mat-select>
+		</mat-autocomplete>
 	</div>
 	<ng-template #defaultInput>
 		<input class="default-input"
