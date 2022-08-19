@@ -24,4 +24,14 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 			}
 		}
 	}
+	
+	filteredOptions() {
+		const text = this.settings[this.key] as string;
+		const lowercaseText = text.toLowerCase();
+		if (this.keys.some(option => option === text)) {
+			return this.keys;
+		} else {
+			return this.keys.filter(option => option.toLowerCase().startsWith(lowercaseText));
+		}
+	}
 }

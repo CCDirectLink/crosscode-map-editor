@@ -8,7 +8,7 @@
 			(ngModelChange)="setSetting(key, $event)"
 		>
 		<mat-autocomplete #auto="matAutocomplete">
-			<mat-option *ngFor="let key of keys" [value]="key">
+			<mat-option *ngFor="let key of filteredOptions()" [value]="key">
 				<span> {{key}} </span>
 			</mat-option>
 		</mat-autocomplete>
