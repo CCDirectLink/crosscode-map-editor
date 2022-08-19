@@ -10,6 +10,7 @@ import {SearchFilterService} from '../../search-filter.service';
 export class StringWidgetComponent extends AbstractWidget implements OnInit {
 	
 	keys: string[] = [];
+	suggestedOptions: string[] = [];
 	
 	constructor(
 		private searchFilterService: SearchFilterService,
@@ -26,16 +27,18 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 				this.keys.unshift('');
 			}
 		}
+		this.updateSuggestedOptions();
 	}
 	
-	filteredOptions() {
+	updateSuggestedOptions() {
 		const inputText = this.settings[this.key];
 		const searchResults = this.searchFilterService.filterOptions(this.keys, inputText);
 		
 		if (searchResults.length === 1 && searchResults[0] === inputText) {
-			return this.keys; //This makes it so that if the text is the same as one of the search results all search results are shown (emulates selector-like behaviour).
+			//This makes it so that if the text is the same as one of the search results all search results are shown (emulates selector-like behaviour).
+			this.suggestedOptions = this.keys;
 		} else {
-			return searchResults;
+			this.suggestedOptions = searchResults;
 		}
 	}
 }
