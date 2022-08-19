@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 import {SearchFilterService} from '../../search-filter.service';
+import {HighlightDirective} from '../../highlight.directive';
 
 @Component({
 	selector: 'app-string-widget',

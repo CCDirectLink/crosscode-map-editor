@@ -8,8 +8,8 @@
 			(ngModelChange)="setSetting(key, $event); updateSuggestedOptions()"
 		>
 		<mat-autocomplete #auto="matAutocomplete">
-			<mat-option *ngFor="let key of suggestedOptions" [value]="key">
-				<span> {{key}} </span>
+			<mat-option *ngFor="let option of suggestedOptions" [value]="option">
+				<span appHighlight [highlightText]="option" [highlightMatch]="settings[key]"></span>
 			</mat-option>
 		</mat-autocomplete>
 	</div>
