@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
+import {SearchFilterService} from '../../search-filter.service';
 
 @Component({
 	selector: 'app-string-widget',
@@ -10,7 +11,9 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 	
 	keys: string[] = [];
 	
-	constructor() {
+	constructor(
+		private searchFilterService: SearchFilterService,
+	) {
 		super();
 	}
 	
@@ -26,12 +29,13 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 	}
 	
 	filteredOptions() {
-		const text = this.settings[this.key] as string;
-		const lowercaseText = text.toLowerCase();
-		if (this.keys.some(option => option === text)) {
-			return this.keys;
+		const inputText = this.settings[this.key];
+		const searchResults = this.searchFilterService.filterOptions(this.keys, inputText);
+		
+		if (searchResults.length === 1 && searchResults[0] === inputText) {
+			return this.keys; //This makes it so that if the text is the same as one of the search results all search results are shown (emulates selector-like behaviour).
 		} else {
-			return this.keys.filter(option => option.toLowerCase().startsWith(lowercaseText));
+			return searchResults;
 		}
 	}
 }

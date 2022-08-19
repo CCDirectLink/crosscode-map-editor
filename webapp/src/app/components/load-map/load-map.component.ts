@@ -6,6 +6,7 @@ import {HttpClientService} from '../../services/http-client.service';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {MapNode, MapNodeRoot} from './mapNode.model';
 import {VirtualMapNode} from './virtualMapNode.model';
+import {SearchFilterService} from '../../shared/search-filter.service';
 
 
 @Component({
@@ -37,7 +38,8 @@ export class LoadMapComponent {
 	constructor(
 		private mapLoader: MapLoaderService,
 		private http: HttpClientService,
-		private ref: ChangeDetectorRef
+		private ref: ChangeDetectorRef,
+		private searchFilterService: SearchFilterService,
 	) {
 		this.mapsSource.data = [];
 		this.refresh();
@@ -133,7 +135,7 @@ export class LoadMapComponent {
 	}
 	
 	private filterNode(node: MapNode, filter: string): boolean {
-		if (node.name.includes(filter)) {
+		if (this.searchFilterService.test(node.name, filter)) {
 			node.displayed = true;
 			this.displayChildren(node);
 			return true;
