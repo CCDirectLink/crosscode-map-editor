@@ -6,7 +6,7 @@ import {HttpClientService} from '../../services/http-client.service';
 import {MapLoaderService} from '../../shared/map-loader.service';
 import {MapNode, MapNodeRoot} from './mapNode.model';
 import {VirtualMapNode} from './virtualMapNode.model';
-import {SearchFilterService} from '../../shared/search-filter.service';
+import {SearchFilterService} from '../../services/search-filter.service';
 
 
 @Component({

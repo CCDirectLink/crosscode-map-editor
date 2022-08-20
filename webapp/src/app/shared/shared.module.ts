@@ -28,7 +28,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 import { BrowserService } from '../services/browser.service';
 import { SplitPaneComponent } from './split-pane/split-pane.component';
 import { SplitPaneModule } from './split-pane/split-pane.module';
-import {SearchFilterService} from './search-filter.service';
+import {SearchFilterService} from '../services/search-filter.service';
 
 @NgModule({
 	imports: [
