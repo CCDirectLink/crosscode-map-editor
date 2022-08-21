@@ -13,7 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fixes inability to edit certain `String` properties of various event and action steps.
 
 ### Changed
-- All `String` inputs now also allow values different from the suggested ones.
+- `String` inputs for event steps, action steps, and entity properties now also allow values different from the suggested ones.
 
 ## [0.14.0] 2022-05-28
 - Add coordinate display for the cursor in entity view
