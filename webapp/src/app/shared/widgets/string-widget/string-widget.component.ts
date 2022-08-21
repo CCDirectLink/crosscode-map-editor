@@ -32,7 +32,7 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 	}
 	
 	updateSuggestedOptions() {
-		const inputText = this.settings[this.key];
+		const inputText = this.settings[this.key] ?? '';
 		const searchResults = this.searchFilterService.filterOptions(this.keys, inputText);
 		
 		if (searchResults.some(option => option === inputText)) {
