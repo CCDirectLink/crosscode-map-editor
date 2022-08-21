@@ -7,7 +7,7 @@
 			[ngModel]="settings[key]"
 			(ngModelChange)="setSetting(key, $event); updateSuggestedOptions()"
 		>
-		<mat-autocomplete #auto="matAutocomplete" class="dark-scrollbar">
+		<mat-autocomplete #auto="matAutocomplete" class="dark-scrollbar" [autoActiveFirstOption]="true">
 			<mat-option *ngFor="let option of suggestedOptions" [value]="option">
 				<span appHighlight [highlightText]="option" [highlightMatch]="settings[key]"></span>
 			</mat-option>
