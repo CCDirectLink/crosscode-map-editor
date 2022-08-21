@@ -38,14 +38,24 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 		if (searchResults.some(option => option === inputText)) {
 			//This makes it so that if the text is the same as one of the search results all search results are shown (emulates selector-like behaviour).
 			//Matching values are always shown before all the other ones.
-			this.suggestedOptions = [...searchResults];
-			for (const option of this.keys) {
-				if (!searchResults.includes(option)) {
-					this.suggestedOptions.push(option);
+			this.suggestedOptions.length = 0;
+			for (const searchResult of searchResults) {
+				if (searchResult.length === inputText.length) {
+					this.suggestedOptions.push(searchResult);
 				}
 			}
+			this.pushNoDupe(this.suggestedOptions, ...searchResults);
+			this.pushNoDupe(this.suggestedOptions, ...this.keys);
 		} else {
 			this.suggestedOptions = searchResults;
+		}
+	}
+	
+	private pushNoDupe<T>(target: T[], ...values: T[]) {
+		for (const value of values) {
+			if (!target.includes(value)) {
+				target.push(value);
+			}
 		}
 	}
 }
