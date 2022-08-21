@@ -35,7 +35,7 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 		const inputText = this.settings[this.key];
 		const searchResults = this.searchFilterService.filterOptions(this.keys, inputText);
 		
-		if (searchResults.some(option => option === inputText)) {
+		if (searchResults.some(option => option.length === inputText.length)) {
 			//This makes it so that if the text is the same as one of the search results all search results are shown (emulates selector-like behaviour).
 			//Matching values are always shown before all the other ones.
 			this.suggestedOptions.length = 0;
