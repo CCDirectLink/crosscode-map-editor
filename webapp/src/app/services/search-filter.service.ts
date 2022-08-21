@@ -2,33 +2,34 @@ import {Injectable} from '@angular/core';
 
 @Injectable()
 export class SearchFilterService {
-	NEUTRAL_CHAR_REGEX = /[-_\s]+/g;
+	NEUTRAL_CHAR_REGEX = /[-_\s]*/g;
 	
-	private prepareSearchString(searched?: string | null) {
-		return searched?.trim()?.toLowerCase()?.replace(this.NEUTRAL_CHAR_REGEX, '');
+	private innerTest(tested: string, searched: RegExp) {
+		const result = tested.match(searched) != null;
+		return result;
 	}
 	
-	private innerTest(tested: string, searched: string) {
-		tested = tested.toLowerCase();
-		const neutralTested = tested.replace(this.NEUTRAL_CHAR_REGEX, '');
-		return neutralTested.includes(searched);
+	createSearcherRegex(searched: string, global = false) {
+		const withRegex = searched.replace(this.NEUTRAL_CHAR_REGEX, this.NEUTRAL_CHAR_REGEX.source);
+		return new RegExp(withRegex, global? 'gi' : 'i');
 	}
 	
 	test(tested: string, searched?: string | null) {
-		searched = this.prepareSearchString(searched);
+		searched = searched?.trim();
 		if (!searched) {
 			return true;
 		} else {
-			return this.innerTest(tested, searched);
+			return this.innerTest(tested, this.createSearcherRegex(searched));
 		}
 	}
 	
-	filterOptions(options: string[], searched?: string | null) {
-		searched = this.prepareSearchString(searched);
+	filterOptions(options: readonly string[], searched?: string | null) {
+		searched = searched?.trim();
 		if (!searched) {
-			return options;
+			return [...options]; //By returning a copy it's always safe to modify the result.
 		} else {
-			return options.filter(tested => this.innerTest(tested, searched!));
+			const regex = this.createSearcherRegex(searched);
+			return options.filter(tested => this.innerTest(tested, regex));
 		}
 	}
 }
