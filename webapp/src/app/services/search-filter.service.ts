@@ -14,6 +14,11 @@ export class SearchFilterService {
 	}
 	
 	createSearcherRegex(searched: string, global = false) {
+		//Prevents from returning /[-_\s]*/g for strings like '_', which would always match and cause problems with highlighting.
+		if (searched.replace(this.NEUTRAL_CHAR_REGEX, '') === '') {
+			return /[-_\s]+/g;
+		}
+		
 		const characters = searched.split(this.NEUTRAL_CHAR_REGEX);
 		const escapedCharacters = characters.map(token => this.escapeRegExp(token));
 		const regex = escapedCharacters.join(this.NEUTRAL_CHAR_REGEX.source);
