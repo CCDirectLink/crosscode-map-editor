@@ -14,7 +14,7 @@
 		"SOUTH_WEST",
 		"NORTH_WEST"
 	],
-	"hide": [
+	"hidden": [
 		true,
 		false
 	],
