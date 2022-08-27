@@ -59,8 +59,12 @@ export class EnemyTypeWidgetComponent extends AbstractWidget implements OnInit, 
 		obj.instance.entity = this.entity;
 		obj.instance.key = this.key;
 		obj.instance.attribute = this.attribute;
+		obj.instance.custom = this.custom;
 		
-		obj.instance.exit.subscribe(() => this.close());
+		obj.instance.exit.subscribe(() => {
+			this.updateType(this.settings[this.key]);
+			this.close();
+		});
 	}
 	
 	private close() {
