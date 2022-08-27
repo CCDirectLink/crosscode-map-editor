@@ -4,9 +4,9 @@ if (typeof window !== 'undefined' &&
 	typeof navigator !== 'undefined' &&
 	navigator.userAgent.indexOf('Electron') > -1) { 
 
-	const electron = window['require']('electron');
 	// Use electron require
-	result = electron.remote.require as NodeRequire;
+	const remote = window['require']('@electron/remote');
+	result = remote.require;
 } else if (typeof process !== 'undefined' && !!module['require']) {
 	// Regular nodejs
 	result = require;

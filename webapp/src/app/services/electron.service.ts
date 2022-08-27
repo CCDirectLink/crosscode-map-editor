@@ -1,7 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Globals} from '../shared/globals';
-import {Dialog, Remote} from 'electron';
-import * as nodeFs from 'fs';
 import { api } from 'cc-map-editor-common';
 import { SharedService } from './sharedService';
 
@@ -12,18 +10,16 @@ export class ElectronService implements SharedService {
 	private static assetsPath = '';
 	private static selectedMod = '';
 	
-	private readonly fs?: typeof nodeFs;
-	private readonly remote?: Remote;
+	private readonly fs?: typeof import('fs');
+	private readonly remote?: typeof import('@electron/remote');
 	
 	constructor() {
 		if (!Globals.isElectron) {
 			return;
 		}
 		
-		// @ts-ignore
-		const remote = window.require('electron').remote;
-		this.remote = remote!;
-		this.fs = remote.require('fs');
+		this.remote = window.require('@electron/remote');
+		this.fs = this.remote!.require('fs');
 		
 	}
 
@@ -81,8 +77,7 @@ export class ElectronService implements SharedService {
 		if (!this.remote) {
 			throw new Error('remote is not defined');
 		}
-		const dialog: Dialog = this.remote.dialog;
-		const newPath = dialog.showOpenDialogSync({
+		const newPath = this.remote.dialog.showOpenDialogSync({
 			title: 'Select CrossCode assets folder',
 			defaultPath: 'C:\\Program Files (x86)\\Steam\\steamapps\\common\\CrossCode\\assets',
 			properties: ['openDirectory']
