@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
 import {SearchFilterService} from '../../../services/search-filter.service';
-import {HighlightDirective} from '../../highlight.directive';
 
 @Component({
 	selector: 'app-string-widget',
@@ -12,6 +11,8 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 	
 	keys: string[] = [];
 	suggestedOptions = new Set<string>();
+	disableTooltip = false;
+	showWarning = false;
 	
 	constructor(
 		private searchFilterService: SearchFilterService,
@@ -36,7 +37,9 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 		const searchResults = this.searchFilterService.filterOptions(this.keys, inputText);
 		
 		this.suggestedOptions.clear();
-		if (searchResults.some(option => option === inputText)) {
+		if (searchResults.includes(inputText)) {
+			this.showWarning = false;
+			this.disableTooltip = false;
 			//This makes it so that if the text is the same as one of the search results all search results are shown (emulates selector-like behaviour).
 			//Matching values are always shown before all the other ones.
 			for (const searchResult of searchResults) {
@@ -47,6 +50,7 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 			searchResults.forEach(searchResult => this.suggestedOptions.add(searchResult));
 			this.keys.forEach(key => this.suggestedOptions.add(key));
 		} else {
+			this.showWarning = true;
 			searchResults.forEach(searchResult => this.suggestedOptions.add(searchResult));
 		}
 	}
