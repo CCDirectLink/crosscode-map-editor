@@ -1,6 +1,8 @@
 import {Injectable} from '@angular/core';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root',
+})
 export class SearchFilterService {
 	NEUTRAL_CHAR_REGEX = /[-_\s]*/g;
 	
