@@ -11,7 +11,7 @@ import {HighlightDirective} from '../../highlight.directive';
 export class StringWidgetComponent extends AbstractWidget implements OnInit {
 	
 	keys: string[] = [];
-	suggestedOptions: string[] = [];
+	suggestedOptions = new Set<string>();
 	
 	constructor(
 		private searchFilterService: SearchFilterService,
@@ -35,27 +35,19 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 		const inputText = this.settings[this.key] ?? '';
 		const searchResults = this.searchFilterService.filterOptions(this.keys, inputText);
 		
+		this.suggestedOptions.clear();
 		if (searchResults.some(option => option === inputText)) {
 			//This makes it so that if the text is the same as one of the search results all search results are shown (emulates selector-like behaviour).
 			//Matching values are always shown before all the other ones.
-			this.suggestedOptions.length = 0;
 			for (const searchResult of searchResults) {
 				if (searchResult.length === inputText.length) {
-					this.suggestedOptions.push(searchResult);
+					this.suggestedOptions.add(searchResult);
 				}
 			}
-			this.pushNoDupe(this.suggestedOptions, ...searchResults);
-			this.pushNoDupe(this.suggestedOptions, ...this.keys);
+			searchResults.forEach(searchResult => this.suggestedOptions.add(searchResult));
+			this.keys.forEach(key => this.suggestedOptions.add(key));
 		} else {
-			this.suggestedOptions = searchResults;
-		}
-	}
-	
-	private pushNoDupe<T>(target: T[], ...values: T[]) {
-		for (const value of values) {
-			if (!target.includes(value)) {
-				target.push(value);
-			}
+			searchResults.forEach(searchResult => this.suggestedOptions.add(searchResult));
 		}
 	}
 }
