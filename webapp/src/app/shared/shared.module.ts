@@ -64,7 +64,6 @@ import {SearchFilterService} from '../services/search-filter.service';
 		GlobalEventsService,
 		EntityRegistryService,
 		SettingsService,
-		SearchFilterService,
 	],
 	entryComponents: [
 		JsonEditorComponent,
