@@ -10,9 +10,7 @@ import {SearchFilterService} from '../../../services/search-filter.service';
 export class StringWidgetComponent extends AbstractWidget implements OnInit {
 	
 	keys: string[] = [];
-	suggestedOptions = new Set<string>();
 	disableTooltip = false;
-	showWarning = false;
 	
 	constructor(
 		private searchFilterService: SearchFilterService,
@@ -28,30 +26,6 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 			if (attr.withNull) {
 				this.keys.unshift('');
 			}
-		}
-		this.updateSuggestedOptions();
-	}
-	
-	updateSuggestedOptions() {
-		const inputText = this.settings[this.key] ?? '';
-		const searchResults = this.searchFilterService.filterOptions(this.keys, inputText);
-		
-		this.suggestedOptions.clear();
-		if (searchResults.includes(inputText)) {
-			this.showWarning = false;
-			this.disableTooltip = false;
-			//This makes it so that if the text is the same as one of the search results all search results are shown (emulates selector-like behaviour).
-			//Matching values are always shown before all the other ones.
-			for (const searchResult of searchResults) {
-				if (searchResult.length === inputText.length) {
-					this.suggestedOptions.add(searchResult);
-				}
-			}
-			searchResults.forEach(searchResult => this.suggestedOptions.add(searchResult));
-			this.keys.forEach(key => this.suggestedOptions.add(key));
-		} else {
-			this.showWarning = true;
-			searchResults.forEach(searchResult => this.suggestedOptions.add(searchResult));
 		}
 	}
 }

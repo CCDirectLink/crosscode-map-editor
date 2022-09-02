@@ -1,18 +1,7 @@
 .mat-select-container {
 	flex: 1 1 0;
-	outline: solid 1px #c9c9c9;
 	display: flex;
 	align-items: center;
-	
-	input {
-		outline: none;
-	}
-}
-
-.warning-icon {
-	margin-right: 2px;
-	color: orange;
-	user-select: none;
 }
 
 textarea {

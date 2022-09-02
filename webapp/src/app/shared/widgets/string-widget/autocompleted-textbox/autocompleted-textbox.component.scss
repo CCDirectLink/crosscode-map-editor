@@ -1,0 +1,16 @@
+:host {
+	display: flex;
+	flex: 1 1 0;
+	align-items: center;
+	outline: solid 1px #c9c9c9;
+}
+
+input.default-input {
+	outline: none;
+}
+
+.warning-icon {
+	margin-right: 2px;
+	color: orange;
+	user-select: none;
+}

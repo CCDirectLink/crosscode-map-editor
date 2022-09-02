@@ -1,26 +1,12 @@
 <div fxLayout="row" class="property-container" [matTooltip]="attribute?.description" [matTooltipDisabled]="disableTooltip">
 	<label [for]="key" class="property-name">{{key}}:</label>
 	<div class="mat-select-container" *ngIf="attribute?.options; else defaultInput">
-		<input class="default-input"
+		<app-autocompleted-textbox
 			[id]="key"
-			[matAutocomplete]="auto"
-			[ngModel]="settings[key]"
-			(ngModelChange)="setSetting(key, $event); updateSuggestedOptions()"
-		>
-		<mat-autocomplete #auto="matAutocomplete" class="dark-scrollbar" [autoActiveFirstOption]="true">
-			<mat-option *ngFor="let option of suggestedOptions" [value]="option">
-				<span appHighlight [highlightText]="option" [highlightMatch]="settings[key]"></span>
-			</mat-option>
-		</mat-autocomplete>
-		<mat-icon
-			*ngIf="showWarning"
-			class="warning-icon"
-			matTooltip=
-			"The specified value does not match any of the known valid values.
-			If your mod uses custom values (for BGM, characters, etc...) and you know the value to be valid, you can ignore this warning."
-			(mouseenter)="disableTooltip = true"
-			(mouseleave)="disableTooltip = false"
-		>warning</mat-icon>
+			[availableOptions]="keys"
+			[(text)]="settings[key]"
+			(onContainsMouse)="disableTooltip = $event"
+		></app-autocompleted-textbox>
 	</div>
 	<ng-template #defaultInput>
 		<input class="default-input"

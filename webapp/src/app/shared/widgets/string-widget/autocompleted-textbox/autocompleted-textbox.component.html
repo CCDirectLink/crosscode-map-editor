@@ -1,0 +1,19 @@
+<input class="default-input"
+	[matAutocomplete]="auto"
+	[ngModel]="text"
+	(ngModelChange)="textChange.emit($event)"
+>
+<mat-autocomplete #auto="matAutocomplete" class="dark-scrollbar" [autoActiveFirstOption]="true">
+	<mat-option *ngFor="let option of suggestedOptions" [value]="option">
+		<span appHighlight [highlightText]="option" [highlightMatch]="text"></span>
+	</mat-option>
+</mat-autocomplete>
+<mat-icon
+	*ngIf="showWarning"
+	class="warning-icon"
+	matTooltip=
+	"The specified value does not match any of the known valid values.
+	If your mod uses custom values (for BGM, characters, etc...) and you know the value to be valid, you can ignore this warning."
+	(mouseenter)="onContainsMouse.emit(true)"
+	(mouseleave)="onContainsMouse.emit(false)"
+>warning</mat-icon>
