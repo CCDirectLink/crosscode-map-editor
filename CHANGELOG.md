@@ -10,10 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fixed compatibility with the newer Electron versions.
 - Enemy editing popup no longer bugs out when editing enemies inside event steps.
 - Fixed copy-pasting of `IF` steps and other steps with branches.
-- Fixes inability to edit certain `String` properties of various event and action steps.
+- Fixed inability to edit certain `String` properties of various event and action steps.
 
 ### Changed
-- `String` inputs for event steps, action steps, and entity properties now also allow values different from the suggested ones.
+- `String` inputs for event steps, action steps, and entity properties, as well as the map creation dialog now also allow values different from the suggested ones.
 
 ## [0.14.0] 2022-05-28
 - Add coordinate display for the cursor in entity view
