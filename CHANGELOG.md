@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Fixed compatibility with the newer Electron versions.
 - Enemy editing popup no longer bugs out when editing enemies inside event steps.
 - Fixed copy-pasting of `IF` steps and other steps with branches.
+- `WallHorizontal` and `WallVertical` are now created with the correct default size on their non-resizable axis.
 
 ## [0.14.0] 2022-05-28
 - Add coordinate display for the cursor in entity view
