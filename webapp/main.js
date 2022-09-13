@@ -1,6 +1,8 @@
+// @ts-check
 'use strict';
 
 const {app, protocol, BrowserWindow} = require('electron');
+const electronRemote = require('@electron/remote/main');
 const windowStateKeeper = require('electron-window-state');
 const path = require('path');
 const url = require('url');
@@ -13,6 +15,8 @@ const {IPC} = require('node-ipc');
 const args = process.argv.slice(1);
 const dev = args.some(val => val === '--dev');
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
+
+electronRemote.initialize();
 
 let openWindows = 0;
 
@@ -34,10 +38,10 @@ function openWindow() {
 			webPreferences: {
 				webSecurity: false,
 				nodeIntegration: true,
-				enableRemoteModule: true,
 				contextIsolation: false
 			}
 		});
+		electronRemote.enable(win.webContents);
 		
 		if (dev) {
 			console.log('dev');

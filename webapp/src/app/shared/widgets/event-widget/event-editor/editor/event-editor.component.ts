@@ -318,7 +318,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 		if (this.copiedNode) {
 			this.history.add(this.getParent(this.selectedNode));
 			
-			const cpy = JSON.parse(JSON.stringify(this.copiedNode.data?.data));
+			const cpy = JSON.parse(JSON.stringify(this.copiedNode.data?.export()));
 			const event = this.helper.getEventFromType(cpy, this.actionStep);
 			
 			const index = !this.selectedNode ? 0 : this.getIndex(this.selectedNode!);

@@ -1,10 +1,7 @@
 import { requireLocal } from '../require';
 
-import * as nodefs from 'fs';
-import * as nodepath from 'path';
-
-const fs: typeof nodefs = requireLocal('fs');
-const path: typeof nodepath = requireLocal('path');
+const fs: typeof import('fs') = requireLocal('fs');
+const path: typeof import('path') = requireLocal('path');
 
 import { saveFile as save } from './saveFile';
 
