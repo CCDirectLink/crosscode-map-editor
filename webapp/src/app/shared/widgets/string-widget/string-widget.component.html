@@ -4,7 +4,8 @@
 		<app-autocompleted-textbox
 			[id]="key"
 			[availableOptions]="keys"
-			[(text)]="settings[key]"
+			[text]="settings[key]"
+			(textChange)="setSetting(key, $event)"
 			(onContainsMouse)="disableTooltip = $event"
 		></app-autocompleted-textbox>
 	</div>
