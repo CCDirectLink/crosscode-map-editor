@@ -278,7 +278,7 @@
 			"followUp": {
 				"type": "EntityAnim",
 				"optional": true,
-				"description": "Aninmation that follows the set animation"
+				"description": "Animation that follows the set animation"
 			}
 		},
 		"initialObject": {
@@ -1359,6 +1359,17 @@
 			"unequip": false
 		}
 	},
+	"TOGGLE_ITEM": {
+		"attributes": {
+			"item": {
+				"type": "Item",
+				"description": "Item to toggle"
+			}
+		},
+		"initialObject": {
+			"item": 0
+		}
+	},
 	"SET_VAR_ENTITY_STAT": {
 		"attributes": {
 			"varName": {
@@ -1549,7 +1560,9 @@
 					"evolabHeartbeat": 0,
 					"beach": 0,
 					"finalDungeon": 0,
-					"godBoss": 0
+					"godBoss": 0,
+					"discoLow": 0,
+					"discoFull": 0
 				}
 			},
 			"volume": {
@@ -1712,7 +1725,9 @@
 					"evolabHeartbeat": 0,
 					"beach": 0,
 					"finalDungeon": 0,
-					"godBoss": 0
+					"godBoss": 0,
+					"discoLow": 0,
+					"discoFull": 0
 				}
 			},
 			"volume": {
@@ -1851,7 +1866,9 @@
 					"evolabHeartbeat": 0,
 					"beach": 0,
 					"finalDungeon": 0,
-					"godBoss": 0
+					"godBoss": 0,
+					"discoLow": 0,
+					"discoFull": 0
 				}
 			},
 			"volume": {
@@ -1925,7 +1942,8 @@
 					"evoVillage": 0,
 					"finalDng": 0,
 					"finalDngEnd": 0,
-					"beach": 0
+					"beach": 0,
+					"disco": 0
 				}
 			},
 			"mode": {
@@ -2654,8 +2672,8 @@
 				"optional": true,
 				"description": "Render Mode if Image",
 				"options": {
-					"0": 0,
-					"1": 0
+					"source-over": 0,
+					"lighter": 0
 				}
 			},
 			"overGui": {
@@ -3365,8 +3383,8 @@
 				"type": "String",
 				"description": "Type of Stick",
 				"options": {
-					"0": 0,
-					"1": 0
+					"left": 0,
+					"right": 0
 				}
 			},
 			"value": {
@@ -3393,34 +3411,34 @@
 				"type": "String",
 				"description": "Kind of action",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0,
-					"15": 0,
-					"16": 0,
-					"17": 0,
-					"18": 0,
-					"19": 0,
-					"20": 0,
-					"21": 0,
-					"22": 0,
-					"23": 0,
-					"24": 0,
-					"25": 0,
-					"26": 0,
-					"27": 0
+					"menu": 0,
+					"quickmenu": 0,
+					"menuConfirm": 0,
+					"menuBack": 0,
+					"menuDown": 0,
+					"menuUp": 0,
+					"menuLeft": 0,
+					"menuRight": 0,
+					"rightPressed": 0,
+					"menuHotkeyHelp": 0,
+					"menuHotkeyHelp2": 0,
+					"menuHotkeyHelp3": 0,
+					"menuCircleLeft": 0,
+					"menuCircleRight": 0,
+					"questCircleLeft": 0,
+					"questCircleRight": 0,
+					"heatMode": 0,
+					"coldMode": 0,
+					"shockMode": 0,
+					"waveMode": 0,
+					"moveDirX": 0,
+					"moveDirY": 0,
+					"aiming": 0,
+					"thrown": 0,
+					"charge": 0,
+					"melee": 0,
+					"dashing": 0,
+					"guarding": 0
 				}
 			},
 			"value": {
@@ -3455,34 +3473,34 @@
 				"type": "String",
 				"description": "Kind of action",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0,
-					"15": 0,
-					"16": 0,
-					"17": 0,
-					"18": 0,
-					"19": 0,
-					"20": 0,
-					"21": 0,
-					"22": 0,
-					"23": 0,
-					"24": 0,
-					"25": 0,
-					"26": 0,
-					"27": 0
+					"menu": 0,
+					"quickmenu": 0,
+					"menuConfirm": 0,
+					"menuBack": 0,
+					"menuDown": 0,
+					"menuUp": 0,
+					"menuLeft": 0,
+					"menuRight": 0,
+					"rightPressed": 0,
+					"menuHotkeyHelp": 0,
+					"menuHotkeyHelp2": 0,
+					"menuHotkeyHelp3": 0,
+					"menuCircleLeft": 0,
+					"menuCircleRight": 0,
+					"questCircleLeft": 0,
+					"questCircleRight": 0,
+					"heatMode": 0,
+					"coldMode": 0,
+					"shockMode": 0,
+					"waveMode": 0,
+					"moveDirX": 0,
+					"moveDirY": 0,
+					"aiming": 0,
+					"thrown": 0,
+					"charge": 0,
+					"melee": 0,
+					"dashing": 0,
+					"guarding": 0
 				}
 			},
 			"deviceFilter": {
@@ -4822,17 +4840,17 @@
 				"type": "String",
 				"description": "Type of get message",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0
+					"ACTIVATED": 0,
+					"OBTAINED": 0,
+					"REMOVED": 0,
+					"ENEMY": 0,
+					"EXTENDED": 0,
+					"WORD": 0,
+					"FRIENDSHIP": 0,
+					"PARTY": 0,
+					"USED": 0,
+					"HAND_OVER": 0,
+					"RESET": 0
 				}
 			},
 			"object": {
@@ -5132,21 +5150,21 @@
 				"type": "String",
 				"description": "Name of player config",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
 				}
 			}
 		},
@@ -5195,10 +5213,10 @@
 				"optional": true,
 				"description": "Type of combat art",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0
+					"THROW": 0,
+					"ATTACK": 0,
+					"DASH": 0,
+					"GUARD": 0
 				}
 			},
 			"level": {
@@ -5799,21 +5817,21 @@
 				"type": "String",
 				"description": "Party member to add",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
 				}
 			},
 			"online": {
@@ -5832,21 +5850,21 @@
 				"type": "String",
 				"description": "Party member to change",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
 				}
 			},
 			"locked": {
@@ -5865,21 +5883,21 @@
 				"type": "String",
 				"description": "Party member to add",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
 				}
 			},
 			"status": {
@@ -5919,21 +5937,21 @@
 				"type": "String",
 				"description": "Party member to add",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
 				}
 			},
 			"npc": {
@@ -5961,21 +5979,21 @@
 				"type": "String",
 				"description": "Party member to add",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
 				}
 			},
 			"level": {
@@ -6004,21 +6022,21 @@
 				"type": "String",
 				"description": "Party member to modify",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
 				}
 			},
 			"noDie": {
@@ -6036,21 +6054,21 @@
 				"type": "String",
 				"description": "Party member to add",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
 				}
 			},
 			"level": {
@@ -6073,21 +6091,21 @@
 				"type": "String",
 				"description": "Party member to add",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
 				}
 			},
 			"allElements": {
@@ -6103,21 +6121,21 @@
 				"type": "String",
 				"description": "Party member to add",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
 				}
 			},
 			"npc": {
@@ -6141,21 +6159,21 @@
 				"type": "String",
 				"description": "Party member to revive",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
 				}
 			}
 		},

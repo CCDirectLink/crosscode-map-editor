@@ -751,7 +751,7 @@
 		"attributes": {
 			"value": {
 				"type": "Boolean",
-				"description": "true iff jumping is enabled"
+				"description": "true if jumping is enabled"
 			}
 		},
 		"initialObject": {
@@ -1132,7 +1132,7 @@
 		"attributes": {
 			"value": {
 				"type": "Boolean",
-				"description": "true iff slip through is active (ignoring any kind of collision)"
+				"description": "true if slip through is active (ignoring any kind of collision)"
 			}
 		},
 		"initialObject": {
@@ -3245,7 +3245,7 @@
 			"immediately": {
 				"type": "Boolean",
 				"optional": true,
-				"description": "True if enemy should always look at the target IMMEDIATLY."
+				"description": "True if enemy should always look at the target IMMEDIATELY."
 			},
 			"posOffset": {
 				"type": "Vec2",
@@ -4617,7 +4617,7 @@
 			"limitRangeOnColl": {
 				"type": "Boolean",
 				"optional": true,
-				"description": "If true, limit range of spawning depening on collision, check only at beginning"
+				"description": "If true, limit range of spawning depending on collision, check only at beginning"
 			},
 			"random": {
 				"type": "Boolean",
@@ -4628,7 +4628,7 @@
 				"description": "The number of proxies thrown"
 			},
 			"duration": {
-				"type": "Number",
+				"type": "NumberExpression",
 				"description": "Time it takes to throw proxies"
 			},
 			"clockwise": {
@@ -4703,7 +4703,7 @@
 			"posEntity": {
 				"type": "String",
 				"optional": true,
-				"description": "If selected: use alternatice entity for spawn center position",
+				"description": "If selected: use alternative entity for spawn center position",
 				"options": {
 					"SELF": 0,
 					"PROXY_OWNER": 0,
@@ -6293,7 +6293,7 @@
 							"type": {
 								"key": "attack"
 							},
-							"value": 1.4,
+							"value": 1.3,
 							"icon": "stat-attack",
 							"grade": "stat-rank-4"
 						},
@@ -6302,7 +6302,7 @@
 							"type": {
 								"key": "focus"
 							},
-							"value": 1.4,
+							"value": 1.3,
 							"icon": "stat-focus",
 							"grade": "stat-rank-4"
 						},
@@ -6517,7 +6517,7 @@
 							"type": {
 								"key": "OVERHEAT_REDUCTION"
 							},
-							"value": 0.2,
+							"value": 0.3,
 							"icon": "stat-overheat",
 							"grade": "stat-rank-1"
 						},
@@ -6526,7 +6526,7 @@
 							"type": {
 								"key": "OVERHEAT_REDUCTION"
 							},
-							"value": 0.3,
+							"value": 0.4,
 							"icon": "stat-overheat",
 							"grade": "stat-rank-2"
 						},
@@ -6535,7 +6535,7 @@
 							"type": {
 								"key": "OVERHEAT_REDUCTION"
 							},
-							"value": 0.4,
+							"value": 0.5,
 							"icon": "stat-overheat",
 							"grade": "stat-rank-3"
 						},
@@ -6544,7 +6544,7 @@
 							"type": {
 								"key": "SP_REGEN"
 							},
-							"value": 0.2,
+							"value": 0.3,
 							"icon": "stat-sp-regen",
 							"grade": "stat-rank-1"
 						},
@@ -6553,7 +6553,7 @@
 							"type": {
 								"key": "SP_REGEN"
 							},
-							"value": 0.3,
+							"value": 0.4,
 							"icon": "stat-sp-regen",
 							"grade": "stat-rank-2"
 						},
@@ -6562,7 +6562,7 @@
 							"type": {
 								"key": "SP_REGEN"
 							},
-							"value": 0.4,
+							"value": 0.5,
 							"icon": "stat-sp-regen",
 							"grade": "stat-rank-3"
 						},
@@ -6653,7 +6653,7 @@
 								"key": "MELEE_DMG"
 							},
 							"value": 0.1,
-							"icon": "stat-default",
+							"icon": "stat-melee",
 							"grade": "stat-rank-1"
 						},
 						"MELEE_DMG-2": {
@@ -6662,7 +6662,7 @@
 								"key": "MELEE_DMG"
 							},
 							"value": 0.2,
-							"icon": "stat-default",
+							"icon": "stat-melee",
 							"grade": "stat-rank-2"
 						},
 						"MELEE_DMG-3": {
@@ -6671,7 +6671,7 @@
 								"key": "MELEE_DMG"
 							},
 							"value": 0.3,
-							"icon": "stat-default",
+							"icon": "stat-melee",
 							"grade": "stat-rank-3"
 						},
 						"MELEE_DMG-4": {
@@ -6680,7 +6680,7 @@
 								"key": "MELEE_DMG"
 							},
 							"value": 0.5,
-							"icon": "stat-default",
+							"icon": "stat-melee",
 							"grade": "stat-rank-4"
 						},
 						"RANGED_DMG-1": {
@@ -6689,7 +6689,7 @@
 								"key": "RANGED_DMG"
 							},
 							"value": 0.1,
-							"icon": "stat-default",
+							"icon": "stat-ranged",
 							"grade": "stat-rank-1"
 						},
 						"RANGED_DMG-2": {
@@ -6698,7 +6698,7 @@
 								"key": "RANGED_DMG"
 							},
 							"value": 0.2,
-							"icon": "stat-default",
+							"icon": "stat-ranged",
 							"grade": "stat-rank-2"
 						},
 						"RANGED_DMG-3": {
@@ -6707,7 +6707,7 @@
 								"key": "RANGED_DMG"
 							},
 							"value": 0.3,
-							"icon": "stat-default",
+							"icon": "stat-ranged",
 							"grade": "stat-rank-3"
 						},
 						"RANGED_DMG-4": {
@@ -6716,7 +6716,7 @@
 								"key": "RANGED_DMG"
 							},
 							"value": 0.5,
-							"icon": "stat-default",
+							"icon": "stat-ranged",
 							"grade": "stat-rank-4"
 						},
 						"MONEY-MINUS-1": {
@@ -6775,10 +6775,10 @@
 				"type": "String",
 				"description": "What param to modify",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0
+					"hp": 0,
+					"attack": 0,
+					"defense": 0,
+					"focus": 0
 				}
 			},
 			"changeType": {
@@ -7037,8 +7037,8 @@
 				"optional": true,
 				"description": "Ball the entity will shoot",
 				"options": {
-					"0": 0,
-					"1": 0
+					"QUICK": 0,
+					"CHARGED": 0
 				}
 			},
 			"align": {
@@ -7269,7 +7269,8 @@
 					"WEREWOLF_STICK": 0,
 					"MOONCAKE": 0,
 					"GUACAMOLE_TOAST": 0,
-					"WILLI_BUN": 0
+					"WILLI_BUN": 0,
+					"PUMPKIN_SPICE": 0
 				}
 			},
 			"offset": {
@@ -7511,10 +7512,10 @@
 				"type": "String",
 				"description": "Element of Shield Ball",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0
+					"HEAT": 0,
+					"COLD": 0,
+					"SHOCK": 0,
+					"WAVE": 0
 				}
 			}
 		},
@@ -7613,21 +7614,21 @@
 				"type": "String",
 				"description": "Party member to add",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0,
-					"4": 0,
-					"5": 0,
-					"6": 0,
-					"7": 0,
-					"8": 0,
-					"9": 0,
-					"10": 0,
-					"11": 0,
-					"12": 0,
-					"13": 0,
-					"14": 0
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
 				}
 			}
 		},

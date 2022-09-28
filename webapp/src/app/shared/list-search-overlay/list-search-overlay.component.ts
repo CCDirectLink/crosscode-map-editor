@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { SearchFilterService } from '../../services/search-filter.service';
 
 const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 
@@ -59,20 +60,12 @@ export class ListSearchOverlayComponent implements OnInit {
 		this.currentIndex = 0;
 		this._filterText = text;
 		
-		if (!text || !text.trim()) {
-			this.filteredList = this.list;
-			return;
-		}
-		text = text.trim();
-		
-		const searchStr = text.toLowerCase();
-		this.filteredList = this.list.filter(text => {
-			const compareStr = text.toLowerCase();
-			return compareStr.includes(searchStr) || compareStr.replace('_', '').includes(searchStr);
-		});
+		this.filteredList = this.searchFilterService.filterOptions(this.list, text);
 	}
 	
-	constructor() {
+	constructor(
+		private searchFilterService: SearchFilterService,
+	) {
 	}
 	
 	ngOnInit() {

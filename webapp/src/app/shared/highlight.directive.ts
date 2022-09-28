@@ -1,4 +1,5 @@
 import {Directive, ElementRef, Input, OnChanges} from '@angular/core';
+import {SearchFilterService} from '../services/search-filter.service';
 
 @Directive({
 	selector: '[appHighlight]'
@@ -9,7 +10,8 @@ export class HighlightDirective implements OnChanges {
 	@Input() highlightMatch?: string;
 	
 	constructor(
-		private element: ElementRef
+		private element: ElementRef,
+		private searchFilterService: SearchFilterService,
 	) {
 	
 	}
@@ -25,11 +27,14 @@ export class HighlightDirective implements OnChanges {
 		if (!this.highlightMatch || this.highlightMatch.length === 0) {
 			return this.highlightText;
 		}
-		const pattern = new RegExp(this.highlightMatch, 'i');
-		const match = this.highlightText.match(pattern);
-		if (!match) {
+		
+		const highlightPattern = this.searchFilterService.createSearcherRegex(this.highlightMatch, true);
+		const highlights = this.highlightText.match(highlightPattern);
+		if (!highlights) {
 			return this.highlightText;
 		}
-		return this.highlightText.split(match[0]).join(`<span class="highlight">${match[0]}</span>`);
+		const plains = this.highlightText.split(highlightPattern);
+		const result = highlights.map((highlight, i) => plains[i] + `<span class="highlight">${highlight}</span>`).join('');
+		return result + plains[plains.length - 1];
 	}
 }

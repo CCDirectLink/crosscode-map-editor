@@ -22,12 +22,20 @@ $color: map_get($theme, accent);
 	margin-right: 16px;
 }
 
-.attribute {
-	padding-bottom: 5px;
-	padding-top: 5px;
-	width: 40%;
-}
-
 .action-button-row {
 	margin-bottom: 8px;
+}
+
+.attributes-container {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	
+	.attribute-tile {
+		max-width: 50%;
+		width: 50%;
+		height: fit-content;
+		padding: 5px;
+		box-sizing: border-box;
+	}
 }
