@@ -24,7 +24,7 @@ export class LangLabelWidgetComponent extends AbstractWidget {
 	}
 	
 	get defaultValue() {
-		const value = Object.create(null);
+		const value: any = {};
 		for (const language of this.languages) {
 			value[language] = '';
 		}
