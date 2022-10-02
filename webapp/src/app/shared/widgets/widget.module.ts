@@ -29,6 +29,7 @@ import {AddEventService} from './event-widget/event-editor/add/add-event.service
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { EnemyTypeWidgetComponent } from './enemy-type-widget/enemy-type-widget.component';
 import { EnemyTypeWidgetOverlayComponent } from './enemy-type-widget/enemy-type-overlay/enemy-type-overlay.component';
+import {AutocompletedTextboxComponent} from './string-widget/autocompleted-textbox/autocompleted-textbox.component';
 
 const COMPONENTS = [
 	StringWidgetComponent,
@@ -44,6 +45,7 @@ const COMPONENTS = [
 	CharacterWidgetComponent,
 	PersonExpressionWidgetComponent,
 	EnemyTypeWidgetComponent,
+	AutocompletedTextboxComponent,
 ];
 
 const PRIVATE_COMPONENTS = [

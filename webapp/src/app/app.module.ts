@@ -26,6 +26,7 @@ import { RouterModule } from '@angular/router';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { BabylonComponent } from './components/babylon/babylon.component';
 import { CaptionsComponent } from './components/captions/captions.component';
+import { DialogsModule } from './components/dialogs/dialogs.module';
 
 @NgModule({
 	declarations: [
@@ -54,6 +55,7 @@ import { CaptionsComponent } from './components/captions/captions.component';
 		SharedModule,
 		HistoryModule,
 		ScrollingModule,
+		DialogsModule,
 	],
 	providers: [WidgetRegistryService, StateHistoryService],
 	bootstrap: [AppComponent],

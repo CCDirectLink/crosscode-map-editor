@@ -21,9 +21,23 @@ interface JsonEntityType {
 	noZLine?: boolean;
 }
 
+interface SizeOverride {
+	x?: number;
+	y?: number;
+}
+
 export class DefaultEntity extends CCEntity {
 	
-	constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
+	private static BASE_SIZE_OVERRIDES: {[entityType: string]: SizeOverride} = {
+		'WallHorizontal': {
+			y: 8,
+		},
+		'WallVertical': {
+			x: 8,
+		}
+	};
+	
+	constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, private typeName: string) {
 		super(scene, map, x, y, typeName);
 		this.typeDef = entities[typeName];
 	}
@@ -62,7 +76,10 @@ export class DefaultEntity extends CCEntity {
 			scalableX: !!this.typeDef.scalableX,
 			scalableY: !!this.typeDef.scalableY,
 			scalableStep: step,
-			baseSize: {x: step, y: step}
+			baseSize: {
+				x: DefaultEntity.BASE_SIZE_OVERRIDES[this.typeName]?.x ?? step,
+				y: DefaultEntity.BASE_SIZE_OVERRIDES[this.typeName]?.y ?? step,
+			}
 		};
 		
 		return this.scaleSettings;

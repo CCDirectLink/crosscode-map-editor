@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractWidget} from '../abstract-widget';
+import {SearchFilterService} from '../../../services/search-filter.service';
 
 @Component({
 	selector: 'app-string-widget',
@@ -9,8 +10,11 @@ import {AbstractWidget} from '../abstract-widget';
 export class StringWidgetComponent extends AbstractWidget implements OnInit {
 	
 	keys: string[] = [];
+	disableTooltip = false;
 	
-	constructor() {
+	constructor(
+		private searchFilterService: SearchFilterService,
+	) {
 		super();
 	}
 	
