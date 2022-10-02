@@ -119,15 +119,6 @@ export class NpcStatesComponent implements OnInit {
 			} else {
 				state.position = undefined;
 			}
-			//This is because all values are (currently) obtained as strings from the user, so if the property
-			//has non-string values (like booleans) those need to be converted to their actual values.
-			for (const [propertyName, textValue] of Object.entries(state)) {
-				const matchingProp: any[] | undefined = this.props[propertyName];
-				const trueValue = matchingProp?.find(propValue => propValue.toString() === textValue.toString());
-				if (trueValue !== undefined && textValue !== trueValue) {
-					(state as any)[propertyName] = trueValue;
-				}
-			}
 		});
 		
 		return out;
