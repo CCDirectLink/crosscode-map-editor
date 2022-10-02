@@ -4,13 +4,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+## [0.15.1] 2022-09-28
+
+### Fixed
+- `WallHorizontal` and `WallVertical` are now created with the correct default size on their non-resizable axis.
+
+## [0.15.0] 2022-09-27
 
 ### Fixed
 - Typo in settings panel.
 - Fixed compatibility with the newer Electron versions.
 - Enemy editing popup no longer bugs out when editing enemies inside event steps.
 - Fixed copy-pasting of `IF` steps and other steps with branches.
+- Fixed inability to edit certain `String` properties of various event and action steps.
 - Fixed buggy behaviour when two checkboxes that refer to properties with the same name are visible at the same time ([#240](https://github.com/CCDirectLink/crosscode-map-editor/issues/240)).
+
+### Changed
+- `String` inputs for event steps, action steps, and entity properties, as well as the map creation dialog now also allow values different from the suggested ones.
 
 ## [0.14.0] 2022-05-28
 - Add coordinate display for the cursor in entity view
