@@ -19,10 +19,6 @@ export class LangLabelWidgetComponent extends AbstractWidget {
 		'zh_TW'
 	];
 	
-	constructor() {
-		super();
-	}
-	
 	get hasValue(): boolean {
 		return this.settings[this.key] !== undefined;
 	}
