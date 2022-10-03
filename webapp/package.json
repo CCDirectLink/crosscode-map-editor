@@ -1,6 +1,6 @@
 {
   "name": "cc-map-editor",
-  "version": "0.15.1",
+  "version": "0.16.0",
   "license": "MIT",
   "repository": "https://github.com/CCDirectLink/crosscode-map-editor",
   "main": "main.js",
@@ -55,6 +55,7 @@
   },
   "private": true,
   "dependencies": {
+    "angular-resize-event": "=3.0.2",
     "@electron/remote": "^2.0.8",
     "electron-context-menu": "^2.3.0",
     "electron-log": "^4.3.0",

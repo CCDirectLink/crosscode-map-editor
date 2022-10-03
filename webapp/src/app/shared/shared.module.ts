@@ -66,7 +66,7 @@ import { SplitPaneModule } from './split-pane/split-pane.module';
 		OverlayModule,
 		KeepHtmlPipe,
 		HighlightDirective,
-		SplitPaneComponent
+		SplitPaneComponent,
 	]
 })
 export class SharedModule {
