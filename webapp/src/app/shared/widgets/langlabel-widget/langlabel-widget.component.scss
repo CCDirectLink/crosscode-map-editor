@@ -1,0 +1,35 @@
+$label-width: 50px;
+
+.property-row {
+	margin-bottom: 4px;
+	
+	&.has-value {
+		align-self: flex-end;
+	}
+	
+	&.has-value, &.uid {
+		align-items: center;
+	}
+	
+	&.uid label, &.language label {
+		width: $label-width;
+	}
+}
+
+div.padded-autosize-textarea {
+	display: inline-block;
+	padding: 4px;
+	height: unset;
+	
+	textarea {
+		width: 100%;
+		height: 100%;
+		padding: 0px;
+		resize: none;
+		outline: none;
+	}
+}
+
+.properties-container {
+	margin-left: -35px;
+}
