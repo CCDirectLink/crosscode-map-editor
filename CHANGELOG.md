@@ -4,12 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+## [0.16.0] 2022-10-03
 ## [0.15.1] 2022-09-28
 
 ### Fixed
 - `WallHorizontal` and `WallVertical` are now created with the correct default size on their non-resizable axis.
 
 ## [0.15.0] 2022-09-27
+
+### Added
+- New editor for `langlabel` properties.
 
 ### Fixed
 - Typo in settings panel.
