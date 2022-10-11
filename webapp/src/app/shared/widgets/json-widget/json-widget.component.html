@@ -1,7 +1,6 @@
 <div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
-	<label [for]="key" class="property-name" *ngIf="!noPropName">{{key}}:</label>
+	<label class="property-name" *ngIf="!noPropName">{{key}}:</label>
 	<textarea class="default-input"
-	          [id]="key"
 	          [ngModel]="json.stringify(settings[key], null, 2)"
 	          (input)="setCustomSetting(key, $event.target.value)">
 	</textarea>
