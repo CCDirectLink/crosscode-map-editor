@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {AbstractWidget} from '../abstract-widget';
+import { Component } from '@angular/core';
+import { AbstractWidget } from '../abstract-widget';
 
 @Component({
 	selector: 'app-boolean-widget',
@@ -7,10 +7,4 @@ import {AbstractWidget} from '../abstract-widget';
 	styleUrls: ['./boolean-widget.component.scss', '../widget.scss']
 })
 export class BooleanWidgetComponent extends AbstractWidget {
-	private static counter = 1;
-	uid = BooleanWidgetComponent.counter++;
-	
-	constructor() {
-		super();
-	}
 }
