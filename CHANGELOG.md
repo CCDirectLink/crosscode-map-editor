@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+### Fixed
+- Replaced `hide` property of NPCs with `hidden`, which is now saved correctly as a boolean value.
+
 ## [0.16.0] 2022-10-03
 ## [0.15.1] 2022-09-28
 
