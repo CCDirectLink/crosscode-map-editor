@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Fixed
+- Replaced `hide` property of NPCs with `hidden`, which is now saved correctly as a boolean value.
 - Fixed buggy behaviour when two checkboxes that refer to properties with the same name are visible at the same time ([#240](https://github.com/CCDirectLink/crosscode-map-editor/issues/240)).
 
 ### Changed

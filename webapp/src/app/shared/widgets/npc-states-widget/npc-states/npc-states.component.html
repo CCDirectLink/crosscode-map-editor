@@ -91,11 +91,11 @@
 						<!-- Other -->
 						<div *ngFor="let prop of props | keyvalue" fxLayout="row" class="attribute" fxFlex="0 0 auto">
 							<span fxFlex="0 0 87px" fxFlexAlign="center">{{prop.key}}: </span>
-							<select class="default-input select-input" [(ngModel)]="currentState[prop.key]">
-								<option *ngFor="let item of prop.value" [value]="item">
+							<mat-select class="default-input select-input" [(ngModel)]="currentState[prop.key]">
+								<mat-option *ngFor="let item of prop.value" [value]="item">
 									{{item}}
-								</option>
-							</select>
+								</mat-option>
+							</mat-select>
 						</div>
 						
 						<!-- Warnings -->
