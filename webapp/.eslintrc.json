@@ -99,7 +99,7 @@
 		"no-trailing-spaces": "off",
 		"no-undef-init": "error",
 		"no-underscore-dangle": "off",
-        "no-unused-labels": "off",
+        "no-unused-labels": "error",
         "no-unused-vars": "off",
 		"no-var": "error",
 		"no-constant-condition": "off",
