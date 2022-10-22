@@ -1,12 +1,13 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {CCMap} from '../../shared/phaser/tilemap/cc-map';
-import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
-import {MapLoaderService} from '../../shared/map-loader.service';
-import {GlobalEventsService} from '../../shared/global-events.service';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {StateHistoryService} from '../../shared/history/state-history.service';
-import {Globals} from '../../shared/globals';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+
+import { GlobalEventsService } from '../../services/global-events.service';
+import { Globals } from '../../services/globals';
 import { HttpClientService } from '../../services/http-client.service';
+import { MapLoaderService } from '../../services/map-loader.service';
+import { CCMap } from '../../services/phaser/tilemap/cc-map';
+import { CCMapLayer } from '../../services/phaser/tilemap/cc-map-layer';
+import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
 
 @Component({
 	selector: 'app-layers',

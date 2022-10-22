@@ -1,33 +1,27 @@
-import {Injectable} from '@angular/core';
-import {SharedModule} from '../../shared/shared.module';
-import {GlobalEventsService} from '../../shared/global-events.service';
-import {Globals} from '../../shared/globals';
+import { Injectable } from '@angular/core';
+import { EventManager } from '@angular/platform-browser';
+
+import tilesets from '../../../assets/tilesets.json';
+import { StateHistoryService } from '../../components/dialogs/floating-window/history/state-history.service';
+import { Globals } from '../../services/globals';
+import { MapLoaderService } from '../../services/map-loader.service';
+import { AutotileService } from '../autotile/autotile.service';
+import { GlobalEventsService } from '../global-events.service';
+import { Helper } from '../phaser/helper';
+import { CCMap } from '../phaser/tilemap/cc-map';
+import { CCMapLayer } from '../phaser/tilemap/cc-map-layer';
+import { GfxMapper } from './gfx-mapper/gfx-mapper';
+import { BACK_WALL_MAP, BLOCK_MAP, ChipsetConfig, HOLE_BLOCK_MAP, HOLE_MAP } from './gfx-mapper/gfx-mapper.constants';
 import {
-	CHECK_DIR,
-	CHECK_ITERATE,
-	CheckDir,
-	DIAG_GFX,
-	FILL_COUNT,
-	FILL_TYPE,
+	CheckDir, CHECK_DIR,
+	CHECK_ITERATE, DIAG_GFX, FILL_COUNT, FILL_TYPE,
 	GFX_TYPE,
 	LEVEL_COUNT,
 	SECOND_LEVEL_CHECK,
 	SHADOW_CORNER_EXCEPTION,
 	SQUARE_CORNER_CHECK,
-	SUB_TYPE,
-	WALL_LINK,
-	WallLink
+	SUB_TYPE, WallLink, WALL_LINK
 } from './heightmap.constants';
-import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
-import {GfxMapper} from './gfx-mapper/gfx-mapper';
-import {BACK_WALL_MAP, BLOCK_MAP, ChipsetConfig, HOLE_BLOCK_MAP, HOLE_MAP} from './gfx-mapper/gfx-mapper.constants';
-import {MapLoaderService} from '../../shared/map-loader.service';
-import {CCMap} from '../../shared/phaser/tilemap/cc-map';
-import {StateHistoryService} from '../../shared/history/state-history.service';
-import {AutotileService} from '../autotile/autotile.service';
-import tilesets from '../../../assets/tilesets.json';
-import {EventManager} from '@angular/platform-browser';
-import {Helper} from '../../shared/phaser/helper';
 
 const TILESET_CONFIG: { [key: string]: ChipsetConfig } = tilesets;
 
@@ -43,7 +37,7 @@ interface TileData {
 }
 
 @Injectable({
-	providedIn: SharedModule
+	providedIn: 'root'
 })
 export class HeightMapService {
 	private data: (TileData | null)[][] = [];

@@ -1,32 +1,79 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import { AngularDraggableModule } from 'angular2-draggable';
 import { routes } from './app-routing';
 import { AppComponent } from './app.component';
-import { PhaserComponent } from './components/phaser/phaser.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ToolbarComponent } from './components/toolbar/toolbar.component';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { SidenavComponent } from './components/sidenav/sidenav.component';
-import { FormsModule } from '@angular/forms';
-import { LayersComponent } from './components/layers/layers.component';
-import { EntitiesComponent } from './components/entities/entities.component';
-import { LoadMapComponent } from './components/load-map/load-map.component';
-import { WidgetRegistryService } from './shared/widgets/widget-registry.service';
-import { HttpClientModule } from '@angular/common/http';
-import { SharedModule } from './shared/shared.module';
-import { MaterialModule } from './external-modules/material.module';
-import { HistoryModule } from './shared/history/history.module';
-import { WidgetModule } from './shared/widgets/widget.module';
-import { StateHistoryService } from './shared/history/state-history.service';
-import { DragDropModule } from '@angular/cdk/drag-drop';
-import { EditorComponent } from './components/editor/editor.component';
-import { TileSelectorComponent } from './components/tile-selector/tile-selector.component';
-import { RouterModule } from '@angular/router';
-import { ScrollingModule } from '@angular/cdk/scrolling';
 import { BabylonComponent } from './components/babylon/babylon.component';
 import { CaptionsComponent } from './components/captions/captions.component';
-import { DialogsModule } from './components/dialogs/dialogs.module';
+import { FloatingWindowComponent } from './components/dialogs/floating-window/floating-window.component';
+import { HistoryComponent } from './components/dialogs/floating-window/history/history.component';
+import { TileSelectorComponent } from './components/dialogs/floating-window/tile-selector/tile-selector.component';
+import { ListSearchOverlayComponent } from './components/dialogs/list-search-overlay/list-search-overlay.component';
+import { LoadMapComponent } from './components/dialogs/load-map/load-map.component';
+import { MapContentSettingsComponent } from './components/dialogs/map-settings/map-content-settings/map-content-settings.component';
+import { MapSettingsComponent } from './components/dialogs/map-settings/map-settings.component';
+import { NewMapComponent } from './components/dialogs/new-map/new-map.component';
+import { OffsetMapComponent } from './components/dialogs/offset-map/offset-map.component';
+import { OverlayPanelComponent } from './components/dialogs/overlay/overlay-panel/overlay-panel.component';
+import { SettingsComponent } from './components/dialogs/settings/settings.component';
+import { EditorComponent } from './components/editor/editor.component';
+import { EntitiesComponent } from './components/entities/entities.component';
+import { JsonEditorComponent } from './components/json-editor/json-editor.component';
+import { LayersComponent } from './components/layers/layers.component';
+import { PhaserComponent } from './components/phaser/phaser.component';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { SplitPaneModule } from './components/split-pane/split-pane.module';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { BooleanWidgetComponent } from './components/widgets/boolean-widget/boolean-widget.component';
+import { CharacterWidgetComponent } from './components/widgets/character-widget/character-widget.component';
+import { EnemyTypeWidgetOverlayComponent } from './components/widgets/enemy-type-widget/enemy-type-overlay/enemy-type-overlay.component';
+import { EnemyTypeWidgetComponent } from './components/widgets/enemy-type-widget/enemy-type-widget.component';
+import { EventDetailComponent } from './components/widgets/event-widget/event-editor/detail/event-detail.component';
+import { EventEditorComponent } from './components/widgets/event-widget/event-editor/editor/event-editor.component';
+import { RowTextComponent } from './components/widgets/event-widget/event-editor/row-text/row-text.component';
+import { EventWidgetComponent } from './components/widgets/event-widget/event-widget.component';
+import { EventWindowComponent } from './components/widgets/event-widget/event-window/event-window.component';
+import { JsonWidgetComponent } from './components/widgets/json-widget/json-widget.component';
+import { LangLabelWidgetComponent } from './components/widgets/langlabel-widget/langlabel-widget.component';
+import { LevelWidgetComponent } from './components/widgets/level-widget/level-widget.component';
+import { NPCStatesWidgetComponent } from './components/widgets/npc-states-widget/npc-states-widget.component';
+import { NpcStatesComponent } from './components/widgets/npc-states-widget/npc-states/npc-states.component';
+import { NumberWidgetComponent } from './components/widgets/number-widget/number-widget.component';
+import { PersonExpressionWidgetComponent } from './components/widgets/person-expression-widget/person-expression-widget.component';
+import { AutocompletedTextboxComponent } from './components/widgets/string-widget/autocompleted-textbox/autocompleted-textbox.component';
+import { StringWidgetComponent } from './components/widgets/string-widget/string-widget.component';
+import { Vec2WidgetComponent } from './components/widgets/vec2-widget/vec2-widget.component';
+import { HighlightDirective } from './directives/highlight.directive';
+import { HostDirective } from './directives/host.directive';
+import { ModalDirective } from './directives/modal.directive';
+import { MaterialModule } from './external-modules/material.module';
+import { KeepHtmlPipe } from './pipes/keep-html.pipe';
+
+const WIDGETS = [
+	StringWidgetComponent,
+	NumberWidgetComponent,
+	BooleanWidgetComponent,
+	JsonWidgetComponent,
+	LevelWidgetComponent,
+	Vec2WidgetComponent,
+	NPCStatesWidgetComponent,
+	NpcStatesComponent,
+	EventWidgetComponent,
+	EventEditorComponent,
+	CharacterWidgetComponent,
+	PersonExpressionWidgetComponent,
+	EnemyTypeWidgetComponent,
+	LangLabelWidgetComponent,
+	AutocompletedTextboxComponent,
+];
 
 @NgModule({
 	declarations: [
@@ -41,6 +88,25 @@ import { DialogsModule } from './components/dialogs/dialogs.module';
 		TileSelectorComponent,
 		BabylonComponent,
 		CaptionsComponent,
+		MapSettingsComponent,
+		NewMapComponent,
+		MapContentSettingsComponent,
+		OffsetMapComponent,
+		SettingsComponent,
+		HistoryComponent,
+		OverlayPanelComponent,
+		HostDirective,
+		ModalDirective,
+		JsonEditorComponent,
+		FloatingWindowComponent,
+		KeepHtmlPipe,
+		HighlightDirective,
+		ListSearchOverlayComponent,
+		EventWindowComponent,
+		RowTextComponent,
+		EventDetailComponent,
+		EnemyTypeWidgetOverlayComponent,
+		...WIDGETS,
 	],
 	imports: [
 		RouterModule.forRoot(routes),
@@ -51,13 +117,21 @@ import { DialogsModule } from './components/dialogs/dialogs.module';
 		MaterialModule,
 		HttpClientModule,
 		BrowserAnimationsModule,
-		WidgetModule,
-		SharedModule,
-		HistoryModule,
 		ScrollingModule,
-		DialogsModule,
+		ReactiveFormsModule,
+		AngularDraggableModule,
+		OverlayModule,
+		SplitPaneModule,
 	],
-	providers: [WidgetRegistryService, StateHistoryService],
 	bootstrap: [AppComponent],
+	entryComponents: [
+		JsonEditorComponent,
+		ListSearchOverlayComponent,
+		EventWindowComponent,
+		RowTextComponent,
+		EventDetailComponent,
+		EnemyTypeWidgetOverlayComponent,
+		...WIDGETS,
+	],
 })
 export class AppModule {}

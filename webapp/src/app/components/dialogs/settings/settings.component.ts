@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { OverlayRefControl } from '../../../shared/overlay/overlay-ref-control';
-import { ElectronService } from '../../../services/electron.service';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HttpClientService } from '../../../services/http-client.service';
-import { Globals } from '../../../shared/globals';
+
+import { OverlayRefControl } from '../../../components/dialogs/overlay/overlay-ref-control';
+import { SettingsService } from '../../../directives/settings.service';
 import { BrowserService } from '../../../services/browser.service';
+import { ElectronService } from '../../../services/electron.service';
+import { Globals } from '../../../services/globals';
+import { HttpClientService } from '../../../services/http-client.service';
 import { SharedService } from '../../../services/sharedService';
-import { SettingsService } from '../../../shared/settings.service';
 
 @Component({
 	selector: 'app-settings',

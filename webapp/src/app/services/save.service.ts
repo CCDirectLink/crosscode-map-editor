@@ -1,10 +1,10 @@
-import {Injectable} from '@angular/core';
-import {HttpClientService} from './http-client.service';
-import {CCMap} from '../shared/phaser/tilemap/cc-map';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {Helper} from '../shared/phaser/helper';
-import {EventManager} from '@angular/platform-browser';
-import {MapLoaderService} from '../shared/map-loader.service';
+import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { EventManager } from '@angular/platform-browser';
+import { MapLoaderService } from '../services/map-loader.service';
+import { HttpClientService } from './http-client.service';
+import { Helper } from './phaser/helper';
+import { CCMap } from './phaser/tilemap/cc-map';
 
 @Injectable({
 	providedIn: 'root'

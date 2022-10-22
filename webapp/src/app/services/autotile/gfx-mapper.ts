@@ -1,16 +1,14 @@
+import { Point } from '../../models/cross-code-map';
+import { ChipsetConfig } from '../height-map/gfx-mapper/gfx-mapper.constants';
+import { Helper } from '../phaser/helper';
+import { Vec2 } from '../phaser/vec2';
 import {
 	AutotileConfig,
-	AutotileType,
-	FILL_TYPE,
+	AutotileType, FillType, FILL_TYPE,
 	FILL_TYPE_CLIFF,
 	FILL_TYPE_CLIFF_ALT,
-	FILL_TYPE_CLIFF_BORDER,
-	FillType
+	FILL_TYPE_CLIFF_BORDER
 } from './autotile.constants';
-import {Point} from '../../models/cross-code-map';
-import {Helper} from '../../shared/phaser/helper';
-import {Vec2} from '../../shared/phaser/vec2';
-import {ChipsetConfig} from '../height-map/gfx-mapper/gfx-mapper.constants';
 
 import autotilesJson from '../../../assets/autotiles.json';
 

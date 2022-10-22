@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {CCMapLayer} from '../../shared/phaser/tilemap/cc-map-layer';
-import {GfxMapper} from './gfx-mapper';
-import {Point} from '../../models/cross-code-map';
-import {CHECK_DIR, CHECK_ITERATE, CheckDir} from '../height-map/heightmap.constants';
-import {AutotileConfig, FillType} from './autotile.constants';
+import { Injectable } from '@angular/core';
+import { Point } from '../../models/cross-code-map';
+import { CheckDir, CHECK_DIR, CHECK_ITERATE } from '../height-map/heightmap.constants';
+import { CCMapLayer } from '../phaser/tilemap/cc-map-layer';
+import { AutotileConfig, FillType } from './autotile.constants';
+import { GfxMapper } from './gfx-mapper';
 
 interface TileData {
 	pos: Point;

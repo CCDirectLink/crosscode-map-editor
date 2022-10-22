@@ -1,18 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { MapLoaderService } from '../shared/map-loader.service';
-import { SharedModule } from '../shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
-import { MapEntity } from '../models/cross-code-map';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { StateHistoryService } from '../components/dialogs/floating-window/history/state-history.service';
+import { LayersComponent } from '../components/layers/layers.component';
 import { PhaserComponent } from '../components/phaser/phaser.component';
-import { StateHistoryService } from '../shared/history/state-history.service';
+import { MaterialModule } from '../external-modules/material.module';
 import { AutotileService } from '../services/autotile/autotile.service';
 import { HeightMapService } from '../services/height-map/height-map.service';
 import { HttpClientService } from '../services/http-client.service';
+import { MapLoaderService } from '../services/map-loader.service';
+import { SharedModule } from '../services/shared.module';
 import { TestHelper } from './test-helper';
-import { LayersComponent } from '../components/layers/layers.component';
-import { MaterialModule } from '../external-modules/material.module';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 class SimpleServiceMock {
 	init() {

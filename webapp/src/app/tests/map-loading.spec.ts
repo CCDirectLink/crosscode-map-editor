@@ -1,13 +1,13 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MapLoaderService } from '../shared/map-loader.service';
-import { SharedModule } from '../shared/shared.module';
-import { HttpClientModule } from '@angular/common/http';
+import { StateHistoryService } from '../components/dialogs/floating-window/history/state-history.service';
 import { PhaserComponent } from '../components/phaser/phaser.component';
-import { StateHistoryService } from '../shared/history/state-history.service';
 import { AutotileService } from '../services/autotile/autotile.service';
 import { HeightMapService } from '../services/height-map/height-map.service';
 import { HttpClientService } from '../services/http-client.service';
+import { MapLoaderService } from '../services/map-loader.service';
+import { SharedModule } from '../services/shared.module';
 import { TestHelper } from './test-helper';
 
 class SimpleServiceMock {

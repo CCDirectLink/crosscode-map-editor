@@ -1,9 +1,9 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Globals} from '../../shared/globals';
-import {Router} from '@angular/router';
-import {GlobalEventsService} from '../../shared/global-events.service';
-import {Subscription} from 'rxjs';
-import {BabylonViewer} from '../../shared/3d/BabylonViewer';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { BabylonViewer } from '../../services/3d/BabylonViewer';
+import { GlobalEventsService } from '../../services/global-events.service';
+import { Globals } from '../../services/globals';
 
 @Component({
 	selector: 'app-babylon',

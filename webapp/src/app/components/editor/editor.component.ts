@@ -1,7 +1,8 @@
-import {Component, ViewChild} from '@angular/core';
-import {MatSidenav} from '@angular/material/sidenav';
-import {AddEntityMenuService} from './add-entity-menu.service';
-import {LoadMapComponent} from '../load-map/load-map.component';
+import { Component, ViewChild } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
+
+import { LoadMapComponent } from '../dialogs/load-map/load-map.component';
+import { AddEntityMenuService } from './add-entity-menu.service';
 
 @Component({
 	selector: 'app-editor',

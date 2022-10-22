@@ -1,13 +1,14 @@
-import {Injectable} from '@angular/core';
-import {OverlayRefControl} from '../../shared/overlay/overlay-ref-control';
-import {MapEntity, Point} from '../../models/cross-code-map';
-import {GlobalEventsService} from '../../shared/global-events.service';
-import {OverlayService} from '../../shared/overlay/overlay.service';
-import {Overlay} from '@angular/cdk/overlay';
-import {EntityRegistryService} from '../../shared/phaser/entities/registry/entity-registry.service';
+import { Overlay } from '@angular/cdk/overlay';
+import { Injectable } from '@angular/core';
+
 import entities from '../../../assets/entities.json';
-import {Vec2} from '../../shared/phaser/vec2';
-import {ListSearchOverlayComponent} from '../../shared/list-search-overlay/list-search-overlay.component';
+import { OverlayRefControl } from '../../components/dialogs/overlay/overlay-ref-control';
+import { OverlayService } from '../../components/dialogs/overlay/overlay.service';
+import { MapEntity, Point } from '../../models/cross-code-map';
+import { GlobalEventsService } from '../../services/global-events.service';
+import { EntityRegistryService } from '../../services/phaser/entities/registry/entity-registry.service';
+import { Vec2 } from '../../services/phaser/vec2';
+import { ListSearchOverlayComponent } from '../dialogs/list-search-overlay/list-search-overlay.component';
 
 @Injectable({
 	providedIn: 'root'

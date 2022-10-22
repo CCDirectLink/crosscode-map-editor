@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+
+import { OverlayRefControl } from '../../../components/dialogs/overlay/overlay-ref-control';
 import { CrossCodeMap } from '../../../models/cross-code-map';
-import { OverlayRefControl } from '../../../shared/overlay/overlay-ref-control';
-import { MapLoaderService } from '../../../shared/map-loader.service';
+import { MapLoaderService } from '../../../services/map-loader.service';
 
 @Component({
 	selector: 'app-new-map',
