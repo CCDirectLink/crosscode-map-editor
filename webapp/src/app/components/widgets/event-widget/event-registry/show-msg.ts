@@ -1,5 +1,5 @@
-import {AbstractEvent, EventType} from './abstract-event';
-import {Label, Person} from '../../../../models/events';
+import { Label, Person } from '../../../../models/events';
+import { AbstractEvent, EventType } from './abstract-event';
 
 interface ShowMsgData extends EventType {
 	message: Label;

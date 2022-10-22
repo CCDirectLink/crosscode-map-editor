@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {AbstractWidget} from '../abstract-widget';
-import {SearchFilterService} from '../../../services/search-filter.service';
+import { Component, OnInit } from '@angular/core';
+import { SearchFilterService } from '../../../services/search-filter.service';
+import { AbstractWidget } from '../abstract-widget';
 
 @Component({
 	selector: 'app-string-widget',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Globals } from '../services/globals';
-import { SharedService } from './sharedService';
+import { Globals } from './globals';
+import { SharedService } from './shared-service';
 
 @Injectable({
 	providedIn: 'root'

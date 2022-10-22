@@ -1,8 +1,8 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
 
-import { OverlayRefControl } from '../../../components/dialogs/overlay/overlay-ref-control';
-import { OverlayService } from '../../../components/dialogs/overlay/overlay.service';
+import { OverlayRefControl } from '../../dialogs/overlay/overlay-ref-control';
+import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { AbstractWidget } from '../abstract-widget';
 import { EnemyTypeWidgetOverlayComponent } from './enemy-type-overlay/enemy-type-overlay.component';
 

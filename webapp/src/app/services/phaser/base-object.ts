@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 
 export interface KeyBinding {
 	event: string;

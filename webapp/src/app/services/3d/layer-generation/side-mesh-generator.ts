@@ -1,6 +1,6 @@
 import { Mesh, Vector3, VertexData } from '@babylonjs/core';
 import { Point3 } from '../../../models/cross-code-map';
-import { Globals } from '../../../services/globals';
+import { Globals } from '../../globals';
 import { CCMapLayer } from '../../phaser/tilemap/cc-map-layer';
 import { getLevelOffsetTile } from './offset-helper';
 import { SimpleTileLayer } from './simple-tile-layer';

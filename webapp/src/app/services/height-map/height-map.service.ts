@@ -3,10 +3,10 @@ import { EventManager } from '@angular/platform-browser';
 
 import tilesets from '../../../assets/tilesets.json';
 import { StateHistoryService } from '../../components/dialogs/floating-window/history/state-history.service';
-import { Globals } from '../../services/globals';
-import { MapLoaderService } from '../../services/map-loader.service';
 import { AutotileService } from '../autotile/autotile.service';
 import { GlobalEventsService } from '../global-events.service';
+import { Globals } from '../globals';
+import { MapLoaderService } from '../map-loader.service';
 import { Helper } from '../phaser/helper';
 import { CCMap } from '../phaser/tilemap/cc-map';
 import { CCMapLayer } from '../phaser/tilemap/cc-map-layer';

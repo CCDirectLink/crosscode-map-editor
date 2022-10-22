@@ -1,6 +1,6 @@
-import {CCEntity, EntityAttributes, ScaleSettings} from '../cc-entity';
-import {Point, Point3} from '../../../../models/cross-code-map';
-import {Helper} from '../../helper';
+import { Point, Point3 } from '../../../../models/cross-code-map';
+import { Helper } from '../../helper';
+import { CCEntity, EntityAttributes, ScaleSettings } from '../cc-entity';
 
 interface ScalablePropSheet {
 	DOCTYPE: string;

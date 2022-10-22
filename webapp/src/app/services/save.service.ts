@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EventManager } from '@angular/platform-browser';
-import { MapLoaderService } from '../services/map-loader.service';
 import { HttpClientService } from './http-client.service';
+import { MapLoaderService } from './map-loader.service';
 import { Helper } from './phaser/helper';
 import { CCMap } from './phaser/tilemap/cc-map';
 

@@ -1,9 +1,9 @@
-import {Component, OnInit, Input, Output, EventEmitter, ViewChild} from '@angular/core';
-import {NPCState} from '../npc-states-widget.component';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import * as settingsJson from '../../../../../assets/npc-settings.json';
-import {EventEditorComponent} from '../../event-widget/event-editor/editor/event-editor.component';
-import {destructureEventArray, createEventArray, EventArray, EventArrayType} from '../../../../models/events';
+import { createEventArray, destructureEventArray, EventArrayType } from '../../../../models/events';
+import { EventEditorComponent } from '../../event-widget/event-editor/editor/event-editor.component';
 import { EventType } from '../../event-widget/event-registry/abstract-event';
+import { NPCState } from '../npc-states-widget.component';
 
 @Component({
 	selector: 'app-npc-states',

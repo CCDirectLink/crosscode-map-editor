@@ -1,4 +1,4 @@
-import {AbstractEvent, EventType} from './abstract-event';
+import { AbstractEvent, EventType } from './abstract-event';
 
 export interface IfData extends EventType {
 	withElse: boolean;

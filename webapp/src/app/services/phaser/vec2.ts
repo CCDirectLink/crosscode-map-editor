@@ -1,6 +1,6 @@
 // Vector tools (source: http://impactjs.com/forums/impact-engine/vector-math-helper-class/page/1)
 
-import {Point} from '../../models/cross-code-map';
+import { Point } from '../../models/cross-code-map';
 
 export class Vec2 {
 	

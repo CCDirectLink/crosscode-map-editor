@@ -2,12 +2,10 @@ import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
-	ElementRef,
-	HostListener,
+	ElementRef, EventEmitter, HostListener,
 	Input,
 	OnInit, Output,
-	ViewChild,
-	EventEmitter
+	ViewChild
 } from '@angular/core';
 
 /** values in % [0, 100] */

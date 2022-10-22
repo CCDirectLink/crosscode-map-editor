@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CrossCodeMap } from '../models/cross-code-map';
-import { ElectronService } from '../services/electron.service';
-import { HttpClientService } from '../services/http-client.service';
-import { CCMap } from '../services/phaser/tilemap/cc-map';
-import { CCMapLayer } from '../services/phaser/tilemap/cc-map-layer';
+import { ElectronService } from './electron.service';
 import { Globals } from './globals';
+import { HttpClientService } from './http-client.service';
 import { BasePath, FileExtension, PathResolver } from './path-resolver';
+import { CCMap } from './phaser/tilemap/cc-map';
+import { CCMapLayer } from './phaser/tilemap/cc-map-layer';
 
 @Injectable({
 	providedIn: 'root'

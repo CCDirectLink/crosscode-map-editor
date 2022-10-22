@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { api } from 'cc-map-editor-common';
 import { Observable } from 'rxjs';
 import { FileInfos } from '../models/file-infos';
-import { Globals } from '../services/globals';
 import { ElectronService } from './electron.service';
+import { Globals } from './globals';
 
 @Injectable({
 	providedIn: 'root'

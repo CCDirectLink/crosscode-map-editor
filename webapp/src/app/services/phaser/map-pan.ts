@@ -1,5 +1,5 @@
 import { Point } from '../../models/cross-code-map';
-import { Globals } from '../../services/globals';
+import { Globals } from '../globals';
 import { Vec2 } from './vec2';
 
 export class MapPan extends Phaser.GameObjects.GameObject {

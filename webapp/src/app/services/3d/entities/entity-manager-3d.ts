@@ -1,6 +1,6 @@
 import { Mesh, Scene } from '@babylonjs/core';
 import { Subscription } from 'rxjs';
-import { Globals } from '../../../services/globals';
+import { Globals } from '../../globals';
 import { CCEntity } from '../../phaser/entities/cc-entity';
 import { EntityGenerator } from './entity-generator';
 

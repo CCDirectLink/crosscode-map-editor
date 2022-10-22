@@ -1,5 +1,5 @@
-import {OverlayRef} from '@angular/cdk/overlay';
-import {Subject} from 'rxjs';
+import { OverlayRef } from '@angular/cdk/overlay';
+import { Subject } from 'rxjs';
 
 export class OverlayRefControl {
 	

@@ -1,7 +1,7 @@
-import {SimpleTileLayer} from '../simple-tile-layer';
-import {Point} from '../../../../models/cross-code-map';
-import {NodeTracer} from './node-grid';
-import {BoundaryTracer} from './boundary-tracer';
+import { Point } from '../../../../models/cross-code-map';
+import { SimpleTileLayer } from '../simple-tile-layer';
+import { BoundaryTracer } from './boundary-tracer';
+import { NodeTracer } from './node-grid';
 
 describe('boundary tracing', () => {
 	

@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { Attributes, CrossCodeMap, MapLayer, Point } from '../../../models/cross-code-map';
-import { Globals } from '../../../services/globals';
+import { Globals } from '../../globals';
 import { EntityManager } from '../entities/entity-manager';
 import { CCMapLayer } from './cc-map-layer';
 

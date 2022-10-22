@@ -1,7 +1,7 @@
 import { combineLatest, Subscription } from 'rxjs';
 import { Point } from '../../models/cross-code-map';
 import { EditorView } from '../../models/editor-view';
-import { Globals } from '../../services/globals';
+import { Globals } from '../globals';
 import { BaseObject } from './base-object';
 
 export class CoordsReporter extends BaseObject {

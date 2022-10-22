@@ -1,6 +1,6 @@
 import { Mesh, MeshBuilder, Scene, Vector3, Vector4 } from '@babylonjs/core';
 import * as earcut from 'earcut';
-import { Globals } from '../../../services/globals';
+import { Globals } from '../../globals';
 import { CCMapLayer } from '../../phaser/tilemap/cc-map-layer';
 import { NodeGrid, PolygonDescription } from './boundary-tracing/node-grid';
 import { adjustLevel, getLevelOffsetTile } from './offset-helper';

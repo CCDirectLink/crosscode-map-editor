@@ -1,5 +1,5 @@
 import { CrossCodeMap, MapEntity, Point } from '../../../models/cross-code-map';
-import { Globals } from '../../../services/globals';
+import { Globals } from '../../globals';
 import { BaseObject } from '../base-object';
 import { Helper } from '../helper';
 import { CCMap } from '../tilemap/cc-map';

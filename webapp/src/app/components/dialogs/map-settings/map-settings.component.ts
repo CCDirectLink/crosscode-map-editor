@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
-import { OverlayRefControl } from '../../../components/dialogs/overlay/overlay-ref-control';
 import { CrossCodeMap } from '../../../models/cross-code-map';
 import { MapLoaderService } from '../../../services/map-loader.service';
 import { CCMap } from '../../../services/phaser/tilemap/cc-map';
+import { OverlayRefControl } from '../overlay/overlay-ref-control';
 
 @Component({
 	selector: 'app-map-settings',

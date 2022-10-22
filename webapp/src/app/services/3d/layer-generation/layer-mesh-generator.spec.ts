@@ -1,5 +1,5 @@
-import {LayerMeshGenerator} from './layer-mesh-generator';
-import {SimpleTileLayer} from './simple-tile-layer';
+import { LayerMeshGenerator } from './layer-mesh-generator';
+import { SimpleTileLayer } from './simple-tile-layer';
 
 describe('layer mesh generator', () => {
 	

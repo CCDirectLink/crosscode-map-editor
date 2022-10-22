@@ -1,7 +1,7 @@
 import mapStyles from '../../../../../webapp/src/assets/map-styles.json';
 import { Point } from '../../models/cross-code-map';
 import { MapStyles } from '../../models/map-styles';
-import { Globals } from '../../services/globals';
+import { Globals } from '../globals';
 import { CCMap } from './tilemap/cc-map';
 import { CCMapLayer } from './tilemap/cc-map-layer';
 import Scene = Phaser.Scene;

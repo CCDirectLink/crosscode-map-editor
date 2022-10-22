@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
-import {SearchFilterService} from '../../../../services/search-filter.service';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { SearchFilterService } from '../../../../services/search-filter.service';
 
 @Component({
 	selector: 'app-autocompleted-textbox',

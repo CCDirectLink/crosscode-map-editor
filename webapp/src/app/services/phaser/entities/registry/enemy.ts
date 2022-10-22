@@ -4,7 +4,7 @@ import { MultiDirAnimation } from '../../../../models/multi-dir-animation';
 import { MultiEntityAnimation } from '../../../../models/multi-entity-animation';
 import { SingleDirAnimation } from '../../../../models/single-dir-animation';
 import { TileSheet } from '../../../../models/tile-sheet';
-import { BasePath, FileExtension, PathResolver } from '../../../../services/path-resolver';
+import { BasePath, FileExtension, PathResolver } from '../../../path-resolver';
 import { Helper } from '../../helper';
 import { DefaultEntity } from './default-entity';
 

@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import {CrossCodeMap} from '../../../../models/cross-code-map';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as mapSettingsjson from '../../../../../assets/map-settings.json';
+import { CrossCodeMap } from '../../../../models/cross-code-map';
 
 @Component({
 	selector: 'app-map-content-settings',

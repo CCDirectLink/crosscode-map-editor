@@ -1,5 +1,5 @@
-import {Material, Mesh} from '@babylonjs/core';
-import {ToggleMesh} from '../debug/toggle-mesh';
+import { Material, Mesh } from '@babylonjs/core';
+import { ToggleMesh } from '../debug/toggle-mesh';
 
 export function addWireframeButton(toggle: ToggleMesh, meshes: Mesh[]) {
 	const materials = new Set<Material>();

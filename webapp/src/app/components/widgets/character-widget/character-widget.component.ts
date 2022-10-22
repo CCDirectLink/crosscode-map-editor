@@ -1,6 +1,6 @@
-import { Component, OnInit , Input} from '@angular/core';
-import {AbstractWidget} from '../abstract-widget';
-import {CharacterNamesService} from './character-names.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { AbstractWidget } from '../abstract-widget';
+import { CharacterNamesService } from './character-names.service';
 
 @Component({
 	selector: 'app-character-widget',

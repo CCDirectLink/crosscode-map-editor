@@ -7,9 +7,9 @@ import actions from '../../../../../../assets/actions.json';
 import events from '../../../../../../assets/events.json';
 import {
 	ListSearchOverlayComponent
-} from '../../../../../components/dialogs/list-search-overlay/list-search-overlay.component';
-import { OverlayRefControl } from '../../../../../components/dialogs/overlay/overlay-ref-control';
-import { OverlayService } from '../../../../../components/dialogs/overlay/overlay.service';
+} from '../../../../dialogs/list-search-overlay/list-search-overlay.component';
+import { OverlayRefControl } from '../../../../dialogs/overlay/overlay-ref-control';
+import { OverlayService } from '../../../../dialogs/overlay/overlay.service';
 import { AbstractEvent } from '../../event-registry/abstract-event';
 import { EventRegistryService } from '../../event-registry/event-registry.service';
 

@@ -1,4 +1,4 @@
-import {Point} from './cross-code-map';
+import { Point } from './cross-code-map';
 
 export interface SelectedTile {
 	id: number;

@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import { Point } from '../../../models/cross-code-map';
 import { SelectedTile } from '../../../models/tile-selector';
-import { Globals } from '../../../services/globals';
+import { Globals } from '../../globals';
 import { BaseObject } from '../base-object';
 import { Helper } from '../helper';
 import { Vec2 } from '../vec2';

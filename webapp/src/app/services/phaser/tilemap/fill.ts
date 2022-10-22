@@ -1,5 +1,5 @@
-import {Point} from '../../../models/cross-code-map';
-import {CCMapLayer} from './cc-map-layer';
+import { Point } from '../../../models/cross-code-map';
+import { CCMapLayer } from './cc-map-layer';
 
 export class Filler {
 	public static fill(layer: CCMapLayer, newTile: number, p: Point) {

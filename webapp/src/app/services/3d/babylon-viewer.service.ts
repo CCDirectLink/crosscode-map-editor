@@ -1,7 +1,8 @@
+import { Injectable } from '@angular/core';
 import { Color3, Engine, FreeCamera, HemisphericLight, Mesh, Scene, Vector3 } from '@babylonjs/core';
 import { EditorView } from '../../models/editor-view';
-import { Globals } from '../../services/globals';
 import { GlobalEventsService } from '../global-events.service';
+import { Globals } from '../globals';
 import { CCMapLayer } from '../phaser/tilemap/cc-map-layer';
 import { CustomFreeCamera } from './camera/custom-free-camera';
 import { showAxis } from './debug/show-axis';
@@ -17,7 +18,10 @@ interface CamStore {
 	rotation: Vector3;
 }
 
-export class BabylonViewer {
+@Injectable({
+	providedIn: 'root'
+})
+export class BabylonViewerService {
 	private engine?: Engine;
 	private scene?: Scene;
 	private cam?: FreeCamera;

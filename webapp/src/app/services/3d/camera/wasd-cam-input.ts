@@ -1,5 +1,5 @@
-import {ICameraInput, Nullable, Vector3} from '@babylonjs/core';
-import {CustomFreeCamera} from './custom-free-camera';
+import { ICameraInput, Nullable, Vector3 } from '@babylonjs/core';
+import { CustomFreeCamera } from './custom-free-camera';
 
 
 /**

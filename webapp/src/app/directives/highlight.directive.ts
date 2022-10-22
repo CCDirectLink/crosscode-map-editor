@@ -1,5 +1,5 @@
-import {Directive, ElementRef, Input, OnChanges} from '@angular/core';
-import {SearchFilterService} from '../services/search-filter.service';
+import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
+import { SearchFilterService } from '../services/search-filter.service';
 
 @Directive({
 	selector: '[appHighlight]'

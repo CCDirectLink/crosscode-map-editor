@@ -1,5 +1,5 @@
 import { Point3 } from '../../../../models/cross-code-map';
-import { Globals } from '../../../../services/globals';
+import { Globals } from '../../../globals';
 import { Helper } from '../../helper';
 import { CCEntity, EntityAttributes, Fix, ScaleSettings } from '../cc-entity';
 import { Anims, AnimSheet } from './prop';

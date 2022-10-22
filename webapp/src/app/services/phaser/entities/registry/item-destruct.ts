@@ -1,7 +1,7 @@
-import {CCEntity, EntityAttributes, ScaleSettings} from '../cc-entity';
-import {Helper} from '../../helper';
-import {Point3} from '../../../../models/cross-code-map';
-import {Anims, AnimSheet} from './prop';
+import { Point3 } from '../../../../models/cross-code-map';
+import { Helper } from '../../helper';
+import { CCEntity, EntityAttributes, ScaleSettings } from '../cc-entity';
+import { Anims, AnimSheet } from './prop';
 
 export class ItemDestruct extends CCEntity {
 	

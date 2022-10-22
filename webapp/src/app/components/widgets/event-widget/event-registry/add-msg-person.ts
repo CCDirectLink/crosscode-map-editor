@@ -1,5 +1,5 @@
-import {AbstractEvent, EventType} from './abstract-event';
-import {Person} from '../../../../models/events';
+import { Person } from '../../../../models/events';
+import { AbstractEvent, EventType } from './abstract-event';
 
 interface AddMsgPersonData extends EventType {
 	person: Person;

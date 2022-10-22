@@ -1,7 +1,7 @@
-import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { EventArray } from '../../../../models/events';
 import { EventEditorComponent } from '../event-editor/editor/event-editor.component';
 import { EventHelperService } from '../event-editor/event-helper.service';
-import { EventArray } from '../../../../models/events';
 
 @Component({
 	selector: 'app-event-window',

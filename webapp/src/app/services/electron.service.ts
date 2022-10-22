@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { api } from 'cc-map-editor-common';
 import { Globals } from './globals';
-import { SharedService } from './sharedService';
+import { SharedService } from './shared-service';
 
 @Injectable({
 	providedIn: 'root'

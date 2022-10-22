@@ -1,6 +1,6 @@
 import { Scene, StandardMaterial, Texture } from '@babylonjs/core';
 import { Point } from '../../../models/cross-code-map';
-import { Globals } from '../../../services/globals';
+import { Globals } from '../../globals';
 import { CCMapLayer } from '../../phaser/tilemap/cc-map-layer';
 
 export class TextureGenerator {

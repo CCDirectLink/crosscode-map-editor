@@ -1,4 +1,4 @@
-import {Point} from '../../models/cross-code-map';
+import { Point } from '../../models/cross-code-map';
 
 /** value is width, height is always 2 */
 export enum AutotileType {

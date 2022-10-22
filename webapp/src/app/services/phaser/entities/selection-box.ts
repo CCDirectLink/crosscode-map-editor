@@ -1,5 +1,5 @@
-import {Point} from '../../../models/cross-code-map';
-import {CCEntity} from './cc-entity';
+import { Point } from '../../../models/cross-code-map';
+import { CCEntity } from './cc-entity';
 
 export class SelectionBox {
 	

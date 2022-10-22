@@ -1,6 +1,6 @@
-import { CCEntity, EntityAttributes, ScaleSettings } from '../cc-entity';
 import entities from '../../../../../assets/entities.json';
 import { CCMap } from '../../tilemap/cc-map';
+import { CCEntity, EntityAttributes, ScaleSettings } from '../cc-entity';
 
 interface JsonEntityType {
 	attributes: EntityAttributes;

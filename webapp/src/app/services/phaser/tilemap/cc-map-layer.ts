@@ -1,5 +1,5 @@
-import { MapLayer, Point } from '../../../models/cross-code-map';
 import * as Phaser from 'phaser';
+import { MapLayer, Point } from '../../../models/cross-code-map';
 import { Helper } from '../helper';
 import Tile = Phaser.Tilemaps.Tile;
 

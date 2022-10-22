@@ -1,12 +1,12 @@
 import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
-import { AbstractWidget } from '../../components/widgets/abstract-widget';
-import { Vec2WidgetComponent } from '../../components/widgets/vec2-widget/vec2-widget.component';
-import { WidgetRegistryService } from '../../components/widgets/widget-registry.service';
 import { HostDirective } from '../../directives/host.directive';
 import { GlobalEventsService } from '../../services/global-events.service';
 import { MapLoaderService } from '../../services/map-loader.service';
 import { AttributeValue, CCEntity } from '../../services/phaser/entities/cc-entity';
 import { CCMap } from '../../services/phaser/tilemap/cc-map';
+import { AbstractWidget } from '../widgets/abstract-widget';
+import { Vec2WidgetComponent } from '../widgets/vec2-widget/vec2-widget.component';
+import { WidgetRegistryService } from '../widgets/widget-registry.service';
 
 @Component({
 	selector: 'app-entities',

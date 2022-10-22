@@ -1,4 +1,4 @@
-import {AbstractEvent} from './abstract-event';
+import { AbstractEvent } from './abstract-event';
 
 export class SetPlayerCore extends AbstractEvent<any> {
 	private attributes = {

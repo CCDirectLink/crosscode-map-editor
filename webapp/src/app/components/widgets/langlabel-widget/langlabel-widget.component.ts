@@ -1,7 +1,6 @@
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import {Component, ElementRef, QueryList, ViewChild, ViewChildren, ChangeDetectorRef} from '@angular/core';
-import {AbstractWidget} from '../abstract-widget';
-import {ResizedEvent} from 'angular-resize-event';
+import { Component, QueryList, ViewChildren } from '@angular/core';
+import { AbstractWidget } from '../abstract-widget';
 
 @Component({
 	selector: 'app-langlabel-widget',

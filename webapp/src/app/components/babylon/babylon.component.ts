@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { BabylonViewer } from '../../services/3d/BabylonViewer';
+import { BabylonViewerService } from '../../services/3d/babylon-viewer.service';
 import { GlobalEventsService } from '../../services/global-events.service';
 import { Globals } from '../../services/globals';
 
@@ -15,16 +15,15 @@ export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 	@ViewChild('renderCanvas', {static: true}) canvas!: ElementRef<HTMLCanvasElement>;
 	
 	private sub: Subscription;
-	private viewer: BabylonViewer;
 	
 	loading = false;
 	
 	constructor(
 		private router: Router,
-		private globalEvents: GlobalEventsService
+		private globalEvents: GlobalEventsService,
+		private viewer: BabylonViewerService,
 	) {
 		this.sub = globalEvents.babylonLoading.subscribe(val => this.loading = val);
-		this.viewer = new BabylonViewer(globalEvents);
 	}
 	
 	ngOnInit() {

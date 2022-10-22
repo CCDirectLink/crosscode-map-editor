@@ -1,11 +1,11 @@
 import { StateHistoryService } from '../components/dialogs/floating-window/history/state-history.service';
-import { AutotileService } from '../services/autotile/autotile.service';
-import { HttpClientService } from '../services/http-client.service';
-import { EntityRegistryService } from '../services/phaser/entities/registry/entity-registry.service';
-import { PhaserEventsService } from '../services/phaser/phaser-events.service';
-import { CCMap } from '../services/phaser/tilemap/cc-map';
+import { AutotileService } from './autotile/autotile.service';
 import { GlobalEventsService } from './global-events.service';
+import { HttpClientService } from './http-client.service';
 import { MapLoaderService } from './map-loader.service';
+import { EntityRegistryService } from './phaser/entities/registry/entity-registry.service';
+import { PhaserEventsService } from './phaser/phaser-events.service';
+import { CCMap } from './phaser/tilemap/cc-map';
 
 export class Globals {
 	static isElectron = false;

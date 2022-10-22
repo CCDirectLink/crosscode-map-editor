@@ -1,14 +1,14 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { Injectable } from '@angular/core';
 
-import entities from '../../../assets/entities.json';
-import { OverlayRefControl } from '../../components/dialogs/overlay/overlay-ref-control';
-import { OverlayService } from '../../components/dialogs/overlay/overlay.service';
-import { MapEntity, Point } from '../../models/cross-code-map';
-import { GlobalEventsService } from '../../services/global-events.service';
-import { EntityRegistryService } from '../../services/phaser/entities/registry/entity-registry.service';
-import { Vec2 } from '../../services/phaser/vec2';
-import { ListSearchOverlayComponent } from '../dialogs/list-search-overlay/list-search-overlay.component';
+import entities from '../../assets/entities.json';
+import { ListSearchOverlayComponent } from '../components/dialogs/list-search-overlay/list-search-overlay.component';
+import { OverlayRefControl } from '../components/dialogs/overlay/overlay-ref-control';
+import { OverlayService } from '../components/dialogs/overlay/overlay.service';
+import { MapEntity, Point } from '../models/cross-code-map';
+import { GlobalEventsService } from './global-events.service';
+import { EntityRegistryService } from './phaser/entities/registry/entity-registry.service';
+import { Vec2 } from './phaser/vec2';
 
 @Injectable({
 	providedIn: 'root'

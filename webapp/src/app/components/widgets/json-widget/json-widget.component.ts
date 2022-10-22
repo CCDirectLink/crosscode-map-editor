@@ -1,7 +1,7 @@
-import {Component, Input} from '@angular/core';
-import {AbstractWidget} from '../abstract-widget';
-import {JsonEditorComponent} from '../../../components/json-editor/json-editor.component';
-import {MatDialog} from '@angular/material/dialog';
+import { Component, Input } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { JsonEditorComponent } from '../../json-editor/json-editor.component';
+import { AbstractWidget } from '../abstract-widget';
 
 @Component({
 	selector: 'app-json-widget',

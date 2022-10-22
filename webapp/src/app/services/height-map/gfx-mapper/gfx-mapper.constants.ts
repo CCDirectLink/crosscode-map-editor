@@ -1,5 +1,5 @@
-import {FILL_TYPE, GFX_TYPE} from '../heightmap.constants';
-import {Point} from '../../../models/cross-code-map';
+import { Point } from '../../../models/cross-code-map';
+import { FILL_TYPE, GFX_TYPE } from '../heightmap.constants';
 
 export interface ChipsetConfig {
 	tileCountX: number;

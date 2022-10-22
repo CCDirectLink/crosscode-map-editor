@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AppModule } from '../app.module';
 
 import { StateHistoryService } from '../components/dialogs/floating-window/history/state-history.service';
 import { PhaserComponent } from '../components/phaser/phaser.component';
@@ -7,7 +8,6 @@ import { AutotileService } from '../services/autotile/autotile.service';
 import { HeightMapService } from '../services/height-map/height-map.service';
 import { HttpClientService } from '../services/http-client.service';
 import { MapLoaderService } from '../services/map-loader.service';
-import { SharedModule } from '../services/shared.module';
 import { TestHelper } from './test-helper';
 
 class SimpleServiceMock {
@@ -22,7 +22,7 @@ describe('Map Loading', () => {
 	
 	beforeEach(() => TestBed.configureTestingModule({
 		declarations: [PhaserComponent],
-		imports: [SharedModule, HttpClientModule],
+		imports: [AppModule, HttpClientModule],
 		providers: [
 			{provide: AutotileService, useValue: new SimpleServiceMock()},
 			{provide: HeightMapService, useValue: new SimpleServiceMock()},

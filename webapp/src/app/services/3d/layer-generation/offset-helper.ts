@@ -1,4 +1,4 @@
-import { Globals } from '../../../services/globals';
+import { Globals } from '../../globals';
 
 export function getLevelOffset(level: number) {
 	const map = Globals.map;

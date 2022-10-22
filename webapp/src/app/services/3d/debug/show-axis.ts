@@ -1,4 +1,4 @@
-import {Color3, DynamicTexture, Mesh, Scene, StandardMaterial, Vector3} from '@babylonjs/core';
+import { Color3, DynamicTexture, Mesh, Scene, StandardMaterial, Vector3 } from '@babylonjs/core';
 
 export function showAxis(size: number, scene: Scene) {
 	function makeTextPlane(text: string, color: string, size: number) {

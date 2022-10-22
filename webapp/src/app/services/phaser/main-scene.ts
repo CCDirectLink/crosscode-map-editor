@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import { Subscription } from 'rxjs';
 import { EditorView } from '../../models/editor-view';
-import { Globals } from '../../services/globals';
+import { Globals } from '../globals';
 import { CoordsReporter } from './coords-reporter';
 import { EntityManager } from './entities/entity-manager';
 import { MapPan } from './map-pan';

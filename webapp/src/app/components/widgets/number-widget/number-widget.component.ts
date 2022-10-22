@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {AbstractWidget} from '../abstract-widget';
+import { Component, OnInit } from '@angular/core';
+import { AbstractWidget } from '../abstract-widget';
 
 @Component({
 	selector: 'app-number-widget',

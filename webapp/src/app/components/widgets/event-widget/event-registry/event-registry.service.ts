@@ -16,8 +16,8 @@ import { SetCameraTarget } from './set-camera-target';
 import { SetCameraZoom } from './set-camera-zoom';
 import { SetOverlay } from './set-overlay';
 import { SetPlayerCore } from './set-player-core';
+import { ShowChoice } from './show-choice';
 import { ShowMsg } from './show-msg';
-import { ShowChoice } from './ShowChoice';
 import { StartNpcTradeMenu } from './start-npc-trade-menu';
 import { Wait } from './wait';
 

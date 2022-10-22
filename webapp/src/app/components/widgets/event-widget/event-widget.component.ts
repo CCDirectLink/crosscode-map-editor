@@ -1,8 +1,8 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { Component, OnChanges } from '@angular/core';
 
-import { OverlayRefControl } from '../../../components/dialogs/overlay/overlay-ref-control';
-import { OverlayService } from '../../../components/dialogs/overlay/overlay.service';
+import { OverlayRefControl } from '../../dialogs/overlay/overlay-ref-control';
+import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { AbstractWidget } from '../abstract-widget';
 import { EventType } from './event-registry/abstract-event';
 import { EventWindowComponent } from './event-window/event-window.component';

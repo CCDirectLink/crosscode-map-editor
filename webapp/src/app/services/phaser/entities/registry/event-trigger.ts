@@ -1,4 +1,4 @@
-import {EntityAttributes, CCEntity, ScaleSettings} from '../cc-entity';
+import { CCEntity, EntityAttributes, ScaleSettings } from '../cc-entity';
 
 export class EventTrigger extends CCEntity {
 	

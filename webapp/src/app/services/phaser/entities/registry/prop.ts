@@ -1,6 +1,6 @@
-import {CCEntity, EntityAttributes, Fix, ScaleSettings} from '../cc-entity';
-import {Helper} from '../../helper';
-import {Point3} from '../../../../models/cross-code-map';
+import { Point3 } from '../../../../models/cross-code-map';
+import { Helper } from '../../helper';
+import { CCEntity, EntityAttributes, Fix, ScaleSettings } from '../cc-entity';
 
 interface JsonTemplate {
 	name: string;
