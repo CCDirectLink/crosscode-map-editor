@@ -30,7 +30,7 @@ import { JsonEditorComponent } from './components/json-editor/json-editor.compon
 import { LayersComponent } from './components/layers/layers.component';
 import { PhaserComponent } from './components/phaser/phaser.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
-import { SplitPaneModule } from './components/split-pane/split-pane.module';
+import { SplitPaneComponent } from './components/split-pane/split-pane.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { BooleanWidgetComponent } from './components/widgets/boolean-widget/boolean-widget.component';
 import { CharacterWidgetComponent } from './components/widgets/character-widget/character-widget.component';
@@ -86,6 +86,7 @@ const WIDGETS = [
 		EntitiesComponent,
 		LoadMapComponent,
 		TileSelectorComponent,
+		SplitPaneComponent,
 		BabylonComponent,
 		CaptionsComponent,
 		MapSettingsComponent,
@@ -121,7 +122,6 @@ const WIDGETS = [
 		ReactiveFormsModule,
 		AngularDraggableModule,
 		OverlayModule,
-		SplitPaneModule,
 	],
 	bootstrap: [AppComponent],
 	entryComponents: [
