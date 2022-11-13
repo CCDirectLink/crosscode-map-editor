@@ -227,9 +227,8 @@ export class EntityManager extends BaseObject {
 				}
 
 				//TODO: investigate this bug where the keyup event is sometimes completely dropped or called twice (second time with event.currentTarget = null)
-				if (event.currentTarget === null) {
-					return;
-				}
+				event.stopPropagation();
+				event.preventDefault();
 
 				this.paste();
 			}
