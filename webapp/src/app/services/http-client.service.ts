@@ -1,12 +1,14 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {Globals} from '../shared/globals';
-import {ElectronService} from './electron.service';
-import {FileInfos} from '../models/file-infos';
-import {api} from 'cc-map-editor-common';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { api } from 'cc-map-editor-common';
+import { Observable } from 'rxjs';
+import { FileInfos } from '../models/file-infos';
+import { ElectronService } from './electron.service';
+import { Globals } from './globals';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class HttpClientService {
 	
 	private readonly fileName = 'config.json';

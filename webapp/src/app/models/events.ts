@@ -1,4 +1,4 @@
-import { EventType } from '../shared/widgets/event-widget/event-registry/abstract-event';
+import { EventType } from '../components/widgets/event-widget/event-registry/abstract-event';
 
 export interface Person {
 	person: string;

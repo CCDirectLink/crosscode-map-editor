@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { MapLoaderService } from '../../shared/map-loader.service';
-import { CCMap } from '../../shared/phaser/tilemap/cc-map';
-import { CCMapLayer } from '../../shared/phaser/tilemap/cc-map-layer';
-import { EditorView } from '../../models/editor-view';
-import { GlobalEventsService } from '../../shared/global-events.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { EditorView } from '../../models/editor-view';
+import { GlobalEventsService } from '../../services/global-events.service';
+import { MapLoaderService } from '../../services/map-loader.service';
+import { CCMap } from '../../services/phaser/tilemap/cc-map';
+import { CCMapLayer } from '../../services/phaser/tilemap/cc-map-layer';
 
 @Component({
 	selector: 'app-sidenav',

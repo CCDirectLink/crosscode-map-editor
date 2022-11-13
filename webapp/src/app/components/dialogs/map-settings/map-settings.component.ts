@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
-import {CrossCodeMap} from '../../../models/cross-code-map';
-import {MapLoaderService} from '../../../shared/map-loader.service';
-import {CCMap} from '../../../shared/phaser/tilemap/cc-map';
-import {OverlayRefControl} from '../../../shared/overlay/overlay-ref-control';
+import { Component } from '@angular/core';
+
+import { CrossCodeMap } from '../../../models/cross-code-map';
+import { MapLoaderService } from '../../../services/map-loader.service';
+import { CCMap } from '../../../services/phaser/tilemap/cc-map';
+import { OverlayRefControl } from '../overlay/overlay-ref-control';
 
 @Component({
 	selector: 'app-map-settings',

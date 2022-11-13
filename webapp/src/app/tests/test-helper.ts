@@ -1,9 +1,9 @@
-import { MapLoaderService } from '../shared/map-loader.service';
-import { HttpClientService } from '../services/http-client.service';
-import { CrossCodeMap } from '../models/cross-code-map';
-import { BasePath, FileExtension, PathResolver } from '../shared/path-resolver';
-import { CCMap } from '../shared/phaser/tilemap/cc-map';
 import { Subscription } from 'rxjs';
+import { CrossCodeMap } from '../models/cross-code-map';
+import { HttpClientService } from '../services/http-client.service';
+import { MapLoaderService } from '../services/map-loader.service';
+import { BasePath, FileExtension, PathResolver } from '../services/path-resolver';
+import { CCMap } from '../services/phaser/tilemap/cc-map';
 
 export class TestHelper {
 	// TODO: shouldn't be used because it relies on backend and original crosscode maps. Instead make custom maps for testing

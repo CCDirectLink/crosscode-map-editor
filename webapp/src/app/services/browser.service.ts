@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Globals } from '../shared/globals';
-import { SharedService } from './sharedService';
+import { Globals } from './globals';
+import { SharedService } from './shared-service';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class BrowserService implements SharedService {
 	private static readonly modName = 'selectedMod';
 	

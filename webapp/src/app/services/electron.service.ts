@@ -1,9 +1,11 @@
-import {Injectable} from '@angular/core';
-import {Globals} from '../shared/globals';
+import { Injectable } from '@angular/core';
 import { api } from 'cc-map-editor-common';
-import { SharedService } from './sharedService';
+import { Globals } from './globals';
+import { SharedService } from './shared-service';
 
-@Injectable()
+@Injectable({
+	providedIn: 'root'
+})
 export class ElectronService implements SharedService {
 	private static readonly storageName = 'assetsPath';
 	private static readonly modName = 'selectedMod';

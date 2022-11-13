@@ -1,18 +1,19 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { MapLoaderService } from '../../shared/map-loader.service';
-import { MatDialog } from '@angular/material/dialog';
-import { MapSettingsComponent } from '../dialogs/map-settings/map-settings.component';
-import { NewMapComponent } from '../dialogs/new-map/new-map.component';
-import { CCMap } from '../../shared/phaser/tilemap/cc-map';
-import { GlobalEventsService } from '../../shared/global-events.service';
-import { OffsetMapComponent } from '../dialogs/offset-map/offset-map.component';
-import { environment } from '../../../environments/environment';
-import { OverlayService } from '../../shared/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
-import { SettingsComponent } from '../dialogs/settings/settings.component';
-import { SaveService } from '../../services/save.service';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
+
+import { environment } from '../../../environments/environment';
+import { GlobalEventsService } from '../../services/global-events.service';
+import { MapLoaderService } from '../../services/map-loader.service';
+import { CCMap } from '../../services/phaser/tilemap/cc-map';
+import { SaveService } from '../../services/save.service';
+import { MapSettingsComponent } from '../dialogs/map-settings/map-settings.component';
+import { NewMapComponent } from '../dialogs/new-map/new-map.component';
+import { OffsetMapComponent } from '../dialogs/offset-map/offset-map.component';
+import { OverlayService } from '../dialogs/overlay/overlay.service';
+import { SettingsComponent } from '../dialogs/settings/settings.component';
 
 @Component({
 	selector: 'app-toolbar',

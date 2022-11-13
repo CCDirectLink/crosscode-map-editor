@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { Globals } from '../../shared/globals';
+import { Globals } from '../../services/globals';
 
 @Component({
 	selector: 'app-captions',

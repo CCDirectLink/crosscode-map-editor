@@ -1,14 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { MapLoaderService } from '../shared/map-loader.service';
-import { SharedModule } from '../shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
-import { CrossCodeMap, MapEntity } from '../models/cross-code-map';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AppModule } from '../app.module';
+
+import { StateHistoryService } from '../components/dialogs/floating-window/history/state-history.service';
 import { PhaserComponent } from '../components/phaser/phaser.component';
-import { StateHistoryService } from '../shared/history/state-history.service';
+import { CrossCodeMap, MapEntity } from '../models/cross-code-map';
 import { AutotileService } from '../services/autotile/autotile.service';
 import { HeightMapService } from '../services/height-map/height-map.service';
 import { HttpClientService } from '../services/http-client.service';
+import { MapLoaderService } from '../services/map-loader.service';
 import { TestHelper } from './test-helper';
 
 class SimpleServiceMock {
@@ -22,7 +22,7 @@ describe('Entities', () => {
 	
 	beforeEach(() => TestBed.configureTestingModule({
 		declarations: [PhaserComponent],
-		imports: [SharedModule, HttpClientModule],
+		imports: [AppModule, HttpClientModule],
 		providers: [
 			{provide: AutotileService, useValue: new SimpleServiceMock()},
 			{provide: HeightMapService, useValue: new SimpleServiceMock()},

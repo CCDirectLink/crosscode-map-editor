@@ -1,4 +1,4 @@
-import { DetailSettings } from '../shared/phaser/entities/cc-entity';
+import { DetailSettings } from '../services/phaser/entities/cc-entity';
 
 export interface CrossCodeMap {
 	name: string;

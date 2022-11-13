@@ -1,15 +1,16 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { MapLoaderService } from '../../shared/map-loader.service';
-import { GlobalEventsService } from '../../shared/global-events.service';
-import { Globals } from '../../shared/globals';
-import { HttpClientService } from '../../services/http-client.service';
-import { StateHistoryService } from '../../shared/history/state-history.service';
-import { PhaserEventsService } from '../../shared/phaser/phaser-events.service';
 import * as Phaser from 'phaser';
-import { MainScene } from '../../shared/phaser/main-scene';
-import { HeightMapService } from '../../services/height-map/height-map.service';
+
 import { AutotileService } from '../../services/autotile/autotile.service';
-import { EntityRegistryService } from '../../shared/phaser/entities/registry/entity-registry.service';
+import { GlobalEventsService } from '../../services/global-events.service';
+import { Globals } from '../../services/globals';
+import { HeightMapService } from '../../services/height-map/height-map.service';
+import { HttpClientService } from '../../services/http-client.service';
+import { MapLoaderService } from '../../services/map-loader.service';
+import { EntityRegistryService } from '../../services/phaser/entities/registry/entity-registry.service';
+import { MainScene } from '../../services/phaser/main-scene';
+import { PhaserEventsService } from '../../services/phaser/phaser-events.service';
+import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
 
 @Component({
 	selector: 'app-phaser',

@@ -1,7 +1,7 @@
-import {Component} from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
-import {Point} from '../../../models/cross-code-map';
-import {GlobalEventsService} from '../../../shared/global-events.service';
+import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Point } from '../../../models/cross-code-map';
+import { GlobalEventsService } from '../../../services/global-events.service';
 
 @Component({
 	selector: 'app-offset-map',
