@@ -54,6 +54,7 @@ import { Vec2WidgetComponent } from './components/widgets/vec2-widget/vec2-widge
 import { HighlightDirective } from './directives/highlight.directive';
 import { HostDirective } from './directives/host.directive';
 import { ModalDirective } from './directives/modal.directive';
+import { ResizedDirective } from './directives/resized.directive';
 import { MaterialModule } from './external-modules/material.module';
 import { KeepHtmlPipe } from './pipes/keep-html.pipe';
 
@@ -107,6 +108,7 @@ const WIDGETS = [
 		RowTextComponent,
 		EventDetailComponent,
 		EnemyTypeWidgetOverlayComponent,
+		ResizedDirective,
 		...WIDGETS,
 	],
 	imports: [
