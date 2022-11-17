@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Fixed
+- Fixed the langlabel widget not updating its size when resizing the detail panel.
+
 ## [0.17.1] 2022-11-13
 - Fixed a bug where pasting an entity would insert those entities twice.
 
