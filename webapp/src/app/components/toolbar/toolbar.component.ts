@@ -105,7 +105,11 @@ export class ToolbarComponent implements OnInit {
 	generateHeights(forceAll: boolean) {
 		this.events.generateHeights.next(forceAll);
 	}
-
+	
+	generateNavMap() {
+		this.events.generateNavMap.next(this.mapLoader.selectedLayer.value);
+	}
+	
 	offsetMap() {
 		this.dialog.open(OffsetMapComponent, {
 			data: this.map

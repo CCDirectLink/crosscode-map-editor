@@ -3,6 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { MapEntity, Point, Point3 } from '../models/cross-code-map';
 import { EditorView } from '../models/editor-view';
 import { CCEntity } from './phaser/entities/cc-entity';
+import { CCMapLayer } from './phaser/tilemap/cc-map-layer';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,14 +16,16 @@ export class GlobalEventsService {
 	filterEntity = new Subject<string>();
 	loadComplete = new Subject<void>();
 	generateHeights = new Subject<boolean>();
+	generateNavMap = new Subject<CCMapLayer | undefined>();
 	offsetMap = new Subject<Point>();
 	toggleVisibility = new Subject<void>();
 	showAddEntityMenu = new Subject<Point>();
-
+	
 	updateCoords = new Subject<Point3 | undefined>();
-
+	
 	babylonLoading = new BehaviorSubject<boolean>(false);
 	is3D = new BehaviorSubject<boolean>(false);
-
-	constructor() {}
+	
+	constructor() {
+	}
 }

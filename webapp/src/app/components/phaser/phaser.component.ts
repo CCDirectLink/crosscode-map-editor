@@ -11,6 +11,7 @@ import { EntityRegistryService } from '../../services/phaser/entities/registry/e
 import { MainScene } from '../../services/phaser/main-scene';
 import { PhaserEventsService } from '../../services/phaser/phaser-events.service';
 import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
+import { NavMapService } from '../../services/nav-map/nav-map.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -28,6 +29,7 @@ export class PhaserComponent implements OnInit {
 		private stateHistory: StateHistoryService,
 		private phaserEventsService: PhaserEventsService,
 		private heightMap: HeightMapService,
+		private navMap: NavMapService,
 		private http: HttpClientService,
 		registry: EntityRegistryService,
 		autotile: AutotileService
@@ -44,6 +46,7 @@ export class PhaserComponent implements OnInit {
 	
 	ngOnInit() {
 		this.heightMap.init();
+		this.navMap.init();
 		const scene = new MainScene();
 		const scale = this.getScale();
 		Globals.game = new Phaser.Game({

@@ -27,6 +27,9 @@
 			<button mat-menu-item (click)="generateHeights(false)" [disabled]="!map">
 				Generate Heights (Ctrl + H)
 			</button>
+			<button mat-menu-item (click)="generateNavMap()" [disabled]="!map">
+				Generate Navigation Map (Ctrl + M)
+			</button>
 		</mat-menu>
 		
 		<div fxLayout="column" fxLayoutAlign="center" class="toggle-3d">
