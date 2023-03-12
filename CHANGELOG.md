@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Changed
-- Default values for Vec2 are now 0,0 instead of 1,1
+- Default values for Vec2 are now 0,0 instead of 1,1.
 
 
 ## [0.17.1] 2022-11-13
