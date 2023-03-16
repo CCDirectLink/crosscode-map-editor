@@ -8,7 +8,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { AngularDraggableModule } from 'angular2-draggable';
 import { routes } from './app-routing';
 import { AppComponent } from './app.component';
 import { BabylonComponent } from './components/babylon/babylon.component';
@@ -122,7 +121,6 @@ const WIDGETS = [
 		BrowserAnimationsModule,
 		ScrollingModule,
 		ReactiveFormsModule,
-		AngularDraggableModule,
 		OverlayModule,
 	],
 	bootstrap: [AppComponent],

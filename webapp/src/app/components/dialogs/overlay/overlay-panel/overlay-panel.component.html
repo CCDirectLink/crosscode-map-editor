@@ -1,7 +1,8 @@
 <div
 	class="container mat-elevation-z8 container-default-size"
 	fxLayout="column"
-	[ngDraggable]="allowDrag"
+	cdkDrag
+	[cdkDragDisabled]="!allowDrag"
 	[handle]="handle"
 	[style.width]="customSize?.width"
 	[style.height]="customSize?.height"

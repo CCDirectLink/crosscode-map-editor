@@ -23,14 +23,14 @@ export class EnemyTypeWidgetComponent extends AbstractWidget implements OnInit, 
 		super();
 	}
 	
-	ngOnInit() {
+	override ngOnInit() {
 		super.ngOnInit();
 		if (EnemyTypeWidgetComponent.overlayOpen) {
 			this.open();
 		}
 	}
 	
-	ngOnChanges(): void {
+	override ngOnChanges(): void {
 		super.ngOnChanges();
 		if (!this.settings[this.key] && !this.attribute.optional) {
 			this.settings[this.key] = [];

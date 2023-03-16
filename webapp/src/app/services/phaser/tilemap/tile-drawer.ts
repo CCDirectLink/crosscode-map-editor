@@ -17,7 +17,7 @@ export class TileDrawer extends BaseObject {
 	private rect?: Phaser.GameObjects.Rectangle;
 	
 	private previewTileMap!: Phaser.Tilemaps.Tilemap;
-	private previewLayer?: Phaser.Tilemaps.StaticTilemapLayer;
+	private previewLayer?: Phaser.Tilemaps.TilemapLayer;
 	
 	private rightClickStart?: Point;
 	private rightClickEnd?: Point;
@@ -368,13 +368,13 @@ export class TileDrawer extends BaseObject {
 		// reset last draw when selected tiles change
 		this.lastDraw.x = -1;
 		this.previewTileMap.removeAllLayers();
-		const layer = this.previewTileMap.createBlankDynamicLayer('layer', 'only', 0, 0, 40, 40);
+		const layer = this.previewTileMap.createBlankLayer('layer', 'only', 0, 0, 40, 40);
 		
 		this.selectedTiles.forEach(tile => {
 			layer.putTileAt(tile.id, tile.offset.x, tile.offset.y, false);
 		});
 		
-		this.previewLayer = this.previewTileMap.convertLayerToStatic();
+		this.previewLayer = layer;
 		this.previewLayer.depth = this.container.depth - 1;
 		this.previewLayer.alpha = 0.6;
 		

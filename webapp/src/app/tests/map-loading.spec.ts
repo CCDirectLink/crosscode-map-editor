@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { firstValueFrom } from 'rxjs';
 import { AppModule } from '../app.module';
 
 import { StateHistoryService } from '../components/dialogs/floating-window/history/state-history.service';
@@ -57,7 +58,7 @@ describe('Map Loading', () => {
 		const service: MapLoaderService = TestBed.get(MapLoaderService);
 		const http: HttpClientService = TestBed.get(HttpClientService);
 		
-		const paths = await http.getMaps().toPromise();
+		const paths = await firstValueFrom(http.getMaps());
 		
 		const autumn = paths.filter(p => p.startsWith('autumn.')).slice(0, 5);
 		const arid = paths.filter(p => p.startsWith('arid.')).slice(0, 5);

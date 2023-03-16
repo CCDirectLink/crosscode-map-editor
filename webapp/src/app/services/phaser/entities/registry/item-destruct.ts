@@ -59,9 +59,9 @@ export class ItemDestruct extends CCEntity {
 			}
 		}
 		const destructibles = this.scene.cache.json.get('destructibles.json') as ItemDestructTypes;
-		this.attributes.desType.options = {};
+		this.attributes['desType'].options = {};
 		for (const name of Object.keys(destructibles)) {
-			this.attributes.desType.options[name] = name;
+			this.attributes['desType'].options[name] = name;
 		}
 		const type = destructibles[desType];
 		if (!type) {

@@ -24,7 +24,7 @@ export class AutotileService {
 	public drawTile(layer: CCMapLayer, x: number, y: number, tile: number, checkCliff = true) {
 		const config = this.gfxMapper.getAutotileConfig(layer.details.tilesetName, tile, checkCliff);
 		if (!config) {
-			return tile;
+			return;
 		}
 		const tileData: TileData = {
 			pos: {x: x, y: y},

@@ -1,5 +1,5 @@
 import Tile = Phaser.Tilemaps.Tile;
-import DynamicTilemapLayer = Phaser.Tilemaps.DynamicTilemapLayer;
+import DynamicTilemapLayer = Phaser.Tilemaps.TilemapLayer;
 
 export class SimpleTileLayer {
 	

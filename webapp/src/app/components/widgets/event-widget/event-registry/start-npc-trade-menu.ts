@@ -46,7 +46,7 @@ export class StartNpcTradeMenu extends AbstractEvent<StartNpcTradeMenuData> {
 		}
 	}
 	
-	export(): StartNpcTradeMenuData {
+	override export(): StartNpcTradeMenuData {
 		const out: StartNpcTradeMenuData = {
 			type: this.data.type,
 			withBranches: this.data.withBranches,

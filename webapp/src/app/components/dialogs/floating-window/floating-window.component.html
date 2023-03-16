@@ -4,7 +4,7 @@
      [style.right]="right"
      [handle]="handle"
      (stopped)="onDragEnd()"
-     ngDraggable
+     cdkDrag
 >
 	<div #handle class="toolbar" fxLayout="row" fxLayoutAlign="center">
 		<span fxFlexAlign="center" class="title" style="pointer-events: none;" fxFlex>{{title}}</span>

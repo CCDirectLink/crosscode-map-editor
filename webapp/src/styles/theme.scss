@@ -1,4 +1,4 @@
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 
 //$anms-black-primary: mat.define-palette(mat.$grey-palette, 900, 500, 900);
 $anms-black-primary: mat.define-palette(mat.$blue-palette, A200);
@@ -6,8 +6,35 @@ $anms-black-primary: mat.define-palette(mat.$blue-palette, A200);
 $anms-black-accent: mat.define-palette(mat.$grey-palette, 900, 500, 900);
 $anms-black-warn: mat.define-palette(mat.$red-palette, A200);
 
-$theme: mat.define-dark-theme(
-		$anms-black-primary,
-		$anms-black-accent,
-		$anms-black-warn
-);
+$theme: mat.define-dark-theme((
+	color: (
+		primary: $anms-black-primary,
+		accent: $anms-black-accent,
+		warn: $anms-black-warn
+	),
+	density: 0,
+));
+
+// @include mat.all-component-themes($theme);
+
+
+// $map-editor-primary: mat.define-palette(mat.$indigo-palette);
+// $map-editor-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// // The warn palette is optional (defaults to red).
+// $map-editor-warn: mat.define-palette(mat.$red-palette);
+
+// // Create the theme object. A theme consists of configurations for individual
+// // theming systems such as "color" or "typography".
+// $map-editor-theme: mat.define-light-theme((
+//   color: (
+//     primary: $map-editor-primary,
+//     accent: $map-editor-accent,
+//     warn: $map-editor-warn,
+//   )
+// ));
+
+// // Include theme styles for core and each component used in your app.
+// // Alternatively, you can import and @include the theme mixins for each component
+// // that you are using.
+// @include mat.all-component-themes($map-editor-theme);

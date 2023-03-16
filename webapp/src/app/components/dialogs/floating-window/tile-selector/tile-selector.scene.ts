@@ -146,7 +146,7 @@ export class TileSelectorScene extends Phaser.Scene {
 	}
 	
 	
-	update(time: number, delta: number): void {
+	override update(time: number, delta: number): void {
 		const pointer = this.input.activePointer;
 		const p = Helper.worldToTile(pointer.worldX, pointer.worldY);
 		
@@ -209,7 +209,7 @@ export class TileSelectorScene extends Phaser.Scene {
 			return;
 		}
 		tileset.firstgid = 1;
-		const layer = this.tileMap.createBlankDynamicLayer('first', tileset, 0, 0, tilesetSize.x, tilesetSize.y);
+		const layer = this.tileMap.createBlankLayer('first', tileset, 0, 0, tilesetSize.x, tilesetSize.y);
 		
 		let counter = 1;
 		const data: number[][] = [];

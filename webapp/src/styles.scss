@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @import "reset";
 @import "jsoneditor/darktheme";
 
@@ -31,7 +31,7 @@ body {
 }
 
 .default-input {
-	$font-type: subheading-1;
+	$font-type: subtitle-1;
 	font-family: mat.font-family($config);
 	font-size: mat.font-size($config, $font-type);
 	font-weight: mat.font-weight($config, $font-type);
@@ -134,3 +134,6 @@ button {
 .highlight {
 	color: #69bdfc;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

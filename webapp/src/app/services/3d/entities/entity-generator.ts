@@ -79,7 +79,7 @@ export class EntityGenerator {
 		
 		let fullWidth = width;
 		if (entity.entitySettings.scalableX) {
-			fullWidth = entity.details.settings.size.x / Globals.TILE_SIZE;
+			fullWidth = entity.details.settings['size'].x / Globals.TILE_SIZE;
 		}
 		
 		const meshes: Mesh[] = [];
