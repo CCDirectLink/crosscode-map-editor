@@ -4,12 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+### Fixed
+- Fixed `enemyInfo` properties not saving properly when created through the map editor.
+
 ## [0.17.3] 2023-06-09
+
 ### Fixed
 - Fixed `lighter` property in layers not rendering properly
 
 ## [0.17.2] 2023-06-07
-## Changed
+
+### Changed
 - Updated all dependencies. This has lead to minor style changes.
 
 ## [0.17.1] 2022-11-13

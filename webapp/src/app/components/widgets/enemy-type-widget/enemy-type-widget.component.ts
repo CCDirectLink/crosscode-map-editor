@@ -33,7 +33,7 @@ export class EnemyTypeWidgetComponent extends AbstractWidget implements OnInit, 
 	override ngOnChanges(): void {
 		super.ngOnChanges();
 		if (!this.settings[this.key] && !this.attribute.optional) {
-			this.settings[this.key] = [];
+			this.settings[this.key] = {};
 		}
 	}
 	
