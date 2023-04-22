@@ -28,6 +28,7 @@ $listItemHeight: 28px;
 	height: $listItemHeight;
 	width: 100% !important;
 	text-transform: none;
+	justify-content: start !important;
 	.mat-button-wrapper {
 		line-height: 1em;
 	}

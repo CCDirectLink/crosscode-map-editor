@@ -14,12 +14,14 @@
 				</button>
 			</div>
 		</mat-list-item>
-		<mat-list-item disableRipple="true">
-			<div mat-list-icon></div>
-			<input matInput mat-line class="simple-input" [(ngModel)]="newLayerName">
-			<button mat-icon-button (click)="addNewLayer()" class="green">
-				<mat-icon>add</mat-icon>
-			</button>
+		<mat-list-item [disableRipple]="true">
+			<div class="flex flex-row items-center gap-1">
+				<div class="layer-icon"></div>
+				<input matInput mat-line class="simple-input" [(ngModel)]="newLayerName">
+				<button mat-icon-button (click)="addNewLayer()" class="green">
+					<mat-icon>add</mat-icon>
+				</button>
+			</div>
 		</mat-list-item>
 	</mat-nav-list>
 	

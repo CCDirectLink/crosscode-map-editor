@@ -2,11 +2,10 @@
      [style.width]="width"
      [style.top]="top"
      [style.right]="right"
-     [handle]="handle"
      (stopped)="onDragEnd()"
      cdkDrag
 >
-	<div #handle class="toolbar" fxLayout="row" fxLayoutAlign="center">
+	<div class="toolbar" fxLayout="row" fxLayoutAlign="center" cdkDragHandle>
 		<span fxFlexAlign="center" class="title" style="pointer-events: none;" fxFlex>{{title}}</span>
 		<button *ngIf="showMin" mat-button color="primary" fxFlexAlign="center" class="toolbar-button minimize-button"
 		        (click)="toggle()">-

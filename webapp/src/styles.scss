@@ -30,12 +30,29 @@ body {
 }
 
 .theme {
-	@include mat.all-component-themes($theme)
+	@include mat.all-component-themes($theme);
+
+	.mat-drawer-backdrop.mat-drawer-shown {
+		background: rgba(0, 0, 0, 0.32);
+	}
+
+	// Make inputs a little smaller
+	.mat-mdc-form-field-infix,
+	.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
+		padding-top: 8px;
+		padding-bottom: 8px;
+		min-height: unset;
+	}
+	
+	.mdc-text-field {
+		border-radius: 0;
+	}
+	
+	.mat-mdc-select-panel {
+		@extend .dark-scrollbar;
+	}
 }
 
-.theme .mat-drawer-backdrop.mat-drawer-shown {
-	background: rgba(0, 0, 0, 0.32);
-}
 
 .default-input {
 	$font-type: subtitle-1;
@@ -46,45 +63,46 @@ body {
 	color: white;
 	outline: solid 1px #c9c9c9;
 	//transition: border 0.3s;
+
+	&:disabled {
+		outline-offset: 0;
+		outline: dotted 1px rgba(201, 201, 201, 0.34);
+		color: rgba(255, 255, 255, 0.5);
+	}
+
+	&:focus, &.focus {
+		outline-offset: 0;
+		outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500);
+	}
+
+
+	&.mat-mdc-select {
+		line-height: 24px;
+		outline: solid 1px #c9c9c9 !important;
+		padding-left: 4px;
+		padding-right: 4px;
+
+
+		&:disabled {
+			outline: dotted 1px rgba(201, 201, 201, 0.34) !important;
+		}
+	
+		&:focus, &.focus {
+			outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500)  !important;
+		}
+	
+		& .mat-select-value-text {
+			padding-left: 4px;
+		}
+	}
 }
 
-input[type=text].default-input, input:not([type]).default-input {
+input[type=text].default-input, input:not([type]).default-input, input[type=number].default-input {
 	padding-left: 4px;
 }
 
 .small-input {
 	width: 60px;
-}
-
-.default-input:disabled {
-	outline-offset: 0;
-	outline: dotted 1px rgba(201, 201, 201, 0.34);
-	color: rgba(255, 255, 255, 0.5);
-}
-
-.default-input:focus,
-.default-input.focus {
-	outline-offset: 0;
-	outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500);
-}
-
-
-.default-input.mat-select {
-	line-height: 24px;
-	outline: solid 1px #c9c9c9 !important;
-}
-
-.default-input.mat-select:disabled {
-	outline: dotted 1px rgba(201, 201, 201, 0.34) !important;
-}
-
-.default-input.mat-select:focus,
-.default-input.mat-select.focus {
-	outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500)  !important;
-}
-
-.default-input.mat-select .mat-select-value-text {
-	padding-left: 4px;
 }
 
 
