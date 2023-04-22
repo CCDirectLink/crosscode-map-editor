@@ -41,7 +41,7 @@
     "start:aot": "ng serve --aot",
     "startNoLiveReload": "ng serve --live-reload false",
     "build": "ng build",
-    "build:prod": "ng build --prod --no-progress",
+    "build:prod": "ng build --configuration=production --no-progress",
     "test": "ng test",
     "lint": "ng lint",
     "electron:dev": "electron . --dev",

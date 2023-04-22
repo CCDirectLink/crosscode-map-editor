@@ -3,7 +3,7 @@
 		<div #editor class="input-container"></div>
 		<textarea class="raw-input input-container"
 		          [ngModel]="json.stringify(data, null, 2)"
-		          (input)="setJson($event.target.value)">
+		          (input)="setJson($any($event.target).value)">
 		</textarea>
 	</div>
 	<div class="button-container" fxFlex="0 0 auto" fxLayout="row" fxLayoutAlign="end">

@@ -38,7 +38,7 @@
 					<span class="label">Type: </span>
 					<mat-form-field>
 						<mat-select fxFlex [disabled]="!selectedLayer" class="list-item" floatPlaceholder="never"
-						            [(ngModel)]="selectedLayer?.details.type">
+						            [(ngModel)]="selectedLayer?.details!.type">
 							<mat-option value="Background">Background</mat-option>
 							<mat-option value="Collision">Collision</mat-option>
 							<mat-option value="Navigation">Navigation</mat-option>
@@ -50,8 +50,8 @@
 				
 				<div class="flex flex-row items-baseline">
 					<span class="label">Name: </span>
-					<mat-form-field floatLabel="never">
-						<input matInput [disabled]="!selectedLayer" [(ngModel)]="selectedLayer?.details.name">
+					<mat-form-field [floatLabel]="$any('never')">
+						<input matInput [disabled]="!selectedLayer" [(ngModel)]="selectedLayer?.details!.name">
 					</mat-form-field>
 				</div>
 				
@@ -59,7 +59,7 @@
 					<span class="label">Level: </span>
 					<mat-form-field>
 						<mat-select fxFlex [disabled]="!selectedLayer" floatPlaceholder="never"
-						            [ngModel]="selectedLayer?.details.level" (selectionChange)="updateLevel($event.value)">
+						            [ngModel]="selectedLayer?.details?.level" (selectionChange)="updateLevel($event.value)">
 							<mat-option *ngFor="let level of map?.levels; let i=index" [value]="i">{{i}}</mat-option>
 						</mat-select>
 					</mat-form-field>
@@ -67,17 +67,17 @@
 				
 				<div class="flex flex-row items-baseline">
 					<span class="label">Distance: </span>
-					<mat-form-field floatLabel="never">
+					<mat-form-field [floatLabel]="$any('never')">
 						<input type="number" step="0.1" matInput [disabled]="!selectedLayer"
-						       [(ngModel)]="selectedLayer?.details.distance">
+						       [(ngModel)]="selectedLayer?.details!.distance">
 					</mat-form-field>
 				</div>
 				
 				<div class="flex flex-row items-baseline">
 					<span class="label">Tileset: </span>
-					<mat-form-field floatLabel="never">
+					<mat-form-field [floatLabel]="$any('never')">
 						<!--<input matInput [disabled]="!selectedLayer" [ngModel]="selectedLayer?.details.tilesetName" (input)="updateTilesetName($event.target.value)">-->
-						<mat-select fxFlex [disabled]="!selectedLayer" [ngModel]="selectedLayer?.details.tilesetName" (selectionChange)="updateTilesetName($event.value)">
+						<mat-select fxFlex [disabled]="!selectedLayer" [ngModel]="selectedLayer?.details?.tilesetName" (selectionChange)="updateTilesetName($event.value)">
 							<mat-option *ngFor="let tileset of tilesets" [value]="tileset">{{getTilesetName(tileset)}}</mat-option>
 						</mat-select>
 					</mat-form-field>

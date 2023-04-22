@@ -37,28 +37,28 @@
 						<!-- Position -->
 						<div fxFlex="0 0 auto">
 							<div fxLayout="row" class="attribute">
-								<mat-checkbox color="primary" [(ngModel)]="currentState.position.active">Position
+								<mat-checkbox color="primary" [(ngModel)]="currentState.position!.active">Position
 								</mat-checkbox>
 							</div>
 						</div>
-						<div fxFlex="0 1 auto" *ngIf="currentState.position.active">
+						<div fxFlex="0 1 auto" *ngIf="currentState.position!.active">
 							<div fxLayout="row" class="property-container">
 								<label fxFlexAlign="center" class="pos-label">Pos:</label>
 								
 								<label class="property-name-small">X:</label>
 								<input type="number" class="default-input small-input"
-								       [(ngModel)]="currentState.position.x">
+								       [(ngModel)]="currentState.position!.x">
 								
 								<label class="property-name-small">Y:</label>
 								<input type="number" class="default-input small-input"
-								       [(ngModel)]="currentState.position.y">
+								       [(ngModel)]="currentState.position!.y">
 							</div>
 							
 							<div fxLayout="row" class="property-container">
 								<label fxFlexAlign="center" class="pos-label" for="level">Level:</label>
 								
 								<input id="level" type="number" class="default-input small-input" min="0"
-								       [(ngModel)]="currentState.position.lvl">
+								       [(ngModel)]="currentState.position!.lvl">
 								
 								<label for="offset" class="property-name-small">+</label>
 								<input disabled id="offset" type="number" class="default-input small-input">
@@ -91,8 +91,8 @@
 						<!-- Other -->
 						<div *ngFor="let prop of props | keyvalue" fxLayout="row" class="attribute" fxFlex="0 0 auto">
 							<span fxFlex="0 0 87px" fxFlexAlign="center">{{prop.key}}: </span>
-							<mat-select class="default-input select-input" [(ngModel)]="currentState[prop.key]">
-								<mat-option *ngFor="let item of prop.value" [value]="item">
+							<mat-select class="default-input select-input" [(ngModel)]="$any(currentState)[$any(prop.key)]">
+								<mat-option *ngFor="let item of $any(prop.value)" [value]="item">
 									{{item}}
 								</mat-option>
 							</mat-select>

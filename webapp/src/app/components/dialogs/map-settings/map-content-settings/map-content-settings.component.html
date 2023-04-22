@@ -57,7 +57,7 @@
 		</div>
 		
 		<div *ngFor="let prop of mapSettings | keyvalue" class="attribute-tile">
-			<app-string-widget [key]="prop.key" [custom]="settings.attributes" [attribute]="{options: prop.value}" ></app-string-widget>
+			<app-string-widget [key]="$any(prop.key)" [custom]="$any(settings.attributes)" [attribute]="$any({options:prop.value})" ></app-string-widget>
 		</div>
 	</div>
 </div>

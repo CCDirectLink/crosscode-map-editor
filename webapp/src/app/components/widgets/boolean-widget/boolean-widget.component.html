@@ -1,4 +1,4 @@
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
+<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!">
 	<!-- uid is necessary because mat-checkbox uses ids to bind events, if two checkboxes anywhere have the same id confusing things happen. -->
 	<!-- Also, a counter which is always increased by one is what mat-checkbox does already when no id is assigned. -->
 	<label class="property-name">{{key}}:</label>
