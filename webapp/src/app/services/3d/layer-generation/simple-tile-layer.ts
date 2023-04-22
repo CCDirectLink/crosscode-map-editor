@@ -28,7 +28,7 @@ export class SimpleTileLayer {
 		this._width = width;
 		this._height = height;
 		this._data = new Array(height);
-		const layerData = new Phaser.Tilemaps.LayerData()
+		const layerData = new Phaser.Tilemaps.LayerData();
 		for (let i = 0; i < height; i++) {
 			this._data[i] = new Array(width);
 			const row = this._data[i];
@@ -44,7 +44,7 @@ export class SimpleTileLayer {
 		this._width = width;
 		this._height = height;
 		this._data = new Array(height);
-		const layerData = new Phaser.Tilemaps.LayerData()
+		const layerData = new Phaser.Tilemaps.LayerData();
 		for (let i = 0; i < height; i++) {
 			this._data[i] = new Array(width);
 			const row = this._data[i];
