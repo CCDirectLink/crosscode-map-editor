@@ -36,21 +36,7 @@ body {
 		background: rgba(0, 0, 0, 0.32);
 	}
 
-	// Make inputs a little smaller
-	.mat-mdc-form-field-infix,
-	.mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
-		padding-top: 8px;
-		padding-bottom: 8px;
-		min-height: unset;
-	}
-	
-	.mdc-text-field {
-		border-radius: 0;
-	}
-	
-	.mat-mdc-select-panel {
-		@extend .dark-scrollbar;
-	}
+	@include mat.form-field-density(-3);
 }
 
 
@@ -86,11 +72,11 @@ body {
 		&:disabled {
 			outline: dotted 1px rgba(201, 201, 201, 0.34) !important;
 		}
-	
+
 		&:focus, &.focus {
 			outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500)  !important;
 		}
-	
+
 		& .mat-select-value-text {
 			padding-left: 4px;
 		}
