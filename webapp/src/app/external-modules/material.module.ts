@@ -17,8 +17,12 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MAT_TOOLTIP_DEFAULT_OPTIONS, MatTooltipDefaultOptions, MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
+
+const tooltipOptions: Partial<MatTooltipDefaultOptions> = {
+	disableTooltipInteractivity: true,
+};
 
 const MODULES = [
 	MatButtonModule,
@@ -46,6 +50,12 @@ const MODULES = [
 @NgModule({
 	imports: MODULES,
 	exports: MODULES,
+	providers: [
+		{
+			provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
+			useValue: tooltipOptions,
+		},
+	],
 })
 export class MaterialModule {
 }
