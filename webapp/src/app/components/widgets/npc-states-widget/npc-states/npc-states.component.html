@@ -10,7 +10,10 @@
 	<ng-container ngProjectAs="content">
 		<div fxLayout="column" class="container">
 			
-			<mat-tab-group fxFlex="0 0 auto" id="groupTabGroup" animationDuration="0ms"
+			<mat-tab-group fxFlex="0 0 auto"
+			               id="groupTabGroup"
+			               animationDuration="0ms"
+			               mat-stretch-tabs="false"
 			               (selectedIndexChange)="selectTab($event)"
 			               [selectedIndex]="index">
 				<mat-tab class="stretched-tabs" *ngFor="let state of states; let index = index"
