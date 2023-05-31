@@ -12,6 +12,10 @@
 
 $config: mat.define-typography-config();
 
+// Use the default configuration.
+$my-typography: mat.define-typography-config();
+@include mat.typography-hierarchy($my-typography);
+
 html * {
 	font-family: Roboto, "Helvetica Neue", sans-serif;
 }
