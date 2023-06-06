@@ -22,7 +22,7 @@ $config: mat.define-typography-config();
 	justify-content: flex-end;
 	align-items: center;
 
-	$font-type: body-1;
+	$font-type: body-2;
 	font-family: mat.font-family($config);
 	font-size: mat.font-size($config, $font-type);
 	font-weight: mat.font-weight($config, $font-type);
