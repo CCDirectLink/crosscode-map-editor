@@ -1,6 +1,6 @@
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
+<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!">
 	<label class="property-name">{{key}}:</label>
 	<input type="number"  class="default-input"
 			[ngModel]="settings[key]"
-		   (input)="setSetting(key, $event.target.value)">
+		   (input)="setSetting(key, $any($event.target).value)">
 </div>

@@ -39,7 +39,7 @@ export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, 
 		super();
 	}
 	
-	ngOnChanges(): void {
+	override ngOnChanges(): void {
 		super.ngOnChanges();
 		this.npcStates = this.settings[this.key];
 		if (!this.npcStates) {

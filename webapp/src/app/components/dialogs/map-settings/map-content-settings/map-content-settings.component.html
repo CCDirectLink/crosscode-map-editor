@@ -1,56 +1,55 @@
-<div class="content-container" fxLayout="column">
+<div class="flex flex-col gap-2 p-3">
 	<!-- Map Name -->
-	<div fxLayout="row" fxFlex="0 0 auto">
-		<span fxFlexAlign="center">Map Name: </span>
-		<input type="text" class="default-input" [(ngModel)]="settings.name">
+	<div class="flex flex-row gap-2 items-baseline">
+		<span class="w-24">Map Name: </span>
+		<input type="text" class="default-input grow" [(ngModel)]="settings.name">
 	</div>
 	<hr>
 
 	<!--Map Size-->
-	<div fxLayout="row" fxFlex="0 0 auto">
-		<span fxFlexAlign="center" fxFlex="0 0 100px">Map Size:</span>
-		<span fxFlexAlign="center">width: </span>
+	<div class="flex flex-row gap-2 items-baseline">
+		<span class="w-24">Map Size:</span>
+		<span>width: </span>
 		<input type="number" class="default-input small-input" min="1" [ngModel]="settings.mapWidth" (change)="onNumberChange($event, 'mapWidth')">
-		<span fxFlexAlign="center">height: </span>
+		<span>height: </span>
 		<input type="number" class="default-input small-input" min="1" [ngModel]="settings.mapHeight" (change)="onNumberChange($event, 'mapHeight')">
 	</div>
 	
 	<hr>
 	
 	<!--Levels-->
-	<div fxLayout="row" fxFlex="0 0 auto">
-		<span fxFlex="0 0 100px">Levels: </span>
-		<div fxLayout="column">
-			<div fxLayout="row" *ngFor="let level of settings.levels; let i=index">
-				<span fxFlexAlign="center">Level {{i}}:</span>
-				<input class="default-input" [(ngModel)]="level.height">
-				<button mat-button *ngIf="settings.levels.length > 1" (click)="settings.levels.splice(i, 1)" tabindex="-1">Remove</button>
+	<div class="flex flex-row gap-2">
+		<span class="w-24">Levels: </span>
+		<div class="flex flex-col gap-1 grow">
+			<div class="flex flex-row gap-2 items-baseline" *ngFor="let level of settings.levels; let i=index">
+				<span>Level {{i}}:</span>
+				<input class="default-input grow" [(ngModel)]="level.height">
+				<button mat-stroked-button *ngIf="settings.levels.length > 1" (click)="settings.levels.splice(i, 1)" tabindex="-1">Remove</button>
 			</div>
 			<div>
-				<button mat-button (click)="settings.levels.push({height: 0})">Add Level</button>
+				<button mat-stroked-button (click)="settings.levels.push({height: 0})">Add Level</button>
 			</div>
 		</div>
 	</div>
 	
 	<!--Master Level-->
 	<hr>
-	<div fxLayout="row" fxFlex="0 0 auto">
-		<span fxFlexAlign="center">Master Level: </span>
-		<!--<input type="number" class="default-input small-input" [(ngModel)]="settings.masterLevel">-->
-		<mat-form-field class="masterlevel-input">
-			<mat-select [(ngModel)]="settings.masterLevel">
+	<div class="flex flex-row gap-2 items-baseline">
+		<span class="w-24">Master Level: </span>
+		<div class="grow">
+			<mat-select [(ngModel)]="settings.masterLevel" class="default-input">
 				<mat-option *ngFor="let level of settings.levels; let i=index" [value]="i">
 					{{i}}
 				</mat-option>
 			</mat-select>
-		</mat-form-field>
+		</div>
 	</div>
 	<hr>
 	
 	<!--Attributes-->
-	<div class="attributes-container">
+	<div class="attributes-container flex flex-rwo flex-wrap">
 		<div class="attribute-tile">
-			<div fxLayout="row" class="attribute" fxFlexAlign="center">
+			<div class="attribute flex flex-row items-baseline">
 				<span >cameraInBounds: </span>
 				<mat-checkbox class="material-input" color="primary"
 							  [(ngModel)]="settings.attributes.cameraInBounds"></mat-checkbox>
@@ -58,7 +57,7 @@
 		</div>
 		
 		<div *ngFor="let prop of mapSettings | keyvalue" class="attribute-tile">
-			<app-string-widget [key]="prop.key" [custom]="settings.attributes" [attribute]="{options: prop.value}" ></app-string-widget>
+			<app-string-widget [key]="$any(prop.key)" [custom]="$any(settings.attributes)" [attribute]="$any({options:prop.value})" ></app-string-widget>
 		</div>
 	</div>
 </div>

@@ -49,9 +49,9 @@ export class Destructible extends CCEntity {
 	protected async setupType(settings: any): Promise<void> {
 		const types = this.scene.cache.json.get('destructible-types.json') as DestructibleTypes;
 		
-		this.attributes.desType.options = {};
+		this.attributes['desType'].options = {};
 		for (const name of Object.keys(types)) {
-			this.attributes.desType.options[name] = name;
+			this.attributes['desType'].options[name] = name;
 		}
 		
 		const type = types[settings.desType];
@@ -105,7 +105,7 @@ export class Destructible extends CCEntity {
 		const mapStyle = Helper.getMapStyle(Globals.map, 'destruct');
 		for (const sheet of sheets) {
 			if (!sheet.gfx) {
-				sheet.gfx = mapStyle.sheet;
+				sheet.gfx = mapStyle['sheet'];
 			}
 			const exists = await Helper.loadTexture(sheet.gfx, this.scene);
 			if (!exists) {

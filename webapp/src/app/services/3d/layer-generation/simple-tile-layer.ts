@@ -1,5 +1,5 @@
 import Tile = Phaser.Tilemaps.Tile;
-import DynamicTilemapLayer = Phaser.Tilemaps.DynamicTilemapLayer;
+import DynamicTilemapLayer = Phaser.Tilemaps.TilemapLayer;
 
 export class SimpleTileLayer {
 	
@@ -28,11 +28,12 @@ export class SimpleTileLayer {
 		this._width = width;
 		this._height = height;
 		this._data = new Array(height);
+		const layerData = new Phaser.Tilemaps.LayerData();
 		for (let i = 0; i < height; i++) {
 			this._data[i] = new Array(width);
 			const row = this._data[i];
 			for (let j = 0; j < width; j++) {
-				row[j] = new Tile(null as any, 0, j, i, 1, 1, 1, 1);
+				row[j] = new Tile(layerData, 0, j, i, 1, 1, 1, 1);
 			}
 		}
 	}
@@ -43,11 +44,12 @@ export class SimpleTileLayer {
 		this._width = width;
 		this._height = height;
 		this._data = new Array(height);
+		const layerData = new Phaser.Tilemaps.LayerData();
 		for (let i = 0; i < height; i++) {
 			this._data[i] = new Array(width);
 			const row = this._data[i];
 			for (let j = 0; j < width; j++) {
-				row[j] = new Tile(null as any, tiles[i][j], j, i, 1, 1, 1, 1);
+				row[j] = new Tile(layerData, tiles[i][j], j, i, 1, 1, 1, 1);
 			}
 		}
 	}

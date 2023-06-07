@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 
 export class OverlayRefControl {
 	
-	onClose = new Subject();
+	onClose = new Subject<void>();
 	
 	constructor(private ref: OverlayRef) {
 	}

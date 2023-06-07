@@ -1,4 +1,4 @@
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @import "theme";
 
 $primary: map-get($theme, primary);
@@ -69,7 +69,7 @@ button {
 	flex-direction: row;
 	width: 100%;
 	text-transform: none;
-	$font-type: subheading-1;
+	$font-type: subtitle-1;
 	font-family: mat.font-family($config);
 	font-size: mat.font-size($config, $font-type);
 	font-weight: mat.font-weight($config, $font-type);

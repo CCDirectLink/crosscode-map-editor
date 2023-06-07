@@ -1,13 +1,13 @@
 <div
 	class="container mat-elevation-z8 container-default-size"
 	fxLayout="column"
-	[ngDraggable]="allowDrag"
-	[handle]="handle"
+	cdkDrag
+	[cdkDragDisabled]="!allowDrag"
 	[style.width]="customSize?.width"
 	[style.height]="customSize?.height"
 >
 	<div fxFlex="0 0 auto"
-         #handle
+         cdkDragHandle
 	     class="toolbar mat-elevation-z4 elevated-toolbar"
 	     fxLayout="column"
 	     fxLayoutAlign="center"

@@ -1,5 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @import "reset";
 @import "jsoneditor/darktheme";
 
@@ -7,7 +7,14 @@
 
 @import "theme";
 
+@tailwind base;
+@tailwind utilities;
+
 $config: mat.define-typography-config();
+
+// Use the default configuration.
+$my-typography: mat.define-typography-config();
+@include mat.typography-hierarchy($my-typography);
 
 html * {
 	font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -17,21 +24,28 @@ body {
 	overflow: hidden;
 }
 
+.no-error-msg .mat-mdc-form-field-subscript-wrapper {
+	display: none !important;
+}
+
 // no scrollbars when dragging history outside
 .mat-drawer-content {
 	overflow: hidden !important;
 }
 
 .theme {
-	@include mat.all-component-themes($theme)
+	@include mat.all-component-themes($theme);
+
+	.mat-drawer-backdrop.mat-drawer-shown {
+		background: rgba(0, 0, 0, 0.32);
+	}
+
+	@include mat.form-field-density(-3);
 }
 
-.theme .mat-drawer-backdrop.mat-drawer-shown {
-	background: rgba(0, 0, 0, 0.32);
-}
 
 .default-input {
-	$font-type: subheading-1;
+	$font-type: subtitle-1;
 	font-family: mat.font-family($config);
 	font-size: mat.font-size($config, $font-type);
 	font-weight: mat.font-weight($config, $font-type);
@@ -39,45 +53,46 @@ body {
 	color: white;
 	outline: solid 1px #c9c9c9;
 	//transition: border 0.3s;
+
+	&:disabled {
+		outline-offset: 0;
+		outline: dotted 1px rgba(201, 201, 201, 0.34);
+		color: rgba(255, 255, 255, 0.5);
+	}
+
+	&:focus, &.focus {
+		outline-offset: 0;
+		outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500);
+	}
+
+
+	&.mat-mdc-select {
+		line-height: 24px;
+		outline: solid 1px #c9c9c9 !important;
+		padding-left: 4px;
+		padding-right: 4px;
+
+
+		&:disabled {
+			outline: dotted 1px rgba(201, 201, 201, 0.34) !important;
+		}
+
+		&:focus, &.focus {
+			outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500)  !important;
+		}
+
+		& .mat-select-value-text {
+			padding-left: 4px;
+		}
+	}
 }
 
-input[type=text].default-input, input:not([type]).default-input {
+input[type=text].default-input, input:not([type]).default-input, input[type=number].default-input {
 	padding-left: 4px;
 }
 
 .small-input {
 	width: 60px;
-}
-
-.default-input:disabled {
-	outline-offset: 0;
-	outline: dotted 1px rgba(201, 201, 201, 0.34);
-	color: rgba(255, 255, 255, 0.5);
-}
-
-.default-input:focus,
-.default-input.focus {
-	outline-offset: 0;
-	outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500);
-}
-
-
-.default-input.mat-select {
-	line-height: 24px;
-	outline: solid 1px #c9c9c9 !important;
-}
-
-.default-input.mat-select:disabled {
-	outline: dotted 1px rgba(201, 201, 201, 0.34) !important;
-}
-
-.default-input.mat-select:focus,
-.default-input.mat-select.focus {
-	outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500)  !important;
-}
-
-.default-input.mat-select .mat-select-value-text {
-	padding-left: 4px;
 }
 
 
@@ -134,3 +149,6 @@ button {
 .highlight {
 	color: #69bdfc;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -15,7 +15,7 @@ export class CharacterWidgetComponent extends AbstractWidget implements OnInit {
 		super();
 	}
 
-	ngOnInit() {
+	override ngOnInit() {
 		super.ngOnInit();
 		this.names = this.namesService.getAllNames();
 	}

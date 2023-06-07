@@ -1,6 +1,6 @@
 <app-character-widget [custom]="settings[key]" (onChange)="updateType($event)" key="person"></app-character-widget>
 
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
+<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!">
 	<label class="property-name">expression:</label>
-	<input class="default-input" [ngModel]="settings[key].expression" (input)="setSetting([key, 'expression'], $event.target.value)">
+	<input class="default-input" [ngModel]="settings[key].expression" (input)="setSetting([key, 'expression'], $any($event.target).value)">
 </div>

@@ -53,7 +53,7 @@ export class ToolbarComponent implements OnInit {
 		// Use this to automatically load a map on startup for faster testing
 		if (!environment.production) {
 			this.events.loadComplete.subscribe(async () => {
-				// await this.mapLoader.tileMap.pipe(take(1)).toPromise();
+				// await (await import('rxjs')).firstValueFrom(this.mapLoader.tileMap);
 				// this.mapLoader.loadMapByName('autumn/entrance');
 				
 				// automatically opens npc event editor

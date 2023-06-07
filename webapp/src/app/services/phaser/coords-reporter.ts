@@ -25,10 +25,10 @@ export class CoordsReporter extends BaseObject {
 	protected activate() {}
 	
 	protected deactivate() {
-		Globals.globalEventsService.updateCoords.next();
+		Globals.globalEventsService.updateCoords.next(undefined);
 	}
 	
-	destroy(fromScene?: boolean) {
+	override destroy(fromScene?: boolean) {
 		this.sub.unsubscribe();
 		super.destroy(fromScene);
 	}

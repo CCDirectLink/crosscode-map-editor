@@ -23,7 +23,7 @@ export class EventWidgetComponent extends AbstractWidget implements OnChanges {
 		super();
 	}
 	
-	ngOnChanges(): void {
+	override ngOnChanges(): void {
 		super.ngOnChanges();
 		if (!this.settings[this.key] && !this.attribute.optional) {
 			this.settings[this.key] = [];

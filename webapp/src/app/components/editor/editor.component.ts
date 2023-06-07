@@ -11,10 +11,10 @@ import { LoadMapComponent } from '../dialogs/load-map/load-map.component';
 })
 export class EditorComponent {
 	@ViewChild('loadmap', {static: true})
-	loadmap!: LoadMapComponent;
+		loadmap!: LoadMapComponent;
 	
 	@ViewChild('sidenavLoadMap', {static: true})
-	sidenavLoadMap!: MatSidenav;
+		sidenavLoadMap!: MatSidenav;
 	
 	constructor(addEntity: AddEntityMenuService) {
 		addEntity.init();

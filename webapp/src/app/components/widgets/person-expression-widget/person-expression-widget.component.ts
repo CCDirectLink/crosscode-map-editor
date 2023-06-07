@@ -12,7 +12,7 @@ export class PersonExpressionWidgetComponent extends AbstractWidget implements O
 		super();
 	}
 	
-	ngOnChanges(): void {
+	override ngOnChanges(): void {
 		super.ngOnChanges();
 		if (!this.settings[this.key]) {
 			this.settings[this.key] = {

@@ -147,10 +147,10 @@ export class ScalableProp extends CCEntity {
 		this.scaleSettings.baseSize = prop.baseSize;
 		
 		if (!this.scaleSettings.scalableX) {
-			this.details.settings.size.x = this.scaleSettings.baseSize.x;
+			this.details.settings['size'].x = this.scaleSettings.baseSize.x;
 		}
 		if (!this.scaleSettings.scalableY) {
-			this.details.settings.size.y = this.scaleSettings.baseSize.y;
+			this.details.settings['size'].y = this.scaleSettings.baseSize.y;
 		}
 		
 		Object.assign(this.entitySettings, this.scaleSettings);

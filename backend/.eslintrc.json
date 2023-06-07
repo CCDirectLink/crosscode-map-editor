@@ -21,10 +21,6 @@
     ],
     "rules": {
         "prefer-const": "warn",
-        "indent": [
-            "error",
-            "tab"
-        ],
         "quotes": [
             "error",
             "single"

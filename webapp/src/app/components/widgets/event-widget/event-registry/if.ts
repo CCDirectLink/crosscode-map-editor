@@ -41,7 +41,7 @@ export class If extends AbstractEvent<IfData> {
 		}
 	}
 	
-	export(): IfData {
+	override export(): IfData {
 		const out: IfData = {
 			type: this.data.type,
 			withElse: this.data.withElse,

@@ -18,7 +18,7 @@ export class StringWidgetComponent extends AbstractWidget implements OnInit {
 		super();
 	}
 	
-	ngOnInit() {
+	override ngOnInit() {
 		super.ngOnInit();
 		const attr = this.attribute;
 		if (attr && attr.options) {

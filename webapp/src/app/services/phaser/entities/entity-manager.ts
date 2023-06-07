@@ -29,9 +29,9 @@ export class EntityManager extends BaseObject {
 		timer: number;
 		pos: Point;
 	} = {
-		timer: 0,
-		pos: {x: 0, y: 0}
-	};
+			timer: 0,
+			pos: {x: 0, y: 0}
+		};
 	
 	private selectedEntities: CCEntity[] = [];
 	private copyEntities: CCEntity[] = [];

@@ -19,13 +19,13 @@ import { VirtualMapNode } from './virtualMapNode.model';
 export class LoadMapComponent {
 	
 	@ViewChild('fileUpload', {static: true})
-	fileUpload!: ElementRef<HTMLInputElement>;
+		fileUpload!: ElementRef<HTMLInputElement>;
 	
 	@ViewChild('filterInput', {static: true})
-	filterInput!: ElementRef<HTMLInputElement>;
+		filterInput!: ElementRef<HTMLInputElement>;
 	
 	@Input()
-	sidenav!: MatSidenav;
+		sidenav!: MatSidenav;
 	
 	loading = false;
 	

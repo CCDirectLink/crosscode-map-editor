@@ -9,7 +9,7 @@ import { Helper } from '../../helper';
 import { DefaultEntity } from './default-entity';
 
 export class Enemy extends DefaultEntity {
-	protected async setupType(settings: any) {
+	protected override async setupType(settings: any) {
 		settings.enemyInfo = settings.enemyInfo || {};
 
 		const enemyPath = PathResolver.convertToPath(BasePath.ENEMIES, settings.enemyInfo.type || '', FileExtension.NONE);

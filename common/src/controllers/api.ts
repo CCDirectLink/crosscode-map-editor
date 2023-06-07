@@ -1,9 +1,5 @@
-import { requireLocal } from '../require';
-
-const fs: typeof import('fs') = requireLocal('fs');
-const path: typeof import('path') = requireLocal('path');
-
-import { saveFile as save } from './saveFile';
+import { fsPromise, pathPromise } from '../require.js';
+import { saveFile as save } from './saveFile.js';
 
 const mods: string[] = [];
 let packagesCache: Map<string, {folderName: string, ccmodDependencies?: Map<string, string>}>;
@@ -23,6 +19,7 @@ async function listAllFiles(dir: string, filelist: string[], ending: string, roo
 }
 
 async function tryReadDir(dir: string): Promise<string[]> {
+	const fs = await fsPromise;
 	try {
 		return await fs.promises.readdir(dir);
 	} catch {
@@ -41,6 +38,8 @@ async function tryReadDir(dir: string): Promise<string[]> {
  * @param root 		The root folder
  */
 async function searchFile(file: string, dir: string, filelist: string[], ending: string, root?: string): Promise<void> {
+	const fs = await fsPromise;
+	const path = await pathPromise;
 	const stat = await fs.promises.stat(path.resolve(dir, file));
 	if (stat.isDirectory()) {
 		await listAllFiles(path.resolve(dir, file), filelist, ending, root);
@@ -63,6 +62,8 @@ async function searchFile(file: string, dir: string, filelist: string[], ending:
  * @param file 	The file to be searched
  */
 async function searchSubFolder(dir: string, file: string): Promise<string[]> {
+	const fs = await fsPromise;
+	const path = await pathPromise;
 	const result: string[] = [];
 	const files = await tryReadDir(dir);
 	for (const folder of files) {
@@ -95,6 +96,7 @@ function selectMod(name: string, packages: Map<string, {folderName: string, ccmo
 }
 
 async function getAsync(file: string): Promise<Buffer | null> {
+	const fs = await fsPromise;
 	try {
 		const stat = await fs.promises.stat(file);
 		if (stat.isFile()) {
@@ -107,6 +109,7 @@ async function getAsync(file: string): Promise<Buffer | null> {
 }
 
 async function resolveAsync(file: string): Promise<string | null> {
+	const fs = await fsPromise;
 	try {
 		const stat = await fs.promises.stat(file);
 		if (stat.isFile()) {
@@ -122,6 +125,9 @@ async function readMods(dir: string) {
 	if (packagesCache) {
 		return packagesCache;
 	}
+
+	const fs = await fsPromise;
+	const path = await pathPromise;
 
 	const modFolder = path.join(dir, 'mods/');
 	const files = await searchSubFolder(modFolder, 'package.json');
@@ -143,6 +149,7 @@ async function readMods(dir: string) {
 }
 
 export async function getAllFiles(dir: string) {
+	const path = await pathPromise;
 	const images = await listAllFiles(path.resolve(dir, 'media/'), [], 'png', path.resolve(dir));
 	const data = await listAllFiles(path.resolve(dir, 'data/'), [], 'json', path.resolve(dir));
 
@@ -159,6 +166,7 @@ export async function getAllFiles(dir: string) {
 }
 
 export async function getAllTilesets(dir: string) {
+	const path = await pathPromise;
 	const result = await listAllFiles(path.resolve(dir, 'media/map/'), [], 'png', path.resolve(dir));
 
 	for (const mod of mods) {
@@ -170,6 +178,7 @@ export async function getAllTilesets(dir: string) {
 }
 
 export async function getAllMaps(dir: string) {
+	const path = await pathPromise;
 	const paths: string[] = [];
 	if (mods.length === 0) {
 		await listAllFiles(path.resolve(dir, 'data/maps/'), paths, 'json', path.resolve(dir));
@@ -196,6 +205,7 @@ export async function selectedMod(dir: string, modName: string) {
 }
 
 export async function get<T>(dir: string, file: string): Promise<T> {
+	const path = await pathPromise;
 	const promises: Promise<Buffer>[] = [];
 	for (const mod of mods) {
 		const modFile = path.join(dir, 'mods', mod, 'assets', file);
@@ -213,6 +223,7 @@ export async function get<T>(dir: string, file: string): Promise<T> {
 }
 
 export async function resolve(dir: string, file: string): Promise<string> {
+	const path = await pathPromise;
 	const promises: Promise<string>[] = [];
 	for (const mod of mods) {
 		const modFile = path.join(dir, 'mods', mod, 'assets', file);
@@ -230,6 +241,7 @@ export async function resolve(dir: string, file: string): Promise<string> {
 }
 
 export async function saveFile(assetsPath: string, file: { content: string, path: string }) {
+	const path = await pathPromise;
 	if (mods.length === 0) {
 		return save(assetsPath, file);
 	} else {

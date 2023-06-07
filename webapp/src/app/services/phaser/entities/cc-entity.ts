@@ -214,14 +214,14 @@ export abstract class CCEntity extends BaseObject {
 			if (!s.sheets.ignoreScalable && (s.scalableX || s.scalableY)) {
 				// scalable
 				const fix = s.sheets.fix[0];
-				const width = settings.size.x;
-				const height = (fix.renderHeight || s.baseSize.z) + settings.size.y;
+				const width = settings['size'].x;
+				const height = (fix.renderHeight || s.baseSize.z) + settings['size'].y;
 				
 				for (let x = 0; x < width; x += fix.w) {
 					const imgWidth = Math.min(fix.w, width - x);
 					for (let y = 0; y < height; y += fix.h) {
 						const imgHeight = Math.min(fix.h, height - y);
-						const img = this.scene.add.image(x, -y + settings.size.y, fix.gfx);
+						const img = this.scene.add.image(x, -y + settings['size'].y, fix.gfx);
 						img.setCrop(fix.x, fix.y, imgWidth, imgHeight);
 						
 						img.setOrigin(0, 0);
@@ -372,7 +372,7 @@ export abstract class CCEntity extends BaseObject {
 		}
 	}
 	
-	destroy() {
+	override destroy() {
 		super.destroy();
 		this.container.destroy();
 		this.filterSubscription.unsubscribe();
@@ -426,12 +426,12 @@ export abstract class CCEntity extends BaseObject {
 		const settings = this.details.settings;
 		
 		const baseSize: Point3 = {x: 16, y: 16, z: 0};
-		if (settings.size) {
-			baseSize.x = settings.size.x;
-			baseSize.y = settings.size.y;
+		if (settings['size']) {
+			baseSize.x = settings['size'].x;
+			baseSize.y = settings['size'].y;
 		}
 		
-		baseSize.z = settings.zHeight || settings.wallZHeight || 0;
+		baseSize.z = settings['zHeight'] || settings['wallZHeight'] || 0;
 		
 		this.entitySettings = <any>{};
 		this.entitySettings.baseSize = baseSize;
@@ -529,12 +529,12 @@ export abstract class CCEntity extends BaseObject {
 	
 	public getActualSize(): Point3 {
 		const s = this.entitySettings;
-		const size = Object.assign({}, this.details.settings.size || s.baseSize);
+		const size = Object.assign({}, this.details.settings['size'] || s.baseSize);
 		try {
 			size.x = Number(size.x);
 			size.y = Number(size.y);
 			if (size.z !== 0) {
-				size.z = Number(size.z || this.details.settings.zHeight || this.details.settings.wallZHeight || (s.baseSize ? s.baseSize.z || 0 : 0));
+				size.z = Number(size.z || this.details.settings['zHeight'] || this.details.settings['wallZHeight'] || (s.baseSize ? s.baseSize.z || 0 : 0));
 			}
 		} catch (e) {
 			console.log(this);
@@ -580,7 +580,7 @@ export abstract class CCEntity extends BaseObject {
 		this.inputZone.y = collImg.y;
 		this.inputZone.setSize(shape.width, shape.height, true);
 		
-		this.generateText(this.details.settings.name, size);
+		this.generateText(this.details.settings['name'], size);
 	}
 	
 	private generateText(name: string, size: Point) {
@@ -588,7 +588,7 @@ export abstract class CCEntity extends BaseObject {
 			if (!this.text) {
 				this.text = this.scene.add.text(0, 0, '', {
 					font: '400 18pt Roboto',
-					fill: 'white',
+					color: 'white',
 				});
 				this.text.setOrigin(0.5, 0.5);
 				this.text.setScale(0.3);
@@ -615,7 +615,7 @@ export abstract class CCEntity extends BaseObject {
 		}
 		
 		return this.details.type.toLowerCase().includes(lower)
-			|| (this.details.settings.name || '').toLowerCase().includes(lower);
+			|| (this.details.settings['name'] || '').toLowerCase().includes(lower);
 	}
 	
 	private setVisible(visible: boolean) {

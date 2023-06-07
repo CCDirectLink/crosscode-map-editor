@@ -8,7 +8,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { AngularDraggableModule } from 'angular2-draggable';
 import { routes } from './app-routing';
 import { AppComponent } from './app.component';
 import { BabylonComponent } from './components/babylon/babylon.component';
@@ -54,6 +53,7 @@ import { Vec2WidgetComponent } from './components/widgets/vec2-widget/vec2-widge
 import { HighlightDirective } from './directives/highlight.directive';
 import { HostDirective } from './directives/host.directive';
 import { ModalDirective } from './directives/modal.directive';
+import { ResizedDirective } from './directives/resized.directive';
 import { MaterialModule } from './external-modules/material.module';
 import { KeepHtmlPipe } from './pipes/keep-html.pipe';
 
@@ -107,6 +107,7 @@ const WIDGETS = [
 		RowTextComponent,
 		EventDetailComponent,
 		EnemyTypeWidgetOverlayComponent,
+		ResizedDirective,
 		...WIDGETS,
 	],
 	imports: [
@@ -120,7 +121,6 @@ const WIDGETS = [
 		BrowserAnimationsModule,
 		ScrollingModule,
 		ReactiveFormsModule,
-		AngularDraggableModule,
 		OverlayModule,
 	],
 	bootstrap: [AppComponent],

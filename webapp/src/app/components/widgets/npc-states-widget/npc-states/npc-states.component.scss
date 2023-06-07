@@ -1,4 +1,4 @@
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @import "theme";
 
 $accent: map-get($theme, accent);
@@ -36,6 +36,7 @@ $accent: map-get($theme, accent);
 .tab-content {
 	flex-direction: column;
 	min-height: 0;
+	border-top: 1px solid mat.get-color-from-palette(mat.$gray-palette, 600);
 }
 
 .tab-content-inner {
@@ -87,6 +88,7 @@ $accent: map-get($theme, accent);
 
 .warning-message {
 	margin-bottom: 14px;
+
 	& > mat-icon {
 		color: orange;
 		margin-right: 4px;

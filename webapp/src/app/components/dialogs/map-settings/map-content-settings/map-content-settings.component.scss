@@ -1,41 +1,16 @@
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @import "theme";
 
 $config: mat.define-typography-config();
 $color: map_get($theme, accent);
 
-.content-container {
-	padding: 24px;
-}
-
-.masterlevel-input {
-	margin-left: 16px;
-}
-
-.default-input, .attribute-input {
-	margin-left: 16px;
-	margin-right: 16px;
-}
-
-.material-input {
-	margin-left: 16px;
-	margin-right: 16px;
-}
-
 .action-button-row {
 	margin-bottom: 8px;
 }
-
-.attributes-container {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	
-	.attribute-tile {
-		max-width: 50%;
-		width: 50%;
-		height: fit-content;
-		padding: 5px;
-		box-sizing: border-box;
-	}
+.attribute-tile {
+	max-width: 50%;
+	width: 50%;
+	height: fit-content;
+	padding: 5px;
+	box-sizing: border-box;
 }

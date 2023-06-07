@@ -62,7 +62,7 @@ export class OpenQuestDialog extends AbstractEvent<OpenQuestDialogData> {
 		];
 	}
 	
-	export(): OpenQuestDialogData {
+	override export(): OpenQuestDialogData {
 		const out: OpenQuestDialogData = {
 			type: this.data.type,
 			
