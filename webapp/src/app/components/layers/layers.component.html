@@ -86,6 +86,7 @@
 					<span class="label">Lighter: </span>
 					<mat-checkbox
 						color="primary"
+						[disabled]="!selectedLayer"
 						[checked]="!!selectedLayer?.details.lighter"
 						(change)="selectedLayer?.updateLighter($event.checked)"
 					>
