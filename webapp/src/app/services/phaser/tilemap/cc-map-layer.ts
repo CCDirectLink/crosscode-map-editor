@@ -150,10 +150,7 @@ export class CCMapLayer {
 	
 	updateLighter(lighter: boolean) {
 		this.details.lighter = lighter;
-		let blendMode = BlendModes.NORMAL;
-		if (lighter) {
-			blendMode = BlendModes.ADD;
-		}
+		const blendMode = lighter ? BlendModes.ADD : BlendModes.NORMAL;
 		this.layer.setBlendMode(blendMode);
 	}
 	
