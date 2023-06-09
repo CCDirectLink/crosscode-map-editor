@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+## [0.17.3] 2023-06-09
 ### Fixed
 - Fixed `lighter` property in layers not rendering properly
 
