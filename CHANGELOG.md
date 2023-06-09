@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Fixed
-- fixed `lighter` property in layers not rendering properly
+- Fixed `lighter` property in layers not rendering properly
 
 ## [0.17.2] 2023-06-07
 ## Changed
