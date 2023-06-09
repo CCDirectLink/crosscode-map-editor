@@ -1,4 +1,5 @@
 import * as Phaser from 'phaser';
+import { BlendModes } from 'phaser';
 import { MapLayer, Point } from '../../../models/cross-code-map';
 import { Helper } from '../helper';
 import Tile = Phaser.Tilemaps.Tile;
@@ -44,7 +45,6 @@ export class CCMapLayer {
 			this.layer.putTilesAt(details.data, 0, 0, false);
 		}
 		await this.updateTileset(details.tilesetName!);
-		this.updateLevel(this.details.level);
 		
 		const skip = 'Navigation Collision HeightMap'.split(' ');
 		// const skip = 'Navigation Background HeightMap'.split(' ');
@@ -134,6 +134,9 @@ export class CCMapLayer {
 		this.layer.putTilesAt(oldLayer.layer.data, 0, 0, false);
 		
 		oldLayer.destroy();
+		
+		this.updateLevel(this.details.level);
+		this.updateLighter(!!this.details.lighter);
 	}
 	
 	updateLevel(level: number) {
@@ -143,6 +146,12 @@ export class CCMapLayer {
 			zIndex = 999;
 		}
 		this.layer.depth = this.details.level * 10;
+	}
+	
+	updateLighter(lighter: boolean) {
+		this.details.lighter = lighter;
+		const blendMode = lighter ? BlendModes.ADD : BlendModes.NORMAL;
+		this.layer.setBlendMode(blendMode);
 	}
 	
 	getPhaserLayer(): Phaser.Tilemaps.TilemapLayer {

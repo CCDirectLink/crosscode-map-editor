@@ -76,7 +76,6 @@
 				<div class="flex flex-row items-baseline">
 					<span class="label">Tileset: </span>
 					<mat-form-field [floatLabel]="$any('never')">
-						<!--<input matInput [disabled]="!selectedLayer" [ngModel]="selectedLayer?.details.tilesetName" (input)="updateTilesetName($event.target.value)">-->
 						<mat-select fxFlex [disabled]="!selectedLayer" [ngModel]="selectedLayer?.details?.tilesetName" (selectionChange)="updateTilesetName($event.value)">
 							<mat-option *ngFor="let tileset of tilesets" [value]="tileset">{{getTilesetName(tileset)}}</mat-option>
 						</mat-select>
@@ -84,11 +83,19 @@
 				</div>
 				
 				<div class="flex flex-row items-baseline">
+					<span class="label">Lighter: </span>
+					<mat-checkbox
+						color="primary"
+						[disabled]="!selectedLayer"
+						[checked]="!!selectedLayer?.details?.lighter"
+						(change)="selectedLayer?.updateLighter($event.checked)"
+					>
+					</mat-checkbox>
+				</div>
+				
+				<div class="flex flex-row items-baseline">
 					<span class="label">Actions: </span>
 					<button mat-stroked-button [disabled]="!selectedLayer" (click)="deleteSelected()">Delete</button>
-					<!--<button mat-icon-button (click)="deleteLayer(selectedLayer)">-->
-					<!--<mat-icon>delete</mat-icon>-->
-					<!--</button>-->
 				</div>
 			</div>
 		
