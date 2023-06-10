@@ -26,9 +26,11 @@ export class EntityManager extends BaseObject {
 	private skipEdit = false;
 	
 	private leftClickOpts: {
+		prevTimer: number;
 		timer: number;
 		pos: Point;
 	} = {
+			prevTimer: 0,
 			timer: 0,
 			pos: {x: 0, y: 0}
 		};
@@ -95,7 +97,6 @@ export class EntityManager extends BaseObject {
 		});
 		this.addSubscription(sub3);
 		
-		
 		this.addKeybinding({
 			event: 'pointerdown',
 			fun: (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
@@ -103,6 +104,7 @@ export class EntityManager extends BaseObject {
 					return;
 				}
 				
+				this.leftClickOpts.prevTimer = this.leftClickOpts.timer;
 				this.leftClickOpts.timer = 0;
 				this.leftClickOpts.pos.x = pointer.worldX;
 				this.leftClickOpts.pos.y = pointer.worldY;
@@ -177,6 +179,10 @@ export class EntityManager extends BaseObject {
 						const p = {x: pointer.worldX, y: pointer.worldY};
 						if (this.leftClickOpts.timer < 200 && Vec2.distance2(p, this.leftClickOpts.pos) < 10) {
 							this.selectEntity(entity, this.multiSelectKey.isDown);
+
+							if (!this.multiSelectKey.isDown && this.leftClickOpts.prevTimer < 500) {
+								entity.doubleClick();
+							}
 						}
 					}
 				}

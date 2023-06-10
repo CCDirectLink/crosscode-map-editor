@@ -43,13 +43,21 @@ export class EntityManager3d {
 		this.select(m, true);
 		this.prevSelected = m;
 	}
+
+	onDoubleClick(m: Mesh) {
+		const entity = this.meshMap.get(m);
+		if (!entity) {
+			throw new Error('entity should always exist');
+		}
+		entity.doubleClick();
+	}
 	
 	select(m: Mesh, activate: boolean) {
 		if (activate) {
 			m.edgesWidth = EDGE_WIDTH;
 			const entity = this.meshMap.get(m);
 			if (!entity) {
-				throw new Error('entity should allways exist');
+				throw new Error('entity should always exist');
 			}
 			Globals.globalEventsService.selectedEntity.next(entity);
 			

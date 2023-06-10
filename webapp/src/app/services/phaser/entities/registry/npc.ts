@@ -1,3 +1,4 @@
+import { NPCStatesWidgetComponent } from '../../../../components/widgets/npc-states-widget/npc-states-widget.component';
 import { Point3 } from '../../../../models/cross-code-map';
 import { Helper } from '../../helper';
 import { CCEntity, EntityAttributes, ScaleSettings } from '../cc-entity';
@@ -210,5 +211,10 @@ export class NPC extends CCEntity {
 		const split = path.split('.');
 		const name = split.splice(-1, 1)[0];
 		return prefix + split.join('/') + '/' + name;
+	}
+	
+
+	public override doubleClick(): void {
+		(this.widgets['npcStates'] as NPCStatesWidgetComponent).open();
 	}
 }

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Added
+- Double clicking an event now opens the event editor
+- Double clicking an npc now opens the npc state editor
+
 ## [0.17.4] 2023-06-10
 
 ### Fixed

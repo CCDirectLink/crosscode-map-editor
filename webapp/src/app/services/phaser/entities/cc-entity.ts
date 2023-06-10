@@ -5,6 +5,7 @@ import { CCMap } from '../tilemap/cc-map';
 import { Vec2 } from '../vec2';
 
 import { Subscription } from 'rxjs';
+import { AbstractWidget } from '../../../components/widgets/abstract-widget';
 import { Globals } from '../../globals';
 import { BaseObject } from '../base-object';
 
@@ -67,7 +68,9 @@ export abstract class CCEntity extends BaseObject {
 	private images: Phaser.GameObjects.Image[] = [];
 	
 	private readonly filterSubscription: Subscription;
-	
+
+
+	protected widgets: Record<string, AbstractWidget> = {};
 	
 	// input (is handled mostly by entity manager)
 	private collisionImage!: Phaser.GameObjects.Graphics;
@@ -371,6 +374,10 @@ export abstract class CCEntity extends BaseObject {
 			this.isDragged = false;
 		}
 	}
+
+	setWidgets(widgets: Record<string, AbstractWidget>) {
+		this.widgets = widgets;
+	}
 	
 	override destroy() {
 		super.destroy();
@@ -411,6 +418,10 @@ export abstract class CCEntity extends BaseObject {
 	public abstract getAttributes(): EntityAttributes;
 	
 	protected abstract setupType(settings: any): Promise<void>;
+
+	public doubleClick(): void {
+		
+	}
 	
 	public async updateType() {
 		const settings = this.details.settings;
