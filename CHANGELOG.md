@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+### Added
+- Made Event `SHOW_SIDE_MSG` prettier. [image](https://github.com/CCDirectLink/crosscode-map-editor/assets/9483499/7aa7dce2-f678-4b93-a026-fbbc5873ebd0)
+
 ## [0.17.4] 2023-06-10
 
 ### Fixed

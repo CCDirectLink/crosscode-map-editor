@@ -14,12 +14,12 @@ interface JsonEventType {
 	};
 }
 
-export class DefaultEvent extends AbstractEvent<DefaultEventData> {
+export class DefaultEvent<T extends EventType = DefaultEventData> extends AbstractEvent<T> {
 	private readonly type?: JsonEventType;
 	
 	constructor(
 		domSanitizer: DomSanitizer,
-		data: DefaultEventData,
+		data: T,
 		actionStep = false
 	) {
 		super(domSanitizer, data, actionStep);
@@ -48,7 +48,7 @@ export class DefaultEvent extends AbstractEvent<DefaultEventData> {
 			if (this.type.attributes[key].noLabel) {
 				continue;
 			}
-			if (this.data[key] !== undefined) {
+			if (this.data[key as keyof T] !== undefined) {
 				this.info += ' ' + this.getPropString(key);
 			}
 		}
