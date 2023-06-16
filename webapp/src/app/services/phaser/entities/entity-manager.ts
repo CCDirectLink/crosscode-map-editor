@@ -27,10 +27,14 @@ export class EntityManager extends BaseObject {
 	
 	private leftClickOpts: {
 		prevTimer: number;
+		prevEntity: CCEntity | undefined;
+		entity: CCEntity | undefined;
 		timer: number;
 		pos: Point;
 	} = {
 			prevTimer: 0,
+			prevEntity: undefined,
+			entity: undefined,
 			timer: 0,
 			pos: {x: 0, y: 0}
 		};
@@ -104,15 +108,18 @@ export class EntityManager extends BaseObject {
 					return;
 				}
 				
-				this.leftClickOpts.prevTimer = this.leftClickOpts.timer;
-				this.leftClickOpts.timer = 0;
-				this.leftClickOpts.pos.x = pointer.worldX;
-				this.leftClickOpts.pos.y = pointer.worldY;
 				
 				let entity;
 				if (gameObject.length > 0) {
 					entity = gameObject[0].getData('entity') as CCEntity;
 				}
+				
+				this.leftClickOpts.prevTimer = this.leftClickOpts.timer;
+				this.leftClickOpts.prevEntity = this.leftClickOpts.entity;
+				this.leftClickOpts.timer = 0;
+				this.leftClickOpts.entity = entity;
+				this.leftClickOpts.pos.x = pointer.worldX;
+				this.leftClickOpts.pos.y = pointer.worldY;
 				
 				// if panning return once entity as been selected to prevent dragging of selected entities
 				if (Globals.panning) {
@@ -180,7 +187,7 @@ export class EntityManager extends BaseObject {
 						if (this.leftClickOpts.timer < 200 && Vec2.distance2(p, this.leftClickOpts.pos) < 10) {
 							this.selectEntity(entity, this.multiSelectKey.isDown);
 
-							if (!this.multiSelectKey.isDown && this.leftClickOpts.prevTimer < 500) {
+							if (!this.multiSelectKey.isDown && this.leftClickOpts.prevEntity === this.leftClickOpts.entity && this.leftClickOpts.prevTimer < 500) {
 								entity.doubleClick();
 							}
 						}
