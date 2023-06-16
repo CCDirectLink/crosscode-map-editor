@@ -179,7 +179,7 @@ export class EntityManager extends BaseObject {
 					
 					let entity;
 					if (gameObject.length > 0) {
-						entity = gameObject[0].getData('entity');
+						entity = gameObject[0].getData('entity') as CCEntity;
 					}
 					if (entity) {
 						console.log(entity);
