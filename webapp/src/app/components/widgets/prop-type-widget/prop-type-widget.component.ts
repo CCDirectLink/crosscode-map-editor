@@ -1,19 +1,19 @@
 import { Component } from '@angular/core';
-import { EnemyTypeWidgetOverlayComponent } from './enemy-type-overlay/enemy-type-overlay.component';
 import { OverlayWidget } from '../overlay-widget';
+import { PropTypeOverlayComponent } from './prop-type-overlay/prop-type-overlay.component';
 
 @Component({
-	selector: 'app-enemy-type-widget',
-	templateUrl: './enemy-type-widget.component.html',
-	styleUrls: ['./enemy-type-widget.component.scss', '../widget.scss']
+	selector: 'app-prop-type-widget',
+	templateUrl: './prop-type-widget.component.html',
+	styleUrls: ['./prop-type-widget.component.scss', '../widget.scss']
 })
-export class EnemyTypeWidgetComponent extends OverlayWidget {
+export class PropTypeWidgetComponent extends OverlayWidget {
 	
 	override openInternal() {
-		const obj = this.overlayService.open(EnemyTypeWidgetOverlayComponent, {
+		const obj = this.overlayService.open(PropTypeOverlayComponent, {
 			positionStrategy: this.overlay.position().global()
 				.left('330px')
-				.top('calc(64px + 6vh / 2)'),
+				.top('calc(64px + 1vh)'),
 			hasBackdrop: false,
 			disablePhaserInput: true
 		});
@@ -21,7 +21,7 @@ export class EnemyTypeWidgetComponent extends OverlayWidget {
 		obj.instance.entity = this.entity;
 		obj.instance.key = this.key;
 		obj.instance.attribute = this.attribute;
-		obj.instance.custom = this.custom;
+		obj.instance.custom = this.settings[this.key];
 		
 		obj.instance.exit.subscribe(() => {
 			this.close();
@@ -29,4 +29,5 @@ export class EnemyTypeWidgetComponent extends OverlayWidget {
 		
 		return obj.ref;
 	}
+	
 }

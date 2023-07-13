@@ -1,0 +1,36 @@
+@use '@angular/material' as mat;
+
+.card {
+	width: 180px;
+	height: 250px;
+	background-color: mat.get-color-from-palette(mat.$gray-palette, 700);
+	transition: transform 100ms ease, border 100ms ease;
+
+	box-sizing: border-box;
+	border: 2px solid transparent;
+
+	&:hover {
+		transform: scale(1.1);
+	}
+}
+
+.selected {
+	border-color: red;
+}
+
+.card-label {
+	border-top: 1px solid rgba(255, 255, 255, 0.3);
+	height: 50px;
+	width: 100%;
+	display: grid;
+	align-items: center;
+
+	& > * {
+		padding: 0 6px;
+		box-sizing: border-box;
+		text-align: center;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		align-items: center;
+	}
+}

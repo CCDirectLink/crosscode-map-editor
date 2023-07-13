@@ -2,13 +2,13 @@ import { fsPromise, pathPromise } from '../require.js';
 import { saveFile as save } from './saveFile.js';
 
 const mods: string[] = [];
-let packagesCache: Map<string, {folderName: string, ccmodDependencies?: Map<string, string>}>;
+let packagesCache: Map<string, { folderName: string, ccmodDependencies?: Map<string, string> }>;
 
 async function listAllFiles(dir: string, filelist: string[], ending: string, root?: string): Promise<string[]> {
 	if (root === undefined) {
 		root = dir;
 	}
-
+	
 	const files = await tryReadDir(dir);
 	const promises: Promise<void>[] = [];
 	for (const file of files) {
@@ -79,17 +79,17 @@ async function searchSubFolder(dir: string, file: string): Promise<string[]> {
 	return result;
 }
 
-function selectMod(name: string, packages: Map<string, {folderName: string, ccmodDependencies?: Map<string, string>}>, result: string[]) {
+function selectMod(name: string, packages: Map<string, { folderName: string, ccmodDependencies?: Map<string, string> }>, result: string[]) {
 	const pkg = packages.get(name);
 	if (!pkg) {
 		return;
 	}
-
+	
 	result.push(pkg.folderName);
 	if (!pkg.ccmodDependencies) {
 		return;
 	}
-
+	
 	for (const depName of Object.keys(pkg.ccmodDependencies)) {
 		selectMod(depName, packages, result);
 	}
@@ -125,25 +125,25 @@ async function readMods(dir: string) {
 	if (packagesCache) {
 		return packagesCache;
 	}
-
+	
 	const fs = await fsPromise;
 	const path = await pathPromise;
-
+	
 	const modFolder = path.join(dir, 'mods/');
 	const files = await searchSubFolder(modFolder, 'package.json');
 	const promises: Promise<[string, Buffer]>[] = [];
 	for (const file of files) {
-		promises.push((async(): Promise<[string, Buffer]> => [path.basename(path.dirname(file)), await fs.promises.readFile(file)])());
+		promises.push((async (): Promise<[string, Buffer]> => [path.basename(path.dirname(file)), await fs.promises.readFile(file)])());
 	}
 	const rawPackages = await Promise.all(promises);
-	const packages = new Map<string, {folderName: string, ccmodDependencies?: Map<string, string>}>();
-
+	const packages = new Map<string, { folderName: string, ccmodDependencies?: Map<string, string> }>();
+	
 	for (const [name, pkg] of rawPackages) {
 		const parsed = JSON.parse(pkg as unknown as string);
 		parsed.folderName = name;
 		packages.set(parsed.name, parsed);
 	}
-
+	
 	packagesCache = packages;
 	return packages;
 }
@@ -152,28 +152,28 @@ export async function getAllFiles(dir: string) {
 	const path = await pathPromise;
 	const images = await listAllFiles(path.resolve(dir, 'media/'), [], 'png', path.resolve(dir));
 	const data = await listAllFiles(path.resolve(dir, 'data/'), [], 'json', path.resolve(dir));
-
+	
 	for (const mod of mods) {
 		const modDir = path.join(dir, 'mods', mod, 'assets');
 		await listAllFiles(path.resolve(modDir, 'media/'), images, 'png', path.resolve(modDir));
 		await listAllFiles(path.resolve(modDir, 'data/'), data, 'json', path.resolve(modDir));
 	}
-
+	
 	images.sort();
 	data.sort();
-
-	return {images,	data};
+	
+	return {images, data};
 }
 
 export async function getAllTilesets(dir: string) {
 	const path = await pathPromise;
 	const result = await listAllFiles(path.resolve(dir, 'media/map/'), [], 'png', path.resolve(dir));
-
+	
 	for (const mod of mods) {
 		const modDir = path.join(dir, 'mods', mod, 'assets');
 		await listAllFiles(path.resolve(modDir, 'media/map/'), result, 'png', path.resolve(modDir));
 	}
-
+	
 	return result.sort();
 }
 
@@ -186,11 +186,24 @@ export async function getAllMaps(dir: string) {
 		const modDir = path.join(dir, 'mods', mods[0], 'assets');
 		await listAllFiles(path.resolve(modDir, 'data/maps/'), paths, 'json', path.resolve(modDir));
 	}
-
+	
 	return paths
 		.sort()
 		.map(p => p.substring('data/maps/'.length, p.length - '.json'.length))
 		.map(p => p.replace(/\//g, '.').replace(/\\/g, '.'));
+}
+
+export async function getAllProps(dir: string) {
+	const path = await pathPromise;
+	const result = await listAllFiles(path.resolve(dir, 'data/props/'), [], 'json', path.resolve(dir));
+	
+	for (const mod of mods) {
+		const modDir = path.join(dir, 'mods', mod, 'assets');
+		await listAllFiles(path.resolve(modDir, 'data/props/'), result, 'json', path.resolve(modDir));
+	}
+	
+	return result.sort()
+		.map(p => p.substring('data/props/'.length, p.length - '.json'.length));
 }
 
 export async function getAllMods(dir: string) {
@@ -212,7 +225,7 @@ export async function get<T>(dir: string, file: string): Promise<T> {
 		promises.push(getAsync(modFile));
 	}
 	promises.push(getAsync(path.join(dir, file)));
-
+	
 	const results = await Promise.all(promises);
 	for (const result of results) {
 		if (result) {
@@ -230,7 +243,7 @@ export async function resolve(dir: string, file: string): Promise<string> {
 		promises.push(resolveAsync(modFile));
 	}
 	promises.push(resolveAsync(path.join(dir, file)));
-
+	
 	const results = await Promise.all(promises);
 	for (const result of results) {
 		if (result) {

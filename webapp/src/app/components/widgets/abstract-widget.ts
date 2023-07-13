@@ -3,15 +3,15 @@ import { AttributeValue, CCEntity } from '../../services/phaser/entities/cc-enti
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export abstract class AbstractWidget implements OnInit, OnChanges {
+export abstract class AbstractWidget<T = any> implements OnInit, OnChanges {
 	@Input() key!: string;
 	@Input() attribute!: AttributeValue;
 	@Input() entity?: CCEntity;
-	@Input() custom?: CCEntity;
+	@Input() custom?: T;
 	
 	@Output() onChange = new EventEmitter<any>();
 	
-	settings: any;
+	settings: T = {} as any;
 	
 	ngOnInit() {
 		this.ngOnChanges();
@@ -21,7 +21,7 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 		if (this.custom) {
 			this.settings = this.custom;
 		} else if (this.entity) {
-			this.settings = this.entity.details.settings;
+			this.settings = this.entity.details.settings as any;
 		} else {
 			throw new Error('entity and custom settings not defined');
 		}
@@ -33,9 +33,9 @@ export abstract class AbstractWidget implements OnInit, OnChanges {
 		}
 		
 		if (typeof key === 'string') {
-			this.settings[key] = value;
+			this.settings[key as keyof T] = value;
 		} else {
-			let node = this.settings;
+			let node: any = this.settings;
 			for (let i = 0; i < key.length - 1; i++) {
 				node = node[key[i]];
 			}

@@ -39,6 +39,7 @@ export class SplitPaneComponent implements OnInit {
 	}
 	
 	@Input() bounds?: Bounds;
+	@Input() showGutter = false;
 	
 	/**
 	 * gutter position, range [-100, 100], 0 is center

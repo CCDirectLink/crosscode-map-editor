@@ -1,28 +1,95 @@
-import { Point3 } from '../../../../models/cross-code-map';
+import { Point, Point3 } from '../../../../models/cross-code-map';
 import { Helper } from '../../helper';
 import { CCEntity, EntityAttributes, Fix, ScaleSettings } from '../cc-entity';
 
-interface JsonTemplate {
-	name: string;
-	tileOffset?: number;
-	sheet?: string;
-	offset?: Point3;
-	renderMode?: string;
-	framesAlpha?: number[];
+export interface PropSheet {
+	DOCTYPE: string;
+	props: PropDef[];
+	jsonTEMPLATES?: JsonTemplates;
 }
 
 interface JsonTemplates {
 	[key: string]: JsonTemplate[];
 }
 
-interface SubJsonInstance {
-	jsonINSTANCE?: keyof JsonTemplates;
+export interface JsonTemplate {
+	name: string;
+	tileOffset?: number;
 }
 
-interface PropSheet {
-	DOCTYPE: string;
-	jsonTEMPLATES: JsonTemplates;
-	props: PropDef[];
+export interface PropDef {
+	name?: string;
+	terrain?: string;
+	size: Point3;
+	collType: string;
+	fix?: Fix;
+	shapeType?: string;
+	effects?: Effects;
+	anims?: Anims;
+	nudging?: boolean;
+	'nudge-variance'?: number;
+	tags?: string;
+	sequence?: Sequence;
+	shuffleAnims?: boolean;
+	ballKill?: BallKill;
+	shadow?: number;
+	floatHeight?: number;
+	floatVariance?: number;
+	shape?: string;
+}
+
+export interface Effects {
+	sheet: string;
+	show?: string;
+	hide?: string;
+}
+
+export interface Sequence {
+	sheet: SequenceSheet;
+	entries: Entry[];
+}
+
+export interface SequenceSheet {
+	gfx: string;
+	x: number;
+	y: number;
+	w: number;
+	h: number;
+}
+
+export interface Entry {
+	name: string;
+	size?: Point3;
+	wallY?: number;
+}
+
+export interface Anims {
+	name?: string;
+	frames?: number[];
+	time?: number;
+	repeat?: boolean;
+	sheet?: AnimSheet | string;
+	renderMode?: string;
+	shapeType?: string;
+	framesAlpha?: number[];
+	flipX?: boolean;
+	SUB?: Anims[] | SubJsonInstance;
+	tileOffset?: number;
+	wallY?: number;
+	offset?: Partial<Point3>;
+	shape?: string;
+	framesGfxOffset?: number[];
+	size?: Point3;
+	pivot?: Point;
+	gfxOffset?: Point;
+	aboveZ?: number;
+	offX?: number;
+	namedSheets?: { [key: string]: AnimSheet };
+	framesSpriteOffset?: number[];
+	globalTiming?: boolean;
+	
+	// doesn't exist, don't know why it's used here
+	DOCTYPE?: string;
 }
 
 export interface AnimSheet {
@@ -34,37 +101,26 @@ export interface AnimSheet {
 	xCount?: number;
 }
 
-export interface Anims {
-	DOCTYPE?: string;
-	SUB: {
-		sheet?: string;
-		offset?: Point3;
-		frames?: number[];
-		framesGfxOffset?: number[];
-		time?: number;
-		repeat?: boolean;
-		renderMode?: string;
-		framesAlpha?: number[];
-		SUB?: SubJsonInstance | JsonTemplate[];
-	}[];
-	offset?: Point3;
-	frames: any[];
-	framesGfxOffset: any[];
-	namedSheets: {
-		[key: string]: AnimSheet;
-	};
-	renderMode?: string;
-	repeat: boolean;
-	shape: string;
-	sheet: AnimSheet | string;
-	time: number;
+export interface SubJsonInstance {
+	jsonINSTANCE: keyof JsonTemplates;
 }
 
-interface PropAttributes {
-	propType: {
-		sheet: string;
-		name: string;
-	};
+export interface BallKill {
+	fx: Fx;
+}
+
+export interface Fx {
+	sheet: string;
+	name: string;
+}
+
+export interface PropType {
+	sheet: string;
+	name: string;
+}
+
+export interface PropAttributes {
+	propType: PropType;
 	propAnim: string;
 	condAnims: string;
 	spawnCondition: string;
@@ -74,23 +130,6 @@ interface PropAttributes {
 	hideEffect: string;
 	permaEffect: string;
 	hideCondition: string;
-}
-
-export interface PropDef {
-	name: string;
-	size: {
-		x: number;
-		y: number;
-		z: number;
-	};
-	collType: string;
-	fix?: Fix;
-	anims?: Anims;
-	effects?: {
-		hide: string;
-		sheet: string;
-		show: string;
-	};
 }
 
 export class Prop extends CCEntity {
@@ -222,11 +261,11 @@ export class Prop extends CCEntity {
 		
 		
 		if (anims.sheet || anims.namedSheets) {
-			this.setupAnim(settings, anims, sheetDef, propDef.name, sprites);
+			this.setupAnim(settings, anims, sheetDef, propDef.name!, sprites);
 		} else {
 			if (anims.SUB) {
 				for (const anim of anims.SUB as Anims[]) {
-					this.setupAnim(settings, anim, sheetDef, propDef.name, sprites);
+					this.setupAnim(settings, anim, sheetDef, propDef.name!, sprites);
 				}
 			}
 		}
@@ -273,50 +312,50 @@ export class Prop extends CCEntity {
 		sheet: AnimSheet;
 		tileOffset: number;
 		alpha: number;
-		offset?: Point3;
+		offset?: Partial<Point3>;
 		renderMode?: string;
 	}[]) {
+		let subArr = anims.SUB as Anims[];
 		if (anims.namedSheets) {
 			let template: JsonTemplate | undefined;
-			
-			const sub = anims.SUB[0].SUB as SubJsonInstance | undefined;
+			const sub = subArr[0].SUB as SubJsonInstance | undefined;
 			if (sub && sub.jsonINSTANCE) {
 				
-				const templates = sheetDef.jsonTEMPLATES[sub.jsonINSTANCE];
-				template = templates.find(t => t.name === settings.propAnim);
+				const templates = sheetDef.jsonTEMPLATES?.[sub.jsonINSTANCE];
+				template = templates?.find(t => t.name === settings.propAnim);
 				
 				if (!template) {
 					console.error(`prop json template with name ${settings.propAnim} not found, `, pname);
 					return this.generateErrorImage();
 				}
-				const name = anims.sheet as string || anims.SUB[0].sheet!;
+				const name = anims.sheet as string || subArr[0].sheet as string;
 				sprites.push({
 					sheet: anims.namedSheets[name],
 					alpha: 1,
-					offset: anims.SUB[0].offset,
+					offset: subArr[0].offset,
 					tileOffset: template.tileOffset || 0
 				});
 			} else {
 				
 				// sometimes anims.SUB is already an array of templates
-				if (anims.SUB.length > 0 && (anims.SUB[0] as any).name) {
-					const templates = anims.SUB as unknown as JsonTemplate[];
-					anims.SUB = [{
+				if (subArr.length > 0 && (subArr[0] as any).name) {
+					const templates = anims.SUB;
+					subArr = [{
 						SUB: templates,
 						renderMode: anims.renderMode
 					}];
 				}
 				
-				for (const sub of anims.SUB) {
-					const templates = sub.SUB as JsonTemplate[] | undefined;
-					if (!templates) {
+				for (const sub of subArr) {
+					const templates = sub.SUB;
+					if (!templates || !Array.isArray(templates)) {
 						continue;
 					}
 					
 					const filteredTemplates = templates.filter(t => t.name === settings.propAnim);
 					
 					for (const template of filteredTemplates) {
-						const name = anims.sheet as string || anims.SUB[0].sheet || template.sheet!;
+						const name = (anims.sheet || subArr[0].sheet || template.sheet) as string;
 						
 						const alpha = sub.framesAlpha || template.framesAlpha || [];
 						const sprite = {

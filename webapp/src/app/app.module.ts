@@ -56,6 +56,9 @@ import { ModalDirective } from './directives/modal.directive';
 import { ResizedDirective } from './directives/resized.directive';
 import { MaterialModule } from './external-modules/material.module';
 import { KeepHtmlPipe } from './pipes/keep-html.pipe';
+import { PropTypeWidgetComponent } from './components/widgets/prop-type-widget/prop-type-widget.component';
+import { PropTypeOverlayComponent } from './components/widgets/prop-type-widget/prop-type-overlay/prop-type-overlay.component';
+import { PropTypeOverlayCardComponent } from './components/widgets/prop-type-widget/prop-type-overlay/prop-type-overlay-card/prop-type-overlay-card.component';
 
 const WIDGETS = [
 	StringWidgetComponent,
@@ -71,6 +74,7 @@ const WIDGETS = [
 	CharacterWidgetComponent,
 	PersonExpressionWidgetComponent,
 	EnemyTypeWidgetComponent,
+	PropTypeWidgetComponent,
 	LangLabelWidgetComponent,
 	AutocompletedTextboxComponent,
 ];
@@ -107,6 +111,7 @@ const WIDGETS = [
 		RowTextComponent,
 		EventDetailComponent,
 		EnemyTypeWidgetOverlayComponent,
+		PropTypeOverlayComponent,
 		ResizedDirective,
 		...WIDGETS,
 	],
@@ -122,16 +127,8 @@ const WIDGETS = [
 		ScrollingModule,
 		ReactiveFormsModule,
 		OverlayModule,
+		PropTypeOverlayCardComponent,
 	],
 	bootstrap: [AppComponent],
-	entryComponents: [
-		JsonEditorComponent,
-		ListSearchOverlayComponent,
-		EventWindowComponent,
-		RowTextComponent,
-		EventDetailComponent,
-		EnemyTypeWidgetOverlayComponent,
-		...WIDGETS,
-	],
 })
 export class AppModule {}

@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+
+.divider {
+	height: 1px;
+	width: 100%;
+	box-sizing: border-box;
+	border-top: 1px solid mat.get-color-from-palette(mat.$gray-palette, 600);
+}
+
+.headline {
+	text-align: center;
+	font-weight: 500;
+	font-size: 20px;
+	margin-top: 8px;
+}

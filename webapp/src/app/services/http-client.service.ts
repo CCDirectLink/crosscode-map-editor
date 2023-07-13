@@ -29,6 +29,10 @@ export class HttpClientService {
 	getMaps(): Observable<string[]> {
 		return this.request('api/allMaps', api.getAllMaps);
 	}
+	
+	getProps(): Observable<string[]> {
+		return this.request('api/allProps', api.getAllProps);
+	}
 
 	getMods(): Observable<string[]> {
 		return this.request('api/allMods', api.getAllMods);

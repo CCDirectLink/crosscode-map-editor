@@ -1,4 +1,4 @@
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!">
+<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description ?? ''">
 	<label class="property-name">{{displayName || key}}:</label>
 	
 	<label class="property-name-small">X:</label>

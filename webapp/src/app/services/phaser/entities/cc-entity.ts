@@ -53,6 +53,18 @@ export interface Fix {
 	flipY?: boolean;
 	tint?: number;
 	alpha?: number;
+	
+	offY?: number;
+	wallY?: number;
+	shape?: string;
+	aboveZ?: string | number;
+	pivotX?: number;
+	pivotY?: number;
+	offX?: number;
+	terrain?: string;
+	off?: null;
+	wall?: number;
+	shapeType?: string;
 }
 
 
