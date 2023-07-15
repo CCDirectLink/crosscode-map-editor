@@ -11,6 +11,7 @@ import { EntityRegistryService } from '../../services/phaser/entities/registry/e
 import { MainScene } from '../../services/phaser/main-scene';
 import { PhaserEventsService } from '../../services/phaser/phaser-events.service';
 import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-phaser',
@@ -29,6 +30,7 @@ export class PhaserComponent implements OnInit {
 		private phaserEventsService: PhaserEventsService,
 		private heightMap: HeightMapService,
 		private http: HttpClientService,
+		snackbar: MatSnackBar,
 		registry: EntityRegistryService,
 		autotile: AutotileService
 	) {
@@ -39,6 +41,7 @@ export class PhaserComponent implements OnInit {
 		Globals.autotileService = autotile;
 		Globals.entityRegistry = registry;
 		Globals.httpService = http;
+		Globals.snackbar = snackbar;
 	}
 	
 	
