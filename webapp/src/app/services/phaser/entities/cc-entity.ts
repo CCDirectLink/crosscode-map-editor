@@ -7,6 +7,7 @@ import { Vec2 } from '../vec2';
 import { Subscription } from 'rxjs';
 import { Globals } from '../../globals';
 import { BaseObject } from '../base-object';
+import RenderTexture = Phaser.GameObjects.RenderTexture;
 
 export interface ScaleSettings {
 	scalableX: boolean;
@@ -637,5 +638,22 @@ export abstract class CCEntity extends BaseObject {
 		} else {
 			this.container.alpha = 0.2;
 		}
+	}
+	
+	private renderTexture?: RenderTexture;
+	
+	public async generateHtmlImage() {
+		if (!this.renderTexture) {
+			this.renderTexture = new RenderTexture(this.scene, 0, 0, 16 * 6, 16 * 7);
+		}
+		const texture = this.renderTexture;
+		texture.clear();
+		texture.draw(this.container, 16 * 3 - this.inputZone.input.hitArea.width / 2, 16 * 5);
+		
+		return await new Promise<HTMLImageElement>((res, rej) => {
+			texture!.snapshot(img => {
+				res(img as HTMLImageElement);
+			});
+		});
 	}
 }

@@ -1,118 +1,7 @@
-import { Point, Point3 } from '../../../../models/cross-code-map';
+import { Point3 } from '../../../../models/cross-code-map';
 import { Helper } from '../../helper';
 import { CCEntity, EntityAttributes, Fix, ScaleSettings } from '../cc-entity';
-
-export interface PropSheet {
-	DOCTYPE: string;
-	props: PropDef[];
-	jsonTEMPLATES?: JsonTemplates;
-}
-
-interface JsonTemplates {
-	[key: string]: JsonTemplate[];
-}
-
-export interface JsonTemplate {
-	name: string;
-	tileOffset?: number;
-}
-
-export interface PropDef {
-	name?: string;
-	terrain?: string;
-	size: Point3;
-	collType: string;
-	fix?: Fix;
-	shapeType?: string;
-	effects?: Effects;
-	anims?: Anims;
-	nudging?: boolean;
-	'nudge-variance'?: number;
-	tags?: string;
-	sequence?: Sequence;
-	shuffleAnims?: boolean;
-	ballKill?: BallKill;
-	shadow?: number;
-	floatHeight?: number;
-	floatVariance?: number;
-	shape?: string;
-}
-
-export interface Effects {
-	sheet: string;
-	show?: string;
-	hide?: string;
-}
-
-export interface Sequence {
-	sheet: SequenceSheet;
-	entries: Entry[];
-}
-
-export interface SequenceSheet {
-	gfx: string;
-	x: number;
-	y: number;
-	w: number;
-	h: number;
-}
-
-export interface Entry {
-	name: string;
-	size?: Point3;
-	wallY?: number;
-}
-
-export interface Anims {
-	name?: string;
-	frames?: number[];
-	time?: number;
-	repeat?: boolean;
-	sheet?: AnimSheet | string;
-	renderMode?: string;
-	shapeType?: string;
-	framesAlpha?: number[];
-	flipX?: boolean;
-	SUB?: Anims[] | SubJsonInstance;
-	tileOffset?: number;
-	wallY?: number;
-	offset?: Partial<Point3>;
-	shape?: string;
-	framesGfxOffset?: number[];
-	size?: Point3;
-	pivot?: Point;
-	gfxOffset?: Point;
-	aboveZ?: number;
-	offX?: number;
-	namedSheets?: { [key: string]: AnimSheet };
-	framesSpriteOffset?: number[];
-	globalTiming?: boolean;
-	
-	// doesn't exist, don't know why it's used here
-	DOCTYPE?: string;
-}
-
-export interface AnimSheet {
-	src: string;
-	width: number;
-	height: number;
-	offX?: number;
-	offY?: number;
-	xCount?: number;
-}
-
-export interface SubJsonInstance {
-	jsonINSTANCE: keyof JsonTemplates;
-}
-
-export interface BallKill {
-	fx: Fx;
-}
-
-export interface Fx {
-	sheet: string;
-	name: string;
-}
+import { Anims, AnimSheet, prepareProp, PropDef, PropSheet } from '../../sheet-parser';
 
 export interface PropType {
 	sheet: string;
@@ -130,6 +19,15 @@ export interface PropAttributes {
 	hideEffect: string;
 	permaEffect: string;
 	hideCondition: string;
+}
+
+interface PropSprite {
+	sheet: AnimSheet;
+	tileOffset: number;
+	alpha: number;
+	offset?: Partial<Point3>;
+	renderMode?: string;
+	flipX?: boolean;
 }
 
 export class Prop extends CCEntity {
@@ -240,43 +138,37 @@ export class Prop extends CCEntity {
 	
 	private async setupAnims(settings: PropAttributes, propDef: PropDef, sheetDef: PropSheet) {
 		
-		// console.log('------');
-		// console.log(settings);
-		// console.log('prop: ', propDef);
-		// console.log('sheet: ', sheetDef);
+		const sprites: PropSprite[] = [];
 		
-		const anims = propDef.anims!;
-		if (anims.DOCTYPE) {
-			console.error('prop anim has DOCTYPE :/ ', propDef.name);
-			return this.generateErrorImage();
+		const anims: Anims = prepareProp(propDef, sheetDef);
+		
+		const propAnim = settings.propAnim || 'default';
+		
+		if (propAnim === 'floor4') {
+			console.log('as');
 		}
 		
-		const sprites: {
-			sheet: AnimSheet;
-			tileOffset: number;
-			alpha: number;
-			offset?: Point3;
-			renderMode?: string;
-		}[] = [];
-		
-		
-		if (anims.sheet || anims.namedSheets) {
-			this.setupAnim(settings, anims, sheetDef, propDef.name!, sprites);
-		} else {
-			if (anims.SUB) {
-				for (const anim of anims.SUB as Anims[]) {
-					this.setupAnim(settings, anim, sheetDef, propDef.name!, sprites);
-				}
+		if (Array.isArray(anims.SUB)) {
+			const firstName = this.setupAnim(propAnim, anims, propDef, {}, sprites);
+			
+			// no sheet found with propAnim. Just take first one
+			if (sprites.length === 0 && firstName) {
+				this.setupAnim(firstName, anims, propDef, {}, sprites);
 			}
+		} else if (anims.sheet) {
+			sprites.push({
+				sheet: anims.sheet as AnimSheet,
+				alpha: anims.framesAlpha?.[0] ?? 1,
+				tileOffset: anims.tileOffset ?? 0,
+				renderMode: anims.renderMode,
+				offset: anims.offset
+			});
 		}
-		
 		
 		if (sprites.length === 0) {
 			console.warn('failed creating prop: ', settings);
-			
 			return this.generateErrorImage();
 		}
-		
 		
 		this.entitySettings.sheets.fix = [];
 		for (const sprite of sprites) {
@@ -288,7 +180,7 @@ export class Prop extends CCEntity {
 			
 			await Helper.loadTexture(sprite.sheet.src, this.scene);
 			
-			const fix = {
+			const fix: Fix = {
 				gfx: sprite.sheet.src,
 				w: sprite.sheet.width,
 				h: sprite.sheet.height,
@@ -297,6 +189,7 @@ export class Prop extends CCEntity {
 				alpha: sprite.alpha,
 				offsetX: 0,
 				offsetY: 0,
+				flipX: sprite.flipX,
 				renderMode: sprite.renderMode
 			};
 			
@@ -308,78 +201,70 @@ export class Prop extends CCEntity {
 		}
 	}
 	
-	private setupAnim(settings: PropAttributes, anims: Anims, sheetDef: PropSheet, pname: string, sprites: {
-		sheet: AnimSheet;
-		tileOffset: number;
-		alpha: number;
-		offset?: Partial<Point3>;
-		renderMode?: string;
-	}[]) {
-		let subArr = anims.SUB as Anims[];
-		if (anims.namedSheets) {
-			let template: JsonTemplate | undefined;
-			const sub = subArr[0].SUB as SubJsonInstance | undefined;
-			if (sub && sub.jsonINSTANCE) {
-				
-				const templates = sheetDef.jsonTEMPLATES?.[sub.jsonINSTANCE];
-				template = templates?.find(t => t.name === settings.propAnim);
-				
-				if (!template) {
-					console.error(`prop json template with name ${settings.propAnim} not found, `, pname);
-					return this.generateErrorImage();
-				}
-				const name = anims.sheet as string || subArr[0].sheet as string;
-				sprites.push({
-					sheet: anims.namedSheets[name],
-					alpha: 1,
-					offset: subArr[0].offset,
-					tileOffset: template.tileOffset || 0
-				});
-			} else {
-				
-				// sometimes anims.SUB is already an array of templates
-				if (subArr.length > 0 && (subArr[0] as any).name) {
-					const templates = anims.SUB;
-					subArr = [{
-						SUB: templates,
-						renderMode: anims.renderMode
-					}];
-				}
-				
-				for (const sub of subArr) {
-					const templates = sub.SUB;
-					if (!templates || !Array.isArray(templates)) {
-						continue;
-					}
-					
-					const filteredTemplates = templates.filter(t => t.name === settings.propAnim);
-					
-					for (const template of filteredTemplates) {
-						const name = (anims.sheet || subArr[0].sheet || template.sheet) as string;
-						
-						const alpha = sub.framesAlpha || template.framesAlpha || [];
-						const sprite = {
-							sheet: anims.namedSheets[name],
-							renderMode: sub.renderMode || template.renderMode,
-							offset: sub.offset || template.offset,
-							alpha: alpha[0] || 1,
-							tileOffset: template.tileOffset || 0
-						};
-						
-						sprites.push(sprite);
-					}
+	private setupAnim(propAnim: string, anims: Anims, propDef: PropDef, settings: Anims, sprites: PropSprite[]): string | undefined {
+		let firstName = anims.name;
+		if (anims.name && anims.name !== propAnim) {
+			return firstName;
+		}
+		settings = {
+			...settings,
+			...anims
+		};
+		if (Array.isArray(anims.SUB)) {
+			for (const sub of anims.SUB) {
+				const animName = this.setupAnim(propAnim, sub, propDef, settings, sprites);
+				if (!firstName) {
+					firstName = animName;
 				}
 			}
-		} else if (anims.sheet) {
-			sprites.push({
-				sheet: anims.sheet as AnimSheet,
-				alpha: 1,
-				tileOffset: 0,
-				renderMode: anims.renderMode
-			});
-		} else {
-			console.error('prop anim has no sheet: ', pname);
-			return this.generateErrorImage();
+			return firstName;
 		}
+		let sheet: AnimSheet | undefined;
+		if (typeof settings.sheet === 'string') {
+			sheet = settings.namedSheets?.[settings.sheet];
+		} else {
+			sheet = settings.sheet;
+		}
+		if (!sheet) {
+			console.error('anim sheet not found, skip: ', propDef);
+			return firstName;
+		}
+		
+		const offset: Point3 = {
+			x: 0,
+			y: 0,
+			z: 0,
+			...settings.offset
+		};
+		
+		// not sure about this one, fixes chair in propType: "booth", sheet: "trading-autumn"
+		if (settings.wallY) {
+			offset.y += settings.wallY * (settings.size?.z ?? 0);
+		}
+		
+		if (settings.gfxOffset) {
+			offset.x += settings.gfxOffset.x ?? 0;
+			offset.y += settings.gfxOffset.y ?? 0;
+		}
+		
+		const frame = settings.frames?.[0] ?? 0;
+		
+		if (frame > 0) {
+			const xCount = sheet.xCount || 999;
+			const xOffset = (frame % xCount) * sheet.width;
+			const yOffset = Math.floor(frame / xCount) * sheet.height;
+			sheet.offX = (sheet.offX ?? 0) + xOffset;
+			sheet.offY = (sheet.offY ?? 0) + yOffset;
+		}
+		
+		sprites.push({
+			sheet: sheet,
+			alpha: settings.framesAlpha?.[frame] ?? 1,
+			offset: offset,
+			tileOffset: settings.tileOffset ?? 0,
+			renderMode: settings.renderMode,
+			flipX: settings.flipX
+		});
+		return firstName;
 	}
 }

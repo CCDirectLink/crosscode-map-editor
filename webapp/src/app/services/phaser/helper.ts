@@ -65,7 +65,10 @@ export class Helper {
 	}
 	
 	/** copies obj via JSON.parse(JSON.stringify(obj)); */
-	public static copy(obj: any) {
+	public static copy<T>(obj: T): T {
+		if (!obj) {
+			return obj;
+		}
 		return JSON.parse(JSON.stringify(obj));
 	}
 	
@@ -103,11 +106,11 @@ export class Helper {
 		if (!name) {
 			return false;
 		}
-
+		
 		//Sometimes RFG adds a whitespace after (or even in front) of the name.
 		//This is invalid behaviour for loading a file but the game trims it as well.
-		const key = name.trim();  
-
+		const key = name.trim();
+		
 		if (scene.textures.exists(key)) {
 			return true;
 		}

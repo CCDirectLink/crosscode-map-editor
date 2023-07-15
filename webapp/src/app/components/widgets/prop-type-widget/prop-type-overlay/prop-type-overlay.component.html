@@ -17,7 +17,7 @@
 			<app-split-pane
 				[bounds]="{left: 10, right: 10}"
 				[opened]="true"
-				[(base)]="base"
+				[(base)]="splitBase"
 				[showGutter]="true"
 				class="overflow-auto"
 			>
@@ -27,9 +27,10 @@
 						<div class="flex flex-row flex-wrap gap-6 p-4">
 							<app-prop-type-overlay-card
 								*ngFor="let prop of propNames"
-								[name]="prop"
-								[selected]="settings.name === prop"
-								(onClick)="setPropType(prop)"
+								[name]="prop.name"
+								[img]="prop.imgSrc"
+								[selected]="settings.name === prop.name"
+								(onClick)="setPropType(prop.name)"
 							></app-prop-type-overlay-card>
 						</div>
 					</div>
@@ -40,9 +41,10 @@
 						<div class="flex flex-row flex-wrap gap-6 p-4">
 							<app-prop-type-overlay-card
 								*ngFor="let prop of propAnimNames"
-								[name]="prop"
-								[selected]="this.entity?.details?.settings?.[animKey] === prop"
-								(onClick)="setPropAnim(prop)"
+								[name]="prop.name"
+								[img]="prop.imgSrc"
+								[selected]="this.entity?.details?.settings?.[animKey] === prop.name"
+								(onClick)="setPropAnim(prop.name)"
 							></app-prop-type-overlay-card>
 						</div>
 					</div>

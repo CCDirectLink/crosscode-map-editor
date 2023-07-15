@@ -1,7 +1,7 @@
 import { Point3 } from '../../../../models/cross-code-map';
 import { Helper } from '../../helper';
 import { CCEntity, EntityAttributes, ScaleSettings } from '../cc-entity';
-import { Anims, AnimSheet } from './prop';
+import { Anims, AnimSheet } from '../../sheet-parser';
 
 export class ItemDestruct extends CCEntity {
 	
@@ -69,7 +69,7 @@ export class ItemDestruct extends CCEntity {
 			return;
 		}
 		const animSheet = type.anims.sheet as AnimSheet;
-		const gfx = (animSheet instanceof String) ? type.anims.sheet as string : animSheet.src;
+		const gfx = (typeof animSheet === 'string') ? animSheet : animSheet.src;
 		
 		const exists = await Helper.loadTexture(gfx, this.scene);
 		

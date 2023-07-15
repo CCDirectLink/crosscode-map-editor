@@ -4,8 +4,8 @@
 	(click)="onClick.emit($event)"
 >
 	
-	<div class="flex-auto">
-		<img src="" alt="">
+	<div class="flex-auto bg-img">
+		<img *ngIf="img" [src]="img">
 	</div>
 	<div class="card-label">
 		<span>{{name}}</span>

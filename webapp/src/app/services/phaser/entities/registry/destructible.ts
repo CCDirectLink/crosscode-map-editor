@@ -2,7 +2,7 @@ import { Point, Point3 } from '../../../../models/cross-code-map';
 import { Globals } from '../../../globals';
 import { Helper } from '../../helper';
 import { CCEntity, EntityAttributes, Fix, ScaleSettings } from '../cc-entity';
-import { Anims, AnimSheet } from './prop';
+import { Anims, AnimSheet } from '../../sheet-parser';
 
 export class Destructible extends CCEntity {
 	private attributes: EntityAttributes = {

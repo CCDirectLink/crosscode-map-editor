@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 export class PropTypeOverlayCardComponent {
 	@Input() name = '?';
 	@Input() selected = false;
+	@Input() img?: string;
 	
 	@Output() onClick = new EventEmitter<MouseEvent>();
 }

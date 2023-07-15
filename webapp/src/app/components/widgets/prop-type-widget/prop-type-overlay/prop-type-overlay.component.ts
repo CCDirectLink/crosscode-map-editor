@@ -1,40 +1,39 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
 import { AbstractWidget } from '../../abstract-widget';
 import { HttpClientService } from '../../../../services/http-client.service';
 import { lastValueFrom } from 'rxjs';
-import { Anims, PropAttributes, PropSheet, PropType, SubJsonInstance } from '../../../../services/phaser/entities/registry/prop';
+import { Prop, PropAttributes, PropType } from '../../../../services/phaser/entities/registry/prop';
 import { Helper } from '../../../../services/phaser/helper';
+import { Anims, prepareSheet, PropSheet } from '../../../../services/phaser/sheet-parser';
+import { Globals } from '../../../../services/globals';
 
+interface PropName {
+	name: string;
+	imgSrc?: string;
+}
 
 @Component({
 	selector: 'app-prop-type-overlay',
 	templateUrl: './prop-type-overlay.component.html',
 	styleUrls: ['./prop-type-overlay.component.scss']
 })
-export class PropTypeOverlayComponent extends AbstractWidget<PropType> implements OnInit {
-	private static globalBase = 13;
+export class PropTypeOverlayComponent extends AbstractWidget<PropType> implements OnInit, OnChanges, OnDestroy {
 	
 	@Output() exit = new EventEmitter<void>();
 	availableSheets: string[] = [];
 	
+	splitBase = 13;
 	private sheetKey: keyof PropType = 'sheet';
 	private nameKey: keyof PropType = 'name';
 	animKey: keyof PropAttributes = 'propAnim';
 	props: {
 		name: string;
 		propAnim: string;
+		imgSrc?: string;
 	}[] = [];
 	
-	propNames: string[] = [];
-	propAnimNames: string[] = [];
-	
-	get base() {
-		return PropTypeOverlayComponent.globalBase;
-	}
-	
-	set base(value: number) {
-		PropTypeOverlayComponent.globalBase = value;
-	}
+	propNames: PropName[] = [];
+	propAnimNames: PropName[] = [];
 	
 	constructor(
 		private http: HttpClientService
@@ -47,6 +46,19 @@ export class PropTypeOverlayComponent extends AbstractWidget<PropType> implement
 		this.availableSheets = await lastValueFrom(this.http.getProps());
 		await this.updateProps();
 		await this.updatePropAnims();
+	}
+	
+	override ngOnChanges() {
+		super.ngOnChanges();
+		try {
+			this.splitBase = parseFloat(localStorage.getItem(PropTypeOverlayComponent.name)!) ?? this.splitBase;
+		} catch (e) {
+			console.error(e);
+		}
+	}
+	
+	ngOnDestroy() {
+		localStorage.setItem(PropTypeOverlayComponent.name, this.splitBase.toString());
 	}
 	
 	close() {
@@ -67,7 +79,7 @@ export class PropTypeOverlayComponent extends AbstractWidget<PropType> implement
 			return;
 		}
 		this.setSetting(this.nameKey, prop);
-		this.setPropAnim('');
+		this.updateType(prop);
 		await this.updatePropAnims();
 	}
 	
@@ -86,33 +98,64 @@ export class PropTypeOverlayComponent extends AbstractWidget<PropType> implement
 			return;
 		}
 		
-		const sheet = await Helper.getJsonPromise('data/props/' + sheetPath) as PropSheet;
+		let sheet = await Helper.getJsonPromise('data/props/' + sheetPath) as PropSheet;
+		sheet = prepareSheet(sheet);
+		
+		const entityClass = Globals.entityRegistry.getEntity('Prop');
+		const propEntity = new entityClass(Globals.scene, Globals.map, 0, 0, 'Prop') as unknown as Prop;
 		
 		for (const prop of sheet.props) {
 			if (!prop.name) {
 				continue;
 			}
-			this.propNames.push(prop.name);
 			
-			const names = this.getSubNames(prop.anims?.SUB, sheet);
+			const names = this.getSubNames(prop.anims?.SUB);
+			let firstImg = '';
 			
 			if (names.length === 0) {
 				names.push('');
 			}
 			for (const name of names) {
+				let imgSrc = '';
+				
+				const settings: Partial<PropAttributes> = {
+					propType: {
+						sheet: sheetPath,
+						name: prop.name
+					},
+					propAnim: name
+				};
+				await propEntity.setSettings(settings);
+				const img = await propEntity.generateHtmlImage();
+				imgSrc = img.src;
 				this.props.push({
 					name: prop.name,
-					propAnim: name
+					propAnim: name,
+					imgSrc: imgSrc
 				});
+				if (!firstImg) {
+					firstImg = imgSrc;
+				}
 			}
+			this.propNames.push({
+				name: prop.name,
+				imgSrc: firstImg
+			});
 		}
+		
+		propEntity.destroy();
+		
+		this.propNames.sort((a, b) => a.name.localeCompare(b.name));
 	}
 	
 	async updatePropAnims() {
-		this.propAnimNames = this.props.filter(v => v.name === this.settings.name).map(v => v.propAnim);
+		this.propAnimNames = this.props.filter(v => v.name === this.settings.name).map(v => ({
+			name: v.propAnim,
+			imgSrc: v.imgSrc
+		}));
 	}
 	
-	private getSubNames(sub: Anims[] | SubJsonInstance | undefined, sheet: PropSheet): string[] {
+	private getSubNames(sub: Anims | Anims['SUB']): string[] {
 		if (!sub) {
 			return [];
 		}
@@ -123,16 +166,11 @@ export class PropTypeOverlayComponent extends AbstractWidget<PropType> implement
 				if (v.name) {
 					uniqueNames.add(v.name);
 				}
-				for (const name of this.getSubNames(v.SUB, sheet)) {
+				for (const name of this.getSubNames(v.SUB)) {
 					uniqueNames.add(name);
 				}
 			}
 			return Array.from(uniqueNames);
-		}
-		
-		if (sub.jsonINSTANCE) {
-			const templates = sheet.jsonTEMPLATES?.[sub.jsonINSTANCE] ?? [];
-			return templates.map(v => v.name);
 		}
 		
 		return [];
