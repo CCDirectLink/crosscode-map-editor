@@ -7,7 +7,6 @@ import { Vec2 } from '../vec2';
 import { Subscription } from 'rxjs';
 import { Globals } from '../../globals';
 import { BaseObject } from '../base-object';
-import RenderTexture = Phaser.GameObjects.RenderTexture;
 
 export interface ScaleSettings {
 	scalableX: boolean;
@@ -70,6 +69,8 @@ export interface Fix {
 
 
 export abstract class CCEntity extends BaseObject {
+	
+	private static renderBackground?: Phaser.GameObjects.Graphics;
 	
 	private map: CCMap;
 	private levelOffset = 0;
@@ -640,16 +641,67 @@ export abstract class CCEntity extends BaseObject {
 		}
 	}
 	
-	private renderTexture?: RenderTexture;
-	
-	public async generateHtmlImage() {
-		if (!this.renderTexture) {
-			this.renderTexture = new RenderTexture(this.scene, 0, 0, 16 * 6, 16 * 7);
+	private getRenderBackground(width: number, height: number) {
+		if (!CCEntity.renderBackground) {
+			const g = this.scene.add.graphics({fillStyle: {color: 0x616161, alpha: 1}});
+			g.fillRect(0, 0, width, height);
+			g.fillStyle(0, 0.15);
+			for (let x = 0; x < width; x += 16) {
+				for (let y = 0; y < height; y += 16) {
+					if ((x + y) % 32 === 0) {
+						continue;
+					}
+					g.fillRect(x, y, 16, 16);
+				}
+			}
+			g.setActive(false);
+			g.setVisible(false);
+			CCEntity.renderBackground = g;
 		}
-		const texture = this.renderTexture;
-		texture.clear();
-		texture.draw(this.container, 16 * 3 - this.inputZone.input.hitArea.width / 2, 16 * 5);
+		return CCEntity.renderBackground;
+	}
+	
+	public async generateHtmlImage(withBackground = true) {
+		const scale = 3;
+		const width = 16 * 6;
+		const height = 16 * 7;
+		const scaledWidth = 16 * 6 * scale;
+		const scaledHeight = 16 * 7 * scale;
 		
+		const textureName = 'entityRenderer';
+		let texture: Phaser.Textures.DynamicTexture;
+		if (this.scene.textures.exists(textureName)) {
+			texture = this.scene.textures.get(textureName) as Phaser.Textures.DynamicTexture;
+		} else {
+			texture = this.scene.textures.addDynamicTexture(textureName, scaledWidth, scaledHeight)!;
+		}
+		
+		texture.clear();
+		if (withBackground) {
+			const g = this.getRenderBackground(width, height);
+			g.setScale(scale);
+			texture.draw(g);
+		}
+		const x = scale * 16 * 3 - (this.inputZone.input!.hitArea.width * scale) / 2;
+		const y = scale * 16 * 5;
+		
+		// drawing container directly is broken: https://github.com/photonstorm/phaser/issues/6546
+		for (const img of this.images) {
+			const sx = img.scaleX;
+			const sy = img.scaleY;
+			
+			img.setScale(
+				sx * scale,
+				sy * scale
+			);
+			texture.draw(
+				img,
+				x + (img.x + this.container.x) * scale,
+				y + (img.y + this.container.y) * scale
+			);
+			
+			img.setScale(sx, sy);
+		}
 		return await new Promise<HTMLImageElement>((res, rej) => {
 			texture!.snapshot(img => {
 				res(img as HTMLImageElement);

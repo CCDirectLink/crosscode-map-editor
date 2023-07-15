@@ -4,7 +4,7 @@ import { HttpClientService } from '../../../../services/http-client.service';
 import { lastValueFrom } from 'rxjs';
 import { Prop, PropAttributes, PropType } from '../../../../services/phaser/entities/registry/prop';
 import { Helper } from '../../../../services/phaser/helper';
-import { Anims, prepareSheet, PropSheet } from '../../../../services/phaser/sheet-parser';
+import { Anims, prepareSheet, PropDef, PropSheet } from '../../../../services/phaser/sheet-parser';
 import { Globals } from '../../../../services/globals';
 
 interface PropName {
@@ -104,16 +104,15 @@ export class PropTypeOverlayComponent extends AbstractWidget<PropType> implement
 		const entityClass = Globals.entityRegistry.getEntity('Prop');
 		const propEntity = new entityClass(Globals.scene, Globals.map, 0, 0, 'Prop') as unknown as Prop;
 		
-		for (const prop of sheet.props) {
-			if (!prop.name) {
-				continue;
-			}
-			
+		const props = sheet.props.filter(v => v.name) as (PropDef & { name: string })[];
+		props.sort((a, b) => a.name!.localeCompare(b.name!));
+		
+		for (const prop of props) {
 			const names = this.getSubNames(prop.anims?.SUB);
 			let firstImg = '';
 			
 			if (names.length === 0) {
-				names.push('');
+				names.push('default');
 			}
 			for (const name of names) {
 				let imgSrc = '';
@@ -144,8 +143,6 @@ export class PropTypeOverlayComponent extends AbstractWidget<PropType> implement
 		}
 		
 		propEntity.destroy();
-		
-		this.propNames.sort((a, b) => a.name.localeCompare(b.name));
 	}
 	
 	async updatePropAnims() {
