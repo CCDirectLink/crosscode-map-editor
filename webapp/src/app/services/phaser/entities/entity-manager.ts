@@ -50,12 +50,12 @@ export class EntityManager extends BaseObject {
 	protected init(): void {
 		const keyboard = this.scene.input.keyboard;
 		const keyCodes = Phaser.Input.Keyboard.KeyCodes;
-		this.multiSelectKey = keyboard.addKey(keyCodes.SHIFT, false);
-		this.copyKey = keyboard.addKey(keyCodes.C, false);
-		this.pasteKey = keyboard.addKey(keyCodes.V, false);
-		this.deleteKey = keyboard.addKey(keyCodes.DELETE, false);
-		this.gridKey = keyboard.addKey(keyCodes.G, false);
-		this.visibilityKey = keyboard.addKey(keyCodes.R, false);
+		this.multiSelectKey = keyboard!.addKey(keyCodes.SHIFT, false);
+		this.copyKey = keyboard!.addKey(keyCodes.C, false);
+		this.pasteKey = keyboard!.addKey(keyCodes.V, false);
+		this.deleteKey = keyboard!.addKey(keyCodes.DELETE, false);
+		this.gridKey = keyboard!.addKey(keyCodes.G, false);
+		this.visibilityKey = keyboard!.addKey(keyCodes.R, false);
 		
 		this.selectionBox = new SelectionBox(this.scene);
 	}
@@ -144,7 +144,7 @@ export class EntityManager extends BaseObject {
 				if (pointer.rightButtonReleased()) {
 					this.selectEntity();
 					this.showAddEntityMenu();
-				} else if (pointer.leftButtonReleased()) {			
+				} else if (pointer.leftButtonReleased()) {
 
 					this.selectedEntities.forEach(entity => {
 						entity.isDragged = false;
@@ -273,7 +273,7 @@ export class EntityManager extends BaseObject {
 		}
 		
 		// concurrent entity loading
-		const promises: Promise<any>[] = []; 
+		const promises: Promise<any>[] = [];
 		for (const entity of map.entities) {
 			promises.push(this.generateEntity(entity));
 		}

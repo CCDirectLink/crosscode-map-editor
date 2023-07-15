@@ -12,6 +12,7 @@ import { EntityManager3d } from './entities/entity-manager-3d';
 import { LayerMeshGenerator } from './layer-generation/layer-mesh-generator';
 import { TextureGenerator } from './layer-generation/texture-generator';
 import { addWireframeButton } from './ui/wireframe';
+import { customPutTilesAt } from '../phaser/tilemap/layer-helper';
 
 interface CamStore {
 	position: Vector3;
@@ -189,7 +190,7 @@ export class BabylonViewerService {
 			data: data,
 		});
 		
-		layer.getPhaserLayer()!.putTilesAt(layer.details.data, 0, 0, false);
+		customPutTilesAt(layer.details.data, layer.getPhaserLayer());
 		this.groundLayers.push(layer);
 		return layer;
 	}

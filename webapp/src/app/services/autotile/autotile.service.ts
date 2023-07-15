@@ -4,6 +4,7 @@ import { CheckDir, CHECK_DIR, CHECK_ITERATE } from '../height-map/heightmap.cons
 import { CCMapLayer } from '../phaser/tilemap/cc-map-layer';
 import { AutotileConfig, FillType } from './autotile.constants';
 import { GfxMapper } from './gfx-mapper';
+import { customPutTileAt } from '../phaser/tilemap/layer-helper';
 
 interface TileData {
 	pos: Point;
@@ -102,7 +103,7 @@ export class AutotileService {
 			return;
 		}
 		const index = this.gfxMapper.getGfx(tile.fill, config);
-		layer.getPhaserLayer()!.putTileAt(index, tile.pos.x, tile.pos.y, false);
+		customPutTileAt(index, tile.pos.x, tile.pos.y, layer.getPhaserLayer().layer);
 	}
 	
 	private getOther(config: AutotileConfig, layer: CCMapLayer, tile: TileData, dir: CheckDir): TileData {
