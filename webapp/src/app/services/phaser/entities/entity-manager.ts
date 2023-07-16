@@ -190,6 +190,9 @@ export class EntityManager extends BaseObject {
 							if (!this.multiSelectKey.isDown && this.leftClickOpts.prevEntity === this.leftClickOpts.entity && this.leftClickOpts.prevTimer < 500) {
 								entity.doubleClick();
 							}
+						} else {
+							//Reset double click after drag
+							this.leftClickOpts.entity = undefined;
 						}
 					}
 				}
