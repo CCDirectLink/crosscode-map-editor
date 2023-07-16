@@ -49,7 +49,7 @@ export class CoordsReporter extends BaseObject {
 			Globals.globalEventsService.selectedEntity.value?.details.level;
 		
 		return maybeLevel
-			? Globals.map.levels[maybeLevel.level].height + maybeLevel.offset
+			? Globals.map.levels[maybeLevel.level]?.height + maybeLevel.offset
 			: 0;
 	}
 	

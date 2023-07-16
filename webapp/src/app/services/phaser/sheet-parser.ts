@@ -1,6 +1,17 @@
 import { Helper } from './helper';
 import { Point, Point3 } from '../../models/cross-code-map';
 import { Fix } from './entities/cc-entity';
+import { ScalablePropDef } from './entities/registry/scalable-prop';
+
+export interface ScalablePropSheet {
+	DOCTYPE: string;
+	entries: {
+		[key: string]: ScalablePropDef;
+	};
+	jsonTEMPLATES?: {
+		[key: string]: ScalablePropDef;
+	};
+}
 
 export interface PropSheet {
 	DOCTYPE: string;
@@ -128,16 +139,17 @@ export function isJsonParam(obj: any): obj is SubJsonParam {
 	return obj && obj[key];
 }
 
-export function prepareSheet(sheetDef: PropSheet): PropSheet {
+export function prepareSheet<T extends PropSheet | ScalablePropSheet>(sheetDef: T): T {
 	const sheet = Helper.copy(sheetDef);
-	for (const prop of sheet.props) {
-		prop.anims = prepareProp(prop, sheet);
-	}
-	return sheet;
+	return recSearchTemplateInstance(sheet, sheet.jsonTEMPLATES, {});
 }
 
 export function prepareProp(propDef: PropDef, sheetDef: PropSheet): Anims {
 	return recSearchTemplateInstance(Helper.copy(propDef.anims), sheetDef.jsonTEMPLATES, {});
+}
+
+export function prepareScalableProp(propDef: ScalablePropDef, sheetDef: ScalablePropSheet): ScalablePropDef {
+	return recSearchTemplateInstance(Helper.copy(propDef), sheetDef.jsonTEMPLATES, {});
 }
 
 function recSearchTemplateInstance(

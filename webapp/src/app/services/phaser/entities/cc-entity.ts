@@ -65,6 +65,13 @@ export interface Fix {
 	off?: null;
 	wall?: number;
 	shapeType?: string;
+	
+	// reduces width/height on scalable props to allow space for end sprites
+	offsetWidth?: number;
+	offsetHeight?: number;
+	scalable?: boolean;
+	ignoreBoundingboxX?: boolean;
+	ignoreBoundingboxY?: boolean;
 }
 
 
@@ -225,99 +232,113 @@ export abstract class CCEntity extends BaseObject {
 					console.error(`texture not loaded: [${fix.gfx}] in class: [${this.constructor.name}]`);
 				}
 			}
-			if (!s.sheets.ignoreScalable && (s.scalableX || s.scalableY)) {
-				// scalable
-				const fix = s.sheets.fix[0];
-				const width = settings['size'].x;
-				const height = (fix.renderHeight || s.baseSize.z) + settings['size'].y;
-				
-				for (let x = 0; x < width; x += fix.w) {
-					const imgWidth = Math.min(fix.w, width - x);
-					for (let y = 0; y < height; y += fix.h) {
-						const imgHeight = Math.min(fix.h, height - y);
-						const img = this.scene.add.image(x, -y + settings['size'].y, fix.gfx);
-						img.setCrop(fix.x, fix.y, imgWidth, imgHeight);
-						
-						img.setOrigin(0, 0);
-						
-						// level offset
-						img.y += this.levelOffset;
-						
-						// origin offset x=0, y=1
-						img.y -= imgHeight;
-						
-						// crop offset
-						img.x -= fix.x;
-						img.y -= fix.y;
-						
-						if (fix.renderMode === 'lighter') {
-							img.blendMode = Phaser.BlendModes.ADD;
-						}
-						
-						this.container.add(img);
-						this.images.push(img);
-					}
-				}
-			} else {
-				// default
-				s.sheets.fix.forEach(sheet => {
-					sheet.x = sheet.x || 0;
-					sheet.y = sheet.y || 0;
-					sheet.offsetX = sheet.offsetX || 0;
-					sheet.offsetY = sheet.offsetY || 0;
+			
+			for (const fix of s.sheets.fix) {
+				if (!s.sheets.ignoreScalable && (s.scalableX || s.scalableY) && fix.scalable) {
+					// scalable
+					const offsetX = fix.offsetX ?? 0;
+					const offsetY = fix.offsetY ?? 0;
+					const offsetWidth = fix.offsetWidth ?? 0;
+					const offsetHeight = fix.offsetHeight ?? 0;
+					const width = settings['size'].x - offsetX - offsetWidth;
+					const height = (fix.renderHeight || s.baseSize.z) + settings['size'].y - offsetY - offsetHeight;
 					
-					const img = this.scene.add.image(sheet.offsetX, sheet.offsetY, sheet.gfx);
+					for (let x = 0; x < width; x += fix.w) {
+						const imgWidth = Math.min(fix.w, width - x);
+						for (let y = 0; y < height; y += fix.h) {
+							const imgHeight = Math.min(fix.h, height - y);
+							const img = this.scene.add.image(x, -y + settings['size'].y, fix.gfx);
+							img.setCrop(fix.x, fix.y, imgWidth, imgHeight);
+							
+							img.setOrigin(0, 0);
+							
+							// level offset
+							img.y += this.levelOffset;
+							
+							// origin offset x=0, y=1
+							img.y -= imgHeight;
+							
+							// crop offset
+							img.x -= fix.x;
+							img.y -= fix.y;
+							
+							// fix offset
+							img.x += offsetX;
+							img.y -= offsetY;
+							
+							if (fix.renderMode === 'lighter') {
+								img.blendMode = Phaser.BlendModes.ADD;
+							}
+							
+							this.container.add(img);
+							this.images.push(img);
+						}
+					}
+				} else {
+					// default
+					
+					fix.x = fix.x || 0;
+					fix.y = fix.y || 0;
+					fix.offsetX = fix.offsetX || 0;
+					fix.offsetY = fix.offsetY || 0;
+					
+					const img = this.scene.add.image(fix.offsetX, fix.offsetY, fix.gfx);
 					img.setOrigin(0, 0);
 					
-					if (sheet.tint !== undefined) {
-						img.setTintFill(sheet.tint);
+					if (fix.tint !== undefined) {
+						img.setTintFill(fix.tint);
 					}
 					
-					img.alpha = sheet.alpha || 1;
+					img.alpha = fix.alpha || 1;
 					
 					// scale, used for single color
-					img.scaleX = sheet.scaleX || 1;
-					img.scaleY = sheet.scaleY || 1;
+					img.scaleX = fix.scaleX || 1;
+					img.scaleY = fix.scaleY || 1;
 					
 					// level offset
 					img.y += this.levelOffset;
 					
-					// origin offset x=0.5, y=1
-					img.x -= sheet.w / 2;
-					img.y -= sheet.h;
-					
 					// bounding box offset
-					img.x += boundBoxOffset.x;
-					img.y += boundBoxOffset.y;
 					
-					// flip crop offset
-					let cropX = sheet.x;
-					if (sheet.flipX) {
-						cropX = img.displayWidth - sheet.x - sheet.w;
+					if (!fix.ignoreBoundingboxX) {
+						img.x += boundBoxOffset.x;
+					}
+					if (!fix.ignoreBoundingboxY) {
+						img.y += boundBoxOffset.y;
+						
 					}
 					
-					let cropY = sheet.y;
-					if (sheet.flipY) {
+					// origin offset x=0.5, y=1
+					img.x -= fix.w / 2;
+					img.y -= fix.h;
+					
+					// flip crop offset
+					let cropX = fix.x;
+					if (fix.flipX) {
+						cropX = img.displayWidth - fix.x - fix.w;
+					}
+					
+					let cropY = fix.y;
+					if (fix.flipY) {
 						// TODO: untested
-						cropY = img.displayWidth - sheet.y - sheet.h;
+						cropY = img.displayWidth - fix.y - fix.h;
 					}
 					
 					// crop offset
-					img.x -= sheet.x;
-					img.y -= sheet.y;
+					img.x -= fix.x;
+					img.y -= fix.y;
 					
-					img.setCrop(cropX, cropY, sheet.w, sheet.h);
-					img.flipX = !!sheet.flipX;
-					img.flipY = !!sheet.flipY;
+					img.setCrop(cropX, cropY, fix.w, fix.h);
+					img.flipX = !!fix.flipX;
+					img.flipY = !!fix.flipY;
 					
-					if (sheet.renderMode === 'lighter') {
+					if (fix.renderMode === 'lighter') {
 						img.blendMode = Phaser.BlendModes.ADD;
 					}
 					
 					this.container.add(img);
 					this.images.push(img);
-				});
-				
+				}
 				if (s.sheets.offset) {
 					this.images.forEach(img => Vec2.add(img, s.sheets.offset!));
 				}

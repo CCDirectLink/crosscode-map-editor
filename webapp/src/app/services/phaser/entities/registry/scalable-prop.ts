@@ -1,48 +1,68 @@
 import { Point, Point3 } from '../../../../models/cross-code-map';
 import { Helper } from '../../helper';
-import { CCEntity, EntityAttributes, ScaleSettings } from '../cc-entity';
-
-interface ScalablePropSheet {
-	DOCTYPE: string;
-	entries: {
-		[key: string]: ScalablePropDef;
-	};
-	jsonTEMPLATES?: {
-		[key: string]: ScalablePropDef;
-	};
-}
+import { CCEntity, EntityAttributes, Fix, ScaleSettings } from '../cc-entity';
+import { BallKill, Effects, prepareScalableProp, ScalablePropSheet } from '../../sheet-parser';
 
 export interface ScalablePropDef {
-	baseSize: Point3;
-	terrain: string;
-	scalableX: boolean;
-	scalableY: boolean;
-	scalableStep: number;
+	baseSize?: Point3;
 	renderHeight?: number;
-	renderMode: string;
-	collType: string;
-	gfx: string;
-	gfxBaseX: number;
-	gfxBaseY: number;
-	patterns: {
-		x: number;
-		y: number;
-		w: number;
-		h: number;
-		xCount: number;
-		yCount: number;
-	};
-	timePadding: Point;
-	effects: {
-		sheet: string;
-		show: string;
-		hide: string;
-	};
-	pivot: Point;
+	scalableX?: boolean;
+	scalableY?: boolean;
+	scalableStep?: number;
+	collType?: string;
+	gfx?: string;
+	gfxBaseX?: number;
+	gfxBaseY?: number;
+	patterns?: Patterns;
+	gfxEnds?: EntryGfxEnds;
+	animFrames?: number[];
+	animTime?: number;
+	terrain?: string;
+	wallY?: number;
+	effects?: Effects;
+	renderMode?: string;
+	timePadding?: Point;
+	pivot?: Point;
 	jsonINSTANCE?: string;
 	srcX?: number;
 	srcY?: number;
 	width?: number;
+	skyBlock?: boolean;
+	ballKill?: BallKill;
+}
+
+export interface Patterns {
+	x: number;
+	y: number;
+	w: number;
+	h: number;
+	zHeight?: number;
+	xCount?: number;
+	renderMode?: string;
+	flipX?: boolean;
+	yCount?: number;
+	renderHeight?: number;
+	fullBack?: boolean;
+	animFrames?: number[];
+}
+
+export interface EntryGfxEnds {
+	west?: GfxEndsDir;
+	east?: GfxEndsDir;
+	north?: GfxEndsDir;
+	south?: GfxEndsDir;
+}
+
+export interface GfxEndsDir {
+	[key: string]: Patterns;
+}
+
+export interface PropConfig {
+	sheet?: string;
+	name?: string;
+	ends?: {
+		[key in keyof EntryGfxEnds]: string;
+	};
 }
 
 export class ScalableProp extends CCEntity {
@@ -98,53 +118,34 @@ export class ScalableProp extends CCEntity {
 	}
 	
 	protected async setupType(settings: any) {
-		if (!settings.propConfig) {
+		const propConfig = settings.propConfig as PropConfig | undefined;
+		if (!propConfig) {
 			console.warn('scalable prop without prop config');
 			this.resetScaleSettings();
 			return this.generateErrorImage();
 		}
-		const sheet = await Helper.getJsonPromise('data/scale-props/' + settings.propConfig.sheet) as ScalablePropSheet;
+		const sheet = await Helper.getJsonPromise('data/scale-props/' + propConfig.sheet) as ScalablePropSheet | undefined;
+		
 		if (!sheet) {
-			console.error('sheet not found: ' + settings.propConfig.sheet);
+			console.warn('sheet not found: ' + propConfig.sheet);
 			this.resetScaleSettings();
 			return this.generateErrorImage();
 		}
-		let prop: ScalablePropDef = sheet.entries[settings.propConfig.name];
+		
+		let prop: ScalablePropDef = sheet.entries[propConfig.name!];
 		if (!prop) {
-			console.error('scale-prop not found: ' + settings.propConfig.name);
+			console.error('scale-prop not found: ' + propConfig.name);
 			this.resetScaleSettings();
 			return this.generateErrorImage();
 		}
+		prop = prepareScalableProp(prop, sheet);
 		
 		this.entitySettings = <any>{};
-		if (prop.jsonINSTANCE && sheet.jsonTEMPLATES) {
-			const jsonInstance = sheet.jsonTEMPLATES[prop.jsonINSTANCE];
-			// TODO: patterns currently ignored
-			//const p = jsonInstance.patterns;
-			this.replaceJsonParams(jsonInstance, prop);
-			prop = jsonInstance;
-		}
 		
-		if (prop.gfx) {
-			await Helper.loadTexture(prop.gfx, this.scene);
-			this.entitySettings.sheets = {
-				fix: [{
-					gfx: prop.gfx,
-					x: prop.gfxBaseX + prop.patterns.x,
-					y: prop.gfxBaseY + prop.patterns.y,
-					w: prop.patterns.w,
-					h: prop.patterns.h,
-					renderHeight: prop.renderHeight
-				}],
-				renderMode: prop.renderMode,
-				flipX: false,
-			};
-		}
-		
-		this.scaleSettings.scalableX = prop.scalableX;
-		this.scaleSettings.scalableY = prop.scalableY;
-		this.scaleSettings.scalableStep = prop.scalableStep;
-		this.scaleSettings.baseSize = prop.baseSize;
+		this.scaleSettings.scalableX = prop.scalableX!;
+		this.scaleSettings.scalableY = prop.scalableY!;
+		this.scaleSettings.scalableStep = prop.scalableStep!;
+		this.scaleSettings.baseSize = prop.baseSize!;
 		
 		if (!this.scaleSettings.scalableX) {
 			this.details.settings['size'].x = this.scaleSettings.baseSize.x;
@@ -153,9 +154,82 @@ export class ScalableProp extends CCEntity {
 			this.details.settings['size'].y = this.scaleSettings.baseSize.y;
 		}
 		
+		
+		let scaleableFix: Fix | undefined;
+		if (prop.gfx) {
+			await Helper.loadTexture(prop.gfx, this.scene);
+			scaleableFix = {
+				gfx: prop.gfx,
+				x: prop.gfxBaseX! + prop.patterns!.x,
+				y: prop.gfxBaseY! + prop.patterns!.y,
+				w: prop.patterns!.w,
+				h: prop.patterns!.h,
+				renderHeight: prop.renderHeight,
+				scalable: true,
+			};
+			this.entitySettings.sheets = {
+				fix: [scaleableFix],
+				renderMode: prop.renderMode,
+			};
+		} else {
+			console.error('scalable prop has no gfx');
+			this.resetScaleSettings();
+			return this.generateErrorImage();
+		}
+		
+		const scale = {
+			x: 0,
+			y: 0,
+			...this.details.settings['size']
+		} as Point;
+		
+		for (const [d, key] of Object.entries(propConfig.ends ?? {})) {
+			if (!key) {
+				continue;
+			}
+			const dir = d as keyof EntryGfxEnds;
+			const pattern = prop.gfxEnds?.[dir]?.[key];
+			if (!pattern) {
+				console.error(`pattern not found: "${dir}" -> "${key}"`);
+				continue;
+			}
+			const fix: Fix = {
+				gfx: prop.gfx,
+				x: prop.gfxBaseX! + pattern.x,
+				y: prop.gfxBaseY! + pattern.y,
+				w: pattern.w,
+				h: pattern.h,
+				renderHeight: pattern.renderHeight,
+				flipX: pattern.flipX,
+				renderMode: pattern.renderMode,
+			};
+			this.entitySettings.sheets.fix.push(fix);
+			switch (dir) {
+				case 'west':
+					scaleableFix.offsetX = pattern.w;
+					fix.offsetX = pattern.w / 2;
+					fix.ignoreBoundingboxX = true;
+					break;
+				case 'east':
+					scaleableFix.offsetWidth = pattern.w;
+					fix.offsetX = scale.x - pattern.w / 2;
+					fix.ignoreBoundingboxX = true;
+					break;
+				case 'north':
+					scaleableFix.offsetHeight = pattern.h;
+					fix.ignoreBoundingboxY = true;
+					break;
+				case 'south':
+					scaleableFix.offsetY = pattern.h;
+					fix.offsetY = scale.y;
+					fix.ignoreBoundingboxY = true;
+					break;
+			}
+		}
+		
 		Object.assign(this.entitySettings, this.scaleSettings);
-		this.entitySettings.collType = prop.collType;
-		this.entitySettings.pivot = prop.pivot;
+		this.entitySettings.collType = prop.collType!;
+		this.entitySettings.pivot = prop.pivot!;
 		this.updateSettings();
 	}
 	
