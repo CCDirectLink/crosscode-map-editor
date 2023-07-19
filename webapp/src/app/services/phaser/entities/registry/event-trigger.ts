@@ -1,3 +1,4 @@
+import { EventWidgetComponent } from '../../../../components/widgets/event-widget/event-widget.component';
 import { CCEntity, EntityAttributes, ScaleSettings } from '../cc-entity';
 
 export class EventTrigger extends CCEntity {
@@ -57,5 +58,9 @@ export class EventTrigger extends CCEntity {
 	
 	protected async setupType() {
 		this.generateNoImageType(0x0032ff, 0.7);
+	}
+
+	public override doubleClick(): void {
+		(this.widgets['event'] as EventWidgetComponent).open();
 	}
 }

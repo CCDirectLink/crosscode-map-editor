@@ -64,9 +64,11 @@ export class EntitiesComponent {
 			);
 			vec2Widget.def = def;
 		}
+		const widgets: Record<string, AbstractWidget> = {};
 		Object.entries(entity.getAttributes()).forEach(([key, val]) => {
-			this.generateWidget(entity, key, val, ref);
+			widgets[key] = this.generateWidget(entity, key, val, ref);
 		});
+		entity.setWidgets(widgets);
 	}
 	
 	updateFilter() {

@@ -55,6 +55,9 @@ export class EntityGenerator {
 			m.actionManager.registerAction(new ExecuteCodeAction(ActionManager.OnPickTrigger, () => {
 				this.entityManager.onClick(m);
 			}));
+			m.actionManager.registerAction(new ExecuteCodeAction(ActionManager.OnDoublePickTrigger, () => {
+				this.entityManager.onDoubleClick(m);
+			}));
 			
 			this.entityManager.registerEntity(entity, m);
 		}
