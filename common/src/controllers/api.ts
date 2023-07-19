@@ -193,30 +193,17 @@ export async function getAllMaps(dir: string) {
 		.map(p => p.replace(/\//g, '.').replace(/\\/g, '.'));
 }
 
-export async function getAllProps(dir: string) {
+export async function getAllFilesInFolder(dir: string, folder: string, extension: string) {
 	const path = await pathPromise;
-	const result = await listAllFiles(path.resolve(dir, 'data/props/'), [], 'json', path.resolve(dir));
+	const result = await listAllFiles(path.resolve(dir, folder), [], extension, path.resolve(dir));
 	
 	for (const mod of mods) {
 		const modDir = path.join(dir, 'mods', mod, 'assets');
-		await listAllFiles(path.resolve(modDir, 'data/props/'), result, 'json', path.resolve(modDir));
+		await listAllFiles(path.resolve(modDir, folder), result, extension, path.resolve(modDir));
 	}
 	
 	return result.sort()
-		.map(p => p.substring('data/props/'.length, p.length - '.json'.length));
-}
-
-export async function getAllScalableProps(dir: string) {
-	const path = await pathPromise;
-	const result = await listAllFiles(path.resolve(dir, 'data/scale-props/'), [], 'json', path.resolve(dir));
-	
-	for (const mod of mods) {
-		const modDir = path.join(dir, 'mods', mod, 'assets');
-		await listAllFiles(path.resolve(modDir, 'data/scale-props/'), result, 'json', path.resolve(modDir));
-	}
-	
-	return result.sort()
-		.map(p => p.substring('data/scale-props/'.length, p.length - '.json'.length));
+		.map(p => p.substring(folder.length, p.length - `.${extension}`.length));
 }
 
 export async function getAllMods(dir: string) {
