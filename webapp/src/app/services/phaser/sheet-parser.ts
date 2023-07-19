@@ -120,10 +120,10 @@ export interface SubJsonParam {
 }
 
 export interface BallKill {
-	fx: Fx;
+	fx: Effect;
 }
 
-export interface Fx {
+export interface Effect {
 	sheet: string;
 	name: string;
 }

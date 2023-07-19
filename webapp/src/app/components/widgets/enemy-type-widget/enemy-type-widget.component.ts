@@ -11,7 +11,9 @@ export class EnemyTypeWidgetComponent extends OverlayWidget {
 	
 	override async openInternal() {
 		const obj = this.overlayService.open(EnemyTypeWidgetOverlayComponent, {
-			positionStrategy: this.overlay.position().global(),
+			positionStrategy: this.overlay.position().global()
+				.left('330px')
+				.top('calc(64px + 6vh / 2)'),
 			hasBackdrop: false,
 			disablePhaserInput: true
 		});

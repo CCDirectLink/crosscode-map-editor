@@ -17,6 +17,8 @@ export class ImageSelectOverlayComponent implements OnChanges, OnDestroy {
 	
 	@Input() splitBaseName = ImageSelectOverlayComponent.name;
 	@Input() splitBase = 13;
+	@Input() title = '';
+	
 	
 	@Input() sheets: string[] = [];
 	@Input() sheet?: string;

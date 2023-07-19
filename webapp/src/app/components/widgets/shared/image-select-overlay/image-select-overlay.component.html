@@ -1,5 +1,5 @@
 <cc-overlay-panel
-	title=""
+	[title]="title"
 	[customSize]="{width: 'calc(100vw - 330px - 220px)'}"
 	left="330px"
 	top="calc(64px + 1vh)"
@@ -7,15 +7,17 @@
 >
 	<ng-container ngProjectAs="content">
 		<div class="flex flex-col h-full">
-			<div class="flex p-4 gap-2.5">
-				<label class="property-name">sheet:</label>
-				<app-autocompleted-textbox
-					[availableOptions]="sheets"
-					[text]="sheet ?? ''"
-					(textChange)="sheetChange.emit($event)"
-				></app-autocompleted-textbox>
-			</div>
-			<div class="divider"></div>
+			<ng-container *ngIf="sheets.length > 0">
+				<div class="flex p-4 gap-2.5">
+					<label class="property-name">sheet:</label>
+					<app-autocompleted-textbox
+						[availableOptions]="sheets"
+						[text]="sheet ?? ''"
+						(textChange)="sheetChange.emit($event)"
+					></app-autocompleted-textbox>
+				</div>
+				<div class="divider"></div>
+			</ng-container>
 			<app-split-pane
 				[bounds]="{left: 10, right: 10}"
 				[opened]="showRightProps"
@@ -35,12 +37,14 @@
 				</ng-container>
 				<ng-container ngProjectAs="right" *ngIf="showRightProps">
 					<div class="flex flex-col h-full">
-						<div *ngIf="showPreview" class="p-4">
-							<app-image-select-card
-								[card]="{ name: 'Preview', imgSrc: preview }"
-							></app-image-select-card>
-						</div>
-						<div class="divider"></div>
+						<ng-container *ngIf="showPreview">
+							<div class="p-4">
+								<app-image-select-card
+									[card]="{ name: 'Preview', imgSrc: preview }"
+								></app-image-select-card>
+							</div>
+							<div class="divider"></div>
+						</ng-container>
 						<div class="flex-auto mr-1.5 dark-scrollbar">
 							<app-image-select-list
 								*ngFor="let group of rightGroups"

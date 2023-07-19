@@ -25,8 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.get('/api/allFiles', async (_, res) => res.json(await api.getAllFiles(config.pathToCrosscode)));
 app.get('/api/allTilesets', async (_, res) => res.json(await api.getAllTilesets(config.pathToCrosscode)));
 app.get('/api/allMaps', async (_, res) => res.json(await api.getAllMaps(config.pathToCrosscode)));
-app.get('/api/allProps', async (_, res) => res.json(await api.getAllProps(config.pathToCrosscode)));
-app.get('/api/allScalableProps', async (_, res) => res.json(await api.getAllScalableProps(config.pathToCrosscode)));
+app.get('/api/allFilesInFolder', async (req, res) => res.json(await api.getAllFilesInFolder(config.pathToCrosscode, req.query['folder'] as string, req.query['extension'] as string)));
 app.get('/api/allMods', async (_, res) => res.json(await api.getAllMods(config.pathToCrosscode)));
 app.post('/api/get', async (req, res) => {
 	res.json(await api.get(config.pathToCrosscode, req.body.path));

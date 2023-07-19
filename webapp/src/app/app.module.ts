@@ -61,6 +61,7 @@ import { ImageSelectOverlayComponent } from './components/widgets/shared/image-s
 import { ImageSelectCardComponent } from './components/widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
 import { ImageSelectListComponent } from './components/widgets/shared/image-select-overlay/image-select-list/image-select-list.component';
 import { ScalablePropConfigWidgetComponent } from './components/widgets/scalable-prop-config-widget/scalable-prop-config-widget.component';
+import { EnemySingleTypeWidgetComponent } from './components/widgets/enemy-single-type-widget/enemy-single-type-widget.component';
 
 const WIDGETS = [
 	StringWidgetComponent,
@@ -77,9 +78,10 @@ const WIDGETS = [
 	PersonExpressionWidgetComponent,
 	EnemyTypeWidgetComponent,
 	PropTypeWidgetComponent,
-	ScalablePropConfigWidgetComponent,
 	LangLabelWidgetComponent,
 	AutocompletedTextboxComponent,
+	ScalablePropConfigWidgetComponent,
+	EnemySingleTypeWidgetComponent,
 ];
 
 @NgModule({

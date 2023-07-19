@@ -42,6 +42,12 @@ export class HttpClientService {
 		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
 	}
 	
+	getEnemies(): Observable<string[]> {
+		const folder = 'data/enemies/';
+		const extension = 'json';
+		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
+	}
+	
 	getMods(): Observable<string[]> {
 		return this.request('api/allMods', api.getAllMods);
 	}

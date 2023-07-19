@@ -8,6 +8,6 @@
 		<img *ngIf="card.imgSrc" [src]="card.imgSrc">
 	</div>
 	<div class="card-label">
-		<span>{{card.name}}</span>
+		<span>{{card.displayName ?? card.name}}</span>
 	</div>
 </div>

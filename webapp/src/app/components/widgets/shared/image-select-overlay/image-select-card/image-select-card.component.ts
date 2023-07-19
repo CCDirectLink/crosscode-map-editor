@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 export interface PropListCard {
 	name: string;
+	displayName?: string;
 	imgSrc?: string;
 	count?: number;
 }
