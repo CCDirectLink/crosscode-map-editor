@@ -57,8 +57,10 @@ import { ResizedDirective } from './directives/resized.directive';
 import { MaterialModule } from './external-modules/material.module';
 import { KeepHtmlPipe } from './pipes/keep-html.pipe';
 import { PropTypeWidgetComponent } from './components/widgets/prop-type-widget/prop-type-widget.component';
-import { PropTypeOverlayComponent } from './components/widgets/prop-type-widget/prop-type-overlay/prop-type-overlay.component';
-import { PropTypeOverlayCardComponent } from './components/widgets/prop-type-widget/prop-type-overlay/prop-type-overlay-card/prop-type-overlay-card.component';
+import { ImageSelectOverlayComponent } from './components/widgets/shared/image-select-overlay/image-select-overlay.component';
+import { ImageSelectCardComponent } from './components/widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
+import { ImageSelectListComponent } from './components/widgets/shared/image-select-overlay/image-select-list/image-select-list.component';
+import { ScalablePropConfigWidgetComponent } from './components/widgets/scalable-prop-config-widget/scalable-prop-config-widget.component';
 
 const WIDGETS = [
 	StringWidgetComponent,
@@ -75,6 +77,7 @@ const WIDGETS = [
 	PersonExpressionWidgetComponent,
 	EnemyTypeWidgetComponent,
 	PropTypeWidgetComponent,
+	ScalablePropConfigWidgetComponent,
 	LangLabelWidgetComponent,
 	AutocompletedTextboxComponent,
 ];
@@ -111,7 +114,7 @@ const WIDGETS = [
 		RowTextComponent,
 		EventDetailComponent,
 		EnemyTypeWidgetOverlayComponent,
-		PropTypeOverlayComponent,
+		ImageSelectOverlayComponent,
 		ResizedDirective,
 		...WIDGETS,
 	],
@@ -127,7 +130,8 @@ const WIDGETS = [
 		ScrollingModule,
 		ReactiveFormsModule,
 		OverlayModule,
-		PropTypeOverlayCardComponent,
+		ImageSelectCardComponent,
+		ImageSelectListComponent,
 	],
 	bootstrap: [AppComponent],
 })

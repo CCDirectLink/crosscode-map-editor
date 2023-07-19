@@ -5,7 +5,7 @@ import { OverlayService } from '../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
 
 @Directive()
-export abstract class OverlayWidget extends AbstractWidget implements OnInit, OnChanges, OnDestroy {
+export abstract class OverlayWidget<T = any> extends AbstractWidget<T> implements OnInit, OnChanges, OnDestroy {
 	private ref?: OverlayRefControl;
 	
 	constructor(
@@ -17,8 +17,8 @@ export abstract class OverlayWidget extends AbstractWidget implements OnInit, On
 	
 	override ngOnChanges(): void {
 		super.ngOnChanges();
-		if (!this.settings[this.key] && !this.attribute.optional) {
-			this.settings[this.key] = {};
+		if (!this.settings[this.key as keyof T] && !this.attribute.optional) {
+			this.settings[this.key as keyof T] = {} as any;
 		}
 	}
 	
@@ -26,17 +26,17 @@ export abstract class OverlayWidget extends AbstractWidget implements OnInit, On
 		this.ref?.close();
 	}
 	
-	open() {
+	async open() {
 		if (this.ref?.isOpen()) {
 			return;
 		}
-		this.ref = this.openInternal();
+		this.ref = await this.openInternal();
 	}
 	
 	/**
 	 * should use overlayService.open
 	 */
-	abstract openInternal(): OverlayRefControl;
+	abstract openInternal(): Promise<OverlayRefControl>;
 	
 	protected close() {
 		this.ref?.close();

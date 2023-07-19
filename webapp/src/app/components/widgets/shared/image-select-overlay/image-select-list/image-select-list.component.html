@@ -1,0 +1,11 @@
+<div class="overflow-auto">
+	<h2 class="headline" *ngIf="title">{{title}}</h2>
+	<div class="flex flex-row flex-wrap gap-6 p-4">
+		<app-image-select-card
+			*ngFor="let prop of items"
+			[card]="prop"
+			[selected]="selected === prop.name"
+			(onClick)="selectedChange.emit(prop.name)"
+		></app-image-select-card>
+	</div>
+</div>

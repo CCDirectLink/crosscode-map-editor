@@ -1,7 +1,8 @@
 import { Point, Point3 } from '../../../../models/cross-code-map';
 import { Helper } from '../../helper';
-import { CCEntity, EntityAttributes, Fix, ScaleSettings } from '../cc-entity';
+import { Fix } from '../cc-entity';
 import { BallKill, Effects, prepareScalableProp, ScalablePropSheet } from '../../sheet-parser';
+import { DefaultEntity } from './default-entity';
 
 export interface ScalablePropDef {
 	baseSize?: Point3;
@@ -57,7 +58,7 @@ export interface GfxEndsDir {
 	[key: string]: Patterns;
 }
 
-export interface PropConfig {
+export interface ScalablePropConfig {
 	sheet?: string;
 	name?: string;
 	ends?: {
@@ -65,60 +66,28 @@ export interface PropConfig {
 	};
 }
 
-export class ScalableProp extends CCEntity {
+export interface ScalablePropAttributes {
+	propConfig?: ScalablePropConfig;
 	
-	private attributes: EntityAttributes = {
-		propConfig: {
-			type: 'ScalablePropConfig',
-			description: 'Type of Scalable Prop'
-		},
-		patternOffset: {
-			type: 'Vec2',
-			description: 'Start offset of the repeating pattern in pixels'
-		},
-		timeOffset: {
-			type: 'Number',
-			description: 'Time offset of the animation'
-		},
-		spawnCondition: {
-			type: 'VarCondition',
-			description: 'Condition for prop to appear',
-			bd: true
-		},
-		HL: {
-			type: 'VarName',
-			description: 'Variable to be changed when prop is touched',
-			R: true
-		},
-		blockNavMap: {
-			type: 'Boolean',
-			description: 'If true, block path map and update when destroyed'
-		},
-		hideCondition: {
-			type: 'VarCondition',
-			description: 'Condition for entity to become transparent',
-			R: true
-		}
-	};
+	// TODO: not implemented, probably easier with Phaser.GameObjects.TileSprite
+	patternOffset?: Point;
+	timeOffset?: number;
+	spawnCondition?: string;
+	touchVar?: string;
+	blockNavMap?: boolean;
+	hideCondition?: string;
+}
+
+export class ScalableProp extends DefaultEntity {
 	
-	// don't allow scaleSettings ref to be changed, allows realtime update of size vec2 widget
-	private readonly scaleSettings: ScaleSettings = {
-		scalableX: false,
-		scalableY: false,
-		baseSize: {x: 16, y: 16},
-		scalableStep: 1
-	};
+	private _onlyEnds = false;
 	
-	public getAttributes(): EntityAttributes {
-		return this.attributes;
+	set onlyEnds(val: boolean) {
+		this._onlyEnds = val;
 	}
 	
-	getScaleSettings(): ScaleSettings | undefined {
-		return this.scaleSettings;
-	}
-	
-	protected async setupType(settings: any) {
-		const propConfig = settings.propConfig as PropConfig | undefined;
+	protected override async setupType(settings: ScalablePropAttributes) {
+		const propConfig = settings.propConfig;
 		if (!propConfig) {
 			console.warn('scalable prop without prop config');
 			this.resetScaleSettings();
@@ -142,16 +111,20 @@ export class ScalableProp extends CCEntity {
 		
 		this.entitySettings = <any>{};
 		
-		this.scaleSettings.scalableX = prop.scalableX!;
-		this.scaleSettings.scalableY = prop.scalableY!;
-		this.scaleSettings.scalableStep = prop.scalableStep!;
-		this.scaleSettings.baseSize = prop.baseSize!;
+		const scaleSettings = this.getScaleSettings()!;
 		
-		if (!this.scaleSettings.scalableX) {
-			this.details.settings['size'].x = this.scaleSettings.baseSize.x;
+		scaleSettings.scalableX = prop.scalableX!;
+		scaleSettings.scalableY = prop.scalableY!;
+		scaleSettings.scalableStep = prop.scalableStep!;
+		scaleSettings.baseSize = prop.baseSize!;
+		
+		const size = this.details.settings['size'] as Point;
+		
+		if (!scaleSettings.scalableX || size.x < scaleSettings.baseSize.x) {
+			size.x = scaleSettings.baseSize.x;
 		}
-		if (!this.scaleSettings.scalableY) {
-			this.details.settings['size'].y = this.scaleSettings.baseSize.y;
+		if (!scaleSettings.scalableY || size.y < scaleSettings.baseSize.y) {
+			size.y = scaleSettings.baseSize.y;
 		}
 		
 		
@@ -165,6 +138,7 @@ export class ScalableProp extends CCEntity {
 				w: prop.patterns!.w,
 				h: prop.patterns!.h,
 				renderHeight: prop.renderHeight,
+				alpha: this._onlyEnds ? 0 : 1,
 				scalable: true,
 			};
 			this.entitySettings.sheets = {
@@ -217,6 +191,7 @@ export class ScalableProp extends CCEntity {
 					break;
 				case 'north':
 					scaleableFix.offsetHeight = pattern.h;
+					fix.offsetY = pattern.h - (pattern.zHeight ?? 0);
 					fix.ignoreBoundingboxY = true;
 					break;
 				case 'south':
@@ -227,16 +202,18 @@ export class ScalableProp extends CCEntity {
 			}
 		}
 		
-		Object.assign(this.entitySettings, this.scaleSettings);
+		Object.assign(this.entitySettings, scaleSettings);
 		this.entitySettings.collType = prop.collType!;
 		this.entitySettings.pivot = prop.pivot!;
 		this.updateSettings();
 	}
 	
 	private resetScaleSettings() {
-		this.scaleSettings.scalableX = true;
-		this.scaleSettings.scalableY = true;
-		this.scaleSettings.scalableStep = 1;
-		this.scaleSettings.baseSize = {x: 1, y: 1};
+		const scaleSettings = this.getScaleSettings()!;
+		
+		scaleSettings.scalableX = true;
+		scaleSettings.scalableY = true;
+		scaleSettings.scalableStep = 1;
+		scaleSettings.baseSize = {x: 1, y: 1};
 	}
 }

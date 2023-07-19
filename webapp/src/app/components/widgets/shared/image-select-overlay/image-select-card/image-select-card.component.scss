@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 
 .card {
+	position: relative;
 	width: 180px;
 	height: 250px;
 	background-color: mat.get-color-from-palette(mat.$gray-palette, 700);
@@ -11,6 +12,20 @@
 
 	&:hover {
 		transform: scale(1.1);
+	}
+
+	.has-more {
+		position: absolute;
+		top: 3px;
+		right: 3px;
+		border-radius: 5px;
+		display: grid;
+		background: rgba(0, 0, 0, 0.5);
+		padding: 3px 6px;
+		line-height: normal;
+		font-size: 12px;
+		font-weight: 500;
+		opacity: 0.8;
 	}
 }
 

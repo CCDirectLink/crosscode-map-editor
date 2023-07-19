@@ -6,6 +6,10 @@ $accent: map-get($theme, accent);
 
 $toolbarHeight: 54px;
 
+:host {
+	pointer-events: none;
+}
+
 .overlay-headline {
 	padding-left: 16px;
 	text-align: center;

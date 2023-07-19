@@ -9,11 +9,9 @@ import { OverlayWidget } from '../overlay-widget';
 })
 export class EnemyTypeWidgetComponent extends OverlayWidget {
 	
-	override openInternal() {
+	override async openInternal() {
 		const obj = this.overlayService.open(EnemyTypeWidgetOverlayComponent, {
-			positionStrategy: this.overlay.position().global()
-				.left('330px')
-				.top('calc(64px + 6vh / 2)'),
+			positionStrategy: this.overlay.position().global(),
 			hasBackdrop: false,
 			disablePhaserInput: true
 		});

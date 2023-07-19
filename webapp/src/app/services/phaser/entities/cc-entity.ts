@@ -252,6 +252,8 @@ export abstract class CCEntity extends BaseObject {
 							
 							img.setOrigin(0, 0);
 							
+							img.alpha = fix.alpha ?? 1;
+							
 							// level offset
 							img.y += this.levelOffset;
 							
@@ -289,7 +291,7 @@ export abstract class CCEntity extends BaseObject {
 						img.setTintFill(fix.tint);
 					}
 					
-					img.alpha = fix.alpha || 1;
+					img.alpha = fix.alpha ?? 1;
 					
 					// scale, used for single color
 					img.scaleX = fix.scaleX || 1;
@@ -305,7 +307,6 @@ export abstract class CCEntity extends BaseObject {
 					}
 					if (!fix.ignoreBoundingboxY) {
 						img.y += boundBoxOffset.y;
-						
 					}
 					
 					// origin offset x=0.5, y=1
@@ -682,7 +683,7 @@ export abstract class CCEntity extends BaseObject {
 		return CCEntity.renderBackground;
 	}
 	
-	public async generateHtmlImage(withBackground = true) {
+	public async generateHtmlImage(withBackground = true, offsetY?: number) {
 		const scale = 3;
 		const width = 16 * 6;
 		const height = 16 * 7;
@@ -704,7 +705,7 @@ export abstract class CCEntity extends BaseObject {
 			texture.draw(g);
 		}
 		const x = scale * 16 * 3 - (this.inputZone.input!.hitArea.width * scale) / 2;
-		const y = scale * 16 * 5;
+		const y = scale * (16 * 5 + (offsetY ?? 0));
 		
 		// drawing container directly is broken: https://github.com/photonstorm/phaser/issues/6546
 		for (const img of this.images) {

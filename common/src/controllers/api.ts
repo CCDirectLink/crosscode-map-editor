@@ -206,6 +206,19 @@ export async function getAllProps(dir: string) {
 		.map(p => p.substring('data/props/'.length, p.length - '.json'.length));
 }
 
+export async function getAllScalableProps(dir: string) {
+	const path = await pathPromise;
+	const result = await listAllFiles(path.resolve(dir, 'data/scale-props/'), [], 'json', path.resolve(dir));
+	
+	for (const mod of mods) {
+		const modDir = path.join(dir, 'mods', mod, 'assets');
+		await listAllFiles(path.resolve(modDir, 'data/scale-props/'), result, 'json', path.resolve(modDir));
+	}
+	
+	return result.sort()
+		.map(p => p.substring('data/scale-props/'.length, p.length - '.json'.length));
+}
+
 export async function getAllMods(dir: string) {
 	const packages = await readMods(dir);
 	return Array.from(packages.keys()).sort();

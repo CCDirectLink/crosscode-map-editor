@@ -37,7 +37,9 @@ export abstract class AbstractWidget<T = any> implements OnInit, OnChanges {
 		} else {
 			let node: any = this.settings;
 			for (let i = 0; i < key.length - 1; i++) {
-				node = node[key[i]];
+				const deepNode = node[key[i]] ?? {};
+				node[key[i]] = deepNode;
+				node = deepNode;
 			}
 			node[key[key.length - 1]] = value;
 		}

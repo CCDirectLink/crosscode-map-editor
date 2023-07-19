@@ -11,6 +11,7 @@ import { PersonExpressionWidgetComponent } from './person-expression-widget/pers
 import { StringWidgetComponent } from './string-widget/string-widget.component';
 import { Vec2WidgetComponent } from './vec2-widget/vec2-widget.component';
 import { PropTypeWidgetComponent } from './prop-type-widget/prop-type-widget.component';
+import { ScalablePropConfigWidgetComponent } from './scalable-prop-config-widget/scalable-prop-config-widget.component';
 
 @Injectable({
 	providedIn: 'root'
@@ -33,7 +34,9 @@ export class WidgetRegistryService {
 		this.register('PersonExpression', PersonExpressionWidgetComponent);
 		this.register('EnemyType', EnemyTypeWidgetComponent);
 		this.register('PropType', PropTypeWidgetComponent);
+		this.register('ScalablePropConfig', ScalablePropConfigWidgetComponent);
 		this.register('LangLabel', LangLabelWidgetComponent);
+		this.register('EntityAnim', StringWidgetComponent);
 	}
 	
 	private setDefaultWidget(widget: any) {

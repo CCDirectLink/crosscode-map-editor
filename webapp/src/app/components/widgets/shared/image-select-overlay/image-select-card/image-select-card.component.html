@@ -3,11 +3,11 @@
 	[class.selected]="selected"
 	(click)="onClick.emit($event)"
 >
-	
+	<div *ngIf="(card.count ?? 0) > 1" class="has-more">{{card.count}}</div>
 	<div class="flex-auto bg-img">
-		<img *ngIf="img" [src]="img">
+		<img *ngIf="card.imgSrc" [src]="card.imgSrc">
 	</div>
 	<div class="card-label">
-		<span>{{name}}</span>
+		<span>{{card.name}}</span>
 	</div>
 </div>

@@ -33,6 +33,10 @@ export class HttpClientService {
 	getProps(): Observable<string[]> {
 		return this.request('api/allProps', api.getAllProps);
 	}
+	
+	getScalableProps(): Observable<string[]> {
+		return this.request('api/allScalableProps', api.getAllScalableProps);
+	}
 
 	getMods(): Observable<string[]> {
 		return this.request('api/allMods', api.getAllMods);

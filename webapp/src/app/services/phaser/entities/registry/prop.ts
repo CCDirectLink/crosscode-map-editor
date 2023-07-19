@@ -1,24 +1,25 @@
 import { Point3 } from '../../../../models/cross-code-map';
 import { Helper } from '../../helper';
-import { CCEntity, EntityAttributes, Fix, ScaleSettings } from '../cc-entity';
+import { Fix } from '../cc-entity';
 import { Anims, AnimSheet, prepareProp, PropDef, PropSheet } from '../../sheet-parser';
+import { DefaultEntity } from './default-entity';
 
 export interface PropType {
-	sheet: string;
-	name: string;
+	sheet?: string;
+	name?: string;
 }
 
 export interface PropAttributes {
-	propType: PropType;
-	propAnim: string;
-	condAnims: string;
-	spawnCondition: string;
-	touchVar: string;
-	interact: string;
-	showEffect: string;
-	hideEffect: string;
-	permaEffect: string;
-	hideCondition: string;
+	propType?: PropType;
+	propAnim?: string;
+	condAnims?: string;
+	spawnCondition?: string;
+	touchVar?: string;
+	interact?: string;
+	showEffect?: string;
+	hideEffect?: string;
+	permaEffect?: string;
+	hideCondition?: string;
 }
 
 interface PropSprite {
@@ -30,68 +31,9 @@ interface PropSprite {
 	flipX?: boolean;
 }
 
-export class Prop extends CCEntity {
+export class Prop extends DefaultEntity {
 	
-	private attributes: EntityAttributes = {
-		propType: {
-			type: 'PropType',
-			description: 'Type of prop'
-		},
-		propAnim: {
-			type: 'EntityAnim',
-			description: 'Animation of prop'
-		},
-		condAnims: {
-			type: 'CondAnims',
-			description: 'Animations shown by conditions'
-		},
-		spawnCondition: {
-			type: 'VarCondition',
-			description: 'Condition for prop to appear',
-			bd: true
-		},
-		touchVar: {
-			type: 'VarName',
-			description: 'Variable to be changed when prop is touched',
-			R: true
-		},
-		interact: {
-			type: 'PropInteract',
-			description: 'Interaction for this property',
-			bd: true,
-			R: true
-		},
-		showEffect: {
-			type: 'Effect',
-			description: 'Effect to show when showing entity',
-			R: true
-		},
-		hideEffect: {
-			type: 'Effect',
-			description: 'Effect to show when hiding entity',
-			R: true
-		},
-		permaEffect: {
-			type: 'Effect',
-			description: 'Effect to be shown permanently',
-			R: true
-		},
-		hideCondition: {
-			type: 'VarCondition',
-			description: 'Condition for entity to become transparent',
-			R: true
-		}
-	};
-	
-	public getAttributes(): EntityAttributes {
-		return this.attributes;
-	}
-	
-	getScaleSettings(): ScaleSettings | undefined {
-		return undefined;
-	}
-	
-	protected async setupType(settings: PropAttributes) {
+	protected override async setupType(settings: PropAttributes) {
 		if (!settings.propType) {
 			console.warn('prop without prop type');
 			return this.generateErrorImage();

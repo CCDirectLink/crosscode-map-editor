@@ -6,9 +6,11 @@
 	[cdkDragDisabled]="!allowDrag"
 	[style.width]="customSize?.width"
 	[style.height]="customSize?.height"
+	[style.margin-left]="left"
+	[style.margin-top]="top"
 >
 	<div fxFlex="0 0 auto"
-         cdkDragHandle
+	     cdkDragHandle
 	     class="toolbar mat-elevation-z4 elevated-toolbar"
 	     fxLayout="column"
 	     fxLayoutAlign="center"
@@ -23,7 +25,12 @@
 		</div>
 	</div>
 	
-	<div fxFlex="0 0 60px" fxLayout="row" [ngClass]="{'no-buttons': actionsRef.children.length == 0}" [class.bottom-border]="showButtonDivider">
+	<div
+		fxFlex="0 0 60px"
+		fxLayout="row"
+		[ngClass]="{'no-buttons': actionsRef.children.length == 0}"
+		[class.bottom-border]="showButtonDivider"
+	>
 		<div class="buttons" fxFlexAlign="center" fxLayoutAlign="end" fxFlex #actionsRef>
 			<ng-content select="actions"></ng-content>
 		</div>

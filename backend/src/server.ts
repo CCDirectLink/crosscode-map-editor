@@ -26,6 +26,7 @@ app.get('/api/allFiles', async (_, res) => res.json(await api.getAllFiles(config
 app.get('/api/allTilesets', async (_, res) => res.json(await api.getAllTilesets(config.pathToCrosscode)));
 app.get('/api/allMaps', async (_, res) => res.json(await api.getAllMaps(config.pathToCrosscode)));
 app.get('/api/allProps', async (_, res) => res.json(await api.getAllProps(config.pathToCrosscode)));
+app.get('/api/allScalableProps', async (_, res) => res.json(await api.getAllScalableProps(config.pathToCrosscode)));
 app.get('/api/allMods', async (_, res) => res.json(await api.getAllMods(config.pathToCrosscode)));
 app.post('/api/get', async (req, res) => {
 	res.json(await api.get(config.pathToCrosscode, req.body.path));
