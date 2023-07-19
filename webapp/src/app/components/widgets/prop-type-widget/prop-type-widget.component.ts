@@ -112,7 +112,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 		sheet = prepareSheet(sheet);
 		
 		const entityClass = Globals.entityRegistry.getEntity('Prop');
-		const propEntity = new entityClass(Globals.scene, Globals.map, 0, 0, 'Prop') as unknown as Prop;
+		const propEntity = new entityClass(Globals.scene, Globals.map, -999999, 0, 'Prop') as unknown as Prop;
 		
 		const props = sheet.props.filter(v => v.name) as (PropDef & { name: string })[];
 		props.sort((a, b) => a.name!.localeCompare(b.name!));

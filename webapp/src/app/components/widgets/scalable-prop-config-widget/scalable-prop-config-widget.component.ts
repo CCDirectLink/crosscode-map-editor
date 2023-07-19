@@ -37,7 +37,7 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 	override ngOnInit() {
 		super.ngOnInit();
 		const entityClass = Globals.entityRegistry.getEntity('ScalableProp');
-		this.imgEntity = new entityClass(Globals.scene, Globals.map, 0, 0, 'ScalableProp') as unknown as ScalableProp;
+		this.imgEntity = new entityClass(Globals.scene, Globals.map, -999999, 0, 'ScalableProp') as unknown as ScalableProp;
 	}
 	
 	override ngOnDestroy() {

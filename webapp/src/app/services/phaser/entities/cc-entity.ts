@@ -718,8 +718,8 @@ export abstract class CCEntity extends BaseObject {
 			);
 			texture.draw(
 				img,
-				x + (img.x + this.container.x) * scale,
-				y + (img.y + this.container.y) * scale
+				x + img.x * scale,
+				y + img.y * scale
 			);
 			
 			img.setScale(sx, sy);

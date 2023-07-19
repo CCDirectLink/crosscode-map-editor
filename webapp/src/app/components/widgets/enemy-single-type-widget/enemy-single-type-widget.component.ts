@@ -99,7 +99,7 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget<EnemyInfo> {
 		this.rightGroup.props = [];
 		
 		const entityClass = Globals.entityRegistry.getEntity('Enemy');
-		const enemyEntity = new entityClass(Globals.scene, Globals.map, 0, 0, 'Prop') as unknown as Enemy;
+		const enemyEntity = new entityClass(Globals.scene, Globals.map, -999999, 0, 'Enemy') as unknown as Enemy;
 		
 		const enemies = (await lastValueFrom(this.http.getEnemies())).map(v => v.replaceAll('/', '.'));
 		
