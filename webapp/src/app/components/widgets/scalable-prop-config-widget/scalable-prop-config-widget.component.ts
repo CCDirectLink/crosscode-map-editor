@@ -5,7 +5,7 @@ import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
 import { lastValueFrom } from 'rxjs';
 import { Helper } from '../../../services/phaser/helper';
-import { Anims, prepareSheet, ScalablePropSheet } from '../../../services/phaser/sheet-parser';
+import { prepareSheet, ScalablePropSheet } from '../../../services/phaser/sheet-parser';
 import { Globals } from '../../../services/globals';
 import { OverlayWidget } from '../overlay-widget';
 import { EntryGfxEnds, GfxEndsDir, ScalableProp, ScalablePropAttributes, ScalablePropConfig, ScalablePropDef } from '../../../services/phaser/entities/registry/scalable-prop';
@@ -121,7 +121,7 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 		
 		entries.sort((a, b) => a.name.localeCompare(b.name));
 		for (const prop of entries) {
-			const imgSrc = await this.generateImage(this.imgEntity, prop, prop.name);
+			const imgSrc = await this.generateImg(this.imgEntity, prop, prop.name);
 			
 			this.comp.leftProps.push({
 				name: prop.name,
@@ -149,7 +149,7 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 			for (const patternName of Object.keys(value)) {
 				props.push({
 					name: patternName,
-					imgSrc: await this.generateImage(this.imgEntity, def, name, {[key]: patternName})
+					imgSrc: await this.generateImg(this.imgEntity, def, name, {[key]: patternName})
 				});
 			}
 			
@@ -209,14 +209,13 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 			}
 		}
 		
-		this.comp.preview = await this.generateImage(this.imgEntity, def, propConfig.name, propConfig.ends, true, size);
+		this.comp.preview = await this.generateImg(this.imgEntity, def, propConfig.name, propConfig.ends, true, size);
 	}
 	
-	private async generateImage(entity: ScalableProp, def: ScalablePropDef, name?: string, ends?: ScalablePropConfig['ends'], renderAll = false, size?: Point): Promise<string> {
-		const sheetPath = this.settings.propConfig?.sheet;
+	private async generateImg(entity: ScalableProp, def: ScalablePropDef, name?: string, ends?: ScalablePropConfig['ends'], renderAll = false, size?: Point): Promise<string> {
 		const settings: Partial<ScalablePropAttributes & { size: Point }> = {
 			propConfig: {
-				sheet: sheetPath,
+				sheet: this.settings.propConfig?.sheet,
 				name: name,
 				ends: ends
 			},
@@ -226,13 +225,10 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 			}
 		};
 		entity.onlyEnds = !renderAll && !!ends;
-		await entity.setSettings(settings);
 		let offsetY = 0;
 		if (def.scalableY && renderAll) {
 			offsetY = -32;
 		}
-		const img = await entity.generateHtmlImage(true, offsetY);
-		
-		return img.src;
+		return this.generateImage(settings, entity, offsetY);
 	}
 }

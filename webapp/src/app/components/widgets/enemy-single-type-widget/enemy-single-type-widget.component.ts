@@ -107,7 +107,7 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget<EnemyInfo> {
 			const prop: typeof this.props[0] = {
 				prefix: enemy.split('.')[0],
 				full: enemy,
-				img: await this.generateImage(enemy, enemyEntity)
+				img: await this.generateImage<EnemyAttributes>({enemyInfo: {type: enemy}}, enemyEntity)
 			};
 			this.props.push(prop);
 			
@@ -124,22 +124,5 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget<EnemyInfo> {
 		}
 		
 		enemyEntity.destroy();
-	}
-	
-	private async generateImage(type: string, enemyEntity: Enemy): Promise<string> {
-		const settings: Partial<EnemyAttributes> = {
-			enemyInfo: {
-				type: type
-			}
-		};
-		try {
-			await enemyEntity.setSettings(settings);
-			const img = await enemyEntity.generateHtmlImage();
-			return img.src;
-		} catch (e) {
-			await enemyEntity.setSettings({});
-			const img = await enemyEntity.generateHtmlImage();
-			return img.src;
-		}
 	}
 }

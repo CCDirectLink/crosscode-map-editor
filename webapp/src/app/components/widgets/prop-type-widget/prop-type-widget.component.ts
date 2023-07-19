@@ -128,7 +128,13 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 				this.comp.showRightProps = true;
 			}
 			for (const name of names) {
-				const imgSrc = await this.generateImage(prop.name, name, propEntity);
+				const imgSrc = await this.generateImage({
+					propType: {
+						sheet: sheetPath,
+						name: prop.name
+					},
+					propAnim: name
+				}, propEntity);
 				this.props.push({
 					name: prop.name,
 					propAnim: name,
@@ -144,22 +150,6 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 		}
 		
 		propEntity.destroy();
-	}
-	
-	private async generateImage(propType: string, propAnim: string, propEntity: Prop): Promise<string> {
-		const sheetPath = this.settings.propType?.sheet;
-		
-		const settings: Partial<PropAttributes> = {
-			propType: {
-				sheet: sheetPath,
-				name: propType
-			},
-			propAnim: propAnim
-		};
-		await propEntity.setSettings(settings);
-		const img = await propEntity.generateHtmlImage();
-		
-		return img.src;
 	}
 	
 	private updatePropAnims() {
