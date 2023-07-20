@@ -23,6 +23,8 @@ export class TileDrawer extends BaseObject {
 	private rightClickStart?: Point;
 	private rightClickEnd?: Point;
 	private renderLayersTransparent = false;
+	private rightPointerDown = false;
+	
 	
 	private container!: Phaser.GameObjects.Container;
 	
@@ -218,11 +220,12 @@ export class TileDrawer extends BaseObject {
 		this.addKeybinding({event: 'pointerdown', fun: pointerDown, emitter: this.scene.input});
 		
 		const pointerUp = (pointer: Phaser.Input.Pointer) => {
-			if (pointer.rightButtonReleased()) {
+			if (pointer.rightButtonReleased() && this.rightPointerDown) {
 				this.onMouseRightUp();
 			}
 		};
 		this.addKeybinding({event: 'pointerup', fun: pointerUp, emitter: this.scene.input});
+		this.addKeybinding({event: 'pointerupoutside', fun: pointerUp, emitter: this.scene.input});
 		
 		
 		const fill = () => {
@@ -286,6 +289,7 @@ export class TileDrawer extends BaseObject {
 	}
 	
 	private onMouseRightDown() {
+		this.rightPointerDown = true;
 		if (!this.layer) {
 			return;
 		}
@@ -315,6 +319,7 @@ export class TileDrawer extends BaseObject {
 	}
 	
 	private onMouseRightUp() {
+		this.rightPointerDown = false;
 		if (!this.layer) {
 			return;
 		}

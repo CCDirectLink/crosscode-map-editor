@@ -63,6 +63,7 @@ export class TileSelectorScene extends Phaser.Scene {
 			}
 		};
 		this.keyBindings.push({event: 'pointerup', fun: pointerUp});
+		this.keyBindings.push({event: 'pointerupoutside', fun: pointerUp});
 		
 		this.keyBindings.forEach(binding => {
 			this.input.addListener(binding.event, binding.fun);

@@ -25,6 +25,7 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 		) => this.onMouseWheel(deltaY));
 		scene.input.on('pointerdown', () => this.onMouseDown());
 		scene.input.on('pointerup', () => this.onMouseUp());
+		scene.input.on('pointerupoutside', () => this.onMouseUp());
 	}
 	
 	private onMouseDown() {

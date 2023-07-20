@@ -20,6 +20,8 @@ export class EntityManager extends BaseObject {
 	private deleteKey!: Phaser.Input.Keyboard.Key;
 	private gridKey!: Phaser.Input.Keyboard.Key;
 	private visibilityKey!: Phaser.Input.Keyboard.Key;
+	private leftPointerDown = false;
+	private rightPointerDown = false;
 	
 	private skipEdit = false;
 	
@@ -123,9 +125,13 @@ export class EntityManager extends BaseObject {
 		this.addKeybinding({
 			event: 'pointerdown',
 			fun: (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
+				if (pointer.rightButtonDown()) {
+					this.rightPointerDown = true;
+				}
 				if (!pointer.leftButtonDown()) {
 					return;
 				}
+				this.leftPointerDown = true;
 				
 				this.leftClickOpts.timer = 0;
 				this.leftClickOpts.pos.x = pointer.worldX;
@@ -162,49 +168,58 @@ export class EntityManager extends BaseObject {
 			emitter: this.scene.input
 		});
 		
-		this.addKeybinding({
-			event: 'pointerup',
-			fun: (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
-				if (pointer.rightButtonReleased()) {
-					this.selectEntity();
-					this.showAddEntityMenu();
-				} else if (pointer.leftButtonReleased()) {
+		const pointerUpFun = (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
+			if (pointer.rightButtonReleased() && this.rightPointerDown) {
+				this.rightPointerDown = false;
+				this.selectEntity();
+				this.showAddEntityMenu();
+			} else if (pointer.leftButtonReleased() && this.leftPointerDown) {
+				this.leftPointerDown = false;
+				this.selectedEntities.forEach(entity => {
+					entity.isDragged = false;
+				});
+				
+				// if panning do not deselect entities
+				if (Globals.panning) {
+					return;
+				}
+				
+				if (this.gameObjectDown) {
+					this.gameObjectDown = false;
+				} else {
+					const entities = this.selectionBox.onInputUp();
 					
-					this.selectedEntities.forEach(entity => {
-						entity.isDragged = false;
+					if (!this.multiSelectKey.isDown) {
+						this.selectEntity();
+					}
+					entities.forEach(entity => {
+						this.selectEntity(entity, true);
 					});
-					
-					// if panning do not deselect entities
-					if (Globals.panning) {
-						return;
-					}
-					
-					if (this.gameObjectDown) {
-						this.gameObjectDown = false;
-					} else {
-						const entities = this.selectionBox.onInputUp();
-						
-						if (!this.multiSelectKey.isDown) {
-							this.selectEntity();
-						}
-						entities.forEach(entity => {
-							this.selectEntity(entity, true);
-						});
-					}
-					
-					let entity;
-					if (gameObject.length > 0) {
-						entity = gameObject[0].getData('entity');
-					}
-					if (entity) {
-						console.log(entity);
-						const p = {x: pointer.worldX, y: pointer.worldY};
-						if (this.leftClickOpts.timer < 200 && Vec2.distance2(p, this.leftClickOpts.pos) < 10) {
-							this.selectEntity(entity, this.multiSelectKey.isDown);
-						}
+				}
+				
+				let entity;
+				if (gameObject.length > 0) {
+					entity = gameObject[0].getData('entity');
+				}
+				if (entity) {
+					console.log(entity);
+					const p = {x: pointer.worldX, y: pointer.worldY};
+					if (this.leftClickOpts.timer < 200 && Vec2.distance2(p, this.leftClickOpts.pos) < 10) {
+						this.selectEntity(entity, this.multiSelectKey.isDown);
 					}
 				}
-			},
+			}
+		};
+		
+		this.addKeybinding({
+			event: 'pointerup',
+			fun: pointerUpFun,
+			emitter: this.scene.input
+		});
+		
+		this.addKeybinding({
+			event: 'pointerupoutside',
+			fun: pointerUpFun,
 			emitter: this.scene.input
 		});
 		
