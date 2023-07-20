@@ -28,7 +28,6 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 	}[] = [];
 	
 	private rightGroup: PropListGroup = {
-		title: 'Prop Anim',
 		props: []
 	};
 	
@@ -56,7 +55,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 		this.comp.leftProp = this.settings.propType?.name;
 		this.rightGroup.selected = this.settings.propAnim;
 		
-		this.comp.leftTitle = 'Prop Type';
+		this.comp.title = 'Prop Type';
 		
 		this.comp.rightGroups = [this.rightGroup];
 		

@@ -110,7 +110,6 @@ const WIDGETS = [
 		JsonEditorComponent,
 		FloatingWindowComponent,
 		KeepHtmlPipe,
-		HighlightDirective,
 		ListSearchOverlayComponent,
 		EventWindowComponent,
 		RowTextComponent,
@@ -134,7 +133,9 @@ const WIDGETS = [
 		OverlayModule,
 		ImageSelectCardComponent,
 		ImageSelectListComponent,
+		HighlightDirective
 	],
 	bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+}

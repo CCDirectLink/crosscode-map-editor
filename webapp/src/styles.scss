@@ -150,5 +150,22 @@ button {
 	color: #69bdfc;
 }
 
+.no-padding-form-field {
+	.mat-mdc-form-field-subscript-wrapper {
+		display: none;
+	}
+}
+
+.autoscale-form-field {
+	min-width: 0;
+	flex: 1;
+	width: 100%;
+
+
+	.mat-mdc-form-field-infix {
+		width: 0;
+	}
+}
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

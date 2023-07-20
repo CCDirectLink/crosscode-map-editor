@@ -8,6 +8,10 @@
 		<img *ngIf="card.imgSrc" [src]="card.imgSrc">
 	</div>
 	<div class="card-label">
-		<span>{{card.displayName ?? card.name}}</span>
+		<span
+			appHighlight
+			[highlightText]="card.displayName ?? card.name"
+			[highlightMatch]="filter"
+		></span>
 	</div>
 </div>

@@ -56,7 +56,7 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 		
 		this.comp.splitBaseName = ScalablePropConfigWidgetComponent.name;
 		this.comp.sheet = this.settings.propConfig?.sheet;
-		this.comp.leftTitle = 'Scalable Prop';
+		this.comp.title = 'Prop Config';
 		this.comp.leftProp = this.settings.propConfig?.name;
 		this.comp.showPreview = true;
 		
