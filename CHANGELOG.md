@@ -17,6 +17,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Improved `ScalableProp` rendering. `ends` are now rendering correctly.
 - Releasing mouse button outside the canvas now properly triggers. Avoids having issues like continue dragging entities even if the mouse button was released
 
+
+## [0.18.0] 2023-07-19
+### Added
+- Made Event `SHOW_SIDE_MSG` prettier. [image](https://github.com/CCDirectLink/crosscode-map-editor/assets/9483499/7aa7dce2-f678-4b93-a026-fbbc5873ebd0)
+- Double clicking an event now opens the event editor
+- Double clicking an npc now opens the npc state editor
+
 ## [0.17.4] 2023-06-10
 
 ### Fixed
