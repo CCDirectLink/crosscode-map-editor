@@ -12,6 +12,7 @@ import { StringWidgetComponent } from './string-widget/string-widget.component';
 import { Vec2WidgetComponent } from './vec2-widget/vec2-widget.component';
 import { PropTypeWidgetComponent } from './prop-type-widget/prop-type-widget.component';
 import { ScalablePropConfigWidgetComponent } from './scalable-prop-config-widget/scalable-prop-config-widget.component';
+import { CustomDesTypeWidgetComponent } from './custom-des-type-widget/custom-des-type-widget.component';
 
 @Injectable({
 	providedIn: 'root'
@@ -37,6 +38,7 @@ export class WidgetRegistryService {
 		this.register('ScalablePropConfig', ScalablePropConfigWidgetComponent);
 		this.register('LangLabel', LangLabelWidgetComponent);
 		this.register('EntityAnim', StringWidgetComponent);
+		this.register('CustomDesType', CustomDesTypeWidgetComponent);
 	}
 	
 	private setDefaultWidget(widget: any) {

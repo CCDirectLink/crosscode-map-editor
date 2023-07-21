@@ -62,6 +62,8 @@ import { ImageSelectCardComponent } from './components/widgets/shared/image-sele
 import { ImageSelectListComponent } from './components/widgets/shared/image-select-overlay/image-select-list/image-select-list.component';
 import { ScalablePropConfigWidgetComponent } from './components/widgets/scalable-prop-config-widget/scalable-prop-config-widget.component';
 import { EnemySingleTypeWidgetComponent } from './components/widgets/enemy-single-type-widget/enemy-single-type-widget.component';
+import { CustomDesTypeWidgetComponent } from './components/widgets/custom-des-type-widget/custom-des-type-widget.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
 
 const WIDGETS = [
 	StringWidgetComponent,
@@ -82,6 +84,7 @@ const WIDGETS = [
 	AutocompletedTextboxComponent,
 	ScalablePropConfigWidgetComponent,
 	EnemySingleTypeWidgetComponent,
+	CustomDesTypeWidgetComponent
 ];
 
 @NgModule({
@@ -133,7 +136,8 @@ const WIDGETS = [
 		OverlayModule,
 		ImageSelectCardComponent,
 		ImageSelectListComponent,
-		HighlightDirective
+		HighlightDirective,
+		AutofocusDirective,
 	],
 	bootstrap: [AppComponent],
 })

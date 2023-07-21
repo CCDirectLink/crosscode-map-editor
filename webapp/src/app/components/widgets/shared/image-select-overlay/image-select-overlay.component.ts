@@ -18,7 +18,7 @@ export class ImageSelectOverlayComponent implements OnChanges, OnDestroy {
 	@Input() splitBaseName = ImageSelectOverlayComponent.name;
 	@Input() splitBase = 13;
 	@Input() title = '';
-	
+	@Input() showGlobalCheckbox = false;
 	
 	@Input() sheets: string[] = [];
 	@Input() sheet?: string;
@@ -34,6 +34,9 @@ export class ImageSelectOverlayComponent implements OnChanges, OnDestroy {
 	
 	@Input() showPreview = false;
 	@Input() preview?: string;
+	
+	@Input() global = false;
+	@Output() globalChange = new EventEmitter<boolean>();
 	
 	@Output() exit = new EventEmitter<void>();
 	

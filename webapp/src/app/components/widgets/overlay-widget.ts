@@ -17,13 +17,6 @@ export abstract class OverlayWidget<T = any> extends AbstractWidget<T> implement
 		super();
 	}
 	
-	override ngOnChanges(): void {
-		super.ngOnChanges();
-		if (!this.settings[this.key as keyof T] && !this.attribute.optional) {
-			this.settings[this.key as keyof T] = {} as any;
-		}
-	}
-	
 	ngOnDestroy() {
 		this.ref?.close();
 	}

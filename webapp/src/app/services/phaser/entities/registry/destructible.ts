@@ -146,7 +146,7 @@ interface DestructibleType {
 	};
 }
 
-interface SheetReference {
+export interface SheetReference {
 	sheet: string;
 	name: string;
 }
