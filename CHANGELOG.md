@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+### Added
+- New graphical selection widget for some entities: `Prop`, `ScalableProp`, `Enemy`, `ItemDestruct`
+
+### Changed
+- Updated Phaser to 3.60.0
+- Entity copy/paste now uses the clipboard to make it easier working with multiple editor instances [#267](https://github.com/CCDirectLink/crosscode-map-editor/issues/267)
+
+### Fixed
+- All `Prop` Entities should now be rendered correctly
+- Improved `ScalableProp` rendering. `ends` are now rendering correctly.
+- Releasing mouse button outside the canvas now properly triggers. Avoids having issues like continue dragging entities even if the mouse button was released
+
 ## [0.17.4] 2023-06-10
 
 ### Fixed
