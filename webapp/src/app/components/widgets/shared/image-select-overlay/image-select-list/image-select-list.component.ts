@@ -6,11 +6,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { ListFilterPipe } from './list-filter.pipe';
+import { AutofocusDirective } from '../../../../../directives/autofocus.directive';
 
 @Component({
 	selector: 'app-image-select-list',
 	standalone: true,
-	imports: [CommonModule, ImageSelectCardComponent, MatInputModule, MatIconModule, FormsModule, MatButtonModule, ListFilterPipe],
+	imports: [CommonModule, ImageSelectCardComponent, MatInputModule, MatIconModule, FormsModule, MatButtonModule, ListFilterPipe, AutofocusDirective],
 	templateUrl: './image-select-list.component.html',
 	styleUrls: ['./image-select-list.component.scss'],
 })
