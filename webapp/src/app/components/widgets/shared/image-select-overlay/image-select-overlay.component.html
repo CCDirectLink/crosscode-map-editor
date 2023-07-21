@@ -37,11 +37,11 @@
 							use GLOBAL
 						</mat-checkbox>
 						<app-image-select-list
-							[title]="leftTitle"
-							[items]="leftProps"
+							[title]="leftGroup.title"
+							[items]="leftGroup.props"
 							[showFilter]="true"
-							[selected]="leftProp"
-							(selectedChange)="leftPropChange.emit(leftProp === $event ? '' : $event)"
+							[selected]="leftGroup.selected"
+							(selectedChange)="leftGroup.click?.(leftGroup.selected === $event ? '' : $event)"
 						></app-image-select-list>
 					</div>
 				</ng-container>

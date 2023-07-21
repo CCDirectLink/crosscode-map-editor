@@ -44,10 +44,10 @@ export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttr
 			this.close();
 		});
 		
-		this.comp.leftPropChange.subscribe(prop => this.setPropType(prop));
+		this.comp.leftGroup.click = prop => this.setPropType(prop);
 		this.comp.globalChange.subscribe(_ => {
 			this.updateProps();
-			this.setPropType(this.comp.leftProp);
+			this.setPropType(this.comp.leftGroup.selected);
 		});
 		
 		this.comp.global = !!this.settings.__GLOBAL__;
@@ -58,7 +58,7 @@ export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttr
 	}
 	
 	private setPropType(prop?: string) {
-		this.comp.leftProp = prop;
+		this.comp.leftGroup.selected = prop;
 		const key = this.getKey(this.comp.global);
 		if (this.settings[key] === prop) {
 			return;
@@ -72,7 +72,7 @@ export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttr
 	}
 	
 	private async updateProps() {
-		this.comp.leftProps = [];
+		this.comp.leftGroup.props = [];
 		
 		const entityClass = Globals.entityRegistry.getEntity('ItemDestruct');
 		const enemyEntity = new entityClass(Globals.scene, Globals.map, -999999, 0, 'ItemDestruct') as unknown as ItemDestruct;
@@ -93,7 +93,7 @@ export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttr
 		}
 		
 		for (const destructible of destructibles) {
-			this.comp.leftProps.push({
+			this.comp.leftGroup.props.push({
 				name: destructible.name,
 				imgSrc: await this.generateImage<ItemDestructAttributes>({desType: destructible.desType}, enemyEntity)
 			});

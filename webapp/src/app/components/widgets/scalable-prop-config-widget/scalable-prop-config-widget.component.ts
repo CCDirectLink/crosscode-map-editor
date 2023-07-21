@@ -57,7 +57,7 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 		this.comp.splitBaseName = ScalablePropConfigWidgetComponent.name;
 		this.comp.sheet = this.settings.propConfig?.sheet;
 		this.comp.title = 'Prop Config';
-		this.comp.leftProp = this.settings.propConfig?.name;
+		this.comp.leftGroup.selected = this.settings.propConfig?.name;
 		this.comp.showPreview = true;
 		
 		
@@ -66,7 +66,7 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 		});
 		
 		this.comp.sheetChange.subscribe(sheet => this.setSheet(sheet));
-		this.comp.leftPropChange.subscribe(prop => this.setPropName(prop));
+		this.comp.leftGroup.click = prop => this.setPropName(prop);
 		
 		this.comp.sheets = await lastValueFrom(this.http.getScalableProps());
 		await this.updateProps();
@@ -87,7 +87,7 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 	}
 	
 	private async setPropName(prop: string) {
-		this.comp.leftProp = prop;
+		this.comp.leftGroup.selected = prop;
 		if (this.settings.propConfig?.name === prop) {
 			return;
 		}
@@ -97,7 +97,7 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 	}
 	
 	private async updateProps() {
-		this.comp.leftProps = [];
+		this.comp.leftGroup.props = [];
 		const sheetPath = this.settings.propConfig?.sheet ?? '';
 		if (!this.comp.sheets.includes(sheetPath)) {
 			return;
@@ -123,7 +123,7 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 		for (const prop of entries) {
 			const imgSrc = await this.generateImg(this.imgEntity, prop, prop.name);
 			
-			this.comp.leftProps.push({
+			this.comp.leftGroup.props.push({
 				name: prop.name,
 				imgSrc: imgSrc,
 			});

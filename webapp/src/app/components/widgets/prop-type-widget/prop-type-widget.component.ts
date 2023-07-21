@@ -52,7 +52,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 		
 		this.comp.splitBaseName = PropTypeWidgetComponent.name;
 		this.comp.sheet = this.settings.propType?.sheet;
-		this.comp.leftProp = this.settings.propType?.name;
+		this.comp.leftGroup.selected = this.settings.propType?.name;
 		this.rightGroup.selected = this.settings.propAnim;
 		
 		this.comp.title = 'Prop Type';
@@ -64,7 +64,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 		});
 		
 		this.comp.sheetChange.subscribe(sheet => this.setSheet(sheet));
-		this.comp.leftPropChange.subscribe(prop => this.setPropType(prop));
+		this.comp.leftGroup.click = prop => this.setPropType(prop);
 		this.rightGroup.click = prop => this.setPropAnim(prop);
 		
 		this.comp.sheets = await lastValueFrom(this.http.getProps());
@@ -85,7 +85,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 	}
 	
 	private setPropType(prop: string) {
-		this.comp.leftProp = prop;
+		this.comp.leftGroup.selected = prop;
 		if (this.settings.propType?.name === prop) {
 			return;
 		}
@@ -100,7 +100,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 	
 	private async updateProps() {
 		this.props = [];
-		this.comp.leftProps = [];
+		this.comp.leftGroup.props = [];
 		this.rightGroup.props = [];
 		const sheetPath = this.settings.propType?.sheet ?? '';
 		if (!this.comp.sheets.includes(sheetPath)) {
@@ -141,7 +141,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 				});
 				firstImg = firstImg || imgSrc;
 			}
-			this.comp.leftProps.push({
+			this.comp.leftGroup.props.push({
 				name: prop.name,
 				imgSrc: firstImg,
 				count: names.length

@@ -55,13 +55,13 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget<EnemyInfo> {
 			this.close();
 		});
 		
-		this.comp.leftPropChange.subscribe(prop => {
+		this.comp.leftGroup.click = prop => {
 			const prefix = this.settings.type?.split('.')?.[0];
 			if (prop === prefix) {
 				return;
 			}
 			this.setPropType(this.props.find(v => v.prefix === prop)?.full ?? '', true);
-		});
+		};
 		this.rightGroup.click = prop => this.setPropType(prop);
 		
 		this.setPropType(this.settings.type ?? '');
@@ -73,7 +73,7 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget<EnemyInfo> {
 	
 	private setPropType(prop: string, updateRightSide = false) {
 		const first = prop.split('.')?.[0];
-		this.comp.leftProp = first;
+		this.comp.leftGroup.selected = first;
 		this.rightGroup.selected = prop;
 		if (this.settings.type === prop) {
 			return;
@@ -95,7 +95,7 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget<EnemyInfo> {
 	
 	private async updateProps() {
 		this.props = [];
-		this.comp.leftProps = [];
+		this.comp.leftGroup.props = [];
 		this.rightGroup.props = [];
 		
 		const entityClass = Globals.entityRegistry.getEntity('Enemy');
@@ -111,14 +111,14 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget<EnemyInfo> {
 			};
 			this.props.push(prop);
 			
-			let el = this.comp.leftProps.find(v => v.name === prop.prefix);
+			let el = this.comp.leftGroup.props.find(v => v.name === prop.prefix);
 			if (!el) {
 				el = {
 					name: prop.prefix,
 					imgSrc: prop.img,
 					count: 0
 				};
-				this.comp.leftProps.push(el);
+				this.comp.leftGroup.props.push(el);
 			}
 			el.count = (el.count ?? 0) + 1;
 		}

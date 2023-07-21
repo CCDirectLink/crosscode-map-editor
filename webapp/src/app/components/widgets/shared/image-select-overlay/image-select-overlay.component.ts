@@ -24,10 +24,7 @@ export class ImageSelectOverlayComponent implements OnChanges, OnDestroy {
 	@Input() sheet?: string;
 	@Output() sheetChange = new EventEmitter<string>();
 	
-	@Input() leftTitle?: string;
-	@Input() leftProps: PropListCard[] = [];
-	@Input() leftProp?: string;
-	@Output() leftPropChange = new EventEmitter<string>();
+	@Input() leftGroup: PropListGroup = {props: []};
 	
 	@Input() showRightProps = true;
 	@Input() rightGroups: PropListGroup[] = [];
