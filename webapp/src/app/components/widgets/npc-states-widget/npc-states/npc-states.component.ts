@@ -10,7 +10,7 @@ import { NPCState } from '../npc-states-widget.component';
 	templateUrl: './npc-states.component.html',
 	styleUrls: ['./npc-states.component.scss', '../../widget.scss'],
 })
-export class NpcStatesComponent implements OnInit {	
+export class NpcStatesComponent implements OnInit {
 	@ViewChild('eventEditor', {static: false}) eventEditor?: EventEditorComponent;
 	
 	@Input() states: NPCState[] = [];
@@ -73,7 +73,7 @@ export class NpcStatesComponent implements OnInit {
 				lvl: 0,
 				active: false
 			},
-			face: '',
+			face: 'NORTH',
 			action: [],
 			hidden: false,
 			condition: '',

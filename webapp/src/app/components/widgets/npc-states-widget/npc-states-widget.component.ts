@@ -6,11 +6,12 @@ import { OverlayRefControl } from '../../dialogs/overlay/overlay-ref-control';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { AbstractWidget } from '../abstract-widget';
 import { NpcStatesComponent } from './npc-states/npc-states.component';
+import { FACE8 } from '../../../services/phaser/entities/registry/npc';
 
 export interface NPCState {
 	reactType: string;
 	pageName?: string;
-	face: string;
+	face: keyof typeof FACE8;
 	action: any;
 	hidden: boolean;
 	position?: {

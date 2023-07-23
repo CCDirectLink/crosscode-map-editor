@@ -205,7 +205,7 @@ export class Prop extends DefaultEntity {
 			offset: offset,
 			tileOffset: settings.tileOffset ?? 0,
 			renderMode: settings.renderMode,
-			flipX: settings.flipX
+			flipX: Array.isArray(settings.flipX) ? !!settings.flipX[frame] : settings.flipX
 		});
 		return firstName;
 	}

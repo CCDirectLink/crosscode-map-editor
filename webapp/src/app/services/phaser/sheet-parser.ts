@@ -2,6 +2,7 @@ import { Helper } from './helper';
 import { Point, Point3 } from '../../models/cross-code-map';
 import { Fix } from './entities/cc-entity';
 import { ScalablePropDef } from './entities/registry/scalable-prop';
+import { CharacterSettings } from './entities/registry/npc';
 
 export interface ScalablePropSheet {
 	DOCTYPE: string;
@@ -69,7 +70,7 @@ export interface Entry {
 	wallY?: number;
 }
 
-export interface Anims {
+export interface Anims extends IfThen {
 	name?: string;
 	frames?: number[];
 	time?: number;
@@ -78,7 +79,7 @@ export interface Anims {
 	renderMode?: string;
 	shapeType?: string;
 	framesAlpha?: number[];
-	flipX?: boolean;
+	flipX?: boolean | number[];
 	SUB?: Anims[] | SubJsonInstance | SubJsonParam;
 	tileOffset?: number;
 	wallY?: number;
@@ -94,9 +95,16 @@ export interface Anims {
 	framesSpriteOffset?: number[];
 	globalTiming?: boolean;
 	
-	// ???? string just to not throw compiler errors, I don't know the type
+	// used in NPC
+	DOCTYPE?: string;
+	dirs?: number | string;
+	tileOffsets?: number[];
+	guiSprites?: boolean;
+}
+
+export interface IfThen {
 	jsonIF?: string;
-	jsonTHEN?: unknown;
+	jsonTHEN?: string;
 }
 
 export interface AnimSheet {
@@ -139,7 +147,7 @@ export function isJsonParam(obj: any): obj is SubJsonParam {
 	return obj && obj[key];
 }
 
-export function prepareSheet<T extends PropSheet | ScalablePropSheet>(sheetDef: T): T {
+export function prepareSheet<T extends PropSheet | ScalablePropSheet | CharacterSettings>(sheetDef: T): T {
 	const sheet = Helper.copy(sheetDef);
 	return recSearchTemplateInstance(sheet, sheet.jsonTEMPLATES, {});
 }
@@ -222,8 +230,8 @@ function recResolveTemplateInstance(
 		if (Array.isArray(template)) {
 			const result = [];
 			for (let i = 0; i < template.length; ++i) {
-				let entry = template[i];
-				if (entry['jsonIF']) {
+				let entry = template[i] as any;
+				if (typeof entry !== 'number' && entry['jsonIF']) {
 					if (instanceData[entry['jsonIF']] === undefined) {
 						continue;
 					}
@@ -235,11 +243,7 @@ function recResolveTemplateInstance(
 					}
 				}
 				const sub = recResolveTemplateInstance(entry, instanceData, templates, tmpTemplates);
-				if (Array.isArray(sub) && template[i]['jsonList']) {
-					result.push(...sub);
-				} else {
-					result.push(sub);
-				}
+				result.push(sub);
 			}
 			return result;
 		}
@@ -251,7 +255,7 @@ function recResolveTemplateInstance(
 					continue;
 				}
 				if (entry['jsonTHEN']) {
-					entry = entry['jsonTHEN'];
+					entry = entry['jsonTHEN'] as any;
 				} else {
 					entry = Helper.copy(entry);
 					delete entry['jsonIF'];
@@ -261,4 +265,24 @@ function recResolveTemplateInstance(
 		}
 		return result;
 	}
+}
+
+
+export function flattenSUBs(obj: Anims, parent: Anims): Anims[] {
+	const out: Anims[] = [];
+	const merged = {
+		...parent,
+		...obj
+	};
+	if (Array.isArray(obj.SUB)) {
+		for (const sub of obj.SUB) {
+			out.push(...flattenSUBs(sub, merged));
+		}
+	} else {
+		out.push({
+			...parent,
+			...obj
+		});
+	}
+	return out;
 }

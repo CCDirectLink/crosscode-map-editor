@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BooleanWidgetComponent } from './boolean-widget/boolean-widget.component';
-import { CharacterWidgetComponent } from './character-widget/character-widget.component';
 import { EnemyTypeWidgetComponent } from './enemy-type-widget/enemy-type-widget.component';
 import { EventWidgetComponent } from './event-widget/event-widget.component';
 import { JsonWidgetComponent } from './json-widget/json-widget.component';
@@ -13,6 +12,7 @@ import { Vec2WidgetComponent } from './vec2-widget/vec2-widget.component';
 import { PropTypeWidgetComponent } from './prop-type-widget/prop-type-widget.component';
 import { ScalablePropConfigWidgetComponent } from './scalable-prop-config-widget/scalable-prop-config-widget.component';
 import { CustomDesTypeWidgetComponent } from './custom-des-type-widget/custom-des-type-widget.component';
+import { CharacterWidgetComponent } from './character-widget/character-widget.component';
 
 @Injectable({
 	providedIn: 'root'

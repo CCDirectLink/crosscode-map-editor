@@ -84,7 +84,8 @@ const WIDGETS = [
 	AutocompletedTextboxComponent,
 	ScalablePropConfigWidgetComponent,
 	EnemySingleTypeWidgetComponent,
-	CustomDesTypeWidgetComponent
+	CustomDesTypeWidgetComponent,
+	CharacterWidgetComponent,
 ];
 
 @NgModule({

@@ -48,6 +48,12 @@ export class HttpClientService {
 		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
 	}
 	
+	getCharacters(): Observable<string[]> {
+		const folder = 'data/characters/';
+		const extension = 'json';
+		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
+	}
+	
 	getMods(): Observable<string[]> {
 		return this.request('api/allMods', api.getAllMods);
 	}

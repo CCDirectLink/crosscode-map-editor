@@ -231,12 +231,13 @@ export abstract class CCEntity extends BaseObject {
 		// setup sprite
 		if (s.sheets && s.sheets.fix) {
 			for (const fix of s.sheets.fix) {
-				if (!this.scene.textures.exists(fix.gfx)) {
+				if (!this.scene.textures.exists(fix.gfx.trim())) {
 					console.error(`texture not loaded: [${fix.gfx}] in class: [${this.constructor.name}]`);
 				}
 			}
 			
 			for (const fix of s.sheets.fix) {
+				const gfx = fix.gfx.trim();
 				if (!s.sheets.ignoreScalable && (s.scalableX || s.scalableY) && fix.scalable) {
 					// scalable
 					const offsetX = fix.offsetX ?? 0;
@@ -250,7 +251,7 @@ export abstract class CCEntity extends BaseObject {
 						const imgWidth = Math.min(fix.w, width - x);
 						for (let y = 0; y < height; y += fix.h) {
 							const imgHeight = Math.min(fix.h, height - y);
-							const img = this.scene.add.image(x, -y + settings['size'].y, fix.gfx);
+							const img = this.scene.add.image(x, -y + settings['size'].y, gfx);
 							img.setCrop(fix.x, fix.y, imgWidth, imgHeight);
 							
 							img.setOrigin(0, 0);
@@ -287,7 +288,7 @@ export abstract class CCEntity extends BaseObject {
 					fix.offsetX = fix.offsetX || 0;
 					fix.offsetY = fix.offsetY || 0;
 					
-					const img = this.scene.add.image(fix.offsetX, fix.offsetY, fix.gfx);
+					const img = this.scene.add.image(fix.offsetX, fix.offsetY, gfx);
 					img.setOrigin(0, 0);
 					
 					if (fix.tint !== undefined) {
@@ -456,7 +457,7 @@ export abstract class CCEntity extends BaseObject {
 	protected abstract setupType(settings: any): Promise<void>;
 
 	public doubleClick(): void {
-		
+	
 	}
 	
 	public async updateType() {
