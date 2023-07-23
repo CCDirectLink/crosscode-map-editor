@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
-- New graphical selection widget for some entities: `Prop`, `ScalableProp`, `Enemy`, `ItemDestruct`
+- New graphical selection widget for some entities: `Prop`, `ScalableProp`, `Enemy`, `ItemDestruct`, `NPC`
 
 ### Changed
 - Updated Phaser to 3.60.0
@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - All `Prop` Entities should now be rendered correctly
 - Improved `ScalableProp` rendering. `ends` are now rendering correctly.
+- Improved `NPC` rendering.
 - Releasing mouse button outside the canvas now properly triggers. Avoids having issues like continue dragging entities even if the mouse button was released
 
 
