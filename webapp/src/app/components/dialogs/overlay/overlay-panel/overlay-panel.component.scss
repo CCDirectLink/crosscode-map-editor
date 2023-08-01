@@ -36,6 +36,7 @@ $toolbarHeight: 54px;
 .toolbar {
 	background-color: mat.get-color-from-palette(map-get($theme, background), app-bar);
 	height: $toolbarHeight;
+	z-index: 10;
 }
 
 .buttons {
