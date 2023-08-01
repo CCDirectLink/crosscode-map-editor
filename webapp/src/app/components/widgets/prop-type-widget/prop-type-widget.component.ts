@@ -128,6 +128,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 			if (names.length >= 2) {
 				this.comp.showRightProps = true;
 			}
+			let searchName = def.name;
 			for (const name of names) {
 				const imgSrc = await this.generateImage({
 					propType: {
@@ -141,10 +142,12 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 					propAnim: name,
 					imgSrc: imgSrc
 				});
+				searchName += name;
 				firstImg = firstImg || imgSrc;
 			}
 			leftProps.push({
 				name: def.name,
+				searchName: searchName,
 				imgSrc: firstImg,
 				count: names.length
 			});

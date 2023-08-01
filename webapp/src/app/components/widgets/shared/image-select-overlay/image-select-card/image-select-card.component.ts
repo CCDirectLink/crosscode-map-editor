@@ -5,6 +5,7 @@ import { HighlightDirective } from '../../../../../directives/highlight.directiv
 export interface PropListCard {
 	name: string;
 	displayName?: string;
+	searchName?: string;
 	imgSrc?: string;
 	count?: number;
 }

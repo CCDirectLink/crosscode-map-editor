@@ -116,11 +116,13 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget<EnemyInfo> {
 			if (!el) {
 				el = {
 					name: prop.prefix,
+					searchName: '',
 					imgSrc: prop.img,
 					count: 0
 				};
 				this.comp.leftGroup.props.push(el);
 			}
+			el.searchName += prop.full;
 			el.count = (el.count ?? 0) + 1;
 		}
 		

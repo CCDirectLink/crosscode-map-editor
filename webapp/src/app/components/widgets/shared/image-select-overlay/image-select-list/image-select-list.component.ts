@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ImageSelectCardComponent, PropListCard } from '../image-select-card/image-select-card.component';
 import { MatInputModule } from '@angular/material/input';
@@ -20,8 +20,10 @@ export class ImageSelectListComponent {
 	@Input() selected?: string;
 	@Input() items: PropListCard[] = [];
 	@Input() showFilter = false;
+	@Input() filterItems = true;
 	
-	filter = '';
+	@Input() filter = '';
+	@Output() filterChange = new EventEmitter<string>();
 	
 	@Output() selectedChange = new EventEmitter<string>();
 }

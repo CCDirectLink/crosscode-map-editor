@@ -38,6 +38,8 @@ export class ImageSelectOverlayComponent implements OnChanges, OnDestroy {
 	
 	@Output() exit = new EventEmitter<void>();
 	
+	filter = '';
+	
 	ngOnChanges(changes: SimpleChanges) {
 		const key: keyof ImageSelectOverlayComponent = 'splitBaseName';
 		if (!changes[key].currentValue) {

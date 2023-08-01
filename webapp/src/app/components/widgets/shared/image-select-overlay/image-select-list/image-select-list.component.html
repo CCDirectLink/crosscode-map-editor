@@ -5,7 +5,13 @@
 		appearance="outline"
 	>
 		<mat-label>Filter</mat-label>
-		<input [appAutofocus]="true" matInput type="text" [(ngModel)]="filter">
+		<input
+			[appAutofocus]="true"
+			matInput
+			type="text"
+			[(ngModel)]="filter"
+			(ngModelChange)="filterChange.emit($event)"
+		>
 		<button matSuffix mat-icon-button aria-label="Clear" (click)="filter=''">
 			<mat-icon>close</mat-icon>
 		</button>
@@ -13,7 +19,7 @@
 	<h2 class="pl-4 headline" *ngIf="title">{{title}}</h2>
 	<div class="list">
 		<ng-container
-			*ngIf="items|listFilter:filter as filteredItems"
+			*ngIf="items|listFilter:filter:filterItems as filteredItems"
 		>
 			<app-image-select-card
 				*ngFor="let prop of filteredItems"

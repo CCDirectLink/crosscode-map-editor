@@ -4,10 +4,8 @@ import { ImageSelectOverlayComponent, PropListGroup } from '../shared/image-sele
 import { HttpClientService } from '../../../services/http-client.service';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
-import { Globals } from '../../../services/globals';
 import { lastValueFrom } from 'rxjs';
 import { NPC, NpcAttributes } from '../../../services/phaser/entities/registry/npc';
-import { EnemyAttributes } from '../../../services/phaser/entities/registry/enemy';
 
 @Component({
 	selector: 'app-character-widget',
@@ -117,10 +115,12 @@ export class CharacterWidgetComponent extends OverlayWidget<NpcAttributes> {
 				el = {
 					name: prop.prefix,
 					imgSrc: prop.img,
+					searchName: '',
 					count: 0
 				};
 				this.comp.leftGroup.props.push(el);
 			}
+			el.searchName += prop.full;
 			el.count = (el.count ?? 0) + 1;
 		}
 		

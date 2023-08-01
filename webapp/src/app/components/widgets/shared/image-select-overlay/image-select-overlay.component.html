@@ -40,6 +40,7 @@
 							[title]="leftGroup.title"
 							[items]="leftGroup.props"
 							[showFilter]="true"
+							[(filter)]="filter"
 							[selected]="leftGroup.selected"
 							(selectedChange)="leftGroup.click?.(leftGroup.selected === $event ? '' : $event)"
 						></app-image-select-list>
@@ -63,6 +64,8 @@
 								*ngFor="let group of rightGroups"
 								[title]="group.title"
 								[items]="group.props"
+								[filter]="filter"
+								[filterItems]="false"
 								[selected]="group.selected"
 								(selectedChange)="group.click?.($event)"
 							></app-image-select-list>
