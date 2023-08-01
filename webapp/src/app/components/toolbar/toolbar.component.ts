@@ -14,8 +14,6 @@ import { NewMapComponent } from '../dialogs/new-map/new-map.component';
 import { OffsetMapComponent } from '../dialogs/offset-map/offset-map.component';
 import { OverlayService } from '../dialogs/overlay/overlay.service';
 import { SettingsComponent } from '../dialogs/settings/settings.component';
-import { EditorView } from '../../models/editor-view';
-import { Globals } from '../../services/globals';
 
 @Component({
 	selector: 'app-toolbar',
