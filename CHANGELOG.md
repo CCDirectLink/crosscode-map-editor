@@ -11,6 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 - Updated Phaser to 3.60.0
 - Entity copy/paste now uses the clipboard to make it easier working with multiple editor instances [#267](https://github.com/CCDirectLink/crosscode-map-editor/issues/267)
+- Changed default Vec2 values to 0 instead of 1 [#257](https://github.com/CCDirectLink/crosscode-map-editor/issues/257)
+- New Entities are now generated with a default size of 16x16
 
 ### Fixed
 - All `Prop` Entities should now be rendered correctly
