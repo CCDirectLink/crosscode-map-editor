@@ -11,7 +11,7 @@
 		</button>
 	</mat-form-field>
 	<h2 class="pl-4 headline" *ngIf="title">{{title}}</h2>
-	<div class="flex flex-row flex-wrap gap-6 p-4">
+	<div class="list">
 		<ng-container
 			*ngIf="items|listFilter:filter as filteredItems"
 		>
