@@ -61,7 +61,12 @@ export class CharacterWidgetComponent extends OverlayWidget {
 		};
 		this.rightGroup.click = prop => this.setPropType(prop);
 		
-		this.setPropType(this.settings[this.key] ?? '');
+		let ogProp = this.settings?.[this.key];
+		if (typeof ogProp !== 'string') {
+			ogProp = '';
+		}
+		
+		this.setPropType(ogProp);
 		await this.updateProps();
 		this.updateRightSide();
 		

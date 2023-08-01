@@ -1,10 +1,10 @@
 <div fxLayout="row"
      class="property-container"
-     [matTooltip]="attribute?.description | combinedTooltip:this.settings?.type"
+     [matTooltip]="attribute?.description | combinedTooltip:this.settings?.[this.key]"
      matTooltipClass="newline-tooltip"
 >
 	<label class="property-name">{{key}}:</label>
 	<input type="button" class="default-input"
-	       [value]="this.settings?.type || '[ null ]'"
+	       [value]="this.settings?.[this.key] || '[ null ]'"
 	       (click)="open()">
 </div>

@@ -12,9 +12,7 @@ import { EnemyAttributes, EnemyInfo } from '../../../services/phaser/entities/re
 	templateUrl: './enemy-single-type-widget.component.html',
 	styleUrls: ['./enemy-single-type-widget.component.scss', '../widget.scss']
 })
-export class EnemySingleTypeWidgetComponent extends OverlayWidget<EnemyInfo> {
-	
-	private typeKey: keyof EnemyInfo = 'type';
+export class EnemySingleTypeWidgetComponent extends OverlayWidget {
 	
 	private props: {
 		prefix: string;
@@ -55,7 +53,7 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget<EnemyInfo> {
 		});
 		
 		this.comp.leftGroup.click = prop => {
-			const prefix = this.settings.type?.split('.')?.[0];
+			const prefix = this.settings[this.key]?.split('.')?.[0];
 			if (prop === prefix) {
 				return;
 			}
@@ -63,7 +61,7 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget<EnemyInfo> {
 		};
 		this.rightGroup.click = prop => this.setPropType(prop);
 		
-		this.setPropType(this.settings.type ?? '');
+		this.setPropType(this.settings[this.key] ?? '');
 		await this.updateProps();
 		this.updateRightSide();
 		
@@ -74,17 +72,17 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget<EnemyInfo> {
 		const first = prop.split('.')?.[0];
 		this.comp.leftGroup.selected = first;
 		this.rightGroup.selected = prop;
-		if (this.settings.type === prop) {
+		if (this.settings[this.key] === prop) {
 			return;
 		}
-		this.setSetting(this.typeKey, prop);
+		this.setSetting(this.key, prop);
 		if (updateRightSide) {
 			this.updateRightSide();
 		}
 	}
 	
 	private updateRightSide() {
-		const prefix = this.settings.type?.split('.')?.[0];
+		const prefix = this.settings[this.key]?.split('.')?.[0];
 		this.rightGroup.props = this.props.filter(v => v.prefix === prefix).map(v => ({
 			name: v.full,
 			displayName: v.full.split('.')?.[1],

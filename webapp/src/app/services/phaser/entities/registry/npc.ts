@@ -160,6 +160,7 @@ export class NPC extends DefaultEntity {
 				throw new Error('no anim sheet found for: ' + charSettings.animSheet + ' in path: ' + path);
 			}
 		}
+		
 		charSettings.jsonTEMPLATES = getNPCTemplates();
 		charSettings = prepareSheet(charSettings);
 		delete charSettings.jsonTEMPLATES;
@@ -241,8 +242,6 @@ export class NPC extends DefaultEntity {
 				gfx: sheet?.src,
 				x: x,
 				y: y,
-				offsetX: 0,
-				offsetY: 0,
 				w: sheet?.width ?? 16,
 				h: sheet?.height ?? 16,
 				flipX: flipX,

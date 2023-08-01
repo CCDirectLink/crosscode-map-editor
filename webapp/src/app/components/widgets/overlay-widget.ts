@@ -62,6 +62,7 @@ export abstract class OverlayWidget<T = {[key: string]: any}> extends AbstractWi
 	abstract openInternal(): Promise<OverlayRefControl>;
 	
 	protected close() {
+		this.onChange.emit();
 		this.ref?.close();
 	}
 }
