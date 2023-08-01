@@ -394,7 +394,7 @@ export class EntityManager extends BaseObject {
 			}
 			entities = (parsed as any[]).filter(v => this.isMapEntity(v));
 		} catch (e) {
-			console.warn('could not parse entities from clipboard');
+			Globals.snackbar.open('could not parse entities from clipboard', undefined, {duration: 2000});
 			return;
 		}
 		if (entities.length === 0) {
