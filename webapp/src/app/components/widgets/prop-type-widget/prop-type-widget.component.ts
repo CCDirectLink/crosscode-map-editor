@@ -8,7 +8,7 @@ import { lastValueFrom } from 'rxjs';
 import { Prop, PropAttributes } from '../../../services/phaser/entities/registry/prop';
 import { Helper } from '../../../services/phaser/helper';
 import { Anims, prepareSheet, PropDef, PropSheet } from '../../../services/phaser/sheet-parser';
-import { Globals } from '../../../services/globals';
+import { PropListCard } from '../shared/image-select-overlay/image-select-card/image-select-card.component';
 
 @Component({
 	selector: 'app-prop-type-widget',
@@ -100,24 +100,26 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 	
 	private async updateProps() {
 		this.props = [];
+		const props: typeof this.props = [];
+		
 		this.comp.leftGroup.props = [];
+		const leftProps: PropListCard[] = [];
+		
 		this.rightGroup.props = [];
 		const sheetPath = this.settings.propType?.sheet ?? '';
 		if (!this.comp.sheets.includes(sheetPath)) {
 			return;
 		}
+		this.comp.loading = true;
 		
 		let sheet = await Helper.getJsonPromise('data/props/' + sheetPath) as PropSheet;
 		sheet = prepareSheet(sheet);
 		
-		const entityClass = Globals.entityRegistry.getEntity('Prop');
-		const propEntity = new entityClass(Globals.scene, Globals.map, -999999, 0, 'Prop') as unknown as Prop;
-		
-		const props = sheet.props.filter(v => v.name) as (PropDef & { name: string })[];
-		props.sort((a, b) => a.name!.localeCompare(b.name!));
+		const propDefs = sheet.props.filter(v => v.name) as (PropDef & { name: string })[];
 		this.comp.showRightProps = false;
-		for (const prop of props) {
-			const names = this.getSubNames(prop.anims?.SUB);
+		
+		await Promise.all(propDefs.map(async def => {
+			const names = this.getSubNames(def.anims?.SUB);
 			let firstImg = '';
 			
 			if (names.length === 0) {
@@ -130,25 +132,30 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 				const imgSrc = await this.generateImage({
 					propType: {
 						sheet: sheetPath,
-						name: prop.name
+						name: def.name
 					},
 					propAnim: name
-				}, propEntity);
-				this.props.push({
-					name: prop.name,
+				}, 'Prop');
+				props.push({
+					name: def.name,
 					propAnim: name,
 					imgSrc: imgSrc
 				});
 				firstImg = firstImg || imgSrc;
 			}
-			this.comp.leftGroup.props.push({
-				name: prop.name,
+			leftProps.push({
+				name: def.name,
 				imgSrc: firstImg,
 				count: names.length
 			});
-		}
+		}));
 		
-		propEntity.destroy();
+		props.sort((a, b) => a.name.localeCompare(b.name));
+		leftProps.sort((a, b) => a.name.localeCompare(b.name));
+		
+		this.props = props;
+		this.comp.leftGroup.props = leftProps;
+		this.comp.loading = false;
 	}
 	
 	private updatePropAnims() {

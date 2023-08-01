@@ -7,6 +7,7 @@ import { Overlay } from '@angular/cdk/overlay';
 import { Globals } from '../../../services/globals';
 import { lastValueFrom } from 'rxjs';
 import { NPC, NpcAttributes } from '../../../services/phaser/entities/registry/npc';
+import { EnemyAttributes } from '../../../services/phaser/entities/registry/enemy';
 
 @Component({
 	selector: 'app-character-widget',
@@ -14,8 +15,6 @@ import { NPC, NpcAttributes } from '../../../services/phaser/entities/registry/n
 	styleUrls: ['./character-widget.component.scss', '../widget.scss']
 })
 export class CharacterWidgetComponent extends OverlayWidget<NpcAttributes> {
-	
-	private characterNameKey: keyof NpcAttributes = 'characterName';
 	
 	private props: {
 		prefix: string;
@@ -78,7 +77,7 @@ export class CharacterWidgetComponent extends OverlayWidget<NpcAttributes> {
 		if (this.settings.characterName === prop) {
 			return;
 		}
-		this.setSetting(this.characterNameKey, prop);
+		this.setSetting(this.key, prop);
 		if (updateRightSide) {
 			this.updateRightSide();
 		}
@@ -95,22 +94,24 @@ export class CharacterWidgetComponent extends OverlayWidget<NpcAttributes> {
 	
 	private async updateProps() {
 		this.props = [];
+		this.comp.loading = true;
 		this.comp.leftGroup.props = [];
 		this.rightGroup.props = [];
 		
-		const entityClass = Globals.entityRegistry.getEntity('NPC');
-		const npcEntity = new entityClass(Globals.scene, Globals.map, -999999, 0, 'NPC') as unknown as NPC;
-		
 		const chars = (await lastValueFrom(this.http.getCharacters())).map(v => v.replaceAll('/', '.'));
 		
-		for (const char of chars) {
+		this.props = await Promise.all(chars.map(async char => {
 			const prop: typeof this.props[0] = {
 				prefix: char.split('.')[0],
 				full: char,
-				img: await this.generateImage<NpcAttributes>({characterName: char}, npcEntity)
+				img: await this.generateImage<NpcAttributes>({characterName: char}, 'NPC')
 			};
-			this.props.push(prop);
-			
+			return prop;
+		}));
+		
+		this.props.sort((a, b) => a.prefix.localeCompare(b.prefix));
+		
+		for (const prop of this.props) {
 			let el = this.comp.leftGroup.props.find(v => v.name === prop.prefix);
 			if (!el) {
 				el = {
@@ -123,6 +124,6 @@ export class CharacterWidgetComponent extends OverlayWidget<NpcAttributes> {
 			el.count = (el.count ?? 0) + 1;
 		}
 		
-		npcEntity.destroy();
+		this.comp.loading = false;
 	}
 }

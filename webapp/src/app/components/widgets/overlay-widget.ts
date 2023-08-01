@@ -3,6 +3,7 @@ import { Directive, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { OverlayRefControl } from '../dialogs/overlay/overlay-ref-control';
 import { OverlayService } from '../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
+import { Globals } from '../../services/globals';
 import { CCEntity } from '../../services/phaser/entities/cc-entity';
 
 @Directive()
@@ -28,12 +29,19 @@ export abstract class OverlayWidget<T = any> extends AbstractWidget<T> implement
 		this.ref = await this.openInternal();
 	}
 	
-	protected async generateImage<T>(settings: T, entity: CCEntity, offsetY?: number) {
+	protected async generateImage<T>(settings: T, entity: string | CCEntity, offsetY?: number) {
+		
 		const imgKey = JSON.stringify(settings);
 		let img = OverlayWidget.imgCache.get(imgKey);
 		if (img) {
 			return img;
 		}
+		
+		if (typeof entity === 'string') {
+			const entityClass = Globals.entityRegistry.getEntity(entity);
+			entity = new entityClass(Globals.scene, Globals.map, -999999, 0, entity);
+		}
+		
 		try {
 			await entity.setSettings(settings);
 		} catch (e) {
@@ -42,6 +50,8 @@ export abstract class OverlayWidget<T = any> extends AbstractWidget<T> implement
 		img = (await entity.generateHtmlImage(true, offsetY)).src;
 		
 		OverlayWidget.imgCache.set(imgKey, img);
+		
+		entity.destroy();
 		
 		return img;
 	}

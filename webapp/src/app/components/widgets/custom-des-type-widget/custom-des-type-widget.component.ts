@@ -8,6 +8,7 @@ import { OverlayWidget } from '../overlay-widget';
 import { ItemDestruct, ItemDestructAttributes, ItemDestructTypes } from '../../../services/phaser/entities/registry/item-destruct';
 import { Helper } from '../../../services/phaser/helper';
 import { GlobalSettings } from '../../../services/phaser/global-settings';
+import { PropListCard } from '../shared/image-select-overlay/image-select-card/image-select-card.component';
 
 @Component({
 	selector: 'app-custom-des-type-widget',
@@ -72,10 +73,9 @@ export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttr
 	}
 	
 	private async updateProps() {
+		const props: PropListCard[] = [];
 		this.comp.leftGroup.props = [];
-		
-		const entityClass = Globals.entityRegistry.getEntity('ItemDestruct');
-		const enemyEntity = new entityClass(Globals.scene, Globals.map, -999999, 0, 'ItemDestruct') as unknown as ItemDestruct;
+		this.comp.loading = true;
 		
 		let destructibles: { name: string, desType: string }[];
 		if (this.comp.global) {
@@ -92,13 +92,15 @@ export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttr
 			}));
 		}
 		
-		for (const destructible of destructibles) {
-			this.comp.leftGroup.props.push({
+		await Promise.all(destructibles.map(async destructible => {
+			props.push({
 				name: destructible.name,
-				imgSrc: await this.generateImage<ItemDestructAttributes>({desType: destructible.desType}, enemyEntity)
+				imgSrc: await this.generateImage<ItemDestructAttributes>({desType: destructible.desType}, 'ItemDestruct')
 			});
-		}
+		}));
+		props.sort((a, b) => a.name.localeCompare(b.name));
 		
-		enemyEntity.destroy();
+		this.comp.leftGroup.props = props;
+		this.comp.loading = false;
 	}
 }

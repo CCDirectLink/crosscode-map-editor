@@ -5,8 +5,7 @@ import { HttpClientService } from '../../../services/http-client.service';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
 import { lastValueFrom } from 'rxjs';
-import { Enemy, EnemyAttributes, EnemyInfo } from '../../../services/phaser/entities/registry/enemy';
-import { Globals } from '../../../services/globals';
+import { EnemyAttributes, EnemyInfo } from '../../../services/phaser/entities/registry/enemy';
 
 @Component({
 	selector: 'app-enemy-single-type-widget',
@@ -95,22 +94,24 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget<EnemyInfo> {
 	
 	private async updateProps() {
 		this.props = [];
+		this.comp.loading = true;
 		this.comp.leftGroup.props = [];
 		this.rightGroup.props = [];
 		
-		const entityClass = Globals.entityRegistry.getEntity('Enemy');
-		const enemyEntity = new entityClass(Globals.scene, Globals.map, -999999, 0, 'Enemy') as unknown as Enemy;
-		
 		const enemies = (await lastValueFrom(this.http.getEnemies())).map(v => v.replaceAll('/', '.'));
 		
-		for (const enemy of enemies) {
+		this.props = await Promise.all(enemies.map(async enemy => {
 			const prop: typeof this.props[0] = {
 				prefix: enemy.split('.')[0],
 				full: enemy,
-				img: await this.generateImage<EnemyAttributes>({enemyInfo: {type: enemy}}, enemyEntity)
+				img: await this.generateImage<EnemyAttributes>({enemyInfo: {type: enemy}}, 'Enemy')
 			};
-			this.props.push(prop);
-			
+			return prop;
+		}));
+		
+		this.props.sort((a, b) => a.prefix.localeCompare(b.prefix));
+		
+		for (const prop of this.props) {
 			let el = this.comp.leftGroup.props.find(v => v.name === prop.prefix);
 			if (!el) {
 				el = {
@@ -123,6 +124,6 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget<EnemyInfo> {
 			el.count = (el.count ?? 0) + 1;
 		}
 		
-		enemyEntity.destroy();
+		this.comp.loading = false;
 	}
 }

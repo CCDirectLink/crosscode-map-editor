@@ -22,7 +22,7 @@
 				[filter]="filter"
 				(onClick)="selectedChange.emit(prop.name)"
 			></app-image-select-card>
-			<div *ngIf="filteredItems.length === 0 && items.length > 0">
+			<div *ngIf="filteredItems.length === 0 && items.length > 0" class="w-60">
 				No items matching the filter
 			</div>
 		</ng-container>

@@ -24,25 +24,12 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 	private comp: ImageSelectOverlayComponent = new ImageSelectOverlayComponent();
 	private sheet?: ScalablePropSheet;
 	
-	private imgEntity: ScalableProp = {} as any;
-	
 	constructor(
 		private http: HttpClientService,
 		overlayService: OverlayService,
 		overlay: Overlay
 	) {
 		super(overlayService, overlay);
-	}
-	
-	override ngOnInit() {
-		super.ngOnInit();
-		const entityClass = Globals.entityRegistry.getEntity('ScalableProp');
-		this.imgEntity = new entityClass(Globals.scene, Globals.map, -999999, 0, 'ScalableProp') as unknown as ScalableProp;
-	}
-	
-	override ngOnDestroy() {
-		super.ngOnDestroy();
-		this.imgEntity.destroy();
 	}
 	
 	override async openInternal() {
@@ -106,7 +93,10 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 		let sheet = await Helper.getJsonPromise('data/scale-props/' + sheetPath) as ScalablePropSheet;
 		if (!sheet) {
 			console.error(`sheet doesnt exist: ${sheetPath}`);
+			return;
 		}
+		this.comp.loading = true;
+		
 		sheet = prepareSheet(sheet);
 		this.sheet = sheet;
 		
@@ -119,15 +109,14 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 			});
 		}
 		
-		entries.sort((a, b) => a.name.localeCompare(b.name));
-		for (const prop of entries) {
-			const imgSrc = await this.generateImg(this.imgEntity, prop, prop.name);
-			
-			this.comp.leftGroup.props.push({
+		this.comp.leftGroup.props = await Promise.all(entries.map(async prop => {
+			return {
 				name: prop.name,
-				imgSrc: imgSrc,
-			});
-		}
+				imgSrc: await this.generateImg(prop, prop.name)
+			};
+		}));
+		this.comp.leftGroup.props.sort((a, b) => a.name.localeCompare(b.name));
+		this.comp.loading = false;
 	}
 	
 	private async updateRightGroups() {
@@ -149,7 +138,7 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 			for (const patternName of Object.keys(value)) {
 				props.push({
 					name: patternName,
-					imgSrc: await this.generateImg(this.imgEntity, def, name, {[key]: patternName})
+					imgSrc: await this.generateImg(def, name, {[key]: patternName})
 				});
 			}
 			
@@ -209,10 +198,13 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 			}
 		}
 		
-		this.comp.preview = await this.generateImg(this.imgEntity, def, propConfig.name, propConfig.ends, true, size);
+		this.comp.preview = await this.generateImg(def, propConfig.name, propConfig.ends, true, size);
 	}
 	
-	private async generateImg(entity: ScalableProp, def: ScalablePropDef, name?: string, ends?: ScalablePropConfig['ends'], renderAll = false, size?: Point): Promise<string> {
+	private async generateImg(def: ScalablePropDef, name?: string, ends?: ScalablePropConfig['ends'], renderAll = false, size?: Point): Promise<string> {
+		
+		const entityClass = Globals.entityRegistry.getEntity('ScalableProp');
+		const entity = new entityClass(Globals.scene, Globals.map, -999999, 0, 'ScalableProp') as unknown as ScalableProp;
 		const settings: Partial<ScalablePropAttributes & { size: Point }> = {
 			propConfig: {
 				sheet: this.settings.propConfig?.sheet,

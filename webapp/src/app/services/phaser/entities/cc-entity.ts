@@ -89,8 +89,8 @@ export abstract class CCEntity extends BaseObject {
 	private images: Phaser.GameObjects.Image[] = [];
 	
 	private readonly filterSubscription: Subscription;
-
-
+	
+	
 	protected widgets: Record<string, AbstractWidget> = {};
 	
 	// input (is handled mostly by entity manager)
@@ -411,7 +411,7 @@ export abstract class CCEntity extends BaseObject {
 			this.isDragged = false;
 		}
 	}
-
+	
 	setWidgets(widgets: Record<string, AbstractWidget>) {
 		this.widgets = widgets;
 	}
@@ -455,7 +455,7 @@ export abstract class CCEntity extends BaseObject {
 	public abstract getAttributes(): EntityAttributes;
 	
 	protected abstract setupType(settings: any): Promise<void>;
-
+	
 	public doubleClick(): void {
 	
 	}
@@ -695,20 +695,13 @@ export abstract class CCEntity extends BaseObject {
 		return CCEntity.renderBackground;
 	}
 	
-	public async generateHtmlImage(withBackground = true, offsetY?: number) {
+	public async generateHtmlImage(withBackground = true, offsetY?: number, width = 16 * 6, height = 16 * 7) {
 		const scale = 3;
-		const width = 16 * 6;
-		const height = 16 * 7;
-		const scaledWidth = 16 * 6 * scale;
-		const scaledHeight = 16 * 7 * scale;
+		const scaledWidth = width * scale;
+		const scaledHeight = height * scale;
 		
-		const textureName = 'entityRenderer';
-		let texture: Phaser.Textures.DynamicTexture;
-		if (this.scene.textures.exists(textureName)) {
-			texture = this.scene.textures.get(textureName) as Phaser.Textures.DynamicTexture;
-		} else {
-			texture = this.scene.textures.addDynamicTexture(textureName, scaledWidth, scaledHeight)!;
-		}
+		const name = Math.random() + '';
+		const texture = this.scene.textures.addDynamicTexture(name, scaledWidth, scaledHeight)!;
 		
 		texture.clear();
 		if (withBackground) {
@@ -716,7 +709,7 @@ export abstract class CCEntity extends BaseObject {
 			g.setScale(scale);
 			texture.draw(g);
 		}
-		const x = scale * 16 * 3 - (this.inputZone.input!.hitArea.width * scale) / 2;
+		const x = scale * 16 * 3 - (this.getActualSize().x * scale) / 2;
 		const y = scale * (16 * 5 + (offsetY ?? 0));
 		
 		// drawing container directly is broken: https://github.com/photonstorm/phaser/issues/6546
@@ -736,10 +729,13 @@ export abstract class CCEntity extends BaseObject {
 			
 			img.setScale(sx, sy);
 		}
-		return await new Promise<HTMLImageElement>((res, rej) => {
+		const res = await new Promise<HTMLImageElement>((res, rej) => {
 			texture!.snapshot(img => {
 				res(img as HTMLImageElement);
 			});
 		});
+		
+		this.scene.textures.remove(name);
+		return res;
 	}
 }
