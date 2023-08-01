@@ -7,7 +7,7 @@ import { Globals } from '../../services/globals';
 import { CCEntity } from '../../services/phaser/entities/cc-entity';
 
 @Directive()
-export abstract class OverlayWidget<T = any> extends AbstractWidget<T> implements OnInit, OnChanges, OnDestroy {
+export abstract class OverlayWidget<T = {[key: string]: any}> extends AbstractWidget<T> implements OnInit, OnChanges, OnDestroy {
 	private ref?: OverlayRefControl;
 	private static imgCache = new Map<string, string>();
 	

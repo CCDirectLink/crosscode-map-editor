@@ -64,6 +64,7 @@ import { ScalablePropConfigWidgetComponent } from './components/widgets/scalable
 import { EnemySingleTypeWidgetComponent } from './components/widgets/enemy-single-type-widget/enemy-single-type-widget.component';
 import { CustomDesTypeWidgetComponent } from './components/widgets/custom-des-type-widget/custom-des-type-widget.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
+import { CombinedTooltipPipe } from './pipes/combined-tooltip.pipe';
 
 const WIDGETS = [
 	StringWidgetComponent,
@@ -139,6 +140,7 @@ const WIDGETS = [
 		ImageSelectListComponent,
 		HighlightDirective,
 		AutofocusDirective,
+		CombinedTooltipPipe,
 	],
 	bootstrap: [AppComponent],
 })

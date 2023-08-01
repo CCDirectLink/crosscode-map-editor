@@ -12,7 +12,7 @@ import { NPC, NpcAttributes } from '../../../services/phaser/entities/registry/n
 	templateUrl: './character-widget.component.html',
 	styleUrls: ['./character-widget.component.scss', '../widget.scss']
 })
-export class CharacterWidgetComponent extends OverlayWidget<NpcAttributes> {
+export class CharacterWidgetComponent extends OverlayWidget {
 	
 	private props: {
 		prefix: string;
@@ -53,7 +53,7 @@ export class CharacterWidgetComponent extends OverlayWidget<NpcAttributes> {
 		});
 		
 		this.comp.leftGroup.click = prop => {
-			const prefix = this.settings.characterName?.split('.')?.[0];
+			const prefix = this.settings[this.key]?.split('.')?.[0];
 			if (prop === prefix) {
 				return;
 			}
@@ -61,7 +61,7 @@ export class CharacterWidgetComponent extends OverlayWidget<NpcAttributes> {
 		};
 		this.rightGroup.click = prop => this.setPropType(prop);
 		
-		this.setPropType(this.settings.characterName ?? '');
+		this.setPropType(this.settings[this.key] ?? '');
 		await this.updateProps();
 		this.updateRightSide();
 		
@@ -72,7 +72,7 @@ export class CharacterWidgetComponent extends OverlayWidget<NpcAttributes> {
 		const first = prop.split('.')?.[0];
 		this.comp.leftGroup.selected = first;
 		this.rightGroup.selected = prop;
-		if (this.settings.characterName === prop) {
+		if (this.settings[this.key] === prop) {
 			return;
 		}
 		this.setSetting(this.key, prop);
@@ -82,7 +82,7 @@ export class CharacterWidgetComponent extends OverlayWidget<NpcAttributes> {
 	}
 	
 	private updateRightSide() {
-		const prefix = this.settings.characterName?.split('.')?.[0];
+		const prefix = this.settings[this.key]?.split('.')?.[0];
 		this.rightGroup.props = this.props.filter(v => v.prefix === prefix).map(v => ({
 			name: v.full,
 			displayName: v.full.split('.')?.[1],
