@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 # Changed
 
 - Made panning more smooth
+- Keep Layer visibility when using history undo/redo [#273](https://github.com/CCDirectLink/crosscode-map-editor/issues/273)
 
 ## [0.18.0] 2023-07-19
 ### Added
