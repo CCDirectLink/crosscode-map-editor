@@ -13,15 +13,22 @@ import { CCMapLayer } from '../phaser/tilemap/cc-map-layer';
 import { GfxMapper } from './gfx-mapper/gfx-mapper';
 import { BACK_WALL_MAP, BLOCK_MAP, ChipsetConfig, HOLE_BLOCK_MAP, HOLE_MAP } from './gfx-mapper/gfx-mapper.constants';
 import {
-	CheckDir, CHECK_DIR,
-	CHECK_ITERATE, DIAG_GFX, FILL_COUNT, FILL_TYPE,
+	CHECK_DIR,
+	CHECK_ITERATE,
+	CheckDir,
+	DIAG_GFX,
+	FILL_COUNT,
+	FILL_TYPE,
 	GFX_TYPE,
 	LEVEL_COUNT,
 	SECOND_LEVEL_CHECK,
 	SHADOW_CORNER_EXCEPTION,
 	SQUARE_CORNER_CHECK,
-	SUB_TYPE, WallLink, WALL_LINK
+	SUB_TYPE,
+	WALL_LINK,
+	WallLink
 } from './heightmap.constants';
+import { customPutTileAt } from '../phaser/tilemap/layer-helper';
 
 const TILESET_CONFIG: { [key: string]: ChipsetConfig } = tilesets;
 
@@ -545,7 +552,7 @@ export class HeightMapService {
 		}
 		const oldValue = phaserLayer.getTileAt(x, y).index;
 		if (oldValue !== tileValue) {
-			phaserLayer.putTileAt(tileValue, x, y, false);
+			customPutTileAt(tileValue, x, y, phaserLayer.layer);
 		}
 		
 		this.autotile.drawTile(layer, x, y, tileValue);

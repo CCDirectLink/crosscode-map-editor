@@ -13,8 +13,8 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 	constructor(scene: Phaser.Scene, type: string) {
 		super(scene, type);
 		
-		this.zoomKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ALT, false);
-		this.panKey = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL, false);
+		this.zoomKey = scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ALT, false);
+		this.panKey = scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL, false);
 		// game.input.mouseWheel.callback = (v) => this.onMouseWheel(v);
 		scene.input.on('wheel', (
 			pointer: Phaser.Input.Pointer,
@@ -25,6 +25,7 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 		) => this.onMouseWheel(deltaY));
 		scene.input.on('pointerdown', () => this.onMouseDown());
 		scene.input.on('pointerup', () => this.onMouseUp());
+		scene.input.on('pointerupoutside', () => this.onMouseUp());
 	}
 	
 	private onMouseDown() {

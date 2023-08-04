@@ -1,0 +1,8 @@
+@use '@angular/material' as mat;
+
+.divider {
+	height: 1px;
+	width: 100%;
+	box-sizing: border-box;
+	border-top: 1px solid mat.get-color-from-palette(mat.$gray-palette, 600);
+}

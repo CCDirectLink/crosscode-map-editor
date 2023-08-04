@@ -1,6 +1,10 @@
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!">
+<div fxLayout="row"
+     class="property-container"
+     [matTooltip]="attribute?.description | combinedTooltip:this.settings[this.key]?.type"
+     matTooltipClass="newline-tooltip"
+>
 	<label class="property-name">{{key}}:</label>
 	<input type="button" class="default-input"
-	       [value]="this.settings[this.key] ? '[ Enemy type ]' : '[ null ]'"
+	       [value]="this.settings[this.key]?.type || '[ null ]'"
 	       (click)="open()">
 </div>

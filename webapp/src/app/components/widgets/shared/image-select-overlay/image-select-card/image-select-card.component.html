@@ -1,0 +1,17 @@
+<div
+	class="card mat-elevation-z4 flex flex-col items-center cursor-pointer"
+	[class.selected]="selected"
+	(click)="onClick.emit($event)"
+>
+	<div *ngIf="(card.count ?? 0) > 1" class="has-more">{{card.count}}</div>
+	<div class="flex-auto bg-img">
+		<img *ngIf="card.imgSrc" [src]="card.imgSrc">
+	</div>
+	<div class="card-label">
+		<span
+			appHighlight
+			[highlightText]="card.displayName ?? card.name"
+			[highlightMatch]="filter"
+		></span>
+	</div>
+</div>

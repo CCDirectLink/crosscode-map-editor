@@ -8,6 +8,7 @@ import { Helper } from '../../../../services/phaser/helper';
 import { MapPan } from '../../../../services/phaser/map-pan';
 import { CCMapLayer } from '../../../../services/phaser/tilemap/cc-map-layer';
 import { Vec2 } from '../../../../services/phaser/vec2';
+import { customPutTilesAt } from '../../../../services/phaser/tilemap/layer-helper';
 
 export class TileSelectorScene extends Phaser.Scene {
 	
@@ -62,6 +63,7 @@ export class TileSelectorScene extends Phaser.Scene {
 			}
 		};
 		this.keyBindings.push({event: 'pointerup', fun: pointerUp});
+		this.keyBindings.push({event: 'pointerupoutside', fun: pointerUp});
 		
 		this.keyBindings.forEach(binding => {
 			this.input.addListener(binding.event, binding.fun);
@@ -118,7 +120,7 @@ export class TileSelectorScene extends Phaser.Scene {
 		const height = bigger.y - smaller.y + 1;
 		
 		
-		const tilesWithin = this.tileMap!.getTilesWithin(smaller.x, smaller.y, width, height);
+		const tilesWithin = this.tileMap!.getTilesWithin(smaller.x, smaller.y, width, height) ?? [];
 		
 		tilesWithin.forEach((tile: Phaser.Tilemaps.Tile) => {
 			this.selectedTiles.push({
@@ -209,7 +211,7 @@ export class TileSelectorScene extends Phaser.Scene {
 			return;
 		}
 		tileset.firstgid = 1;
-		const layer = this.tileMap.createBlankLayer('first', tileset, 0, 0, tilesetSize.x, tilesetSize.y);
+		const layer = this.tileMap.createBlankLayer('first', tileset, 0, 0, tilesetSize.x, tilesetSize.y)!;
 		
 		let counter = 1;
 		const data: number[][] = [];
@@ -221,8 +223,7 @@ export class TileSelectorScene extends Phaser.Scene {
 			}
 		}
 		
-		layer.putTilesAt(data, 0, 0);
-		
+		customPutTilesAt(data, layer);
 		
 		this.tilesetRendered = true;
 	}

@@ -15,7 +15,8 @@
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": 2018,
-        "sourceType": "module"
+        "sourceType": "module",
+		"project": "./tsconfig.json"
     },
     "plugins": [
         "@typescript-eslint",
@@ -49,6 +50,7 @@
 		"@angular-eslint/no-output-native": "off",
 		"@typescript-eslint/consistent-type-definitions": "error",
 		"@typescript-eslint/dot-notation": "off",
+		"@typescript-eslint/await-thenable": "error",
 		"@typescript-eslint/explicit-member-accessibility": [
 			"off",
 			{

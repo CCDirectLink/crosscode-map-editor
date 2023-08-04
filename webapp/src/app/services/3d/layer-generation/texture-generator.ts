@@ -71,7 +71,10 @@ export class TextureGenerator {
 				if (!tileset) {
 					continue;
 				}
-				const tilesetImage = tileset.image.source[0].image;
+				const tilesetImage = tileset.image?.source[0].image;
+				if (!tilesetImage) {
+					throw new Error('tilesetImage is not defined');
+				}
 				const uv = tile.tileset.getTileTextureCoordinates(index) as Point;
 				
 				ctx.drawImage(tilesetImage,

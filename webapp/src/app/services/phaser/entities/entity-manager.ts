@@ -17,13 +17,35 @@ export class EntityManager extends BaseObject {
 	}
 	
 	private multiSelectKey!: Phaser.Input.Keyboard.Key;
-	private copyKey!: Phaser.Input.Keyboard.Key;
-	private pasteKey!: Phaser.Input.Keyboard.Key;
 	private deleteKey!: Phaser.Input.Keyboard.Key;
 	private gridKey!: Phaser.Input.Keyboard.Key;
 	private visibilityKey!: Phaser.Input.Keyboard.Key;
+	private leftPointerDown = false;
+	private rightPointerDown = false;
 	
 	private skipEdit = false;
+	
+	private copyListener = async () => {
+		if (Helper.isInputFocused()) {
+			return;
+		}
+		await this.copy();
+	};
+	
+	private pasteListener = async () => {
+		if (Helper.isInputFocused()) {
+			return;
+		}
+		await this.paste();
+	};
+	
+	private cutListener = async () => {
+		if (Helper.isInputFocused()) {
+			return;
+		}
+		await this.copy();
+		this.deleteSelectedEntities();
+	};
 	
 	private leftClickOpts: {
 		prevTimer: number;
@@ -32,15 +54,14 @@ export class EntityManager extends BaseObject {
 		timer: number;
 		pos: Point;
 	} = {
-			prevTimer: 0,
-			prevEntity: undefined,
-			entity: undefined,
-			timer: 0,
-			pos: {x: 0, y: 0}
-		};
+		prevTimer: 0,
+		prevEntity: undefined,
+		entity: undefined,
+		timer: 0,
+		pos: {x: 0, y: 0}
+	};
 	
 	private selectedEntities: CCEntity[] = [];
-	private copyEntities: CCEntity[] = [];
 	
 	private gameObjectDown = false;
 	
@@ -56,18 +77,20 @@ export class EntityManager extends BaseObject {
 	protected init(): void {
 		const keyboard = this.scene.input.keyboard;
 		const keyCodes = Phaser.Input.Keyboard.KeyCodes;
-		this.multiSelectKey = keyboard.addKey(keyCodes.SHIFT, false);
-		this.copyKey = keyboard.addKey(keyCodes.C, false);
-		this.pasteKey = keyboard.addKey(keyCodes.V, false);
-		this.deleteKey = keyboard.addKey(keyCodes.DELETE, false);
-		this.gridKey = keyboard.addKey(keyCodes.G, false);
-		this.visibilityKey = keyboard.addKey(keyCodes.R, false);
+		this.multiSelectKey = keyboard!.addKey(keyCodes.SHIFT, false);
+		this.deleteKey = keyboard!.addKey(keyCodes.DELETE, false);
+		this.gridKey = keyboard!.addKey(keyCodes.G, false);
+		this.visibilityKey = keyboard!.addKey(keyCodes.R, false);
 		
 		this.selectionBox = new SelectionBox(this.scene);
 	}
 	
 	
 	protected deactivate() {
+		document.removeEventListener('copy', this.copyListener);
+		document.removeEventListener('paste', this.pasteListener);
+		document.removeEventListener('cut', this.cutListener);
+		
 		this.selectEntity();
 		this._entities.forEach(entity => {
 			entity.setActive(false);
@@ -76,6 +99,9 @@ export class EntityManager extends BaseObject {
 	}
 	
 	protected activate() {
+		document.addEventListener('copy', this.copyListener);
+		document.addEventListener('paste', this.pasteListener);
+		document.addEventListener('cut', this.cutListener);
 		this._entities.forEach(entity => {
 			entity.setActive(true);
 		});
@@ -104,9 +130,13 @@ export class EntityManager extends BaseObject {
 		this.addKeybinding({
 			event: 'pointerdown',
 			fun: (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
+				if (pointer.rightButtonDown()) {
+					this.rightPointerDown = true;
+				}
 				if (!pointer.leftButtonDown()) {
 					return;
 				}
+				this.leftPointerDown = true;
 				
 				
 				let entity;
@@ -125,7 +155,7 @@ export class EntityManager extends BaseObject {
 				if (Globals.panning) {
 					return;
 				}
-
+				
 				if (entity) {
 					this.gameObjectDown = true;
 					
@@ -147,56 +177,65 @@ export class EntityManager extends BaseObject {
 			emitter: this.scene.input
 		});
 		
-		this.addKeybinding({
-			event: 'pointerup',
-			fun: (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
-				if (pointer.rightButtonReleased()) {
-					this.selectEntity();
-					this.showAddEntityMenu();
-				} else if (pointer.leftButtonReleased()) {			
-
-					this.selectedEntities.forEach(entity => {
-						entity.isDragged = false;
+		const pointerUpFun = (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
+			if (pointer.rightButtonReleased() && this.rightPointerDown) {
+				this.rightPointerDown = false;
+				this.selectEntity();
+				this.showAddEntityMenu();
+			} else if (pointer.leftButtonReleased() && this.leftPointerDown) {
+				this.leftPointerDown = false;
+				this.selectedEntities.forEach(entity => {
+					entity.isDragged = false;
+				});
+				
+				// if panning do not deselect entities
+				if (Globals.panning) {
+					return;
+				}
+				
+				if (this.gameObjectDown) {
+					this.gameObjectDown = false;
+				} else {
+					const entities = this.selectionBox.onInputUp();
+					
+					if (!this.multiSelectKey.isDown) {
+						this.selectEntity();
+					}
+					entities.forEach(entity => {
+						this.selectEntity(entity, true);
 					});
-
-					// if panning do not deselect entities
-					if (Globals.panning) {
-						return;
-					}
-					
-					if (this.gameObjectDown) {
-						this.gameObjectDown = false;
+				}
+				
+				let entity;
+				if (gameObject.length > 0) {
+					entity = gameObject[0].getData('entity');
+				}
+				if (entity) {
+					console.log(entity);
+					const p = {x: pointer.worldX, y: pointer.worldY};
+					if (this.leftClickOpts.timer < 200 && Vec2.distance2(p, this.leftClickOpts.pos) < 10) {
+						this.selectEntity(entity, this.multiSelectKey.isDown);
+						
+						if (!this.multiSelectKey.isDown && this.leftClickOpts.prevEntity === this.leftClickOpts.entity && this.leftClickOpts.prevTimer < 500) {
+							entity.doubleClick();
+						}
 					} else {
-						const entities = this.selectionBox.onInputUp();
-
-						if (!this.multiSelectKey.isDown) {
-							this.selectEntity();
-						}
-						entities.forEach(entity => {
-							this.selectEntity(entity, true);
-						});
-					}
-					
-					let entity;
-					if (gameObject.length > 0) {
-						entity = gameObject[0].getData('entity') as CCEntity;
-					}
-					if (entity) {
-						console.log(entity);
-						const p = {x: pointer.worldX, y: pointer.worldY};
-						if (this.leftClickOpts.timer < 200 && Vec2.distance2(p, this.leftClickOpts.pos) < 10) {
-							this.selectEntity(entity, this.multiSelectKey.isDown);
-
-							if (!this.multiSelectKey.isDown && this.leftClickOpts.prevEntity === this.leftClickOpts.entity && this.leftClickOpts.prevTimer < 500) {
-								entity.doubleClick();
-							}
-						} else {
-							//Reset double click after drag
-							this.leftClickOpts.entity = undefined;
-						}
+						//Reset double click after drag
+						this.leftClickOpts.entity = undefined;
 					}
 				}
-			},
+			}
+		};
+		
+		this.addKeybinding({
+			event: 'pointerup',
+			fun: pointerUpFun,
+			emitter: this.scene.input
+		});
+		
+		this.addKeybinding({
+			event: 'pointerupoutside',
+			fun: pointerUpFun,
 			emitter: this.scene.input
 		});
 		
@@ -220,33 +259,6 @@ export class EntityManager extends BaseObject {
 					return;
 				}
 				this.deleteSelectedEntities();
-			}
-		});
-		
-		this.addKeybinding({
-			event: 'up',
-			emitter: this.copyKey,
-			fun: (key: Phaser.Input.Keyboard.Key, event: KeyboardEvent) => {
-				if (Helper.isInputFocused() || !event.ctrlKey) {
-					return;
-				}
-				this.copy();
-			}
-		});
-		
-		this.addKeybinding({
-			event: 'up',
-			emitter: this.pasteKey,
-			fun: (key: Phaser.Input.Keyboard.Key, event: KeyboardEvent) => {
-				if (Helper.isInputFocused() || !event.ctrlKey) {
-					return;
-				}
-
-				//TODO: investigate this bug where the keyup event is sometimes completely dropped or called twice (second time with event.currentTarget = null)
-				event.stopPropagation();
-				event.preventDefault();
-
-				this.paste();
 			}
 		});
 		
@@ -289,7 +301,7 @@ export class EntityManager extends BaseObject {
 		}
 		
 		// concurrent entity loading
-		const promises: Promise<any>[] = []; 
+		const promises: Promise<any>[] = [];
 		for (const entity of map.entities) {
 			promises.push(this.generateEntity(entity));
 		}
@@ -355,27 +367,58 @@ export class EntityManager extends BaseObject {
 		return ccEntity;
 	}
 	
-	copy() {
-		this.copyEntities = this.selectedEntities.slice();
+	async copy() {
+		const entities = this.selectedEntities.map(v => v.exportEntity());
+		if (entities.length === 0) {
+			return;
+		}
+		await navigator.clipboard.writeText(JSON.stringify(entities));
+		Globals.snackbar.open('copied entity to clipboard', undefined, {duration: 1000});
+		
+	}
+	
+	isMapEntity(obj: Partial<MapEntity> | undefined): obj is MapEntity {
+		return typeof obj?.type === 'string' && typeof obj.x === 'number' && typeof obj.settings === 'object';
 	}
 	
 	async paste() {
-		if (this.copyEntities.length === 0 || !this.map) {
+		if (!this.map) {
 			return;
 		}
-		const offset = Vec2.create(this.copyEntities[0].container);
-		offset.y -= this.map.levels[this.copyEntities[0].details.level.level].height;
+		const json = await navigator.clipboard.readText();
+		let entities: MapEntity[] = [];
+		try {
+			let parsed = JSON.parse(json);
+			if (!Array.isArray(parsed)) {
+				parsed = [parsed];
+			}
+			entities = (parsed as any[]).filter(v => this.isMapEntity(v));
+		} catch (e) {
+			Globals.snackbar.open('could not parse entities from clipboard', undefined, {duration: 2000});
+			return;
+		}
+		if (entities.length === 0) {
+			return;
+		}
+		const offset = Vec2.createC(entities[0].x, entities[0].y);
+		const level = entities[0].level;
+		let levelOffset = 0;
+		if (typeof level === 'number') {
+			levelOffset = this.map.levels[level]?.height ?? 0;
+		} else if (typeof level !== 'string') {
+			levelOffset = this.map.levels[level.level]?.height ?? 0;
+		}
+		offset.y -= levelOffset;
 		const mousePos = Helper.getPointerPos(this.scene.input.activePointer);
 		this.selectEntity();
 		
-		for (const e of this.copyEntities) {
-			const entityDef = e.exportEntity();
-			entityDef.settings.mapId = undefined;
-			Vec2.sub(entityDef, offset);
-			Vec2.add(entityDef, mousePos);
-			const newEntity = await this.generateEntity(entityDef);
+		for (const e of entities) {
+			e.settings.mapId = undefined;
+			Vec2.sub(e, offset);
+			Vec2.add(e, mousePos);
+			const newEntity = await this.generateEntity(e);
 			newEntity.setActive(true);
-			this.selectEntity(newEntity, this.copyEntities.length > 1);
+			this.selectEntity(newEntity, entities.length > 1);
 		}
 		
 	}

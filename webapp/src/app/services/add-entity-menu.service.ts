@@ -85,7 +85,9 @@ export class AddEntityMenuService {
 			y: this.worldPos.y,
 			type: key,
 			level: 0,
-			settings: {}
+			settings: {
+				size: {x: 16, y: 16}
+			}
 		};
 		this.events.generateNewEntity.next(entity);
 	}

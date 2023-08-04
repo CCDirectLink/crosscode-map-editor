@@ -56,6 +56,15 @@ import { ModalDirective } from './directives/modal.directive';
 import { ResizedDirective } from './directives/resized.directive';
 import { MaterialModule } from './external-modules/material.module';
 import { KeepHtmlPipe } from './pipes/keep-html.pipe';
+import { PropTypeWidgetComponent } from './components/widgets/prop-type-widget/prop-type-widget.component';
+import { ImageSelectOverlayComponent } from './components/widgets/shared/image-select-overlay/image-select-overlay.component';
+import { ImageSelectCardComponent } from './components/widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
+import { ImageSelectListComponent } from './components/widgets/shared/image-select-overlay/image-select-list/image-select-list.component';
+import { ScalablePropConfigWidgetComponent } from './components/widgets/scalable-prop-config-widget/scalable-prop-config-widget.component';
+import { EnemySingleTypeWidgetComponent } from './components/widgets/enemy-single-type-widget/enemy-single-type-widget.component';
+import { CustomDesTypeWidgetComponent } from './components/widgets/custom-des-type-widget/custom-des-type-widget.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
+import { CombinedTooltipPipe } from './pipes/combined-tooltip.pipe';
 
 const WIDGETS = [
 	StringWidgetComponent,
@@ -71,8 +80,13 @@ const WIDGETS = [
 	CharacterWidgetComponent,
 	PersonExpressionWidgetComponent,
 	EnemyTypeWidgetComponent,
+	PropTypeWidgetComponent,
 	LangLabelWidgetComponent,
 	AutocompletedTextboxComponent,
+	ScalablePropConfigWidgetComponent,
+	EnemySingleTypeWidgetComponent,
+	CustomDesTypeWidgetComponent,
+	CharacterWidgetComponent,
 ];
 
 @NgModule({
@@ -101,12 +115,12 @@ const WIDGETS = [
 		JsonEditorComponent,
 		FloatingWindowComponent,
 		KeepHtmlPipe,
-		HighlightDirective,
 		ListSearchOverlayComponent,
 		EventWindowComponent,
 		RowTextComponent,
 		EventDetailComponent,
 		EnemyTypeWidgetOverlayComponent,
+		ImageSelectOverlayComponent,
 		ResizedDirective,
 		...WIDGETS,
 	],
@@ -122,16 +136,13 @@ const WIDGETS = [
 		ScrollingModule,
 		ReactiveFormsModule,
 		OverlayModule,
+		ImageSelectCardComponent,
+		ImageSelectListComponent,
+		HighlightDirective,
+		AutofocusDirective,
+		CombinedTooltipPipe,
 	],
 	bootstrap: [AppComponent],
-	entryComponents: [
-		JsonEditorComponent,
-		ListSearchOverlayComponent,
-		EventWindowComponent,
-		RowTextComponent,
-		EventDetailComponent,
-		EnemyTypeWidgetOverlayComponent,
-		...WIDGETS,
-	],
 })
-export class AppModule {}
+export class AppModule {
+}

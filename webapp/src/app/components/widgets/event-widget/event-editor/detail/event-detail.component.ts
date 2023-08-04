@@ -1,12 +1,4 @@
-import {
-	ChangeDetectorRef,
-	Component,
-	ComponentFactoryResolver,
-	EventEmitter, Input,
-	OnDestroy, Output,
-	ViewChild,
-	ViewContainerRef
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Input, OnDestroy, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { HostDirective } from '../../../../../directives/host.directive';
 import { AttributeValue } from '../../../../../services/phaser/entities/cc-entity';
@@ -51,7 +43,7 @@ export class EventDetailComponent implements OnDestroy {
 	closeDetails(): void {
 		this.close.emit();
 	}
-
+	
 	public loadEvent(event: AbstractEvent<any>) {
 		this.event = event;
 		this.loadSettings();
@@ -63,10 +55,10 @@ export class EventDetailComponent implements OnDestroy {
 		}
 		this.changeSubscriptions = [];
 	}
-
+	
 	private loadSettings() {
 		this.clearSubscriptions();
-
+		
 		const ref = this.appHost.viewContainerRef;
 		
 		ref.clear();
@@ -92,7 +84,7 @@ export class EventDetailComponent implements OnDestroy {
 			}, ref) as JsonWidgetComponent;
 			instance.noPropName = true;
 		}
-
+		
 		this.ref.detectChanges();
 	}
 	
@@ -113,6 +105,6 @@ export class EventDetailComponent implements OnDestroy {
 		const previousChildCount = this.event.children.length;
 		this.event.update();
 		const childCount = this.event.children.length;
-		this.refresh.emit((childCount > 0 || previousChildCount !== childCount)? 'Full' : 'Node');
+		this.refresh.emit((childCount > 0 || previousChildCount !== childCount) ? 'Full' : 'Node');
 	}
 }

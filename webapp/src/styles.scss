@@ -78,7 +78,7 @@ body {
 		}
 
 		&:focus, &.focus {
-			outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500)  !important;
+			outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500) !important;
 		}
 
 		& .mat-select-value-text {
@@ -137,6 +137,11 @@ button {
 	overflow: overlay;
 }
 
+.dark-scrollbar-auto {
+	@extend .dark-scrollbar;
+	overflow: auto;
+}
+
 .small-dark-scrollbar {
 	@extend .dark-scrollbar;
 
@@ -150,5 +155,32 @@ button {
 	color: #69bdfc;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.no-padding-form-field {
+	.mat-mdc-form-field-subscript-wrapper {
+		display: none;
+	}
+}
+
+.autoscale-form-field {
+	min-width: 0;
+	flex: 1;
+	width: 100%;
+
+
+	.mat-mdc-form-field-infix {
+		width: 0;
+	}
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.newline-tooltip {
+	white-space: pre-line;
+}

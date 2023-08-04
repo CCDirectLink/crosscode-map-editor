@@ -8,6 +8,7 @@ import { Vec2 } from '../vec2';
 import { CCMapLayer } from './cc-map-layer';
 import { Filler } from './fill';
 import { pointsInLine } from './points-in-line';
+import { customPutTileAt } from './layer-helper';
 
 export class TileDrawer extends BaseObject {
 	
@@ -22,6 +23,8 @@ export class TileDrawer extends BaseObject {
 	private rightClickStart?: Point;
 	private rightClickEnd?: Point;
 	private renderLayersTransparent = false;
+	private rightPointerDown = false;
+	
 	
 	private container!: Phaser.GameObjects.Container;
 	
@@ -38,10 +41,10 @@ export class TileDrawer extends BaseObject {
 	}
 	
 	protected init() {
-		this.fillKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F, false);
-		this.transparentKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R, false);
-		this.visibilityKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V, false);
-		this.shiftKey = this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT, false);
+		this.fillKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.F, false);
+		this.transparentKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.R, false);
+		this.visibilityKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.V, false);
+		this.shiftKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT, false);
 		
 		this.container = this.scene.add.container(0, 0);
 		this.container.depth = 1000;
@@ -156,12 +159,12 @@ export class TileDrawer extends BaseObject {
 			if (this.lastDraw.x === p.x && this.lastDraw.y === p.y) {
 				return;
 			}
-
+			
 			// skip drawing if panning key is down
 			if (Globals.panning) {
 				return;
 			}
-
+			
 			this.dirty = true;
 			for (const tile of this.selectedTiles) {
 				
@@ -179,7 +182,7 @@ export class TileDrawer extends BaseObject {
 							return;
 						}
 						
-						phaserLayer.putTileAt(tile.id, point.x, point.y, false);
+						customPutTileAt(tile.id, point.x, point.y, phaserLayer.layer);
 						
 						if (!this.shiftKey.isDown) {
 							Globals.autotileService.drawTile(this.layer, point.x, point.y, tile.id);
@@ -217,11 +220,12 @@ export class TileDrawer extends BaseObject {
 		this.addKeybinding({event: 'pointerdown', fun: pointerDown, emitter: this.scene.input});
 		
 		const pointerUp = (pointer: Phaser.Input.Pointer) => {
-			if (pointer.rightButtonReleased()) {
+			if (pointer.rightButtonReleased() && this.rightPointerDown) {
 				this.onMouseRightUp();
 			}
 		};
 		this.addKeybinding({event: 'pointerup', fun: pointerUp, emitter: this.scene.input});
+		this.addKeybinding({event: 'pointerupoutside', fun: pointerUp, emitter: this.scene.input});
 		
 		
 		const fill = () => {
@@ -285,6 +289,7 @@ export class TileDrawer extends BaseObject {
 	}
 	
 	private onMouseRightDown() {
+		this.rightPointerDown = true;
 		if (!this.layer) {
 			return;
 		}
@@ -314,6 +319,7 @@ export class TileDrawer extends BaseObject {
 	}
 	
 	private onMouseRightUp() {
+		this.rightPointerDown = false;
 		if (!this.layer) {
 			return;
 		}
@@ -368,10 +374,10 @@ export class TileDrawer extends BaseObject {
 		// reset last draw when selected tiles change
 		this.lastDraw.x = -1;
 		this.previewTileMap.removeAllLayers();
-		const layer = this.previewTileMap.createBlankLayer('layer', 'only', 0, 0, 40, 40);
+		const layer = this.previewTileMap.createBlankLayer('layer', 'only', 0, 0, 40, 40)!;
 		
 		this.selectedTiles.forEach(tile => {
-			layer.putTileAt(tile.id, tile.offset.x, tile.offset.y, false);
+			customPutTileAt(tile.id, tile.offset.x, tile.offset.y, layer.layer);
 		});
 		
 		this.previewLayer = layer;

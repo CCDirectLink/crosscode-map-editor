@@ -1,8 +1,8 @@
-import { Point3 } from '../../../../models/cross-code-map';
+import { Point, Point3 } from '../../../../models/cross-code-map';
 import { Globals } from '../../../globals';
 import { Helper } from '../../helper';
 import { CCEntity, EntityAttributes, Fix, ScaleSettings } from '../cc-entity';
-import { Anims, AnimSheet } from './prop';
+import { Anims, AnimSheet } from '../../sheet-parser';
 
 export class Destructible extends CCEntity {
 	private attributes: EntityAttributes = {
@@ -63,8 +63,8 @@ export class Destructible extends CCEntity {
 		const sheets: Fix[] = [];
 		const defaultSheet = type.anims.sheet as AnimSheet;
 		
-		for (const sub of type.anims.SUB) {
-			const sheet = defaultSheet || type.anims.namedSheets[sub.sheet!];
+		for (const sub of (type.anims.SUB as Anims[])) {
+			const sheet = defaultSheet || type.anims.namedSheets![sub.sheet as string];
 			let frame = sub.frames ? sub.frames[0] : 0;
 			
 			// frame 1 is always glow, don't show in map editor
@@ -72,7 +72,7 @@ export class Destructible extends CCEntity {
 				frame = 0;
 			}
 			
-			const offset = {
+			const offset: Partial<Point> = {
 				x: 0,
 				y: 0
 			};
@@ -146,7 +146,7 @@ interface DestructibleType {
 	};
 }
 
-interface SheetReference {
+export interface SheetReference {
 	sheet: string;
 	name: string;
 }

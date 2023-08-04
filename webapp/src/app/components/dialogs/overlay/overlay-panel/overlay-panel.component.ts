@@ -29,6 +29,8 @@ export class OverlayPanelComponent {
 	@Input() title = '';
 	@Input() allowDrag = true;
 	@Input() customSize?: { width?: string, height?: string };
+	@Input() left?: string;
+	@Input() top?: string;
 	@Input() showButtonDivider = false;
 	
 	classes: { [key: string]: boolean } = {};
