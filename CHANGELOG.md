@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - Added support for parallax layers (`distance != 1`)
 - The size of every individual layer can now be changed instead of using the map size
+- Added preview to see how the parallax effect would look ingame
 
 ### Fixed
 - Layers with different sizes are now saved properly [#272](https://github.com/CCDirectLink/crosscode-map-editor/issues/272)
