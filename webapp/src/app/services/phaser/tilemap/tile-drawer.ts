@@ -398,10 +398,14 @@ export class TileDrawer extends BaseObject {
 		}
 		
 		const pointer = this.scene.input.activePointer;
-		const p = Helper.worldToTile(pointer.worldX, pointer.worldY);
+		const p = Helper.worldToTile(pointer.worldX - this.layer.x, pointer.worldY - this.layer.y);
 		
 		if (this.selectedTiles.length > 0) {
 			Filler.fill(this.layer, this.selectedTiles[0].id, p);
+			Globals.stateHistoryService.saveState({
+				name: 'fill',
+				icon: 'format_color_fill'
+			});
 		}
 		
 	}
