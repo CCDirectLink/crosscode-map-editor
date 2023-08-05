@@ -8,10 +8,9 @@ import { MapPan } from './map-pan';
 import { CCMap } from './tilemap/cc-map';
 import { TileDrawer } from './tilemap/tile-drawer';
 import { LayerParallax } from './layer-parallax';
+import { IngamePreview } from './ingame-preview';
 
 export class MainScene extends Phaser.Scene {
-	
-	private readonly borderSize = 1;
 	
 	private sub?: Subscription;
 	
@@ -71,7 +70,10 @@ export class MainScene extends Phaser.Scene {
 		this.add.existing(tileDrawer);
 		
 		this.add.existing(entityManager);
-		this.add.existing(new LayerParallax(this));
+		
+		const preview = new IngamePreview(this);
+		this.add.existing(preview);
+		this.add.existing(new LayerParallax(this, preview));
 
 		const coordsReporter = new CoordsReporter(this);
 		this.add.existing(coordsReporter);

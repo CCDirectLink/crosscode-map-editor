@@ -192,7 +192,7 @@ export class CCMapLayer {
 		const oldLayer = this.layer as typeof this.layer | undefined;
 		
 		if (!tileset) {
-			tileset = oldLayer?.tileset[0].name ?? [];
+			tileset = oldLayer?.tileset[0]?.name ?? [];
 		}
 		if (!tiles) {
 			tiles = oldLayer?.layer?.data;

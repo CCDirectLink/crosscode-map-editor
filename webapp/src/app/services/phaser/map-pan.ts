@@ -1,8 +1,9 @@
 import { Point } from '../../models/cross-code-map';
 import { Globals } from '../globals';
 import { Vec2 } from './vec2';
+import { PreUpdate } from './pre-update';
 
-export class MapPan extends Phaser.GameObjects.GameObject {
+export class MapPan extends Phaser.GameObjects.GameObject implements PreUpdate{
 	private isScrolling = false;
 	private startMouse: Point = {x: 0, y: 0};
 	private startCam: Point = {x: 0, y: 0};
