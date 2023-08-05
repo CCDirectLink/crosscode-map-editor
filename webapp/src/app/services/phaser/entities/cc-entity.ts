@@ -214,6 +214,11 @@ export abstract class CCEntity extends BaseObject {
 		}
 	}
 	
+	addPosition(x: number, y: number) {
+		this.container.x += x;
+		this.container.y += y;
+	}
+	
 	updateSettings() {
 		const s = this.entitySettings;
 		const settings = this.details.settings;

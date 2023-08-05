@@ -19,6 +19,7 @@ export class CCMap {
 	
 	private historySub: Subscription;
 	private offsetSub: Subscription;
+	private offsetSub2: Subscription;
 	
 	filename = '';
 	path?: string;
@@ -63,11 +64,13 @@ export class CCMap {
 		});
 		
 		this.offsetSub = Globals.globalEventsService.offsetMap.subscribe(offset => this.offsetMap(offset));
+		this.offsetSub2 = Globals.globalEventsService.offsetEntities.subscribe(offset => this.offsetEntities(offset));
 	}
 	
 	destroy() {
 		this.historySub.unsubscribe();
 		this.offsetSub.unsubscribe();
+		this.offsetSub2.unsubscribe();
 	}
 	
 	async loadMap(map: CrossCodeMap, skipInit = false) {
@@ -141,6 +144,12 @@ export class CCMap {
 	
 	offsetMap(offset: Point, borderTiles = false) {
 		this.layers.forEach(layer => layer.offsetLayer(offset, borderTiles));
+	}
+	
+	offsetEntities(offset: Point) {
+		for (const entity of this.entityManager.entities) {
+			entity.addPosition(offset.x, offset.y);
+		}
 	}
 	
 	addLayer(layer: CCMapLayer) {

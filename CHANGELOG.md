@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+### Added
+- Added checkbox to "Offset Map" to optionally include entities [#279](https://github.com/CCDirectLink/crosscode-map-editor/issues/279)
+
 ## [1.0.0] 2023-08-04
 
 ### Added

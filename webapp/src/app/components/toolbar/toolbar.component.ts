@@ -109,8 +109,11 @@ export class ToolbarComponent implements OnInit {
 	}
 	
 	offsetMap() {
-		this.dialog.open(OffsetMapComponent, {
-			data: this.map
+		this.overlayService.open(OffsetMapComponent, {
+			positionStrategy: this.overlay.position().global()
+				.left('23vw')
+				.top('calc(64px + 6vh / 2)'),
+			hasBackdrop: true
 		});
 	}
 	
