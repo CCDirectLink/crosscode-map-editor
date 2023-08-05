@@ -135,8 +135,12 @@ export class CCMap {
 		this.mapWidth = width;
 		this.mapHeight = height;
 		
-		this.layers.forEach(layer => layer.resize(width, height));
-		Globals.phaserEventsService.updateMapBorder.next(true);
+		this.layers.forEach(layer => {
+			// only update layers with distance: 1, parallax should not be touched
+			if (layer.details.distance === 1) {
+				layer.resize(width, height);
+			}
+		});
 	}
 	
 	offsetMap(offset: Point, borderTiles = false) {

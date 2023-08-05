@@ -25,9 +25,9 @@ export class LayersComponent implements OnInit {
 	tilesets: string[] = []; //Angular view data
 	
 	constructor(private mapLoader: MapLoaderService,
-				private stateHistory: StateHistoryService,
-				private http: HttpClientService,
-				events: GlobalEventsService) {
+		private stateHistory: StateHistoryService,
+		private http: HttpClientService,
+		events: GlobalEventsService) {
 		events.toggleVisibility.subscribe(() => {
 			if (this.selectedLayer) {
 				this.toggleVisibility({
@@ -36,12 +36,18 @@ export class LayersComponent implements OnInit {
 				} as Event, this.selectedLayer);
 			}
 		});
-
+		
 		this.loadTilesets();
 	}
 	
 	ngOnInit() {
-		this.mapLoader.selectedLayer.subscribe(layer => this.selectedLayer = layer);
+		this.mapLoader.selectedLayer.subscribe(layer => {
+			this.selectedLayer = layer;
+			for (const layer of (this.map?.layers ?? [])) {
+				layer.select(false);
+			}
+			layer?.select(true);
+		});
 		this.mapLoader.tileMap.subscribe(tilemap => this.map = tilemap);
 	}
 	
@@ -117,9 +123,6 @@ export class LayersComponent implements OnInit {
 	}
 	
 	selectLayer(layer?: CCMapLayer) {
-		if (layer) {
-			layer.visible = true;
-		}
 		this.mapLoader.selectedLayer.next(layer);
 	}
 	
@@ -130,17 +133,17 @@ export class LayersComponent implements OnInit {
 		this.selectedLayer.updateTileset(name);
 		this.mapLoader.selectedLayer.next(this.selectedLayer);
 	}
-
+	
 	getTilesetName(path: string): string {
 		return path.substring('media/map/'.length, path.length - '.png'.length);
 	}
-
+	
 	private async loadTilesets() {
 		if (LayersComponent.tilesets.length > 0) {
 			this.tilesets = LayersComponent.tilesets;
 			return;
 		}
-
+		
 		LayersComponent.tilesets = await firstValueFrom(this.http.getAllTilesets());
 		this.tilesets = LayersComponent.tilesets;
 	}
@@ -150,6 +153,21 @@ export class LayersComponent implements OnInit {
 			throw new Error('no layer selected');
 		}
 		this.selectedLayer.updateLevel(level);
+	}
+	
+	updateSize() {
+		this.selectedLayer?.resize(this.selectedLayer?.details.width, this.selectedLayer?.details.height);
+		this.stateHistory.saveState({
+			name: 'Layer resized',
+			icon: 'resize'
+		});
+	}
+	
+	updateDistance() {
+		this.stateHistory.saveState({
+			name: 'Distance changed',
+			icon: 'fit_screen'
+		});
 	}
 	
 	drop(event: CdkDragDrop<string[]>) {

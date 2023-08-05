@@ -7,14 +7,13 @@ import { EntityManager } from './entities/entity-manager';
 import { MapPan } from './map-pan';
 import { CCMap } from './tilemap/cc-map';
 import { TileDrawer } from './tilemap/tile-drawer';
+import { LayerParallax } from './layer-parallax';
 
 export class MainScene extends Phaser.Scene {
 	
 	private readonly borderSize = 1;
 	
-	private border?: Phaser.GameObjects.Rectangle;
 	private sub?: Subscription;
-	private borderVisible = true;
 	
 	constructor() {
 		super({key: 'main'});
@@ -23,6 +22,7 @@ export class MainScene extends Phaser.Scene {
 	preload() {
 		
 		this.load.image('pixel', 'assets/pixel.png');
+		this.load.image('ingame', 'assets/ingame.png');
 		
 		this.load.json('destructibles.json', 'assets/destructibles.json');
 		this.load.json('destructible-types.json', 'assets/destructible-types.json');
@@ -52,7 +52,6 @@ export class MainScene extends Phaser.Scene {
 		this.sub = Globals.mapLoaderService.map.subscribe((map) => {
 			if (map) {
 				tileMap.loadMap(map);
-				this.rescaleBorder();
 				
 				// reset camera position on map load
 				const cam = this.cameras.main;
@@ -64,13 +63,6 @@ export class MainScene extends Phaser.Scene {
 				cam.centerOn(map.mapWidth * s / 2 + offset, map.mapHeight * s / 2);
 			}
 		});
-		Globals.phaserEventsService.updateMapBorder.subscribe(() => this.rescaleBorder());
-		Globals.phaserEventsService.showMapBorder.subscribe(visible => {
-			if (this.border) {
-				this.border.visible = visible;
-			}
-			this.borderVisible = visible;
-		});
 		
 		const pan = new MapPan(this, 'mapPan');
 		this.add.existing(pan);
@@ -79,6 +71,7 @@ export class MainScene extends Phaser.Scene {
 		this.add.existing(tileDrawer);
 		
 		this.add.existing(entityManager);
+		this.add.existing(new LayerParallax(this));
 
 		const coordsReporter = new CoordsReporter(this);
 		this.add.existing(coordsReporter);
@@ -104,19 +97,5 @@ export class MainScene extends Phaser.Scene {
 		if (this.sub) {
 			this.sub.unsubscribe();
 		}
-	}
-	
-	private rescaleBorder() {
-		const s = Globals.TILE_SIZE;
-		
-		if (this.border) {
-			this.border.destroy();
-		}
-		const map = Globals.map;
-		
-		this.border = this.add.rectangle(-this.borderSize, -this.borderSize, map.mapWidth * s + this.borderSize * 2, map.mapHeight * s + this.borderSize * 2);
-		this.border.setStrokeStyle(this.borderSize * 2, 0xfc4445, 1);
-		this.border.setOrigin(0, 0);
-		this.border.visible = this.borderVisible;
 	}
 }

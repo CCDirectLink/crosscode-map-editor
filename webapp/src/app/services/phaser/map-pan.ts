@@ -77,7 +77,6 @@ export class MapPan extends Phaser.GameObjects.GameObject {
 			cam.scrollX += oldX - mouse.x;
 			cam.scrollY += oldY - mouse.y;
 		}
-		Globals.phaserEventsService.updateMapBorder.next(true);
 	}
 	
 	preUpdate() {

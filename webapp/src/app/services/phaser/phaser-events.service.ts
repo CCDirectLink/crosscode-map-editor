@@ -8,6 +8,4 @@ import { SelectedTile } from '../../models/tile-selector';
 export class PhaserEventsService {
 	
 	changeSelectedTiles = new Subject<SelectedTile[]>();
-	updateMapBorder = new Subject<boolean>();
-	showMapBorder = new Subject<boolean>();
 }
