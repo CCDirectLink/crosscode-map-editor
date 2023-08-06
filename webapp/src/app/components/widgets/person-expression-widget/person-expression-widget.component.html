@@ -2,11 +2,12 @@
 	[attribute]="attribute"
 	[custom]="settings[key]"
 	[onlyFaces]="true"
-	(onChange)="updateType($event)"
+	(onChange)="updateType($event); expression.ngOnChanges()"
 	key="person"
 ></app-character-widget>
 
 <app-custom-expression-widget
+	#expression
 	[custom]="settings[key]"
 	(onChange)="updateType($event)"
 	key="expression"
