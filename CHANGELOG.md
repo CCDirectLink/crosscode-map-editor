@@ -5,8 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- added graphical selection widget to `person-expression`
+
 ### Changed
 - Added manual input field to graphical selection widget for `Prop`, `Enemy`, `NPC`
+- event `person-expression` now only shows characters that have a face [#284](https://github.com/CCDirectLink/crosscode-map-editor/issues/284)
 
 ## [1.0.0] 2023-08-04
 

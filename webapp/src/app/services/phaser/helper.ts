@@ -115,6 +115,7 @@ export class Helper {
 			return true;
 		}
 		
+		// TODO: save promise to avoid loading the same texture simultaneously
 		const file = await Globals.httpService.resolveFile(key).toPromise().catch(() => false);
 		if (!file) {
 			return false;
