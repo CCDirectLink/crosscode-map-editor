@@ -61,6 +61,10 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget {
 		};
 		this.rightGroup.click = prop => this.setPropType(prop);
 		
+		this.comp.manualKey = this.key;
+		this.comp.manualValue = this.settings[this.key];
+		this.comp.manualValueChange.subscribe(v => this.setPropType(v, true));
+		
 		this.setPropType(this.settings[this.key] ?? '');
 		await this.updateProps();
 		this.updateRightSide();
@@ -79,6 +83,7 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget {
 		if (updateRightSide) {
 			this.updateRightSide();
 		}
+		this.comp.manualValue = prop;
 	}
 	
 	private updateRightSide() {

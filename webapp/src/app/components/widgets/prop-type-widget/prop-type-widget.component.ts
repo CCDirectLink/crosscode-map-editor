@@ -68,6 +68,11 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 		this.rightGroup.click = prop => this.setPropAnim(prop);
 		
 		this.comp.sheets = await lastValueFrom(this.http.getProps());
+		
+		this.comp.manualKey = this.key;
+		this.comp.manualValue = this.settings.propType?.name;
+		this.comp.manualValueChange.subscribe(v => this.setPropType(v));
+		
 		await this.updateProps();
 		this.updatePropAnims();
 		
@@ -91,6 +96,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 		}
 		this.setSetting(this.nameKey, prop);
 		this.updatePropAnims();
+		this.comp.manualValue = this.settings.propType?.name;
 	}
 	
 	private setPropAnim(propAnim: string) {
