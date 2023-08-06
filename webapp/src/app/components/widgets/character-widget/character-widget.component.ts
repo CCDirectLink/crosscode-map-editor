@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { OverlayWidget } from '../overlay-widget';
 import { ImageSelectOverlayComponent, PropListGroup } from '../shared/image-select-overlay/image-select-overlay.component';
 import { HttpClientService } from '../../../services/http-client.service';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
 import { lastValueFrom } from 'rxjs';
-import { NPC, NpcAttributes } from '../../../services/phaser/entities/registry/npc';
+import { CharacterSettings, NPC, NpcAttributes } from '../../../services/phaser/entities/registry/npc';
+import { Helper } from '../../../services/phaser/helper';
 
 @Component({
 	selector: 'app-character-widget',
@@ -13,6 +14,8 @@ import { NPC, NpcAttributes } from '../../../services/phaser/entities/registry/n
 	styleUrls: ['./character-widget.component.scss', '../widget.scss']
 })
 export class CharacterWidgetComponent extends OverlayWidget {
+	
+	@Input() onlyFaces = false;
 	
 	private props: {
 		prefix: string;
@@ -106,7 +109,15 @@ export class CharacterWidgetComponent extends OverlayWidget {
 		this.comp.leftGroup.props = [];
 		this.rightGroup.props = [];
 		
-		const chars = (await lastValueFrom(this.http.getCharacters())).map(v => v.replaceAll('/', '.'));
+		let chars = (await lastValueFrom(this.http.getCharacters())).map(v => v.replaceAll('/', '.'));
+		
+		if (this.onlyFaces) {
+			chars = await Helper.asyncFilter(chars, async v => {
+				const name = v.replaceAll('.', '/');
+				const settings = await Helper.getJsonPromise('data/characters/' + name) as CharacterSettings | undefined;
+				return !!settings?.face;
+			});
+		}
 		
 		this.props = await Promise.all(chars.map(async char => {
 			const prop: typeof this.props[0] = {

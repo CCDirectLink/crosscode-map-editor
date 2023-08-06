@@ -153,4 +153,9 @@ export class Helper {
 		}
 		return mapStyles.default[type];
 	}
+	
+	public static async asyncFilter<T>(arr: T[], predicate: (v: T) => Promise<boolean>) {
+		const results = await Promise.all(arr.map(predicate));
+		return arr.filter((_v, index) => results[index]);
+	}
 }
