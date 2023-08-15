@@ -137,17 +137,23 @@ export class CCMapLayer {
 		
 		oldLayer.destroy();
 		
-		this.updateLevel(this.details.level);
+		this.updateLevel(this.details.levelName ?? this.details.level);
 		this.updateLighter(!!this.details.lighter);
 	}
 	
-	updateLevel(level: number) {
-		this.details.level = level;
+	updateLevel(level: number | string) {
+		if(typeof level == 'string') {
+			this.details.levelName = level;
+			this.details.level = level === 'first' ? 0 : 10;
+		} else {
+			this.details.level = level;
+			delete this.details.levelName;
+		}
 		let zIndex = this.details.level * 10;
 		if (isNaN(zIndex)) {
 			zIndex = 999;
 		}
-		this.layer.depth = this.details.level * 10;
+		this.layer.depth = zIndex;
 	}
 	
 	updateLighter(lighter: boolean) {

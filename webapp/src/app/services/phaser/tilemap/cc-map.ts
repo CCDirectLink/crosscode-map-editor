@@ -7,6 +7,15 @@ import { CCMapLayer } from './cc-map-layer';
 export class CCMap {
 	name = '';
 	levels: { height: number }[] = [];
+	specialLevels = [
+		'first',
+		'last',
+		'light',
+		'postlight',
+		'object1',
+		'object2',
+		'object3',
+	];
 	mapWidth = 0;
 	mapHeight = 0;
 	masterLevel = 0;

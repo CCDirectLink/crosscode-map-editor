@@ -46,7 +46,7 @@ export class LayersComponent implements OnInit {
 	}
 	
 	getDisplayName(layer: CCMapLayer): string {
-		return `${layer.details.name} (${layer.details.level})`;
+		return `${layer.details.name} (${layer.details.levelName ?? layer.details.level})`;
 	}
 	
 	toggleVisibility(event: Event, layer: CCMapLayer) {

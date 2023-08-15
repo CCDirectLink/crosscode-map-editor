@@ -59,8 +59,9 @@
 					<span class="label">Level: </span>
 					<mat-form-field>
 						<mat-select fxFlex [disabled]="!selectedLayer" floatPlaceholder="never"
-						            [ngModel]="selectedLayer?.details?.level" (selectionChange)="updateLevel($event.value)">
+						            [ngModel]="selectedLayer?.details?.levelName ?? selectedLayer?.details?.level" (selectionChange)="updateLevel($event.value)">
 							<mat-option *ngFor="let level of map?.levels; let i=index" [value]="i">{{i}}</mat-option>
+							<mat-option *ngFor="let level of map?.specialLevels;" [value]="level">{{level}}</mat-option>
 						</mat-select>
 					</mat-form-field>
 				</div>
