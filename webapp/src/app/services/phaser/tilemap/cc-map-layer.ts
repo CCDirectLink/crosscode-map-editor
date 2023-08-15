@@ -29,7 +29,7 @@ export class CCMapLayer {
 			} else {
 				details.levelName = details.level;
 				if (details.level.startsWith('first')) {
-					details.level = 0;
+					details.level = -1;
 				} else {
 					// TODO: get actual max level;
 					details.level = 10;
@@ -144,7 +144,7 @@ export class CCMapLayer {
 	updateLevel(level: number | string) {
 		if(typeof level == 'string') {
 			this.details.levelName = level;
-			this.details.level = level === 'first' ? 0 : 10;
+			this.details.level = level === 'first' ? -1 : 10;
 		} else {
 			this.details.level = level;
 			delete this.details.levelName;
