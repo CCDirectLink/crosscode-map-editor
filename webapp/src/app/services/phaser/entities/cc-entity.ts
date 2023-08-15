@@ -5,6 +5,7 @@ import { CCMap } from '../tilemap/cc-map';
 import { Vec2 } from '../vec2';
 
 import { Subscription } from 'rxjs';
+import { AbstractWidget } from '../../../components/widgets/abstract-widget';
 import { Globals } from '../../globals';
 import { BaseObject } from '../base-object';
 
@@ -53,10 +54,31 @@ export interface Fix {
 	flipY?: boolean;
 	tint?: number;
 	alpha?: number;
+	
+	offY?: number;
+	wallY?: number;
+	shape?: string;
+	aboveZ?: string | number;
+	pivotX?: number;
+	pivotY?: number;
+	offX?: number;
+	terrain?: string;
+	off?: null;
+	wall?: number;
+	shapeType?: string;
+	
+	// reduces width/height on scalable props to allow space for end sprites
+	offsetWidth?: number;
+	offsetHeight?: number;
+	scalable?: boolean;
+	ignoreBoundingboxX?: boolean;
+	ignoreBoundingboxY?: boolean;
 }
 
 
 export abstract class CCEntity extends BaseObject {
+	
+	private static renderBackground?: Phaser.GameObjects.Graphics;
 	
 	private map: CCMap;
 	private levelOffset = 0;
@@ -68,6 +90,8 @@ export abstract class CCEntity extends BaseObject {
 	
 	private readonly filterSubscription: Subscription;
 	
+	
+	protected widgets: Record<string, AbstractWidget> = {};
 	
 	// input (is handled mostly by entity manager)
 	private collisionImage!: Phaser.GameObjects.Graphics;
@@ -207,103 +231,119 @@ export abstract class CCEntity extends BaseObject {
 		// setup sprite
 		if (s.sheets && s.sheets.fix) {
 			for (const fix of s.sheets.fix) {
-				if (!this.scene.textures.exists(fix.gfx)) {
+				if (!this.scene.textures.exists(fix.gfx.trim())) {
 					console.error(`texture not loaded: [${fix.gfx}] in class: [${this.constructor.name}]`);
 				}
 			}
-			if (!s.sheets.ignoreScalable && (s.scalableX || s.scalableY)) {
-				// scalable
-				const fix = s.sheets.fix[0];
-				const width = settings.size.x;
-				const height = (fix.renderHeight || s.baseSize.z) + settings.size.y;
-				
-				for (let x = 0; x < width; x += fix.w) {
-					const imgWidth = Math.min(fix.w, width - x);
-					for (let y = 0; y < height; y += fix.h) {
-						const imgHeight = Math.min(fix.h, height - y);
-						const img = this.scene.add.image(x, -y + settings.size.y, fix.gfx);
-						img.setCrop(fix.x, fix.y, imgWidth, imgHeight);
-						
-						img.setOrigin(0, 0);
-						
-						// level offset
-						img.y += this.levelOffset;
-						
-						// origin offset x=0, y=1
-						img.y -= imgHeight;
-						
-						// crop offset
-						img.x -= fix.x;
-						img.y -= fix.y;
-						
-						if (fix.renderMode === 'lighter') {
-							img.blendMode = Phaser.BlendModes.ADD;
-						}
-						
-						this.container.add(img);
-						this.images.push(img);
-					}
-				}
-			} else {
-				// default
-				s.sheets.fix.forEach(sheet => {
-					sheet.x = sheet.x || 0;
-					sheet.y = sheet.y || 0;
-					sheet.offsetX = sheet.offsetX || 0;
-					sheet.offsetY = sheet.offsetY || 0;
+			
+			for (const fix of s.sheets.fix) {
+				const gfx = fix.gfx.trim();
+				if (!s.sheets.ignoreScalable && (s.scalableX || s.scalableY) && fix.scalable) {
+					// scalable
+					const offsetX = fix.offsetX ?? 0;
+					const offsetY = fix.offsetY ?? 0;
+					const offsetWidth = fix.offsetWidth ?? 0;
+					const offsetHeight = fix.offsetHeight ?? 0;
+					const width = settings['size'].x - offsetX - offsetWidth;
+					const height = (fix.renderHeight || s.baseSize.z) + settings['size'].y - offsetY - offsetHeight;
 					
-					const img = this.scene.add.image(sheet.offsetX, sheet.offsetY, sheet.gfx);
+					for (let x = 0; x < width; x += fix.w) {
+						const imgWidth = Math.min(fix.w, width - x);
+						for (let y = 0; y < height; y += fix.h) {
+							const imgHeight = Math.min(fix.h, height - y);
+							const img = this.scene.add.image(x, -y + settings['size'].y, gfx);
+							img.setCrop(fix.x, fix.y, imgWidth, imgHeight);
+							
+							img.setOrigin(0, 0);
+							
+							img.alpha = fix.alpha ?? 1;
+							
+							// level offset
+							img.y += this.levelOffset;
+							
+							// origin offset x=0, y=1
+							img.y -= imgHeight;
+							
+							// crop offset
+							img.x -= fix.x;
+							img.y -= fix.y;
+							
+							// fix offset
+							img.x += offsetX;
+							img.y -= offsetY;
+							
+							if (fix.renderMode === 'lighter') {
+								img.blendMode = Phaser.BlendModes.ADD;
+							}
+							
+							this.container.add(img);
+							this.images.push(img);
+						}
+					}
+				} else {
+					// default
+					
+					fix.x = fix.x || 0;
+					fix.y = fix.y || 0;
+					fix.offsetX = fix.offsetX || 0;
+					fix.offsetY = fix.offsetY || 0;
+					
+					const img = this.scene.add.image(fix.offsetX, fix.offsetY, gfx);
 					img.setOrigin(0, 0);
 					
-					if (sheet.tint !== undefined) {
-						img.setTintFill(sheet.tint);
+					if (fix.tint !== undefined) {
+						img.setTintFill(fix.tint);
 					}
 					
-					img.alpha = sheet.alpha || 1;
+					img.alpha = fix.alpha ?? 1;
 					
 					// scale, used for single color
-					img.scaleX = sheet.scaleX || 1;
-					img.scaleY = sheet.scaleY || 1;
+					img.scaleX = fix.scaleX || 1;
+					img.scaleY = fix.scaleY || 1;
 					
 					// level offset
 					img.y += this.levelOffset;
 					
-					// origin offset x=0.5, y=1
-					img.x -= sheet.w / 2;
-					img.y -= sheet.h;
-					
 					// bounding box offset
-					img.x += boundBoxOffset.x;
-					img.y += boundBoxOffset.y;
 					
-					// flip crop offset
-					let cropX = sheet.x;
-					if (sheet.flipX) {
-						cropX = img.displayWidth - sheet.x - sheet.w;
+					if (!fix.ignoreBoundingboxX) {
+						img.x += boundBoxOffset.x;
+					}
+					if (!fix.ignoreBoundingboxY) {
+						img.y += boundBoxOffset.y;
 					}
 					
-					let cropY = sheet.y;
-					if (sheet.flipY) {
+					// origin offset x=0.5, y=1
+					img.x -= fix.w / 2;
+					img.y -= fix.h;
+					
+					// flip crop offset
+					let cropX = fix.x;
+					if (fix.flipX) {
+						cropX = img.displayWidth - fix.x - fix.w;
+					}
+					
+					let cropY = fix.y;
+					if (fix.flipY) {
 						// TODO: untested
-						cropY = img.displayWidth - sheet.y - sheet.h;
+						cropY = img.displayWidth - fix.y - fix.h;
 					}
 					
 					// crop offset
-					img.x -= sheet.x;
-					img.y -= sheet.y;
+					img.x -= fix.x;
+					img.y -= fix.y;
 					
-					img.setCrop(cropX, cropY, sheet.w, sheet.h);
-					img.flipX = !!sheet.flipX;
-					img.flipY = !!sheet.flipY;
+					img.setCrop(cropX, cropY, fix.w, fix.h);
+					img.flipX = !!fix.flipX;
+					img.flipY = !!fix.flipY;
 					
-					if (sheet.renderMode === 'lighter') {
+					if (fix.renderMode === 'lighter') {
 						img.blendMode = Phaser.BlendModes.ADD;
 					}
 					
 					this.container.add(img);
 					this.images.push(img);
-				});
-				
+				}
 				if (s.sheets.offset) {
 					this.images.forEach(img => Vec2.add(img, s.sheets.offset!));
 				}
@@ -372,7 +412,11 @@ export abstract class CCEntity extends BaseObject {
 		}
 	}
 	
-	destroy() {
+	setWidgets(widgets: Record<string, AbstractWidget>) {
+		this.widgets = widgets;
+	}
+	
+	override destroy() {
 		super.destroy();
 		this.container.destroy();
 		this.filterSubscription.unsubscribe();
@@ -412,6 +456,10 @@ export abstract class CCEntity extends BaseObject {
 	
 	protected abstract setupType(settings: any): Promise<void>;
 	
+	public doubleClick(): void {
+	
+	}
+	
 	public async updateType() {
 		const settings = this.details.settings;
 		await this.setupType(settings);
@@ -426,12 +474,12 @@ export abstract class CCEntity extends BaseObject {
 		const settings = this.details.settings;
 		
 		const baseSize: Point3 = {x: 16, y: 16, z: 0};
-		if (settings.size) {
-			baseSize.x = settings.size.x;
-			baseSize.y = settings.size.y;
+		if (settings['size']) {
+			baseSize.x = settings['size'].x;
+			baseSize.y = settings['size'].y;
 		}
 		
-		baseSize.z = settings.zHeight || settings.wallZHeight || 0;
+		baseSize.z = settings['zHeight'] || settings['wallZHeight'] || 0;
 		
 		this.entitySettings = <any>{};
 		this.entitySettings.baseSize = baseSize;
@@ -529,12 +577,12 @@ export abstract class CCEntity extends BaseObject {
 	
 	public getActualSize(): Point3 {
 		const s = this.entitySettings;
-		const size = Object.assign({}, this.details.settings.size || s.baseSize);
+		const size = Object.assign({}, this.details.settings['size'] || s.baseSize);
 		try {
 			size.x = Number(size.x);
 			size.y = Number(size.y);
 			if (size.z !== 0) {
-				size.z = Number(size.z || this.details.settings.zHeight || this.details.settings.wallZHeight || (s.baseSize ? s.baseSize.z || 0 : 0));
+				size.z = Number(size.z || this.details.settings['zHeight'] || this.details.settings['wallZHeight'] || (s.baseSize ? s.baseSize.z || 0 : 0));
 			}
 		} catch (e) {
 			console.log(this);
@@ -580,7 +628,7 @@ export abstract class CCEntity extends BaseObject {
 		this.inputZone.y = collImg.y;
 		this.inputZone.setSize(shape.width, shape.height, true);
 		
-		this.generateText(this.details.settings.name, size);
+		this.generateText(this.details.settings['name'], size);
 	}
 	
 	private generateText(name: string, size: Point) {
@@ -588,7 +636,7 @@ export abstract class CCEntity extends BaseObject {
 			if (!this.text) {
 				this.text = this.scene.add.text(0, 0, '', {
 					font: '400 18pt Roboto',
-					fill: 'white',
+					color: 'white',
 				});
 				this.text.setOrigin(0.5, 0.5);
 				this.text.setScale(0.3);
@@ -615,7 +663,7 @@ export abstract class CCEntity extends BaseObject {
 		}
 		
 		return this.details.type.toLowerCase().includes(lower)
-			|| (this.details.settings.name || '').toLowerCase().includes(lower);
+			|| (this.details.settings['name'] || '').toLowerCase().includes(lower);
 	}
 	
 	private setVisible(visible: boolean) {
@@ -625,5 +673,69 @@ export abstract class CCEntity extends BaseObject {
 		} else {
 			this.container.alpha = 0.2;
 		}
+	}
+	
+	private getRenderBackground(width: number, height: number) {
+		if (!CCEntity.renderBackground) {
+			const g = this.scene.add.graphics({fillStyle: {color: 0x616161, alpha: 1}});
+			g.fillRect(0, 0, width, height);
+			g.fillStyle(0, 0.15);
+			for (let x = 0; x < width; x += 16) {
+				for (let y = 0; y < height; y += 16) {
+					if ((x + y) % 32 === 0) {
+						continue;
+					}
+					g.fillRect(x, y, 16, 16);
+				}
+			}
+			g.setActive(false);
+			g.setVisible(false);
+			CCEntity.renderBackground = g;
+		}
+		return CCEntity.renderBackground;
+	}
+	
+	public async generateHtmlImage(withBackground = true, offsetY?: number, width = 16 * 6, height = 16 * 7) {
+		const scale = 3;
+		const scaledWidth = width * scale;
+		const scaledHeight = height * scale;
+		
+		const name = Math.random() + '';
+		const texture = this.scene.textures.addDynamicTexture(name, scaledWidth, scaledHeight)!;
+		
+		texture.clear();
+		if (withBackground) {
+			const g = this.getRenderBackground(width, height);
+			g.setScale(scale);
+			texture.draw(g);
+		}
+		const x = scale * 16 * 3 - (this.getActualSize().x * scale) / 2;
+		const y = scale * (16 * 5 + (offsetY ?? 0));
+		
+		// drawing container directly is broken: https://github.com/photonstorm/phaser/issues/6546
+		for (const img of this.images) {
+			const sx = img.scaleX;
+			const sy = img.scaleY;
+			
+			img.setScale(
+				sx * scale,
+				sy * scale
+			);
+			texture.draw(
+				img,
+				x + img.x * scale,
+				y + img.y * scale
+			);
+			
+			img.setScale(sx, sy);
+		}
+		const res = await new Promise<HTMLImageElement>((res, rej) => {
+			texture!.snapshot(img => {
+				res(img as HTMLImageElement);
+			});
+		});
+		
+		this.scene.textures.remove(name);
+		return res;
 	}
 }

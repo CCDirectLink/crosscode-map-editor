@@ -54,6 +54,7 @@ export interface MapLayer {
 	visible: number;
 	tilesetName: string;
 	repeat: boolean;
+	lighter?: boolean;
 	distance: number;
 	tilesize: number;
 	moveSpeed: Point;

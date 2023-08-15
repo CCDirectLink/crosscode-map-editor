@@ -4,8 +4,10 @@
                   [@slideContent]="animation"
 >
 	<ng-container ngProjectAs="toolbar">
-		<label class="header" fxLayoutAlign="center" fxLayout="column">
-			<mat-form-field>
+		<label class="header no-error-msg" fxLayoutAlign="center" fxLayout="column">
+			<mat-form-field
+				appearance="outline"
+			>
 				<input matInput
 				       autocomplete="off"
 				       #filterInput

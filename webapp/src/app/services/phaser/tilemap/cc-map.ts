@@ -35,11 +35,30 @@ export class CCMap {
 			if (!container || !container.state) {
 				return;
 			}
+			
+			const makeLayerKey = (layer: CCMapLayer) => {
+				return `${layer.details.name}\n${layer.details.levelName}\n${layer.details.level}`;
+			};
+			
 			const selectedLayer = Globals.mapLoaderService.selectedLayer;
-			const i = this.layers.indexOf(<any>selectedLayer.getValue());
+			const oldLayers = this.layers.map(v => ({
+				key: makeLayerKey(v),
+				visible: v.visible,
+				selected: v === selectedLayer.getValue()
+			}));
+			
 			await this.loadMap(JSON.parse(container.state.json), true);
-			if (i >= 0 && this.layers.length > i) {
-				selectedLayer.next(this.layers[i]);
+			
+			for (const layer of this.layers) {
+				const key = makeLayerKey(layer);
+				const oldLayer = oldLayers.find(v => v.key === key);
+				if (!oldLayer) {
+					continue;
+				}
+				layer.visible = oldLayer.visible;
+				if (oldLayer.selected) {
+					selectedLayer.next(layer);
+				}
 			}
 		});
 		
@@ -141,10 +160,10 @@ export class CCMap {
 	public getUniqueMapid() {
 		return ++this.lastMapId;
 	}
-
+	
 	exportMap(): CrossCodeMap {
 		const out: CrossCodeMap = <any>{};
-
+		
 		for (const level of this.levels) {
 			const number = Number(level.height);
 			if (!Number.isNaN(number)) {

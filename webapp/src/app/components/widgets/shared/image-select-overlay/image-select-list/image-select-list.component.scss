@@ -1,0 +1,15 @@
+@use '../variables' as var;
+
+.headline {
+	font-weight: 500;
+	font-size: 20px;
+	margin-top: 8px;
+}
+
+.list {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, var.$card-width);
+	grid-gap: 1.5rem;
+	justify-content: center;
+	padding: 1rem;
+}

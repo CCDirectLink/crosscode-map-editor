@@ -34,7 +34,7 @@ export class FloatingWindowComponent implements OnInit, OnChanges {
 	}
 	
 	ngOnChanges(changes: SimpleChanges): void {
-		if (changes.visible) {
+		if (changes['visible']) {
 			this.updateContentStyle();
 		}
 	}

@@ -1,4 +1,4 @@
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @import "theme";
 
 $config: mat.define-typography-config();
@@ -6,15 +6,18 @@ $background: map_get($theme, background);
 
 .nav-container {
 	height: 100%;
+
+	& .mat-mdc-tab-group, .mat-mdc-tab-body-content > * {
+		height: 100%;
+	}
+
+	& .mat-mdc-tab-body-wrapper {
+		flex: auto;
+	}
 }
 
 .mat-tab-header {
 	background-color: rgba(255, 255, 255, 0.1);
-}
-
-// tab 100% height fix (https://github.com/angular/material2/issues/4591#issuecomment-308226870)
-.hacky-tab-height-fix {
-	height: calc(100vh - 64px - 49px);
 }
 
 .mat-tab-label {

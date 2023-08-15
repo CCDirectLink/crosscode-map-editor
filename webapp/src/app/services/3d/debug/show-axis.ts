@@ -1,4 +1,4 @@
-import { Color3, DynamicTexture, Mesh, Scene, StandardMaterial, Vector3 } from '@babylonjs/core';
+import { Color3, DynamicTexture, Mesh, MeshBuilder, Scene, StandardMaterial, Vector3 } from '@babylonjs/core';
 
 export function showAxis(size: number, scene: Scene) {
 	function makeTextPlane(text: string, color: string, size: number) {
@@ -14,26 +14,32 @@ export function showAxis(size: number, scene: Scene) {
 		return plane;
 	}
 	
-	const axisX = Mesh.CreateLines('axisX', [
-		new Vector3(), new Vector3(size, 0, 0), new Vector3(size * 0.95, 0.05 * size, 0),
-		new Vector3(size, 0, 0), new Vector3(size * 0.95, -0.05 * size, 0)
-	], scene);
+	const axisX = MeshBuilder.CreateLines('axisX', {
+		points: [
+			new Vector3(), new Vector3(size, 0, 0), new Vector3(size * 0.95, 0.05 * size, 0),
+			new Vector3(size, 0, 0), new Vector3(size * 0.95, -0.05 * size, 0)
+		]
+	}, scene);
 	axisX.color = new Color3(1, 0, 0);
 	const xChar = makeTextPlane('X', 'red', size / 10);
 	xChar.position = new Vector3(0.9 * size, -0.05 * size, 0);
 	
-	const axisY = Mesh.CreateLines('axisY', [
-		new Vector3(), new Vector3(0, size, 0), new Vector3(-0.05 * size, size * 0.95, 0),
-		new Vector3(0, size, 0), new Vector3(0.05 * size, size * 0.95, 0)
-	], scene);
+	const axisY = MeshBuilder.CreateLines('axisY', {
+		points: [
+			new Vector3(), new Vector3(0, size, 0), new Vector3(-0.05 * size, size * 0.95, 0),
+			new Vector3(0, size, 0), new Vector3(0.05 * size, size * 0.95, 0)
+		]
+	}, scene);
 	axisY.color = new Color3(0, 1, 0);
 	const yChar = makeTextPlane('Y', 'green', size / 10);
 	yChar.position = new Vector3(0, 0.9 * size, -0.05 * size);
 	
-	const axisZ = Mesh.CreateLines('axisZ', [
-		new Vector3(), new Vector3(0, 0, size), new Vector3(0, -0.05 * size, size * 0.95),
-		new Vector3(0, 0, size), new Vector3(0, 0.05 * size, size * 0.95)
-	], scene);
+	const axisZ = MeshBuilder.CreateLines('axisZ', {
+		points: [
+			new Vector3(), new Vector3(0, 0, size), new Vector3(0, -0.05 * size, size * 0.95),
+			new Vector3(0, 0, size), new Vector3(0, 0.05 * size, size * 0.95)
+		]
+	}, scene);
 	axisZ.color = new Color3(0, 0, 1);
 	const zChar = makeTextPlane('Z', 'blue', size / 10);
 	zChar.position = new Vector3(0, 0.05 * size, 0.9 * size);

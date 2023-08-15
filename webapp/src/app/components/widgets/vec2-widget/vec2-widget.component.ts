@@ -20,14 +20,14 @@ export class Vec2WidgetComponent extends AbstractWidget implements OnChanges {
 		this.scaleSettings = this.updateScaleSettings();
 	}
 	
-	ngOnChanges(): void {
+	override ngOnChanges(): void {
 		super.ngOnChanges();
 		this.scaleSettings = this.updateScaleSettings();
 		if (!this.settings[this.key]) {
 			const minSize = this.scaleSettings.baseSize;
 			const value = {
-				x: minSize.x > 0 ? minSize.x : 1,
-				y: minSize.y > 0 ? minSize.y : 1
+				x: minSize.x > 0 ? minSize.x : 0,
+				y: minSize.y > 0 ? minSize.y : 0
 			};
 			this.settings[this.key] = value;
 			this.updateType(value);

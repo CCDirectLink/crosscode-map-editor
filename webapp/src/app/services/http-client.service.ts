@@ -29,7 +29,31 @@ export class HttpClientService {
 	getMaps(): Observable<string[]> {
 		return this.request('api/allMaps', api.getAllMaps);
 	}
-
+	
+	getProps(): Observable<string[]> {
+		const folder = 'data/props/';
+		const extension = 'json';
+		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
+	}
+	
+	getScalableProps(): Observable<string[]> {
+		const folder = 'data/scale-props/';
+		const extension = 'json';
+		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
+	}
+	
+	getEnemies(): Observable<string[]> {
+		const folder = 'data/enemies/';
+		const extension = 'json';
+		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
+	}
+	
+	getCharacters(): Observable<string[]> {
+		const folder = 'data/characters/';
+		const extension = 'json';
+		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
+	}
+	
 	getMods(): Observable<string[]> {
 		return this.request('api/allMods', api.getAllMods);
 	}
@@ -41,7 +65,7 @@ export class HttpClientService {
 		const cc = this.electron.getAssetsPath();
 		return this.toObservable(api.get<T>(cc, path));
 	}
-
+	
 	resolveFile(path: string): Observable<string> {
 		if (!Globals.isElectron) {
 			return this.http.post<string>(Globals.URL + 'api/resolve', {path});
@@ -58,18 +82,19 @@ export class HttpClientService {
 		
 		return this.toObservable(api.saveFile(this.electron.getAssetsPath(), file));
 	}
-
+	
 	/**
 	 * Request a resource either from backend when run in the browser or directly from backend when run with Electron.
 	 * @param url 		URL of the backend endpoint relative to Globals.URL
 	 * @param common 	Direct call to common
+	 * @param args      Additional arguments for common
 	 */
-	private request<T>(url: string, common: (path: string) => Promise<T>): Observable<T> {
+	private request<T>(url: string, common: (path: string, ...args: string[]) => Promise<T>, ...args: string[]): Observable<T> {
 		if (!Globals.isElectron) {
 			return this.http.get<T>(Globals.URL + url);
 		}
 		const path = this.electron.getAssetsPath();
-		return this.toObservable(common(path));
+		return this.toObservable(common(path, ...args));
 	}
 	
 	private toObservable<T>(promise: Promise<T>): Observable<T> {

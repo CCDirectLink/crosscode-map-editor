@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "ES2020",
         "target": "ES2018",
         "moduleResolution": "node",
         "sourceMap": true,

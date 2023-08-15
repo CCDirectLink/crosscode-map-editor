@@ -31,7 +31,7 @@ export abstract class BaseObject extends Phaser.GameObjects.GameObject {
 	
 	protected abstract deactivate(): void;
 	
-	public setActive(value: boolean): this {
+	public override setActive(value: boolean): this {
 		if (this.active === value) {
 			return this;
 		}

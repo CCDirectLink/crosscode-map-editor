@@ -1,55 +1,47 @@
-import { Point3 } from '../../../../models/cross-code-map';
 import { Helper } from '../../helper';
-import { CCEntity, EntityAttributes, ScaleSettings } from '../cc-entity';
-import { Anims, AnimSheet } from './prop';
+import { Anims, AnimSheet } from '../../sheet-parser';
+import { DefaultEntity } from './default-entity';
+import { Point3 } from '../../../../models/cross-code-map';
+import { EntityAttributes } from '../cc-entity';
+import { EnemyInfo } from './enemy';
+import { SheetReference } from './destructible';
+import { GlobalSettings } from '../../global-settings';
 
-export class ItemDestruct extends CCEntity {
+export interface ItemDestructTypes {
+	[name: string]: ItemDestructType;
+}
+
+export interface ItemDestructType {
+	size: Point3;
+	effectOffset: Point3;
+	boom: SheetReference;
+	debris: SheetReference;
+	anims: Anims;
+	gravity?: number;
+}
+
+export interface ItemDestructAttributes {
+	desType?: string;
+	__GLOBAL__?: string;
+	items?: unknown;
+	perma?: boolean;
+	indest?: boolean;
+	trigger?: string;
+	increment?: string;
+	enemyInfo?: EnemyInfo;
+}
+
+export class ItemDestruct extends DefaultEntity {
 	
-	private attributes: EntityAttributes = {
-		desType: {
-			type: 'String',
-			description: 'Type of destructible object',
-			withNull: true
-		},
-		__GLOBAL__: {
-			type: 'String',
-			description: 'Global settings for destructible object',
-			withNull: true
-		},
-		items: {
-			type: 'ItemsDropRate',
-			description: 'Items dropped',
-		},
-		perma: {
-			type: 'Boolean',
-			description: 'True if cannot be respawned',
-			default: 'false',
-			optional: true
-		},
-		trigger: {
-			type: 'String',
-			description: 'var tp set to true once the prop has been destroyed. Only works once.',
-			optional: true
-		},
-		enemyInfo: {
-			type: 'EnemyType',
-			description: 'Enemy to spawn after destruction',
-			popup: true,
-			withNull: true
-		}
-	};
-	
-	public getAttributes(): EntityAttributes {
-		return this.attributes;
+	override getAttributes(): EntityAttributes {
+		const attributes = super.getAttributes();
+		attributes['desType'].type = 'CustomDesType';
+		return attributes;
 	}
 	
-	getScaleSettings(): ScaleSettings | undefined {
-		return undefined;
-	}
-	
-	protected async setupType(settings: any) {
-		const globalSettings = await Helper.getJsonPromise('data/global-settings') as any;
-		let desType;
+	protected override async setupType(settings: any) {
+		const globalSettings = await Helper.getJsonPromise('data/global-settings') as GlobalSettings.GlobalSettings;
+		let desType = '';
 		if (settings.desType) {
 			desType = settings.desType;
 		} else {
@@ -59,17 +51,13 @@ export class ItemDestruct extends CCEntity {
 			}
 		}
 		const destructibles = this.scene.cache.json.get('destructibles.json') as ItemDestructTypes;
-		this.attributes.desType.options = {};
-		for (const name of Object.keys(destructibles)) {
-			this.attributes.desType.options[name] = name;
-		}
 		const type = destructibles[desType];
 		if (!type) {
 			this.generateNoImageType(0xFF0000, 1);
 			return;
 		}
 		const animSheet = type.anims.sheet as AnimSheet;
-		const gfx = (animSheet instanceof String) ? type.anims.sheet as string : animSheet.src;
+		const gfx = (typeof animSheet === 'string') ? animSheet : animSheet.src;
 		
 		const exists = await Helper.loadTexture(gfx, this.scene);
 		
@@ -93,13 +81,4 @@ export class ItemDestruct extends CCEntity {
 		this.updateSettings();
 		
 	}
-}
-
-interface ItemDestructTypes {
-	[name: string]: ItemDestructType;
-}
-
-interface ItemDestructType {
-	size: Point3;
-	anims: Anims;
 }

@@ -50,8 +50,11 @@ export class EnemyTypeWidgetOverlayComponent extends AbstractWidget implements O
 		super();
 	}
 	
-	ngOnInit() {
+	override ngOnInit() {
 		super.ngOnInit();
+		if (!this.settings[this.key]) {
+			this.settings[this.key] = {};
+		}
 	}
 	
 	close() {

@@ -1,0 +1,81 @@
+<cc-overlay-panel
+	[title]="title"
+	[customSize]="{width: 'calc(100vw - 330px - 220px)'}"
+	left="330px"
+	top="calc(64px + 1vh)"
+	[showButtonDivider]="true"
+>
+	<ng-container ngProjectAs="content">
+		<div class="flex flex-col h-full">
+			<ng-container *ngIf="sheets.length > 0">
+				<div class="flex p-4 gap-2.5">
+					<label class="property-name">sheet:</label>
+					<app-autocompleted-textbox
+						[availableOptions]="sheets"
+						[text]="sheet ?? ''"
+						(textChange)="sheetChange.emit($event)"
+					></app-autocompleted-textbox>
+				</div>
+				<div class="divider"></div>
+			</ng-container>
+			<app-split-pane
+				[bounds]="{left: 10, right: 10}"
+				[opened]="showRightProps"
+				[(base)]="splitBase"
+				[showGutter]="true"
+				class="overflow-auto"
+			>
+				<ng-container ngProjectAs="left">
+					<div class="flex flex-col h-full mr-1.5 dark-scrollbar-auto">
+						<mat-checkbox
+							*ngIf="showGlobalCheckbox"
+							class="pl-2 pt-2"
+							color="primary"
+							[(ngModel)]="global"
+							(ngModelChange)="globalChange.emit($event)"
+						>
+							use GLOBAL
+						</mat-checkbox>
+						<app-image-select-list
+							[title]="leftGroup.title"
+							[items]="leftGroup.props"
+							[showFilter]="true"
+							[(filter)]="filter"
+							[selected]="leftGroup.selected"
+							(selectedChange)="leftGroup.click?.(leftGroup.selected === $event ? '' : $event)"
+						></app-image-select-list>
+						<div class="flex-auto grid justify-center items-center">
+							<mat-spinner *ngIf="loading"></mat-spinner>
+						</div>
+					</div>
+				</ng-container>
+				<ng-container ngProjectAs="right" *ngIf="showRightProps">
+					<div class="flex flex-col h-full">
+						<ng-container *ngIf="showPreview">
+							<div class="p-4">
+								<app-image-select-card
+									[card]="{ name: 'Preview', imgSrc: preview }"
+								></app-image-select-card>
+							</div>
+							<div class="divider"></div>
+						</ng-container>
+						<div class="flex-auto mr-1.5 dark-scrollbar">
+							<app-image-select-list
+								*ngFor="let group of rightGroups"
+								[title]="group.title"
+								[items]="group.props"
+								[filter]="filter"
+								[filterItems]="false"
+								[selected]="group.selected"
+								(selectedChange)="group.click?.($event)"
+							></app-image-select-list>
+						</div>
+					</div>
+				</ng-container>
+			</app-split-pane>
+		</div>
+	</ng-container>
+	<ng-container ngProjectAs="actions">
+		<button mat-stroked-button (click)="close()">Close</button>
+	</ng-container>
+</cc-overlay-panel>

@@ -11,6 +11,7 @@
 				"build": {
 					"builder": "@angular-devkit/build-angular:browser",
 					"options": {
+						"allowedCommonJsDependencies": ["earcut", "jsoneditor"],
 						"outputPath": "distAngular",
 						"index": "src/index.html",
 						"main": "src/main.ts",
@@ -29,10 +30,10 @@
 							]
 						},
 						"scripts": [],
-						"aot": false,
+						"aot": true,
 						"vendorChunk": true,
 						"extractLicenses": false,
-						"buildOptimizer": false,
+						"buildOptimizer": true,
 						"sourceMap": true,
 						"optimization": false,
 						"namedChunks": true
@@ -110,7 +111,7 @@
 	"schematics": {
 		"@schematics/angular:component": {
 			"prefix": "app",
-			"styleext": "scss"
+			"style": "scss"
 		},
 		"@schematics/angular:directive": {
 			"prefix": "app"

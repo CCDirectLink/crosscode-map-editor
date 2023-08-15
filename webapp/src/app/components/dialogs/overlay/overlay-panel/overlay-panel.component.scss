@@ -1,10 +1,14 @@
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @import "theme";
 
 $primary: map-get($theme, primary);
 $accent: map-get($theme, accent);
 
 $toolbarHeight: 54px;
+
+:host {
+	pointer-events: none;
+}
 
 .overlay-headline {
 	padding-left: 16px;
@@ -32,6 +36,7 @@ $toolbarHeight: 54px;
 .toolbar {
 	background-color: mat.get-color-from-palette(map-get($theme, background), app-bar);
 	height: $toolbarHeight;
+	z-index: 10;
 }
 
 .buttons {

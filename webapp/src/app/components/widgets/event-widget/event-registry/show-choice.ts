@@ -59,7 +59,7 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 	}
 	
 	
-	export(): ShowChoiceData {
+	override export(): ShowChoiceData {
 		const out: ShowChoiceData = {
 			type: this.data.type,
 			person: this.data.person,

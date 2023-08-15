@@ -4,8 +4,50 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
 ### Fixed
 - Fixed the langlabel widget not updating its size when resizing the detail panel.
+
+## [1.0.0] 2023-08-04
+
+### Added
+- New graphical selection widget for some entities: `Prop`, `ScalableProp`, `Enemy`, `ItemDestruct`, `NPC`
+
+### Changed
+- Made panning more smooth
+- Keep Layer visibility when using history undo/redo [#273](https://github.com/CCDirectLink/crosscode-map-editor/issues/273)
+- Updated Phaser to 3.60.0
+- Entity copy/paste now uses the clipboard to make it easier working with multiple editor instances [#267](https://github.com/CCDirectLink/crosscode-map-editor/issues/267)
+- Changed default Vec2 values to 0 instead of 1 [#257](https://github.com/CCDirectLink/crosscode-map-editor/issues/257)
+- New Entities are now generated with a default size of 16x16
+
+### Fixed
+- All `Prop` Entities should now be rendered correctly
+- Improved `ScalableProp` rendering. `ends` are now rendering correctly.
+- Improved `NPC` rendering.
+- Releasing mouse button outside the canvas now properly triggers. Avoids having issues like continue dragging entities even if the mouse button was released
+
+
+## [0.18.0] 2023-07-19
+### Added
+- Made Event `SHOW_SIDE_MSG` prettier. [image](https://github.com/CCDirectLink/crosscode-map-editor/assets/9483499/7aa7dce2-f678-4b93-a026-fbbc5873ebd0)
+- Double clicking an event now opens the event editor
+- Double clicking an npc now opens the npc state editor
+
+## [0.17.4] 2023-06-10
+
+### Fixed
+- Fixed `enemyInfo` properties not saving properly when created through the map editor.
+
+## [0.17.3] 2023-06-09
+
+### Fixed
+- Fixed `lighter` property in layers not rendering properly
+
+## [0.17.2] 2023-06-07
+
+### Changed
+- Updated all dependencies. This has lead to minor style changes.
 
 ## [0.17.1] 2022-11-13
 - Fixed a bug where pasting an entity would insert those entities twice.

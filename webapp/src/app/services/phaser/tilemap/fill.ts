@@ -1,5 +1,6 @@
 import { Point } from '../../../models/cross-code-map';
 import { CCMapLayer } from './cc-map-layer';
+import { customPutTileAt } from './layer-helper';
 
 export class Filler {
 	public static fill(layer: CCMapLayer, newTile: number, p: Point) {
@@ -17,7 +18,7 @@ export class Filler {
 			const currP = toCheck.pop()!;
 			const tile = phaserLayer.getTileAt(currP.x, currP.y);
 			if (tile.index === prev) {
-				phaserLayer.putTileAt(newTile, currP.x, currP.y, false);
+				customPutTileAt(newTile, currP.x, currP.y, phaserLayer.layer);
 				toCheck = toCheck.concat(this.getNeighbours(currP, layer));
 			}
 		}

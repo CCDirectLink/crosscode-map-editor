@@ -1,13 +1,15 @@
 import * as Phaser from 'phaser';
+import { BlendModes } from 'phaser';
 import { MapLayer, Point } from '../../../models/cross-code-map';
 import { Helper } from '../helper';
+import { customPutTilesAt } from './layer-helper';
 import Tile = Phaser.Tilemaps.Tile;
 
 export class CCMapLayer {
 	
 	public details!: MapLayer;
 	
-	private layer!: Phaser.Tilemaps.DynamicTilemapLayer;
+	private layer!: Phaser.Tilemaps.TilemapLayer;
 	
 	constructor(private tilemap: Phaser.Tilemaps.Tilemap) {
 	}
@@ -39,12 +41,11 @@ export class CCMapLayer {
 			details.distance = parseFloat(details.distance);
 		}
 		this.details = details;
-		this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), 'stub');
+		this.layer = this.tilemap.createBlankLayer(details.name + Math.random(), 'stub')!;
 		if (details.data) {
-			this.layer.putTilesAt(details.data, 0, 0, false);
+			customPutTilesAt(details.data, this.layer);
 		}
 		await this.updateTileset(details.tilesetName!);
-		this.updateLevel(this.details.level);
 		
 		const skip = 'Navigation Collision HeightMap'.split(' ');
 		// const skip = 'Navigation Background HeightMap'.split(' ');
@@ -97,7 +98,7 @@ export class CCMapLayer {
 				newData[y][x] = newTile?.index ?? 0;
 			}
 		}
-		this.layer.putTilesAt(newData, 0, 0, false);
+		customPutTilesAt(newData, this.layer);
 	}
 	
 	resize(width: number, height: number) {
@@ -117,8 +118,9 @@ export class CCMapLayer {
 		const visible = this.layer.visible;
 		this.layer.destroy();
 		
-		this.layer = this.tilemap.createBlankDynamicLayer(this.details.name + Math.random(), tilesetName, 0, 0, width, height);
-		this.layer.putTilesAt(newData, 0, 0, false);
+		this.layer = this.tilemap.createBlankLayer(this.details.name + Math.random(), tilesetName, 0, 0, width, height)!;
+		customPutTilesAt(newData, this.layer);
+		
 		this.visible = visible;
 	}
 	
@@ -130,10 +132,13 @@ export class CCMapLayer {
 		await Helper.loadTexture(tilesetname, this.tilemap.scene);
 		
 		const newTileset = this.tilemap.addTilesetImage(tilesetname, undefined, undefined, undefined, undefined, undefined, 1);
-		this.layer = this.tilemap.createBlankDynamicLayer(details.name + Math.random(), newTileset ?? [], 0, 0, details.width, details.height);
-		this.layer.putTilesAt(oldLayer.layer.data, 0, 0, false);
+		this.layer = this.tilemap.createBlankLayer(details.name + Math.random(), newTileset ?? [], 0, 0, details.width, details.height)!;
+		customPutTilesAt(oldLayer.layer.data, this.layer);
 		
 		oldLayer.destroy();
+		
+		this.updateLevel(this.details.level);
+		this.updateLighter(!!this.details.lighter);
 	}
 	
 	updateLevel(level: number) {
@@ -145,7 +150,13 @@ export class CCMapLayer {
 		this.layer.depth = this.details.level * 10;
 	}
 	
-	getPhaserLayer(): Phaser.Tilemaps.DynamicTilemapLayer {
+	updateLighter(lighter: boolean) {
+		this.details.lighter = lighter;
+		const blendMode = lighter ? BlendModes.ADD : BlendModes.NORMAL;
+		this.layer.setBlendMode(blendMode);
+	}
+	
+	getPhaserLayer(): Phaser.Tilemaps.TilemapLayer {
 		return this.layer;
 	}
 	

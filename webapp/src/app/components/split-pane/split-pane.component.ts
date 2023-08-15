@@ -2,9 +2,14 @@ import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
-	ElementRef, EventEmitter, HostListener,
+	ElementRef,
+	EventEmitter,
+	HostListener,
 	Input,
-	OnInit, Output,
+	OnChanges,
+	OnInit,
+	Output,
+	SimpleChanges,
 	ViewChild
 } from '@angular/core';
 
@@ -20,7 +25,7 @@ export interface Bounds {
 	styleUrls: ['./split-pane.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SplitPaneComponent implements OnInit {
+export class SplitPaneComponent implements OnInit, OnChanges {
 	
 	@ViewChild('container') container!: ElementRef<HTMLElement>;
 	
@@ -39,6 +44,7 @@ export class SplitPaneComponent implements OnInit {
 	}
 	
 	@Input() bounds?: Bounds;
+	@Input() showGutter = false;
 	
 	/**
 	 * gutter position, range [-100, 100], 0 is center
@@ -69,6 +75,10 @@ export class SplitPaneComponent implements OnInit {
 		setTimeout(() => {
 			this.noAnims = false;
 		}, 0);
+	}
+	
+	ngOnChanges(changes: SimpleChanges) {
+		this.valueChanged(this.base);
 	}
 	
 	valueChanged(val: number, bounds?: Bounds) {

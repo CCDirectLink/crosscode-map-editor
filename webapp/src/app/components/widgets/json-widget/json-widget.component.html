@@ -1,8 +1,8 @@
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
+<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!">
 	<label class="property-name" *ngIf="!noPropName">{{key}}:</label>
 	<textarea class="default-input"
 	          [ngModel]="json.stringify(settings[key], null, 2)"
-	          (input)="setCustomSetting(key, $event.target.value)">
+	          (input)="setCustomSetting(key, $any($event.target).value)">
 	</textarea>
 	<button class="mini-button" (click)="openJsonEditor()">+</button>
 </div>

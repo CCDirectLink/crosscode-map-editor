@@ -1,5 +1,6 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 
 import { GlobalEventsService } from '../../services/global-events.service';
 import { Globals } from '../../services/globals';
@@ -140,7 +141,7 @@ export class LayersComponent implements OnInit {
 			return;
 		}
 
-		LayersComponent.tilesets = await this.http.getAllTilesets().toPromise();
+		LayersComponent.tilesets = await firstValueFrom(this.http.getAllTilesets());
 		this.tilesets = LayersComponent.tilesets;
 	}
 	

@@ -55,6 +55,9 @@ export class EntityGenerator {
 			m.actionManager.registerAction(new ExecuteCodeAction(ActionManager.OnPickTrigger, () => {
 				this.entityManager.onClick(m);
 			}));
+			m.actionManager.registerAction(new ExecuteCodeAction(ActionManager.OnDoublePickTrigger, () => {
+				this.entityManager.onDoubleClick(m);
+			}));
 			
 			this.entityManager.registerEntity(entity, m);
 		}
@@ -79,7 +82,7 @@ export class EntityGenerator {
 		
 		let fullWidth = width;
 		if (entity.entitySettings.scalableX) {
-			fullWidth = entity.details.settings.size.x / Globals.TILE_SIZE;
+			fullWidth = entity.details.settings['size'].x / Globals.TILE_SIZE;
 		}
 		
 		const meshes: Mesh[] = [];

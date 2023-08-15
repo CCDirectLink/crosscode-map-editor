@@ -46,7 +46,7 @@ export class MapLoaderService {
 					path = file.path.split(this.electron.getAssetsPath())[1];
 				}
 				this.loadRawMap(map, file.name, path);
-			} catch (e) {
+			} catch (e: any) {
 				console.error(e);
 				this.snackBar.open('Error: ' + e.message, undefined, {
 					duration: 2500

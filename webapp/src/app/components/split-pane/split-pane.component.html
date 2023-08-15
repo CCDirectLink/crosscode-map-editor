@@ -17,6 +17,7 @@
 	>
 		<div
 			class="gutter"
+			[class.show-gutter]="showGutter"
 			[style.display]="opened ? 'inherit' : 'none'"
 			(mousedown)="dragStart($event)"
 		></div>

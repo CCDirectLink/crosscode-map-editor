@@ -1,11 +1,12 @@
-<label class="filter" fxLayout="column" *ngIf="!entity && !hideFilter">
-	<mat-form-field>
+<label class="filter no-error-msg" fxLayout="column" *ngIf="!entity && !hideFilter">
+	<mat-form-field
+		appearance="outline"
+	>
 		<input #filterInput matInput type="text" placeholder="Filter" [(ngModel)]="filter"
 		       (ngModelChange)="updateFilter()"/>
 	</mat-form-field>
 </label>
-<mat-divider></mat-divider>
-<h2 class="mat-title">{{entity?.details.type}}</h2>
+<h2 class="mat-h2">{{entity?.details?.type}}</h2>
 <div class="entity-settings-container dark-scrollbar" fxLayout="column">
 	
 	<app-string-widget [key]="'name'" [entity]="entity" *ngIf="entity"></app-string-widget>
@@ -15,7 +16,7 @@
 	<app-vec2-widget [key]="'container'" [custom]="entity" [entity]="entity" [displayName]="'Pos'"
 	                 *ngIf="entity"></app-vec2-widget>
 	
-	<app-level-widget [key]="'level'" [custom]="entity.details" [entity]="entity" [displayName]="'Level'"
+	<app-level-widget [key]="'level'" [custom]="$any(entity.details)" [entity]="entity" [displayName]="'Level'"
 	                  *ngIf="entity"></app-level-widget>
 	
 	<ng-template appHost></ng-template>

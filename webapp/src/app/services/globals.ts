@@ -6,6 +6,7 @@ import { MapLoaderService } from './map-loader.service';
 import { EntityRegistryService } from './phaser/entities/registry/entity-registry.service';
 import { PhaserEventsService } from './phaser/phaser-events.service';
 import { CCMap } from './phaser/tilemap/cc-map';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export class Globals {
 	static isElectron = false;
@@ -29,4 +30,5 @@ export class Globals {
 	static autotileService: AutotileService;
 	static entityRegistry: EntityRegistryService;
 	static httpService: HttpClientService;
+	static snackbar: MatSnackBar;
 }

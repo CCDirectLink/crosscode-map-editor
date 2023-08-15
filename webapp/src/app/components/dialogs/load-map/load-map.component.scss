@@ -1,4 +1,4 @@
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 
 $config: mat.define-typography-config();
 
@@ -20,10 +20,11 @@ $config: mat.define-typography-config();
 	text-transform: none;
 	width: 100%;
 	min-height: 48px;
+	justify-content: flex-start;
 }
 
 .filter {
-	padding: 16px 16px 0;
+	padding: 16px;
 }
 
 .sidenav {

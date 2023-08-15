@@ -2,7 +2,8 @@ import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
 import { SearchFilterService } from '../services/search-filter.service';
 
 @Directive({
-	selector: '[appHighlight]'
+	selector: '[appHighlight]',
+	standalone: true
 })
 export class HighlightDirective implements OnChanges {
 	

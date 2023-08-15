@@ -1,0 +1,37 @@
+<div class="overflow-auto">
+	<mat-form-field
+		*ngIf="showFilter"
+		class="no-padding-form-field autoscale-form-field p-4"
+		appearance="outline"
+	>
+		<mat-label>Filter</mat-label>
+		<input
+			[appAutofocus]="true"
+			matInput
+			type="text"
+			[(ngModel)]="filter"
+			(ngModelChange)="filterChange.emit($event)"
+		>
+		<button matSuffix mat-icon-button aria-label="Clear" (click)="filter=''">
+			<mat-icon>close</mat-icon>
+		</button>
+	</mat-form-field>
+	<h2 class="pl-4 headline" *ngIf="title">{{title}}</h2>
+	<div class="list">
+		<ng-container
+			*ngIf="items|listFilter:filter:filterItems as filteredItems"
+		>
+			<app-image-select-card
+				*ngFor="let prop of filteredItems"
+				[card]="prop"
+				[selected]="selected === prop.name"
+				[filter]="filter"
+				(onClick)="selectedChange.emit(prop.name)"
+			></app-image-select-card>
+			<div *ngIf="filteredItems.length === 0 && items.length > 0" class="w-60">
+				No items matching the filter
+			</div>
+		</ng-container>
+	
+	</div>
+</div>

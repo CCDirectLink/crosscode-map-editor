@@ -1,205 +1,254 @@
-import { Point3 } from '../../../../models/cross-code-map';
+import { NPCState, NPCStatesWidgetComponent } from '../../../../components/widgets/npc-states-widget/npc-states-widget.component';
+import { Point, Point3 } from '../../../../models/cross-code-map';
 import { Helper } from '../../helper';
-import { CCEntity, EntityAttributes, ScaleSettings } from '../cc-entity';
+import { DefaultEntity } from './default-entity';
+import { Label } from '../../../../models/events';
+import { Anims, flattenSUBs, IfThen, prepareSheet, SubJsonParam } from '../../sheet-parser';
+import { getNPCTemplates } from './npc-templates';
+import { Globals } from '../../../globals';
 
-interface CharacterSettings {
+export interface CharacterSettings {
 	jsonINSTANCE?: string;
-	gender?: string;
+	jsonTEMPLATES?: any;
+	name?: Label;
 	img?: string;
 	x?: number;
 	y?: number;
+	face?: Face | null | string;
+	animSheet?: Anims | string;
+	walkAnimSet?: WalkAnimSet;
+	walkAnims?: string;
+	configs?: Configs;
+	gender?: string;
+	size?: Point3;
+	shadow?: number;
+	floatHeight?: number;
+	floatVariance?: number;
+	realname?: Label;
+	sitX?: number;
+	sitY?: number;
+	displayOffset?: Point;
+	relativeVel?: number;
+	collType?: string;
+	width?: number;
+	height?: number;
+	sit2X?: number;
+	sit2Y?: number;
 	offlineX?: number;
 	offlineY?: number;
-	face?: string;
 	runSrc?: string;
 	runX?: number;
 	runY?: number;
-	walkAnimSet?: {
-		normal?: {
-			idle: string;
-			move: string;
-		};
-	};
+	zGravityFactor?: number;
+	shadowScaleY?: number;
+	terrain?: string;
+	soundType?: string;
+	shadowType?: string;
+}
+
+export interface Face {
+	[key: number]: string | undefined;
 	
-	animSheet?: AnimSheet;
+	width?: number;
+	height?: number;
+	centerX?: number;
+	centerY?: number;
+	src?: string;
+	parts?: Part[];
+	expressions?: Expressions;
+	ABSTRACT?: string | SubJsonParam;
+	subImages?: { [key: string]: string };
 }
 
-interface AnimSheet {
-	namedSheets: {
-		move?: NamedSheet;
-		walk?: NamedSheet;
-	};
-	sheet?: NamedSheet;
-	DOCTYPE?: string;
-	shapeType?: string;
-	offset?: Point3;
-	SUB?: any;
+export interface Part {
+	[key: string]: DetailPart | number;
 }
 
-interface NamedSheet {
-	src: string;
+export interface Expressions {
+	[key: string]: Faces;
+}
+
+export interface Faces {
+	faces: string[][];
+}
+
+export interface DetailPart {
+	srcX: number;
+	srcY: number;
 	width: number;
 	height: number;
-	xCount: number;
-	offX: number;
-	offY: number;
+	destX: number;
+	destY: number;
+	subX?: number;
+	subY?: number;
+	img?: string;
+	hideOnClip?: boolean;
 }
 
-export class NPC extends CCEntity {
+export interface WalkAnimSet {
+	[key: string]: { [key: string]: string | WalkAnimSetInner | undefined } | undefined;
+}
+
+export interface WalkAnimSetInner extends IfThen {
+	[key: string]: string | undefined;
+}
+
+
+export interface Configs {
+	[key: string]: ConfigSet;
+}
+
+export interface ConfigSet {
+	relativeVel?: number;
+	walkAnims?: string;
+	collType?: string;
+	floatHeight?: number;
+	floatVariance?: number;
+	floatAccel?: number;
+	ignoreCollision?: boolean;
+	zGravityFactor?: number;
+	shadow?: number;
+	sizeOverride?: Partial<Point3>;
+	jsonIF?: string;
+}
+
+export const FACE4 = {
+	NORTH: 0,
+	EAST: 1,
+	SOUTH: 2,
+	WEST: 3,
+};
+
+export const FACE8 = {
+	NORTH: 0,
+	NORTH_EAST: 1,
+	EAST: 2,
+	SOUTH_EAST: 3,
+	SOUTH: 4,
+	SOUTH_WEST: 5,
+	WEST: 6,
+	NORTH_WEST: 7
+};
+
+
+export interface NpcAttributes {
+	characterName?: string;
+	npcStates?: Partial<NPCState>[];
+	analyzable?: Analyzable;
+	hideCondition?: string;
+}
+
+export interface Analyzable {
+	text?: Label;
+	active?: boolean;
+}
+
+export class NPC extends DefaultEntity {
 	
-	private attributes: EntityAttributes = {
-		characterName: {
-			type: 'Character',
-			description: 'Character of NPC',
-			context: 'Character'
-		},
-		npcStates: {
-			type: 'NPCStates',
-			description: 'Different states of the NPC',
-			popup: true
-		},
-		analyzable: {
-			type: 'Analyzable',
-			description: 'Analyzable if any.',
-			compact: true,
-			optional: true,
-			popup: true
-		},
-		hideCondition: {
-			type: 'VarCondition',
-			description: 'Condition for entity to become transparent',
-			optional: true,
-			width: 70
-		}
-	};
-	
-	private NPCSimple = {
-		width: 32,
-		height: 40,
-		sprites: {
-			normal: {
-				default: {x: 1, y: 2, offsetY: -2},
-				NORTH: {x: 1, y: 0, offsetY: -2},
-				EAST: {x: 1, y: 1, offsetY: -2},
-				SOUTH: {x: 1, y: 2, offsetY: -2},
-				WEST: {x: 1, y: 1, offsetY: -2, flipX: true},
-			},
-			ground: {
-				default: {x: 0, y: 3, offsetY: 2},
-				WEST: {x: 0, y: 3, offsetY: 2, flipX: true}
-			}
-		}
-	};
-	
-	public getAttributes(): EntityAttributes {
-		return this.attributes;
-	}
-	
-	getScaleSettings(): ScaleSettings | undefined {
-		return undefined;
-	}
-	
-	protected async setupType(settings: any) {
+	protected override async setupType(settings: NpcAttributes) {
 		
-		const charSettings = await Helper.getJsonPromise(this.getPath('data/characters/', settings.characterName)) as CharacterSettings | undefined;
+		let charSettings = await Helper.getJsonPromise(this.getPath('data/characters/', settings.characterName)) as CharacterSettings | undefined;
 		if (!charSettings) {
 			console.warn(`no char settings found for character name: [${settings.characterName}]`);
 			this.generateNoImageType();
 			return;
 		}
-		const state = settings.npcStates[0] || {};
-		const npc = this.NPCSimple;
-		let config = (npc.sprites as any)[state.config];
-		if (!config) {
-			console.error(`unknown npc config: [${state.config}], using default. Charsettings: `, charSettings);
-			config = npc.sprites.normal;
-		}
-		let offset = config[state.face] || config.default;
-		
-		let width = npc.width;
-		let height = npc.height;
-		let src = charSettings.img;
-		let x = charSettings.x || 0;
-		let y = charSettings.y || 0;
-		if (charSettings.animSheet) {
-			// TODO: refactor: https://github.com/CCDirectLink/crosscode-map-editor/pull/80#discussion_r317308048
-			// noinspection SuspiciousTypeOfGuard
-			if (typeof charSettings.animSheet === 'string') {
-				// sheet is only reference
-				const animSheet = charSettings.animSheet;
-				const path = this.getPath('data/animations/', animSheet);
-				charSettings.animSheet = await Helper.getJsonPromise(path) as AnimSheet;
-				if (!charSettings.animSheet) {
-					throw new Error('no anim sheet found for: ' + animSheet + ' in path: ' + path);
-				}
+		if (typeof charSettings.animSheet === 'string') {
+			const path = this.getPath('data/animations/', charSettings.animSheet);
+			charSettings.animSheet = await Helper.getJsonPromise(path) as Anims;
+			if (!charSettings.animSheet) {
+				throw new Error('no anim sheet found for: ' + charSettings.animSheet + ' in path: ' + path);
 			}
-			if (charSettings.animSheet.sheet) {
-				// sheet exists, test how to get proper offset
-				console.group('sheet exists for ' + settings.characterName);
-				console.warn(settings);
-				console.warn('assuming no offset, check if this is correct');
-				console.groupEnd();
-				offset = {x: 0, y: 0};
-			}
-			const sheets = charSettings.animSheet.namedSheets || {};
-			let sheet = sheets.move || sheets.walk || charSettings.animSheet.sheet;
-			if (!sheet) {
-				let key;
-				
-				if (charSettings.walkAnimSet && charSettings.walkAnimSet.normal) {
-					// try to get sheet through walkAnimSet
-					const animKey = charSettings.walkAnimSet.normal.idle;
-					for (let i = 0; i < charSettings.animSheet.SUB.length; i++) {
-						const sub = charSettings.animSheet.SUB[i];
-						const privateKey = sub.sheet;
-						if (!sub.SUB) {
-							continue;
-						}
-						if (sub.SUB.some((sheet: any) => sheet.name === animKey)) {
-							key = privateKey;
-							break;
-						}
-					}
-				}
-				
-				if (!key) {
-					// no key found, use anything so the npc is not invisible
-					key = Object.keys(sheets)[0];
-					console.warn('key not found, used [' + key + '] instead', charSettings);
-				}
-				sheet = sheets[key as keyof typeof sheets]!;
-			}
-			width = sheet.width || width;
-			height = sheet.height || height;
-			src = sheet.src || src!;
-			x = sheet.offX || x;
-			y = sheet.offY || y;
-			
-			src = src.trim();
 		}
 		
-		const exists = await Helper.loadTexture(src, this.scene);
+		charSettings.jsonTEMPLATES = getNPCTemplates();
+		charSettings = prepareSheet(charSettings);
+		delete charSettings.jsonTEMPLATES;
+		
+		if (typeof charSettings.animSheet === 'string') {
+			throw new Error('should never be string');
+		}
+		
+		const state = settings.npcStates?.[0] ?? {};
+		const config = state.config ?? 'normal';
+		const face = state.face || 'SOUTH';
+		const walkAnims = charSettings.configs?.[config]?.walkAnims ?? 'normal';
+		const animSet = charSettings.walkAnimSet?.[walkAnims] || Object.values(charSettings.walkAnimSet ?? {})[0];
+		
+		const usedSet = animSet?.['idle'] || animSet?.['move'] || Object.values(animSet ?? {})[0];
+		
+		const subName = usedSet as string;
+		
+		
+		if (!Array.isArray(charSettings.animSheet?.SUB)) {
+			console.warn(`animSheet is not an array, abort: [${settings.characterName}]`);
+			this.generateNoImageType();
+			return;
+		}
+		const subs = flattenSUBs(charSettings.animSheet!, {});
+		
+		let sub = subs.find(v => v.name === subName);
+		if (!sub) {
+			sub = subs[0];
+		}
+		const sheet = sub.namedSheets?.[sub.sheet as string] ?? sub.sheet;
+		if (!sheet || typeof sheet === 'string') {
+			this.generateErrorImage();
+			return;
+		}
+		const exists = await Helper.loadTexture(sheet?.src, this.scene);
 		
 		if (!exists) {
 			this.generateErrorImage();
 			return;
 		}
-		this.entitySettings = <any>{
-			sheets: {
-				fix: [{
-					gfx: src,
-					x: width * offset.x + x,
-					y: height * offset.y + y,
-					offsetX: offset.offsetX || 0,
-					offsetY: offset.offsetY || 0,
-					w: width,
-					h: height,
-					flipX: offset.flipX || false,
-					flipY: offset.flipY || false
-				}]
-			},
-			baseSize: {x: 12, y: 12, z: 28}
+		
+		let x = sheet.offX ?? 0;
+		let y = sheet.offY ?? 0;
+		let flipX = false;
+		
+		let dirIndex = 0;
+		const subDirs = typeof sub.dirs === 'string' ? parseInt(sub.dirs, 10) : sub.dirs;
+		if (subDirs === 8) {
+			dirIndex = FACE8[face];
+		} else if (subDirs === 4) {
+			dirIndex = FACE4[face as keyof typeof FACE4];
+		}
+		
+		const img = Globals.scene.textures.get(sheet.src).getSourceImage();
+		const xCount = sheet.xCount ?? img.width / sheet.width;
+		
+		// flip x with some serious type checking
+		if (sub.flipX) {
+			if (typeof sub.flipX === 'boolean') {
+				flipX = sub.flipX;
+			} else {
+				const flipXNum = sub.flipX?.[dirIndex];
+				if (typeof flipXNum === 'number') {
+					flipX = !!flipXNum;
+				}
+			}
+		}
+		
+		const tileOffsets = sub.tileOffsets;
+		const idleFrame = sub.frames?.[0] ?? 0;
+		const offset = (tileOffsets?.[dirIndex] ?? 0) + idleFrame;
+		
+		x += (offset % xCount) * sheet.width;
+		y += Math.floor(offset / xCount) * sheet.height;
+		
+		this.entitySettings.sheets = {
+			fix: [{
+				gfx: sheet?.src,
+				x: x,
+				y: y,
+				w: sheet?.width ?? 16,
+				h: sheet?.height ?? 16,
+				flipX: flipX,
+				flipY: false
+			}]
 		};
+		this.entitySettings.baseSize = {x: 12, y: 12, z: 28};
 		this.updateSettings();
 	}
 	
@@ -210,5 +259,10 @@ export class NPC extends CCEntity {
 		const split = path.split('.');
 		const name = split.splice(-1, 1)[0];
 		return prefix + split.join('/') + '/' + name;
+	}
+	
+	
+	public override doubleClick(): void {
+		(this.widgets['npcStates'] as NPCStatesWidgetComponent).open();
 	}
 }

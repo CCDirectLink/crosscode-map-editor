@@ -1,4 +1,4 @@
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description">
+<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!">
 	<label class="property-name">{{key}}:</label>
 	
 	<div fxLayout="column" fxFlex="1 1 0">
@@ -11,7 +11,7 @@
 				color="primary"
 			></mat-checkbox>
 		</div>
-		<div *ngIf="hasValue" class="properties-container" (resized)="resizeTextareas()">
+		<div *ngIf="hasValue" class="properties-container" (appResized)="resizeTextareas()">
 			<div *ngFor="let language of languages" fxLayout="row" class="property-row language">
 				<label class="property-name">{{language}}</label>
 				<!-- textarea inside div with padding because autosize does not like textareas with padding -->
