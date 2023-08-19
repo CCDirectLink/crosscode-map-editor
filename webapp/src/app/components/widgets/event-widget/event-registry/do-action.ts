@@ -37,6 +37,7 @@ export class DoAction extends AbstractEvent<any> {
 	update() {
 		this.info = this.combineStrings(
 			this.getTypeString('#8fe174'),
+			this.getPropString('entity'),
 			this.getPropString('actions', '[' + this.data.action.length + ']'),
 			this.getPropString('repeating'),
 			this.getPropString('wait'),

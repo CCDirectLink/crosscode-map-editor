@@ -51,7 +51,7 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 		
 		this.data.options.forEach((option, index) => {
 			this.children[index] = {
-				title: this.getColoredString('Choice. ' + option.label.en_US, '#838383'),
+				title: this.getColoredString('Choice: ', '#838383') + option.label.en_US,
 				events: this.data[index] || [],
 				draggable: false
 			};
@@ -81,9 +81,13 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 		return {
 			person: {},
 			options: [{
-				label: {}
+				label: {
+					en_US: 'Choice 1'
+				}
 			}, {
-				label: {}
+				label: {
+					en_US: 'Choice 2'
+				}
 			}]
 		};
 	}

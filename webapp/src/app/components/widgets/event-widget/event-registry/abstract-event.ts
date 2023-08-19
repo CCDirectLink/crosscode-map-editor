@@ -59,12 +59,63 @@ export abstract class AbstractEvent<T extends EventType> {
 		const attr = this.getAttributes();
 		if (attr && attr[key]) {
 			const type = attr[key].type;
-			if (type === 'Color') {
-				value = this.getColorRectangle(value);
-			} else if (type === 'Vec2' && value) {
-				value = this.getVec2String(value.x, value.y);
-			} else if (type === 'Entity') {
-				value = '[' + value.name + ']';
+			switch (type) {
+				case 'Color': 
+					value = this.getColorRectangle(value);
+					break;
+				case 'Vec2':
+				case 'Vec2Expression':
+					value = this.getVarExpressionValue(value, true);
+					if(typeof value !== 'string') {
+						value = this.getVec2String(value.x, value.y);
+					}
+					break;
+				case 'Vec3':
+				case 'Vec3Expression':
+					value = this.getVarExpressionValue(value, true);
+					if(typeof value !== 'string') {
+						value = this.getVec3String(value.x, value.y, value.z, value.lvl);
+					}
+					break;
+				case 'Offset':
+					if(value) {
+						value = this.getVec3String(value.x, value.y, value.z);
+					}
+					break;
+				case 'Entity':
+					if(value.player){
+						value = 'player';
+					} else if(value.self) {
+						value = 'self';
+					} else if(value.name) {
+						value = '[' + value.name + ']';
+					} else if (value.varName) {
+						value = `[Var: ${value.varName}]`;
+					} else if (value.party) {
+						value = `[Party: ${value.party}]`; 
+					}
+					break;
+				case 'EnemyType':
+					value = '[' + value.type + ']';
+					break;
+				case 'NumberExpression':
+				case 'StringExpression':
+				case 'BooleanExpression':
+					value = this.getVarExpressionValue(value);
+					break;
+				case 'VarName':
+					if(value.indirect) {
+						value = `[indirect: ${value.indirect}]`;
+					} else if (value.actorAttrib) {
+						value = `[actorAttrib: ${value.indirect}]`;
+					}
+					break;
+				case 'Effect':
+				case 'Animation':
+					if(value) {
+						value = `${value.sheet}/${value.name}`;
+					}
+					break;
 			}
 		}
 		
@@ -73,8 +124,27 @@ export abstract class AbstractEvent<T extends EventType> {
 		return `<span style="display: inline-block;"><span style="color: #858585">${key}</span>: ${value}</span>`;
 	}
 	
+	protected getVarExpressionValue(value: any, supportsActorAttrib = false): any {
+		if(value.indirect) {
+			value = `[indirect: ${value.indirect}]`;
+		} else if(value.varName) {
+			value = `[varName: ${value.varName}]`;
+		} else if(value.actorAttrib && supportsActorAttrib) {
+			value = `[actorAttrib: ${value.actorAttrib}]`;
+		}
+		return value;
+	}
+
 	protected getVec2String(x: number, y: number): string {
 		return `(${this.sanitize(x)}, ${this.sanitize(y)})`;
+	}
+
+	protected getVec3String(x: number, y: number, z?: number, level?: number): string {
+		if(level !== undefined) {
+			return `(${this.sanitize(x)}, ${this.sanitize(y)}, lvl ${this.sanitize(level)})`;
+		} else {
+			return `(${this.sanitize(x)}, ${this.sanitize(y)}, ${this.sanitize(z!)})`;
+		}
 	}
 	
 	protected getTypeString(color: string): string {
