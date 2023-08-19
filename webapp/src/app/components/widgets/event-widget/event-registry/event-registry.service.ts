@@ -21,6 +21,7 @@ import { ShowMsg } from './show-msg';
 import { StartNpcTradeMenu } from './start-npc-trade-menu';
 import { Wait } from './wait';
 import { ShowSideMsg } from './show-side-msg';
+import { ShowModalChoice } from './show-modal-choice';
 
 type EventConstructor<T extends EventType> = new (domSanitizer: DomSanitizer, data: T, actionStep: boolean) => AbstractEvent<T>;
 
@@ -52,6 +53,7 @@ export class EventRegistryService {
 		this.register('START_NPC_TRADE_MENU', StartNpcTradeMenu);
 		this.register('OPEN_QUEST_DIALOG', OpenQuestDialog);
 		this.register('SHOW_SIDE_MSG', ShowSideMsg);
+		this.register('SHOW_MODAL_CHOICE', ShowModalChoice);
 		
 	}
 	
