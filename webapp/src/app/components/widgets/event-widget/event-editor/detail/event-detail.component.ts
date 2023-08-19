@@ -45,8 +45,10 @@ export class EventDetailComponent implements OnDestroy {
 	}
 	
 	public loadEvent(event: AbstractEvent<any>) {
-		this.event = event;
-		this.loadSettings();
+		if(this.event !== event) {
+			this.event = event;
+			this.loadSettings();
+		}
 	}
 	
 	private clearSubscriptions() {
@@ -96,6 +98,7 @@ export class EventDetailComponent implements OnDestroy {
 		instance.key = key;
 		instance.attribute = val;
 		const sub = instance.onChange.subscribe(() => this.update());
+		
 		this.changeSubscriptions.push(sub);
 		return instance;
 	}
