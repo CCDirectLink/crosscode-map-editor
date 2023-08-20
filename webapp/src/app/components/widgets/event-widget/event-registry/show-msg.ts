@@ -31,7 +31,7 @@ export class ShowMsg extends AbstractEvent<ShowMsgData> {
 	update() {
 		this.info = this.combineStrings(
 			this.getColoredString(this.data.person.person + '>&#8203;' + this.data.person.expression, '#ffe188'),
-			this.data.message?.en_US
+			this.getProcessedText(this.data.message)
 		);
 	}
 	

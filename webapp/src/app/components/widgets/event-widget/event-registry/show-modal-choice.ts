@@ -33,12 +33,12 @@ export class ShowModalChoice extends AbstractEvent<ShowModalChoiceData> {
         this.children = [];
 		this.info = this.combineStrings(
 			this.getTypeString('#7ea3ff'),
-			this.getPropString('text', this.data.text.en_US)
+			this.getPropString('text', this.getProcessedText(this.data.text))
 		);
 		
 		this.data.options.forEach((option, index) => {
 			this.children[index] = {
-				title: this.getColoredString('Choice: ', '#838383') + option.label.en_US,
+				title: this.getColoredString('Choice: ', '#838383') + this.getProcessedText(option.label),
 				events: this.data[index] || [],
 				draggable: false
 			};

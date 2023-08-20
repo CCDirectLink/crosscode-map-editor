@@ -1,6 +1,7 @@
 import { SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
+import { Label } from '../../../../models/events';
 
 export interface EventType {
 	type: string;
@@ -162,6 +163,38 @@ export abstract class AbstractEvent<T extends EventType> {
 	
 	protected getColorRectangle(color: string): string {
 		return `<span style="background-color: ${this.sanitize(color)};">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>`;
+	}
+
+	protected getProcessedText(langLabel: Label): string {
+		const textColors = [
+			null,
+			'#ff6969',
+			'#65ff89',
+			'#ffe430',
+			'#808080',
+			'#ffe430',
+		];
+		let text = langLabel?.en_US ?? '';
+
+		let inSpan = false;
+		text = text.replace(/\\c\[(\d+)\]|$/g, (substr, colorIndex) => {
+			const color = textColors[+colorIndex];
+			let replacement = '';
+			if(inSpan) {
+				replacement += '</span>';
+				inSpan = false;
+			}
+			if(color) {
+				replacement += `<span style="color: ${color}">`;
+				inSpan = true;
+			} else if (color !== null) {
+				//preserve the original color code untouched.
+				replacement += substr;
+			}
+			return replacement;
+		});
+
+		return text;
 	}
 	
 	private sanitize(val: string | number) {

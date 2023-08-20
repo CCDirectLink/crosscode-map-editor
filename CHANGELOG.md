@@ -6,8 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
-- Added proper support for the event step `SHOW_MODAL_CHOICE`.
-
+- Added proper support for the event steps `SHOW_MODAL_CHOICE` and `SET_MSG_EXPRESSION`.
+- Added rendering of text colors in relevant events (such as `SHOW_MSG`).
 
 ### Changed
 - `VarConditions` now use the string editor, as opposed to the JSON editor.
