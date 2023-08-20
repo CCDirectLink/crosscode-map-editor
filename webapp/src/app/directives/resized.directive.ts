@@ -24,13 +24,13 @@ export class ResizedDirective implements OnInit, OnDestroy {
 	private oldRect?: DOMRectReadOnly;
 
 	@Output()
-	public readonly resized;
+	public readonly appResized;
 
 	public constructor(
 		private readonly element: ElementRef,
 		private readonly zone: NgZone
 	) {
-		this.resized = new EventEmitter<ResizedEvent>();
+		this.appResized = new EventEmitter<ResizedEvent>();
 		this.observer = new ResizeObserver((entries) =>
 			this.zone.run(() => this.observe(entries))
 		);
@@ -52,6 +52,6 @@ export class ResizedDirective implements OnInit, OnDestroy {
 			isFirst: this.oldRect == null,
 		};
 		this.oldRect = domSize.contentRect;
-		this.resized.emit(resizedEvent);
+		this.appResized.emit(resizedEvent);
 	}
 }

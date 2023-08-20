@@ -13,6 +13,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - Layers on the `first` level should now properly render as though they are below level 0.
 
+## [1.0.1] 2023-08-20
+
+### Fixed
+- Fixed the langlabel widget not updating its size when resizing the detail panel.
+
 ## [1.0.0] 2023-08-04
 
 ### Added
