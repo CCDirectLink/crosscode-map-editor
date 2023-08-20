@@ -142,18 +142,20 @@ export class CCMapLayer {
 	}
 	
 	updateLevel(level: number | string) {
-		if(typeof level == 'string') {
+		//converts stringed numbers like "2" to be numeric.
+		//leaves everything else unchanged.
+		if(!isNaN(+level)) {
+			level = +level;
+		}
+
+		if(typeof level === 'string') {
 			this.details.levelName = level;
 			this.details.level = level === 'first' ? -1 : 10;
 		} else {
 			this.details.level = level;
 			delete this.details.levelName;
 		}
-		let zIndex = this.details.level * 10;
-		if (isNaN(zIndex)) {
-			zIndex = 999;
-		}
-		this.layer.depth = zIndex;
+		this.layer.depth = this.details.level * 10;
 	}
 	
 	updateLighter(lighter: boolean) {
