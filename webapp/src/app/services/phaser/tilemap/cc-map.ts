@@ -136,7 +136,8 @@ export class CCMap {
 		this.mapHeight = height;
 		
 		this.layers.forEach(layer => {
-			// only update layers with distance: 1, parallax should not be touched
+			// only update layers with distance: 1
+			// Parallax Layers shouldn't be updated because they usually have different dimensions than the map
 			if (layer.details.distance === 1) {
 				layer.resize(width, height);
 			}
