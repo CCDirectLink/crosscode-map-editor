@@ -1,4 +1,5 @@
 import { AbstractEvent, EventType } from './abstract-event';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
 export interface IfData extends EventType {
 	withElse: boolean;
@@ -8,7 +9,7 @@ export interface IfData extends EventType {
 }
 
 export class If extends AbstractEvent<IfData> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		condition: {
 			type: 'VarCondition',
 			description: 'Condition for IF statement'

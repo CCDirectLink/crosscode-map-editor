@@ -1,5 +1,6 @@
 import { Label, Person } from '../../../../models/events';
 import { AbstractEvent, EventType } from './abstract-event';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
 interface ShowMsgData extends EventType {
 	message: Label;
@@ -8,7 +9,7 @@ interface ShowMsgData extends EventType {
 }
 
 export class ShowMsg extends AbstractEvent<ShowMsgData> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		person: {
 			type: 'PersonExpression',
 			description: 'Talking person'

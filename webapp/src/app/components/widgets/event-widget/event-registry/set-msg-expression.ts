@@ -1,11 +1,12 @@
 import { Person } from '../../../../models/events';
-import { AbstractEvent, EventType } from './abstract-event';
+import { EventType } from './abstract-event';
+import { DefaultEvent } from './default-event';
 
 interface SetMsgExpressionData extends EventType {
 	person: Person;
 }
 
-export class SetMsgExpression extends AbstractEvent<SetMsgExpressionData> {
+export class SetMsgExpression extends DefaultEvent<SetMsgExpressionData> {
     private attributes = {
         person: {
             type: 'PersonExpression',
@@ -13,18 +14,14 @@ export class SetMsgExpression extends AbstractEvent<SetMsgExpressionData> {
         }
     };
 
-    getAttributes() {
-        return this.attributes;
-    }
-
-    update() {
+    override update() {
         this.info = this.combineStrings(
             this.getTypeString('#7ea3ff'),
 			this.getPropString('person', this.data.person.person + '>&#8203;' + this.data.person.expression),
         );
     }
 
-    generateNewDataInternal() {
+    override generateNewDataInternal() {
 		return {
 			person: {}
 		};

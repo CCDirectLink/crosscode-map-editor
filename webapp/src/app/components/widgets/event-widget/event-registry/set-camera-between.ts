@@ -1,7 +1,8 @@
 import { AbstractEvent } from './abstract-event';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
 export class SetCameraBetween extends AbstractEvent<any> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		entity1: {
 			type: 'Entity',
 			description: 'First entity'

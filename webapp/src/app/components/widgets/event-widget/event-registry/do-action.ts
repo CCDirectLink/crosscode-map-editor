@@ -1,7 +1,8 @@
 import { AbstractEvent } from './abstract-event';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
 export class DoAction extends AbstractEvent<any> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		entity: {
 			type: 'Entity',
 			description: 'Entity to move',

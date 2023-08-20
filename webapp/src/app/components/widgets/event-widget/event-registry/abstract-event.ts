@@ -1,6 +1,6 @@
 import { SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
+import { EntityAttributes, Base_WM_Type } from '../../../../services/phaser/entities/cc-entity';
 import { Label } from '../../../../models/events';
 
 export interface EventType {
@@ -54,13 +54,13 @@ export abstract class AbstractEvent<T extends EventType> {
 	}
 	
 	protected getPropString(key: string, value?: any): string {
-		if (!value) {
+		if (value === undefined) {
 			value = this.data[key as keyof T];
 		}
 		const attr = this.getAttributes();
 		if (attr && attr[key]) {
 			const type = attr[key].type;
-			switch (type) {
+			switch (type as Base_WM_Type) {
 				case 'Color': 
 					value = this.getColorRectangle(value);
 					break;
@@ -172,7 +172,7 @@ export abstract class AbstractEvent<T extends EventType> {
 			'#65ff89',
 			'#ffe430',
 			'#808080',
-			'#ffe430',
+			'#ff8932',
 		];
 		let text = langLabel?.en_US ?? '';
 

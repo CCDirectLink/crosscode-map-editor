@@ -1,6 +1,8 @@
+import { Helper } from '../../../../services/phaser/helper';
 import { Label } from '../../../../models/events';
 import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 import { AbstractEvent, EventType } from './abstract-event';
+import { DefaultEvent } from './default-event';
 
 export interface ShowModalChoiceData extends EventType {
     [key: number]: AbstractEvent<any>[];
@@ -11,7 +13,7 @@ export interface ShowModalChoiceData extends EventType {
     }[];
 }
 
-export class ShowModalChoice extends AbstractEvent<ShowModalChoiceData> {
+export class ShowModalChoice extends DefaultEvent<ShowModalChoiceData> {
     private attributes: EntityAttributes = {
         text: {
             type: 'LangLabel',
@@ -25,14 +27,10 @@ export class ShowModalChoice extends AbstractEvent<ShowModalChoiceData> {
         }
     };
 
-    getAttributes(): EntityAttributes {
-        return this.attributes;    
-    }
-
-    update() {
+    override update() {
         this.children = [];
 		this.info = this.combineStrings(
-			this.getTypeString('#7ea3ff'),
+			this.getTypeString('#7774e8'),
 			this.getPropString('text', this.getProcessedText(this.data.text))
 		);
 		
@@ -58,10 +56,10 @@ export class ShowModalChoice extends AbstractEvent<ShowModalChoiceData> {
 			out[index] = child.events.map(v => v.export());
 		});
 		
-		return JSON.parse(JSON.stringify(out));
+		return Helper.copy(out);
     }
 
-    protected generateNewDataInternal() {
+    protected override generateNewDataInternal() {
         return {
             text: {},
             options: [{

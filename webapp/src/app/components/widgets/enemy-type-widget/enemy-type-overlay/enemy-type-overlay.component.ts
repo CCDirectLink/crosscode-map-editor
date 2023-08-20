@@ -16,7 +16,7 @@ export class EnemyTypeWidgetOverlayComponent extends AbstractWidget implements O
 		'OTHER'
 	];
 	readonly partyAttributes: AttributeValue = {
-		type: 'string',
+		type: 'String',
 		description: '',
 		withNull: true,
 		options: this.makeOptions(this.partyOptions)
@@ -32,7 +32,7 @@ export class EnemyTypeWidgetOverlayComponent extends AbstractWidget implements O
 		'NORTH_WEST'
 	];
 	readonly faceAttributes: AttributeValue = {
-		type: 'string',
+		type: 'String',
 		description: '',
 		withNull: true,
 		options: this.makeOptions(this.faceOptions)
