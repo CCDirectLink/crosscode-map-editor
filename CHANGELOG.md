@@ -16,6 +16,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - Events with children/branching steps (such as `IF`, `SHOW_CHOICE`, `SHOW_MODAL_CHOICE`, etc.) will no longer fully refresh upon any edits, causing focus to be reset.
 
+## [1.0.1] 2023-08-20
+
+### Fixed
+- Fixed the langlabel widget not updating its size when resizing the detail panel.
+
 ## [1.0.0] 2023-08-04
 
 ### Added
