@@ -110,7 +110,7 @@
 							matInput
 							[disabled]="!selectedLayer"
 							[(ngModel)]="selectedLayer?.details!.distance"
-							(ngModelChange)="updateDistance()"
+							(blur)="updateDistance()"
 						>
 					</mat-form-field>
 				</div>
