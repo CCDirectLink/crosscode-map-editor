@@ -24,6 +24,9 @@ export class LayersComponent implements OnInit {
 	newLayerName = '';
 	tilesets: string[] = []; //Angular view data
 	
+	width = 0;
+	height = 0;
+	
 	constructor(private mapLoader: MapLoaderService,
 		private stateHistory: StateHistoryService,
 		private http: HttpClientService,
@@ -46,7 +49,11 @@ export class LayersComponent implements OnInit {
 			for (const layer of (this.map?.layers ?? [])) {
 				layer.select(false);
 			}
-			layer?.select(true);
+			if (layer){
+				layer.select(true);
+				this.width = layer.details.width;
+				this.height = layer.details.height;
+			}
 		});
 		this.mapLoader.tileMap.subscribe(tilemap => this.map = tilemap);
 	}
@@ -156,7 +163,7 @@ export class LayersComponent implements OnInit {
 	}
 	
 	updateSize() {
-		this.selectedLayer?.resize(this.selectedLayer?.details.width, this.selectedLayer?.details.height);
+		this.selectedLayer?.resize(this.width, this.height);
 		this.stateHistory.saveState({
 			name: 'Layer resized',
 			icon: 'resize'
@@ -183,5 +190,4 @@ export class LayersComponent implements OnInit {
 			icon: 'open_with',
 		}, true);
 	}
-	
 }
