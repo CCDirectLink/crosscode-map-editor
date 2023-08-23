@@ -66,10 +66,6 @@ export class CharacterWidgetComponent extends OverlayWidget {
 			ogProp = '';
 		}
 		
-		this.comp.manualKey = this.key;
-		this.comp.manualValue = ogProp;
-		this.comp.manualValueChange.subscribe(v => this.setPropType(v, true));
-		
 		this.setPropType(ogProp);
 		await this.updateProps();
 		this.updateRightSide();
@@ -88,7 +84,6 @@ export class CharacterWidgetComponent extends OverlayWidget {
 		if (updateRightSide) {
 			this.updateRightSide();
 		}
-		this.comp.manualValue = prop;
 	}
 	
 	private updateRightSide() {
