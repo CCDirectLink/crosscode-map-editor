@@ -1,6 +1,7 @@
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!">
-	<label class="property-name">{{key}}:</label>
-	<input type="button" class="default-input"
-	       [value]="this.settings?.desType || this.settings?.__GLOBAL__ || '[ null ]'"
-	       (click)="open()">
-</div>
+<app-input-with-button
+	[description]="attribute?.description ?? ''"
+	[key]="key"
+	[model]="settings.desType"
+	(buttonClick)="open()"
+	(modelChange)="setSetting(key, $event)"
+></app-input-with-button>

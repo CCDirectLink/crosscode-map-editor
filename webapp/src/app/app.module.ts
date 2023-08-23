@@ -65,6 +65,7 @@ import { EnemySingleTypeWidgetComponent } from './components/widgets/enemy-singl
 import { CustomDesTypeWidgetComponent } from './components/widgets/custom-des-type-widget/custom-des-type-widget.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { CombinedTooltipPipe } from './pipes/combined-tooltip.pipe';
+import { InputWithButtonComponent } from './components/widgets/inputs/input-with-button/input-with-button.component';
 
 const WIDGETS = [
 	StringWidgetComponent,
@@ -141,6 +142,7 @@ const WIDGETS = [
 		HighlightDirective,
 		AutofocusDirective,
 		CombinedTooltipPipe,
+		InputWithButtonComponent,
 	],
 	bootstrap: [AppComponent],
 })

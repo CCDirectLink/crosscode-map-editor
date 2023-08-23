@@ -1,0 +1,22 @@
+@use '@angular/material' as mat;
+
+input.default-input {
+	outline: none;
+}
+
+.input-container {
+	@include mat.icon-button-density(-4);
+
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+
+	mat-icon {
+		font-size: 20px;
+	}
+
+	&::ng-deep.mat-mdc-button-touch-target {
+		width: 32px;
+		height: 32px;
+	}
+}

@@ -17,6 +17,9 @@
 		</button>
 	</mat-form-field>
 	<h2 class="pl-4 headline" *ngIf="title">{{title}}</h2>
+	<div class="pl-4 pr-4">
+		<ng-content></ng-content>
+	</div>
 	<div class="list">
 		<ng-container
 			*ngIf="items|listFilter:filter:filterItems as filteredItems"

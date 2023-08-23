@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 - Named layer levels will now appear in the layer selector as opposed to a layer appearing on level 0 or 10.
+- Added manual input field to graphical selection widget for `Prop`, `Enemy`, `NPC`, `ItemDestruct`
 
 ### Fixed
 - Layers on the `first` level should now properly render as though they are below level 0.

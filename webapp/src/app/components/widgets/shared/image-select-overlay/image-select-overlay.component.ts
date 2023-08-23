@@ -19,7 +19,12 @@ export class ImageSelectOverlayComponent implements OnChanges, OnDestroy {
 	@Input() splitBase = 13;
 	@Input() title = '';
 	@Input() showGlobalCheckbox = false;
-	@Input() loading = true;
+	@Input() loading = false;
+	
+	// input for manual value enter
+	@Input() manualKey?: string;
+	@Input() manualValue?: string;
+	@Output() manualValueChange = new EventEmitter<string>();
 	
 	@Input() sheets: string[] = [];
 	@Input() sheet?: string;
