@@ -190,7 +190,7 @@ export class CCMapLayer {
 		}
 		this.layer.alpha = oldLayer?.alpha ?? 1;
 		this.setOffset(this.container.x, this.container.y);
-		this.updateLevel(this.details.level);
+		this.updateLevel(this.details.levelName ?? this.details.level);
 		if (oldLayer) {
 			oldLayer.destroy(true);
 		}

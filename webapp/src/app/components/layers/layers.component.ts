@@ -49,7 +49,7 @@ export class LayersComponent implements OnInit {
 			for (const layer of (this.map?.layers ?? [])) {
 				layer.select(false);
 			}
-			if (layer){
+			if (layer) {
 				layer.select(true);
 				this.width = layer.details.width;
 				this.height = layer.details.height;
@@ -155,7 +155,7 @@ export class LayersComponent implements OnInit {
 		this.tilesets = LayersComponent.tilesets;
 	}
 	
-	updateLevel(level: number) {
+	updateLevel(level: number | string) {
 		if (!this.selectedLayer) {
 			throw new Error('no layer selected');
 		}
