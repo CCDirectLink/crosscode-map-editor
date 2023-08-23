@@ -15,27 +15,6 @@ export class CCMapLayer {
 	}
 	
 	public async init(details: MapLayer) {
-		if (typeof details.level === 'string') {
-			// possible levels
-			// 'first'
-			// 'last'
-			// 'light'
-			// 'postlight'
-			// 'object1'
-			// 'object2'
-			// 'object3'
-			if (!isNaN(<any>details.level)) {
-				details.level = parseInt(details.level, 10);
-			} else {
-				details.levelName = details.level;
-				if (details.level.startsWith('first')) {
-					details.level = -1;
-				} else {
-					// TODO: get actual max level;
-					details.level = 10;
-				}
-			}
-		}
 		// noinspection SuspiciousTypeOfGuard
 		if (typeof details.distance === 'string') {
 			details.distance = parseFloat(details.distance);
