@@ -6,12 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 ### Added
 - Layer level selector now also supports selecting all the named layer levels: `first`, `last`, `light`, `postlight`, `object1`, `object2`, and `object3`.
+- Added support for parallax layers (`distance != 1`)
+- The size of every individual layer can now be changed instead of using the map size
+- Added preview to see how the parallax effect would look ingame
 
 ### Changed
 - Named layer levels will now appear in the layer selector as opposed to a layer appearing on level 0 or 10.
 
 ### Fixed
 - Layers on the `first` level should now properly render as though they are below level 0.
+- Layers with different sizes are now saved properly [#272](https://github.com/CCDirectLink/crosscode-map-editor/issues/272)
 
 ## [1.0.1] 2023-08-20
 

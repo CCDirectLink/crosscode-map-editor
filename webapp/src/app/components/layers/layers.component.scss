@@ -67,12 +67,13 @@ mat-nav-list {
 
 .small-list {
 	min-height: 80px !important;
+
 	& mat-list-item, .mat-list-item-content {
 		height: 36px !important;
 	}
 }
 
-.layers-tab-container{
+.layers-tab-container {
 	height: 100%;
 }
 
@@ -86,11 +87,16 @@ mat-nav-list {
 
 .label {
 	flex: 0 0 80px;
+	@include mat.icon-button-density(-3);
 }
 
 .list-item {
 	//padding-left: 16px;
 	width: 100%;
+}
+
+.size-prefix {
+	margin-left: 6px;
 }
 
 .simple-input {

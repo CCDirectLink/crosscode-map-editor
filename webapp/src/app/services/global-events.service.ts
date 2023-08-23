@@ -20,6 +20,7 @@ export class GlobalEventsService {
 	showAddEntityMenu = new Subject<Point>();
 
 	updateCoords = new Subject<Point3 | undefined>();
+	showIngamePreview = new BehaviorSubject(false);
 
 	babylonLoading = new BehaviorSubject<boolean>(false);
 	is3D = new BehaviorSubject<boolean>(false);

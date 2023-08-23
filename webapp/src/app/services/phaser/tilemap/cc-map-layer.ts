@@ -3,6 +3,7 @@ import { BlendModes } from 'phaser';
 import { MapLayer, Point } from '../../../models/cross-code-map';
 import { Helper } from '../helper';
 import { customPutTilesAt } from './layer-helper';
+import { Globals } from '../../globals';
 import Tile = Phaser.Tilemaps.Tile;
 
 export class CCMapLayer {
@@ -10,8 +11,12 @@ export class CCMapLayer {
 	public details!: MapLayer;
 	
 	private layer!: Phaser.Tilemaps.TilemapLayer;
+	private border!: Phaser.GameObjects.Rectangle;
+	private container!: Phaser.GameObjects.Container;
 	
-	constructor(private tilemap: Phaser.Tilemaps.Tilemap) {
+	constructor(
+		private tilemap: Phaser.Tilemaps.Tilemap
+	) {
 	}
 	
 	public async init(details: MapLayer) {
@@ -20,7 +25,12 @@ export class CCMapLayer {
 			details.distance = parseFloat(details.distance);
 		}
 		this.details = details;
-		this.layer = this.tilemap.createBlankLayer(details.name + Math.random(), 'stub')!;
+		this.border = this.tilemap.scene.add.rectangle();
+		this.border.visible = false;
+		this.container = this.tilemap.scene.add.container(0, 0, this.border);
+		this.container.depth = 999;
+		this.makeLayer('stub');
+		this.updateBorder();
 		if (details.data) {
 			customPutTilesAt(details.data, this.layer);
 		}
@@ -40,6 +50,8 @@ export class CCMapLayer {
 	}
 	
 	set visible(val: boolean) {
+		this.container.visible = val;
+		this.container.active = val;
 		this.layer.visible = val;
 		this.layer.active = val;
 	}
@@ -52,8 +64,24 @@ export class CCMapLayer {
 		this.layer.alpha = val;
 	}
 	
+	get x(): number {
+		return this.container.x;
+	}
+	
+	get y(): number {
+		return this.container.y;
+	}
+	
 	destroy() {
-		this.layer.destroy();
+		this.container.destroy(true);
+		this.layer?.destroy(true);
+	}
+	
+	select(val: boolean) {
+		if (val) {
+			this.visible = true;
+		}
+		this.border.visible = val;
 	}
 	
 	offsetLayer(offset: Point, borderTiles = false) {
@@ -93,12 +121,9 @@ export class CCMapLayer {
 				newData[y][x] = old[x]?.index ?? 0;
 			}
 		}
-		const tilesetName = this.layer.tileset[0].name;
 		const visible = this.layer.visible;
-		this.layer.destroy();
-		
-		this.layer = this.tilemap.createBlankLayer(this.details.name + Math.random(), tilesetName, 0, 0, width, height)!;
-		customPutTilesAt(newData, this.layer);
+		this.makeLayer(undefined, newData);
+		this.updateBorder();
 		
 		this.visible = visible;
 	}
@@ -107,14 +132,10 @@ export class CCMapLayer {
 		const details = this.details;
 		details.tilesetName = tilesetname;
 		
-		const oldLayer = this.layer;
 		await Helper.loadTexture(tilesetname, this.tilemap.scene);
 		
 		const newTileset = this.tilemap.addTilesetImage(tilesetname, undefined, undefined, undefined, undefined, undefined, 1);
-		this.layer = this.tilemap.createBlankLayer(details.name + Math.random(), newTileset ?? [], 0, 0, details.width, details.height)!;
-		customPutTilesAt(oldLayer.layer.data, this.layer);
-		
-		oldLayer.destroy();
+		this.makeLayer(newTileset ?? []);
 		
 		this.updateLevel(this.details.levelName ?? this.details.level);
 		this.updateLighter(!!this.details.lighter);
@@ -137,6 +158,13 @@ export class CCMapLayer {
 		this.layer.depth = this.details.level * 10;
 	}
 	
+	setOffset(x: number, y: number) {
+		this.container.x = x;
+		this.container.y = y;
+		this.layer.x = x;
+		this.layer.y = y;
+	}
+	
 	updateLighter(lighter: boolean) {
 		this.details.lighter = lighter;
 		const blendMode = lighter ? BlendModes.ADD : BlendModes.NORMAL;
@@ -145,6 +173,41 @@ export class CCMapLayer {
 	
 	getPhaserLayer(): Phaser.Tilemaps.TilemapLayer {
 		return this.layer;
+	}
+	
+	private makeLayer(tileset?: string | string[] | Phaser.Tilemaps.Tileset, tiles?: Tile[][] | number[][]) {
+		const oldLayer = this.layer as typeof this.layer | undefined;
+		
+		if (!tileset) {
+			tileset = oldLayer?.tileset[0]?.name ?? [];
+		}
+		if (!tiles) {
+			tiles = oldLayer?.layer?.data;
+		}
+		this.layer = this.tilemap.createBlankLayer(this.details.name + Math.random(), tileset, 0, 0, this.details.width, this.details.height)!;
+		if (tiles) {
+			customPutTilesAt(tiles, this.layer);
+		}
+		this.layer.alpha = oldLayer?.alpha ?? 1;
+		this.setOffset(this.container.x, this.container.y);
+		this.updateLevel(this.details.level);
+		if (oldLayer) {
+			oldLayer.destroy(true);
+		}
+	}
+	
+	private updateBorder() {
+		const s = Globals.TILE_SIZE;
+		
+		const borderSize = 2;
+		
+		this.border.setPosition(-borderSize * 0.5, -borderSize * 0.5);
+		this.border.setSize(
+			this.details.width * s + borderSize,
+			this.details.height * s + borderSize,
+		);
+		this.border.setStrokeStyle(borderSize, 0xfc4445, 1);
+		this.border.setOrigin(0, 0);
 	}
 	
 	exportLayer(): MapLayer {
