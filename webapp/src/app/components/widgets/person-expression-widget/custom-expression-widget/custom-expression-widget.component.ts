@@ -1,4 +1,4 @@
-import { Component, OnChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges } from '@angular/core';
 import { OverlayWidget } from '../../overlay-widget';
 import { ImageSelectOverlayComponent } from '../../shared/image-select-overlay/image-select-overlay.component';
 import { HttpClientService } from '../../../../services/http-client.service';
@@ -26,8 +26,9 @@ export class CustomExpressionWidgetComponent extends OverlayWidget<Person> imple
 	
 	constructor(
 		private http: HttpClientService,
+		private changeDetectorRef: ChangeDetectorRef,
 		overlayService: OverlayService,
-		overlay: Overlay
+		overlay: Overlay,
 	) {
 		super(overlayService, overlay);
 	}
@@ -59,19 +60,16 @@ export class CustomExpressionWidgetComponent extends OverlayWidget<Person> imple
 		
 		const expression = this.settings.expression ?? '';
 		
-		this.comp.manualKey = this.key;
-		this.comp.manualValue = expression;
-		this.comp.manualValueChange.subscribe(v => this.setExpression(v));
-		
 		this.setExpression(this.settings.expression);
 		await this.updateFaces();
 		
 		return obj.ref;
 	}
 	
-	private async updatePreviewImg() {
+	async updatePreviewImg() {
 		const face = await this.getFace();
 		this.preview = await this.makeImage(face, this.settings.expression);
+		this.changeDetectorRef.markForCheck();
 	}
 	
 	private setExpression(prop?: string) {
@@ -80,7 +78,6 @@ export class CustomExpressionWidgetComponent extends OverlayWidget<Person> imple
 			return;
 		}
 		this.setSetting(this.key, prop);
-		this.comp.manualValue = prop;
 	}
 	
 	private async updateFaces() {
