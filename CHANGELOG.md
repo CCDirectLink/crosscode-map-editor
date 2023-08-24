@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The size of every individual layer can now be changed instead of using the map size
 - Added preview to see how the parallax effect would look ingame
 - added graphical selection widget to `person-expression`
+- Added checkbox to "Offset Map" to optionally include entities [#279](https://github.com/CCDirectLink/crosscode-map-editor/issues/279)
 
 ### Changed
 - Named layer levels will now appear in the layer selector as opposed to a layer appearing on level 0 or 10.
