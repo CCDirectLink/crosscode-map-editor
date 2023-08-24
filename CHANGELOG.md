@@ -9,10 +9,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added support for parallax layers (`distance != 1`)
 - The size of every individual layer can now be changed instead of using the map size
 - Added preview to see how the parallax effect would look ingame
+- added graphical selection widget to `person-expression`
 
 ### Changed
 - Named layer levels will now appear in the layer selector as opposed to a layer appearing on level 0 or 10.
 - Added manual input field to graphical selection widget for `Prop`, `Enemy`, `NPC`, `ItemDestruct`
+- event `person-expression` now only shows characters that have a face [#284](https://github.com/CCDirectLink/crosscode-map-editor/issues/284)
 
 ### Fixed
 - Layers on the `first` level should now properly render as though they are below level 0.

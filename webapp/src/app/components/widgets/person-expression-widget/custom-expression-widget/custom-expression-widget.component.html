@@ -1,0 +1,19 @@
+<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!">
+	<label class="property-name">{{key}}:</label>
+	<button class="default-input img-btn"
+	        (click)="open()"
+	>
+		<img
+			[src]="preview"
+			[style.visibility]="preview ? 'initial' : 'hidden'"
+			width="489"
+			height="571"
+		>
+		<div
+			class="w-full text-ellipsis overflow-hidden"
+			[matTooltip]="this.settings?.expression ?? ''"
+		>
+			{{this.settings?.expression || '[ null ]' | lowercase}}
+		</div>
+	</button>
+</div>

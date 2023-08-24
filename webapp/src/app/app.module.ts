@@ -66,6 +66,7 @@ import { CustomDesTypeWidgetComponent } from './components/widgets/custom-des-ty
 import { AutofocusDirective } from './directives/autofocus.directive';
 import { CombinedTooltipPipe } from './pipes/combined-tooltip.pipe';
 import { InputWithButtonComponent } from './components/widgets/inputs/input-with-button/input-with-button.component';
+import { CustomExpressionWidgetComponent } from './components/widgets/person-expression-widget/custom-expression-widget/custom-expression-widget.component';
 
 const WIDGETS = [
 	StringWidgetComponent,
@@ -87,6 +88,7 @@ const WIDGETS = [
 	ScalablePropConfigWidgetComponent,
 	EnemySingleTypeWidgetComponent,
 	CustomDesTypeWidgetComponent,
+	CustomExpressionWidgetComponent,
 	CharacterWidgetComponent,
 ];
 
