@@ -58,8 +58,6 @@ export class CustomExpressionWidgetComponent extends OverlayWidget<Person> imple
 		
 		this.comp.leftGroup.click = prop => this.setExpression(prop);
 		
-		const expression = this.settings.expression ?? '';
-		
 		this.setExpression(this.settings.expression);
 		await this.updateFaces();
 		
