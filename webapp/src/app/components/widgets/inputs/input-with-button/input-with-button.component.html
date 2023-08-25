@@ -1,0 +1,16 @@
+<div class="property-container flex flex-row" [matTooltip]="description ?? ''">
+	<label class="property-name">{{key}}:</label>
+	<div class="default-input input-container">
+		<input class="default-input"
+		       [ngModel]="model"
+		       (ngModelChange)="modelChange.emit($event)">
+		<button
+			mat-icon-button
+			(click)="buttonClick.emit()"
+		>
+			<mat-icon>
+				collections
+			</mat-icon>
+		</button>
+	</div>
+</div>

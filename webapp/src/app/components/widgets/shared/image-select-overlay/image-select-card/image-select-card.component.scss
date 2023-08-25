@@ -4,7 +4,6 @@
 .card {
 	position: relative;
 	width: var.$card-width;
-	height: var.$card-height;
 	background-color: mat.get-color-from-palette(mat.$gray-palette, 700);
 	transition: transform 100ms ease, border 100ms ease;
 

@@ -115,6 +115,7 @@ export class Helper {
 			return true;
 		}
 		
+		// TODO: save promise to avoid loading the same texture simultaneously
 		const file = await Globals.httpService.resolveFile(key).toPromise().catch(() => false);
 		if (!file) {
 			return false;
@@ -152,5 +153,10 @@ export class Helper {
 			return mapStyle[type];
 		}
 		return mapStyles.default[type];
+	}
+	
+	public static async asyncFilter<T>(arr: T[], predicate: (v: T) => Promise<boolean>) {
+		const results = await Promise.all(arr.map(predicate));
+		return arr.filter((_v, index) => results[index]);
 	}
 }

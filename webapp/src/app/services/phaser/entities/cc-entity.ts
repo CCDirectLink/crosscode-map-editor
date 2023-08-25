@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { MapEntity, Point, Point3 } from '../../../models/cross-code-map';
+import { MapEntity, PartialPoint3, Point, Point3 } from '../../../models/cross-code-map';
 import { Helper } from '../helper';
 import { CCMap } from '../tilemap/cc-map';
 import { Vec2 } from '../vec2';
@@ -55,13 +55,11 @@ export interface Fix {
 	tint?: number;
 	alpha?: number;
 	
-	offY?: number;
 	wallY?: number;
 	shape?: string;
 	aboveZ?: string | number;
 	pivotX?: number;
 	pivotY?: number;
-	offX?: number;
 	terrain?: string;
 	off?: null;
 	wall?: number;
@@ -116,8 +114,8 @@ export abstract class CCEntity extends BaseObject {
 		settings: DetailSettings;
 	} = <any>{};
 	entitySettings: {
-		collType: string;
-		baseSize: Point3;
+		collType?: string;
+		baseSize: PartialPoint3;
 		sheets: {
 			fix: Fix[];
 			offset?: Point;
@@ -125,10 +123,10 @@ export abstract class CCEntity extends BaseObject {
 			flipX?: boolean;
 			ignoreScalable?: boolean;
 		};
-		scalableX: boolean;
-		scalableY: boolean;
-		scalableStep: number;
-		pivot: Point;
+		scalableX?: boolean;
+		scalableY?: boolean;
+		scalableStep?: number;
+		pivot?: Point;
 	} = <any>{};
 	
 	protected constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
@@ -212,6 +210,11 @@ export abstract class CCEntity extends BaseObject {
 			}
 			this.updateZIndex();
 		}
+	}
+	
+	addPosition(x: number, y: number) {
+		this.container.x += x;
+		this.container.y += y;
 	}
 	
 	updateSettings() {
@@ -695,22 +698,23 @@ export abstract class CCEntity extends BaseObject {
 		return CCEntity.renderBackground;
 	}
 	
-	public async generateHtmlImage(withBackground = true, offsetY?: number, width = 16 * 6, height = 16 * 7) {
+	public async generateHtmlImage(withBackground = true, offsetY: number = 0, entityScale = 1) {
+		const width = 16 * 6 * entityScale;
+		const height = 16 * 7 * entityScale;
+		
 		const scale = 3;
-		const scaledWidth = width * scale;
-		const scaledHeight = height * scale;
 		
 		const name = Math.random() + '';
-		const texture = this.scene.textures.addDynamicTexture(name, scaledWidth, scaledHeight)!;
+		const texture = this.scene.textures.addDynamicTexture(name, width * scale, height * scale)!;
 		
 		texture.clear();
 		if (withBackground) {
-			const g = this.getRenderBackground(width, height);
-			g.setScale(scale);
+			const g = this.getRenderBackground(width / entityScale, height / entityScale);
+			g.setScale(scale * entityScale);
 			texture.draw(g);
 		}
-		const x = scale * 16 * 3 - (this.getActualSize().x * scale) / 2;
-		const y = scale * (16 * 5 + (offsetY ?? 0));
+		const x = (width - this.getActualSize().x) * scale / 2;
+		const y = scale * (height - ((32 - offsetY) * entityScale));
 		
 		// drawing container directly is broken: https://github.com/photonstorm/phaser/issues/6546
 		for (const img of this.images) {

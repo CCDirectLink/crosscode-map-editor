@@ -99,7 +99,7 @@ export class TileDrawer extends BaseObject {
 			return;
 		}
 		const pointer = this.scene.input.activePointer;
-		const p = Helper.worldToTile(pointer.worldX, pointer.worldY);
+		const p = Helper.worldToTile(pointer.worldX - this.layer.x, pointer.worldY - this.layer.y);
 		
 		// render selection border
 		if (this.rightClickStart) {
@@ -135,15 +135,15 @@ export class TileDrawer extends BaseObject {
 		container.x = pointer.worldX;
 		container.y = pointer.worldY;
 		
-		if (container.x < 0) {
+		if (container.x < this.layer.x) {
 			container.x -= Globals.TILE_SIZE;
 		}
-		if (container.y < 0) {
+		if (container.y < this.layer.y) {
 			container.y -= Globals.TILE_SIZE;
 		}
 		
-		container.x -= container.x % Globals.TILE_SIZE;
-		container.y -= container.y % Globals.TILE_SIZE;
+		container.x -= (container.x - this.layer.x) % Globals.TILE_SIZE;
+		container.y -= (container.y - this.layer.y) % Globals.TILE_SIZE;
 		
 		if (this.previewLayer) {
 			Vec2.assign(this.previewLayer, container);
@@ -151,7 +151,7 @@ export class TileDrawer extends BaseObject {
 		
 		// draw tiles
 		// trigger only when mouse is over canvas element (the renderer), avoids triggering when interacting with ui
-		if (pointer.leftButtonDown() && pointer.downElement.nodeName === 'CANVAS' && this.layer) {
+		if (pointer.leftButtonDown() && pointer.downElement?.nodeName === 'CANVAS' && this.layer) {
 			const finalPos = {x: 0, y: 0};
 			const startPos = {x: 0, y: 0};
 			
@@ -297,7 +297,7 @@ export class TileDrawer extends BaseObject {
 		
 		// only start tile copy when cursor in bounds
 		const pointer = this.scene.input.activePointer;
-		const p = Helper.worldToTile(pointer.worldX, pointer.worldY);
+		const p = Helper.worldToTile(pointer.worldX - this.layer.x, pointer.worldY - this.layer.y);
 		if (!Helper.isInBounds(this.layer, p)) {
 			return;
 		}
@@ -398,10 +398,14 @@ export class TileDrawer extends BaseObject {
 		}
 		
 		const pointer = this.scene.input.activePointer;
-		const p = Helper.worldToTile(pointer.worldX, pointer.worldY);
+		const p = Helper.worldToTile(pointer.worldX - this.layer.x, pointer.worldY - this.layer.y);
 		
 		if (this.selectedTiles.length > 0) {
 			Filler.fill(this.layer, this.selectedTiles[0].id, p);
+			Globals.stateHistoryService.saveState({
+				name: 'fill',
+				icon: 'format_color_fill'
+			});
 		}
 		
 	}

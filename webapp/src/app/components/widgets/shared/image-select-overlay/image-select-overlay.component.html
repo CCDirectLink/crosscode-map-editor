@@ -27,15 +27,6 @@
 			>
 				<ng-container ngProjectAs="left">
 					<div class="flex flex-col h-full mr-1.5 dark-scrollbar-auto">
-						<mat-checkbox
-							*ngIf="showGlobalCheckbox"
-							class="pl-2 pt-2"
-							color="primary"
-							[(ngModel)]="global"
-							(ngModelChange)="globalChange.emit($event)"
-						>
-							use GLOBAL
-						</mat-checkbox>
 						<app-image-select-list
 							[title]="leftGroup.title"
 							[items]="leftGroup.props"
@@ -43,7 +34,29 @@
 							[(filter)]="filter"
 							[selected]="leftGroup.selected"
 							(selectedChange)="leftGroup.click?.(leftGroup.selected === $event ? '' : $event)"
-						></app-image-select-list>
+						>
+							<div *ngIf="manualKey">
+								<mat-form-field
+									appearance="outline"
+									class="no-padding-form-field autoscale-form-field pb-4"
+								>
+									<mat-label>{{manualKey}}</mat-label>
+									<input
+										matInput
+										[ngModel]="manualValue"
+										(ngModelChange)="manualValueChange.emit($event)"
+									>
+								</mat-form-field>
+							</div>
+							<mat-checkbox
+								*ngIf="showGlobalCheckbox"
+								color="primary"
+								[(ngModel)]="global"
+								(ngModelChange)="globalChange.emit($event)"
+							>
+								use GLOBAL
+							</mat-checkbox>
+						</app-image-select-list>
 						<div class="flex-auto grid justify-center items-center">
 							<mat-spinner *ngIf="loading"></mat-spinner>
 						</div>

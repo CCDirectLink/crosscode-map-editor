@@ -29,7 +29,7 @@ export abstract class OverlayWidget<T = {[key: string]: any}> extends AbstractWi
 		this.ref = await this.openInternal();
 	}
 	
-	protected async generateImage<T>(settings: T, entity: string | CCEntity, offsetY?: number) {
+	protected async generateImage<T>(settings: T, entity: string | CCEntity, offsetY?: number, entityScale = 1) {
 		
 		const imgKey = JSON.stringify(settings);
 		let img = OverlayWidget.imgCache.get(imgKey);
@@ -47,7 +47,7 @@ export abstract class OverlayWidget<T = {[key: string]: any}> extends AbstractWi
 		} catch (e) {
 			await entity.setSettings({});
 		}
-		img = (await entity.generateHtmlImage(true, offsetY)).src;
+		img = (await entity.generateHtmlImage(true, offsetY, entityScale)).src;
 		
 		OverlayWidget.imgCache.set(imgKey, img);
 		

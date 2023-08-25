@@ -32,7 +32,7 @@ export class ToolbarComponent implements OnInit {
 	public loadMapClicked = new EventEmitter<void>(false);
 	
 	constructor(private mapLoader: MapLoaderService,
-		private events: GlobalEventsService,
+		public events: GlobalEventsService,
 		private dialog: MatDialog,
 		private overlayService: OverlayService,
 		private overlay: Overlay,
@@ -109,8 +109,11 @@ export class ToolbarComponent implements OnInit {
 	}
 	
 	offsetMap() {
-		this.dialog.open(OffsetMapComponent, {
-			data: this.map
+		this.overlayService.open(OffsetMapComponent, {
+			positionStrategy: this.overlay.position().global()
+				.left('23vw')
+				.top('calc(64px + 6vh / 2)'),
+			hasBackdrop: true
 		});
 	}
 	
@@ -123,8 +126,12 @@ export class ToolbarComponent implements OnInit {
 		});
 	}
 	
-	changeTo3d(event: MatSlideToggleChange) {
-		this.is3d = event.checked;
-		this.router.navigate([event.checked ? '3d' : '']);
+	changeTo3d(checked: boolean) {
+		this.is3d = checked;
+		this.router.navigate([checked ? '3d' : '']);
+	}
+	
+	toggleIngamePreview(checked: boolean) {
+		this.events.showIngamePreview.next(checked);
 	}
 }
