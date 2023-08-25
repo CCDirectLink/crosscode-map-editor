@@ -118,7 +118,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 		}
 		this.comp.loading = true;
 		
-		let sheet = await Helper.getJsonPromise('data/props/' + sheetPath) as PropSheet;
+		let sheet = await Helper.getJson('data/props/' + sheetPath) as PropSheet;
 		sheet = prepareSheet(sheet);
 		
 		const propDefs = sheet.props.filter(v => v.name) as (PropDef & { name: string })[];

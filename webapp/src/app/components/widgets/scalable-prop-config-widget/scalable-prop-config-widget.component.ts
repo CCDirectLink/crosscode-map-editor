@@ -90,7 +90,7 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 			return;
 		}
 		
-		let sheet = await Helper.getJsonPromise('data/scale-props/' + sheetPath) as ScalablePropSheet;
+		let sheet = await Helper.getJson('data/scale-props/' + sheetPath) as ScalablePropSheet;
 		if (!sheet) {
 			console.error(`sheet doesnt exist: ${sheetPath}`);
 			return;

@@ -147,7 +147,7 @@ export class NPC extends DefaultEntity {
 	
 	protected override async setupType(settings: NpcAttributes) {
 		
-		let charSettings = await Helper.getJsonPromise(this.getPath('data/characters/', settings.characterName)) as CharacterSettings | undefined;
+		let charSettings = await Helper.getJson(this.getPath('data/characters/', settings.characterName)) as CharacterSettings | undefined;
 		if (!charSettings) {
 			console.warn(`no char settings found for character name: [${settings.characterName}]`);
 			this.generateNoImageType();
@@ -155,7 +155,7 @@ export class NPC extends DefaultEntity {
 		}
 		if (typeof charSettings.animSheet === 'string') {
 			const path = this.getPath('data/animations/', charSettings.animSheet);
-			charSettings.animSheet = await Helper.getJsonPromise(path) as Anims;
+			charSettings.animSheet = await Helper.getJson(path) as Anims;
 			if (!charSettings.animSheet) {
 				throw new Error('no anim sheet found for: ' + charSettings.animSheet + ' in path: ' + path);
 			}

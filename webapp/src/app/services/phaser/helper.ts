@@ -8,6 +8,11 @@ import Scene = Phaser.Scene;
 
 export class Helper {
 	
+	// stores promises so editor doesn't try to load the same file multiple times simultaneously
+	private static cache: {
+		[key: string]: Promise<any> | undefined;
+	} = {};
+	
 	public static worldToTile(x: number, y: number): Point {
 		const p: Point = {x: 0, y: 0};
 		
@@ -72,31 +77,33 @@ export class Helper {
 		return JSON.parse(JSON.stringify(obj));
 	}
 	
-	public static getJson(key: string, callback: (json: any) => void) {
+	public static async getJson<T>(key: string): Promise<T | undefined> {
+		const jsonKey = key + '.json';
 		const scene = Globals.scene;
 		
-		// get json from cache
-		if (scene.cache.json.has(key)) {
-			return callback(scene.cache.json.get(key));
+		if (scene.cache.json.has(jsonKey)) {
+			return scene.cache.json.get(jsonKey);
 		}
 		
-		Globals.httpService.resolveFile(key + '.json').subscribe(file => {
-			// load json
-			scene.load.json(key, Globals.URL + file);
-			scene.load.once('complete', () => {
-				return callback(scene.cache.json.get(key));
+		if (this.cache[jsonKey]) {
+			return this.cache[jsonKey];
+		}
+		
+		const promise = new Promise<T | undefined>(res => {
+			Globals.httpService.resolveFile(jsonKey).subscribe(file => {
+				// load json
+				scene.load.json(jsonKey, Globals.URL + file);
+				scene.load.once(`filecomplete-json-${jsonKey}`, () => {
+					return res(scene.cache.json.get(jsonKey));
+				});
+				scene.load.start();
+			}, () => {
+				console.warn(`Failed to resolve resource: ${jsonKey}`);
+				res(undefined);
 			});
-			scene.load.start();
-		}, () => {
-			console.warn(`Failed to resolve resource: ${key}.json`);
-			callback(undefined);
 		});
-	}
-	
-	public static getJsonPromise(key: string) {
-		return new Promise(resolve => {
-			this.getJson(key, json => resolve(json));
-		});
+		this.cache[jsonKey] = promise;
+		return promise;
 	}
 	
 	/**
@@ -115,15 +122,23 @@ export class Helper {
 			return true;
 		}
 		
-		// TODO: save promise to avoid loading the same texture simultaneously
+		if (this.cache[key]) {
+			return this.cache[key];
+		}
+		const promise = this.loadTextureInternal(key, scene);
+		this.cache[key] = promise;
+		return promise;
+	}
+	
+	private static async loadTextureInternal(key: string, scene: Scene) {
 		const file = await Globals.httpService.resolveFile(key).toPromise().catch(() => false);
 		if (!file) {
 			return false;
 		}
 		
-		return new Promise(res => {
+		return new Promise<boolean>(res => {
 			scene.load.image(key, Globals.URL + file);
-			scene.load.once('complete', () => res(true));
+			scene.load.once(`filecomplete-image-${key}`, () => res(true));
 			scene.load.once('loaderror', () => res(false));
 			scene.load.start();
 		});

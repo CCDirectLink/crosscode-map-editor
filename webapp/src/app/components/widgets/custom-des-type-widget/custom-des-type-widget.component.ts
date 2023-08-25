@@ -79,7 +79,7 @@ export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttr
 		
 		let destructibles: { name: string, desType: string }[];
 		if (this.comp.global) {
-			const settings = await Helper.getJsonPromise('data/global-settings') as GlobalSettings.GlobalSettings;
+			const settings = await Helper.getJson('data/global-settings') as GlobalSettings.GlobalSettings;
 			destructibles = Object.values(settings.ENTITY.ItemDestruct).map(v => ({
 				name: v._globalSettingKey,
 				desType: v.desType

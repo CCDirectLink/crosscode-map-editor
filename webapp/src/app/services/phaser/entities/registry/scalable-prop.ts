@@ -93,7 +93,7 @@ export class ScalableProp extends DefaultEntity {
 			this.resetScaleSettings();
 			return this.generateErrorImage();
 		}
-		const sheet = await Helper.getJsonPromise('data/scale-props/' + propConfig.sheet) as ScalablePropSheet | undefined;
+		const sheet = await Helper.getJson('data/scale-props/' + propConfig.sheet) as ScalablePropSheet | undefined;
 		
 		if (!sheet) {
 			console.warn('sheet not found: ' + propConfig.sheet);

@@ -45,14 +45,14 @@ export class Enemy extends DefaultEntity {
 		settings.enemyInfo = settings.enemyInfo || {};
 		
 		const enemyPath = PathResolver.convertToPath(BasePath.ENEMIES, settings.enemyInfo.type || '', FileExtension.NONE);
-		const enemyData = await Helper.getJsonPromise(enemyPath) as EnemyData | undefined;
+		const enemyData = await Helper.getJson(enemyPath) as EnemyData | undefined;
 		if (!enemyData) {
 			this.generateErrorImage();
 			return;
 		}
 		
 		const sheetPath = PathResolver.convertToPath(BasePath.ANIMATIONS, enemyData.anims, FileExtension.NONE);
-		const rawSheet = await Helper.getJsonPromise(sheetPath);
+		const rawSheet = await Helper.getJson(sheetPath);
 		if (!rawSheet) {
 			this.generateErrorImage();
 			return;

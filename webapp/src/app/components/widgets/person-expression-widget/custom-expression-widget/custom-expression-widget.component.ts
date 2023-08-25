@@ -102,7 +102,7 @@ export class CustomExpressionWidgetComponent extends OverlayWidget<Person> imple
 	
 	private async getFace() {
 		const person = (this.settings.person ?? '').replaceAll('.', '/');
-		let sheet = (await Helper.getJsonPromise('data/characters/' + person) as CharacterSettings | undefined) ?? {};
+		let sheet = (await Helper.getJson('data/characters/' + person) as CharacterSettings | undefined) ?? {};
 		sheet.jsonTEMPLATES = getNPCTemplates();
 		sheet = prepareSheet(sheet);
 		

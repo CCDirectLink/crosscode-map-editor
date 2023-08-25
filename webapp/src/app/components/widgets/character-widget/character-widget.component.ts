@@ -109,7 +109,7 @@ export class CharacterWidgetComponent extends OverlayWidget {
 		if (this.onlyFaces) {
 			chars = await Helper.asyncFilter(chars, async v => {
 				const name = v.replaceAll('.', '/');
-				const settings = await Helper.getJsonPromise('data/characters/' + name) as CharacterSettings | undefined;
+				const settings = await Helper.getJson('data/characters/' + name) as CharacterSettings | undefined;
 				return !!settings?.face;
 			});
 		}

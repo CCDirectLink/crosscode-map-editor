@@ -38,7 +38,7 @@ export class Prop extends DefaultEntity {
 			console.warn('prop without prop type');
 			return this.generateErrorImage();
 		}
-		const sheet = await Helper.getJsonPromise('data/props/' + settings.propType.sheet) as PropSheet;
+		const sheet = await Helper.getJson('data/props/' + settings.propType.sheet) as PropSheet;
 		if (!sheet) {
 			console.warn('prop without sheet', settings);
 			return this.generateErrorImage();

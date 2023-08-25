@@ -48,7 +48,7 @@ export class ItemDestruct extends DefaultEntity {
 	}
 	
 	protected override async setupType(settings: any) {
-		const globalSettings = await Helper.getJsonPromise('data/global-settings') as GlobalSettings.GlobalSettings;
+		const globalSettings = await Helper.getJson('data/global-settings') as GlobalSettings.GlobalSettings;
 		let desType = '';
 		if (settings.desType) {
 			desType = settings.desType;
