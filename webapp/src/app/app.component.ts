@@ -25,7 +25,7 @@ export class AppComponent {
 		if(this.eventsService.hasUnsavedChanges.getValue()) {
 			$event.returnValue = 'Are you sure you want to discard your changes?';
 			
-			const dialogRef = this.dialogService.open(ConfirmCloseComponent);
+			const dialogRef = this.dialogService.open(ConfirmCloseComponent, {data: {showDevMode: true}});
 			dialogRef.afterClosed().subscribe(result => {
 				if (result) {
 					this.eventsService.hasUnsavedChanges.next(false);

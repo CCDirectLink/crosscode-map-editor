@@ -1,4 +1,5 @@
-import { Component, isDevMode } from '@angular/core';
+import { Component, Inject, isDevMode } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
 	selector: 'app-confirm-close',
@@ -7,4 +8,7 @@ import { Component, isDevMode } from '@angular/core';
 })
 export class ConfirmCloseComponent  { 
 	protected readonly devMode = isDevMode();
+	constructor(
+		@Inject(MAT_DIALOG_DATA) protected readonly data: { showDevMode?: boolean },
+	) { }
 }

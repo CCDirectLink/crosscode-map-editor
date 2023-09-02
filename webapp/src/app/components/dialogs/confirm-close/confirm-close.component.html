@@ -6,6 +6,6 @@
 </div>
 <div mat-dialog-actions align="end" class="text-white">
   <button mat-stroked-button [mat-dialog-close]="false">Go back</button>
-  <button mat-stroked-button [mat-dialog-close]="null" *ngIf="devMode" cdkFocusInitial>DEV: Reload</button>
+  <button mat-stroked-button [mat-dialog-close]="null" *ngIf="data.showDevMode && devMode" cdkFocusInitial>DEV: Reload</button>
   <button mat-stroked-button [mat-dialog-close]="true" cdkFocusInitial>Discard changes</button>
 </div>
