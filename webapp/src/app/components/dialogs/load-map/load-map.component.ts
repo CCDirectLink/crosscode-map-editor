@@ -80,6 +80,8 @@ export class LoadMapComponent {
 			return true;
 		}
 
+		this.eventsService.hasUnsavedChanges.next(false);
+
 		const dialogRef = this.overlayService.open(ConfirmCloseComponent, {
 			hasBackdrop: true,
 		});

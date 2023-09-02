@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+### Fixed
+- The confirm dialog now no longer shows up after discarding changes
+
 ## [1.1.1] 2023-09-02
 
 ### Added
