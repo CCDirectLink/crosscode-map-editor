@@ -25,7 +25,9 @@ export class AppComponent {
 		if(this.eventsService.hasUnsavedChanges.getValue()) {
 			$event.returnValue = 'Are you sure you want to discard your changes?';
 			
-			const dialogRef = this.overlayService.open(ConfirmCloseComponent);
+			const dialogRef = this.overlayService.open(ConfirmCloseComponent, {
+				hasBackdrop: true,
+			});
 			dialogRef.instance.showDevMode = true;
 			dialogRef.ref.onClose.subscribe(result => {
 				if (result) {
