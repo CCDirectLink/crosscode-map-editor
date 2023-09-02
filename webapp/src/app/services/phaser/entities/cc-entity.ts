@@ -487,9 +487,18 @@ export abstract class CCEntity extends BaseObject {
 		this.entitySettings = <any>{};
 		this.entitySettings.baseSize = baseSize;
 		const scaleSettings = this.getScaleSettings();
-		if (scaleSettings && (scaleSettings.scalableX || scaleSettings.scalableY)) {
-			this.entitySettings.scalableX = scaleSettings.scalableX;
-			this.entitySettings.scalableY = scaleSettings.scalableY;
+		if (scaleSettings) {
+			if (scaleSettings.scalableX || scaleSettings.scalableY) {
+				this.entitySettings.scalableX = scaleSettings.scalableX;
+				this.entitySettings.scalableY = scaleSettings.scalableY;
+			}
+			// check for size overrides
+			if (scaleSettings.baseSize.x != scaleSettings.scalableStep) {
+				settings['size'].x = scaleSettings.baseSize.x;
+			}
+			if (scaleSettings.baseSize.y != scaleSettings.scalableStep) {
+				settings['size'].y = scaleSettings.baseSize.y;
+			}
 		}
 		
 		
