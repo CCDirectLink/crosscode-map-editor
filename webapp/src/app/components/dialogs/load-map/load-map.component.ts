@@ -80,12 +80,14 @@ export class LoadMapComponent {
 			return true;
 		}
 
-		this.eventsService.hasUnsavedChanges.next(false);
-
 		const dialogRef = this.overlayService.open(ConfirmCloseComponent, {
 			hasBackdrop: true,
 		});
-		return await firstValueFrom(dialogRef.ref.onClose, {defaultValue: false});
+		const result = await firstValueFrom(dialogRef.ref.onClose, {defaultValue: false});
+		if (result) {
+			this.eventsService.hasUnsavedChanges.next(false);
+		}
+		return result;
 	}
 	
 	async loadMap(event: Event) {
