@@ -9,8 +9,8 @@
     </div>
 	</ng-container>
 	<ng-container ngProjectAs="actions">
-    <button mat-stroked-button (click)="close(false)">Go back</button>
     <button mat-stroked-button (click)="close(null)" *ngIf="showDevMode && devMode" cdkFocusInitial>DEV: Reload</button>
-    <button mat-stroked-button (click)="close(true)" cdkFocusInitial>Discard changes</button>
+    <button mat-stroked-button (click)="close(false)" cdkFocusInitial>Go back</button>
+    <button mat-stroked-button (click)="close(true)">Discard changes</button>
 	</ng-container>
 </cc-overlay-panel>
