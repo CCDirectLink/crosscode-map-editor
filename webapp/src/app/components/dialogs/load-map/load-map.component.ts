@@ -3,13 +3,13 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inpu
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 
-import { MatDialog } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
 import { GlobalEventsService } from '../../../services/global-events.service';
 import { HttpClientService } from '../../../services/http-client.service';
 import { MapLoaderService } from '../../../services/map-loader.service';
 import { SearchFilterService } from '../../../services/search-filter.service';
 import { ConfirmCloseComponent } from '../confirm-close/confirm-close.component';
+import { OverlayService } from '../overlay/overlay.service';
 import { MapNode, MapNodeRoot } from './mapNode.model';
 import { VirtualMapNode } from './virtualMapNode.model';
 
@@ -46,7 +46,7 @@ export class LoadMapComponent {
 		private ref: ChangeDetectorRef,
 		private searchFilterService: SearchFilterService,
 		private readonly eventsService: GlobalEventsService,
-		private readonly dialogService: MatDialog
+		private readonly overlayService: OverlayService
 	) {
 		this.mapsSource.data = [];
 		this.refresh();
@@ -80,8 +80,10 @@ export class LoadMapComponent {
 			return true;
 		}
 
-		const dialogRef = this.dialogService.open(ConfirmCloseComponent);
-		return await firstValueFrom(dialogRef.afterClosed(), {defaultValue: false});
+		const dialogRef = this.overlayService.open(ConfirmCloseComponent, {
+			hasBackdrop: true,
+		});
+		return await firstValueFrom(dialogRef.ref.onClose, {defaultValue: false});
 	}
 	
 	async loadMap(event: Event) {

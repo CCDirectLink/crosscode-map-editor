@@ -1,5 +1,5 @@
-import { Component, Inject, isDevMode } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, isDevMode } from '@angular/core';
+import { OverlayRefControl } from '../overlay/overlay-ref-control';
 
 @Component({
 	selector: 'app-confirm-close',
@@ -8,7 +8,12 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class ConfirmCloseComponent  { 
 	protected readonly devMode = isDevMode();
+	public showDevMode = false;
 	constructor(
-		@Inject(MAT_DIALOG_DATA) protected readonly data: { showDevMode?: boolean },
+		private readonly ref: OverlayRefControl<boolean | null>,
 	) { }
+
+	protected close(result: boolean | null) {
+		this.ref.close(result);
+	}
 }

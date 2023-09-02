@@ -1,11 +1,16 @@
-<h1 mat-dialog-title class="title-color text-white">You have unsaved changes</h1>
-<div mat-dialog-content>
-  <div class="pt-3 text-white">
-    Are you sure you want to discard your changes?
-  </div>
-</div>
-<div mat-dialog-actions align="end" class="text-white">
-  <button mat-stroked-button [mat-dialog-close]="false">Go back</button>
-  <button mat-stroked-button [mat-dialog-close]="null" *ngIf="data.showDevMode && devMode" cdkFocusInitial>DEV: Reload</button>
-  <button mat-stroked-button [mat-dialog-close]="true" cdkFocusInitial>Discard changes</button>
-</div>
+<cc-overlay-panel 
+  cdkTrapFocus [cdkTrapFocusAutoCapture]="true" 
+  title="You have unsaved changes"
+  [customSize]="{width: '30em', height: 'auto'}"
+  >
+	<ng-container ngProjectAs="content">
+    <div class="p-3 text-center">
+      Are you sure you want to discard your changes?
+    </div>
+	</ng-container>
+	<ng-container ngProjectAs="actions">
+    <button mat-stroked-button (click)="close(false)">Go back</button>
+    <button mat-stroked-button (click)="close(null)" *ngIf="showDevMode && devMode" cdkFocusInitial>DEV: Reload</button>
+    <button mat-stroked-button (click)="close(true)" cdkFocusInitial>Discard changes</button>
+	</ng-container>
+</cc-overlay-panel>

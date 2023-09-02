@@ -22,7 +22,7 @@ export class OverlayService {
 		private overlay: Overlay) {
 	}
 	
-	open<T>(component: ComponentType<T>, options: CustomOverlayConfig = {}): { ref: OverlayRefControl, instance: T } {
+	open<T>(component: ComponentType<T>, options: CustomOverlayConfig = {}): { ref: OverlayRefControl<any>, instance: T } {
 		const config = this.getOverlayConfig(options);
 		const ref = this.overlay.create(config);
 		const refControl = new OverlayRefControl(ref);
