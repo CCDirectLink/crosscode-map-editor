@@ -21,7 +21,7 @@ export class AppComponent {
 	}
 
 	@HostListener('window:beforeunload', ['$event'])
-	doSomething($event: any) {
+	onUnload($event: any) {
 		if(this.eventsService.hasUnsavedChanges.getValue()) {
 			$event.returnValue = 'Are you sure you want to discard your changes?';
 			
