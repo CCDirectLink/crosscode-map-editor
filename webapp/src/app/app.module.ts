@@ -12,6 +12,7 @@ import { routes } from './app-routing';
 import { AppComponent } from './app.component';
 import { BabylonComponent } from './components/babylon/babylon.component';
 import { CaptionsComponent } from './components/captions/captions.component';
+import { ConfirmCloseComponent } from './components/dialogs/confirm-close/confirm-close.component';
 import { FloatingWindowComponent } from './components/dialogs/floating-window/floating-window.component';
 import { HistoryComponent } from './components/dialogs/floating-window/history/history.component';
 import { TileSelectorComponent } from './components/dialogs/floating-window/tile-selector/tile-selector.component';
@@ -33,6 +34,8 @@ import { SplitPaneComponent } from './components/split-pane/split-pane.component
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { BooleanWidgetComponent } from './components/widgets/boolean-widget/boolean-widget.component';
 import { CharacterWidgetComponent } from './components/widgets/character-widget/character-widget.component';
+import { CustomDesTypeWidgetComponent } from './components/widgets/custom-des-type-widget/custom-des-type-widget.component';
+import { EnemySingleTypeWidgetComponent } from './components/widgets/enemy-single-type-widget/enemy-single-type-widget.component';
 import { EnemyTypeWidgetOverlayComponent } from './components/widgets/enemy-type-widget/enemy-type-overlay/enemy-type-overlay.component';
 import { EnemyTypeWidgetComponent } from './components/widgets/enemy-type-widget/enemy-type-widget.component';
 import { EventDetailComponent } from './components/widgets/event-widget/event-editor/detail/event-detail.component';
@@ -40,33 +43,31 @@ import { EventEditorComponent } from './components/widgets/event-widget/event-ed
 import { RowTextComponent } from './components/widgets/event-widget/event-editor/row-text/row-text.component';
 import { EventWidgetComponent } from './components/widgets/event-widget/event-widget.component';
 import { EventWindowComponent } from './components/widgets/event-widget/event-window/event-window.component';
+import { InputWithButtonComponent } from './components/widgets/inputs/input-with-button/input-with-button.component';
 import { JsonWidgetComponent } from './components/widgets/json-widget/json-widget.component';
 import { LangLabelWidgetComponent } from './components/widgets/langlabel-widget/langlabel-widget.component';
 import { LevelWidgetComponent } from './components/widgets/level-widget/level-widget.component';
 import { NPCStatesWidgetComponent } from './components/widgets/npc-states-widget/npc-states-widget.component';
 import { NpcStatesComponent } from './components/widgets/npc-states-widget/npc-states/npc-states.component';
 import { NumberWidgetComponent } from './components/widgets/number-widget/number-widget.component';
+import { CustomExpressionWidgetComponent } from './components/widgets/person-expression-widget/custom-expression-widget/custom-expression-widget.component';
 import { PersonExpressionWidgetComponent } from './components/widgets/person-expression-widget/person-expression-widget.component';
+import { PropTypeWidgetComponent } from './components/widgets/prop-type-widget/prop-type-widget.component';
+import { ScalablePropConfigWidgetComponent } from './components/widgets/scalable-prop-config-widget/scalable-prop-config-widget.component';
+import { ImageSelectCardComponent } from './components/widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
+import { ImageSelectListComponent } from './components/widgets/shared/image-select-overlay/image-select-list/image-select-list.component';
+import { ImageSelectOverlayComponent } from './components/widgets/shared/image-select-overlay/image-select-overlay.component';
 import { AutocompletedTextboxComponent } from './components/widgets/string-widget/autocompleted-textbox/autocompleted-textbox.component';
 import { StringWidgetComponent } from './components/widgets/string-widget/string-widget.component';
 import { Vec2WidgetComponent } from './components/widgets/vec2-widget/vec2-widget.component';
+import { AutofocusDirective } from './directives/autofocus.directive';
 import { HighlightDirective } from './directives/highlight.directive';
 import { HostDirective } from './directives/host.directive';
 import { ModalDirective } from './directives/modal.directive';
 import { ResizedDirective } from './directives/resized.directive';
 import { MaterialModule } from './external-modules/material.module';
-import { KeepHtmlPipe } from './pipes/keep-html.pipe';
-import { PropTypeWidgetComponent } from './components/widgets/prop-type-widget/prop-type-widget.component';
-import { ImageSelectOverlayComponent } from './components/widgets/shared/image-select-overlay/image-select-overlay.component';
-import { ImageSelectCardComponent } from './components/widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
-import { ImageSelectListComponent } from './components/widgets/shared/image-select-overlay/image-select-list/image-select-list.component';
-import { ScalablePropConfigWidgetComponent } from './components/widgets/scalable-prop-config-widget/scalable-prop-config-widget.component';
-import { EnemySingleTypeWidgetComponent } from './components/widgets/enemy-single-type-widget/enemy-single-type-widget.component';
-import { CustomDesTypeWidgetComponent } from './components/widgets/custom-des-type-widget/custom-des-type-widget.component';
-import { AutofocusDirective } from './directives/autofocus.directive';
 import { CombinedTooltipPipe } from './pipes/combined-tooltip.pipe';
-import { InputWithButtonComponent } from './components/widgets/inputs/input-with-button/input-with-button.component';
-import { CustomExpressionWidgetComponent } from './components/widgets/person-expression-widget/custom-expression-widget/custom-expression-widget.component';
+import { KeepHtmlPipe } from './pipes/keep-html.pipe';
 
 const WIDGETS = [
 	StringWidgetComponent,
@@ -124,6 +125,7 @@ const WIDGETS = [
 		EventDetailComponent,
 		EnemyTypeWidgetOverlayComponent,
 		ImageSelectOverlayComponent,
+		ConfirmCloseComponent,
 		ResizedDirective,
 		...WIDGETS,
 	],
