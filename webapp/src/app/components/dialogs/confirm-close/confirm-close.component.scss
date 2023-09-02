@@ -1,0 +1,6 @@
+@use '@angular/material' as mat;
+@import "theme";
+
+.title-color {
+	background-color: mat.get-color-from-palette(map-get($theme, background), app-bar);
+}

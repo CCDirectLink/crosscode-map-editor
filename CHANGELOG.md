@@ -7,6 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed 
 - Fix WallHorizontal/WallVertical having the wrong default size
 
+
+## [1.1.1] 2023-09-02
+### Added
+- Added confirm dialog if there are any unsaved changes when closing a map
+
 ## [1.1.0] 2023-08-25
 ### Added
 - Layer level selector now also supports selecting all the named layer levels: `first`, `last`, `light`, `postlight`, `object1`, `object2`, and `object3`.
