@@ -1,0 +1,11 @@
+<h1 mat-dialog-title class="title-color text-white">You have unsaved changes</h1>
+<div mat-dialog-content>
+  <div class="pt-3 text-white">
+    Are you sure you want to discard your changes?
+  </div>
+</div>
+<div mat-dialog-actions align="end" class="text-white">
+  <button mat-stroked-button [mat-dialog-close]="false">Go back</button>
+  <button mat-stroked-button [mat-dialog-close]="null" *ngIf="devMode" cdkFocusInitial>DEV: Reload</button>
+  <button mat-stroked-button [mat-dialog-close]="true" cdkFocusInitial>Discard changes</button>
+</div>

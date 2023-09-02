@@ -3,9 +3,13 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inpu
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 
+import { MatDialog } from '@angular/material/dialog';
+import { firstValueFrom } from 'rxjs';
+import { GlobalEventsService } from '../../../services/global-events.service';
 import { HttpClientService } from '../../../services/http-client.service';
 import { MapLoaderService } from '../../../services/map-loader.service';
 import { SearchFilterService } from '../../../services/search-filter.service';
+import { ConfirmCloseComponent } from '../confirm-close/confirm-close.component';
 import { MapNode, MapNodeRoot } from './mapNode.model';
 import { VirtualMapNode } from './virtualMapNode.model';
 
@@ -41,6 +45,8 @@ export class LoadMapComponent {
 		private http: HttpClientService,
 		private ref: ChangeDetectorRef,
 		private searchFilterService: SearchFilterService,
+		private readonly eventsService: GlobalEventsService,
+		private readonly dialogService: MatDialog
 	) {
 		this.mapsSource.data = [];
 		this.refresh();
@@ -67,13 +73,29 @@ export class LoadMapComponent {
 		this.mapsSource.data = this.virtualRoot.children || [];
 		this.ref.detectChanges();
 	}
+
+	private async showConfirmDialog() {
+		const hasUnsavedChanges = await firstValueFrom(this.eventsService.hasUnsavedChanges);
+		if (!hasUnsavedChanges) {
+			return true;
+		}
+
+		const dialogRef = this.dialogService.open(ConfirmCloseComponent);
+		return await firstValueFrom(dialogRef.afterClosed(), {defaultValue: false});
+	}
 	
-	loadMap(event: Event) {
+	async loadMap(event: Event) {
+		if (!await this.showConfirmDialog()) {
+			return;
+		}
 		this.mapLoader.loadMap(event);
 		this.fileUpload.nativeElement.value = '';
 	}
 	
-	load(name: string) {
+	async load(name: string) {
+		if (!await this.showConfirmDialog()) {
+			return;
+		}
 		this.mapLoader.loadMapByName(name);
 	}
 	
