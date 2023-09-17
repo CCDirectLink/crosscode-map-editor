@@ -139,9 +139,13 @@ async function readMods(dir: string) {
 	const packages = new Map<string, { folderName: string, ccmodDependencies?: Map<string, string> }>();
 	
 	for (const [name, pkg] of rawPackages) {
-		const parsed = JSON.parse(pkg as unknown as string);
-		parsed.folderName = name;
-		packages.set(parsed.name, parsed);
+		try {
+			const parsed = JSON.parse(pkg as unknown as string);
+			parsed.folderName = name;
+			packages.set(parsed.name, parsed);
+		} catch (err) {
+			console.error('Invalid json data in package.json of mod: ' + name, err);
+		}
 	}
 	
 	packagesCache = packages;
