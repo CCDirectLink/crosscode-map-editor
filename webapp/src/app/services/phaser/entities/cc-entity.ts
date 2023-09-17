@@ -493,7 +493,7 @@ export abstract class CCEntity extends BaseObject {
 				this.entitySettings.scalableY = scaleSettings.scalableY;
 			}
 			// check for size overrides
-			if (scaleSettings.baseSize.x != scaleSettings.scalableStep) {
+			if (scaleSettings.baseSize.x !== scaleSettings.scalableStep) {
 				settings['size'].x = scaleSettings.baseSize.x;
 			}
 			if (scaleSettings.baseSize.y != scaleSettings.scalableStep) {
