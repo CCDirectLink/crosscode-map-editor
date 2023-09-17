@@ -496,7 +496,7 @@ export abstract class CCEntity extends BaseObject {
 			if (scaleSettings.baseSize.x !== scaleSettings.scalableStep) {
 				settings['size'].x = scaleSettings.baseSize.x;
 			}
-			if (scaleSettings.baseSize.y != scaleSettings.scalableStep) {
+			if (scaleSettings.baseSize.y !== scaleSettings.scalableStep) {
 				settings['size'].y = scaleSettings.baseSize.y;
 			}
 		}
