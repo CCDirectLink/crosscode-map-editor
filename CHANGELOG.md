@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - Render dimensions when selecting multiple tiles [#310](https://github.com/CCDirectLink/crosscode-map-editor/issues/310)
 
+### Changed
+- Increased font resolution for entity names 
+
 ## [1.1.4] 2023-09-17
 ### Fixed 
 - Fix WallHorizontal/WallVertical having the wrong default size
