@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Added
+- Render dimensions when selecting multiple tiles [#310](https://github.com/CCDirectLink/crosscode-map-editor/issues/310)
+
 ## [1.1.4] 2023-09-17
 ### Fixed 
 - Fix WallHorizontal/WallVertical having the wrong default size

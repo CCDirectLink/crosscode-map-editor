@@ -237,6 +237,6 @@ export class TileSelectorScene extends Phaser.Scene {
 		}
 		this.rect = this.add.rectangle(x * Globals.TILE_SIZE, y * Globals.TILE_SIZE, width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
 		this.rect.setOrigin(0, 0);
-		this.rect.setStrokeStyle(1, 0xffffff, 0.6);
+		this.rect.setStrokeStyle(2, 0x333333, 0.9);
 	}
 }
