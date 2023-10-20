@@ -21,6 +21,7 @@ export class GlobalEventsService {
 	showAddEntityMenu = new Subject<Point>();
 
 	updateCoords = new Subject<Point3 | undefined>();
+	updateTileSelectionSize = new Subject<Point | undefined>();
 	showIngamePreview = new BehaviorSubject(false);
 	hasUnsavedChanges = new BehaviorSubject(false);
 

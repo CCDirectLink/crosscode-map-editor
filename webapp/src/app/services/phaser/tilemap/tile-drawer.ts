@@ -322,6 +322,7 @@ export class TileDrawer extends BaseObject {
 		this.container.add(this.selection);
 		
 		if (!renderSize) {
+			Globals.globalEventsService.updateTileSelectionSize.next(undefined);
 			return;
 		}
 		
@@ -354,6 +355,11 @@ export class TileDrawer extends BaseObject {
 				y: (height - 1) * Globals.TILE_SIZE / 2,
 			}, height);
 		}
+		
+		Globals.globalEventsService.updateTileSelectionSize.next({
+			x: Math.abs(width),
+			y: Math.abs(height)
+		});
 	}
 	
 	private onMouseRightUp() {

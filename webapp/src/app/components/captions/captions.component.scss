@@ -13,10 +13,10 @@
 	right: 0;
 }
 
-.coords {
+.bottom-elements {
 	background-color: #0005;
 
-	&.inactive {
+	&:empty {
 		display: none;
 	}
 }
