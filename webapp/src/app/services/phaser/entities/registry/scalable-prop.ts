@@ -118,7 +118,7 @@ export class ScalableProp extends DefaultEntity {
 		scaleSettings.scalableStep = prop.scalableStep!;
 		scaleSettings.baseSize = prop.baseSize!;
 		
-		const size = this.details.settings['size'] as Point;
+		const size = (this.details.settings['size'] as Point | undefined) ?? {x: 1, y: 1};
 		
 		if (!scaleSettings.scalableX || size.x < scaleSettings.baseSize.x) {
 			size.x = scaleSettings.baseSize.x;
