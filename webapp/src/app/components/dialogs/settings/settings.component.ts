@@ -25,7 +25,7 @@ export class SettingsComponent implements OnInit {
 	mod = '';
 	wrapEventEditorLines: boolean;
 	includeVanillaMaps: boolean;
-	isIncludeVanillaMapsDisabled: boolean
+	isIncludeVanillaMapsDisabled: boolean;
 
 	private readonly sharedService: SharedService;
 
@@ -45,7 +45,7 @@ export class SettingsComponent implements OnInit {
 
 		http.getMods().subscribe(mods => this.mods = mods);
 		this.mod = this.sharedService.getSelectedMod();
-		this.isIncludeVanillaMapsDisabled = this.mod === 'undefined'
+		this.isIncludeVanillaMapsDisabled = this.mod === 'undefined';
 		this.wrapEventEditorLines = this.settingsService.wrapEventEditorLines;
 		this.includeVanillaMaps = this.settingsService.includeVanillaMaps;
 	}
@@ -94,7 +94,7 @@ export class SettingsComponent implements OnInit {
 	}
 
 	modSelectEvent(selectedMod: string) {
-		this.isIncludeVanillaMapsDisabled = !selectedMod
+		this.isIncludeVanillaMapsDisabled = !selectedMod;
 	}
 
 	save() {
