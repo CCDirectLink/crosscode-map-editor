@@ -13,18 +13,18 @@ export const app = express();
  */
 app.set('port', process.env['PORT'] || 8080);
 app.use(cors());
-app.use(express.static(config.pathToCrosscode, {maxAge: 0}));
+app.use(express.static(config.pathToCrosscode, { maxAge: 0 }));
 // app.use(compression());
 app.use(logger('dev'));
-app.use(express.json({limit: '20mb'}));
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.json({ limit: '20mb' }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /**
  * Primary app routes.
  */
 app.get('/api/allFiles', async (_, res) => res.json(await api.getAllFiles(config.pathToCrosscode)));
 app.get('/api/allTilesets', async (_, res) => res.json(await api.getAllTilesets(config.pathToCrosscode)));
-app.get('/api/allMaps', async (req, res) => res.json(await api.getAllMaps(config.pathToCrosscode, req.query['includeVanillaMaps'] as string)));
+app.get('/api/allMaps', async (req, res) => res.json(await api.getAllMaps(config.pathToCrosscode, req.query['includeVanillaMaps'] == 'true')));
 app.get('/api/allFilesInFolder', async (req, res) => res.json(await api.getAllFilesInFolder(config.pathToCrosscode, req.query['folder'] as string, req.query['extension'] as string)));
 app.get('/api/allMods', async (_, res) => res.json(await api.getAllMods(config.pathToCrosscode)));
 app.post('/api/get', async (req, res) => {
@@ -39,7 +39,7 @@ app.post('/api/resolve', async (req, res) => {
 });
 app.post('/api/select', async (req, res) => {
 	await api.selectedMod(config.pathToCrosscode, req.body.mod);
-	res.json({success: true});
+	res.json({ success: true });
 });
 app.post('/api/saveFile', async (req, res) => {
 	try {
@@ -47,7 +47,7 @@ app.post('/api/saveFile', async (req, res) => {
 		res.status(200).json(msg);
 	} catch (e) {
 		console.error(e);
-		res.status(400).json({error: e});
+		res.status(400).json({ error: e });
 	}
 });
 

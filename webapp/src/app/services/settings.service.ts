@@ -6,12 +6,12 @@ import { Injectable } from '@angular/core';
 export class SettingsService {
 	private static readonly wrapSettingName = 'wrapEventEditorLines';
 	private static readonly includeVanillaMapsSettingName = 'includeVanillaMaps';
-	
+
 	private static loadBooleanOrDefault(key: string, defaultValue: boolean): boolean {
-		const loadedValue = localStorage.getItem(SettingsService.wrapSettingName);
-		return loadedValue === null? defaultValue : (loadedValue === 'true');
+		const loadedValue = localStorage.getItem(key);
+		return loadedValue === null ? defaultValue : (loadedValue === 'true');
 	}
-	
+
 	get wrapEventEditorLines() {
 		return SettingsService.loadBooleanOrDefault(SettingsService.wrapSettingName, true);
 	}
