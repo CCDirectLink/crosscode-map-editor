@@ -22,7 +22,7 @@
 			<div fxLayout="row" class="option-row">
 				<mat-form-field fxFlex="auto">
 					<mat-label>Mod</mat-label>
-					<mat-select [(value)]="mod">
+					<mat-select [(value)]="mod" (selectionChange)="modSelectEvent($event.value)">
 						<mat-option>None</mat-option>
 						<mat-option *ngFor="let mod of mods" [value]="mod">{{mod}}</mat-option>
 					</mat-select>
@@ -30,13 +30,13 @@
 				</mat-form-field>
 			</div>
 			<div fxLayout="row" class="option-row">
-				<mat-checkbox [(ngModel)]="wrapEventEditorLines" color="primary">
-					Wrap event editor lines
+				<mat-checkbox [(ngModel)]="includeVanillaMaps" color="primary" [disabled]="isIncludeVanillaMapsDisabled">
+					Include vanilla maps
 				</mat-checkbox>
 			</div>
 			<div fxLayout="row" class="option-row">
-				<mat-checkbox [(ngModel)]="includeVanillaMaps" color="primary">
-					Include vanilla maps
+				<mat-checkbox [(ngModel)]="wrapEventEditorLines" color="primary">
+					Wrap event editor lines
 				</mat-checkbox>
 			</div>
 		</div>
