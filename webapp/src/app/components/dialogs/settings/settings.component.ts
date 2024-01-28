@@ -24,6 +24,7 @@ export class SettingsComponent implements OnInit {
 	mods: string[] = [];
 	mod = '';
 	wrapEventEditorLines: boolean;
+	includeVanillaMaps: boolean;
 
 	private readonly sharedService: SharedService;
 
@@ -44,6 +45,7 @@ export class SettingsComponent implements OnInit {
 		http.getMods().subscribe(mods => this.mods = mods);
 		this.mod = this.sharedService.getSelectedMod();
 		this.wrapEventEditorLines = this.settingsService.wrapEventEditorLines;
+		this.includeVanillaMaps = this.settingsService.includeVanillaMaps;
 	}
 
 	ngOnInit() {
@@ -95,6 +97,7 @@ export class SettingsComponent implements OnInit {
 		}
 		this.sharedService.saveModSelect(this.mod);
 		this.settingsService.wrapEventEditorLines = this.wrapEventEditorLines;
+		this.settingsService.includeVanillaMaps = this.includeVanillaMaps;
 		this.close();
 		const ref = this.snackBar.open('Changing the path requires to restart the editor', 'Restart', {
 			duration: 6000

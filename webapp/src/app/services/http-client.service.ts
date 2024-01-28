@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { FileInfos } from '../models/file-infos';
 import { ElectronService } from './electron.service';
 import { Globals } from './globals';
+import { SettingsService } from './settings.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,7 +16,9 @@ export class HttpClientService {
 	
 	constructor(
 		private http: HttpClient,
-		private electron: ElectronService) {
+		private electron: ElectronService,
+		private settingsService: SettingsService
+	) {
 	}
 	
 	getAllFiles(): Observable<FileInfos> {
@@ -27,7 +30,8 @@ export class HttpClientService {
 	}
 	
 	getMaps(): Observable<string[]> {
-		return this.request('api/allMaps', api.getAllMaps);
+		const includeVanillaMaps: boolean = this.settingsService.includeVanillaMaps
+		return this.request(`api/allMaps?includeVanillaMaps=${includeVanillaMaps}`, api.getAllMaps, includeVanillaMaps ? 'true' : 'false');
 	}
 	
 	getProps(): Observable<string[]> {

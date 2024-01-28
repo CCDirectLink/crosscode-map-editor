@@ -181,15 +181,27 @@ export async function getAllTilesets(dir: string) {
 	return result.sort();
 }
 
-export async function getAllMaps(dir: string) {
+export async function getAllMaps(dir: string, includeVanillaMaps: string /* 'true' | 'false' */) {
 	const path = await pathPromise;
 	const paths: string[] = [];
-	if (mods.length === 0) {
-		await listAllFiles(path.resolve(dir, 'data/maps/'), paths, 'json', path.resolve(dir));
-	} else {
-		const modDir = path.join(dir, 'mods', mods[0], 'assets');
-		await listAllFiles(path.resolve(modDir, 'data/maps/'), paths, 'json', path.resolve(modDir));
-	}
+
+    if (includeVanillaMaps === 'true') {
+	    await listAllFiles(path.resolve(dir, 'data/maps/'), paths, 'json', path.resolve(dir));
+
+	    if (mods.length > 0) {
+	    	const modDir = path.join(dir, 'mods', mods[0], 'assets');
+	    	await listAllFiles(path.resolve(modDir, 'data/maps/'), paths, 'json', path.resolve(modDir));
+	    }
+    } else {
+        /* old behaiviour */
+	    if (mods.length === 0) {
+	    	await listAllFiles(path.resolve(dir, 'data/maps/'), paths, 'json', path.resolve(dir));
+	    } else {
+	    	const modDir = path.join(dir, 'mods', mods[0], 'assets');
+	    	await listAllFiles(path.resolve(modDir, 'data/maps/'), paths, 'json', path.resolve(modDir));
+	    }
+    }
+
 	
 	return paths
 		.sort()
