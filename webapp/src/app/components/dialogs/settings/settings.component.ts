@@ -45,7 +45,7 @@ export class SettingsComponent implements OnInit {
 
 		http.getMods().subscribe(mods => this.mods = mods);
 		this.mod = this.sharedService.getSelectedMod();
-		this.isIncludeVanillaMapsDisabled = this.mod === 'undefined';
+		this.isIncludeVanillaMapsDisabled = !this.mod;
 		this.wrapEventEditorLines = this.settingsService.wrapEventEditorLines;
 		this.includeVanillaMaps = this.settingsService.includeVanillaMaps;
 	}

@@ -41,7 +41,7 @@ export class BrowserService implements SharedService {
 	}    
 
 	public async saveModSelect(mod: string): Promise<void> {
-		localStorage.setItem(BrowserService.modName, mod);
+		localStorage.setItem(BrowserService.modName, mod ?? '');
 		await BrowserService.updateMod(mod);
 	}
 
