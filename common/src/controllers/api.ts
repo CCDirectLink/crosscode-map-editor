@@ -193,7 +193,6 @@ export async function getAllMaps(dir: string, includeVanillaMaps: boolean) {
 		await listAllFiles(path.resolve(modDir, 'data/maps/'), paths, 'json', path.resolve(modDir));
     }
 
-
 	return paths
 		.sort()
 		.map(p => p.substring('data/maps/'.length, p.length - '.json'.length))
