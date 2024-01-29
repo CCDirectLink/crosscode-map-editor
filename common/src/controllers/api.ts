@@ -185,22 +185,13 @@ export async function getAllMaps(dir: string, includeVanillaMaps: boolean) {
 	const path = await pathPromise;
 	const paths: string[] = [];
 
-	if (includeVanillaMaps) {
+	if (mods.length === 0 || includeVanillaMaps) {
 		await listAllFiles(path.resolve(dir, 'data/maps/'), paths, 'json', path.resolve(dir));
-
-		if (mods.length > 0) {
-			const modDir = path.join(dir, 'mods', mods[0], 'assets');
-			await listAllFiles(path.resolve(modDir, 'data/maps/'), paths, 'json', path.resolve(modDir));
-		}
-	} else {
-		/* old behaiviour */
-		if (mods.length === 0) {
-			await listAllFiles(path.resolve(dir, 'data/maps/'), paths, 'json', path.resolve(dir));
-		} else {
-			const modDir = path.join(dir, 'mods', mods[0], 'assets');
-			await listAllFiles(path.resolve(modDir, 'data/maps/'), paths, 'json', path.resolve(modDir));
-		}
-	}
+    }
+    if (mods.length > 0) {
+		const modDir = path.join(dir, 'mods', mods[0], 'assets');
+		await listAllFiles(path.resolve(modDir, 'data/maps/'), paths, 'json', path.resolve(modDir));
+    }
 
 
 	return paths
