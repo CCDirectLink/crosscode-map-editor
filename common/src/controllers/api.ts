@@ -187,11 +187,11 @@ export async function getAllMaps(dir: string, includeVanillaMaps: boolean) {
 
 	if (mods.length === 0 || includeVanillaMaps) {
 		await listAllFiles(path.resolve(dir, 'data/maps/'), paths, 'json', path.resolve(dir));
-    }
-    if (mods.length > 0) {
+	}
+	if (mods.length > 0) {
 		const modDir = path.join(dir, 'mods', mods[0], 'assets');
 		await listAllFiles(path.resolve(modDir, 'data/maps/'), paths, 'json', path.resolve(modDir));
-    }
+	}
 
 	return paths
 		.sort()
