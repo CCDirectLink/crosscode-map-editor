@@ -120,7 +120,7 @@ export class LoadMapComponent {
 		let lastNode = data;
 		for (const path of paths) {
 			const node = this.resolve(data, path, lastNode, lastPath);
-			const name = path.substr(path.lastIndexOf('.') + 1);
+			const name = path.substring(path.lastIndexOf('.') + 1);
 			
 			node.push({name, path, displayed: true});
 			
@@ -132,7 +132,7 @@ export class LoadMapComponent {
 	}
 	
 	private resolve(data: MapNode[], path: string, lastNode: MapNode[], lastPath: string): MapNode[] {
-		if (path.substr(0, path.lastIndexOf('.')) === lastPath.substr(0, lastPath.lastIndexOf('.'))) {
+		if (path.substring(0, path.lastIndexOf('.')) === lastPath.substring(0, lastPath.lastIndexOf('.'))) {
 			return lastNode;
 		}
 		
@@ -143,7 +143,7 @@ export class LoadMapComponent {
 		let node = data;
 		
 		const parts = path
-			.substr(0, path.lastIndexOf('.'))
+			.substring(0, path.lastIndexOf('.'))
 			.split('.');
 		for (const name of parts) {
 			const child = node.find(n => n.name === name);

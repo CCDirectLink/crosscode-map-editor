@@ -8,7 +8,7 @@ async function listAllFiles(dir: string, filelist: string[], ending: string, roo
 	if (root === undefined) {
 		root = dir;
 	}
-	
+
 	const files = await tryReadDir(dir);
 	const promises: Promise<void>[] = [];
 	for (const file of files) {
@@ -48,7 +48,7 @@ async function searchFile(file: string, dir: string, filelist: string[], ending:
 			.resolve(dir, file)
 			.split(path.normalize(root))[1]
 			.replace(/\\/g, '/');
-		
+
 		const result = normalized.startsWith('/') ? normalized.substr(1) : normalized;
 		if (!filelist.includes(result)) {
 			filelist.push(result);
@@ -84,12 +84,12 @@ function selectMod(name: string, packages: Map<string, { folderName: string, ccm
 	if (!pkg) {
 		return;
 	}
-	
+
 	result.push(pkg.folderName);
 	if (!pkg.ccmodDependencies) {
 		return;
 	}
-	
+
 	for (const depName of Object.keys(pkg.ccmodDependencies)) {
 		selectMod(depName, packages, result);
 	}
@@ -125,10 +125,10 @@ async function readMods(dir: string) {
 	if (packagesCache) {
 		return packagesCache;
 	}
-	
+
 	const fs = await fsPromise;
 	const path = await pathPromise;
-	
+
 	const modFolder = path.join(dir, 'mods/');
 	const files = await searchSubFolder(modFolder, 'package.json');
 	const promises: Promise<[string, Buffer]>[] = [];
@@ -137,7 +137,7 @@ async function readMods(dir: string) {
 	}
 	const rawPackages = await Promise.all(promises);
 	const packages = new Map<string, { folderName: string, ccmodDependencies?: Map<string, string> }>();
-	
+
 	for (const [name, pkg] of rawPackages) {
 		try {
 			const parsed = JSON.parse(pkg as unknown as string);
@@ -147,7 +147,7 @@ async function readMods(dir: string) {
 			console.error('Invalid json data in package.json of mod: ' + name, err);
 		}
 	}
-	
+
 	packagesCache = packages;
 	return packages;
 }
@@ -156,41 +156,43 @@ export async function getAllFiles(dir: string) {
 	const path = await pathPromise;
 	const images = await listAllFiles(path.resolve(dir, 'media/'), [], 'png', path.resolve(dir));
 	const data = await listAllFiles(path.resolve(dir, 'data/'), [], 'json', path.resolve(dir));
-	
+
 	for (const mod of mods) {
 		const modDir = path.join(dir, 'mods', mod, 'assets');
 		await listAllFiles(path.resolve(modDir, 'media/'), images, 'png', path.resolve(modDir));
 		await listAllFiles(path.resolve(modDir, 'data/'), data, 'json', path.resolve(modDir));
 	}
-	
+
 	images.sort();
 	data.sort();
-	
-	return {images, data};
+
+	return { images, data };
 }
 
 export async function getAllTilesets(dir: string) {
 	const path = await pathPromise;
 	const result = await listAllFiles(path.resolve(dir, 'media/map/'), [], 'png', path.resolve(dir));
-	
+
 	for (const mod of mods) {
 		const modDir = path.join(dir, 'mods', mod, 'assets');
 		await listAllFiles(path.resolve(modDir, 'media/map/'), result, 'png', path.resolve(modDir));
 	}
-	
+
 	return result.sort();
 }
 
-export async function getAllMaps(dir: string) {
+export async function getAllMaps(dir: string, includeVanillaMaps: boolean) {
 	const path = await pathPromise;
 	const paths: string[] = [];
-	if (mods.length === 0) {
+
+	if (mods.length === 0 || includeVanillaMaps) {
 		await listAllFiles(path.resolve(dir, 'data/maps/'), paths, 'json', path.resolve(dir));
-	} else {
+	}
+	if (mods.length > 0) {
 		const modDir = path.join(dir, 'mods', mods[0], 'assets');
 		await listAllFiles(path.resolve(modDir, 'data/maps/'), paths, 'json', path.resolve(modDir));
 	}
-	
+
 	return paths
 		.sort()
 		.map(p => p.substring('data/maps/'.length, p.length - '.json'.length))
@@ -200,12 +202,12 @@ export async function getAllMaps(dir: string) {
 export async function getAllFilesInFolder(dir: string, folder: string, extension: string) {
 	const path = await pathPromise;
 	const result = await listAllFiles(path.resolve(dir, folder), [], extension, path.resolve(dir));
-	
+
 	for (const mod of mods) {
 		const modDir = path.join(dir, 'mods', mod, 'assets');
 		await listAllFiles(path.resolve(modDir, folder), result, extension, path.resolve(modDir));
 	}
-	
+
 	return result.sort()
 		.map(p => p.substring(folder.length, p.length - `.${extension}`.length));
 }
@@ -229,7 +231,7 @@ export async function get<T>(dir: string, file: string): Promise<T> {
 		promises.push(getAsync(modFile));
 	}
 	promises.push(getAsync(path.join(dir, file)));
-	
+
 	const results = await Promise.all(promises);
 	for (const result of results) {
 		if (result) {
@@ -247,7 +249,7 @@ export async function resolve(dir: string, file: string): Promise<string> {
 		promises.push(resolveAsync(modFile));
 	}
 	promises.push(resolveAsync(path.join(dir, file)));
-	
+
 	const results = await Promise.all(promises);
 	for (const result of results) {
 		if (result) {

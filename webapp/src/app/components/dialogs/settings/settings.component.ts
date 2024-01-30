@@ -24,6 +24,8 @@ export class SettingsComponent implements OnInit {
 	mods: string[] = [];
 	mod = '';
 	wrapEventEditorLines: boolean;
+	includeVanillaMaps: boolean;
+	isIncludeVanillaMapsDisabled: boolean;
 
 	private readonly sharedService: SharedService;
 
@@ -43,7 +45,9 @@ export class SettingsComponent implements OnInit {
 
 		http.getMods().subscribe(mods => this.mods = mods);
 		this.mod = this.sharedService.getSelectedMod();
+		this.isIncludeVanillaMapsDisabled = !this.mod;
 		this.wrapEventEditorLines = this.settingsService.wrapEventEditorLines;
+		this.includeVanillaMaps = this.settingsService.includeVanillaMaps;
 	}
 
 	ngOnInit() {
@@ -89,12 +93,17 @@ export class SettingsComponent implements OnInit {
 		}
 	}
 
+	modSelectEvent(selectedMod: string) {
+		this.isIncludeVanillaMapsDisabled = !selectedMod;
+	}
+
 	save() {
 		if (this.isElectron) {
 			this.electron.saveAssetsPath(this.folderFormControl.value);
 		}
 		this.sharedService.saveModSelect(this.mod);
 		this.settingsService.wrapEventEditorLines = this.wrapEventEditorLines;
+		this.settingsService.includeVanillaMaps = this.includeVanillaMaps;
 		this.close();
 		const ref = this.snackBar.open('Changing the path requires to restart the editor', 'Restart', {
 			duration: 6000
