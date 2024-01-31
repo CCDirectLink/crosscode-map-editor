@@ -3,14 +3,14 @@
 import IsInLayerBounds = Phaser.Tilemaps.Components.IsInLayerBounds;
 import Tile = Phaser.Tilemaps.Tile;
 
-export function customPutTilesAt(tiles: number[][] | Tile[][], layer: Phaser.Tilemaps.TilemapLayer) {
+export function customPutTilesAt(tiles: (number | null | undefined)[][] | Tile[][], layer: Phaser.Tilemaps.TilemapLayer) {
 	
 	const height = tiles.length;
 	const width = tiles[0].length;
 	
 	for (let ty = 0; ty < height; ty++) {
 		for (let tx = 0; tx < width; tx++) {
-			const tile = tiles[ty][tx];
+			const tile = tiles[ty][tx] ?? 0;
 			const index = typeof tile === 'number' ? tile : tile.index;
 			customPutTileAt(index, tx, ty, layer.layer);
 		}
