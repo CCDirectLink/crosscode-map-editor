@@ -315,7 +315,7 @@ export class TileDrawer extends BaseObject {
 		let textColor = 'rgba(0,0,0,0.6)';
 		let backgroundColor = 0xffffff;
 		if (Globals.settingsService.getSettings().selectionBoxDark) {
-			textColor = 'rgba(255,255,255,0.8)';
+			textColor = 'rgba(255,255,255,0.9)';
 			backgroundColor = 0x333333;
 		}
 		
