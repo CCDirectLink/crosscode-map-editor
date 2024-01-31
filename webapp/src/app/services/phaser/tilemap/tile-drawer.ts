@@ -312,11 +312,18 @@ export class TileDrawer extends BaseObject {
 			this.selection.destroy();
 		}
 		
+		let textColor = 'rgba(0,0,0,0.6)';
+		let backgroundColor = 0xffffff;
+		if (Globals.settingsService.getSettings().selectionBoxDark) {
+			textColor = 'rgba(255,255,255,0.8)';
+			backgroundColor = 0x333333;
+		}
+		
 		this.selection = this.scene.add.container(x, y);
 		
 		const rect = this.scene.add.rectangle(0, 0, width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
 		rect.setOrigin(0, 0);
-		rect.setStrokeStyle(1, 0x333333, 0.6);
+		rect.setStrokeStyle(1, backgroundColor, 0.6);
 		
 		this.selection.add(rect);
 		this.container.add(this.selection);
@@ -329,13 +336,11 @@ export class TileDrawer extends BaseObject {
 		const makeText = (pos: Point, val: number) => {
 			const text = this.scene.add.text(pos.x, pos.y, Math.abs(val) + '', {
 				font: '400 10px Roboto',
-				color: 'white',
+				color: textColor,
 				resolution: window.devicePixelRatio * 3,
 			});
 			text.setOrigin(0.5, 0);
-			// text.alpha = 0.8;
-			
-			const background = this.scene.add.rectangle(pos.x, pos.y + 2, 14, 10, 0x222222, 0.6);
+			const background = this.scene.add.rectangle(pos.x, pos.y + 2, 14, 10, backgroundColor, 0.6);
 			background.setOrigin(0.5, 0);
 			
 			this.selection?.add(background);
