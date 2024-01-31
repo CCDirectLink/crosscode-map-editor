@@ -30,7 +30,7 @@ export class HttpClientService {
 	}
 
 	getMaps(): Observable<string[]> {
-		const includeVanillaMaps: boolean = this.settingsService.includeVanillaMaps;
+		const includeVanillaMaps = this.settingsService.getSettings().includeVanillaMaps;
 		return this.request(`api/allMaps?includeVanillaMaps=${includeVanillaMaps}`, api.getAllMaps, includeVanillaMaps);
 	}
 

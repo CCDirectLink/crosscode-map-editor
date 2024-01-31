@@ -65,7 +65,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	}
 	
 	ngOnInit() {
-		this.wrapText = this.settingsService.wrapEventEditorLines;
+		this.wrapText = this.settingsService.getSettings().wrapEventEditorLines;
 	}
 	
 	ngOnChanges() {

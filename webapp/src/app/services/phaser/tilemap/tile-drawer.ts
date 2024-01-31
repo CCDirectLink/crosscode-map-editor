@@ -15,7 +15,7 @@ export class TileDrawer extends BaseObject {
 	private layer?: CCMapLayer;
 	private selectedTiles: SelectedTile[] = [];
 	
-	private rect?: Phaser.GameObjects.Rectangle;
+	private selection?: Phaser.GameObjects.Container;
 	
 	private previewTileMap!: Phaser.Tilemaps.Tilemap;
 	private previewLayer?: Phaser.Tilemaps.TilemapLayer;
@@ -126,7 +126,7 @@ export class TileDrawer extends BaseObject {
 				diff.y--;
 			}
 			
-			this.drawRect(diff.x, diff.y, start.x, start.y);
+			this.drawRect(diff.x, diff.y, start.x, start.y, true);
 			return;
 		}
 		
@@ -307,15 +307,64 @@ export class TileDrawer extends BaseObject {
 		this.rightClickStart = p;
 	}
 	
-	private drawRect(width: number, height: number, x = 0, y = 0) {
-		if (this.rect) {
-			this.rect.destroy();
+	private drawRect(width: number, height: number, x = 0, y = 0, renderSize = false) {
+		if (this.selection) {
+			this.selection.destroy();
 		}
-		this.rect = this.scene.add.rectangle(x, y, width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
-		this.rect.setOrigin(0, 0);
-		this.rect.setStrokeStyle(1, 0xffffff, 0.6);
 		
-		this.container.add(this.rect);
+		let textColor = 'rgba(0,0,0,0.6)';
+		let backgroundColor = 0xffffff;
+		if (Globals.settingsService.getSettings().selectionBoxDark) {
+			textColor = 'rgba(255,255,255,0.9)';
+			backgroundColor = 0x333333;
+		}
+		
+		this.selection = this.scene.add.container(x, y);
+		
+		const rect = this.scene.add.rectangle(0, 0, width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
+		rect.setOrigin(0, 0);
+		rect.setStrokeStyle(1, backgroundColor, 0.6);
+		
+		this.selection.add(rect);
+		this.container.add(this.selection);
+		
+		if (!renderSize) {
+			Globals.globalEventsService.updateTileSelectionSize.next(undefined);
+			return;
+		}
+		
+		const makeText = (pos: Point, val: number) => {
+			const text = this.scene.add.text(pos.x, pos.y, Math.abs(val) + '', {
+				font: '400 10px Roboto',
+				color: textColor,
+				resolution: window.devicePixelRatio * 3,
+			});
+			text.setOrigin(0.5, 0);
+			const background = this.scene.add.rectangle(pos.x, pos.y + 2, 14, 10, backgroundColor, 0.6);
+			background.setOrigin(0.5, 0);
+			
+			this.selection?.add(background);
+			this.selection?.add(text);
+		};
+		
+		if (Math.abs(width) >= 3) {
+			makeText({
+				x: width * Globals.TILE_SIZE / 2,
+				y: (height > 0 ? 0 : height * Globals.TILE_SIZE) - 1
+			}, width);
+		}
+		
+		if (Math.abs(height) >= 3) {
+			makeText({
+				x: Globals.TILE_SIZE / 2 + (width > 0 ? 0 : width * Globals.TILE_SIZE),
+				y: (height - 1) * Globals.TILE_SIZE / 2,
+			}, height);
+		}
+		
+		Globals.globalEventsService.updateTileSelectionSize.next({
+			x: Math.abs(width),
+			y: Math.abs(height)
+		});
 	}
 	
 	private onMouseRightUp() {

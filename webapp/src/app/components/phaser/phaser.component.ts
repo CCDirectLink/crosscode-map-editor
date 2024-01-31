@@ -12,6 +12,7 @@ import { MainScene } from '../../services/phaser/main-scene';
 import { PhaserEventsService } from '../../services/phaser/phaser-events.service';
 import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -32,7 +33,8 @@ export class PhaserComponent implements AfterViewInit {
 		private http: HttpClientService,
 		snackbar: MatSnackBar,
 		registry: EntityRegistryService,
-		autotile: AutotileService
+		autotile: AutotileService,
+		settingsService: SettingsService
 	) {
 		Globals.stateHistoryService = stateHistory;
 		Globals.mapLoaderService = mapLoader;
@@ -42,6 +44,7 @@ export class PhaserComponent implements AfterViewInit {
 		Globals.entityRegistry = registry;
 		Globals.httpService = http;
 		Globals.snackbar = snackbar;
+		Globals.settingsService = settingsService;
 	}
 	
 	

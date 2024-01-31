@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Added
+- Render dimensions when selecting multiple tiles [#310](https://github.com/CCDirectLink/crosscode-map-editor/issues/310)
+
+### Changed
+- Increased font resolution for entity names
+
 ## [1.2.0] 2024-01-30
 ### Added
 - Toggle in settings that also shows the vanilla maps in the map selection menu

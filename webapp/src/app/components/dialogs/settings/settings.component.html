@@ -15,7 +15,7 @@
 					<button mat-stroked-button (click)="select()">Select</button>
 					<button mat-stroked-button (click)="check()">
 						Check
-						<mat-icon [ngClass]="iconCss" class="icon-base">{{icon}}</mat-icon>
+						<mat-icon [ngClass]="iconCss" class="icon-base">{{ icon }}</mat-icon>
 					</button>
 				</div>
 			</form>
@@ -24,20 +24,42 @@
 					<mat-label>Mod</mat-label>
 					<mat-select [(value)]="mod" (selectionChange)="modSelectEvent($event.value)">
 						<mat-option>None</mat-option>
-						<mat-option *ngFor="let mod of mods" [value]="mod">{{mod}}</mat-option>
+						<mat-option *ngFor="let mod of mods" [value]="mod">{{ mod }}</mat-option>
 					</mat-select>
 					<mat-hint>Maps will be stored and loaded from the selected mod</mat-hint>
 				</mat-form-field>
 			</div>
 			<div fxLayout="row" class="option-row">
-				<mat-checkbox [(ngModel)]="includeVanillaMaps" color="primary" [disabled]="isIncludeVanillaMapsDisabled">
+				<mat-checkbox
+					[(ngModel)]="settings.includeVanillaMaps"
+					color="primary"
+					[disabled]="isIncludeVanillaMapsDisabled"
+				>
 					Include vanilla maps
 				</mat-checkbox>
 			</div>
 			<div fxLayout="row" class="option-row">
-				<mat-checkbox [(ngModel)]="wrapEventEditorLines" color="primary">
+				<mat-checkbox
+					[(ngModel)]="settings.wrapEventEditorLines"
+					color="primary"
+				>
 					Wrap event editor lines
 				</mat-checkbox>
+			</div>
+			<div class="flex flex-col pt-5">
+				<h2 class="mat-h2 ">Selection Box Style</h2>
+				<div class="flex flex-row gap-4">
+					<app-image-select-card
+						[card]="cardLight"
+						[selected]="!settings.selectionBoxDark"
+						(onClick)="settings.selectionBoxDark = false"
+					></app-image-select-card>
+					<app-image-select-card
+						[card]="cardDark"
+						[selected]="settings.selectionBoxDark"
+						(onClick)="settings.selectionBoxDark = true"
+					></app-image-select-card>
+				</div>
 			</div>
 		</div>
 	</ng-container>
