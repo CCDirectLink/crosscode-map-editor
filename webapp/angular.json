@@ -59,19 +59,19 @@
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
-					"options": {
-						"browserTarget": "map-editor:build"
+          "options": {
+            "buildTarget": "map-editor:build"
 					},
 					"configurations": {
-						"production": {
-							"browserTarget": "map-editor:build:production"
+            "production": {
+              "buildTarget": "map-editor:build:production"
 						}
 					}
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
-					"options": {
-						"browserTarget": "map-editor:build"
+          "options": {
+            "buildTarget": "map-editor:build"
 					}
 				},
 				"test": {
