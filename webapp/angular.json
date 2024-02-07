@@ -106,8 +106,7 @@
 				}
 			}
 		}
-	},
-	"defaultProject": "map-editor",
+  },
 	"schematics": {
 		"@schematics/angular:component": {
 			"prefix": "app",

@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { HostDirective } from '../../directives/host.directive';
 import { GlobalEventsService } from '../../services/global-events.service';
 import { MapLoaderService } from '../../services/map-loader.service';
@@ -21,7 +21,6 @@ export class EntitiesComponent {
 	hideFilter = false;
 	
 	constructor(
-		private componentFactoryResolver: ComponentFactoryResolver,
 		private widgetRegistry: WidgetRegistryService,
 		private events: GlobalEventsService,
 		loader: MapLoaderService
@@ -76,8 +75,7 @@ export class EntitiesComponent {
 	}
 	
 	private generateWidget(entity: CCEntity, key: string, val: AttributeValue, ref: ViewContainerRef) {
-		const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.widgetRegistry.getWidget(val.type));
-		const componentRef = ref.createComponent(componentFactory);
+		const componentRef = ref.createComponent(this.widgetRegistry.getWidget(val.type));
 		const instance = <AbstractWidget>componentRef.instance;
 		instance.entity = entity;
 		instance.key = key;
