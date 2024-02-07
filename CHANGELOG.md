@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Changed
+- Updated Angular and Electron versions.  
+Should include some performance improvements when running the electron build
 ## [1.3.0] 2024-01-31
 ### Added
 - Render dimensions when selecting multiple tiles [#310](https://github.com/CCDirectLink/crosscode-map-editor/issues/310)
