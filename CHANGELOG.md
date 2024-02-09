@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+## [1.3.1] 2024-02-09
 ### Changed
 - Updated Angular and Electron versions.  
 Should include some performance improvements when running the electron build
