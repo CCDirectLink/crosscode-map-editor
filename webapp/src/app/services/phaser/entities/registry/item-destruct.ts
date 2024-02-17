@@ -2,7 +2,7 @@ import { Helper } from '../../helper';
 import { Anims, AnimSheet } from '../../sheet-parser';
 import { DefaultEntity } from './default-entity';
 import { Point3 } from '../../../../models/cross-code-map';
-import { EntityAttributes } from '../cc-entity';
+import { AttributeValue, EntityAttributes } from '../cc-entity';
 import { EnemyInfo } from './enemy';
 import { SheetReference } from './destructible';
 import { GlobalSettings } from '../../global-settings';
@@ -36,7 +36,15 @@ export class ItemDestruct extends DefaultEntity {
 	override getAttributes(): EntityAttributes {
 		const attributes = super.getAttributes();
 		attributes['desType'].type = 'CustomDesType';
-		return attributes;
+		attributes['__GLOBAL__'] = {
+			type: 'String',
+			description: 'Global settings for destructible object',
+		};
+		const objOrder: { [key in keyof ItemDestructAttributes]: null } = {
+			desType: null,
+			__GLOBAL__: null
+		};
+		return Object.assign(objOrder, attributes);
 	}
 	
 	protected override async setupType(settings: any) {

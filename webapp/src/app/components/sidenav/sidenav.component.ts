@@ -15,9 +15,7 @@ import { CCMapLayer } from '../../services/phaser/tilemap/cc-map-layer';
 export class SidenavComponent implements OnInit {
 
 	activeTab = EditorView.Layers;
-	selectedLayer?: CCMapLayer;
 	tilemap?: CCMap;
-	editorViewEnum = EditorView;
 	disableLayersTab = false;
 
 	constructor(
@@ -27,11 +25,6 @@ export class SidenavComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		this.mapLoader.selectedLayer.subscribe(layer => {
-			if (layer) {
-				this.selectedLayer = layer;
-			}
-		});
 		this.mapLoader.tileMap.subscribe(tilemap => {
 			this.tilemap = tilemap;
 			const currentView = this.globalEvents.currentView;

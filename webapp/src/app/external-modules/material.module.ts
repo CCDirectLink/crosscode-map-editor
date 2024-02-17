@@ -1,3 +1,4 @@
+import { A11yModule } from '@angular/cdk/a11y';
 import { NgModule } from '@angular/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -45,6 +46,7 @@ const MODULES = [
 	MatTreeModule,
 	MatDividerModule,
 	MatSlideToggleModule,
+	A11yModule,
 ];
 
 @NgModule({

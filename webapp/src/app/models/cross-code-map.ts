@@ -24,6 +24,10 @@ export interface Point3 extends Point {
 	z: number;
 }
 
+export interface PartialPoint3 extends Point {
+	z?: number;
+}
+
 export interface Attributes {
 	saveMode: string;
 	bgm: string;

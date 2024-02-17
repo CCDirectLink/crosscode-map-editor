@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import { MapEntity, Point, Point3 } from '../../../models/cross-code-map';
+import { MapEntity, PartialPoint3, Point, Point3 } from '../../../models/cross-code-map';
 import { Helper } from '../helper';
 import { CCMap } from '../tilemap/cc-map';
 import { Vec2 } from '../vec2';
@@ -156,13 +156,11 @@ export interface Fix {
 	tint?: number;
 	alpha?: number;
 	
-	offY?: number;
 	wallY?: number;
 	shape?: string;
 	aboveZ?: string | number;
 	pivotX?: number;
 	pivotY?: number;
-	offX?: number;
 	terrain?: string;
 	off?: null;
 	wall?: number;
@@ -217,8 +215,8 @@ export abstract class CCEntity extends BaseObject {
 		settings: DetailSettings;
 	} = <any>{};
 	entitySettings: {
-		collType: string;
-		baseSize: Point3;
+		collType?: string;
+		baseSize: PartialPoint3;
 		sheets: {
 			fix: Fix[];
 			offset?: Point;
@@ -226,10 +224,10 @@ export abstract class CCEntity extends BaseObject {
 			flipX?: boolean;
 			ignoreScalable?: boolean;
 		};
-		scalableX: boolean;
-		scalableY: boolean;
-		scalableStep: number;
-		pivot: Point;
+		scalableX?: boolean;
+		scalableY?: boolean;
+		scalableStep?: number;
+		pivot?: Point;
 	} = <any>{};
 	
 	protected constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
@@ -313,6 +311,11 @@ export abstract class CCEntity extends BaseObject {
 			}
 			this.updateZIndex();
 		}
+	}
+	
+	addPosition(x: number, y: number) {
+		this.container.x += x;
+		this.container.y += y;
 	}
 	
 	updateSettings() {
@@ -585,9 +588,18 @@ export abstract class CCEntity extends BaseObject {
 		this.entitySettings = <any>{};
 		this.entitySettings.baseSize = baseSize;
 		const scaleSettings = this.getScaleSettings();
-		if (scaleSettings && (scaleSettings.scalableX || scaleSettings.scalableY)) {
-			this.entitySettings.scalableX = scaleSettings.scalableX;
-			this.entitySettings.scalableY = scaleSettings.scalableY;
+		if (scaleSettings) {
+			if (scaleSettings.scalableX || scaleSettings.scalableY) {
+				this.entitySettings.scalableX = scaleSettings.scalableX;
+				this.entitySettings.scalableY = scaleSettings.scalableY;
+			}
+			// check for size overrides
+			if (scaleSettings.baseSize.x !== scaleSettings.scalableStep) {
+				settings['size'].x = scaleSettings.baseSize.x;
+			}
+			if (scaleSettings.baseSize.y !== scaleSettings.scalableStep) {
+				settings['size'].y = scaleSettings.baseSize.y;
+			}
 		}
 		
 		
@@ -738,6 +750,7 @@ export abstract class CCEntity extends BaseObject {
 				this.text = this.scene.add.text(0, 0, '', {
 					font: '400 18pt Roboto',
 					color: 'white',
+					resolution: window.devicePixelRatio * 3
 				});
 				this.text.setOrigin(0.5, 0.5);
 				this.text.setScale(0.3);
@@ -796,22 +809,23 @@ export abstract class CCEntity extends BaseObject {
 		return CCEntity.renderBackground;
 	}
 	
-	public async generateHtmlImage(withBackground = true, offsetY?: number, width = 16 * 6, height = 16 * 7) {
+	public async generateHtmlImage(withBackground = true, offsetY: number = 0, entityScale = 1) {
+		const width = 16 * 6 * entityScale;
+		const height = 16 * 7 * entityScale;
+		
 		const scale = 3;
-		const scaledWidth = width * scale;
-		const scaledHeight = height * scale;
 		
 		const name = Math.random() + '';
-		const texture = this.scene.textures.addDynamicTexture(name, scaledWidth, scaledHeight)!;
+		const texture = this.scene.textures.addDynamicTexture(name, width * scale, height * scale)!;
 		
 		texture.clear();
 		if (withBackground) {
-			const g = this.getRenderBackground(width, height);
-			g.setScale(scale);
+			const g = this.getRenderBackground(width / entityScale, height / entityScale);
+			g.setScale(scale * entityScale);
 			texture.draw(g);
 		}
-		const x = scale * 16 * 3 - (this.getActualSize().x * scale) / 2;
-		const y = scale * (16 * 5 + (offsetY ?? 0));
+		const x = (width - this.getActualSize().x) * scale / 2;
+		const y = scale * (height - ((32 - offsetY) * entityScale));
 		
 		// drawing container directly is broken: https://github.com/photonstorm/phaser/issues/6546
 		for (const img of this.images) {

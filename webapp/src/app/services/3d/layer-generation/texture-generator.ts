@@ -26,11 +26,9 @@ export class TextureGenerator {
 			.filter(l => l.details.type.toLowerCase() === 'background')
 			.sort((a, b) => a.details.level - b.details.level);
 		
-		Globals.phaserEventsService.showMapBorder.next(false);
 	}
 	
 	destroy() {
-		Globals.phaserEventsService.showMapBorder.next(true);
 	}
 	
 	/**

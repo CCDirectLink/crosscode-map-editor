@@ -3,9 +3,13 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Inpu
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 
+import { firstValueFrom } from 'rxjs';
+import { GlobalEventsService } from '../../../services/global-events.service';
 import { HttpClientService } from '../../../services/http-client.service';
 import { MapLoaderService } from '../../../services/map-loader.service';
 import { SearchFilterService } from '../../../services/search-filter.service';
+import { ConfirmCloseComponent } from '../confirm-close/confirm-close.component';
+import { OverlayService } from '../overlay/overlay.service';
 import { MapNode, MapNodeRoot } from './mapNode.model';
 import { VirtualMapNode } from './virtualMapNode.model';
 
@@ -41,6 +45,8 @@ export class LoadMapComponent {
 		private http: HttpClientService,
 		private ref: ChangeDetectorRef,
 		private searchFilterService: SearchFilterService,
+		private readonly eventsService: GlobalEventsService,
+		private readonly overlayService: OverlayService
 	) {
 		this.mapsSource.data = [];
 		this.refresh();
@@ -67,13 +73,35 @@ export class LoadMapComponent {
 		this.mapsSource.data = this.virtualRoot.children || [];
 		this.ref.detectChanges();
 	}
+
+	private async showConfirmDialog() {
+		const hasUnsavedChanges = await firstValueFrom(this.eventsService.hasUnsavedChanges);
+		if (!hasUnsavedChanges) {
+			return true;
+		}
+
+		const dialogRef = this.overlayService.open(ConfirmCloseComponent, {
+			hasBackdrop: true,
+		});
+		const result = await firstValueFrom(dialogRef.ref.onClose, {defaultValue: false});
+		if (result) {
+			this.eventsService.hasUnsavedChanges.next(false);
+		}
+		return result;
+	}
 	
-	loadMap(event: Event) {
+	async loadMap(event: Event) {
+		if (!await this.showConfirmDialog()) {
+			return;
+		}
 		this.mapLoader.loadMap(event);
 		this.fileUpload.nativeElement.value = '';
 	}
 	
-	load(name: string) {
+	async load(name: string) {
+		if (!await this.showConfirmDialog()) {
+			return;
+		}
 		this.mapLoader.loadMapByName(name);
 	}
 	
@@ -92,7 +120,7 @@ export class LoadMapComponent {
 		let lastNode = data;
 		for (const path of paths) {
 			const node = this.resolve(data, path, lastNode, lastPath);
-			const name = path.substr(path.lastIndexOf('.') + 1);
+			const name = path.substring(path.lastIndexOf('.') + 1);
 			
 			node.push({name, path, displayed: true});
 			
@@ -104,7 +132,7 @@ export class LoadMapComponent {
 	}
 	
 	private resolve(data: MapNode[], path: string, lastNode: MapNode[], lastPath: string): MapNode[] {
-		if (path.substr(0, path.lastIndexOf('.')) === lastPath.substr(0, lastPath.lastIndexOf('.'))) {
+		if (path.substring(0, path.lastIndexOf('.')) === lastPath.substring(0, lastPath.lastIndexOf('.'))) {
 			return lastNode;
 		}
 		
@@ -115,7 +143,7 @@ export class LoadMapComponent {
 		let node = data;
 		
 		const parts = path
-			.substr(0, path.lastIndexOf('.'))
+			.substring(0, path.lastIndexOf('.'))
 			.split('.');
 		for (const name of parts) {
 			const child = node.find(n => n.name === name);

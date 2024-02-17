@@ -29,9 +29,28 @@
 			</button>
 		</mat-menu>
 		
-		<div fxLayout="column" fxLayoutAlign="center" class="toggle-3d">
-			<mat-slide-toggle [disabled]="!map || is3dLoading" color="primary" (change)="changeTo3d($event)">3D!
-			</mat-slide-toggle>
+		<div class="flex flex-row gap-4 ml-4 items-center">
+			<div>
+				<mat-checkbox
+					[checked]="is3d"
+					[disabled]="!map || is3dLoading"
+					color="primary"
+					(change)="changeTo3d($event.checked)"
+				>
+					3D!
+				</mat-checkbox>
+			</div>
+			
+			<div>
+				<mat-checkbox
+					[checked]="(events.showIngamePreview | async) ?? false"
+					[disabled]="is3d"
+					color="primary"
+					(change)="toggleIngamePreview($event.checked)"
+				>
+					Ingame Preview
+				</mat-checkbox>
+			</div>
 		</div>
 	</div>
 	

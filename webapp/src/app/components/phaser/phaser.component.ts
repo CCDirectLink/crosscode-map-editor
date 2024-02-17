@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import * as Phaser from 'phaser';
 
 import { AutotileService } from '../../services/autotile/autotile.service';
@@ -12,13 +12,14 @@ import { MainScene } from '../../services/phaser/main-scene';
 import { PhaserEventsService } from '../../services/phaser/phaser-events.service';
 import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SettingsService } from '../../services/settings.service';
 
 @Component({
 	selector: 'app-phaser',
 	templateUrl: './phaser.component.html',
 	styleUrls: ['./phaser.component.scss']
 })
-export class PhaserComponent implements OnInit {
+export class PhaserComponent implements AfterViewInit {
 	
 	@ViewChild('content', {static: true}) content!: ElementRef<HTMLElement>;
 	
@@ -32,7 +33,8 @@ export class PhaserComponent implements OnInit {
 		private http: HttpClientService,
 		snackbar: MatSnackBar,
 		registry: EntityRegistryService,
-		autotile: AutotileService
+		autotile: AutotileService,
+		settingsService: SettingsService
 	) {
 		Globals.stateHistoryService = stateHistory;
 		Globals.mapLoaderService = mapLoader;
@@ -42,10 +44,11 @@ export class PhaserComponent implements OnInit {
 		Globals.entityRegistry = registry;
 		Globals.httpService = http;
 		Globals.snackbar = snackbar;
+		Globals.settingsService = settingsService;
 	}
 	
 	
-	ngOnInit() {
+	ngAfterViewInit() {
 		this.heightMap.init();
 		const scene = new MainScene();
 		const scale = this.getScale();
@@ -83,8 +86,8 @@ export class PhaserComponent implements OnInit {
 	private getScale() {
 		const rect = this.content.nativeElement.getBoundingClientRect();
 		return {
-			width: (rect.width + 5) * window.devicePixelRatio,
-			height: (rect.height + 5) * window.devicePixelRatio
+			width: rect.width * window.devicePixelRatio,
+			height: rect.height * window.devicePixelRatio
 		};
 	}
 }

@@ -7,6 +7,15 @@ import { CCMapLayer } from './cc-map-layer';
 export class CCMap {
 	name = '';
 	levels: { height: number }[] = [];
+	specialLevels = [
+		'first',
+		'last',
+		'light',
+		'postlight',
+		'object1',
+		'object2',
+		'object3',
+	];
 	mapWidth = 0;
 	mapHeight = 0;
 	masterLevel = 0;
@@ -19,6 +28,7 @@ export class CCMap {
 	
 	private historySub: Subscription;
 	private offsetSub: Subscription;
+	private offsetSub2: Subscription;
 	
 	filename = '';
 	path?: string;
@@ -63,11 +73,13 @@ export class CCMap {
 		});
 		
 		this.offsetSub = Globals.globalEventsService.offsetMap.subscribe(offset => this.offsetMap(offset));
+		this.offsetSub2 = Globals.globalEventsService.offsetEntities.subscribe(offset => this.offsetEntities(offset));
 	}
 	
 	destroy() {
 		this.historySub.unsubscribe();
 		this.offsetSub.unsubscribe();
+		this.offsetSub2.unsubscribe();
 	}
 	
 	async loadMap(map: CrossCodeMap, skipInit = false) {
@@ -135,12 +147,23 @@ export class CCMap {
 		this.mapWidth = width;
 		this.mapHeight = height;
 		
-		this.layers.forEach(layer => layer.resize(width, height));
-		Globals.phaserEventsService.updateMapBorder.next(true);
+		this.layers.forEach(layer => {
+			// only update layers with distance: 1
+			// Parallax Layers shouldn't be updated because they usually have different dimensions than the map
+			if (layer.details.distance === 1) {
+				layer.resize(width, height);
+			}
+		});
 	}
 	
 	offsetMap(offset: Point, borderTiles = false) {
 		this.layers.forEach(layer => layer.offsetLayer(offset, borderTiles));
+	}
+	
+	offsetEntities(offset: Point) {
+		for (const entity of this.entityManager.entities) {
+			entity.addPosition(offset.x, offset.y);
+		}
 	}
 	
 	addLayer(layer: CCMapLayer) {

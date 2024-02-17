@@ -16,10 +16,14 @@ export class GlobalEventsService {
 	loadComplete = new Subject<void>();
 	generateHeights = new Subject<boolean>();
 	offsetMap = new Subject<Point>();
+	offsetEntities = new Subject<Point>();
 	toggleVisibility = new Subject<void>();
 	showAddEntityMenu = new Subject<Point>();
 
 	updateCoords = new Subject<Point3 | undefined>();
+	updateTileSelectionSize = new Subject<Point | undefined>();
+	showIngamePreview = new BehaviorSubject(false);
+	hasUnsavedChanges = new BehaviorSubject(false);
 
 	babylonLoading = new BehaviorSubject<boolean>(false);
 	is3D = new BehaviorSubject<boolean>(false);

@@ -96,7 +96,7 @@ export class ElectronService implements SharedService {
 	}
 
 	public async saveModSelect(mod: string) {
-		localStorage.setItem(ElectronService.modName, mod);
+		localStorage.setItem(ElectronService.modName, mod ?? '');
 		ElectronService.selectedMod = mod;
 		await ElectronService.updateMod();
 	}

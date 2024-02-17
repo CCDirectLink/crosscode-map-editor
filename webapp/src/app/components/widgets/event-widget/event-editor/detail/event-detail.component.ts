@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ComponentFactoryResolver, EventEmitter, Input, OnDestroy, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { HostDirective } from '../../../../../directives/host.directive';
 import { AttributeValue } from '../../../../../services/phaser/entities/cc-entity';
@@ -29,7 +29,6 @@ export class EventDetailComponent implements OnDestroy {
 	private changeSubscriptions: Subscription[] = [];
 	
 	constructor(
-		private componentFactoryResolver: ComponentFactoryResolver,
 		private widgetRegistry: WidgetRegistryService,
 		private helper: EventHelperService,
 		private ref: ChangeDetectorRef,
@@ -91,8 +90,7 @@ export class EventDetailComponent implements OnDestroy {
 	}
 	
 	private generateWidget(data: any, key: string, val: AttributeValue, ref: ViewContainerRef) {
-		const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.widgetRegistry.getWidget(val.type));
-		const componentRef = ref.createComponent(componentFactory);
+		const componentRef = ref.createComponent(this.widgetRegistry.getWidget(val.type));
 		const instance = <AbstractWidget>componentRef.instance;
 		instance.custom = data;
 		instance.key = key;

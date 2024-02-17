@@ -16,6 +16,62 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - Events with children/branching steps (such as `IF`, `SHOW_CHOICE`, `SHOW_MODAL_CHOICE`, etc.) will no longer fully refresh upon any edits, causing focus to be reset.
 
+## [1.3.1] 2024-02-09
+### Changed
+- Updated Angular and Electron versions.  
+Should include some performance improvements when running the electron build
+## [1.3.0] 2024-01-31
+### Added
+- Render dimensions when selecting multiple tiles [#310](https://github.com/CCDirectLink/crosscode-map-editor/issues/310)
+
+### Changed
+- Increased font resolution for entity names
+
+## [1.2.0] 2024-01-30
+### Added
+- Toggle in settings that also shows the vanilla maps in the map selection menu
+
+## [1.1.5] 2023-11-16
+
+### Fixed
+- Fix map "heat/special/cursed-temple" not loading
+
+
+## [1.1.4] 2023-09-17
+### Fixed 
+- Fix WallHorizontal/WallVertical having the wrong default size
+
+## [1.1.3] 2023-09-17
+### Fixed
+- The editor won't freeze if a mod's package.json is invalid.
+
+## [1.1.2] 2023-09-02
+
+### Fixed
+- The confirm dialog now no longer shows up after discarding changes
+
+## [1.1.1] 2023-09-02
+### Added
+- Added confirm dialog if there are any unsaved changes when closing a map
+
+## [1.1.0] 2023-08-25
+### Added
+- Layer level selector now also supports selecting all the named layer levels: `first`, `last`, `light`, `postlight`, `object1`, `object2`, and `object3`.
+- Added support for parallax layers (`distance != 1`)
+- The size of every individual layer can now be changed instead of using the map size
+- Added preview to see how the parallax effect would look ingame
+- added graphical selection widget to `person-expression`
+- Added checkbox to "Offset Map" to optionally include entities [#279](https://github.com/CCDirectLink/crosscode-map-editor/issues/279)
+
+### Changed
+- Named layer levels will now appear in the layer selector as opposed to a layer appearing on level 0 or 10.
+- Added manual input field to graphical selection widget for `Prop`, `Enemy`, `NPC`, `ItemDestruct`
+- event `person-expression` now only shows characters that have a face [#284](https://github.com/CCDirectLink/crosscode-map-editor/issues/284)
+
+### Fixed
+- Layers on the `first` level should now properly render as though they are below level 0.
+- Layers with different sizes are now saved properly [#272](https://github.com/CCDirectLink/crosscode-map-editor/issues/272)
+
 ## [1.0.1] 2023-08-20
 
 ### Fixed

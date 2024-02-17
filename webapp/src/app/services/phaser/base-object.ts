@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import { Subscription } from 'rxjs';
+import { PreUpdate } from './pre-update';
 
 export interface KeyBinding {
 	event: string;
@@ -7,7 +8,7 @@ export interface KeyBinding {
 	emitter: Phaser.Events.EventEmitter;
 }
 
-export abstract class BaseObject extends Phaser.GameObjects.GameObject {
+export abstract class BaseObject extends Phaser.GameObjects.GameObject implements PreUpdate {
 	private subs: Subscription[] = [];
 	
 	private keyBindings: KeyBinding[] = [];

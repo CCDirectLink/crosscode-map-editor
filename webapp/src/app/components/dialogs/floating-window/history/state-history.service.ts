@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import { GlobalEventsService } from '../../../../services/global-events.service';
 import { Globals } from '../../../../services/globals';
 
 export interface HistoryStateContainer {
@@ -22,7 +23,9 @@ export class StateHistoryService {
 	states = new BehaviorSubject<HistoryState[]>([]);
 	selectedState = new BehaviorSubject<HistoryStateContainer>({state: undefined});
 	
-	constructor() {
+	constructor(
+		private readonly eventsService: GlobalEventsService
+	) {
 	}
 	
 	init(state: HistoryState) {
@@ -46,6 +49,8 @@ export class StateHistoryService {
 			}
 			state.json = stateJson;
 		}
+
+		this.eventsService.hasUnsavedChanges.next(true);
 		
 		const states = this.states.getValue();
 		const selected = this.selectedState.getValue();

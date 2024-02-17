@@ -1,2 +1,8 @@
 <p class="version caption">{{ version }}</p>
-<p class="coords caption {{ coordsClass }}">{{ coords }}</p>
+<p class="bottom-elements caption">
+	<ng-container *ngFor="let el of uiElements">
+		<ng-container *ngIf="el.active">
+			{{el.text}}
+		</ng-container>
+	</ng-container>
+</p>
