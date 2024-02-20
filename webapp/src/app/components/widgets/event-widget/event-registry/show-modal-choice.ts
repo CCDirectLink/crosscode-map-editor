@@ -14,19 +14,6 @@ export interface ShowModalChoiceData extends EventType {
 }
 
 export class ShowModalChoice extends DefaultEvent<ShowModalChoiceData> {
-    private attributes: EntityAttributes = {
-        text: {
-            type: 'LangLabel',
-            description: 'Text of modal dialog',
-			hs: true
-        },
-        options: {
-            type: 'ModalChoiceOptions',
-            description: 'All the options of the modal dialog',
-			C2: true
-        }
-    };
-
     override update() {
         this.children = [];
 		this.info = this.combineStrings(

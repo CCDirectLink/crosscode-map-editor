@@ -36,6 +36,23 @@ export type EventArray =
 	{trade: TraderEvent}
 ;
 
+export type VarValue =
+	string |
+	number |
+	boolean |
+	{x: number, y: number} | //vec2
+	{x: number, y: number, z: number} | //vec3
+	Label
+;
+
+export type VarExpression = 
+	VarValue |
+	{indirect: string} |
+	{varName: string} |
+	{actorAttrib: string}
+;
+
+
 export function destructureEventArray(events: EventArray): {events: EventType[], type: EventArrayType, trader?: string} {
 	if (Array.isArray(events)) {
 		return {events: events, type: EventArrayType.Simple};

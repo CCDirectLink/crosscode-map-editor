@@ -9,7 +9,7 @@ import { AbstractWidget } from '../../../components/widgets/abstract-widget';
 import { Globals } from '../../globals';
 import { BaseObject } from '../base-object';
 
-export type Base_WM_Type = 'Action'
+export type WMType = 'Action'
 	| 'Actor'
 	| 'Analyzable'
 	| 'AnimSheetRef'
@@ -108,7 +108,7 @@ export type Base_WM_Type = 'Action'
 	| 'WalkAnimConfig'
 	| 'XenoDialog';
 
-export type WM_Type = Base_WM_Type | 'Unknown' | 'CustomDesType' | '';
+//export type WMType = BaseWMType;
 
 export interface ScaleSettings {
 	scalableX: boolean;
@@ -122,7 +122,7 @@ export interface EntityAttributes {
 }
 
 export interface AttributeValue {
-	type: WM_Type;
+	type: string;
 	description: string;
 	options?: { [key: string]: any };
 	withNull?: boolean;

@@ -1,7 +1,8 @@
 import { SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { EntityAttributes, Base_WM_Type } from '../../../../services/phaser/entities/cc-entity';
-import { Label } from '../../../../models/events';
+import { EntityAttributes, WMType } from '../../../../services/phaser/entities/cc-entity';
+import { Label, VarExpression, VarValue } from '../../../../models/events';
+import { Point, Point3 } from '../../../../models/cross-code-map';
 
 export interface EventType {
 	type: string;
@@ -60,7 +61,7 @@ export abstract class AbstractEvent<T extends EventType> {
 		const attr = this.getAttributes();
 		if (attr && attr[key]) {
 			const type = attr[key].type;
-			switch (type as Base_WM_Type) {
+			switch (type as WMType) {
 				case 'Color': 
 					value = this.getColorRectangle(value);
 					break;
@@ -68,14 +69,16 @@ export abstract class AbstractEvent<T extends EventType> {
 				case 'Vec2Expression':
 					value = this.getVarExpressionValue(value, true);
 					if(typeof value !== 'string') {
-						value = this.getVec2String(value.x, value.y);
+						const vec2 = value as Point;
+						value = this.getVec2String(vec2.x, vec2.y);
 					}
 					break;
 				case 'Vec3':
 				case 'Vec3Expression':
 					value = this.getVarExpressionValue(value, true);
 					if(typeof value !== 'string') {
-						value = this.getVec3String(value.x, value.y, value.z, value.lvl);
+						const vec3 = value as Point3 & {lvl: number};
+						value = this.getVec3String(vec3.x, vec3.y, vec3.z, vec3.lvl);
 					}
 					break;
 				case 'Offset':
@@ -125,15 +128,17 @@ export abstract class AbstractEvent<T extends EventType> {
 		return `<span style="display: inline-block;"><span style="color: #858585">${key}</span>: ${value}</span>`;
 	}
 	
-	protected getVarExpressionValue(value: any, supportsActorAttrib = false): any {
-		if(value.indirect) {
-			value = `[indirect: ${value.indirect}]`;
-		} else if(value.varName) {
-			value = `[varName: ${value.varName}]`;
-		} else if(value.actorAttrib && supportsActorAttrib) {
-			value = `[actorAttrib: ${value.actorAttrib}]`;
+	protected getVarExpressionValue(value: VarExpression, supportsActorAttrib = false): VarValue {
+		if(typeof value == 'object') {
+			if('indirect' in value) {
+				value = `[indirect: ${value.indirect}]`;
+			} else if('varName' in value) {
+				value = `[varName: ${value.varName}]`;
+			} else if('actorAttrib' in value && supportsActorAttrib) {
+				value = `[actorAttrib: ${value.actorAttrib}]`;
+			}
 		}
-		return value;
+		return value as VarValue;
 	}
 
 	protected getVec2String(x: number, y: number): string {
@@ -167,12 +172,12 @@ export abstract class AbstractEvent<T extends EventType> {
 
 	protected getProcessedText(langLabel: Label): string {
 		const textColors = [
-			null,
-			'#ff6969',
-			'#65ff89',
-			'#ffe430',
-			'#808080',
-			'#ff8932',
+			null,	   // \c[0] White
+			'#ff6969', // \c[1] Red
+			'#65ff89', // \c[2] Green
+			'#ffe430', // \c[3] Yellow
+			'#808080', // \c[4] Gray
+			//'#ff8932',  \c[5] Orange, only used for small font in vanilla
 		];
 		let text = langLabel?.en_US ?? '';
 

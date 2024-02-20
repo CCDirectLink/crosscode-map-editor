@@ -17,29 +17,6 @@ export interface ShowChoiceData extends EventType {
 }
 
 export class ShowChoice extends DefaultEvent<ShowChoiceData> {
-	private attributes: EntityAttributes = {
-		person: {
-			type: 'PersonExpression',
-			description: 'Talking person'
-		},
-		options: {
-			type: 'ChoiceOptions',
-			description: 'List of options',
-			C2: true
-		},
-		columns: {
-			type: 'Integer',
-			description: 'Number of buttons columns.',
-			I: true,
-			min: 2
-		},
-		forceWidth: {
-			type: 'Integer',
-			description: 'Override the default button width. NOTE: Buttons still get matched when a text is to large.',
-			I: true
-		}
-	};
-	
 	override update() {
 		this.children = [];
 		this.info = this.combineStrings(

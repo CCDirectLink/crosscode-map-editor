@@ -7,13 +7,6 @@ interface SetMsgExpressionData extends EventType {
 }
 
 export class SetMsgExpression extends DefaultEvent<SetMsgExpressionData> {
-    private attributes = {
-        person: {
-            type: 'PersonExpression',
-            description: 'Person + Expression to change'
-        }
-    };
-
     override update() {
         this.info = this.combineStrings(
             this.getTypeString('#7ea3ff'),
