@@ -16,6 +16,14 @@ $config: mat.define-typography-config();
 $my-typography: mat.define-typography-config();
 @include mat.typography-hierarchy($my-typography);
 
+
+// tailwind base makes angular material icon buttons off-center. This fixes it
+@layer base {
+	button {
+		line-height: normal;
+	}
+}
+
 html * {
 	font-family: Roboto, "Helvetica Neue", sans-serif;
 }
