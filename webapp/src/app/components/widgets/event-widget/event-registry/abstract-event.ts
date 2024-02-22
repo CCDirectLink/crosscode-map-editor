@@ -1,8 +1,157 @@
 import { SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { EntityAttributes, WMType } from '../../../../services/phaser/entities/cc-entity';
-import { Label, VarExpression, VarValue } from '../../../../models/events';
-import { Point, Point3 } from '../../../../models/cross-code-map';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
+import { Label } from '../../../../models/events';
+import { Point, Point3, PartialPoint3 } from '../../../../models/cross-code-map';
+
+export type WMTypeNames = 'Action'
+	| 'Actor'
+	| 'Analyzable'
+	| 'AnimSheetRef'
+	| 'Animation'
+	| 'Area'
+	| 'Array'
+	| 'AttackInfo'
+	| 'BallChangerType'
+	| 'Boolean'
+	| 'BooleanExpression'
+	| 'BounceAction'
+	| 'CallEvent'
+	| 'Character'
+	| 'ChoiceOptions'
+	| 'CollabLabelFilter'
+	| 'Color'
+	| 'CombatConditions'
+	| 'CondAnims'
+	| 'CreditsTriggerSelect'
+	| 'DoorVariations'
+	| 'DropSelect'
+	| 'DynamicPlatformDests'
+	| 'Effect'
+	| 'EffectSelect'
+	| 'ElevatorDests'
+	| 'EnemyActionRef'
+	| 'EnemySearch'
+	| 'EnemyState'
+	| 'EnemyType'
+	| 'EnemyTypeList'
+	| 'Entity'
+	| 'EntityAnim'
+	| 'EntityAnimArray'
+	| 'Event'
+	| 'EventLoadCondition'
+	| 'EventSheetCall'
+	| 'Face'
+	| 'FlexibleTable'
+	| 'GUI'
+	| 'GUIState'
+	| 'GuiState'
+	| 'Image'
+	| 'Integer'
+	| 'Item'
+	| 'ItemsDropRate'
+	| 'Landmarks'
+	| 'LangLabel'
+	| 'LoreEntrySelect'
+	| 'LoreSelect'
+	| 'LorryAltTypes'
+	| 'MagnetAltDirs'
+	| 'Maps'
+	| 'Marker'
+	| 'ModalChoiceOptions'
+	| 'NPC'
+	| 'NPCStates'
+	| 'Number'
+	| 'NumberExpression'
+	| 'NumberVary'
+	| 'Object'
+	| 'Offset'
+	| 'OlPlatformStates'
+	| 'PersonExpression'
+	| 'PoiFilter'
+	| 'PropInteract'
+	| 'PropType'
+	| 'ProxyRef'
+	| 'Quest'
+	| 'QuestHub'
+	| 'QuestLabelSelect'
+	| 'QuestNameSelect'
+	| 'QuestResetSelect'
+	| 'QuestRewards'
+	| 'QuestTaskList'
+	| 'RandomDistribution'
+	| 'Reaction'
+	| 'ScalablePropConfig'
+	| 'Select'
+	| 'Shield'
+	| 'Shop'
+	| 'SoundT'
+	| 'String'
+	| 'StringExpression'
+	| 'TaskIndex'
+	| 'TileSheet'
+	| 'Timer'
+	| 'TrackerRef'
+	| 'TraderSelect'
+	| 'TrophySelect'
+	| 'VarCondition'
+	| 'VarName'
+	| 'Vec2'
+	| 'Vec2Expression'
+	| 'Vec3'
+	| 'Vec3Expression'
+	| 'WalkAnimConfig'
+	| 'XenoDialog';
+
+
+export namespace WMTypes {
+	export type VarExpression<T> = 
+		T |
+		{indirect: string} |
+		{varName: string} |
+		{actorAttrib: string}
+	;
+
+	export type Color = string;
+
+	export type Vec2 = Point;
+	export type Vec2Expression = VarExpression<Vec2>;
+	export type Vec3 = PartialPoint3 & {lvl?: number};
+	export type Vec3Expression = VarExpression<Vec3>;
+
+	export type NumberExpression = VarExpression<number>;
+	export type StringExpression = VarExpression<string>;
+	export type BooleanExpression = VarExpression<boolean>;
+
+	export type Offset = Point3;
+
+	export type VarName = string | {
+		actorAttrib?: string;
+		indirect?: string;
+	};
+
+	export interface Entity {
+		player?: boolean;
+		self?: boolean;
+		name?: string;
+		varName?: string;
+		party?: string;
+	}
+
+	export interface EnemyType {
+		type: string;
+	}
+
+	export interface Effect {
+		sheet: string;
+		name: string;
+	}
+
+	export interface Animation {
+		sheet: string;
+		name: string;
+	}
+}
 
 export interface EventType {
 	type: string;
@@ -61,65 +210,81 @@ export abstract class AbstractEvent<T extends EventType> {
 		const attr = this.getAttributes();
 		if (attr && attr[key]) {
 			const type = attr[key].type;
-			switch (type as WMType) {
+			switch (type as WMTypeNames) {
 				case 'Color': 
-					value = this.getColorRectangle(value);
+					value = this.getColorRectangle(value as WMTypes.Color);
 					break;
 				case 'Vec2':
-				case 'Vec2Expression':
-					value = this.getVarExpressionValue(value, true);
+				case 'Vec2Expression': {
+					value = this.getVarExpressionValue(value as WMTypes.Vec2Expression, true);
 					if(typeof value !== 'string') {
-						const vec2 = value as Point;
+						const vec2 = value as WMTypes.Vec2;
 						value = this.getVec2String(vec2.x, vec2.y);
 					}
 					break;
+				}
 				case 'Vec3':
 				case 'Vec3Expression':
-					value = this.getVarExpressionValue(value, true);
+					value = this.getVarExpressionValue(value as WMTypes.Vec3Expression, true);
 					if(typeof value !== 'string') {
-						const vec3 = value as Point3 & {lvl: number};
+						const vec3 = value as WMTypes.Vec3;
 						value = this.getVec3String(vec3.x, vec3.y, vec3.z, vec3.lvl);
 					}
 					break;
 				case 'Offset':
 					if(value) {
-						value = this.getVec3String(value.x, value.y, value.z);
+						const offset = value as WMTypes.Offset;
+						value = this.getVec3String(offset.x, offset.y, offset.z);
 					}
 					break;
-				case 'Entity':
-					if(value.player){
+				case 'Entity': {
+					const entity = value as WMTypes.Entity;
+					if(entity.player){
 						value = 'player';
-					} else if(value.self) {
+					} else if(entity.self) {
 						value = 'self';
-					} else if(value.name) {
-						value = '[' + value.name + ']';
-					} else if (value.varName) {
-						value = `[Var: ${value.varName}]`;
-					} else if (value.party) {
-						value = `[Party: ${value.party}]`; 
+					} else if(entity.name) {
+						value = '[' + entity.name + ']';
+					} else if (entity.varName) {
+						value = `[Var: ${entity.varName}]`;
+					} else if (entity.party) {
+						value = `[Party: ${entity.party}]`; 
 					}
 					break;
-				case 'EnemyType':
-					value = '[' + value.type + ']';
+				}
+				case 'EnemyType': {
+					const enemyType = value as WMTypes.EnemyType;
+					value = '[' + enemyType.type + ']';
 					break;
+				}
 				case 'NumberExpression':
 				case 'StringExpression':
-				case 'BooleanExpression':
-					value = this.getVarExpressionValue(value);
+				case 'BooleanExpression': {
+					const expression = value as WMTypes.NumberExpression 
+												| WMTypes.StringExpression
+												| WMTypes.BooleanExpression;
+					value = this.getVarExpressionValue(expression);
 					break;
-				case 'VarName':
-					if(value.indirect) {
-						value = `[indirect: ${value.indirect}]`;
-					} else if (value.actorAttrib) {
-						value = `[actorAttrib: ${value.indirect}]`;
+				}
+				case 'VarName': {
+					const varName = value as WMTypes.VarName;
+					if(typeof varName === 'object') {
+						if(varName.indirect) {
+							value = `[indirect: ${value.indirect}]`;
+						} else if (varName.actorAttrib) {
+							value = `[actorAttrib: ${value.indirect}]`;
+						}
 					}
 					break;
+				}
 				case 'Effect':
-				case 'Animation':
-					if(value) {
-						value = `${value.sheet}/${value.name}`;
+				case 'Animation':{
+					const obj = value as WMTypes.Effect | WMTypes.Animation;
+					if(obj) {
+						value = `${obj.sheet}/${obj.name}`;
 					}
 					break;
+				}
 			}
 		}
 		
@@ -128,17 +293,17 @@ export abstract class AbstractEvent<T extends EventType> {
 		return `<span style="display: inline-block;"><span style="color: #858585">${key}</span>: ${value}</span>`;
 	}
 	
-	protected getVarExpressionValue(value: VarExpression, supportsActorAttrib = false): VarValue {
-		if(typeof value == 'object') {
+	protected getVarExpressionValue<T>(value: WMTypes.VarExpression<T>, supportsActorAttrib = false): T | string {
+		if(value && typeof value == 'object') {
 			if('indirect' in value) {
-				value = `[indirect: ${value.indirect}]`;
+				return `[indirect: ${value.indirect}]`;
 			} else if('varName' in value) {
-				value = `[varName: ${value.varName}]`;
+				return `[varName: ${value.varName}]`;
 			} else if('actorAttrib' in value && supportsActorAttrib) {
-				value = `[actorAttrib: ${value.actorAttrib}]`;
+				return `[actorAttrib: ${value.actorAttrib}]`;
 			}
 		}
-		return value as VarValue;
+		return value as T;
 	}
 
 	protected getVec2String(x: number, y: number): string {
