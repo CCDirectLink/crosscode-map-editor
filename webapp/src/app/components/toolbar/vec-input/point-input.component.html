@@ -1,0 +1,19 @@
+<div role="group" class="flex flex-row gap-1.5"
+     [formGroup]="parts"
+     (focusin)="onFocusIn($event)"
+     (focusout)="onFocusOut($event)">
+	<span class="input-label">X:</span>
+	<input formControlName="x"
+	       min="1"
+	       max="999"
+	       type="number"
+	       (input)="update()"
+	>
+	<span class="input-label">Y:</span>
+	<input formControlName="y"
+	       min="1"
+	       max="999"
+	       type="number"
+	       (input)="update()"
+	>
+</div>

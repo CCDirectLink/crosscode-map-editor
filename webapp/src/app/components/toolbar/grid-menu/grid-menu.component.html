@@ -1,0 +1,37 @@
+<div class="flex flex-row items-center gap-2 h-full">
+	<ng-container
+		*ngIf="gridSettings() as settings"
+	>
+		<mat-checkbox
+			[ngModel]="settings.enableGrid"
+			(ngModelChange)="update({enableGrid: $event})"
+			color="primary"
+		>
+			Entity Grid
+		</mat-checkbox>
+		<div>
+			<button
+				mat-icon-button
+				(click)="toggleSettings()"
+			>
+				<mat-icon>settings</mat-icon>
+			</button>
+		</div>
+		<div
+			*ngIf="settings.showSettings"
+			@openClose
+			class="extended-menu"
+		>
+			<mat-form-field
+				appearance="outline"
+				class="no-padding-form-field size-form-field"
+			>
+				<mat-label>Grid size</mat-label>
+				<app-point-input
+					[ngModel]="settings.gridSize"
+					(ngModelChange)="update({gridSize: $event})"
+				></app-point-input>
+			</mat-form-field>
+		</div>
+	</ng-container>
+</div>

@@ -1,7 +1,7 @@
 <mat-toolbar fxLayout="row" class="mat-elevation-z4 elevated-toolbar">
 	
-	<div fxFlex fxLayoutAlign="start">
-		<div [style.visibility]="is3d ? 'hidden': 'visible'">
+	<div fxLayoutAlign="start">
+		<div [style.visibility]="is3d ? 'hidden': 'visible'" class="flex flex-row items-center">
 			<button mat-button [matMenuTriggerFor]="file">File</button>
 			<mat-menu #file="matMenu">
 				<button mat-menu-item *ngIf="loaded" (click)="newMap()">New Map</button>
@@ -54,14 +54,19 @@
 		</div>
 	</div>
 	
-	<div fxFlex>
-		<span class="mat-headline">{{map?.name}}</span>
+	<app-toolbar-divider></app-toolbar-divider>
+	<app-grid-menu></app-grid-menu>
+	<app-toolbar-divider></app-toolbar-divider>
+	
+	<div fxFlex class="text-center text-lg">
+		<span class="mat-headline">{{ map?.name }}</span>
 	</div>
-	<div fxFlex fxLayoutAlign="end" [style.visibility]="is3d ? 'hidden': 'visible'">
+	
+	<div fxLayoutAlign="end" [style.visibility]="is3d ? 'hidden': 'visible'">
 		<div>
 			<button *ngIf="map" mat-button (click)="openMapSettings()">Map Settings</button>
 			<ng-container *ngIf="!loaded">
-				<span class="load-error">{{error}}</span>
+				<span class="load-error">{{ error }}</span>
 				<mat-spinner *ngIf="!error" [diameter]="40" [strokeWidth]="5"></mat-spinner>
 			</ng-container>
 		</div>

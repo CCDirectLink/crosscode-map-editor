@@ -246,7 +246,10 @@ export class EntityManager extends BaseObject {
 				if (Helper.isInputFocused()) {
 					return;
 				}
-				Globals.entitySettings.enableGrid = !Globals.entitySettings.enableGrid;
+				Globals.gridSettings.update(settings => ({
+					...settings,
+					enableGrid: !settings.enableGrid
+				}));
 			}
 		});
 		
