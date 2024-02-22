@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Added
-- UI for Entity Grid (hotkey G) with additional settings [#292](https://github.com/CCDirectLink/crosscode-map-editor/issues/292)
+- Added UI for Entity Grid (hotkey G) with additional settings [#292](https://github.com/CCDirectLink/crosscode-map-editor/issues/292)
 
 
 ## [1.3.1] 2024-02-09

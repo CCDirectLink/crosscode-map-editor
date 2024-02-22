@@ -44,6 +44,11 @@
 					(ngModelChange)="update({offset: $event})"
 				></app-point-input>
 			</mat-form-field>
+			<input
+				type="color"
+				[ngModel]="settings.color"
+				(ngModelChange)="update({color: $event})"
+			/>
 			<mat-checkbox
 				[ngModel]="settings.visible"
 				(ngModelChange)="update({visible: $event})"

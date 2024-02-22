@@ -16,6 +16,7 @@ import { GlobalEventsService } from '../../../services/global-events.service';
 export interface GridSettings {
 	size: Point;
 	offset: Point;
+	color: string;
 	enableGrid: boolean;
 	showSettings?: boolean;
 	visible?: boolean;

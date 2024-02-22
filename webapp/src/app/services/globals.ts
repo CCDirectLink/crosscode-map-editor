@@ -22,6 +22,7 @@ export class Globals {
 	static gridSettings = signal<GridSettings>({
 		size: {x: 8, y: 8},
 		offset: {x: 0, y: 0},
+		color: '#222222',
 		enableGrid: false
 	});
 	static disablePhaserInput = new Set<any>();

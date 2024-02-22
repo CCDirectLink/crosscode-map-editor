@@ -39,6 +39,11 @@ export class EntityGrid extends Phaser.GameObjects.GameObject {
 		const width = Globals.map.mapWidth * Globals.TILE_SIZE - pos.x;
 		const height = Globals.map.mapHeight * Globals.TILE_SIZE - pos.y;
 		
+		let color = parseInt(settings.color.substring(1), 16);
+		if (isNaN(color)) {
+			color = 0x222222;
+		}
+		
 		this.grid = new Phaser.GameObjects.Grid(
 			this.scene,
 			pos.x,
@@ -49,7 +54,7 @@ export class EntityGrid extends Phaser.GameObjects.GameObject {
 			settings.size.y * scale,
 			undefined,
 			0,
-			0xffffff,
+			color,
 			0.6
 		);
 		this.grid.depth = 500;
