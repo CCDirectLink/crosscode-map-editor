@@ -4,14 +4,14 @@
      (focusout)="onFocusOut($event)">
 	<span class="input-label">X:</span>
 	<input formControlName="x"
-	       min="1"
+	       [min]="min"
 	       max="999"
 	       type="number"
 	       (input)="update()"
 	>
 	<span class="input-label">Y:</span>
 	<input formControlName="y"
-	       min="1"
+	       [min]="min"
 	       max="999"
 	       type="number"
 	       (input)="update()"

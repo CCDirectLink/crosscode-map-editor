@@ -20,10 +20,8 @@ export class Globals {
 	static TILE_SIZE = 16;
 	static URL = 'http://localhost:8080/';
 	static gridSettings = signal<GridSettings>({
-		gridSize: {
-			x: 8,
-			y: 8
-		},
+		size: {x: 8, y: 8},
+		offset: {x: 0, y: 0},
 		enableGrid: false
 	});
 	static disablePhaserInput = new Set<any>();

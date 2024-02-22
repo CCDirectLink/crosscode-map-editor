@@ -1,19 +1,15 @@
 :host {
-	// offsets checkbox large margins
-	margin-left: -12px;
 	display: flex;
 	align-items: center;
 	height: 100%;
 }
 
-.size-form-field {
+.point-form-field {
 	width: 170px;
 }
 
 .extended-menu {
 	overflow-x: hidden;
-	display: grid;
-	align-items: center;
 	min-width: 0;
 	height: 100%;
 }

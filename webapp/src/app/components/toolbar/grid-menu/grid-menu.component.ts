@@ -1,4 +1,4 @@
-import { Component, effect, OnInit, signal } from '@angular/core';
+import { Component, effect, OnInit } from '@angular/core';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -13,9 +13,11 @@ import { Point } from '../../../models/cross-code-map';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 export interface GridSettings {
-	gridSize: Point;
+	size: Point;
+	offset: Point;
 	enableGrid: boolean;
 	showSettings?: boolean;
+	visible?: boolean;
 }
 
 const gridSettingsKey = 'gridSettingsKey';
@@ -25,7 +27,10 @@ const gridSettingsKey = 'gridSettingsKey';
 	standalone: true,
 	animations: [
 		trigger('openClose', [
-			state('void', style({width: '0'})),
+			state('void', style({
+				width: '0',
+				margin: '0'
+			})),
 			transition('* <=> *', [
 				animate('100ms ease'),
 			]),

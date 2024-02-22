@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostBinding, Input, OnDestroy, Optional, Output, Self } from '@angular/core';
+import { Component, ElementRef, HostBinding, Input, OnDestroy, Optional, Self } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { Point } from '../../../models/cross-code-map';
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -20,7 +20,11 @@ export class PointInputComponent implements MatFormFieldControl<Point>, OnDestro
 	parts: FormGroup;
 	stateChanges = new Subject<void>();
 	
-	onChange = (_: any) => {};
+	@Input()
+	min = 1;
+	
+	onChange = (_: any) => {
+	};
 	
 	@Input()
 	get value(): Point | null {
@@ -137,7 +141,7 @@ export class PointInputComponent implements MatFormFieldControl<Point>, OnDestro
 		this.stateChanges.complete();
 	}
 	
-	update(){
+	update() {
 		this.onChange(this.value);
 	}
 }

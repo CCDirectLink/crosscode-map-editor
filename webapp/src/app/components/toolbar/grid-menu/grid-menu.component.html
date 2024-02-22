@@ -1,4 +1,4 @@
-<div class="flex flex-row items-center gap-2 h-full">
+<div class="flex flex-row items-center h-full">
 	<ng-container
 		*ngIf="gridSettings() as settings"
 	>
@@ -9,7 +9,7 @@
 		>
 			Entity Grid
 		</mat-checkbox>
-		<div>
+		<div class="ml-2">
 			<button
 				mat-icon-button
 				(click)="toggleSettings()"
@@ -20,18 +20,37 @@
 		<div
 			*ngIf="settings.showSettings"
 			@openClose
-			class="extended-menu"
+			class="flex flex-row gap-2.5 items-center extended-menu ml-2"
 		>
 			<mat-form-field
 				appearance="outline"
-				class="no-padding-form-field size-form-field"
+				class="no-padding-form-field point-form-field"
 			>
-				<mat-label>Grid size</mat-label>
+				<mat-label>Size</mat-label>
 				<app-point-input
-					[ngModel]="settings.gridSize"
-					(ngModelChange)="update({gridSize: $event})"
+					[ngModel]="settings.size"
+					(ngModelChange)="update({size: $event})"
 				></app-point-input>
 			</mat-form-field>
+			
+			<mat-form-field
+				appearance="outline"
+				class="no-padding-form-field point-form-field"
+			>
+				<mat-label>Offset</mat-label>
+				<app-point-input
+					[ngModel]="settings.offset"
+					[min]="-999"
+					(ngModelChange)="update({offset: $event})"
+				></app-point-input>
+			</mat-form-field>
+			<mat-checkbox
+				[ngModel]="settings.visible"
+				(ngModelChange)="update({visible: $event})"
+				color="primary"
+			>
+				Visible
+			</mat-checkbox>
 		</div>
 	</ng-container>
 </div>
