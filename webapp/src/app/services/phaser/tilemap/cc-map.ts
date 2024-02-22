@@ -26,9 +26,7 @@ export class CCMap {
 	private lastMapId = 1;
 	private tileMap?: Phaser.Tilemaps.Tilemap;
 	
-	private historySub: Subscription;
-	private offsetSub: Subscription;
-	private offsetSub2: Subscription;
+	private subs: Subscription[] = [];
 	
 	filename = '';
 	path?: string;
@@ -41,7 +39,7 @@ export class CCMap {
 		public entityManager: EntityManager
 	) {
 		const stateHistory = Globals.stateHistoryService;
-		this.historySub = stateHistory.selectedState.subscribe(async container => {
+		this.subs.push(stateHistory.selectedState.subscribe(async container => {
 			if (!container || !container.state) {
 				return;
 			}
@@ -70,16 +68,18 @@ export class CCMap {
 					selectedLayer.next(layer);
 				}
 			}
-		});
+		}));
 		
-		this.offsetSub = Globals.globalEventsService.offsetMap.subscribe(offset => this.offsetMap(offset));
-		this.offsetSub2 = Globals.globalEventsService.offsetEntities.subscribe(offset => this.offsetEntities(offset));
+		this.subs.push(Globals.globalEventsService.offsetMap.subscribe(offset => this.offsetMap(offset)));
+		this.subs.push(Globals.globalEventsService.offsetEntities.subscribe(offset => this.offsetEntities(offset)));
+		this.subs.push(Globals.globalEventsService.resizeMap.subscribe(size => this.resize(size.x, size.y)));
 	}
 	
 	destroy() {
-		this.historySub.unsubscribe();
-		this.offsetSub.unsubscribe();
-		this.offsetSub2.unsubscribe();
+		for (const sub of this.subs) {
+			sub.unsubscribe();
+		}
+		this.subs = [];
 	}
 	
 	async loadMap(map: CrossCodeMap, skipInit = false) {
@@ -143,7 +143,7 @@ export class CCMap {
 		Globals.mapLoaderService.selectedLayer.next(this.layers[0]);
 	}
 	
-	resize(width: number, height: number) {
+	private resize(width: number, height: number) {
 		this.mapWidth = width;
 		this.mapHeight = height;
 		

@@ -18,6 +18,7 @@ export class GlobalEventsService {
 	loadComplete = new Subject<void>();
 	generateHeights = new Subject<boolean>();
 	offsetMap = new Subject<Point>();
+	resizeMap = new Subject<Point>();
 	offsetEntities = new Subject<Point>();
 	toggleVisibility = new Subject<void>();
 	showAddEntityMenu = new Subject<Point>();

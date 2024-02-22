@@ -1,7 +1,6 @@
 import { Scene } from 'phaser';
 import { Globals } from '../globals';
-import { GridSettings } from '../../components/toolbar/grid-menu/grid-menu.component';
-import { combineLatest, Subscription } from 'rxjs';
+import { debounceTime, merge, Subscription } from 'rxjs';
 import { Point } from '../../models/cross-code-map';
 
 export class EntityGrid extends Phaser.GameObjects.GameObject {
@@ -10,13 +9,16 @@ export class EntityGrid extends Phaser.GameObjects.GameObject {
 	
 	constructor(scene: Scene) {
 		super(scene, 'EntityGrid');
-		this.sub = combineLatest([
+		
+		this.sub = merge(
 			Globals.globalEventsService.gridSettings,
-			Globals.mapLoaderService.map
-		]).subscribe(([settings, _]) => this.updateGrid(settings));
+			Globals.mapLoaderService.map,
+			Globals.globalEventsService.resizeMap
+		).pipe(debounceTime(1)).subscribe(() => this.updateGrid());
 	}
 	
-	updateGrid(settings: GridSettings) {
+	updateGrid() {
+		const settings = Globals.gridSettings();
 		const scale = 4;
 		this.grid?.destroy();
 		if (!settings.enableGrid || !settings.visible) {
