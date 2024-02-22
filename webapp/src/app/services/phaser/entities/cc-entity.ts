@@ -194,14 +194,14 @@ export abstract class CCEntity extends BaseObject {
 			
 			const settings = Globals.gridSettings();
 			if (settings.enableGrid) {
-				const diffX = container.x % settings.size.x;
+				const diffX = (container.x - settings.offset.x) % settings.size.x;
 				if (diffX * 2 < settings.size.x) {
 					container.x -= diffX;
 				} else {
 					container.x += settings.size.x - diffX;
 				}
 				
-				const diffY = container.y % settings.size.y;
+				const diffY = (container.y - settings.offset.y) % settings.size.y;
 				if (diffY * 2 < settings.size.y) {
 					container.y -= diffY;
 				} else {

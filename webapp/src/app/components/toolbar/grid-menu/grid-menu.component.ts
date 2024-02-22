@@ -11,6 +11,7 @@ import { PointInputComponent } from '../vec-input/point-input.component';
 import { Helper } from '../../../services/phaser/helper';
 import { Point } from '../../../models/cross-code-map';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { GlobalEventsService } from '../../../services/global-events.service';
 
 export interface GridSettings {
 	size: Point;
@@ -54,10 +55,13 @@ export class GridMenuComponent implements OnInit {
 	
 	gridSettings = Globals.gridSettings;
 	
-	constructor() {
+	constructor(
+		events: GlobalEventsService
+	) {
 		effect(() => {
 			const settings = this.gridSettings();
 			localStorage.setItem(gridSettingsKey, JSON.stringify(settings));
+			events.gridSettings.next(settings);
 		});
 	}
 	
