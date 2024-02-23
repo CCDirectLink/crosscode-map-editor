@@ -1,5 +1,6 @@
 import { Label, Person } from '../../../../models/events';
 import { AbstractEvent, EventType } from './abstract-event';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
 interface ShowMsgData extends EventType {
 	message: Label;
@@ -8,7 +9,7 @@ interface ShowMsgData extends EventType {
 }
 
 export class ShowMsg extends AbstractEvent<ShowMsgData> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		person: {
 			type: 'PersonExpression',
 			description: 'Talking person'
@@ -31,7 +32,7 @@ export class ShowMsg extends AbstractEvent<ShowMsgData> {
 	update() {
 		this.info = this.combineStrings(
 			this.getColoredString(this.data.person.person + '>&#8203;' + this.data.person.expression, '#ffe188'),
-			this.data.message?.en_US
+			this.getProcessedText(this.data.message)
 		);
 	}
 	

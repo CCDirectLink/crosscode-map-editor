@@ -1,5 +1,6 @@
 import { Person } from '../../../../models/events';
 import { AbstractEvent, EventType } from './abstract-event';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
 interface AddMsgPersonData extends EventType {
 	person: Person;
@@ -10,7 +11,7 @@ interface AddMsgPersonData extends EventType {
 }
 
 export class AddMsgPerson extends AbstractEvent<AddMsgPersonData> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		person: {
 			type: 'PersonExpression',
 			description: 'Person + Expression to add'

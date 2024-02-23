@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+### Added
+- Added proper support for the event steps `SHOW_MODAL_CHOICE` and `SET_MSG_EXPRESSION`.
+- Added rendering of text colors in relevant events (such as `SHOW_MSG`).
+
+### Changed
+- `VarConditions` now use the string editor, as opposed to the JSON editor.
+- Improved support for event/action step property previews - specifically for `Vec2`, `Vec3`, `Offset`, `Entity`, `EnemyType`, `NumberExpression`, `StringExpression`, `BooleanExpression`, `VarName`, `Effect`, and `Animation`.
+
+### Fixed
+- Events with children/branching steps (such as `IF`, `SHOW_CHOICE`, `SHOW_MODAL_CHOICE`, etc.) will no longer fully refresh upon any edits, causing focus to be reset.
+
 ## [1.3.1] 2024-02-09
 ### Changed
 - Updated Angular and Electron versions.  

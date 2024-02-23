@@ -1,7 +1,8 @@
 import { AbstractEvent } from './abstract-event';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
 export class SetCameraPos extends AbstractEvent<any> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		pos: {
 			type: 'Vec2',
 			description: 'Position to focus camera on',

@@ -1,7 +1,8 @@
 import { AbstractEvent } from './abstract-event';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
 export class ClearSlowMotion extends AbstractEvent<any> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		name: {
 			type: 'String',
 			description: 'Name of slow motion to be removed'

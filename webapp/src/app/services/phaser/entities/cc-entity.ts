@@ -9,6 +9,7 @@ import { AbstractWidget } from '../../../components/widgets/abstract-widget';
 import { Globals } from '../../globals';
 import { BaseObject } from '../base-object';
 
+
 export interface ScaleSettings {
 	scalableX: boolean;
 	scalableY: boolean;

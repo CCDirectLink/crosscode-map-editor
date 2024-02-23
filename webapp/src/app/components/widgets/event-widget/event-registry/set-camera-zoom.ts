@@ -1,7 +1,8 @@
 import { AbstractEvent } from './abstract-event';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
 export class SetCameraZoom extends AbstractEvent<any> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		zoom: {
 			type: 'Number',
 			description: 'Zoom Value. 1=default, 2=twice pixel size',

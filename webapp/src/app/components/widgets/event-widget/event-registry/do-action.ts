@@ -1,7 +1,8 @@
 import { AbstractEvent } from './abstract-event';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
 export class DoAction extends AbstractEvent<any> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		entity: {
 			type: 'Entity',
 			description: 'Entity to move',
@@ -37,6 +38,7 @@ export class DoAction extends AbstractEvent<any> {
 	update() {
 		this.info = this.combineStrings(
 			this.getTypeString('#8fe174'),
+			this.getPropString('entity'),
 			this.getPropString('actions', '[' + this.data.action.length + ']'),
 			this.getPropString('repeating'),
 			this.getPropString('wait'),
