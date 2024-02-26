@@ -27,7 +27,7 @@ export class EventHelperService {
 			if (valIf.elseStep) {
 				valIf.elseStep = valIf.elseStep.map((v: EventType) => this.getEventFromType(v, actionStep));
 			}
-		} else if (val.type === 'SHOW_CHOICE') {
+		} else if (val.type === 'SHOW_CHOICE' || val.type === 'SHOW_MODAL_CHOICE') {
 			const valChoice = val as any;
 			valChoice.options.forEach((option: any, index: number) => {
 				valChoice[index] = valChoice[index].map((v: EventType) => this.getEventFromType(v, actionStep));

@@ -1,6 +1,8 @@
+import { Helper } from '../../../../services/phaser/helper';
 import { Label, Person } from '../../../../models/events';
 import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 import { AbstractEvent, EventType } from './abstract-event';
+import { DefaultEvent } from './default-event';
 
 export interface ShowChoiceData extends EventType {
 	[key: number]: AbstractEvent<any>[];
@@ -14,35 +16,8 @@ export interface ShowChoiceData extends EventType {
 	forceWidth: number;
 }
 
-export class ShowChoice extends AbstractEvent<ShowChoiceData> {
-	private attributes: EntityAttributes = {
-		person: {
-			type: 'PersonExpression',
-			description: 'Talking person'
-		},
-		options: {
-			type: 'ChoiceOptions',
-			description: 'List of options',
-			C2: true
-		},
-		columns: {
-			type: 'Integer',
-			description: 'Number of buttons columns.',
-			I: true,
-			min: 2
-		},
-		forceWidth: {
-			type: 'Integer',
-			description: 'Override the default button width. NOTE: Buttons still get matched when a text is to large.',
-			I: true
-		}
-	};
-	
-	getAttributes(): EntityAttributes {
-		return this.attributes;
-	}
-	
-	update() {
+export class ShowChoice extends DefaultEvent<ShowChoiceData> {
+	override update() {
 		this.children = [];
 		this.info = this.combineStrings(
 			this.getTypeString('#7ea3ff'),
@@ -51,7 +26,7 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 		
 		this.data.options.forEach((option, index) => {
 			this.children[index] = {
-				title: this.getColoredString('Choice. ' + option.label.en_US, '#838383'),
+				title: this.getColoredString('Choice: ', '#838383') + this.getProcessedText(option.label),
 				events: this.data[index] || [],
 				draggable: false
 			};
@@ -74,16 +49,20 @@ export class ShowChoice extends AbstractEvent<ShowChoiceData> {
 			out[index] = child.events.map(v => v.export());
 		});
 		
-		return JSON.parse(JSON.stringify(out));
+		return Helper.copy(out);
 	}
 	
-	protected generateNewDataInternal() {
+	protected override generateNewDataInternal() {
 		return {
 			person: {},
 			options: [{
-				label: {}
+				label: {
+					en_US: 'Choice 1'
+				}
 			}, {
-				label: {}
+				label: {
+					en_US: 'Choice 2'
+				}
 			}]
 		};
 	}

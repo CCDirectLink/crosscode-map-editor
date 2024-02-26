@@ -1,7 +1,8 @@
 import { AbstractEvent } from './abstract-event';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
 export class SetOverlay extends AbstractEvent<any> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		color: {
 			type: 'Color',
 			description: 'Color of overlay'

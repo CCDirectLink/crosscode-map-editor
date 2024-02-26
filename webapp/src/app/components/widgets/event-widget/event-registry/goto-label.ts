@@ -1,4 +1,5 @@
 import { AbstractEvent, EventType } from './abstract-event';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
 
 export interface GotoLabelData extends EventType {
@@ -6,7 +7,7 @@ export interface GotoLabelData extends EventType {
 }
 
 export class GotoLabel extends AbstractEvent<GotoLabelData> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		name : {
 			type: 'String',
 			description: 'Label to goto.'

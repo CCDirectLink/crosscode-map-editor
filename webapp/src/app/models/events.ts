@@ -36,6 +36,8 @@ export type EventArray =
 	{trade: TraderEvent}
 ;
 
+
+
 export function destructureEventArray(events: EventArray): {events: EventType[], type: EventArrayType, trader?: string} {
 	if (Array.isArray(events)) {
 		return {events: events, type: EventArrayType.Simple};

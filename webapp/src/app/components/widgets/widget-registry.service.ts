@@ -39,6 +39,7 @@ export class WidgetRegistryService {
 		this.register('LangLabel', LangLabelWidgetComponent);
 		this.register('EntityAnim', StringWidgetComponent);
 		this.register('CustomDesType', CustomDesTypeWidgetComponent);
+		this.register('VarCondition', StringWidgetComponent);
 	}
 	
 	private setDefaultWidget(widget: any) {

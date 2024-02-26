@@ -1,4 +1,5 @@
 import { AbstractEvent, EventType } from './abstract-event';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
 
 export interface LabelData extends EventType {
@@ -6,7 +7,7 @@ export interface LabelData extends EventType {
 }
 
 export class Label extends AbstractEvent<LabelData> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		name : {
 			type: 'String',
 			description: 'Name to reference this label by.'

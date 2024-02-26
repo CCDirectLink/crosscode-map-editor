@@ -1,7 +1,8 @@
 import { AbstractEvent } from './abstract-event';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
 export class SetPlayerCore extends AbstractEvent<any> {
-	private attributes = {
+	private attributes: EntityAttributes = {
 		core: {
 			type: 'String',
 			description: 'Type of Core.',
