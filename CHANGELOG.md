@@ -4,8 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-## [1.4.0] 2024-02-23
+### Added
+- Added UI for Entity Grid (hotkey G) with additional settings [#292](https://github.com/CCDirectLink/crosscode-map-editor/issues/292)
 
+## [1.4.0] 2024-02-23
 ### Added
 - Added proper support for the event steps `SHOW_MODAL_CHOICE` and `SET_MSG_EXPRESSION`.
 - Added rendering of text colors in relevant events (such as `SHOW_MSG`).

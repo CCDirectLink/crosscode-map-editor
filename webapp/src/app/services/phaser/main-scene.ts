@@ -9,6 +9,7 @@ import { CCMap } from './tilemap/cc-map';
 import { TileDrawer } from './tilemap/tile-drawer';
 import { LayerParallax } from './layer-parallax';
 import { IngamePreview } from './ingame-preview';
+import { EntityGrid } from './entity-grid';
 
 export class MainScene extends Phaser.Scene {
 	
@@ -74,20 +75,23 @@ export class MainScene extends Phaser.Scene {
 		const preview = new IngamePreview(this);
 		this.add.existing(preview);
 		this.add.existing(new LayerParallax(this, preview));
-
+		
 		const coordsReporter = new CoordsReporter(this);
 		this.add.existing(coordsReporter);
+		
+		const grid = new EntityGrid(this);
+		this.add.existing(grid);
 		
 		Globals.globalEventsService.currentView.subscribe(view => {
 			tileDrawer.setActive(false);
 			entityManager.setActive(false);
 			switch (view) {
-			case EditorView.Layers:
-				tileDrawer.setActive(true);
-				break;
-			case EditorView.Entities:
-				entityManager.setActive(true);
-				break;
+				case EditorView.Layers:
+					tileDrawer.setActive(true);
+					break;
+				case EditorView.Entities:
+					entityManager.setActive(true);
+					break;
 			}
 		});
 		

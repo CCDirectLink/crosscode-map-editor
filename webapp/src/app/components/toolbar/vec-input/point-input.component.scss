@@ -1,0 +1,21 @@
+input {
+	border: none;
+	background: none;
+	padding: 0 0 0 4px;
+	outline: none;
+	font: inherit;
+	color: currentcolor;
+	min-width: 0;
+	flex: 1;
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 1px;
+}
+
+.input-label {
+	opacity: 0;
+	transition: opacity 200ms;
+}
+
+:host.floating .input-label {
+	opacity: 1;
+}

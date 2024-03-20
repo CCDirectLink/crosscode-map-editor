@@ -68,6 +68,8 @@ import { ResizedDirective } from './directives/resized.directive';
 import { MaterialModule } from './external-modules/material.module';
 import { CombinedTooltipPipe } from './pipes/combined-tooltip.pipe';
 import { KeepHtmlPipe } from './pipes/keep-html.pipe';
+import { ToolbarDividerComponent } from './components/toolbar/toolbar-divider/toolbar-divider.component';
+import { GridMenuComponent } from './components/toolbar/grid-menu/grid-menu.component';
 
 const WIDGETS = [
 	StringWidgetComponent,
@@ -147,6 +149,8 @@ const WIDGETS = [
 		AutofocusDirective,
 		CombinedTooltipPipe,
 		InputWithButtonComponent,
+		ToolbarDividerComponent,
+		GridMenuComponent,
 	],
 	bootstrap: [AppComponent],
 })

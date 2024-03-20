@@ -8,6 +8,8 @@ import { PhaserEventsService } from './phaser/phaser-events.service';
 import { CCMap } from './phaser/tilemap/cc-map';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SettingsService } from './settings.service';
+import { signal } from '@angular/core';
+import { GridSettings } from '../components/toolbar/grid-menu/grid-menu.component';
 
 export class Globals {
 	static isElectron = false;
@@ -17,10 +19,12 @@ export class Globals {
 	static map: CCMap;
 	static TILE_SIZE = 16;
 	static URL = 'http://localhost:8080/';
-	static entitySettings = {
-		gridSize: 8,
+	static gridSettings = signal<GridSettings>({
+		size: {x: 8, y: 8},
+		offset: {x: 0, y: 0},
+		color: '#222222',
 		enableGrid: false
-	};
+	});
 	static disablePhaserInput = new Set<any>();
 	
 	// TODO: remove them from global state

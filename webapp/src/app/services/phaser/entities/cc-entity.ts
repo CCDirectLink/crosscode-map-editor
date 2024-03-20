@@ -193,20 +193,20 @@ export abstract class CCEntity extends BaseObject {
 			container.x = Math.round(p.worldX - this.startOffset.x);
 			container.y = Math.round(p.worldY - this.startOffset.y);
 			
-			const settings = Globals.entitySettings;
+			const settings = Globals.gridSettings();
 			if (settings.enableGrid) {
-				const diffX = container.x % settings.gridSize;
-				if (diffX * 2 < settings.gridSize) {
+				const diffX = (container.x - settings.offset.x) % settings.size.x;
+				if (diffX * 2 < settings.size.x) {
 					container.x -= diffX;
 				} else {
-					container.x += settings.gridSize - diffX;
+					container.x += settings.size.x - diffX;
 				}
 				
-				const diffY = container.y % settings.gridSize;
-				if (diffY * 2 < settings.gridSize) {
+				const diffY = (container.y - settings.offset.y) % settings.size.y;
+				if (diffY * 2 < settings.size.y) {
 					container.y -= diffY;
 				} else {
-					container.y += settings.gridSize - diffY;
+					container.y += settings.size.y - diffY;
 				}
 			}
 			this.updateZIndex();
