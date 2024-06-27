@@ -81,6 +81,7 @@ export abstract class CCEntity extends BaseObject {
 	
 	private map: CCMap;
 	private levelOffset = 0;
+	private visible = true;
 	
 	public container!: Phaser.GameObjects.Container;
 	
@@ -681,12 +682,17 @@ export abstract class CCEntity extends BaseObject {
 	}
 	
 	private setVisible(visible: boolean) {
+		this.visible = visible;
 		this.setActive(visible);
 		if (visible) {
 			this.container.alpha = 1;
 		} else {
 			this.container.alpha = 0.2;
 		}
+	}
+	
+	override setActive(value: boolean): this {
+		return super.setActive(this.visible ? value : false);
 	}
 	
 	private getRenderBackground(width: number, height: number) {
