@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 - Layers on same level are rendered based on their position in the list 
+- Show exact match at first position in search [#296](https://github.com/CCDirectLink/crosscode-map-editor/issues/296)
 
 ## [1.5.0] 2024-03-20
 ### Added
