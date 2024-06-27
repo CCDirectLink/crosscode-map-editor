@@ -14,6 +14,8 @@ export class CCMapLayer {
 	private border!: Phaser.GameObjects.Rectangle;
 	private container!: Phaser.GameObjects.Container;
 	
+	private index = 0;
+	
 	constructor(
 		private tilemap: Phaser.Tilemaps.Tilemap
 	) {
@@ -137,25 +139,45 @@ export class CCMapLayer {
 		const newTileset = this.tilemap.addTilesetImage(tilesetname, undefined, undefined, undefined, undefined, undefined, 1);
 		this.makeLayer(newTileset ?? []);
 		
-		this.updateLevel(this.details.levelName ?? this.details.level);
+		this.updateLevel();
 		this.updateLighter(!!this.details.lighter);
 	}
 	
-	updateLevel(level: number | string) {
+	updateLevel(level?: number | string) {
+		
+		if (level === undefined) {
+			level = (this.details.levelName ?? this.details.level) as string | number;
+		}
+		
 		//converts stringed numbers like "2" to be numeric.
 		//leaves everything else unchanged.
-		if(!isNaN(+level)) {
+		if (!isNaN(+level)) {
 			level = +level;
 		}
-
-		if(typeof level === 'string') {
+		
+		if (typeof level === 'string') {
 			this.details.levelName = level;
-			this.details.level = level === 'first' ? -1 : 10;
+			switch (level) {
+				case 'first':
+					this.details.level = -1;
+					break;
+				case 'postlight':
+					this.details.level = 101;
+					break;
+				default:
+					this.details.level = 100;
+					break;
+			}
 		} else {
 			this.details.level = level;
 			delete this.details.levelName;
 		}
-		this.layer.depth = this.details.level * 10;
+		this.layer.depth = this.details.level * 10 + this.index * 0.0001;
+	}
+	
+	updateIndex(index: number) {
+		this.index = index;
+		this.updateLevel();
 	}
 	
 	setOffset(x: number, y: number) {
@@ -190,7 +212,7 @@ export class CCMapLayer {
 		}
 		this.layer.alpha = oldLayer?.alpha ?? 1;
 		this.setOffset(this.container.x, this.container.y);
-		this.updateLevel(this.details.levelName ?? this.details.level);
+		this.updateLevel();
 		if (oldLayer) {
 			oldLayer.destroy(true);
 		}

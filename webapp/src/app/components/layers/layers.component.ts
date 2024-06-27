@@ -185,6 +185,7 @@ export class LayersComponent implements OnInit {
 			throw new Error('tilemap not defined');
 		}
 		moveItemInArray(this.map.layers, event.previousIndex, event.currentIndex);
+		this.map.updateLayerIndices();
 		this.stateHistory.saveState({
 			name: 'Layer moved',
 			icon: 'open_with',

@@ -47,7 +47,7 @@ export class TileDrawer extends BaseObject {
 		this.shiftKey = this.scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT, false);
 		
 		this.container = this.scene.add.container(0, 0);
-		this.container.depth = 1000;
+		this.container.depth = 10000;
 		
 		this.drawRect(1, 1);
 		

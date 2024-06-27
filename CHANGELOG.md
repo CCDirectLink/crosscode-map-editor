@@ -5,7 +5,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 ### Fixed
-- keep filtered entities inactive when changing tabs [#301](https://github.com/CCDirectLink/crosscode-map-editor/issues/301)
+- Keep filtered entities inactive when changing tabs [#301](https://github.com/CCDirectLink/crosscode-map-editor/issues/301)
+- Increased special level layers to render at level 100 instead of 10 [#309](https://github.com/CCDirectLink/crosscode-map-editor/issues/309)
+
+### Changed
+- Layers on same level are rendered based on their position in the list 
+
 ## [1.5.0] 2024-03-20
 ### Added
 - Added UI for Entity Grid (hotkey G) with additional settings [#292](https://github.com/CCDirectLink/crosscode-map-editor/issues/292)
