@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Layers on same level are rendered based on their position in the list 
 - Show exact match at first position in search [#296](https://github.com/CCDirectLink/crosscode-map-editor/issues/296)
 - Changed GlowingLine Step size from 16 to 8 [#276](https://github.com/CCDirectLink/crosscode-map-editor/issues/276)
+- Moving an Entity is now tracked in the history [#270](https://github.com/CCDirectLink/crosscode-map-editor/issues/270)
 
 ## [1.5.0] 2024-03-20
 ### Added
