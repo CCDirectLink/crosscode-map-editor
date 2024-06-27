@@ -77,6 +77,7 @@ export class PhaserComponent implements AfterViewInit {
 			return;
 		}
 		const scale = this.getScale();
+		Globals.game.scale.setZoom(1 / window.devicePixelRatio);
 		Globals.game.scale.resize(
 			scale.width,
 			scale.height

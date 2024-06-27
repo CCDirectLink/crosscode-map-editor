@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Keep filtered entities inactive when changing tabs [#301](https://github.com/CCDirectLink/crosscode-map-editor/issues/301)
 - Increased special level layers to render at level 100 instead of 10 [#309](https://github.com/CCDirectLink/crosscode-map-editor/issues/309)
 - Snap size inputs to defined range only after input loses focus, enabling smoother manual entry [#295](https://github.com/CCDirectLink/crosscode-map-editor/issues/295)
+- Fixed Editor not resizing when zooming in/out in the Browser [#265](https://github.com/CCDirectLink/crosscode-map-editor/issues/265)
 
 ### Changed
 - Layers on same level are rendered based on their position in the list 
