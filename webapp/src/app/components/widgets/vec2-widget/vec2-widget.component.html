@@ -1,19 +1,23 @@
 <div fxLayout="row" class="property-container" [matTooltip]="attribute?.description ?? ''">
-	<label class="property-name">{{displayName || key}}:</label>
+	<label class="property-name">{{ displayName || key }}:</label>
 	
 	<label class="property-name-small">X:</label>
 	<input type="number" class="default-input small-input"
 	       [step]="scaleSettings.scalableStep"
 	       [min]="scaleSettings.baseSize.x"
 	       [disabled]="!scaleSettings.scalableX"
-		   [ngModel]="settings[key].x"
-		   (input)="setVal('x', toInt($any($event.target).value))">
+	       [ngModel]="settings[key].x"
+	       (ngModelChange)="setVal('x', toInt($event))"
+	       (blur)="applySnap('x')"
+	>
 	
 	<label class="property-name-small">Y:</label>
 	<input type="number" class="default-input small-input"
 	       [step]="scaleSettings.scalableStep"
 	       [min]="scaleSettings.baseSize.y"
 	       [disabled]="!scaleSettings.scalableY"
-		   [ngModel]="settings[key].y"
-		   (input)="setVal('y', toInt($any($event.target).value))">
+	       [ngModel]="settings[key].y"
+	       (ngModelChange)="setVal('y', toInt($event))"
+	       (blur)="applySnap('y')"
+	>
 </div>
