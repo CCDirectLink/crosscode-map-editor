@@ -117,6 +117,8 @@ export class CCMap {
 				this.layers.push(ccLayer);
 			}
 			
+			this.updateLayerIndices();
+			
 			this.inputLayers = undefined;
 		}
 		
@@ -168,12 +170,19 @@ export class CCMap {
 	
 	addLayer(layer: CCMapLayer) {
 		this.layers.push(layer);
+		this.updateLayerIndices();
 	}
 	
 	removeLayer(layer: CCMapLayer) {
 		const index = this.layers.indexOf(layer);
 		this.layers.splice(index, 1);
 		layer.destroy();
+	}
+	
+	updateLayerIndices() {
+		for (let i = 0; i < this.layers.length; i++) {
+			this.layers[i].updateIndex(i);
+		}
 	}
 	
 	public getTilemap() {

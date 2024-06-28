@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Fixed
+- Keep filtered entities inactive when changing tabs [#301](https://github.com/CCDirectLink/crosscode-map-editor/issues/301)
+- Increased special level layers to render at level 100 instead of 10 [#309](https://github.com/CCDirectLink/crosscode-map-editor/issues/309)
+- Snap size inputs to defined range only after input loses focus, enabling smoother manual entry [#295](https://github.com/CCDirectLink/crosscode-map-editor/issues/295)
+- Fixed Editor not resizing when zooming in/out in the Browser [#265](https://github.com/CCDirectLink/crosscode-map-editor/issues/265)
+
+### Changed
+- Layers on same level are rendered based on their position in the list 
+- Show exact match at first position in search [#296](https://github.com/CCDirectLink/crosscode-map-editor/issues/296)
+- Changed GlowingLine Step size from 16 to 8 [#276](https://github.com/CCDirectLink/crosscode-map-editor/issues/276)
+- Moving an Entity is now tracked in the history [#270](https://github.com/CCDirectLink/crosscode-map-editor/issues/270)
+- Adding a new level in Map Settings guesses the correct level instead of using 0 [#255](https://github.com/CCDirectLink/crosscode-map-editor/issues/255)
+
 ## [1.5.0] 2024-03-20
 ### Added
 - Added UI for Entity Grid (hotkey G) with additional settings [#292](https://github.com/CCDirectLink/crosscode-map-editor/issues/292)

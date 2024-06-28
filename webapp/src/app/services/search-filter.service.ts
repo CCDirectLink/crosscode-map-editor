@@ -24,7 +24,7 @@ export class SearchFilterService {
 		const characters = searched.split(this.NEUTRAL_CHAR_REGEX);
 		const escapedCharacters = characters.map(token => this.escapeRegExp(token));
 		const regex = escapedCharacters.join(this.NEUTRAL_CHAR_REGEX.source);
-		return new RegExp(regex, global? 'gi' : 'i');
+		return new RegExp(regex, global ? 'gi' : 'i');
 	}
 	
 	test(tested: string, searched?: string | null) {
@@ -42,7 +42,16 @@ export class SearchFilterService {
 			return [...options]; //By returning a copy it's always safe to modify the result.
 		} else {
 			const regex = this.createSearcherRegex(searched);
-			return options.filter(tested => this.innerTest(tested, regex));
+			const filtered = options.filter(tested => this.innerTest(tested, regex));
+			
+			// move exact match to first position
+			const lowercase = searched.toLowerCase();
+			const exactIndex = filtered.findIndex(v => v.toLowerCase() === lowercase);
+			if (exactIndex > 0) {
+				const exact = filtered.splice(exactIndex, 1)[0];
+				filtered.unshift(exact);
+			}
+			return filtered;
 		}
 	}
 }

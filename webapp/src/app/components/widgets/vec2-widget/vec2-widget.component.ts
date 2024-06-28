@@ -39,11 +39,17 @@ export class Vec2WidgetComponent extends AbstractWidget implements OnChanges {
 	}
 	
 	setVal(key: keyof Point, val: number) {
-		val -= val % this.scaleSettings.scalableStep;
 		const setting = this.settings[this.key];
+		setting[key] = val;
+		this.updateType(val);
+	}
+	
+	applySnap(key: keyof Point) {
+		const setting = this.settings[this.key];
+		let val = setting[key] ?? 0;
+		val -= val % this.scaleSettings.scalableStep;
 		const value = Math.max(val, this.scaleSettings.baseSize[key]);
-		setting[key] = value;
-		this.updateType(value);
+		this.setVal(key, value);
 	}
 	
 	private updateScaleSettings(): ScaleSettings {

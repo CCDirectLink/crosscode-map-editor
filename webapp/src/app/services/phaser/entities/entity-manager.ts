@@ -195,6 +195,10 @@ export class EntityManager extends BaseObject {
 				
 				if (this.gameObjectDown) {
 					this.gameObjectDown = false;
+					Globals.stateHistoryService.saveState({
+						name: 'Entity moved',
+						icon: 'open_with'
+					});
 				} else {
 					const entities = this.selectionBox.onInputUp();
 					
@@ -211,7 +215,6 @@ export class EntityManager extends BaseObject {
 					entity = gameObject[0].getData('entity');
 				}
 				if (entity) {
-					console.log(entity);
 					const p = {x: pointer.worldX, y: pointer.worldY};
 					if (this.leftClickOpts.timer < 200 && Vec2.distance2(p, this.leftClickOpts.pos) < 10) {
 						this.selectEntity(entity, this.multiSelectKey.isDown);

@@ -57,7 +57,7 @@ export class EntityGrid extends Phaser.GameObjects.GameObject {
 			color,
 			0.6
 		);
-		this.grid.depth = 500;
+		this.grid.depth = 5000;
 		this.grid.setOrigin(0, 0);
 		this.grid.setScale(1 / scale, 1 / scale);
 		

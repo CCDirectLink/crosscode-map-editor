@@ -1680,7 +1680,7 @@
 		},
 		"scalableX": true,
 		"scalableY": true,
-		"scalableStep": 16
+		"scalableStep": 8
 	},
 	"Lorry": {
 		"spawnable": true,

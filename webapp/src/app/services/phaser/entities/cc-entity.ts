@@ -81,6 +81,7 @@ export abstract class CCEntity extends BaseObject {
 	
 	private map: CCMap;
 	private levelOffset = 0;
+	private visible = true;
 	
 	public container!: Phaser.GameObjects.Container;
 	
@@ -432,9 +433,9 @@ export abstract class CCEntity extends BaseObject {
 	updateZIndex() {
 		let zIndex = this.details.level.level * 10 + 1;
 		
-		// TODO: hack to display OLPlatform over objects because right now Object Layer is always on level 10
+		// TODO: hack to display OLPlatform over objects because right now Object Layer is always on level 100
 		if (this.details.type === 'OLPlatform' || this.details.type === 'ObjectLayerView') {
-			zIndex += 100;
+			zIndex += 1000;
 		}
 		
 		// sort entities by y when on same level
@@ -681,12 +682,17 @@ export abstract class CCEntity extends BaseObject {
 	}
 	
 	private setVisible(visible: boolean) {
+		this.visible = visible;
 		this.setActive(visible);
 		if (visible) {
 			this.container.alpha = 1;
 		} else {
 			this.container.alpha = 0.2;
 		}
+	}
+	
+	override setActive(value: boolean): this {
+		return super.setActive(this.visible ? value : false);
 	}
 	
 	private getRenderBackground(width: number, height: number) {

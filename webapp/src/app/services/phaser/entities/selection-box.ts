@@ -23,7 +23,7 @@ export class SelectionBox {
 				alpha: 0.8
 			}
 		});
-		this.graphics.depth = 1000;
+		this.graphics.depth = 10000;
 	}
 	
 	public onInputDown(pointer: Phaser.Input.Pointer) {
