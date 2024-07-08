@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+### Fixed
+- Resizing the editor while using multiple monitors [#319](https://github.com/CCDirectLink/crosscode-map-editor/issues/319)
+
 ## [1.6.0] 2024-06-28
 ### Fixed
 - Keep filtered entities inactive when changing tabs [#301](https://github.com/CCDirectLink/crosscode-map-editor/issues/301)

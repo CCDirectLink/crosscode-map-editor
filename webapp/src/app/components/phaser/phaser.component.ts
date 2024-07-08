@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import * as Phaser from 'phaser';
 
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AutotileService } from '../../services/autotile/autotile.service';
 import { GlobalEventsService } from '../../services/global-events.service';
 import { Globals } from '../../services/globals';
@@ -10,9 +11,8 @@ import { MapLoaderService } from '../../services/map-loader.service';
 import { EntityRegistryService } from '../../services/phaser/entities/registry/entity-registry.service';
 import { MainScene } from '../../services/phaser/main-scene';
 import { PhaserEventsService } from '../../services/phaser/phaser-events.service';
-import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { SettingsService } from '../../services/settings.service';
+import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -20,9 +20,9 @@ import { SettingsService } from '../../services/settings.service';
 	styleUrls: ['./phaser.component.scss']
 })
 export class PhaserComponent implements AfterViewInit {
-	
-	@ViewChild('content', {static: true}) content!: ElementRef<HTMLElement>;
-	
+
+	@ViewChild('content', { static: true }) content!: ElementRef<HTMLElement>;
+
 	constructor(
 		private element: ElementRef,
 		private mapLoader: MapLoaderService,
@@ -46,8 +46,8 @@ export class PhaserComponent implements AfterViewInit {
 		Globals.snackbar = snackbar;
 		Globals.settingsService = settingsService;
 	}
-	
-	
+
+
 	ngAfterViewInit() {
 		this.heightMap.init();
 		const scene = new MainScene();
@@ -70,20 +70,20 @@ export class PhaserComponent implements AfterViewInit {
 		});
 		Globals.scene = scene;
 	}
-	
+
 	@HostListener('window:resize', ['$event'])
 	onResize() {
 		if (!Globals.game) {
 			return;
 		}
 		const scale = this.getScale();
-		Globals.game.scale.setZoom(1 / window.devicePixelRatio);
 		Globals.game.scale.resize(
 			scale.width,
 			scale.height
 		);
+		Globals.game.scale.setZoom(1 / window.devicePixelRatio);
 	}
-	
+
 	private getScale() {
 		const rect = this.content.nativeElement.getBoundingClientRect();
 		return {
