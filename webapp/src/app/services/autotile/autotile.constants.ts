@@ -1,13 +1,8 @@
 import { Point } from '../../models/cross-code-map';
+import { Helper } from '../phaser/helper';
 
-/** value is width, height is always 2 */
-export enum AutotileType {
-	SMALL = 4,
-	DEFAULT = 8,
-	LARGE = 10,
-	SUPER_LARGE = 12,
-	MEGA_LARGE = 14
-}
+/** Known autotile sizes */
+export type AutotileType = '4x1' | '4x4' | '8x2' | '10x2' | '12x2' | '14x2';
 
 export interface AutotileConfig {
 	tileCountX: number;
@@ -23,6 +18,12 @@ export interface AutotileConfig {
  * X means tile, O means border.
  *
  * E.g. XXXX is the filled tile, OXXO is the left border
+ *
+ *       XX                       OX
+ *       XX                       OX
+ *
+ *
+ * 4x4 uses a different layout: top, right, bottom, left.
  */
 export interface FillType {
 	XXXX: Point[];
@@ -42,10 +43,6 @@ export interface FillType {
 	OXOO: Point[];
 	XOOO: Point[];
 }
-
-export const FILL_TYPE: {
-	[key in AutotileType]: FillType
-} = <any>{};
 
 const empty: FillType = {
 	XXXX: [],
@@ -67,7 +64,7 @@ const empty: FillType = {
 };
 
 
-const fillTypeDefault: FillType = {
+const fillType8x2: FillType = {
 	XXXX: [{x: 0, y: 0}],
 	OXXX: [{x: 1, y: 0}],
 	XOXX: [{x: 2, y: 0}],
@@ -85,31 +82,27 @@ const fillTypeDefault: FillType = {
 	OXOO: [{x: 6, y: 1}],
 	XOOO: [{x: 7, y: 1}],
 };
-FILL_TYPE[AutotileType.DEFAULT] = fillTypeDefault;
 
-const fillTypeLarge: FillType = JSON.parse(JSON.stringify(fillTypeDefault));
-fillTypeLarge.OOXX.push({x: 8, y: 0});
-fillTypeLarge.OXXO.push({x: 9, y: 0});
-fillTypeLarge.XXOO.push({x: 8, y: 1});
-fillTypeLarge.XOOX.push({x: 9, y: 1});
-FILL_TYPE[AutotileType.LARGE] = fillTypeLarge;
+const fillType10x2 = Helper.copy(fillType8x2);
+fillType10x2.OOXX.push({x: 8, y: 0});
+fillType10x2.OXXO.push({x: 9, y: 0});
+fillType10x2.XXOO.push({x: 8, y: 1});
+fillType10x2.XOOX.push({x: 9, y: 1});
 
-const fillTypeSuperLarge: FillType = JSON.parse(JSON.stringify(fillTypeLarge));
-fillTypeSuperLarge.OOXO.push({x: 10, y: 0});
-fillTypeSuperLarge.OOOX.push({x: 11, y: 0});
-fillTypeSuperLarge.OXOO.push({x: 10, y: 1});
-fillTypeSuperLarge.XOOO.push({x: 11, y: 1});
-FILL_TYPE[AutotileType.SUPER_LARGE] = fillTypeSuperLarge;
+const fillType12x2 = Helper.copy(fillType10x2);
+fillType12x2.OOXO.push({x: 10, y: 0});
+fillType12x2.OOOX.push({x: 11, y: 0});
+fillType12x2.OXOO.push({x: 10, y: 1});
+fillType12x2.XOOO.push({x: 11, y: 1});
 
-const fillTypeMegaLarge: FillType = JSON.parse(JSON.stringify(fillTypeSuperLarge));
-fillTypeMegaLarge.OOXX.push({x: 12, y: 0});
-fillTypeMegaLarge.OXXO.push({x: 13, y: 0});
-fillTypeMegaLarge.XXOO.push({x: 12, y: 1});
-fillTypeMegaLarge.XOOX.push({x: 13, y: 1});
-FILL_TYPE[AutotileType.MEGA_LARGE] = fillTypeMegaLarge;
+const fillType14x2 = Helper.copy(fillType12x2);
+fillType14x2.OOXX.push({x: 12, y: 0});
+fillType14x2.OXXO.push({x: 13, y: 0});
+fillType14x2.XXOO.push({x: 12, y: 1});
+fillType14x2.XOOX.push({x: 13, y: 1});
 
-const fillTypeSmall: FillType = JSON.parse(JSON.stringify(empty));
-for (const value of Object.values(fillTypeSmall) as Point[][]) {
+const fillType4x1 = Helper.copy(empty);
+for (const value of Object.values(fillType4x1) as Point[][]) {
 	value.push({x: 0, y: 0});
 	value.push({x: 0, y: 0});
 	value.push({x: 0, y: 0});
@@ -118,10 +111,44 @@ for (const value of Object.values(fillTypeSmall) as Point[][]) {
 	value.push({x: 3, y: 0});
 }
 
-FILL_TYPE[AutotileType.SMALL] = fillTypeSmall;
+const fillType4x4: FillType = {
+	// order is important for same offset. Last one is used for reverse mapping
+	OOOO: [{x: 2, y: 2}],
+	XXXX: [{x: 2, y: 2}],
+	
+	OXXX: [{x: 2, y: 1}],
+	XOXX: [{x: 3, y: 2}],
+	XXOX: [{x: 2, y: 3}],
+	XXXO: [{x: 1, y: 2}],
+	
+	XXOO: [{x: 1, y: 3}],
+	OXXO: [{x: 1, y: 1}],
+	OOXX: [{x: 3, y: 1}],
+	XOOX: [{x: 3, y: 3}],
+	
+	OXOX: [{x: 1, y: 0}],
+	XOXO: [{x: 0, y: 2}],
+	
+	XOOO: [{x: 0, y: 3}],
+	OXOO: [{x: 0, y: 0}],
+	OOXO: [{x: 0, y: 1}],
+	OOOX: [{x: 2, y: 0}],
+};
 
 
-export const FILL_TYPE_CLIFF_BORDER: FillType = JSON.parse(JSON.stringify(empty));
+export const FILL_TYPE: {
+	[key in AutotileType]: FillType
+} = {
+	'4x1': fillType4x1,
+	'4x4': fillType4x4,
+	'8x2': fillType8x2,
+	'10x2': fillType10x2,
+	'12x2': fillType12x2,
+	'14x2': fillType14x2
+};
+
+
+export const FILL_TYPE_CLIFF_BORDER = Helper.copy(empty);
 
 FILL_TYPE_CLIFF_BORDER.XXXX = [
 	{x: 1, y: 0},
@@ -182,7 +209,7 @@ FILL_TYPE_CLIFF_BORDER.XOOX = [
 	{x: 3, y: 6}
 ];
 
-export const FILL_TYPE_CLIFF: FillType = JSON.parse(JSON.stringify(empty));
+export const FILL_TYPE_CLIFF: FillType = Helper.copy(empty);
 
 FILL_TYPE_CLIFF.XXXX = [
 	{x: 0, y: 3},
@@ -191,7 +218,7 @@ FILL_TYPE_CLIFF.XXXX = [
 	{x: 5, y: 3},
 ];
 
-export const FILL_TYPE_CLIFF_ALT: FillType = JSON.parse(JSON.stringify(empty));
+export const FILL_TYPE_CLIFF_ALT: FillType = Helper.copy(empty);
 
 FILL_TYPE_CLIFF_ALT.XXXX = [
 	{x: 0, y: 0},

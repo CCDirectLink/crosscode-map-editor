@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Point } from '../../models/cross-code-map';
-import { CheckDir, CHECK_DIR, CHECK_ITERATE } from '../height-map/heightmap.constants';
+import { CHECK_DIR, CHECK_ITERATE, CheckDir } from '../height-map/heightmap.constants';
 import { CCMapLayer } from '../phaser/tilemap/cc-map-layer';
 import { AutotileConfig, FillType } from './autotile.constants';
 import { GfxMapper } from './gfx-mapper';
@@ -67,29 +67,54 @@ export class AutotileService {
 		
 		let fillType = '';
 		
-		if (this.checkAt(w, 1) && this.checkAt(nw, 2) && this.checkAt(n, 3)) {
-			fillType += 'X';
+		// 4x4 needs special handling, corners are ignored
+		if (config.type === '4x4') {
+			if (this.checkAt(n, 2)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
+			if (this.checkAt(e, 3)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
+			if (this.checkAt(s, 0)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
+			if (this.checkAt(w, 1)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
 		} else {
-			fillType += 'O';
+			if (this.checkAt(w, 1) && this.checkAt(nw, 2) && this.checkAt(n, 3)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
+			
+			if (this.checkAt(n, 2) && this.checkAt(ne, 3) && this.checkAt(e, 0)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
+			
+			if (this.checkAt(e, 3) && this.checkAt(se, 0) && this.checkAt(s, 1)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
+			
+			if (this.checkAt(s, 0) && this.checkAt(sw, 1) && this.checkAt(w, 2)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
 		}
 		
-		if (this.checkAt(n, 2) && this.checkAt(ne, 3) && this.checkAt(e, 0)) {
-			fillType += 'X';
-		} else {
-			fillType += 'O';
-		}
-		
-		if (this.checkAt(e, 3) && this.checkAt(se, 0) && this.checkAt(s, 1)) {
-			fillType += 'X';
-		} else {
-			fillType += 'O';
-		}
-		
-		if (this.checkAt(s, 0) && this.checkAt(sw, 1) && this.checkAt(w, 2)) {
-			fillType += 'X';
-		} else {
-			fillType += 'O';
-		}
 		tile.fill = fillType as keyof FillType;
 		this.drawSingleTile(layer, config, tile);
 	}

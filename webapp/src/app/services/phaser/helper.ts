@@ -72,6 +72,10 @@ export class Helper {
 		return JSON.parse(JSON.stringify(obj));
 	}
 	
+	public static typedKeys<T extends {}>(obj: T): (keyof T)[] {
+		return Object.keys(obj) as (keyof T)[];
+	}
+	
 	public static getJson(key: string, callback: (json: any) => void) {
 		const scene = Globals.scene;
 		
