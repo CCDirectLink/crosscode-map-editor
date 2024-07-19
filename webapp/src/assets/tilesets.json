@@ -30,6 +30,235 @@
 			}
 		]
 	},
+	"media/map/evo-village.png": {
+		"tileCountX": 32,
+		"base": {
+			"mappingType": "TYPE1",
+			"ground": {
+				"x": 0,
+				"y": 0
+			},
+			"cliff": {
+				"x": 0,
+				"y": 5
+			},
+			"blockedTypes": []
+		},
+		"terrains": [
+			{
+				"ground": {
+					"x": 0,
+					"y": 1
+				},
+				"cliff": {
+					"x": 0,
+					"y": 5
+				},
+				"border": true
+			},
+			{
+				"ground": {
+					"x": 0,
+					"y": 13
+				},
+				"cliff": {
+					"x": 0,
+					"y": 9
+				},
+				"border": true
+			},
+			{
+				"blockedTypes": [],
+				"mappingType": "TYPE2",
+				"ground": {
+					"x": 7,
+					"y": 6
+				},
+				"cliff": {
+					"x": 6,
+					"y": 5
+				},
+				"wallTerrainPrio": 1,
+				"border": true
+			}
+		]
+	},
+	"media/map/final-dungeon-outer.png": {
+		"tileCountX": 32,
+		"base": {
+			"mappingType": "TYPE1",
+			"ground": {
+				"x": 0,
+				"y": 0
+			},
+			"cliff": {
+				"x": 0,
+				"y": 4
+			},
+			"blockedTypes": []
+		},
+		"terrains": [
+			{
+				"ground": {
+					"x": 1,
+					"y": 0
+				},
+				"cliff": {
+					"x": 6,
+					"y": 4
+				},
+				"border": true
+			},
+			{
+				"ground": {
+					"x": 12,
+					"y": 8
+				},
+				"cliff": {
+					"x": 12,
+					"y": 4
+				},
+				"border": true
+			},
+			{
+				"blockedTypes": [],
+				"mappingType": "TYPE2",
+				"ground": {
+					"x": 20,
+					"y": 0
+				},
+				"cliff": {
+					"x": 0,
+					"y": 15
+				},
+				"wallTerrainPrio": 1,
+				"border": true
+			},
+			{
+				"ground": {
+					"x": 20,
+					"y": 4
+				},
+				"cliff": {
+					"x": 6,
+					"y": 15
+				},
+				"baseTerrain": 3,
+				"wallTerrainPrio": 1
+			}
+		]
+	},
+	"media/map/final-dungeon-inner.png": {
+		"tileCountX": 32,
+		"base": {
+			"mappingType": "TYPE2",
+			"ground": {
+				"x": 0,
+				"y": 0
+			},
+			"cliff": {
+				"x": 0,
+				"y": 4
+			},
+			"shadow": {
+				"x": 5,
+				"y": 4
+			}
+		},
+		"terrains": [
+			{
+				"ground": {
+					"x": 1,
+					"y": 0
+				},
+				"cliff": {
+					"x": 10,
+					"y": 4
+				},
+				"border": true
+			},
+			{
+				"ground": {
+					"x": 9,
+					"y": 0
+				},
+				"cliff": {
+					"x": 15,
+					"y": 4
+				},
+				"border": true
+			},
+			{
+				"ground": {
+					"x": 20,
+					"y": 4
+				},
+				"cliff": {
+					"x": 20,
+					"y": 4
+				},
+				"border": false,
+				"overrideWallBase": true
+			},
+			{
+				"mappingType": "TYPE1",
+				"ground": {
+					"x": 25,
+					"y": 0
+				},
+				"cliff": {
+					"x": 25,
+					"y": 2
+				},
+				"shadow": {
+					"x": 24,
+					"y": 36
+				}
+			},
+			{
+				"ground": {
+					"x": 3,
+					"y": 2
+				},
+				"cliff": {
+					"x": 10,
+					"y": 4
+				},
+				"border": true,
+				"baseTerrain": 0
+			},
+			{
+				"ground": {
+					"x": 18,
+					"y": 43
+				},
+				"cliff": {
+					"x": 18,
+					"y": 38
+				},
+				"baseTerrain": 4
+			}
+		]
+	},
+	"media/map/old-hideout.png": {
+		"tileCountX": 32,
+		"base": {
+			"mappingType": "TYPE1",
+			"ground": {
+				"x": 0,
+				"y": 0
+			},
+			"cliff": {
+				"x": 0,
+				"y": 5
+			},
+			"cliffAlt": null,
+			"blockedTypes": [
+				"CORNER_SW",
+				"CORNER_SE"
+			]
+		}
+	},
 	"media/map/bergen-trail.png": {
 		"tileCountX": 32,
 		"base": {
@@ -83,24 +312,6 @@
 				"border": true
 			}
 		]
-	},
-	"media/map/old-hideout.png": {
-		"tileCountX": 32,
-		"base": {
-			"mappingType": "TYPE1",
-			"ground": {
-				"x": 0,
-				"y": 0
-			},
-			"cliff": {
-				"x": 0,
-				"y": 5
-			},
-			"blockedTypes": [
-				"CORNER_SW",
-				"CORNER_SE"
-			]
-		}
 	},
 	"media/map/heat-area.png": {
 		"tileCountX": 32,
@@ -569,6 +780,98 @@
 			}
 		]
 	},
+	"media/map/forest-dng.png": {
+		"tileCountX": 32,
+		"base": {
+			"mappingType": "TYPE2",
+			"ground": {
+				"x": 0,
+				"y": 0
+			},
+			"cliff": {
+				"x": 0,
+				"y": 4
+			},
+			"shadow": {
+				"x": 5,
+				"y": 4
+			}
+		},
+		"terrains": [
+			{
+				"ground": {
+					"x": 1,
+					"y": 0
+				},
+				"cliff": {
+					"x": 10,
+					"y": 4
+				},
+				"border": true
+			},
+			{
+				"ground": {
+					"x": 9,
+					"y": 0
+				},
+				"cliff": {
+					"x": 15,
+					"y": 4
+				},
+				"border": true
+			},
+			{
+				"ground": {
+					"x": 20,
+					"y": 4
+				},
+				"cliff": {
+					"x": 20,
+					"y": 4
+				},
+				"border": false,
+				"overrideWallBase": true
+			},
+			{
+				"mappingType": "TYPE1",
+				"ground": {
+					"x": 25,
+					"y": 0
+				},
+				"cliff": {
+					"x": 25,
+					"y": 2
+				},
+				"shadow": {
+					"x": 24,
+					"y": 36
+				}
+			},
+			{
+				"ground": {
+					"x": 3,
+					"y": 2
+				},
+				"cliff": {
+					"x": 10,
+					"y": 4
+				},
+				"border": true,
+				"baseTerrain": 0
+			},
+			{
+				"ground": {
+					"x": 18,
+					"y": 43
+				},
+				"cliff": {
+					"x": 18,
+					"y": 38
+				},
+				"baseTerrain": 4
+			}
+		]
+	},
 	"media/map/tree-inner.png": {
 		"tileCountX": 32,
 		"base": {
@@ -735,6 +1038,98 @@
 					"y": 20
 				},
 				"baseTerrain": 4,
+				"wallTerrainPrio": 1
+			}
+		]
+	},
+	"media/map/beach.png": {
+		"tileCountX": 32,
+		"base": {
+			"mappingType": "TYPE1",
+			"ground": {
+				"x": 0,
+				"y": 4
+			},
+			"cliff": {
+				"x": 0,
+				"y": 4
+			},
+			"cliffAlt": {
+				"x": 0,
+				"y": 10
+			},
+			"blockedTypes": []
+		},
+		"terrains": [
+			{
+				"ground": {
+					"x": 12,
+					"y": 0
+				},
+				"cliff": {
+					"x": 6,
+					"y": 4
+				},
+				"border": true
+			},
+			{
+				"ground": {
+					"x": 10,
+					"y": 2
+				},
+				"cliff": {
+					"x": 12,
+					"y": 4
+				},
+				"border": true
+			},
+			{
+				"ground": {
+					"x": 0,
+					"y": 0
+				},
+				"cliff": {
+					"x": 18,
+					"y": 4
+				},
+				"border": false,
+				"wallTerrainPrio": 0.5
+			},
+			{
+				"ground": {
+					"x": 18,
+					"y": 4
+				},
+				"cliff": {
+					"x": 6,
+					"y": 8
+				},
+				"border": false
+			},
+			{
+				"mappingType": "TYPE1",
+				"ground": {
+					"x": 24,
+					"y": 0
+				},
+				"cliff": {
+					"x": 24,
+					"y": 0
+				},
+				"border": true,
+				"wallTerrainPrio": 1
+			},
+			{
+				"mappingType": "TYPE1",
+				"ground": {
+					"x": 24,
+					"y": 6
+				},
+				"cliff": {
+					"x": 24,
+					"y": 6
+				},
+				"border": true,
 				"wallTerrainPrio": 1
 			}
 		]
@@ -915,6 +1310,115 @@
 				},
 				"blockedTypes": [],
 				"baseTerrain": 3
+			}
+		]
+	},
+	"media/map/lab.png": {
+		"tileCountX": 32,
+		"mappingType": "TYPE1",
+		"base": {
+			"mappingType": "TYPE1",
+			"ground": {
+				"x": 0,
+				"y": 0
+			},
+			"cliff": {
+				"x": 0,
+				"y": 4
+			},
+			"cliffAlt": {
+				"x": 0,
+				"y": 10
+			},
+			"shadow": {
+				"x": 6,
+				"y": 4
+			}
+		},
+		"terrains": [
+			{
+				"mappingType": "TYPE2",
+				"ground": {
+					"x": 12,
+					"y": 0
+				},
+				"cliff": {
+					"x": 12,
+					"y": 4
+				},
+				"shadow": {
+					"x": 17,
+					"y": 4
+				}
+			},
+			{
+				"baseTerrain": 1,
+				"ground": {
+					"x": 20,
+					"y": 0
+				},
+				"cliff": {
+					"x": 22,
+					"y": 4
+				}
+			},
+			{
+				"baseTerrain": 0,
+				"ground": {
+					"x": 18,
+					"y": 20
+				},
+				"cliff": {
+					"x": 18,
+					"y": 16
+				},
+				"border": false,
+				"shadow": {
+					"x": 18,
+					"y": 21
+				}
+			},
+			{
+				"baseTerrain": 1,
+				"ground": {
+					"x": 18,
+					"y": 20
+				},
+				"cliff": {
+					"x": 15,
+					"y": 32
+				},
+				"border": false,
+				"overrideWallBase": true
+			},
+			{
+				"baseTerrain": 0,
+				"ground": {
+					"x": 13,
+					"y": 48
+				},
+				"cliff": {
+					"x": 12,
+					"y": 46
+				},
+				"border": false,
+				"shadow": {
+					"x": 12,
+					"y": 51
+				}
+			},
+			{
+				"baseTerrain": 1,
+				"ground": {
+					"x": 13,
+					"y": 48
+				},
+				"cliff": {
+					"x": 20,
+					"y": 47
+				},
+				"border": false,
+				"overrideWallBase": true
 			}
 		]
 	}
