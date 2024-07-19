@@ -47,6 +47,26 @@ export class CCMapLayer {
 		});
 	}
 	
+	public async initFromPhaser(layer: Phaser.Tilemaps.TilemapLayer) {
+		const details: MapLayer = {
+			type: 'Background',
+			name: 'fromPhaser',
+			level: 0,
+			width: layer.width,
+			height: layer.height,
+			visible: 1,
+			tilesetName: layer.tileset[0]?.image?.key ?? '',
+			repeat: false,
+			distance: 0,
+			tilesize: Globals.TILE_SIZE,
+			moveSpeed: {x: 0, y: 0},
+			data: [],
+		};
+		this.layer = layer;
+		this.extractLayerData(details);
+		await this.init(details);
+	}
+	
 	get visible(): boolean {
 		return this.layer.visible;
 	}
