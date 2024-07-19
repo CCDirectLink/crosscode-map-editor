@@ -402,17 +402,12 @@ export class TileDrawer extends BaseObject {
 		
 		const tilesWithin = phaserLayer.getTilesWithin(smaller.x, smaller.y, width, height);
 		
-		tilesWithin.forEach((tile: Phaser.Tilemaps.Tile) => {
-			this.selectedTiles.push({
-				id: tile.index,
-				offset: Vec2.sub(tile, smaller, true)
-			});
-		});
+		const tiles: SelectedTile[] = tilesWithin.map(tile => ({
+			id: tile.index,
+			offset: Vec2.sub(tile, smaller, true)
+		}));
 		
-		this.renderPreview();
-		
-		this.drawRect(width, height);
-		
+		Globals.phaserEventsService.changeSelectedTiles.next(tiles);
 		
 		this.rightClickStart = undefined;
 		this.rightClickEnd = undefined;

@@ -15,7 +15,7 @@ export class TileSelectorScene extends Phaser.Scene {
 	private tileMap?: Phaser.Tilemaps.Tilemap;
 	private selecting = false;
 	private rect?: Phaser.GameObjects.Rectangle;
-	private sub?: Subscription;
+	private subs: Subscription[] = [];
 	
 	private tilesetRendered = false;
 	
@@ -38,11 +38,35 @@ export class TileSelectorScene extends Phaser.Scene {
 			e.preventDefault();
 		};
 		
-		this.sub = Globals.mapLoaderService.selectedLayer.subscribe(layer => {
+		this.subs.push(Globals.mapLoaderService.selectedLayer.subscribe(layer => {
 			if (layer) {
 				this.drawTileset(layer);
 			}
-		});
+		}));
+		
+		this.subs.push(Globals.phaserEventsService.changeSelectedTiles.subscribe(tiles => {
+			this.drawRect(0, 0);
+			if (tiles.length === 0) {
+				return;
+			}
+			const baseTile = tiles[0];
+			
+			let width = 0;
+			let height = 0;
+			
+			for (const tile of tiles) {
+				const id = tile.id - tile.offset.x - tile.offset.y * this.tilesetSize.x;
+				if (baseTile.id !== id) {
+					return;
+				}
+				width = Math.max(width, tile.offset.x);
+				height = Math.max(height, tile.offset.y);
+			}
+			
+			const start = Helper.indexToPoint(baseTile.id, this.tilesetSize.x);
+			this.drawRect(width + 1, height + 1, start.x, start.y);
+			
+		}));
 		
 		const pan = new MapPan(this, 'mapPan');
 		this.add.existing(pan);
@@ -98,7 +122,7 @@ export class TileSelectorScene extends Phaser.Scene {
 		
 		// cancel current selection when out of bounds
 		if (!this.rightClickStart || !this.rightClickEnd) {
-			this.drawRect(1, 1);
+			this.drawRect(0, 0);
 			return;
 		}
 		
@@ -129,8 +153,6 @@ export class TileSelectorScene extends Phaser.Scene {
 			});
 		});
 		
-		this.drawRect(width, height, smaller.x, smaller.y);
-		
 		this.rightClickStart = undefined;
 		this.rightClickEnd = undefined;
 		
@@ -138,9 +160,10 @@ export class TileSelectorScene extends Phaser.Scene {
 	}
 	
 	destroy() {
-		if (this.sub) {
-			this.sub.unsubscribe();
+		for (const sub of this.subs) {
+			sub.unsubscribe();
 		}
+		this.subs = [];
 		this.keyBindings.forEach(binding => {
 			this.input.removeListener(binding.event, binding.fun);
 		});
@@ -233,6 +256,9 @@ export class TileSelectorScene extends Phaser.Scene {
 			this.rect.destroy();
 		}
 		if (!this.tilesetRendered) {
+			return;
+		}
+		if (width === 0 || height === 0) {
 			return;
 		}
 		this.rect = this.add.rectangle(x * Globals.TILE_SIZE, y * Globals.TILE_SIZE, width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
