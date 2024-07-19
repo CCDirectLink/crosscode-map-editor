@@ -9,19 +9,19 @@ import { BaseTileDrawer } from '../../../../services/phaser/BaseTileDrawer';
 
 export class TileSelectorScene extends Phaser.Scene {
 	
-	private tileMap?: Phaser.Tilemaps.Tilemap;
+	private tileMap!: Phaser.Tilemaps.Tilemap;
 	private subs: Subscription[] = [];
 	
 	private baseDrawer!: BaseTileDrawer;
 	private tilesetWidth = 0;
 	
-	private tilemapLayer?: CCMapLayer;
+	private tilemapLayer!: CCMapLayer;
 	
 	constructor() {
 		super({key: 'main'});
 	}
 	
-	create() {
+	async create() {
 		
 		this.baseDrawer = new BaseTileDrawer(this, true);
 		this.baseDrawer.resetSelectedTiles();
@@ -67,7 +67,22 @@ export class TileSelectorScene extends Phaser.Scene {
 		this.add.existing(pan);
 		
 		this.tileMap = this.add.tilemap(undefined, Globals.TILE_SIZE, Globals.TILE_SIZE);
+		this.tilemapLayer = new CCMapLayer(this.tileMap);
 		
+		await this.tilemapLayer.init({
+			type: 'Background',
+			name: 'fromPhaser',
+			level: 0,
+			width: 1,
+			height: 1,
+			visible: 1,
+			tilesetName: '',
+			repeat: false,
+			distance: 0,
+			tilesize: Globals.TILE_SIZE,
+			moveSpeed: {x: 0, y: 0},
+			data: []
+		});
 	}
 	
 	public resize() {
@@ -90,10 +105,6 @@ export class TileSelectorScene extends Phaser.Scene {
 			return;
 		}
 		
-		if (!this.tileMap) {
-			return;
-		}
-		
 		const exists = await Helper.loadTexture(selectedLayer.details.tilesetName, this);
 		if (!exists) {
 			return;
@@ -102,7 +113,7 @@ export class TileSelectorScene extends Phaser.Scene {
 		const tilesetSize = Helper.getTilesetSize(this, selectedLayer.details.tilesetName);
 		this.tilesetWidth = tilesetSize.x;
 		this.tileMap.removeAllLayers();
-		const tileset = this.tileMap.addTilesetImage('tileset', selectedLayer.details.tilesetName, Globals.TILE_SIZE, Globals.TILE_SIZE);
+		const tileset = this.tileMap.addTilesetImage(selectedLayer.details.tilesetName);
 		if (!tileset) {
 			return;
 		}
@@ -120,11 +131,7 @@ export class TileSelectorScene extends Phaser.Scene {
 		}
 		
 		customPutTilesAt(data, layer);
-		
-		this.tilemapLayer?.destroy();
-		this.tilemapLayer = new CCMapLayer(this.tileMap);
-		await this.tilemapLayer.initFromPhaser(layer);
-		
+		this.tilemapLayer.setPhaserLayer(layer);
 		await this.baseDrawer.setLayer(this.tilemapLayer);
 	}
 }

@@ -33,7 +33,7 @@ export class CCMapLayer {
 		this.container.depth = 999;
 		this.makeLayer('stub');
 		this.updateBorder();
-		if (details.data) {
+		if (details.data && details.data.length > 0) {
 			customPutTilesAt(details.data, this.layer);
 		}
 		await this.updateTileset(details.tilesetName!);
@@ -45,26 +45,6 @@ export class CCMapLayer {
 				this.visible = false;
 			}
 		});
-	}
-	
-	public async initFromPhaser(layer: Phaser.Tilemaps.TilemapLayer) {
-		const details: MapLayer = {
-			type: 'Background',
-			name: 'fromPhaser',
-			level: 0,
-			width: layer.width,
-			height: layer.height,
-			visible: 1,
-			tilesetName: layer.tileset[0]?.image?.key ?? '',
-			repeat: false,
-			distance: 0,
-			tilesize: Globals.TILE_SIZE,
-			moveSpeed: {x: 0, y: 0},
-			data: [],
-		};
-		this.layer = layer;
-		this.extractLayerData(details);
-		await this.init(details);
 	}
 	
 	get visible(): boolean {
@@ -264,11 +244,26 @@ export class CCMapLayer {
 	}
 	
 	private extractLayerData(layer: MapLayer): void {
-		this.layer.getTilesWithin().forEach(tile => {
+		for (const tile of this.layer.getTilesWithin()) {
 			if (!layer.data[tile.y]) {
 				layer.data[tile.y] = [];
 			}
 			layer.data[tile.y][tile.x] = tile.index;
-		});
+		}
+	}
+	
+	setPhaserLayer(layer: Phaser.Tilemaps.TilemapLayer) {
+		
+		const oldLayer = this.layer as typeof this.layer | undefined;
+		
+		this.layer = layer;
+		this.layer.alpha = oldLayer?.alpha ?? 1;
+		this.details.width = this.layer.width / Globals.TILE_SIZE;
+		this.details.height = this.layer.height / Globals.TILE_SIZE;
+		this.setOffset(this.container.x, this.container.y);
+		this.updateLevel();
+		if (oldLayer) {
+			oldLayer.destroy(true);
+		}
 	}
 }
