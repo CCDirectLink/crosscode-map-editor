@@ -2,7 +2,7 @@ import { fsPromise, pathPromise } from '../require.js';
 import { saveFile as save } from './saveFile.js';
 
 const mods: string[] = [];
-let packagesCache: Map<string, { folderName: string, ccmodDependencies?: Map<string, string> }>;
+let packagesCache: Record<string, { folderName: string, displayName: string, ccmodDependencies?: Map<string, string> }>;
 
 async function listAllFiles(dir: string, filelist: string[], ending: string, root?: string): Promise<string[]> {
 	if (root === undefined) {
@@ -79,8 +79,8 @@ async function searchSubFolder(dir: string, file: string): Promise<string[]> {
 	return result;
 }
 
-function selectMod(name: string, packages: Map<string, { folderName: string, ccmodDependencies?: Map<string, string> }>, result: string[]) {
-	const pkg = packages.get(name);
+function selectMod(name: string, packages: Record<string, { folderName: string, ccmodDependencies?: Map<string, string> }>, result: string[]) {
+	const pkg = packages[name];
 	if (!pkg) {
 		return;
 	}
@@ -131,20 +131,51 @@ async function readMods(dir: string) {
 
 	const modFolder = path.join(dir, 'mods/');
 	const files = await searchSubFolder(modFolder, 'package.json');
+	const filesCCMod = await searchSubFolder(modFolder, 'ccmod.json');
+
+	const ccmodFolderNames = new Set(filesCCMod.map(file => path.basename(path.dirname(file))));
+
 	const promises: Promise<[string, Buffer]>[] = [];
 	for (const file of files) {
+		const folderName = path.basename(path.dirname(file));
+		// Skip mods that have a ccmod.json file
+		if (ccmodFolderNames.has(folderName)) {
+			continue;
+		}
 		promises.push((async (): Promise<[string, Buffer]> => [path.basename(path.dirname(file)), await fs.promises.readFile(file)])());
 	}
 	const rawPackages = await Promise.all(promises);
-	const packages = new Map<string, { folderName: string, ccmodDependencies?: Map<string, string> }>();
+	const packages: Record<string, { folderName: string, displayName: string, ccmodDependencies?: Map<string, string> }> = {};
 
 	for (const [name, pkg] of rawPackages) {
 		try {
 			const parsed = JSON.parse(pkg as unknown as string);
-			parsed.folderName = name;
-			packages.set(parsed.name, parsed);
+			packages[parsed.name] = {
+				folderName: name,
+				displayName: parsed.displayName ?? parsed.ccmodHumanName ?? parsed.name,
+				ccmodDependencies: parsed.ccmodDependencies ?? parsed.dependencies ?? {},
+			};
 		} catch (err) {
 			console.error('Invalid json data in package.json of mod: ' + name, err);
+		}
+	}
+
+	const promisesCCMod: Promise<[string, Buffer]>[] = [];
+	for (const file of filesCCMod) {
+		promisesCCMod.push((async (): Promise<[string, Buffer]> => [path.basename(path.dirname(file)), await fs.promises.readFile(file)])());
+	}
+	const rawCCMods = await Promise.all(promisesCCMod);
+
+	for (const [name, pkg] of rawCCMods) {
+		try {
+			const parsed = JSON.parse(pkg as unknown as string);
+			packages[parsed.id] = {
+				folderName: name,
+				displayName: parsed.title?.['en_US'] ?? parsed.title ?? parsed.id,
+				ccmodDependencies: parsed.ccmodDependencies ?? parsed.dependencies ?? {},
+			};
+		} catch (err) {
+			console.error('Invalid json data in ccmod.json of mod: ' + name, err);
 		}
 	}
 
@@ -214,7 +245,9 @@ export async function getAllFilesInFolder(dir: string, folder: string, extension
 
 export async function getAllMods(dir: string) {
 	const packages = await readMods(dir);
-	return Array.from(packages.keys()).sort();
+	return Object.entries(packages)
+		.map(([id, pkg]) => ({ id, displayName: pkg.displayName as string }))
+		.sort((a, b) => a.displayName.localeCompare(b.displayName));
 }
 
 export async function selectedMod(dir: string, modName: string) {
