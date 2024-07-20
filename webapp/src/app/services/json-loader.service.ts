@@ -13,6 +13,8 @@ export class JsonLoaderService {
 	private readonly initialized?: Promise<void>;
 	private configs = new Map<string, ConfigExtension<unknown>[]>;
 	
+	private cache: Record<string, unknown> = {};
+	
 	constructor(
 		private http: HttpClientService,
 		private angularHttp: HttpClient,
@@ -55,9 +57,14 @@ export class JsonLoaderService {
 	}
 	
 	async loadJsonMerged<T>(file: string): Promise<T> {
+		const cached = this.cache[file] as T | undefined;
+		if (cached) {
+			return cached;
+		}
 		const jsons = await this.loadJson(file);
 		const base = {} as T;
 		Object.assign(base as any, ...jsons);
+		this.cache[file] = base;
 		return base;
 	}
 }
