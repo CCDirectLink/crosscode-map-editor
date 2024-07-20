@@ -58,7 +58,7 @@ export class HttpClientService {
 		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
 	}
 
-	getMods(): Observable<string[]> {
+	getMods(): Observable<{ id: string, displayName: string }[]> {
 		return this.request('api/allMods', api.getAllMods);
 	}
 

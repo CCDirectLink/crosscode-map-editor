@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+### Added
+- Support for `ccmod.json` mods [#323](https://github.com/CCDirectLink/crosscode-map-editor/issues/323)
+
+### Changed
+- The settings menu now display the proper mod name  [#324](https://github.com/CCDirectLink/crosscode-map-editor/pull/324)
+
 ## [1.6.2] 2024-07-19
 ### Changed
 - Updated tilesets.json to include all available tilesets for Height Map generation

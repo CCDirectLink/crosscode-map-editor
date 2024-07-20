@@ -31,6 +31,8 @@ import { LayersComponent } from './components/layers/layers.component';
 import { PhaserComponent } from './components/phaser/phaser.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
 import { SplitPaneComponent } from './components/split-pane/split-pane.component';
+import { GridMenuComponent } from './components/toolbar/grid-menu/grid-menu.component';
+import { ToolbarDividerComponent } from './components/toolbar/toolbar-divider/toolbar-divider.component';
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { BooleanWidgetComponent } from './components/widgets/boolean-widget/boolean-widget.component';
 import { CharacterWidgetComponent } from './components/widgets/character-widget/character-widget.component';
@@ -61,6 +63,7 @@ import { AutocompletedTextboxComponent } from './components/widgets/string-widge
 import { StringWidgetComponent } from './components/widgets/string-widget/string-widget.component';
 import { Vec2WidgetComponent } from './components/widgets/vec2-widget/vec2-widget.component';
 import { AutofocusDirective } from './directives/autofocus.directive';
+import { ColoredTextDirective } from './directives/colored-text.directive';
 import { HighlightDirective } from './directives/highlight.directive';
 import { HostDirective } from './directives/host.directive';
 import { ModalDirective } from './directives/modal.directive';
@@ -68,8 +71,6 @@ import { ResizedDirective } from './directives/resized.directive';
 import { MaterialModule } from './external-modules/material.module';
 import { CombinedTooltipPipe } from './pipes/combined-tooltip.pipe';
 import { KeepHtmlPipe } from './pipes/keep-html.pipe';
-import { ToolbarDividerComponent } from './components/toolbar/toolbar-divider/toolbar-divider.component';
-import { GridMenuComponent } from './components/toolbar/grid-menu/grid-menu.component';
 
 const WIDGETS = [
 	StringWidgetComponent,
@@ -146,6 +147,7 @@ const WIDGETS = [
 		ImageSelectCardComponent,
 		ImageSelectListComponent,
 		HighlightDirective,
+		ColoredTextDirective,
 		AutofocusDirective,
 		CombinedTooltipPipe,
 		InputWithButtonComponent,
