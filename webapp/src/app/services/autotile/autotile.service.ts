@@ -5,6 +5,10 @@ import { CCMapLayer } from '../phaser/tilemap/cc-map-layer';
 import { AutotileConfig, FillType } from './autotile.constants';
 import { GfxMapper } from './gfx-mapper';
 import { customPutTileAt } from '../phaser/tilemap/layer-helper';
+import { PhaserEventsService } from '../phaser/phaser-events.service';
+import { combineLatest } from 'rxjs';
+import { MapLoaderService } from '../map-loader.service';
+import { GlobalEventsService } from '../global-events.service';
 
 interface TileData {
 	pos: Point;
@@ -19,7 +23,29 @@ export class AutotileService {
 	
 	private gfxMapper = new GfxMapper();
 	
-	constructor() {
+	constructor(
+		phaserEvents: PhaserEventsService,
+		mapLoader: MapLoaderService,
+		events: GlobalEventsService
+	) {
+		combineLatest([
+			phaserEvents.changeSelectedTiles.asObservable(),
+			mapLoader.selectedLayer.asObservable()
+		]).subscribe(([tiles, layer]) => {
+			if (!layer) {
+				events.isAutotile.next(false);
+				return;
+			}
+			let autotile = false;
+			for (const tile of tiles) {
+				const config = this.gfxMapper.getAutotileConfig(layer.details.tilesetName, tile.id, false);
+				if (config) {
+					autotile = true;
+					break;
+				}
+			}
+			events.isAutotile.next(autotile);
+		});
 	}
 	
 	public drawTile(layer: CCMapLayer, x: number, y: number, tile: number, checkCliff = true) {

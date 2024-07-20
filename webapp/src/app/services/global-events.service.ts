@@ -25,6 +25,7 @@ export class GlobalEventsService {
 	
 	updateCoords = new Subject<Point3 | undefined>();
 	updateTileSelectionSize = new Subject<Point | undefined>();
+	isAutotile = new BehaviorSubject(false);
 	showIngamePreview = new BehaviorSubject(false);
 	hasUnsavedChanges = new BehaviorSubject(false);
 	gridSettings = new BehaviorSubject<GridSettings>(Globals.gridSettings());

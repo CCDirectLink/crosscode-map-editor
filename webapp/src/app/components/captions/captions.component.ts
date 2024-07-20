@@ -16,10 +16,14 @@ export class CaptionsComponent implements OnInit {
 	version = environment.version;
 	coords: BottomUiElement = {};
 	selectionSize: BottomUiElement = {};
+	autotile: BottomUiElement = {
+		text: 'Autotile'
+	};
 	
 	uiElements: BottomUiElement[] = [
 		this.coords,
-		this.selectionSize
+		this.selectionSize,
+		this.autotile,
 	];
 	
 	ngOnInit(): void {
@@ -31,6 +35,10 @@ export class CaptionsComponent implements OnInit {
 		Globals.globalEventsService.updateTileSelectionSize.subscribe(size => {
 			this.selectionSize.text = `${size?.x}x${size?.y}`;
 			this.selectionSize.active = !!size;
+		});
+		
+		Globals.globalEventsService.isAutotile.subscribe(show => {
+			this.autotile.active = show;
 		});
 	}
 }
