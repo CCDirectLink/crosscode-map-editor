@@ -13,16 +13,12 @@ export class AppComponent {
 	constructor(
 		private readonly eventsService: GlobalEventsService,
 		private readonly overlayService: OverlayService,
-		private readonly router: Router
-	) { 
-		this.router.events.subscribe(event => {
-			console.log(event.constructor.name, event);
-		});
+	) {
 	}
-
+	
 	@HostListener('window:beforeunload', ['$event'])
 	onUnload($event: any) {
-		if(this.eventsService.hasUnsavedChanges.getValue()) {
+		if (this.eventsService.hasUnsavedChanges.getValue()) {
 			$event.returnValue = 'Are you sure you want to discard your changes?';
 			
 			const dialogRef = this.overlayService.open(ConfirmCloseComponent, {

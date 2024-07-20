@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { api } from 'cc-map-editor-common';
-import { Observable } from 'rxjs';
+import { lastValueFrom, Observable } from 'rxjs';
 import { FileInfos } from '../models/file-infos';
 import { ElectronService } from './electron.service';
 import { Globals } from './globals';
@@ -60,6 +60,10 @@ export class HttpClientService {
 
 	getMods(): Observable<{ id: string, displayName: string }[]> {
 		return this.request('api/allMods', api.getAllMods);
+	}
+	
+	getModMapEditorConfigs() {
+		return lastValueFrom(this.request('api/allModMapEditorConfigs', api.getAllModMapEditorConfigs));
 	}
 
 	getAssetsFile<T>(path: string): Observable<T> {

@@ -9,6 +9,7 @@ import { PhaserEventsService } from '../phaser/phaser-events.service';
 import { combineLatest } from 'rxjs';
 import { MapLoaderService } from '../map-loader.service';
 import { GlobalEventsService } from '../global-events.service';
+import { JsonLoaderService } from '../json-loader.service';
 
 interface TileData {
 	pos: Point;
@@ -21,13 +22,15 @@ interface TileData {
 })
 export class AutotileService {
 	
-	private gfxMapper = new GfxMapper();
+	private gfxMapper: GfxMapper;
 	
 	constructor(
 		phaserEvents: PhaserEventsService,
 		mapLoader: MapLoaderService,
-		events: GlobalEventsService
+		events: GlobalEventsService,
+		jsonLoader: JsonLoaderService,
 	) {
+		this.gfxMapper = new GfxMapper(jsonLoader);
 		combineLatest([
 			phaserEvents.changeSelectedTiles.asObservable(),
 			mapLoader.selectedLayer.asObservable()
