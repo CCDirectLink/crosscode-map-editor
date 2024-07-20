@@ -34,7 +34,7 @@ export class JsonLoaderService {
 				newConfig.file = JSON.parse(config.file);
 			} catch (e) {
 				console.error(e);
-				this.snackbar.open(`Failed to parse Mod config: ${config.mod} -> ${config.filename}`, undefined);
+				this.snackbar.open(`Failed to parse mod config: ${config.mod}/map-editor/${config.filename}`, 'close');
 				continue;
 			}
 			const configs = this.configs.get(config.filename) ?? [];
@@ -52,5 +52,12 @@ export class JsonLoaderService {
 			json as T,
 			...modJson
 		];
+	}
+	
+	async loadJsonMerged<T>(file: string): Promise<T> {
+		const jsons = await this.loadJson(file);
+		const base = {} as T;
+		Object.assign(base as any, ...jsons);
+		return base;
 	}
 }

@@ -4,10 +4,7 @@ import { Helper } from '../phaser/helper';
 import { Vec2 } from '../phaser/vec2';
 import { AutotileConfig, AutotileType, FILL_TYPE, FILL_TYPE_CLIFF, FILL_TYPE_CLIFF_ALT, FILL_TYPE_CLIFF_BORDER, FillType } from './autotile.constants';
 
-import tilesets from '../../../assets/tilesets.json';
 import { JsonLoaderService } from '../json-loader.service';
-
-const TILESET_CONFIG: { [key: string]: ChipsetConfig } = tilesets;
 
 interface JsonType {
 	map: string;
@@ -26,6 +23,9 @@ export class GfxMapper {
 		[key: string]: AutotileConfig[] | undefined;
 	} = {};
 	
+	
+	private TILESET_CONFIG: { [key: string]: ChipsetConfig } = {};
+	
 	private mapping: { [key in AutotileType]: Map<number, keyof FillType> } = <any>{};
 	private cliffBorderMapping = new Map<number, keyof FillType>();
 	private cliffMapping = new Map<number, keyof FillType>();
@@ -38,6 +38,7 @@ export class GfxMapper {
 	}
 	
 	private async init() {
+		this.TILESET_CONFIG = await this.jsonLoader.loadJsonMerged('tilesets.json');
 		await this.generateAutotileConfig();
 		
 		for (const type of Helper.typedKeys(FILL_TYPE)) {
@@ -65,7 +66,7 @@ export class GfxMapper {
 			for (const autotile of config.autotiles) {
 				const generatedType: AutotileType = `${autotile.size.x}x${autotile.size.y}` as AutotileType;
 				
-				const tileset = TILESET_CONFIG[config.map];
+				const tileset = this.TILESET_CONFIG[config.map];
 				const terrains = tileset.terrains ?? [];
 				terrains.push(tileset.base);
 				let cliff = autotile.cliff;
@@ -123,7 +124,7 @@ export class GfxMapper {
 		if (!cliff) {
 			return this.getFill(pos, config.base, this.mapping[config.type]);
 		}
-		const tilesetConfig = TILESET_CONFIG[config.key];
+		const tilesetConfig = this.TILESET_CONFIG[config.key];
 		let tilesetBase;
 		if (tilesetConfig && tilesetConfig.base) {
 			tilesetBase = tilesetConfig.base;
