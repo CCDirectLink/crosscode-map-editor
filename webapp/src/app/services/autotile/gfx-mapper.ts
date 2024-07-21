@@ -83,7 +83,7 @@ export class GfxMapper {
 					key: config.map,
 					tileCountX: config.tileCountX,
 					type: generatedType,
-					mergeWithEmpty: autotile.mergeWithEmpty === undefined ? true : autotile.mergeWithEmpty,
+					mergeWithEmpty: !!autotile.mergeWithEmpty,
 					base: autotile.base,
 					cliff: cliff ? cliff : undefined
 				};
