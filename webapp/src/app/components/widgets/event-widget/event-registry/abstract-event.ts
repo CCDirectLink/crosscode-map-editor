@@ -1,4 +1,4 @@
-import { inject, SecurityContext } from '@angular/core';
+import { SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PartialPoint3, Point, Point3 } from '../../../../models/cross-code-map';
 import { Label } from '../../../../models/events';
@@ -169,7 +169,7 @@ export abstract class AbstractEvent<T extends EventType> {
 	public info = '---';
 	public children: EventTypeChild[] = [];
 
-	private colorService = inject(ColorService);
+	private colorService = new ColorService();
 
 	constructor(
 		private domSanitizer: DomSanitizer,

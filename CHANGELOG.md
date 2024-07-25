@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+## [1.7.1] 2024-07-21
+### Fixed
+- Fixed Event editor not working
+
 ## [1.7.0] 2024-07-20
 ### Added
 - Support for `ccmod.json` mods [#323](https://github.com/CCDirectLink/crosscode-map-editor/issues/323)
