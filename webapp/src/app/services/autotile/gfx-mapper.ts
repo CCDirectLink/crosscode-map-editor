@@ -24,7 +24,7 @@ export class GfxMapper {
 	} = {};
 	
 	
-	private TILESET_CONFIG: { [key: string]: ChipsetConfig } = {};
+	private TILESET_CONFIG: Record<string, ChipsetConfig | undefined> = {};
 	
 	private mapping: { [key in AutotileType]: Map<number, keyof FillType> } = <any>{};
 	private cliffBorderMapping = new Map<number, keyof FillType>();
@@ -67,8 +67,10 @@ export class GfxMapper {
 				const generatedType: AutotileType = `${autotile.size.x}x${autotile.size.y}` as AutotileType;
 				
 				const tileset = this.TILESET_CONFIG[config.map];
-				const terrains = tileset.terrains ?? [];
-				terrains.push(tileset.base);
+				const terrains = tileset?.terrains ?? [];
+				if (tileset) {
+					terrains.push(tileset.base);
+				}
 				let cliff = autotile.cliff;
 				if (cliff === undefined) {
 					for (const terrain of terrains) {

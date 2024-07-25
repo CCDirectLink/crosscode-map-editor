@@ -2,7 +2,7 @@ import { Point } from '../../models/cross-code-map';
 import { Helper } from '../phaser/helper';
 
 /** Known autotile sizes */
-export type AutotileType = '4x1' | '4x4' | '8x2' | '10x2' | '12x2' | '14x2';
+export type AutotileType = '4x4' | '8x2' | '10x2' | '12x2' | '14x2';
 
 export interface AutotileConfig {
 	tileCountX: number;
@@ -101,16 +101,6 @@ fillType14x2.OXXO.push({x: 13, y: 0});
 fillType14x2.XXOO.push({x: 12, y: 1});
 fillType14x2.XOOX.push({x: 13, y: 1});
 
-const fillType4x1 = Helper.copy(empty);
-for (const value of Object.values(fillType4x1) as Point[][]) {
-	value.push({x: 0, y: 0});
-	value.push({x: 0, y: 0});
-	value.push({x: 0, y: 0});
-	value.push({x: 1, y: 0});
-	value.push({x: 2, y: 0});
-	value.push({x: 3, y: 0});
-}
-
 const fillType4x4: FillType = {
 	// order is important for same offset. Last one is used for reverse mapping
 	OOOO: [{x: 2, y: 2}],
@@ -139,7 +129,6 @@ const fillType4x4: FillType = {
 export const FILL_TYPE: {
 	[key in AutotileType]: FillType
 } = {
-	'4x1': fillType4x1,
 	'4x4': fillType4x4,
 	'8x2': fillType8x2,
 	'10x2': fillType10x2,
