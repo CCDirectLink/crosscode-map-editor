@@ -1,7 +1,7 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import { AttributeValue, EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 import { AbstractEvent, EventType } from './abstract-event';
-import { JsonLoaderService } from '../../../../services/json-loader.service';
+import { Globals } from '../../../../services/globals';
 
 export interface ActionsJson {
 	[key: string]: JsonEventType;
@@ -28,9 +28,9 @@ export class DefaultEvent<T extends EventType = DefaultEventData> extends Abstra
 		domSanitizer: DomSanitizer,
 		data: T,
 		actionStep = false,
-		jsonLoader: JsonLoaderService
 	) {
 		super(domSanitizer, data, actionStep);
+		const jsonLoader = Globals.jsonLoader;
 		if (actionStep) {
 			this.type = jsonLoader.loadJsonMergedSync<ActionsJson>('actions.json')[this.data.type];
 		} else {

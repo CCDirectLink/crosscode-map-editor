@@ -112,22 +112,6 @@
 		]
 	},
 	{
-		"map": "media/map/arid-shadow.png",
-		"tileCountX": 16,
-		"autotiles": [
-			{
-				"base": {
-					"x": 0,
-					"y": 0
-				},
-				"size": {
-					"x": 14,
-					"y": 2
-				}
-			}
-		]
-	},
-	{
 		"map": "media/map/autumn-outside.png",
 		"tileCountX": 32,
 		"autotiles": [

@@ -82,7 +82,7 @@ export class AddEventService {
 	
 	select(event: string) {
 		const clss = this.eventRegistry.getEvent(event);
-		const instance: AbstractEvent<any> = new clss(this.domSanitizer, {type: event}, this.actionStep, this.jsonLoader);
+		const instance: AbstractEvent<any> = new clss(this.domSanitizer, {type: event}, this.actionStep);
 		instance.generateNewData();
 		instance.update();
 		this.selectedEvent.next(instance);

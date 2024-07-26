@@ -21,7 +21,7 @@ export class EventHelperService {
 	
 	public getEventFromType(val: EventType, actionStep: boolean): AbstractEvent<any> {
 		const eventClass = this.eventRegistry.getEvent(val.type);
-		const instance: AbstractEvent<any> = new eventClass(this.domSanitizer, val, actionStep, this.jsonLoader);
+		const instance: AbstractEvent<any> = new eventClass(this.domSanitizer, val, actionStep);
 		
 		if (val.type === 'IF') {
 			const valIf = val as any;

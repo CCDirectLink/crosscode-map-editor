@@ -3,7 +3,6 @@ import { ChipsetConfig } from '../height-map/gfx-mapper/gfx-mapper.constants';
 import { Helper } from '../phaser/helper';
 import { Vec2 } from '../phaser/vec2';
 import { AutotileConfig, AutotileType, FILL_TYPE, FILL_TYPE_CLIFF, FILL_TYPE_CLIFF_ALT, FILL_TYPE_CLIFF_BORDER, FillType } from './autotile.constants';
-
 import { JsonLoaderService } from '../json-loader.service';
 
 interface JsonType {
