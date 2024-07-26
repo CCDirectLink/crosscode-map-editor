@@ -1,4 +1,3 @@
-import mapStyles from '../../../../../webapp/src/assets/map-styles.json';
 import { Point } from '../../models/cross-code-map';
 import { MapStyles } from '../../models/map-styles';
 import { Globals } from '../globals';
@@ -151,12 +150,13 @@ export class Helper {
 	}
 	
 	public static getMapStyle(map: CCMap, type: string): MapStyles {
+		const mapStyles = Globals.jsonLoader.loadJsonMergedSync<MapStyles>('map-styles.json');
 		const mapStyleName = map.attributes.mapStyle || 'default';
 		const mapStyle = mapStyles[mapStyleName];
 		if (mapStyle && mapStyle[type]) {
 			return mapStyle[type];
 		}
-		return mapStyles.default[type];
+		return mapStyles['default'][type];
 	}
 	
 	public static async asyncFilter<T>(arr: T[], predicate: (v: T) => Promise<boolean>) {

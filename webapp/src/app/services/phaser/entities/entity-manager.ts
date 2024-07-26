@@ -83,6 +83,8 @@ export class EntityManager extends BaseObject {
 		this.visibilityKey = keyboard!.addKey(keyCodes.R, false);
 		
 		this.selectionBox = new SelectionBox(this.scene);
+		
+		Globals.globalEventsService.updateEntities.subscribe(() => this.resetEntities());
 	}
 	
 	
@@ -430,6 +432,19 @@ export class EntityManager extends BaseObject {
 			this.selectEntity(newEntity, entities.length > 1);
 		}
 		
+	}
+	
+	private async resetEntities() {
+		if (!this.map) {
+			return;
+		}
+		const exportedMap = this.map.exportMap();
+		await this.initialize(exportedMap, this.map);
+		if (this.active) {
+			for (const entity of this.entities) {
+				entity.setActive(true);
+			}
+		}
 	}
 	
 	deleteSelectedEntities() {

@@ -26,6 +26,7 @@ export class EditorComponent {
 		// makes sure they are synchronously available
 		jsonLoader.loadJsonMerged('actions.json');
 		jsonLoader.loadJsonMerged('events.json');
+		jsonLoader.loadJsonMerged('map-styles.json');
 		
 	}
 	

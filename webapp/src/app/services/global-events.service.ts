@@ -22,6 +22,7 @@ export class GlobalEventsService {
 	offsetEntities = new Subject<Point>();
 	toggleVisibility = new Subject<void>();
 	showAddEntityMenu = new Subject<Point>();
+	updateEntities = new Subject<boolean>();
 	
 	updateCoords = new Subject<Point3 | undefined>();
 	updateTileSelectionSize = new Subject<Point | undefined>();

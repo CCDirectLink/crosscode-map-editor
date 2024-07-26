@@ -1,12 +1,11 @@
-export type MapStyles = {
-	walls: WallColors;
-} & {
+export interface MapStyles {
 	[key: string]: MapStyle;
-};
+}
 
 export type MapStyle = {
 	sheet: string;
 	hasDoorMat?: boolean;
+	walls?: WallColors;
 } & {
 	[key: string]: any;
 };
