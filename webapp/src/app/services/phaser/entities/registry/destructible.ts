@@ -47,7 +47,7 @@ export class Destructible extends CCEntity {
 	}
 	
 	protected async setupType(settings: any): Promise<void> {
-		const types = this.scene.cache.json.get('destructible-types.json') as DestructibleTypes;
+		const types = await Globals.jsonLoader.loadJsonMerged<DestructibleTypes>('destructible-types.json');
 		
 		this.attributes['desType'].options = {};
 		for (const name of Object.keys(types)) {

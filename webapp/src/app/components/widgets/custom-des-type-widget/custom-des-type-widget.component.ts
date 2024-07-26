@@ -85,7 +85,7 @@ export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttr
 				desType: v.desType
 			}));
 		} else {
-			const json = Globals.scene.cache.json.get('destructibles.json') as ItemDestructTypes;
+			const json = await Globals.jsonLoader.loadJsonMerged<ItemDestructTypes>('destructibles.json');
 			destructibles = Object.keys(json).map(v => ({
 				name: v,
 				desType: v
