@@ -23,8 +23,14 @@ import { Wait } from './wait';
 import { ShowSideMsg } from './show-side-msg';
 import { ShowModalChoice } from './show-modal-choice';
 import { SetMsgExpression } from './set-msg-expression';
+import { JsonLoaderService } from '../../../../services/json-loader.service';
 
-type EventConstructor<T extends EventType> = new (domSanitizer: DomSanitizer, data: T, actionStep: boolean) => AbstractEvent<T>;
+type EventConstructor<T extends EventType> = new (
+	domSanitizer: DomSanitizer,
+	data: T,
+	actionStep: boolean,
+	jsonLoader: JsonLoaderService
+) => AbstractEvent<T>;
 
 @Injectable({
 	providedIn: 'root'

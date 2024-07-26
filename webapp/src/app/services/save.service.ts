@@ -51,7 +51,7 @@ export class SaveService {
 				this.snackbar.open('successfully saved map', 'ok', { duration: 3000 });
 			}, error: err => {
 				console.error(err);
-				this.snackbar.open('failed to save map', 'ok');
+				this.snackbar.open('failed to save map', 'ok', {panelClass: 'snackbar-error'});
 			}
 		});
 	}

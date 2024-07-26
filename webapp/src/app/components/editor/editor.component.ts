@@ -3,6 +3,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 
 import { AddEntityMenuService } from '../../services/add-entity-menu.service';
 import { LoadMapComponent } from '../dialogs/load-map/load-map.component';
+import { JsonLoaderService } from '../../services/json-loader.service';
 
 @Component({
 	selector: 'app-editor',
@@ -16,8 +17,16 @@ export class EditorComponent {
 	@ViewChild('sidenavLoadMap', {static: true})
 		sidenavLoadMap!: MatSidenav;
 	
-	constructor(addEntity: AddEntityMenuService) {
+	constructor(
+		addEntity: AddEntityMenuService,
+		jsonLoader: JsonLoaderService
+	) {
 		addEntity.init();
+		
+		// makes sure they are synchronously available
+		jsonLoader.loadJsonMerged('actions.json');
+		jsonLoader.loadJsonMerged('events.json');
+		
 	}
 	
 	loadMapClicked() {

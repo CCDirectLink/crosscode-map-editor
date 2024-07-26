@@ -36,7 +36,11 @@ export class JsonLoaderService {
 				newConfig.file = JSON.parse(config.file);
 			} catch (e) {
 				console.error(e);
-				this.snackbar.open(`Failed to parse mod config: ${config.mod}/map-editor/${config.filename}`, 'close');
+				this.snackbar.open(
+					`Failed to parse mod config: ${config.mod}/map-editor/${config.filename}`,
+					'close',
+					{panelClass: 'snackbar-error'}
+				);
 				continue;
 			}
 			const configs = this.configs.get(config.filename) ?? [];
@@ -66,5 +70,13 @@ export class JsonLoaderService {
 		Object.assign(base as any, ...jsons);
 		this.cache[file] = base;
 		return base;
+	}
+	
+	loadJsonMergedSync<T>(file: string): T {
+		const cached = this.cache[file] as T | undefined;
+		if (cached) {
+			return cached;
+		}
+		throw new Error('Tried to get json synchronous, but its not loaded');
 	}
 }

@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { AbstractEvent, EventType } from '../event-registry/abstract-event';
 import { EventRegistryService } from '../event-registry/event-registry.service';
+import { JsonLoaderService } from '../../../../services/json-loader.service';
 
 @Injectable({
 	providedIn: 'root'
@@ -13,13 +14,14 @@ export class EventHelperService {
 	
 	constructor(
 		private eventRegistry: EventRegistryService,
-		private domSanitizer: DomSanitizer
+		private domSanitizer: DomSanitizer,
+		private jsonLoader: JsonLoaderService
 	) {
 	}
 	
 	public getEventFromType(val: EventType, actionStep: boolean): AbstractEvent<any> {
 		const eventClass = this.eventRegistry.getEvent(val.type);
-		const instance: AbstractEvent<any> = new eventClass(this.domSanitizer, val, actionStep);
+		const instance: AbstractEvent<any> = new eventClass(this.domSanitizer, val, actionStep, this.jsonLoader);
 		
 		if (val.type === 'IF') {
 			const valIf = val as any;

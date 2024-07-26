@@ -192,3 +192,17 @@ body {
 .newline-tooltip {
 	white-space: pre-line;
 }
+
+.snackbar-error {
+	> * {
+		background: mat.get-color-from-palette(mat.$red-palette, 700) !important;
+	}
+
+	button {
+		color: white !important;
+	}
+
+	.mat-mdc-snack-bar-label {
+		color: white !important;
+	}
+}
