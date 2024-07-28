@@ -35,7 +35,7 @@ export class TileSelectorScene extends Phaser.Scene {
 		
 		this.subs.push(Globals.mapLoaderService.selectedLayer.subscribe(async layer => {
 			const success = await this.drawTileset(layer);
-			if (!success){
+			if (!success) {
 				this.tileMap.removeAllLayers();
 				await this.baseDrawer.setLayer();
 			}

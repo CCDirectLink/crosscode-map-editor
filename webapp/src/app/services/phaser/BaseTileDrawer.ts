@@ -124,10 +124,9 @@ export class BaseTileDrawer extends BaseObject {
 		this.setVisibility(false);
 	}
 	
-	private setVisibility(visible: boolean) {
-		visible = visible && !!this.layer;
-		this.selection?.setVisible(visible);
-		this.previewLayer?.setVisible(visible);
+	private setVisibility(selection: boolean, preview = selection) {
+		this.selection?.setVisible(selection && !!this.layer);
+		this.previewLayer?.setVisible(preview && !!this.layer);
 	}
 	
 	public async setLayer(layer?: CCMapLayer) {
@@ -139,7 +138,7 @@ export class BaseTileDrawer extends BaseObject {
 		
 		const exists = await Helper.loadTexture(layer.details.tilesetName, this.scene);
 		if (!exists) {
-			this.setVisibility(false);
+			this.setVisibility(true, false);
 			return;
 		}
 		this.setVisibility(true);
@@ -250,6 +249,7 @@ export class BaseTileDrawer extends BaseObject {
 		}
 		
 		this.selection = this.scene.add.container(x, y);
+		this.selection.setDepth(10);
 		
 		const rect = this.scene.add.rectangle(0, 0, width * Globals.TILE_SIZE, height * Globals.TILE_SIZE);
 		rect.setOrigin(0, 0);
