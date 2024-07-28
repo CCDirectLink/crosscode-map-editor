@@ -54,6 +54,7 @@ export class TileSelectorScene extends Phaser.Scene {
 			let width = 0;
 			let height = 0;
 			
+			// If the selection is a continuous rectangle in the tile selector, highlight it
 			for (const tile of tiles) {
 				const id = tile.id - tile.offset.x - tile.offset.y * this.tilesetWidth;
 				if (baseTile.id !== id) {
