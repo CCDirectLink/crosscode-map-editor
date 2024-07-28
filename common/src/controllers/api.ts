@@ -268,11 +268,11 @@ export async function getAllModMapEditorConfigs(dir: string): Promise<ConfigExte
 	for (const mod of Object.values(packages)) {
 		const modName = mod.folderName;
 		const mapEditorPath = path.join(dir, 'mods', modName, 'map-editor');
-		const files = await tryReadDir(mapEditorPath);
+		const files = await listAllFiles(mapEditorPath, [], 'json', path.resolve(dir));
 		for (const filename of files) {
-			const file = await fs.promises.readFile(path.join(mapEditorPath, filename), 'utf-8');
+			const file = await fs.promises.readFile(path.join(dir, filename), 'utf-8');
 			configs.push({
-				filename: filename,
+				filename: path.basename(filename),
 				mod: modName,
 				file: file
 			});
