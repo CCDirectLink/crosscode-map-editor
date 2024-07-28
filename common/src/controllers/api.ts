@@ -1,8 +1,7 @@
 import { fsPromise, pathPromise } from '../require.js';
 import { saveFile as save } from './saveFile.js';
 
-
-export interface ConfigExtension {
+export interface ModEditorConfig {
 	filename: string;
 	mod: string;
 	file: string;
@@ -257,13 +256,13 @@ export async function getAllMods(dir: string) {
 		.sort((a, b) => a.displayName.localeCompare(b.displayName));
 }
 
-export async function getAllModMapEditorConfigs(dir: string): Promise<ConfigExtension[]> {
+export async function getAllModMapEditorConfigs(dir: string): Promise<ModEditorConfig[]> {
 	const packages = await readMods(dir);
 	
 	const fs = await fsPromise;
 	const path = await pathPromise;
 	
-	const configs: ConfigExtension[] = [];
+	const configs: ModEditorConfig[] = [];
 	
 	for (const mod of Object.values(packages)) {
 		const modName = mod.folderName;
