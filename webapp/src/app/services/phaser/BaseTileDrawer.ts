@@ -101,8 +101,7 @@ export class BaseTileDrawer extends BaseObject {
 	}
 	
 	protected override activate(): void {
-		this.selection?.setVisible(true);
-		this.previewLayer?.setVisible(true);
+		this.setVisibility(true);
 		const pointerDown = (pointer: Phaser.Input.Pointer) => {
 			if (pointer.rightButtonDown() || this.leftClick && pointer.leftButtonDown()) {
 				this.onMouseRightDown();
@@ -122,20 +121,28 @@ export class BaseTileDrawer extends BaseObject {
 	}
 	
 	protected override deactivate(): void {
-		this.selection?.setVisible(false);
-		this.previewLayer?.setVisible(false);
+		this.setVisibility(false);
+	}
+	
+	private setVisibility(visible: boolean) {
+		visible = visible && !!this.layer;
+		this.selection?.setVisible(visible);
+		this.previewLayer?.setVisible(visible);
 	}
 	
 	public async setLayer(layer?: CCMapLayer) {
 		this.layer = layer;
 		if (!layer) {
+			this.setVisibility(false);
 			return;
 		}
 		
 		const exists = await Helper.loadTexture(layer.details.tilesetName, this.scene);
 		if (!exists) {
+			this.setVisibility(false);
 			return;
 		}
+		this.setVisibility(true);
 		
 		const tileset = this.previewTileMap.addTilesetImage('only', layer.details.tilesetName);
 		if (tileset) {

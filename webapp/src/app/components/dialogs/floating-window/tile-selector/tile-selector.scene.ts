@@ -34,7 +34,11 @@ export class TileSelectorScene extends Phaser.Scene {
 		};
 		
 		this.subs.push(Globals.mapLoaderService.selectedLayer.subscribe(async layer => {
-			await this.drawTileset(layer);
+			const success = await this.drawTileset(layer);
+			if (!success){
+				this.tileMap.removeAllLayers();
+				await this.baseDrawer.setLayer();
+			}
 		}));
 		
 		this.subs.push(Globals.phaserEventsService.changeSelectedTiles.subscribe(tiles => {
@@ -97,17 +101,14 @@ export class TileSelectorScene extends Phaser.Scene {
 		this.subs = [];
 	}
 	
-	private async drawTileset(selectedLayer?: CCMapLayer) {
+	private async drawTileset(selectedLayer?: CCMapLayer): Promise<boolean> {
 		if (!selectedLayer?.details.tilesetName) {
-			if (this.tileMap) {
-				this.tileMap.removeAllLayers();
-			}
-			return;
+			return false;
 		}
 		
 		const exists = await Helper.loadTexture(selectedLayer.details.tilesetName, this);
 		if (!exists) {
-			return;
+			return false;
 		}
 		
 		const tilesetSize = Helper.getTilesetSize(this, selectedLayer.details.tilesetName);
@@ -115,7 +116,7 @@ export class TileSelectorScene extends Phaser.Scene {
 		this.tileMap.removeAllLayers();
 		const tileset = this.tileMap.addTilesetImage(selectedLayer.details.tilesetName);
 		if (!tileset) {
-			return;
+			return false;
 		}
 		tileset.firstgid = 1;
 		const layer = this.tileMap.createBlankLayer('first', tileset, 0, 0, tilesetSize.x, tilesetSize.y)!;
@@ -133,5 +134,7 @@ export class TileSelectorScene extends Phaser.Scene {
 		customPutTilesAt(data, layer);
 		this.tilemapLayer.setPhaserLayer(layer);
 		await this.baseDrawer.setLayer(this.tilemapLayer);
+		
+		return true;
 	}
 }
