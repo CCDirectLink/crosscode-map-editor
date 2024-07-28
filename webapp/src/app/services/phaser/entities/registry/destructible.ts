@@ -105,7 +105,7 @@ export class Destructible extends CCEntity {
 		const mapStyle = Helper.getMapStyle(Globals.map, 'destruct');
 		for (const sheet of sheets) {
 			if (!sheet.gfx) {
-				sheet.gfx = mapStyle['sheet'];
+				sheet.gfx = mapStyle?.sheet;
 			}
 			const exists = await Helper.loadTexture(sheet.gfx, this.scene);
 			if (!exists) {

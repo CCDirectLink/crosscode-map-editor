@@ -1,20 +1,13 @@
 export interface MapStyles {
-	[key: string]: MapStyle;
+	default: MapStyleType;
+	
+	[key: string]: MapStyleType | undefined;
 }
 
-export type MapStyle = {
-	sheet: string;
-	hasDoorMat?: boolean;
-	walls?: WallColors;
-} & {
-	[key: string]: any;
-};
+export interface MapStyleType {
+	[key: string]: MapStyle | undefined;
+}
 
-export interface WallColors {
-	blockFront: string;
-	blockTop: string;
-	pBlockFront: string;
-	pBlockTop: string;
-	npBlockFront: string;
-	npBlockTop: string;
+export interface MapStyle {
+	sheet?: string;
 }
