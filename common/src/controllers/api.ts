@@ -2,10 +2,10 @@ import { fsPromise, pathPromise } from '../require.js';
 import { saveFile as save } from './saveFile.js';
 
 
-export interface ConfigExtension<T> {
+export interface ConfigExtension {
 	filename: string;
 	mod: string;
-	file: T;
+	file: string;
 }
 
 const mods: string[] = [];
@@ -257,13 +257,13 @@ export async function getAllMods(dir: string) {
 		.sort((a, b) => a.displayName.localeCompare(b.displayName));
 }
 
-export async function getAllModMapEditorConfigs(dir: string): Promise<ConfigExtension<string>[]> {
+export async function getAllModMapEditorConfigs(dir: string): Promise<ConfigExtension[]> {
 	const packages = await readMods(dir);
 	
 	const fs = await fsPromise;
 	const path = await pathPromise;
 	
-	const configs: ConfigExtension<string>[] = [];
+	const configs: ConfigExtension[] = [];
 	
 	for (const mod of Object.values(packages)) {
 		const modName = mod.folderName;

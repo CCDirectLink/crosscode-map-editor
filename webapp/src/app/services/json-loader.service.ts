@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClientService } from './http-client.service';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
-import { ConfigExtension } from 'cc-map-editor-common/dist/controllers/api';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
@@ -11,7 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class JsonLoaderService {
 	
 	private readonly initialized?: Promise<void>;
-	private configs = new Map<string, ConfigExtension<unknown>[]>;
+	private configs = new Map<string, unknown[]>;
 	
 	private cache: Record<string, unknown> = {};
 	
@@ -27,13 +26,9 @@ export class JsonLoaderService {
 		const configs = await this.http.getModMapEditorConfigs();
 		
 		for (const config of configs) {
-			const newConfig: ConfigExtension<any> = {
-				filename: config.filename,
-				mod: config.mod,
-				file: {},
-			};
+			let parsedFile: unknown;
 			try {
-				newConfig.file = JSON.parse(config.file);
+				parsedFile = JSON.parse(config.file);
 			} catch (e) {
 				console.error(e);
 				this.snackbar.open(
@@ -45,14 +40,14 @@ export class JsonLoaderService {
 			}
 			const configs = this.configs.get(config.filename) ?? [];
 			this.configs.set(config.filename, configs);
-			configs.push(newConfig);
+			configs.push(parsedFile);
 		}
 	}
 	
 	async loadJson<T>(file: string): Promise<T[]> {
 		await this.initialized;
 		const json = await lastValueFrom(this.angularHttp.get(`./assets/${file}`));
-		const modJson = (this.configs.get(file) ?? []).map(v => v.file) as T[];
+		const modJson = (this.configs.get(file) ?? [])  as T[];
 		
 		return [
 			json as T,
