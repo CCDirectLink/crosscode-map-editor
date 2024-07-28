@@ -3,19 +3,17 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { AbstractEvent, EventType } from '../event-registry/abstract-event';
 import { EventRegistryService } from '../event-registry/event-registry.service';
-import { JsonLoaderService } from '../../../../services/json-loader.service';
 
 @Injectable({
 	providedIn: 'root'
 })
 export class EventHelperService {
 	
-	selectedEvent: BehaviorSubject<AbstractEvent<any> | null> = new BehaviorSubject<AbstractEvent<any> | null> (null);
+	selectedEvent: BehaviorSubject<AbstractEvent<any> | null> = new BehaviorSubject<AbstractEvent<any> | null>(null);
 	
 	constructor(
 		private eventRegistry: EventRegistryService,
 		private domSanitizer: DomSanitizer,
-		private jsonLoader: JsonLoaderService
 	) {
 	}
 	
