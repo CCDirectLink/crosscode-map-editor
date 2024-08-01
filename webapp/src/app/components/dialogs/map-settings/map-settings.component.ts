@@ -63,6 +63,8 @@ export class MapSettingsComponent {
 			y: settings.mapHeight
 		});
 		
+		this.events.updateEntities.next(true);
+		
 		this.ref.close();
 	}
 }

@@ -13,6 +13,7 @@ import { MainScene } from '../../services/phaser/main-scene';
 import { PhaserEventsService } from '../../services/phaser/phaser-events.service';
 import { SettingsService } from '../../services/settings.service';
 import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
+import { JsonLoaderService } from '../../services/json-loader.service';
 
 @Component({
 	selector: 'app-phaser',
@@ -34,7 +35,8 @@ export class PhaserComponent implements AfterViewInit {
 		snackbar: MatSnackBar,
 		registry: EntityRegistryService,
 		autotile: AutotileService,
-		settingsService: SettingsService
+		settingsService: SettingsService,
+		jsonLoader: JsonLoaderService,
 	) {
 		Globals.stateHistoryService = stateHistory;
 		Globals.mapLoaderService = mapLoader;
@@ -45,6 +47,7 @@ export class PhaserComponent implements AfterViewInit {
 		Globals.httpService = http;
 		Globals.snackbar = snackbar;
 		Globals.settingsService = settingsService;
+		Globals.jsonLoader = jsonLoader;
 	}
 
 

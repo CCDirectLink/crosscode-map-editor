@@ -9,10 +9,10 @@ import { Helper } from '../../../../services/phaser/helper';
 import { CharacterSettings, Face } from '../../../../services/phaser/entities/registry/npc';
 import { Person } from '../../../../models/events';
 import { prepareSheet } from '../../../../services/phaser/sheet-parser';
-import AbstractFaces from '../../../../../assets/abstract-faces.json';
 import { getNPCTemplates } from '../../../../services/phaser/entities/registry/npc-templates';
 import { ExpressionRendererEntity, ExpressionRendererSettings } from './expression-renderer-entity';
 import { Globals } from '../../../../services/globals';
+import { JsonLoaderService } from '../../../../services/json-loader.service';
 
 @Component({
 	selector: 'app-custom-expression-widget',
@@ -27,6 +27,7 @@ export class CustomExpressionWidgetComponent extends OverlayWidget<Person> imple
 	constructor(
 		private http: HttpClientService,
 		private changeDetectorRef: ChangeDetectorRef,
+		private jsonLoader: JsonLoaderService,
 		overlayService: OverlayService,
 		overlay: Overlay,
 	) {
@@ -109,7 +110,8 @@ export class CustomExpressionWidgetComponent extends OverlayWidget<Person> imple
 		let face: Face = sheet.face ?? {};
 		
 		if (typeof sheet.face === 'object' && sheet.face?.ABSTRACT) {
-			face = AbstractFaces[sheet.face.ABSTRACT as string];
+			const abstractFaces = await this.jsonLoader.loadJsonMerged<Record<string, Face>>('abstract-faces.json');
+			face = abstractFaces[sheet.face.ABSTRACT as string];
 		}
 		
 		return face;

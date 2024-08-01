@@ -1,7 +1,6 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { Injectable } from '@angular/core';
 
-import entities from '../../assets/entities.json';
 import { ListSearchOverlayComponent } from '../components/dialogs/list-search-overlay/list-search-overlay.component';
 import { OverlayRefControl } from '../components/dialogs/overlay/overlay-ref-control';
 import { OverlayService } from '../components/dialogs/overlay/overlay.service';
@@ -9,6 +8,8 @@ import { MapEntity, Point } from '../models/cross-code-map';
 import { GlobalEventsService } from './global-events.service';
 import { EntityRegistryService } from './phaser/entities/registry/entity-registry.service';
 import { Vec2 } from './phaser/vec2';
+import { JsonLoaderService } from './json-loader.service';
+import { EntitiesJson } from './phaser/entities/registry/default-entity';
 
 @Injectable({
 	providedIn: 'root'
@@ -26,11 +27,13 @@ export class AddEntityMenuService {
 		private events: GlobalEventsService,
 		private overlayService: OverlayService,
 		private overlay: Overlay,
-		private entityRegistry: EntityRegistryService
+		private entityRegistry: EntityRegistryService,
+		private jsonLoader: JsonLoaderService,
 	) {
 	}
 	
-	public init() {
+	public async init() {
+		const entities = await this.jsonLoader.loadJsonMerged<EntitiesJson>('entities.json');
 		const registry = Object.keys(this.entityRegistry.getAll());
 		const entityNames = Object.keys(entities);
 		

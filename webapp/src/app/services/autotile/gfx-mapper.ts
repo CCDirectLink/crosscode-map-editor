@@ -2,28 +2,17 @@ import { Point } from '../../models/cross-code-map';
 import { ChipsetConfig } from '../height-map/gfx-mapper/gfx-mapper.constants';
 import { Helper } from '../phaser/helper';
 import { Vec2 } from '../phaser/vec2';
-import {
-	AutotileConfig,
-	AutotileType, FillType, FILL_TYPE,
-	FILL_TYPE_CLIFF,
-	FILL_TYPE_CLIFF_ALT,
-	FILL_TYPE_CLIFF_BORDER
-} from './autotile.constants';
-
-import autotilesJson from '../../../assets/autotiles.json';
-
-import tilesets from '../../../assets/tilesets.json';
-
-const TILESET_CONFIG: { [key: string]: ChipsetConfig } = tilesets;
+import { AutotileConfig, AutotileType, FILL_TYPE, FILL_TYPE_CLIFF, FILL_TYPE_CLIFF_ALT, FILL_TYPE_CLIFF_BORDER, FillType } from './autotile.constants';
+import { JsonLoaderService } from '../json-loader.service';
 
 interface JsonType {
 	map: string;
 	tileCountX: number;
 	autotiles: {
-		type: keyof typeof AutotileType;
+		size: Point;
+		cliff?: Point | null | false;
 		mergeWithEmpty?: boolean;
 		base: Point;
-		cliff: Point;
 	}[];
 }
 
@@ -33,17 +22,25 @@ export class GfxMapper {
 		[key: string]: AutotileConfig[] | undefined;
 	} = {};
 	
+	
+	private TILESET_CONFIG: Record<string, ChipsetConfig | undefined> = {};
+	
 	private mapping: { [key in AutotileType]: Map<number, keyof FillType> } = <any>{};
 	private cliffBorderMapping = new Map<number, keyof FillType>();
 	private cliffMapping = new Map<number, keyof FillType>();
 	private cliffAltMapping = new Map<number, keyof FillType>();
 	
-	constructor() {
-		this.generateAutotileConfig();
+	constructor(
+		private jsonLoader: JsonLoaderService
+	) {
+		this.init();
+	}
+	
+	private async init() {
+		this.TILESET_CONFIG = await this.jsonLoader.loadJsonMerged('tilesets.json');
+		await this.generateAutotileConfig();
 		
-		const enumVals = Object.values(AutotileType).filter(v => !isNaN(Number(v)));
-		
-		for (const type of enumVals as AutotileType[]) {
+		for (const type of Helper.typedKeys(FILL_TYPE)) {
 			const map = new Map<number, keyof FillType>();
 			this.mapping[type] = map;
 			this.generateMapping(map, FILL_TYPE[type]);
@@ -52,24 +49,44 @@ export class GfxMapper {
 		this.generateMapping(this.cliffBorderMapping, FILL_TYPE_CLIFF_BORDER);
 		this.generateMapping(this.cliffMapping, FILL_TYPE_CLIFF);
 		this.generateMapping(this.cliffAltMapping, FILL_TYPE_CLIFF_ALT);
-		
 	}
 	
-	private generateAutotileConfig() {
-		console.log(autotilesJson);
-		for (const config of autotilesJson as JsonType[]) {
-			const arr: AutotileConfig[] = [];
+	private async generateAutotileConfig() {
+		const jsons = await this.jsonLoader.loadJson<JsonType[]>('autotiles.json');
+		const autotilesJson = jsons.flat();
+		for (const config of autotilesJson) {
+			let arr: AutotileConfig[] = [];
+			const prevArr = this.AUTOTILE_CONFIG[config.map];
+			if (prevArr) {
+				arr = prevArr;
+			}
 			this.AUTOTILE_CONFIG[config.map] = arr;
 			
 			for (const autotile of config.autotiles) {
-				const type = AutotileType[autotile.type];
+				const generatedType: AutotileType = `${autotile.size.x}x${autotile.size.y}` as AutotileType;
+				
+				const tileset = this.TILESET_CONFIG[config.map];
+				const terrains = tileset?.terrains ?? [];
+				if (tileset) {
+					terrains.push(tileset.base);
+				}
+				let cliff = autotile.cliff;
+				if (cliff === undefined) {
+					for (const terrain of terrains) {
+						if (terrain.ground.x === autotile.base.x && terrain.ground.y === autotile.base.y) {
+							cliff = terrain.cliff;
+							break;
+						}
+					}
+				}
+				
 				const newConfig: AutotileConfig = {
 					key: config.map,
 					tileCountX: config.tileCountX,
-					type: type,
-					mergeWithEmpty: autotile.mergeWithEmpty === undefined ? true : autotile.mergeWithEmpty,
+					type: generatedType,
+					mergeWithEmpty: !!autotile.mergeWithEmpty,
 					base: autotile.base,
-					cliff: autotile.cliff
+					cliff: cliff ? cliff : undefined
 				};
 				
 				arr.push(newConfig);
@@ -108,7 +125,7 @@ export class GfxMapper {
 		if (!cliff) {
 			return this.getFill(pos, config.base, this.mapping[config.type]);
 		}
-		const tilesetConfig = TILESET_CONFIG[config.key];
+		const tilesetConfig = this.TILESET_CONFIG[config.key];
 		let tilesetBase;
 		if (tilesetConfig && tilesetConfig.base) {
 			tilesetBase = tilesetConfig.base;
@@ -146,7 +163,7 @@ export class GfxMapper {
 	}
 	
 	private getMappingKey(p: Point) {
-		return p.y * 2000 + p.x;
+		return p.y * 1000 + p.x;
 	}
 	
 }

@@ -1,6 +1,5 @@
-import mapStyles from '../../../../../webapp/src/assets/map-styles.json';
 import { Point } from '../../models/cross-code-map';
-import { MapStyles } from '../../models/map-styles';
+import { MapStyle, MapStyles } from '../../models/map-styles';
 import { Globals } from '../globals';
 import { CCMap } from './tilemap/cc-map';
 import { CCMapLayer } from './tilemap/cc-map-layer';
@@ -70,6 +69,10 @@ export class Helper {
 			return obj;
 		}
 		return JSON.parse(JSON.stringify(obj));
+	}
+	
+	public static typedKeys<T extends {}>(obj: T): (keyof T)[] {
+		return Object.keys(obj) as (keyof T)[];
 	}
 	
 	public static getJson(key: string, callback: (json: any) => void) {
@@ -146,13 +149,11 @@ export class Helper {
 		return tag === 'input' || tag === 'textarea';
 	}
 	
-	public static getMapStyle(map: CCMap, type: string): MapStyles {
+	public static getMapStyle(map: CCMap, type: keyof MapStyles): MapStyle | undefined {
+		const mapStyles = Globals.jsonLoader.loadJsonMergedSync<MapStyles>('map-styles.json');
 		const mapStyleName = map.attributes.mapStyle || 'default';
 		const mapStyle = mapStyles[mapStyleName];
-		if (mapStyle && mapStyle[type]) {
-			return mapStyle[type];
-		}
-		return mapStyles.default[type];
+		return mapStyle?.[type] ?? mapStyles.default[type];
 	}
 	
 	public static async asyncFilter<T>(arr: T[], predicate: (v: T) => Promise<boolean>) {

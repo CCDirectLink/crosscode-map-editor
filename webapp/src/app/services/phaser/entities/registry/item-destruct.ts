@@ -2,10 +2,11 @@ import { Helper } from '../../helper';
 import { Anims, AnimSheet } from '../../sheet-parser';
 import { DefaultEntity } from './default-entity';
 import { Point3 } from '../../../../models/cross-code-map';
-import { AttributeValue, EntityAttributes } from '../cc-entity';
+import { EntityAttributes } from '../cc-entity';
 import { EnemyInfo } from './enemy';
 import { SheetReference } from './destructible';
 import { GlobalSettings } from '../../global-settings';
+import { Globals } from '../../../globals';
 
 export interface ItemDestructTypes {
 	[name: string]: ItemDestructType;
@@ -58,7 +59,7 @@ export class ItemDestruct extends DefaultEntity {
 				desType = config.desType;
 			}
 		}
-		const destructibles = this.scene.cache.json.get('destructibles.json') as ItemDestructTypes;
+		const destructibles = await Globals.jsonLoader.loadJsonMerged<ItemDestructTypes>('destructibles.json');
 		const type = destructibles[desType];
 		if (!type) {
 			this.generateNoImageType(0xFF0000, 1);

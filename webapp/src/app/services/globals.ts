@@ -10,6 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { SettingsService } from './settings.service';
 import { signal } from '@angular/core';
 import { GridSettings } from '../components/toolbar/grid-menu/grid-menu.component';
+import { JsonLoaderService } from './json-loader.service';
 
 export class Globals {
 	static isElectron = false;
@@ -27,7 +28,6 @@ export class Globals {
 	});
 	static disablePhaserInput = new Set<any>();
 	
-	// TODO: remove them from global state
 	static stateHistoryService: StateHistoryService;
 	static mapLoaderService: MapLoaderService;
 	static globalEventsService: GlobalEventsService;
@@ -37,4 +37,5 @@ export class Globals {
 	static httpService: HttpClientService;
 	static settingsService: SettingsService;
 	static snackbar: MatSnackBar;
+	static jsonLoader: JsonLoaderService;
 }

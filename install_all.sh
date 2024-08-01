@@ -1,9 +1,9 @@
 #!/bin/bash
 
 cd common
-npm install
+npm ci
 npm run build
 cd ../backend
-npm install
+npm ci
 cd ../webapp
-npm install
+npm ci

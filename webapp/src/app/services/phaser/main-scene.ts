@@ -24,8 +24,6 @@ export class MainScene extends Phaser.Scene {
 		this.load.image('pixel', 'assets/pixel.png');
 		this.load.image('ingame', 'assets/ingame.png');
 		
-		this.load.json('destructibles.json', 'assets/destructibles.json');
-		this.load.json('destructible-types.json', 'assets/destructible-types.json');
 		this.load.crossOrigin = 'anonymous';
 		
 		// this.load.on('progress', (val: number) => console.log(val));

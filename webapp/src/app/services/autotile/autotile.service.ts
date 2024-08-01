@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Point } from '../../models/cross-code-map';
-import { CheckDir, CHECK_DIR, CHECK_ITERATE } from '../height-map/heightmap.constants';
+import { CHECK_DIR, CHECK_ITERATE, CheckDir } from '../height-map/heightmap.constants';
 import { CCMapLayer } from '../phaser/tilemap/cc-map-layer';
 import { AutotileConfig, FillType } from './autotile.constants';
 import { GfxMapper } from './gfx-mapper';
 import { customPutTileAt } from '../phaser/tilemap/layer-helper';
+import { PhaserEventsService } from '../phaser/phaser-events.service';
+import { combineLatest } from 'rxjs';
+import { MapLoaderService } from '../map-loader.service';
+import { GlobalEventsService } from '../global-events.service';
+import { JsonLoaderService } from '../json-loader.service';
 
 interface TileData {
 	pos: Point;
@@ -17,9 +22,33 @@ interface TileData {
 })
 export class AutotileService {
 	
-	private gfxMapper = new GfxMapper();
+	private gfxMapper: GfxMapper;
 	
-	constructor() {
+	constructor(
+		phaserEvents: PhaserEventsService,
+		mapLoader: MapLoaderService,
+		events: GlobalEventsService,
+		jsonLoader: JsonLoaderService,
+	) {
+		this.gfxMapper = new GfxMapper(jsonLoader);
+		combineLatest([
+			phaserEvents.changeSelectedTiles.asObservable(),
+			mapLoader.selectedLayer.asObservable()
+		]).subscribe(([tiles, layer]) => {
+			if (!layer) {
+				events.isAutotile.next(false);
+				return;
+			}
+			let autotile = false;
+			for (const tile of tiles) {
+				const config = this.gfxMapper.getAutotileConfig(layer.details.tilesetName, tile.id, false);
+				if (config) {
+					autotile = true;
+					break;
+				}
+			}
+			events.isAutotile.next(autotile);
+		});
 	}
 	
 	public drawTile(layer: CCMapLayer, x: number, y: number, tile: number, checkCliff = true) {
@@ -67,29 +96,54 @@ export class AutotileService {
 		
 		let fillType = '';
 		
-		if (this.checkAt(w, 1) && this.checkAt(nw, 2) && this.checkAt(n, 3)) {
-			fillType += 'X';
+		// 4x4 needs special handling, corners are ignored
+		if (config.type === '4x4') {
+			if (this.checkAt(n, 2)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
+			if (this.checkAt(e, 3)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
+			if (this.checkAt(s, 0)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
+			if (this.checkAt(w, 1)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
 		} else {
-			fillType += 'O';
+			if (this.checkAt(w, 1) && this.checkAt(nw, 2) && this.checkAt(n, 3)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
+			
+			if (this.checkAt(n, 2) && this.checkAt(ne, 3) && this.checkAt(e, 0)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
+			
+			if (this.checkAt(e, 3) && this.checkAt(se, 0) && this.checkAt(s, 1)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
+			
+			if (this.checkAt(s, 0) && this.checkAt(sw, 1) && this.checkAt(w, 2)) {
+				fillType += 'X';
+			} else {
+				fillType += 'O';
+			}
 		}
 		
-		if (this.checkAt(n, 2) && this.checkAt(ne, 3) && this.checkAt(e, 0)) {
-			fillType += 'X';
-		} else {
-			fillType += 'O';
-		}
-		
-		if (this.checkAt(e, 3) && this.checkAt(se, 0) && this.checkAt(s, 1)) {
-			fillType += 'X';
-		} else {
-			fillType += 'O';
-		}
-		
-		if (this.checkAt(s, 0) && this.checkAt(sw, 1) && this.checkAt(w, 2)) {
-			fillType += 'X';
-		} else {
-			fillType += 'O';
-		}
 		tile.fill = fillType as keyof FillType;
 		this.drawSingleTile(layer, config, tile);
 	}

@@ -1,12 +1,16 @@
 @use '@angular/material' as mat;
 
-.caption {
+.bottom-container {
 	bottom: 0;
-	padding: 5px;
-	color: white;
+
 	z-index: 9999;
 	position: absolute;
-	pointer-events: none;
+	//pointer-events: none;
+}
+
+.caption {
+	padding: 5px;
+	color: white;
 }
 
 .version {
@@ -14,9 +18,14 @@
 }
 
 .bottom-elements {
-	background-color: #0005;
+	display: flex;
+	gap: 8px;
 
 	&:empty {
 		display: none;
+	}
+
+	& .caption {
+		background-color: #0005;
 	}
 }

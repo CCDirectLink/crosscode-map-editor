@@ -10,6 +10,7 @@ $toolbarHeight: 32px;
 .container {
 	min-width: 100px;
 	position: absolute;
+	z-index: 100;
 }
 
 .ng-draggable {

@@ -9,11 +9,11 @@ import { EventRegistryService } from '../event-registry/event-registry.service';
 })
 export class EventHelperService {
 	
-	selectedEvent: BehaviorSubject<AbstractEvent<any> | null> = new BehaviorSubject<AbstractEvent<any> | null> (null);
+	selectedEvent: BehaviorSubject<AbstractEvent<any> | null> = new BehaviorSubject<AbstractEvent<any> | null>(null);
 	
 	constructor(
 		private eventRegistry: EventRegistryService,
-		private domSanitizer: DomSanitizer
+		private domSanitizer: DomSanitizer,
 	) {
 	}
 	

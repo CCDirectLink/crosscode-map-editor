@@ -1,6 +1,10 @@
-import entities from '../../../../../assets/entities.json';
 import { CCMap } from '../../tilemap/cc-map';
 import { CCEntity, EntityAttributes, ScaleSettings } from '../cc-entity';
+import { Globals } from '../../../globals';
+
+export interface EntitiesJson {
+	[key: string]: JsonEntityType;
+}
 
 interface JsonEntityType {
 	attributes: EntityAttributes;
@@ -37,8 +41,15 @@ export class DefaultEntity extends CCEntity {
 		}
 	};
 	
-	constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, private typeName: string) {
+	constructor(
+		scene: Phaser.Scene,
+		map: CCMap,
+		x: number,
+		y: number,
+		private typeName: string
+	) {
 		super(scene, map, x, y, typeName);
+		const entities = Globals.jsonLoader.loadJsonMergedSync<EntitiesJson>('entities.json');
 		this.typeDef = entities[typeName];
 	}
 	

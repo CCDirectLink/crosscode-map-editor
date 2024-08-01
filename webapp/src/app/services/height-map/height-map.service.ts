@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
 
-import tilesets from '../../../assets/tilesets.json';
 import { StateHistoryService } from '../../components/dialogs/floating-window/history/state-history.service';
 import { AutotileService } from '../autotile/autotile.service';
 import { GlobalEventsService } from '../global-events.service';
@@ -29,8 +28,11 @@ import {
 	WallLink
 } from './heightmap.constants';
 import { customPutTileAt } from '../phaser/tilemap/layer-helper';
+import { JsonLoaderService } from '../json-loader.service';
 
-const TILESET_CONFIG: { [key: string]: ChipsetConfig } = tilesets;
+interface TilesetJson {
+	[key: string]: ChipsetConfig;
+}
 
 interface TileData {
 	level: number;
@@ -53,6 +55,7 @@ export class HeightMapService {
 	private maxLevel = 0;
 	private width = 0;
 	private height = 0;
+	private tilesetConfig: TilesetJson = {};
 	
 	private c_wallProps = {start: 0, end: 0};
 	
@@ -61,6 +64,7 @@ export class HeightMapService {
 		private mapLoader: MapLoaderService,
 		private stateHistory: StateHistoryService,
 		private autotile: AutotileService,
+		private jsonLoader: JsonLoaderService,
 		eventManager: EventManager
 	) {
 		
@@ -75,9 +79,11 @@ export class HeightMapService {
 		});
 	}
 	
-	public init() {
+	public async init() {
 		this.events.generateHeights.subscribe(forceAll => this.generateHeights(forceAll));
 		this.mapLoader.tileMap.subscribe(map => this.onMapLoad(map));
+		
+		this.tilesetConfig = await this.jsonLoader.loadJsonMerged<TilesetJson>('tilesets.json');
 		
 		// TODO: add shortcuts for generation
 	}
@@ -202,7 +208,7 @@ export class HeightMapService {
 			if (details.distance !== 1) {
 				continue;
 			}
-			if (details.type === 'Background' && TILESET_CONFIG[details.tilesetName] && lastLevel !== details.level) {
+			if (details.type === 'Background' && this.tilesetConfig[details.tilesetName] && lastLevel !== details.level) {
 				lastLevel = details.level;
 				this.applyOnBackground(layer, forceAll);
 			} else if (details.type === 'Collision') {
@@ -229,7 +235,7 @@ export class HeightMapService {
 	}
 	
 	private applyOnBackground(layer: CCMapLayer, forceAll: boolean) {
-		const config = TILESET_CONFIG[layer.details.tilesetName];
+		const config = this.tilesetConfig[layer.details.tilesetName];
 		if (!config) {
 			return;
 		}

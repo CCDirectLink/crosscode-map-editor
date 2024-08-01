@@ -24,7 +24,11 @@ import { ShowSideMsg } from './show-side-msg';
 import { ShowModalChoice } from './show-modal-choice';
 import { SetMsgExpression } from './set-msg-expression';
 
-type EventConstructor<T extends EventType> = new (domSanitizer: DomSanitizer, data: T, actionStep: boolean) => AbstractEvent<T>;
+type EventConstructor<T extends EventType> = new (
+	domSanitizer: DomSanitizer,
+	data: T,
+	actionStep: boolean
+) => AbstractEvent<T>;
 
 @Injectable({
 	providedIn: 'root'

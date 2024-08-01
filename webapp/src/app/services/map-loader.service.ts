@@ -49,7 +49,8 @@ export class MapLoaderService {
 			} catch (e: any) {
 				console.error(e);
 				this.snackBar.open('Error: ' + e.message, undefined, {
-					duration: 2500
+					duration: 2500,
+					panelClass: 'snackbar-error'
 				});
 				return;
 			}
