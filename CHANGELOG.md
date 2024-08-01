@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+## [1.8.0] 2024-08-01
 ### Added
 - Added overrideable JSON configs, see [#327](https://github.com/CCDirectLink/crosscode-map-editor/pull/327) for more details
 - Added most definitions to autotiles.json
