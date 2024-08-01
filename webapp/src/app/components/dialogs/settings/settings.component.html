@@ -24,7 +24,7 @@
 					<mat-label>Mod</mat-label>
 					<mat-select [(value)]="mod" (selectionChange)="modSelectEvent($event.value)">
 						<mat-option>None</mat-option>
-						<mat-option *ngFor="let mod of mods" [value]="mod.id" [appColoredText]="mod.displayName"></mat-option>
+						<mat-option *ngFor="let mod of mods" [value]="mod.id"><span [appColoredText]="mod.displayName"></span></mat-option>
 					</mat-select>
 					<mat-hint>Maps will be stored and loaded from the selected mod</mat-hint>
 				</mat-form-field>
