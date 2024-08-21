@@ -3,11 +3,14 @@ import { AttributeValue, CCEntity } from '../../services/phaser/entities/cc-enti
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export abstract class AbstractWidget<T = any> implements OnInit, OnChanges {
+export abstract class AbstractWidget<T = any, Attr = AttributeValue> implements OnInit, OnChanges {
 	@Input() key!: string;
-	@Input() attribute!: AttributeValue;
+	@Input() attribute!: Attr;
 	@Input() entity?: CCEntity;
 	@Input() custom?: T;
+	
+	// Cannot subscribe to
+	@Input() changeVal = (val: T) => {};
 	
 	@Output() onChange = new EventEmitter<any>();
 	
@@ -52,5 +55,6 @@ export abstract class AbstractWidget<T = any> implements OnInit, OnChanges {
 	updateType(value: any) {
 		this.entity?.updateType();
 		this.onChange.emit(value);
+		this.changeVal(value);
 	}
 }

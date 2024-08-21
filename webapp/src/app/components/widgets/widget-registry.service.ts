@@ -13,6 +13,7 @@ import { PropTypeWidgetComponent } from './prop-type-widget/prop-type-widget.com
 import { ScalablePropConfigWidgetComponent } from './scalable-prop-config-widget/scalable-prop-config-widget.component';
 import { CustomDesTypeWidgetComponent } from './custom-des-type-widget/custom-des-type-widget.component';
 import { CharacterWidgetComponent } from './character-widget/character-widget.component';
+import { ArrayWidgetComponent } from './array-widget/array-widget.component';
 
 @Injectable({
 	providedIn: 'root'
@@ -40,6 +41,7 @@ export class WidgetRegistryService {
 		this.register('EntityAnim', StringWidgetComponent);
 		this.register('CustomDesType', CustomDesTypeWidgetComponent);
 		this.register('VarCondition', StringWidgetComponent);
+		this.register('Array', ArrayWidgetComponent);
 	}
 	
 	private setDefaultWidget(widget: any) {

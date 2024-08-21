@@ -1,0 +1,11 @@
+@use '@angular/material' as mat;
+
+:host {
+	@include mat.icon-button-density(-4);
+}
+
+.remove-button {
+	position: absolute;
+	left: 50px;
+	top: -4px;
+}
