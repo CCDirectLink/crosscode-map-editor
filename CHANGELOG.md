@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Added
+- Added Array Widget
+
 ## [1.8.1] 2024-08-01
 ### Fixed
 - The currently selected mod is now properly displayed in the settings menu

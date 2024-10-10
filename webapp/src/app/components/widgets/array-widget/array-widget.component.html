@@ -1,0 +1,23 @@
+<div class="flex flex-col property-container">
+	<div class="flex flex-row items-center mb-2">
+		<label class="property-name" [matTooltip]="attribute?.description!">{{ key }}:</label>
+		<button mat-icon-button (click)="add()">
+			<mat-icon>add</mat-icon>
+		</button>
+	</div>
+	
+	<div class="flex flex-col">
+		@for (comp of dynamicComponents; track $index) {
+			<div class="relative">
+				<div class="remove-button">
+					<button mat-icon-button (click)="remove($index)">
+						<mat-icon>remove</mat-icon>
+					</button>
+				</div>
+				<ng-container
+					*ngComponentOutlet="comp.comp; inputs: comp.inputs"
+				></ng-container>
+			</div>
+		}
+	</div>
+</div>
