@@ -82,6 +82,6 @@ export class VirtualMapNode {
 			return aIsDir ? -1 : 1;
 		}
 
-		return a.name.localeCompare(b.name);
+		return a.name.localeCompare(b.name, undefined, {numeric: true});
 	}
 }
