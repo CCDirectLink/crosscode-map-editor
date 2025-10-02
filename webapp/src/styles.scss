@@ -2,9 +2,9 @@
 @use '@angular/material' as mat;
 @use "reset";
 @use "jsoneditor/darktheme";
+@use "elevation";
 @use "theme";
 
-@include mat.elevation-classes();
 @include mat.app-background();
 @tailwind base;
 @tailwind utilities;
@@ -40,17 +40,6 @@ body {
 	overflow: hidden !important;
 }
 
-.theme {
-	@include mat.all-component-themes(theme.$theme);
-
-	.mat-drawer-backdrop.mat-drawer-shown {
-		background: rgba(0, 0, 0, 0.32);
-	}
-
-	@include mat.form-field-density(-3);
-}
-
-
 .default-input {
 	$font-type: subtitle-1;
 	$focus-color: #2196f3;
@@ -71,27 +60,6 @@ body {
 	&:focus, &.focus {
 		outline-offset: 0;
 		outline: solid 1px $focus-color;
-	}
-
-
-	&.mat-mdc-select {
-		line-height: 24px;
-		outline: solid 1px #c9c9c9 !important;
-		padding-left: 4px;
-		padding-right: 4px;
-
-
-		&:disabled {
-			outline: dotted 1px rgba(201, 201, 201, 0.34) !important;
-		}
-
-		&:focus, &.focus {
-			outline: solid 1px $focus-color !important;
-		}
-
-		& .mat-select-value-text {
-			padding-left: 4px;
-		}
 	}
 }
 

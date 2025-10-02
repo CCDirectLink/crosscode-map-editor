@@ -1,0 +1,8 @@
+@use '@angular/material' as mat;
+
+.mat-elevation-z8 {
+	@include mat.elevation(8)
+}
+.mat-elevation-z4 {
+	@include mat.elevation(4)
+}
