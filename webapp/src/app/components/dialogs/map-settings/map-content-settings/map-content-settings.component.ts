@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import * as mapSettingsjson from '../../../../../assets/map-settings.json';
+import mapSettingsjson from '../../../../../assets/map-settings.json';
 import { CrossCodeMap } from '../../../../models/cross-code-map';
 
 @Component({
@@ -18,7 +18,7 @@ export class MapContentSettingsComponent implements OnInit {
 		property: any;
 		value: any;
 	}>();
-	mapSettings = mapSettingsjson.default;
+	mapSettings = mapSettingsjson;
 	
 	constructor() {
 	}

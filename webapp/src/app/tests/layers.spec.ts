@@ -48,8 +48,8 @@ describe('Layers', () => {
 		const comp = fixture.componentInstance;
 		fixture.detectChanges();
 		
-		const service: MapLoaderService = TestBed.get(MapLoaderService);
-		const http: HttpClientService = TestBed.get(HttpClientService);
+		const service: MapLoaderService = TestBed.inject(MapLoaderService);
+		const http: HttpClientService = TestBed.inject(HttpClientService);
 		const res = await TestHelper.loadMap(service, http, 'autumn/entrance');
 		const map = res.ccmap;
 		const export1 = map.exportMap();

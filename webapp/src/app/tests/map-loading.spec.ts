@@ -47,16 +47,16 @@ describe('Map Loading', () => {
 	});
 	
 	it('should export same map as imported (autumn/entrance)', async () => {
-		const service: MapLoaderService = TestBed.get(MapLoaderService);
-		const http: HttpClientService = TestBed.get(HttpClientService);
+		const service: MapLoaderService = TestBed.inject(MapLoaderService);
+		const http: HttpClientService = TestBed.inject(HttpClientService);
 		const output = await loadMap(service, http, 'autumn/entrance');
 		expect(output.exported).toEqual(output.imported);
 	});
 	
 	it('should export same map as imported (lots of maps)', async () => {
 		
-		const service: MapLoaderService = TestBed.get(MapLoaderService);
-		const http: HttpClientService = TestBed.get(HttpClientService);
+		const service: MapLoaderService = TestBed.inject(MapLoaderService);
+		const http: HttpClientService = TestBed.inject(HttpClientService);
 		
 		const paths = await firstValueFrom(http.getMaps());
 		

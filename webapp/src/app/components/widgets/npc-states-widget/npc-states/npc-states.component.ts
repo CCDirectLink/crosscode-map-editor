@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import * as settingsJson from '../../../../../assets/npc-settings.json';
+import settingsJson from '../../../../../assets/npc-settings.json';
 import { createEventArray, destructureEventArray, EventArrayType } from '../../../../models/events';
 import { EventEditorComponent } from '../../event-widget/event-editor/editor/event-editor.component';
 import { EventType } from '../../event-widget/event-registry/abstract-event';
@@ -19,7 +19,7 @@ export class NpcStatesComponent implements OnInit {
 	currentState?: NPCState;
 	index = 0;
 	
-	props = settingsJson.default;
+	props = settingsJson;
 	eventTypes = Object.values(EventArrayType);
 	warnings: string[] = [];
 	private missingTradeEvent = false;
