@@ -1,5 +1,5 @@
 import { ComponentType, Overlay, OverlayConfig } from '@angular/cdk/overlay';
-import { ComponentPortal, PortalInjector } from '@angular/cdk/portal';
+import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable, Injector } from '@angular/core';
 
 import { Globals } from '../../../services/globals';
@@ -37,14 +37,17 @@ export class OverlayService {
 			ref.detachments().subscribe(() => Globals.disablePhaserInput.delete(key));
 		}
 		
-		const instance: any = ref.attach(portal).instance;
-		return {ref: refControl, instance: instance};
+		const compRef = ref.attach(portal);
+		return {ref: refControl, instance: compRef.instance};
 	}
 	
-	private createInjector(ref: OverlayRefControl): PortalInjector {
-		const injectionTokens = new WeakMap();
-		injectionTokens.set(OverlayRefControl, ref);
-		return new PortalInjector(this.injector, injectionTokens);
+	private createInjector(ref: OverlayRefControl): Injector {
+		return Injector.create({
+			parent: this.injector,
+			providers: [
+				{provide: OverlayRefControl, useValue: ref},
+			],
+		});
 	}
 	
 	private getOverlayConfig(options: OverlayConfig): OverlayConfig {
