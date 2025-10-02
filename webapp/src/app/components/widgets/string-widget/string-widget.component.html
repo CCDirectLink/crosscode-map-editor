@@ -1,24 +1,32 @@
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!" [matTooltipDisabled]="disableTooltip">
-	<label class="property-name">{{key}}:</label>
-	<div class="mat-select-container" *ngIf="attribute?.options; else defaultInput">
-		<app-autocompleted-textbox
-			[availableOptions]="keys"
-			[text]="settings[key]"
-			(textChange)="setSetting(key, $event)"
-			(onContainsMouse)="disableTooltip = $event"
-		></app-autocompleted-textbox>
-	</div>
-	<ng-template #defaultInput>
+<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!"
+     [matTooltipDisabled]="disableTooltip">
+	<label class="property-name">{{ key }}:</label>
+	@if (attribute?.options) {
+		<div class="mat-select-container">
+			<app-autocompleted-textbox
+				[availableOptions]="keys"
+				[text]="settings[key]"
+				(textChange)="setSetting(key, $event)"
+				(onContainsMouse)="disableTooltip = $event"
+			></app-autocompleted-textbox>
+		</div>
+	} @else {
+	
+	@if (!attribute?.large) {
 		<input class="default-input"
-		       *ngIf="!attribute?.large; else largeInput"
+		       
 		       [ngModel]="settings[key]"
 		       (input)="setSetting(key, $any($event.target).value)">
-	</ng-template>
-	
-	<ng-template #largeInput>
+	} @else {
+		
 		<textarea class="default-input"
 		          [ngModel]="settings[key]"
 		          (input)="setSetting(key, $any($event.target).value)"
 		></textarea>
-	</ng-template>
+		
+	}
+	
+}
+
+
 </div>

@@ -23,19 +23,23 @@
 	<div class="flex flex-row gap-2">
 		<span class="w-24">Levels: </span>
 		<div class="flex flex-col gap-1 grow">
-			<div class="flex flex-row gap-2 items-baseline" *ngFor="let level of settings.levels; let i=index">
-				<span>Level {{ i }}:</span>
-				<input
-					type="number"
-					step="16"
-					class="default-input grow"
-					[ngModel]="level.height"
-					(ngModelChange)="level.height = +$event"
-				>
-				<button mat-stroked-button *ngIf="settings.levels.length > 1" (click)="settings.levels.splice(i, 1)"
-				        tabindex="-1">Remove
-				</button>
-			</div>
+			@for (level of settings.levels; track level; let i = $index) {
+				<div class="flex flex-row gap-2 items-baseline">
+					<span>Level {{ i }}:</span>
+					<input
+						type="number"
+						step="16"
+						class="default-input grow"
+						[ngModel]="level.height"
+						(ngModelChange)="level.height = +$event"
+					>
+					@if (settings.levels.length > 1) {
+						<button mat-stroked-button (click)="settings.levels.splice(i, 1)"
+						        tabindex="-1">Remove
+						</button>
+					}
+				</div>
+			}
 			<div>
 				<button mat-stroked-button (click)="settings.levels.push({height: guessHeight()})">Add Level</button>
 			</div>
@@ -48,9 +52,11 @@
 		<span class="w-24">Master Level: </span>
 		<div class="grow">
 			<mat-select [(ngModel)]="settings.masterLevel" class="default-input">
-				<mat-option *ngFor="let level of settings.levels; let i=index" [value]="i">
-					{{ i }}
-				</mat-option>
+				@for (level of settings.levels; track level; let i = $index) {
+					<mat-option [value]="i">
+						{{ i }}
+					</mat-option>
+				}
 			</mat-select>
 		</div>
 	</div>
@@ -66,9 +72,11 @@
 			</div>
 		</div>
 		
-		<div *ngFor="let prop of mapSettings | keyvalue" class="attribute-tile">
-			<app-string-widget [key]="$any(prop.key)" [custom]="$any(settings.attributes)"
-			                   [attribute]="$any({options:prop.value})"></app-string-widget>
-		</div>
+		@for (prop of mapSettings | keyvalue; track prop) {
+			<div class="attribute-tile">
+				<app-string-widget [key]="$any(prop.key)" [custom]="$any(settings.attributes)"
+				                   [attribute]="$any({options:prop.value})"></app-string-widget>
+			</div>
+		}
 	</div>
 </div>

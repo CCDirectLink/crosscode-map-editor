@@ -7,7 +7,8 @@
 >
 	<ng-container ngProjectAs="content">
 		<div class="flex flex-col h-full">
-			<ng-container *ngIf="sheets.length > 0">
+			@if (sheets.length > 0) {
+				
 				<div class="flex p-4 gap-2.5">
 					<label class="property-name">sheet:</label>
 					<app-autocompleted-textbox
@@ -17,7 +18,8 @@
 					></app-autocompleted-textbox>
 				</div>
 				<div class="divider"></div>
-			</ng-container>
+				
+			}
 			<app-split-pane
 				[bounds]="{left: 10, right: 10}"
 				[opened]="showRightProps"
@@ -35,56 +37,67 @@
 							[selected]="leftGroup.selected"
 							(selectedChange)="leftGroup.click?.(leftGroup.selected === $event ? '' : $event)"
 						>
-							<div *ngIf="manualKey">
-								<mat-form-field
-									appearance="outline"
-									class="no-padding-form-field autoscale-form-field pb-4"
-								>
-									<mat-label>{{manualKey}}</mat-label>
-									<input
-										matInput
-										[ngModel]="manualValue"
-										(ngModelChange)="manualValueChange.emit($event)"
+							@if (manualKey) {
+								<div>
+									<mat-form-field
+										appearance="outline"
+										class="no-padding-form-field autoscale-form-field pb-4"
 									>
-								</mat-form-field>
-							</div>
+										<mat-label>{{ manualKey }}</mat-label>
+										<input
+											matInput
+											[ngModel]="manualValue"
+											(ngModelChange)="manualValueChange.emit($event)"
+										>
+									</mat-form-field>
+								</div>
+							} @if (showGlobalCheckbox) {
 							<mat-checkbox
-								*ngIf="showGlobalCheckbox"
+								
 								color="primary"
 								[(ngModel)]="global"
 								(ngModelChange)="globalChange.emit($event)"
 							>
 								use GLOBAL
 							</mat-checkbox>
+						}
 						</app-image-select-list>
 						<div class="flex-auto grid justify-center items-center">
-							<mat-spinner *ngIf="loading"></mat-spinner>
+							@if (loading) {
+								<mat-spinner></mat-spinner>
+							}
 						</div>
 					</div>
 				</ng-container>
-				<ng-container ngProjectAs="right" *ngIf="showRightProps">
-					<div class="flex flex-col h-full">
-						<ng-container *ngIf="showPreview">
-							<div class="p-4">
-								<app-image-select-card
-									[card]="{ name: 'Preview', imgSrc: preview }"
-								></app-image-select-card>
+				@if (showRightProps) {
+					<ng-container ngProjectAs="right">
+						<div class="flex flex-col h-full">
+							@if (showPreview) {
+								
+								<div class="p-4">
+									<app-image-select-card
+										[card]="{ name: 'Preview', imgSrc: preview }"
+									></app-image-select-card>
+								</div>
+								<div class="divider"></div>
+								
+							}
+							<div class="flex-auto mr-1.5">
+								@for (group of rightGroups; track group) {
+									<app-image-select-list
+										
+										[title]="group.title"
+										[items]="group.props"
+										[filter]="filter"
+										[filterItems]="false"
+										[selected]="group.selected"
+										(selectedChange)="group.click?.($event)"
+									></app-image-select-list>
+								}
 							</div>
-							<div class="divider"></div>
-						</ng-container>
-						<div class="flex-auto mr-1.5">
-							<app-image-select-list
-								*ngFor="let group of rightGroups"
-								[title]="group.title"
-								[items]="group.props"
-								[filter]="filter"
-								[filterItems]="false"
-								[selected]="group.selected"
-								(selectedChange)="group.click?.($event)"
-							></app-image-select-list>
 						</div>
-					</div>
-				</ng-container>
+					</ng-container>
+				}
 			</app-split-pane>
 		</div>
 	</ng-container>

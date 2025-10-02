@@ -4,7 +4,7 @@ import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { Globals } from '../../../services/globals';
-import { NgIf } from '@angular/common';
+
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { PointInputComponent } from '../vec-input/point-input.component';
 import { Helper } from '../../../services/phaser/helper';
@@ -41,7 +41,6 @@ const gridSettingsKey = 'gridSettingsKey';
 		MatIconButton,
 		MatIcon,
 		FormsModule,
-		NgIf,
 		MatFormField,
 		MatLabel,
 		PointInputComponent

@@ -16,7 +16,9 @@
 	     fxLayoutAlign="center"
 	>
 		
-		<h1 *ngIf="title" class="overlay-headline mat-headline">{{title}}</h1>
+		@if (title) {
+			<h1 class="overlay-headline mat-headline">{{ title }}</h1>
+		}
 		<ng-content select="toolbar"></ng-content>
 	</div>
 	<div class="content" fxFlex="1 1 0" fxLayout="column">

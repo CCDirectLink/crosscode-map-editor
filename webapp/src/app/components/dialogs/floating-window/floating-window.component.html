@@ -6,13 +6,16 @@
      cdkDrag
 >
 	<div class="toolbar" fxLayout="row" fxLayoutAlign="center" cdkDragHandle>
-		<span fxFlexAlign="center" class="title" style="pointer-events: none;" fxFlex>{{title}}</span>
-		<button *ngIf="showMin" mat-button color="primary" fxFlexAlign="center" class="toolbar-button minimize-button"
-		        (click)="toggle()">-
-		</button>
-		<button *ngIf="showClose" mat-button color="warn" fxFlexAlign="center" class="toolbar-button close-button"
+		<span fxFlexAlign="center" class="title" style="pointer-events: none;" fxFlex>{{ title }}</span>
+		@if (showMin) {
+			<button mat-button color="primary" fxFlexAlign="center" class="toolbar-button minimize-button"
+			        (click)="toggle()">-
+			</button>
+		} @if (showClose) {
+		<button mat-button color="warn" fxFlexAlign="center" class="toolbar-button close-button"
 		        (click)="onClose()">x
 		</button>
+	}
 	</div>
 	<div class="content" [ngStyle]="contentStyle">
 		<ng-content [ngStyle]="{display: visible ? 'inherit' : 'none'}"></ng-content>

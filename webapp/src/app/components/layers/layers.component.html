@@ -1,19 +1,21 @@
 <div class="layers-tab-container flex flex-col">
 	<mat-nav-list class="small-list grow" cdkDropList (cdkDropListDropped)="drop($event)">
-		<mat-list-item *ngFor="let layer of map?.layers" (click)="selectLayer(layer)"
-		               [ngClass]="{'layer-hidden': !layer.visible}" cdkDrag>
-			<div class="flex flex-row items-center gap-1">
-				<div *cdkDragPreview></div>
-				<div class="item-selected-bg" [ngClass]="{'item-selected': layer === selectedLayer}"></div>
-				<div cdkDragHandle class="layer-icon" [ngClass]="'type-' + layer.details.type"></div>
-				<div class="grow">
-					<span>{{getDisplayName(layer)}}</span>
+		@for (layer of map?.layers; track layer) {
+			<mat-list-item (click)="selectLayer(layer)"
+			               [ngClass]="{'layer-hidden': !layer.visible}" cdkDrag>
+				<div class="flex flex-row items-center gap-1">
+					<div *cdkDragPreview></div>
+					<div class="item-selected-bg" [ngClass]="{'item-selected': layer === selectedLayer}"></div>
+					<div cdkDragHandle class="layer-icon" [ngClass]="'type-' + layer.details.type"></div>
+					<div class="grow">
+						<span>{{ getDisplayName(layer) }}</span>
+					</div>
+					<button mat-icon-button (click)="toggleVisibility($event, layer)" class="green">
+						<mat-icon>{{ layer.visible ? 'visibility' : 'visibility_off' }}</mat-icon>
+					</button>
 				</div>
-				<button mat-icon-button (click)="toggleVisibility($event, layer)" class="green">
-					<mat-icon>{{layer.visible ? 'visibility' : 'visibility_off'}}</mat-icon>
-				</button>
-			</div>
-		</mat-list-item>
+			</mat-list-item>
+		}
 		<mat-list-item [disableRipple]="true">
 			<div class="flex flex-row items-center gap-1">
 				<div class="layer-icon"></div>
@@ -29,7 +31,7 @@
 		<mat-expansion-panel>
 			<mat-expansion-panel-header>
 				<mat-panel-title>
-					Settings {{selectedLayer ? '- ' + getDisplayName(selectedLayer) : ''}}
+					Settings {{ selectedLayer ? '- ' + getDisplayName(selectedLayer) : '' }}
 				</mat-panel-title>
 			</mat-expansion-panel-header>
 			
@@ -100,8 +102,11 @@
 							[ngModel]="selectedLayer?.details?.levelName ?? selectedLayer?.details?.level"
 							(selectionChange)="updateLevel($event.value)"
 						>
-							<mat-option *ngFor="let level of map?.levels; let i=index" [value]="i">{{i}}</mat-option>
-							<mat-option *ngFor="let level of map?.specialLevels;" [value]="level">{{level}}</mat-option>
+							@for (level of map?.levels; track level; let i = $index) {
+								<mat-option [value]="i">{{ i }}</mat-option>
+							} @for (level of map?.specialLevels; track level) {
+							<mat-option [value]="level">{{ level }}</mat-option>
+						}
 						</mat-select>
 					</mat-form-field>
 				</div>
@@ -125,8 +130,11 @@
 					<mat-form-field [floatLabel]="$any('never')">
 						<mat-select fxFlex [disabled]="!selectedLayer" [ngModel]="selectedLayer?.details?.tilesetName"
 						            (selectionChange)="updateTilesetName($event.value)">
-							<mat-option *ngFor="let tileset of tilesets"
-							            [value]="tileset">{{getTilesetName(tileset)}}</mat-option>
+							@for (tileset of tilesets; track tileset) {
+								<mat-option
+									[value]="tileset">{{ getTilesetName(tileset) }}
+								</mat-option>
+							}
 						</mat-select>
 					</mat-form-field>
 				</div>

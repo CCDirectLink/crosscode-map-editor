@@ -11,8 +11,10 @@
 		</div>
 	</ng-container>
 	<ng-container ngProjectAs="actions">
-		<button mat-stroked-button (click)="close(null)" *ngIf="showDevMode && devMode" cdkFocusInitial>DEV: Reload
-		</button>
+		@if (showDevMode && devMode) {
+			<button mat-stroked-button (click)="close(null)" cdkFocusInitial>DEV: Reload
+			</button>
+		}
 		<button mat-stroked-button (click)="close(false)" cdkFocusInitial>Go back</button>
 		<button mat-stroked-button (click)="close(true)">Discard changes</button>
 	</ng-container>
