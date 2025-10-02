@@ -3,7 +3,7 @@
 	[ngModel]="text"
 	(ngModelChange)="textChange.emit($event)"
 >
-<mat-autocomplete #auto="matAutocomplete" class="dark-scrollbar" [autoActiveFirstOption]="true">
+<mat-autocomplete #auto="matAutocomplete" [autoActiveFirstOption]="true">
 	<mat-option *ngFor="let option of suggestedOptions" [value]="option">
 		<span appHighlight [highlightText]="option" [highlightMatch]="text"></span>
 	</mat-option>

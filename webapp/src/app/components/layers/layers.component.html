@@ -1,5 +1,5 @@
 <div class="layers-tab-container flex flex-col">
-	<mat-nav-list class="small-list dark-scrollbar grow" cdkDropList (cdkDropListDropped)="drop($event)">
+	<mat-nav-list class="small-list grow" cdkDropList (cdkDropListDropped)="drop($event)">
 		<mat-list-item *ngFor="let layer of map?.layers" (click)="selectLayer(layer)"
 		               [ngClass]="{'layer-hidden': !layer.visible}" cdkDrag>
 			<div class="flex flex-row items-center gap-1">

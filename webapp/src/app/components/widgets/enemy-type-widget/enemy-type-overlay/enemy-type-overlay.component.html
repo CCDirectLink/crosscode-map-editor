@@ -5,7 +5,7 @@
 >
 	<!-- 301px is the same as the width of a sidenav -->
 	<ng-container ngProjectAs="content">
-		<div class="enemy-settings-container dark-scrollbar" fxLayout="column">
+		<div class="enemy-settings-container" fxLayout="column">
 			<app-enemy-single-type-widget [entity]="entity" [custom]="settings[key]" key="type"></app-enemy-single-type-widget>
 			<app-string-widget [entity]="entity" [custom]="settings[key]" key="group"></app-string-widget>
 			<app-string-widget [entity]="entity" [custom]="settings[key]" key="state"></app-string-widget>

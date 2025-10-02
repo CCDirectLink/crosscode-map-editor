@@ -124,41 +124,6 @@ button {
 	background-color: #5ad972;
 }
 
-// sick scrollbar
-.dark-scrollbar {
-	&::-webkit-scrollbar-track {
-		background-color: var(--gray-800);
-	}
-
-	&::-webkit-scrollbar {
-		width: 12px;
-		background-color: #F5F5F5;
-	}
-
-	&::-webkit-scrollbar-thumb {
-		background-color: var(--gray-600);
-	}
-
-	// non standard value, makes scrollbar not take additional space.
-	// More information: https://stackoverflow.com/a/43051077/5244460
-	// noinspection CssInvalidPropertyValue
-	overflow: overlay;
-}
-
-.dark-scrollbar-auto {
-	@extend .dark-scrollbar;
-	overflow: auto;
-}
-
-.small-dark-scrollbar {
-	@extend .dark-scrollbar;
-
-	&::-webkit-scrollbar {
-		width: 8px;
-		background-color: #F5F5F5;
-	}
-}
-
 .highlight {
 	color: #69bdfc;
 }

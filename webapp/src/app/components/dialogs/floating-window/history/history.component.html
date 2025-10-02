@@ -7,7 +7,7 @@
 	[style.display]="hide ? 'none' : ''"
 >
 	<div class="history-container" fxLayout="column">
-		<div fxFlex="1 1 auto" class="history-list small-dark-scrollbar small-list" #listContainer>
+		<div fxFlex="1 1 auto" class="history-list small-list" #listContainer>
 			<button mat-button fxLayout="row" class="history-list-item"
 			        [ngClass]="{'item-selected': state === selected?.state}"
 			        *ngFor="let state of states; let i = index"

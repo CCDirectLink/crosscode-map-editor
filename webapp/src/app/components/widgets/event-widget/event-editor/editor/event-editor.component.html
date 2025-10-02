@@ -7,7 +7,7 @@
 		[(base)]="base"
 	>
 		<ng-container ngProjectAs="left">
-			<div class="event-inner-container dark-scrollbar"
+			<div class="event-inner-container"
 				fxFlex="1 1 0"
 				cdkDropList
 				(cdkDropListDropped)="drop($event)">
@@ -44,7 +44,7 @@
 			</div>
 		</ng-container>
 		<ng-container ngProjectAs="right">
-			<div class="details-container dark-scrollbar">
+			<div class="details-container">
 				<app-event-detail #eventDetail (refresh)="refresh($event)" (close)="hideDetails()"></app-event-detail>
 			</div>
 		</ng-container>
