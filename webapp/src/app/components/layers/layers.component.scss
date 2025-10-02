@@ -1,9 +1,6 @@
 @use '@angular/material' as mat;
 @import "theme";
 
-$config: mat.define-typography-config();
-$background: map_get($theme, "background");
-
 mat-expansion-panel-header {
 	background-color: rgba(255, 255, 255, 0.1) !important;
 }
@@ -15,23 +12,23 @@ $type-hue: A200;
 $brightness: 60%;
 
 .type-Background {
-	background-color: mat.get-color-from-palette(mat.$green-palette, $type-hue);
+	background-color: #69f0ae;
 }
 
 .type-Collision {
-	background-color: mat.get-color-from-palette(mat.$red-palette, $type-hue);
+	background-color: #ff5252;
 }
 
 .type-Navigation {
-	background-color: mat.get-color-from-palette(mat.$blue-palette, $type-hue);
+	background-color: #448aff;
 }
 
 .type-HeightMap {
-	background-color: mat.get-color-from-palette(mat.$orange-palette, $type-hue);
+	background-color: #ffab40;
 }
 
 .type-Light {
-	background-color: mat.get-color-from-palette(mat.$yellow-palette, $type-hue);
+	background-color: #ffff00;
 }
 
 .layer-icon {
@@ -55,14 +52,12 @@ $brightness: 60%;
 }
 
 .item-selected {
-	background-color: mat.get-color-from-palette(mat.$grey-palette, 700);
+	background-color: rgba(white, 0.2);
 }
 
 mat-nav-list {
 	padding-top: 0 !important;
 	overflow-x: hidden;
-	//noinspection CssInvalidPropertyValue
-	overflow-y: overlay;
 }
 
 .small-list {

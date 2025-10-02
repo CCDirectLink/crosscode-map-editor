@@ -54,6 +54,7 @@ body {
 
 .default-input {
 	$font-type: subtitle-1;
+	$focus-color: #2196f3;
 	font-family: mat.font-family($config);
 	font-size: mat.font-size($config, $font-type);
 	font-weight: mat.font-weight($config, $font-type);
@@ -70,7 +71,7 @@ body {
 
 	&:focus, &.focus {
 		outline-offset: 0;
-		outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500);
+		outline: solid 1px $focus-color;
 	}
 
 
@@ -86,7 +87,7 @@ body {
 		}
 
 		&:focus, &.focus {
-			outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500) !important;
+			outline: solid 1px $focus-color !important;
 		}
 
 		& .mat-select-value-text {
@@ -127,7 +128,7 @@ button {
 // sick scrollbar
 .dark-scrollbar {
 	&::-webkit-scrollbar-track {
-		background-color: mat.get-color-from-palette($accent, 800);
+		background-color: var(--gray-800);
 	}
 
 	&::-webkit-scrollbar {
@@ -136,7 +137,7 @@ button {
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background-color: mat.get-color-from-palette($accent, 600);
+		background-color: var(--gray-600);
 	}
 
 	// non standard value, makes scrollbar not take additional space.
@@ -195,7 +196,7 @@ body {
 
 .snackbar-error {
 	> * {
-		background: mat.get-color-from-palette(mat.$red-palette, 700) !important;
+		background: #d32f2f !important;
 	}
 
 	button {

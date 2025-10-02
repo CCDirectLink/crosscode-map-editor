@@ -1,9 +1,6 @@
 @use '@angular/material' as mat;
 @import "theme";
 
-$primary: map-get($theme, primary);
-$accent: map-get($theme, accent);
-
 $config: mat.define-typography-config();
 
 .no-click {

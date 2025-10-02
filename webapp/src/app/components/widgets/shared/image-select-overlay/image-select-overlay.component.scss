@@ -4,5 +4,5 @@
 	height: 1px;
 	width: 100%;
 	box-sizing: border-box;
-	border-top: 1px solid mat.get-color-from-palette(mat.$gray-palette, 600);
+	border-top: 1px solid var(--gray-600);
 }

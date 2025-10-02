@@ -22,5 +22,5 @@ $accent: map-get($theme, accent);
 	font-family: droid sans mono, consolas, monospace, courier new, courier, sans-serif;
 	resize: none;
 	color: white;
-	background-color: mat.get-color-from-palette($accent, 700);
+	background-color: var(--gray-700);
 }

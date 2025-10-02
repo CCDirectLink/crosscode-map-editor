@@ -23,11 +23,10 @@ $toolbarHeight: 32px;
 
 .toolbar {
 	padding-left: 16px;
-	background-color: mat.get-color-from-palette(map-get($theme, background), app-bar);
+	background-color: var(--gray-900);
 	height: $toolbarHeight !important;
 
 	.toolbar-button {
-		//background-color: mat.get-color-from-palette($primary, 700);
 		width: $btnWidth;
 		height: 100%;
 		line-height: normal;

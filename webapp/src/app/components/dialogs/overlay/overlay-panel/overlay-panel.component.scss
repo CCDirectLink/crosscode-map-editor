@@ -18,7 +18,7 @@ $toolbarHeight: 54px;
 
 .container {
 	color: white;
-	background: mat.get-color-from-palette($accent, 800);
+	background: var(--gray-800);
 	pointer-events: auto;
 }
 
@@ -34,7 +34,7 @@ $toolbarHeight: 54px;
 }
 
 .toolbar {
-	background-color: mat.get-color-from-palette(map-get($theme, background), app-bar);
+	background-color: var(--gray-900);
 	height: $toolbarHeight;
 	z-index: 10;
 }
@@ -46,7 +46,7 @@ $toolbarHeight: 54px;
 }
 
 .bottom-border {
-	border-top: 1px solid mat.get-color-from-palette(mat.$gray-palette, 600);
+	border-top: 1px solid var(--gray-600);
 }
 
 .no-buttons {

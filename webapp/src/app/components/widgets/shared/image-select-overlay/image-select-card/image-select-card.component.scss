@@ -4,7 +4,7 @@
 .card {
 	position: relative;
 	width: var.$card-width;
-	background-color: mat.get-color-from-palette(mat.$gray-palette, 700);
+	background-color: var(--gray-700);
 	transition: transform 100ms ease, border 100ms ease;
 
 	box-sizing: border-box;

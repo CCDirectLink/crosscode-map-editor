@@ -9,7 +9,6 @@ import { HistoryState, HistoryStateContainer, StateHistoryService } from './stat
 	selector: 'app-history',
 	templateUrl: './history.component.html',
 	styleUrls: ['./history.component.scss'],
-	encapsulation: ViewEncapsulation.None
 })
 export class HistoryComponent implements OnInit, OnDestroy {
 	
