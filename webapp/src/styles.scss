@@ -1,12 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
-@import "reset";
-@import "jsoneditor/darktheme";
+@use "reset";
+@use "jsoneditor/darktheme";
+@use "theme";
 
-@include mat.core();
-
-@import "theme";
-
+@include mat.elevation-classes();
+@include mat.app-background();
 @tailwind base;
 @tailwind utilities;
 
@@ -42,7 +41,7 @@ body {
 }
 
 .theme {
-	@include mat.all-component-themes($theme);
+	@include mat.all-component-themes(theme.$theme);
 
 	.mat-drawer-backdrop.mat-drawer-shown {
 		background: rgba(0, 0, 0, 0.32);

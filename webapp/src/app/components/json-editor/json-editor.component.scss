@@ -1,19 +1,14 @@
 
-@use '@angular/material' as mat;
-@import "theme";
-$primary: map-get($theme, primary);
-$accent: map-get($theme, accent);
-
 .dialog-container {
 	width: 70vw;
 	height: 85vh;
 }
 
-.input-container{
+.input-container {
 	width: 50%;
 }
 
-.button-container{
+.button-container {
 	margin-top: 16px;
 }
 

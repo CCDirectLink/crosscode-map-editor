@@ -1,9 +1,3 @@
-@use '@angular/material' as mat;
-@import "theme";
-
-$primary: map-get($theme, primary);
-$accent: map-get($theme, accent);
-
 $btnWidth: 34px;
 $toolbarHeight: 32px;
 
