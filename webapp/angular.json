@@ -15,6 +15,9 @@
 							"earcut",
 							"jsoneditor"
 						],
+						"externalDependencies": [
+							"electron"
+						],
 						"outputPath": {
 							"base": "distAngular"
 						},

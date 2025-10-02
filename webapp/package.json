@@ -1,106 +1,103 @@
 {
-  "name": "cc-map-editor",
-  "version": "1.8.2",
-  "license": "MIT",
-  "repository": "https://github.com/CCDirectLink/crosscode-map-editor",
-  "main": "main.js",
-  "build": {
-    "appId": "CCDirectLink.crosscode.map.editor",
-    "artifactName": "${productName}-${version}-${os}.${ext}",
-    "files": [
-      "main.js",
-      "distAngular"
-    ],
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
-    },
-    "win": {
-      "target": [
-        "nsis"
-      ],
-      "publish": [
-        "github"
-      ]
-    },
-    "linux": {
-      "target": [
-        "AppImage"
-      ],
-      "publish": [
-        "github"
-      ]
-    }
-  },
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "start:aot": "ng serve --aot",
-    "startNoLiveReload": "ng serve --live-reload false",
-    "build": "ng build",
-    "build:prod": "ng build --configuration=production --no-progress",
-    "test": "ng test",
-    "lint": "ng lint",
-    "electron:dev": "electron . --dev",
-    "electron:prod": "electron .",
-    "builder:pack": "electron-builder --dir",
-    "builder:dist": "electron-builder --publish never",
-    "postinstall": "electron-builder install-app-deps",
-    "package": "npm run postinstall && npm run build:prod && npm run builder:dist",
-    "dist": "npm run build:prod && npm run builder:dist",
-    "release": "npm run build:prod && electron-builder --publish always"
-  },
-  "private": true,
-  "devDependencies": {
-    "@angular-eslint/builder": "^17.2.1",
-    "@angular-eslint/eslint-plugin": "^17.2.1",
-    "@angular/animations": "^20.3.3",
-    "@angular/build": "^20.3.3",
-    "@angular/cdk": "^20.2.7",
-    "@angular/cli": "~20.3.3",
-    "@angular/common": "^20.3.3",
-    "@angular/compiler": "^20.3.3",
-    "@angular/compiler-cli": "^20.3.3",
-    "@angular/core": "^20.3.3",
-    "@angular/flex-layout": "^15.0.0-beta.42",
-    "@angular/forms": "^20.3.3",
-    "@angular/material": "^20.2.7",
-    "@angular/platform-browser": "^20.3.3",
-    "@angular/platform-browser-dynamic": "^20.3.3",
-    "@angular/router": "^20.3.3",
-    "@babylonjs/core": "5.50.1",
-    "@babylonjs/gui": "5.50.1",
-    "@types/earcut": "^2.1.1",
-    "@types/jasmine": "~4.3.0",
-    "@types/jsoneditor": "^9.9.0",
-    "@types/node-ipc": "^9.2.0",
-    "@typescript-eslint/eslint-plugin": "^6.21.0",
-    "cc-map-editor-common": "file:../common",
-    "core-js": "^3.29.1",
-    "earcut": "^2.2.4",
-    "electron": "^28.2.2",
-    "electron-builder": "^24.9.1",
-    "hammerjs": "^2.0.8",
-    "jasmine-core": "~4.5.0",
-    "jsoneditor": "^9.10.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.0.0",
-    "phaser": "3.60.0",
-    "rxjs": "~7.8.0",
-    "tailwindcss": "^3.3.1",
-    "tslib": "^2.3.0",
-    "typescript": "~5.9.3",
-    "zone.js": "~0.15.1"
-  },
-  "dependencies": {
-    "@electron/remote": "^2.1.2",
-    "electron-context-menu": "^3.6.1",
-    "electron-log": "^5.1.1",
-    "electron-updater": "^6.1.7",
-    "electron-window-state": "^5.0.3",
-    "node-ipc": "^9.2.1"
-  }
+	"name": "cc-map-editor",
+	"version": "1.8.2",
+	"license": "MIT",
+	"repository": "https://github.com/CCDirectLink/crosscode-map-editor",
+	"main": "main.js",
+	"build": {
+		"appId": "CCDirectLink.crosscode.map.editor",
+		"artifactName": "${productName}-${version}-${os}.${ext}",
+		"files": [
+			"main.js",
+			"distAngular"
+		],
+		"nsis": {
+			"oneClick": false,
+			"allowToChangeInstallationDirectory": true
+		},
+		"win": {
+			"target": [
+				"nsis"
+			],
+			"publish": [
+				"github"
+			]
+		},
+		"linux": {
+			"target": [
+				"AppImage"
+			],
+			"publish": [
+				"github"
+			]
+		}
+	},
+	"scripts": {
+		"ng": "ng",
+		"start": "ng serve",
+		"start:aot": "ng serve --aot",
+		"startNoLiveReload": "ng serve --live-reload false",
+		"build": "ng build",
+		"build:prod": "ng build --configuration=production --no-progress",
+		"test": "ng test",
+		"lint": "ng lint",
+		"electron:dev": "electron . --dev",
+		"electron:prod": "electron .",
+		"builder:pack": "electron-builder --dir",
+		"builder:dist": "electron-builder --publish never",
+		"postinstall": "electron-builder install-app-deps",
+		"package": "npm run postinstall && npm run build:prod && npm run builder:dist",
+		"dist": "npm run build:prod && npm run builder:dist",
+		"release": "npm run build:prod && electron-builder --publish always"
+	},
+	"private": true,
+	"devDependencies": {
+		"@angular-eslint/builder": "^20.3.0",
+		"@angular-eslint/eslint-plugin": "^20.3.0",
+		"@angular/animations": "^20.3.3",
+		"@angular/build": "^20.3.3",
+		"@angular/cdk": "^20.2.7",
+		"@angular/cli": "~20.3.3",
+		"@angular/common": "^20.3.3",
+		"@angular/compiler": "^20.3.3",
+		"@angular/compiler-cli": "^20.3.3",
+		"@angular/core": "^20.3.3",
+		"@angular/flex-layout": "^15.0.0-beta.42",
+		"@angular/forms": "^20.3.3",
+		"@angular/material": "^20.2.7",
+		"@angular/platform-browser": "^20.3.3",
+		"@angular/platform-browser-dynamic": "^20.3.3",
+		"@angular/router": "^20.3.3",
+		"@babylonjs/core": "^8.30.1",
+		"@babylonjs/gui": "^8.30.1",
+		"@types/earcut": "^3.0.0",
+		"@types/jasmine": "~5.1.9",
+		"@types/jsoneditor": "^9.9.0",
+		"@typescript-eslint/eslint-plugin": "^8.45.0",
+		"cc-map-editor-common": "file:../common",
+		"earcut": "^3.0.2",
+		"electron": "^38.2.0",
+		"electron-builder": "^26.0.12",
+		"jasmine-core": "~4.5.0",
+		"jsoneditor": "^9.10.0",
+		"karma": "~6.4.0",
+		"karma-chrome-launcher": "~3.1.0",
+		"karma-coverage": "~2.2.0",
+		"karma-jasmine": "~5.1.0",
+		"karma-jasmine-html-reporter": "~2.0.0",
+		"phaser": "3.60.0",
+		"rxjs": "~7.8.0",
+		"tailwindcss": "^3.3.1",
+		"tslib": "^2.3.0",
+		"typescript": "~5.9.3",
+		"zone.js": "~0.15.1"
+	},
+	"dependencies": {
+		"@electron/remote": "^2.1.3",
+		"electron-context-menu": "^4.1.1",
+		"electron-log": "^5.4.3",
+		"electron-updater": "^6.6.2",
+		"electron-window-state": "^5.0.3",
+		"@achrinza/node-ipc": "^10.1.11"
+	}
 }

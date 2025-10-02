@@ -35,6 +35,10 @@ html {
 		container-color: var(--gray-700),
 		supporting-text-color: white,
 	));
-	
+
+	@include mat.sidenav-overrides((
+		scrim-color: rgba(black, 0.5),
+	));
+
 	@include mat.form-field-density(-3);
 }

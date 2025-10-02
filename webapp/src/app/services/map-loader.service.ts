@@ -37,13 +37,14 @@ export class MapLoaderService {
 		
 		const file = files[0];
 		const reader = new FileReader();
-		
 		reader.onload = (e: any) => {
 			try {
 				const map = JSON.parse(e.target.result);
 				let path: string | undefined;
-				if (file.path && Globals.isElectron) {
-					path = file.path.split(this.electron.getAssetsPath())[1];
+				if (file && Globals.isElectron) {
+					const {webUtils} = require('electron');
+					const filePath = webUtils.getPathForFile(file);
+					path = filePath.split(this.electron.getAssetsPath())[1];
 				}
 				this.loadRawMap(map, file.name, path);
 			} catch (e: any) {

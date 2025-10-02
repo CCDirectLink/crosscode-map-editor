@@ -5,7 +5,6 @@ import { AppModule } from './app/app.module';
 import { Globals } from './app/services/globals';
 import { environment } from './environments/environment';
 
-import 'hammerjs';
 import { BrowserService } from './app/services/browser.service';
 import { ElectronService } from './app/services/electron.service';
 
