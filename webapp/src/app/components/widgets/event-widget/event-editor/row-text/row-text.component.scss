@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 @import "theme";
 
-$config: mat.define-typography-config();
+$config: mat.m2-define-typography-config();
 
 .no-click {
 	user-select: none;
@@ -67,9 +67,9 @@ button {
 	width: 100%;
 	text-transform: none;
 	$font-type: subtitle-1;
-	font-family: mat.font-family($config);
-	font-size: mat.font-size($config, $font-type);
-	font-weight: mat.font-weight($config, $font-type);
+	font-family: mat.m2-font-family($config);
+	font-size: mat.m2-font-size($config, $font-type);
+	font-weight: mat.m2-font-weight($config, $font-type);
 	background: none;
 	color: white;
 	border: none;

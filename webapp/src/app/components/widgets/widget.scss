@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 
-$config: mat.define-typography-config();
+$config: mat.m2-define-typography-config();
 
 .property-container {
 	margin-bottom: 14px;
@@ -23,9 +23,9 @@ $config: mat.define-typography-config();
 	align-items: center;
 
 	$font-type: body-2;
-	font-family: mat.font-family($config);
-	font-size: mat.font-size($config, $font-type);
-	font-weight: mat.font-weight($config, $font-type);
+	font-family: mat.m2-font-family($config);
+	font-size: mat.m2-font-size($config, $font-type);
+	font-weight: mat.m2-font-weight($config, $font-type);
 
 	width: 100px;
 	height: 24px;

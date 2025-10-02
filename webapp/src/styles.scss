@@ -10,10 +10,10 @@
 @tailwind base;
 @tailwind utilities;
 
-$config: mat.define-typography-config();
+$config: mat.m2-define-typography-config();
 
 // Use the default configuration.
-$my-typography: mat.define-typography-config();
+$my-typography: mat.m2-define-typography-config();
 @include mat.typography-hierarchy($my-typography);
 
 
@@ -55,9 +55,9 @@ body {
 .default-input {
 	$font-type: subtitle-1;
 	$focus-color: #2196f3;
-	font-family: mat.font-family($config);
-	font-size: mat.font-size($config, $font-type);
-	font-weight: mat.font-weight($config, $font-type);
+	font-family: mat.m2-font-family($config);
+	font-size: mat.m2-font-size($config, $font-type);
+	font-weight: mat.m2-font-weight($config, $font-type);
 	height: 24px;
 	color: white;
 	outline: solid 1px #c9c9c9;

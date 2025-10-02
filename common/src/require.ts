@@ -24,8 +24,8 @@ if (typeof window !== 'undefined' &&
 	const pathPath = globalThis['doesNotMatter'] ? 'path' : 'path';
 	
 	// Regular nodejs
-	fsPromise = import(fsPath);
-	pathPromise = import(pathPath);
+	fsPromise = import( /* @vite-ignore */ fsPath);
+	pathPromise = import( /* @vite-ignore */ pathPath);
 } else {
 	// Not a supported plattform. Return dummy, do not fail on execute of the lambda.
 	fsPromise = Promise.resolve((() => new Proxy({}, {
