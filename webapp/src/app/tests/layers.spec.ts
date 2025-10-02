@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AppModule } from '../app.module';
@@ -24,12 +24,12 @@ describe('Layers', () => {
 	
 	beforeEach(() => TestBed.configureTestingModule({
 		declarations: [PhaserComponent, LayersComponent],
-		imports: [NoopAnimationsModule, AppModule, HttpClientModule, MaterialModule],
+		imports: [NoopAnimationsModule, AppModule, MaterialModule],
 		providers: [
 			{provide: AutotileService, useValue: new SimpleServiceMock()},
 			{provide: HeightMapService, useValue: new SimpleServiceMock()},
-			
-			StateHistoryService
+			StateHistoryService,
+			provideHttpClient(withInterceptorsFromDi())
 		]
 	}).compileComponents());
 	

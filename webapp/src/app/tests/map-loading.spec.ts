@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 import { AppModule } from '../app.module';
@@ -23,12 +23,12 @@ describe('Map Loading', () => {
 	
 	beforeEach(() => TestBed.configureTestingModule({
 		declarations: [PhaserComponent],
-		imports: [AppModule, HttpClientModule],
+		imports: [AppModule],
 		providers: [
 			{provide: AutotileService, useValue: new SimpleServiceMock()},
 			{provide: HeightMapService, useValue: new SimpleServiceMock()},
-			
-			StateHistoryService
+			StateHistoryService,
+			provideHttpClient(withInterceptorsFromDi())
 		]
 	}).compileComponents());
 	

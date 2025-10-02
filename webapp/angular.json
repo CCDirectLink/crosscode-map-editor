@@ -9,14 +9,20 @@
 			"projectType": "application",
 			"architect": {
 				"build": {
-					"builder": "@angular-devkit/build-angular:browser",
+					"builder": "@angular-devkit/build-angular:application",
 					"options": {
-						"allowedCommonJsDependencies": ["earcut", "jsoneditor"],
-						"outputPath": "distAngular",
+						"allowedCommonJsDependencies": [
+							"earcut",
+							"jsoneditor"
+						],
+						"outputPath": {
+							"base": "distAngular"
+						},
 						"index": "src/index.html",
-						"main": "src/main.ts",
 						"tsConfig": "src/tsconfig.app.json",
-						"polyfills": "src/polyfills.ts",
+						"polyfills": [
+							"src/polyfills.ts"
+						],
 						"assets": [
 							"src/assets",
 							"src/favicon.ico"
@@ -31,12 +37,11 @@
 						},
 						"scripts": [],
 						"aot": true,
-						"vendorChunk": true,
 						"extractLicenses": false,
-						"buildOptimizer": true,
 						"sourceMap": true,
 						"optimization": false,
-						"namedChunks": true
+						"namedChunks": true,
+						"browser": "src/main.ts"
 					},
 					"configurations": {
 						"production": {
@@ -46,8 +51,6 @@
 							"namedChunks": false,
 							"aot": true,
 							"extractLicenses": true,
-							"vendorChunk": false,
-							"buildOptimizer": true,
 							"fileReplacements": [
 								{
 									"replace": "src/environments/environment.ts",
@@ -59,19 +62,19 @@
 				},
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "buildTarget": "map-editor:build"
+					"options": {
+						"buildTarget": "map-editor:build"
 					},
 					"configurations": {
-            "production": {
-              "buildTarget": "map-editor:build:production"
+						"production": {
+							"buildTarget": "map-editor:build:production"
 						}
 					}
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "map-editor:build"
+					"options": {
+						"buildTarget": "map-editor:build"
 					}
 				},
 				"test": {
@@ -100,13 +103,15 @@
 				"lint": {
 					"builder": "@angular-eslint/builder:lint",
 					"options": {
-						"lintFilePatterns": ["src/**/*.ts"],
+						"lintFilePatterns": [
+							"src/**/*.ts"
+						],
 						"eslintConfig": "./.eslintrc.json"
 					}
 				}
 			}
 		}
-  },
+	},
 	"schematics": {
 		"@schematics/angular:component": {
 			"prefix": "app",

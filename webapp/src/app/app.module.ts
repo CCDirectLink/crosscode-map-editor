@@ -1,7 +1,7 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -139,7 +139,6 @@ const WIDGETS = [
 		FormsModule,
 		FlexLayoutModule,
 		MaterialModule,
-		HttpClientModule,
 		BrowserAnimationsModule,
 		ScrollingModule,
 		ReactiveFormsModule,
@@ -152,7 +151,10 @@ const WIDGETS = [
 		CombinedTooltipPipe,
 		InputWithButtonComponent,
 		ToolbarDividerComponent,
-		GridMenuComponent,
+		GridMenuComponent
+	],
+	providers: [
+		provideHttpClient(withInterceptorsFromDi())
 	],
 	bootstrap: [AppComponent],
 })
