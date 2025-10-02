@@ -18,18 +18,19 @@ import { VirtualMapNode } from './virtualMapNode.model';
 	selector: 'app-load-map',
 	templateUrl: './load-map.component.html',
 	styleUrls: ['./load-map.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	standalone: false
 })
 export class LoadMapComponent {
 	
 	@ViewChild('fileUpload', {static: true})
-		fileUpload!: ElementRef<HTMLInputElement>;
+	fileUpload!: ElementRef<HTMLInputElement>;
 	
 	@ViewChild('filterInput', {static: true})
-		filterInput!: ElementRef<HTMLInputElement>;
+	filterInput!: ElementRef<HTMLInputElement>;
 	
 	@Input()
-		sidenav!: MatSidenav;
+	sidenav!: MatSidenav;
 	
 	loading = false;
 	
@@ -73,13 +74,13 @@ export class LoadMapComponent {
 		this.mapsSource.data = this.virtualRoot.children || [];
 		this.ref.detectChanges();
 	}
-
+	
 	private async showConfirmDialog() {
 		const hasUnsavedChanges = await firstValueFrom(this.eventsService.hasUnsavedChanges);
 		if (!hasUnsavedChanges) {
 			return true;
 		}
-
+		
 		const dialogRef = this.overlayService.open(ConfirmCloseComponent, {
 			hasBackdrop: true,
 		});

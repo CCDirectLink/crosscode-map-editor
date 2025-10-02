@@ -13,7 +13,8 @@ export type RefreshType = 'Node' | 'Full';
 @Component({
 	selector: 'app-event-detail',
 	templateUrl: './event-detail.component.html',
-	styleUrls: ['./event-detail.component.scss']
+	styleUrls: ['./event-detail.component.scss'],
+	standalone: false
 })
 export class EventDetailComponent implements OnDestroy {
 	@ViewChild(HostDirective, {static: true}) appHost!: HostDirective;
@@ -44,7 +45,7 @@ export class EventDetailComponent implements OnDestroy {
 	}
 	
 	public loadEvent(event: AbstractEvent<any>) {
-		if(this.event !== event) {
+		if (this.event !== event) {
 			this.event = event;
 			this.loadSettings();
 		}

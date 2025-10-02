@@ -18,12 +18,13 @@ import { JsonLoaderService } from '../../services/json-loader.service';
 @Component({
 	selector: 'app-phaser',
 	templateUrl: './phaser.component.html',
-	styleUrls: ['./phaser.component.scss']
+	styleUrls: ['./phaser.component.scss'],
+	standalone: false
 })
 export class PhaserComponent implements AfterViewInit {
-
-	@ViewChild('content', { static: true }) content!: ElementRef<HTMLElement>;
-
+	
+	@ViewChild('content', {static: true}) content!: ElementRef<HTMLElement>;
+	
 	constructor(
 		private element: ElementRef,
 		private mapLoader: MapLoaderService,
@@ -49,8 +50,8 @@ export class PhaserComponent implements AfterViewInit {
 		Globals.settingsService = settingsService;
 		Globals.jsonLoader = jsonLoader;
 	}
-
-
+	
+	
 	ngAfterViewInit() {
 		this.heightMap.init();
 		const scene = new MainScene();
@@ -73,7 +74,7 @@ export class PhaserComponent implements AfterViewInit {
 		});
 		Globals.scene = scene;
 	}
-
+	
 	@HostListener('window:resize', ['$event'])
 	onResize() {
 		if (!Globals.game) {
@@ -86,7 +87,7 @@ export class PhaserComponent implements AfterViewInit {
 		);
 		Globals.game.scale.setZoom(1 / window.devicePixelRatio);
 	}
-
+	
 	private getScale() {
 		const rect = this.content.nativeElement.getBoundingClientRect();
 		return {

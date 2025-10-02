@@ -5,12 +5,13 @@ import { HttpClientService } from '../../../services/http-client.service';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
 import { lastValueFrom } from 'rxjs';
-import { EnemyAttributes, EnemyInfo } from '../../../services/phaser/entities/registry/enemy';
+import { EnemyAttributes } from '../../../services/phaser/entities/registry/enemy';
 
 @Component({
 	selector: 'app-enemy-single-type-widget',
 	templateUrl: './enemy-single-type-widget.component.html',
-	styleUrls: ['./enemy-single-type-widget.component.scss', '../widget.scss']
+	styleUrls: ['./enemy-single-type-widget.component.scss', '../widget.scss'],
+	standalone: false
 })
 export class EnemySingleTypeWidgetComponent extends OverlayWidget {
 	

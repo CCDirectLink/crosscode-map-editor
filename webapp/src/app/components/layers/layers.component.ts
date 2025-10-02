@@ -14,7 +14,8 @@ import { StateHistoryService } from '../dialogs/floating-window/history/state-hi
 	selector: 'app-layers',
 	templateUrl: './layers.component.html',
 	styleUrls: ['./layers.component.scss'],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	standalone: false
 })
 export class LayersComponent implements OnInit {
 	static tilesets: string[] = []; //Cache

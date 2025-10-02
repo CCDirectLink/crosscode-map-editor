@@ -7,7 +7,8 @@ import { AbstractWidget } from '../abstract-widget';
 @Component({
 	selector: 'app-level-widget',
 	templateUrl: './level-widget.component.html',
-	styleUrls: ['./level-widget.component.scss', '../widget.scss']
+	styleUrls: ['./level-widget.component.scss', '../widget.scss'],
+	standalone: false
 })
 export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDestroy, OnChanges {
 	

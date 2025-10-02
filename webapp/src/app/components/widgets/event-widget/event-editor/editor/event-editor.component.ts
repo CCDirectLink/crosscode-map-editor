@@ -16,7 +16,8 @@ import { EventHistory } from './event-history';
 	selector: 'app-event-editor',
 	templateUrl: './event-editor.component.html',
 	styleUrls: ['./event-editor.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	standalone: false
 })
 export class EventEditorComponent implements OnChanges, OnInit {
 	private static globalBase = 0;
@@ -33,6 +34,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	get base() {
 		return EventEditorComponent.globalBase;
 	}
+	
 	set base(value: number) {
 		EventEditorComponent.globalBase = value;
 	}
@@ -172,46 +174,46 @@ export class EventEditorComponent implements OnChanges, OnInit {
 		if (event.cancelable) {
 			event.preventDefault();
 		}
-
+		
 		switch (event.code) {
-		case 'ArrowUp':
-		case 'ArrowLeft':
-			this.selectUp();
-			return;
-		case 'ArrowDown':
-		case 'ArrowRight':
-			this.selectDown();
-			return;
-		case 'Enter':
-			this.openAddMenu(event, null);
-			return;
-		case 'Delete':
-			this.delete();
-			return;
-		case 'Escape':
-			this.deselect();
-			return;
-		}
-
-		if (event.ctrlKey) {
-			switch (event.key.toLowerCase()) {
-			case 'c':
-				this.copy();
+			case 'ArrowUp':
+			case 'ArrowLeft':
+				this.selectUp();
 				return;
-			case 'x':
-				this.copy();
+			case 'ArrowDown':
+			case 'ArrowRight':
+				this.selectDown();
+				return;
+			case 'Enter':
+				this.openAddMenu(event, null);
+				return;
+			case 'Delete':
 				this.delete();
 				return;
-			case 'v':
-				this.paste();
+			case 'Escape':
+				this.deselect();
 				return;
-			case 'z':
-				if (event.shiftKey) {
-					this.redo();
-				} else {
-					this.undo();
-				}
-				return;
+		}
+		
+		if (event.ctrlKey) {
+			switch (event.key.toLowerCase()) {
+				case 'c':
+					this.copy();
+					return;
+				case 'x':
+					this.copy();
+					this.delete();
+					return;
+				case 'v':
+					this.paste();
+					return;
+				case 'z':
+					if (event.shiftKey) {
+						this.redo();
+					} else {
+						this.undo();
+					}
+					return;
 			}
 		}
 	}

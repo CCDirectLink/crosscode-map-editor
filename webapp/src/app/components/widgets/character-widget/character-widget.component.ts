@@ -11,7 +11,8 @@ import { Helper } from '../../../services/phaser/helper';
 @Component({
 	selector: 'app-character-widget',
 	templateUrl: './character-widget.component.html',
-	styleUrls: ['./character-widget.component.scss', '../widget.scss']
+	styleUrls: ['./character-widget.component.scss', '../widget.scss'],
+	standalone: false
 })
 export class CharacterWidgetComponent extends OverlayWidget {
 	

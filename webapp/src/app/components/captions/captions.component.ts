@@ -11,6 +11,7 @@ export interface BottomUiElement {
 	selector: 'app-captions',
 	templateUrl: './captions.component.html',
 	styleUrls: ['./captions.component.scss'],
+	standalone: false
 })
 export class CaptionsComponent implements OnInit {
 	version = environment.version;

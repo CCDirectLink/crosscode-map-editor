@@ -8,14 +8,15 @@ import { JsonLoaderService } from '../../services/json-loader.service';
 @Component({
 	selector: 'app-editor',
 	templateUrl: './editor.component.html',
-	styleUrls: ['./editor.component.scss']
+	styleUrls: ['./editor.component.scss'],
+	standalone: false
 })
 export class EditorComponent {
 	@ViewChild('loadmap', {static: true})
-		loadmap!: LoadMapComponent;
+	loadmap!: LoadMapComponent;
 	
 	@ViewChild('sidenavLoadMap', {static: true})
-		sidenavLoadMap!: MatSidenav;
+	sidenavLoadMap!: MatSidenav;
 	
 	constructor(
 		addEntity: AddEntityMenuService,

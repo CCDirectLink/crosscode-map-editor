@@ -23,7 +23,8 @@ export interface Bounds {
 	selector: 'app-split-pane',
 	templateUrl: './split-pane.component.html',
 	styleUrls: ['./split-pane.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	standalone: false
 })
 export class SplitPaneComponent implements OnInit, OnChanges {
 	

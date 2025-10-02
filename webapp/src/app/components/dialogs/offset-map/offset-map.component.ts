@@ -8,7 +8,8 @@ import { StateHistoryService } from '../floating-window/history/state-history.se
 @Component({
 	selector: 'app-offset-map',
 	templateUrl: './offset-map.component.html',
-	styleUrls: ['./offset-map.component.scss']
+	styleUrls: ['./offset-map.component.scss'],
+	standalone: false
 })
 export class OffsetMapComponent {
 	

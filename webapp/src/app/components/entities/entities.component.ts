@@ -11,7 +11,8 @@ import { WidgetRegistryService } from '../widgets/widget-registry.service';
 @Component({
 	selector: 'app-entities',
 	templateUrl: './entities.component.html',
-	styleUrls: ['./entities.component.scss']
+	styleUrls: ['./entities.component.scss'],
+	standalone: false
 })
 export class EntitiesComponent {
 	@ViewChild(HostDirective, {static: false}) appHost?: HostDirective;

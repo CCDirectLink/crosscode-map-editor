@@ -7,7 +7,6 @@ import { MatIconModule } from '@angular/material/icon';
 
 @Component({
 	selector: 'app-input-with-button',
-	standalone: true,
 	imports: [CommonModule, MatTooltipModule, FormsModule, MatButtonModule, MatIconModule],
 	templateUrl: './input-with-button.component.html',
 	styleUrls: ['./input-with-button.component.scss', '../../widget.scss']

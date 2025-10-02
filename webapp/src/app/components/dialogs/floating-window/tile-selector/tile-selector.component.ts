@@ -10,7 +10,8 @@ import { TileSelectorScene } from './tile-selector.scene';
 @Component({
 	selector: 'app-tile-selector',
 	templateUrl: './tile-selector.component.html',
-	styleUrls: ['./tile-selector.component.scss']
+	styleUrls: ['./tile-selector.component.scss'],
+	standalone: false
 })
 export class TileSelectorComponent implements AfterViewInit {
 	private display?: Phaser.Game;
@@ -49,7 +50,7 @@ export class TileSelectorComponent implements AfterViewInit {
 			scene: [this.scene]
 		});
 	}
-
+	
 	@HostListener('window:resize', ['$event'])
 	onResize(event: Event) {
 		if (!this.display) {
@@ -57,7 +58,7 @@ export class TileSelectorComponent implements AfterViewInit {
 		}
 		this.display.scale.refresh();
 	}
-
+	
 	onDragEnd() {
 		if (!this.display || !this.scene) {
 			return;

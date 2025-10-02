@@ -4,7 +4,8 @@ import { SearchFilterService } from '../../../../services/search-filter.service'
 @Component({
 	selector: 'app-autocompleted-textbox',
 	templateUrl: './autocompleted-textbox.component.html',
-	styleUrls: ['./autocompleted-textbox.component.scss', '../../widget.scss']
+	styleUrls: ['./autocompleted-textbox.component.scss', '../../widget.scss'],
+	standalone: false
 })
 export class AutocompletedTextboxComponent implements OnChanges {
 	@Input() availableOptions!: string[];

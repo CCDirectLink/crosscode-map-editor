@@ -3,7 +3,8 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 @Component({
 	selector: 'app-floating-window',
 	templateUrl: './floating-window.component.html',
-	styleUrls: ['./floating-window.component.scss']
+	styleUrls: ['./floating-window.component.scss'],
+	standalone: false
 })
 export class FloatingWindowComponent implements OnInit, OnChanges {
 	

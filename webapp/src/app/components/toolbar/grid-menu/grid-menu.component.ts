@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { Globals } from '../../../services/globals';
 import { NgIf } from '@angular/common';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
 import { PointInputComponent } from '../vec-input/point-input.component';
 import { Helper } from '../../../services/phaser/helper';
 import { Point } from '../../../models/cross-code-map';
@@ -26,7 +25,6 @@ const gridSettingsKey = 'gridSettingsKey';
 
 @Component({
 	selector: 'app-grid-menu',
-	standalone: true,
 	animations: [
 		trigger('openClose', [
 			state('void', style({
@@ -45,7 +43,6 @@ const gridSettingsKey = 'gridSettingsKey';
 		FormsModule,
 		NgIf,
 		MatFormField,
-		MatInput,
 		MatLabel,
 		PointInputComponent
 	],

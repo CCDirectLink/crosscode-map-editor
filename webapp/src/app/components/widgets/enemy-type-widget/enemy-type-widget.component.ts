@@ -5,7 +5,8 @@ import { OverlayWidget } from '../overlay-widget';
 @Component({
 	selector: 'app-enemy-type-widget',
 	templateUrl: './enemy-type-widget.component.html',
-	styleUrls: ['./enemy-type-widget.component.scss', '../widget.scss']
+	styleUrls: ['./enemy-type-widget.component.scss', '../widget.scss'],
+	standalone: false
 })
 export class EnemyTypeWidgetComponent extends OverlayWidget {
 	

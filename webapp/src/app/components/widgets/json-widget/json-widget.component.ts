@@ -6,7 +6,8 @@ import { AbstractWidget } from '../abstract-widget';
 @Component({
 	selector: 'app-json-widget',
 	templateUrl: './json-widget.component.html',
-	styleUrls: ['./json-widget.component.scss', '../widget.scss']
+	styleUrls: ['./json-widget.component.scss', '../widget.scss'],
+	standalone: false
 })
 export class JsonWidgetComponent extends AbstractWidget {
 	

@@ -5,15 +5,17 @@ import { EventDisplay } from '../event-display.model';
 	selector: 'app-row-text',
 	templateUrl: './row-text.component.html',
 	styleUrls: ['./row-text.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	standalone: false
 })
 export class RowTextComponent implements OnInit {
 	@Input() display!: EventDisplay;
-
+	
 	constructor(
 		private ref: ChangeDetectorRef,
-	) {}
-
+	) {
+	}
+	
 	ngOnInit(): void {
 		this.display.changeDetector = this.ref;
 	}

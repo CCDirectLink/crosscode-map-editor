@@ -5,7 +5,8 @@ import { AbstractWidget } from '../../abstract-widget';
 @Component({
 	selector: 'app-enemy-type-overlay',
 	templateUrl: './enemy-type-overlay.component.html',
-	styleUrls: ['./enemy-type-overlay.component.scss', '../../widget.scss']
+	styleUrls: ['./enemy-type-overlay.component.scss', '../../widget.scss'],
+	standalone: false
 })
 export class EnemyTypeWidgetOverlayComponent extends AbstractWidget implements OnInit {
 	@Output() exit = new EventEmitter<void>();

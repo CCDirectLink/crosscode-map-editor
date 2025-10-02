@@ -6,7 +6,8 @@ import { AbstractWidget } from '../abstract-widget';
 @Component({
 	selector: 'app-vec2-widget',
 	templateUrl: './vec2-widget.component.html',
-	styleUrls: ['./vec2-widget.component.scss', '../widget.scss']
+	styleUrls: ['./vec2-widget.component.scss', '../widget.scss'],
+	standalone: false
 })
 export class Vec2WidgetComponent extends AbstractWidget implements OnChanges {
 	

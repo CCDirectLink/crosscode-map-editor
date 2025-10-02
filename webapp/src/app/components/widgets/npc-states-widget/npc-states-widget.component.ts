@@ -28,7 +28,8 @@ export interface NPCState {
 @Component({
 	selector: 'app-npcstates-widget',
 	templateUrl: './npc-states-widget.component.html',
-	styleUrls: ['./npc-states-widget.component.scss', '../widget.scss']
+	styleUrls: ['./npc-states-widget.component.scss', '../widget.scss'],
+	standalone: false
 })
 export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, OnChanges, OnDestroy {
 	
@@ -36,7 +37,7 @@ export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, 
 	private ref?: OverlayRefControl;
 	
 	constructor(private overlayService: OverlayService,
-				private overlay: Overlay) {
+		private overlay: Overlay) {
 		super();
 	}
 	

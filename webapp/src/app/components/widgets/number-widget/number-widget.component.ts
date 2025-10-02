@@ -4,7 +4,8 @@ import { AbstractWidget } from '../abstract-widget';
 @Component({
 	selector: 'app-number-widget',
 	templateUrl: './number-widget.component.html',
-	styleUrls: ['./number-widget.component.scss', '../widget.scss']
+	styleUrls: ['./number-widget.component.scss', '../widget.scss'],
+	standalone: false
 })
 export class NumberWidgetComponent extends AbstractWidget implements OnInit {
 	

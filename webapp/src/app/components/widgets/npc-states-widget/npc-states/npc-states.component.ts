@@ -9,6 +9,7 @@ import { NPCState } from '../npc-states-widget.component';
 	selector: 'app-npc-states',
 	templateUrl: './npc-states.component.html',
 	styleUrls: ['./npc-states.component.scss', '../../widget.scss'],
+	standalone: false
 })
 export class NpcStatesComponent implements OnInit {
 	@ViewChild('eventEditor', {static: false}) eventEditor?: EventEditorComponent;

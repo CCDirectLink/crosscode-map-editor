@@ -7,7 +7,6 @@ import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 
 @Component({
 	selector: 'app-point-input',
-	standalone: true,
 	imports: [
 		FormsModule,
 		ReactiveFormsModule

@@ -10,7 +10,8 @@ import { EventWindowComponent } from './event-window/event-window.component';
 @Component({
 	selector: 'app-event-widget',
 	templateUrl: './event-widget.component.html',
-	styleUrls: ['./event-widget.component.scss', '../widget.scss']
+	styleUrls: ['./event-widget.component.scss', '../widget.scss'],
+	standalone: false
 })
 export class EventWidgetComponent extends AbstractWidget implements OnChanges {
 	

@@ -5,7 +5,8 @@ import { AbstractWidget } from '../abstract-widget';
 @Component({
 	selector: 'app-langlabel-widget',
 	templateUrl: './langlabel-widget.component.html',
-	styleUrls: ['./langlabel-widget.component.scss', '../widget.scss']
+	styleUrls: ['./langlabel-widget.component.scss', '../widget.scss'],
+	standalone: false
 })
 export class LangLabelWidgetComponent extends AbstractWidget {
 	@ViewChildren(CdkTextareaAutosize) inputTextareas!: QueryList<CdkTextareaAutosize>;

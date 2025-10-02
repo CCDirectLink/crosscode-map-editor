@@ -5,7 +5,8 @@ import { CrossCodeMap } from '../../../../models/cross-code-map';
 @Component({
 	selector: 'app-map-content-settings',
 	templateUrl: './map-content-settings.component.html',
-	styleUrls: ['./map-content-settings.component.scss']
+	styleUrls: ['./map-content-settings.component.scss'],
+	standalone: false
 })
 export class MapContentSettingsComponent implements OnInit {
 	@Input() settings!: CrossCodeMap;

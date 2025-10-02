@@ -9,7 +9,8 @@ import { GlobalEventsService } from '../../../services/global-events.service';
 @Component({
 	selector: 'app-map-settings',
 	templateUrl: './map-settings.component.html',
-	styleUrls: ['./map-settings.component.scss']
+	styleUrls: ['./map-settings.component.scss'],
+	standalone: false
 })
 export class MapSettingsComponent {
 	

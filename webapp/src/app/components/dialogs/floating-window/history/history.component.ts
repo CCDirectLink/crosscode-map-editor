@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
 import { NavigationStart, Router } from '@angular/router';
 
@@ -9,6 +9,7 @@ import { HistoryState, HistoryStateContainer, StateHistoryService } from './stat
 	selector: 'app-history',
 	templateUrl: './history.component.html',
 	styleUrls: ['./history.component.scss'],
+	standalone: false
 })
 export class HistoryComponent implements OnInit, OnDestroy {
 	

@@ -12,7 +12,6 @@ export interface PropListCard {
 
 @Component({
 	selector: 'app-image-select-card',
-	standalone: true,
 	imports: [CommonModule, HighlightDirective],
 	templateUrl: './image-select-card.component.html',
 	styleUrls: ['./image-select-card.component.scss']

@@ -13,7 +13,8 @@ import { PropListCard } from '../shared/image-select-overlay/image-select-card/i
 @Component({
 	selector: 'app-custom-des-type-widget',
 	templateUrl: './custom-des-type-widget.component.html',
-	styleUrls: ['./custom-des-type-widget.component.scss', '../widget.scss']
+	styleUrls: ['./custom-des-type-widget.component.scss', '../widget.scss'],
+	standalone: false
 })
 export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttributes> {
 	

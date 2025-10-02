@@ -10,10 +10,9 @@ import { AutofocusDirective } from '../../../../../directives/autofocus.directiv
 
 @Component({
 	selector: 'app-image-select-list',
-	standalone: true,
 	imports: [CommonModule, ImageSelectCardComponent, MatInputModule, MatIconModule, FormsModule, MatButtonModule, ListFilterPipe, AutofocusDirective],
 	templateUrl: './image-select-list.component.html',
-	styleUrls: ['./image-select-list.component.scss'],
+	styleUrls: ['./image-select-list.component.scss']
 })
 export class ImageSelectListComponent {
 	@Input() title?: string;

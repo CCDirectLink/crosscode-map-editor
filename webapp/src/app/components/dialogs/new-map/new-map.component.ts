@@ -7,7 +7,8 @@ import { OverlayRefControl } from '../overlay/overlay-ref-control';
 @Component({
 	selector: 'app-new-map',
 	templateUrl: './new-map.component.html',
-	styleUrls: ['./new-map.component.scss']
+	styleUrls: ['./new-map.component.scss'],
+	standalone: false
 })
 export class NewMapComponent {
 	map: CrossCodeMap;

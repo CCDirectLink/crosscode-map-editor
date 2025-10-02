@@ -22,7 +22,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 	selector: 'cc-overlay-panel',
 	templateUrl: './overlay-panel.component.html',
 	styleUrls: ['./overlay-panel.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	standalone: false
 })
 export class OverlayPanelComponent {
 	

@@ -4,26 +4,26 @@ import { EditorView } from '../../models/editor-view';
 import { GlobalEventsService } from '../../services/global-events.service';
 import { MapLoaderService } from '../../services/map-loader.service';
 import { CCMap } from '../../services/phaser/tilemap/cc-map';
-import { CCMapLayer } from '../../services/phaser/tilemap/cc-map-layer';
 
 @Component({
 	selector: 'app-sidenav',
 	templateUrl: './sidenav.component.html',
 	styleUrls: ['./sidenav.component.scss'],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	standalone: false
 })
 export class SidenavComponent implements OnInit {
-
+	
 	activeTab = EditorView.Layers;
 	tilemap?: CCMap;
 	disableLayersTab = false;
-
+	
 	constructor(
 		private mapLoader: MapLoaderService,
 		private globalEvents: GlobalEventsService
 	) {
 	}
-
+	
 	ngOnInit() {
 		this.mapLoader.tileMap.subscribe(tilemap => {
 			this.tilemap = tilemap;
@@ -39,7 +39,7 @@ export class SidenavComponent implements OnInit {
 			this.disableLayersTab = is3d;
 		});
 	}
-
+	
 	tabChanged(event: MatTabChangeEvent) {
 		this.globalEvents.currentView.next(event.index === 0 ? EditorView.Layers : EditorView.Entities);
 	}

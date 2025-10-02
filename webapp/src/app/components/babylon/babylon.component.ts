@@ -8,7 +8,8 @@ import { Globals } from '../../services/globals';
 @Component({
 	selector: 'app-babylon',
 	templateUrl: './babylon.component.html',
-	styleUrls: ['./babylon.component.scss']
+	styleUrls: ['./babylon.component.scss'],
+	standalone: false
 })
 export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 	

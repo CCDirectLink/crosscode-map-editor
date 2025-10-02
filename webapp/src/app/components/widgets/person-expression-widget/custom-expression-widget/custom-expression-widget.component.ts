@@ -17,7 +17,8 @@ import { JsonLoaderService } from '../../../../services/json-loader.service';
 @Component({
 	selector: 'app-custom-expression-widget',
 	templateUrl: './custom-expression-widget.component.html',
-	styleUrls: ['./custom-expression-widget.component.scss', '../../widget.scss']
+	styleUrls: ['./custom-expression-widget.component.scss', '../../widget.scss'],
+	standalone: false
 })
 export class CustomExpressionWidgetComponent extends OverlayWidget<Person> implements OnChanges {
 	

@@ -11,7 +11,8 @@ export interface PropListGroup {
 @Component({
 	selector: 'app-image-select-overlay',
 	templateUrl: './image-select-overlay.component.html',
-	styleUrls: ['./image-select-overlay.component.scss']
+	styleUrls: ['./image-select-overlay.component.scss'],
+	standalone: false
 })
 export class ImageSelectOverlayComponent implements OnChanges, OnDestroy {
 	

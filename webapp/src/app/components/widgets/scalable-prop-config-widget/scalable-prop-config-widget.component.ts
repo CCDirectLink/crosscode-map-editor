@@ -15,7 +15,8 @@ import Point = Electron.Point;
 @Component({
 	selector: 'app-scalable-prop-config-widget',
 	templateUrl: './scalable-prop-config-widget.component.html',
-	styleUrls: ['./scalable-prop-config-widget.component.scss', '../widget.scss']
+	styleUrls: ['./scalable-prop-config-widget.component.scss', '../widget.scss'],
+	standalone: false
 })
 export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePropAttributes> implements OnInit, OnDestroy {
 	private sheetKey = ['propConfig', 'sheet'];

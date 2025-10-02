@@ -13,7 +13,8 @@ import { PropListCard } from '../shared/image-select-overlay/image-select-card/i
 @Component({
 	selector: 'app-prop-type-widget',
 	templateUrl: './prop-type-widget.component.html',
-	styleUrls: ['./prop-type-widget.component.scss', '../widget.scss']
+	styleUrls: ['./prop-type-widget.component.scss', '../widget.scss'],
+	standalone: false
 })
 export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 	
