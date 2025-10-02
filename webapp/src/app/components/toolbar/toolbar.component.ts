@@ -1,7 +1,6 @@
 import { Overlay } from '@angular/cdk/overlay';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 
 import { environment } from '../../../environments/environment';
@@ -52,21 +51,25 @@ export class ToolbarComponent implements OnInit {
 		
 		// Use this to automatically load a map on startup for faster testing
 		if (!environment.production) {
+			console.warn('DEBUG: auto load map');
 			this.events.loadComplete.subscribe(async () => {
 				// await (await import('rxjs')).firstValueFrom(this.mapLoader.tileMap);
-				// this.mapLoader.loadMapByName('autumn/entrance');
+				// this.mapLoader.loadMapByName('arid/river-1');
+				// this.mapLoader.loadMapByName('tests/all-overlays');
+				// this.mapLoader.loadMapByName('tests/rhombus-sqr_beach-sw');
+				this.mapLoader.loadMapByName('autumn-fall/raid/raid-end');
 				
-				// automatically opens npc event editor
+				// automatically opens event editor
 				// console.log('after map load');
 				// await new Promise(r => setTimeout(r, 500));
 				// Globals.scene.cameras.main.setZoom(4, 4);
-				// Globals.scene.cameras.main.pan(330, 160, 0);
-				// const npc = this.map?.entityManager.entities.find(e => e.details.type === 'NPC');
+				// Globals.scene.cameras.main.pan(800, 1460, 0);
+				// const npc = this.map?.entityManager.entities.find(e => e.details.settings['name'] === 'BossGoesBoom');
 				// this.events.currentView.next(EditorView.Entities);
 				// await new Promise(r => setTimeout(r, 300));
 				// this.events.selectedEntity.next(npc);
-				// await new Promise(r => setTimeout(r, 400));
-				// const el = document.getElementsByTagName('app-npcstates-widget');
+				// await new Promise(r => setTimeout(r, 500));
+				// const el = document.getElementsByTagName('app-event-widget');
 				// el[0].getElementsByTagName('input')[0].click();
 			});
 		}
