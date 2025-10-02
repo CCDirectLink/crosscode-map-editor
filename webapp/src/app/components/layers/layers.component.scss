@@ -61,9 +61,14 @@ mat-nav-list {
 
 .small-list {
 	min-height: 80px !important;
+	$size: 36px;
+
+	button {
+		--mat-button-text-touch-target-size: $size !important;
+	}
 
 	& mat-list-item, .mat-list-item-content {
-		height: 36px !important;
+		height: $size !important;
 	}
 }
 
