@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import {
+	AfterViewInit,
+	Component,
+	ElementRef,
+	HostListener,
+	ViewChild,
+	inject,
+} from '@angular/core';
 import * as Phaser from 'phaser';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -7,38 +14,43 @@ import { GlobalEventsService } from '../../services/global-events.service';
 import { Globals } from '../../services/globals';
 import { HeightMapService } from '../../services/height-map/height-map.service';
 import { HttpClientService } from '../../services/http-client.service';
+import { JsonLoaderService } from '../../services/json-loader.service';
 import { MapLoaderService } from '../../services/map-loader.service';
 import { EntityRegistryService } from '../../services/phaser/entities/registry/entity-registry.service';
 import { MainScene } from '../../services/phaser/main-scene';
 import { PhaserEventsService } from '../../services/phaser/phaser-events.service';
 import { SettingsService } from '../../services/settings.service';
 import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
-import { JsonLoaderService } from '../../services/json-loader.service';
 
 @Component({
 	selector: 'app-phaser',
 	templateUrl: './phaser.component.html',
 	styleUrls: ['./phaser.component.scss'],
-	standalone: false
+	standalone: false,
 })
 export class PhaserComponent implements AfterViewInit {
-	
-	@ViewChild('content', {static: true}) content!: ElementRef<HTMLElement>;
-	
-	constructor(
-		private element: ElementRef,
-		private mapLoader: MapLoaderService,
-		private globalEvents: GlobalEventsService,
-		private stateHistory: StateHistoryService,
-		private phaserEventsService: PhaserEventsService,
-		private heightMap: HeightMapService,
-		private http: HttpClientService,
-		snackbar: MatSnackBar,
-		registry: EntityRegistryService,
-		autotile: AutotileService,
-		settingsService: SettingsService,
-		jsonLoader: JsonLoaderService,
-	) {
+	private element = inject(ElementRef);
+	private mapLoader = inject(MapLoaderService);
+	private globalEvents = inject(GlobalEventsService);
+	private stateHistory = inject(StateHistoryService);
+	private phaserEventsService = inject(PhaserEventsService);
+	private heightMap = inject(HeightMapService);
+	private http = inject(HttpClientService);
+
+	@ViewChild('content', { static: true }) content!: ElementRef<HTMLElement>;
+
+	constructor() {
+		const mapLoader = this.mapLoader;
+		const globalEvents = this.globalEvents;
+		const stateHistory = this.stateHistory;
+		const phaserEventsService = this.phaserEventsService;
+		const http = this.http;
+		const snackbar = inject(MatSnackBar);
+		const registry = inject(EntityRegistryService);
+		const autotile = inject(AutotileService);
+		const settingsService = inject(SettingsService);
+		const jsonLoader = inject(JsonLoaderService);
+
 		Globals.stateHistoryService = stateHistory;
 		Globals.mapLoaderService = mapLoader;
 		Globals.phaserEventsService = phaserEventsService;
@@ -50,10 +62,9 @@ export class PhaserComponent implements AfterViewInit {
 		Globals.settingsService = settingsService;
 		Globals.jsonLoader = jsonLoader;
 	}
-	
-	
+
 	ngAfterViewInit() {
-		this.heightMap.init();
+		void this.heightMap.init();
 		const scene = new MainScene();
 		const scale = this.getScale();
 		Globals.game = new Phaser.Game({
@@ -63,36 +74,33 @@ export class PhaserComponent implements AfterViewInit {
 			parent: 'content',
 			scale: {
 				mode: Phaser.Scale.ScaleModes.NONE,
-				zoom: 1 / window.devicePixelRatio
+				zoom: 1 / window.devicePixelRatio,
 			},
 			render: {
 				antialiasGL: false,
-				pixelArt: true
+				pixelArt: true,
 			},
 			zoom: 1,
-			scene: [scene]
+			scene: [scene],
 		});
 		Globals.scene = scene;
 	}
-	
+
 	@HostListener('window:resize', ['$event'])
 	onResize() {
 		if (!Globals.game) {
 			return;
 		}
 		const scale = this.getScale();
-		Globals.game.scale.resize(
-			scale.width,
-			scale.height
-		);
+		Globals.game.scale.resize(scale.width, scale.height);
 		Globals.game.scale.setZoom(1 / window.devicePixelRatio);
 	}
-	
+
 	private getScale() {
 		const rect = this.content.nativeElement.getBoundingClientRect();
 		return {
 			width: rect.width * window.devicePixelRatio,
-			height: rect.height * window.devicePixelRatio
+			height: rect.height * window.devicePixelRatio,
 		};
 	}
 }

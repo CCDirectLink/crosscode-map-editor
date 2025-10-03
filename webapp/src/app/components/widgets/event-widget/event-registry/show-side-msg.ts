@@ -8,19 +8,23 @@ interface ShowSideMsgData extends EventType {
 }
 
 export class ShowSideMsg extends DefaultEvent<ShowSideMsgData> {
-	
 	override update() {
 		this.info = this.combineStrings(
 			this.getTypeString('#fa5aff'),
-			this.getColoredString(this.data.person?.person + '>&#8203;' + this.data.person?.expression, '#ffe188'),
-			this.getProcessedText(this.data.message)
+			this.getColoredString(
+				this.data.person?.person +
+					'>&#8203;' +
+					this.data.person?.expression,
+				'#ffe188',
+			),
+			this.getProcessedText(this.data.message),
 		);
 	}
-	
+
 	protected override generateNewDataInternal() {
 		return {
 			person: {},
-			message: {}
+			message: {},
 		};
 	}
 }

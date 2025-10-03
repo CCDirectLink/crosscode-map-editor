@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { GlobalEventsService } from '../../../../services/global-events.service';
@@ -15,29 +15,31 @@ export interface HistoryState {
 }
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class StateHistoryService {
+	private readonly eventsService = inject(GlobalEventsService);
+
 	maxStates = 100;
-	
+
 	states = new BehaviorSubject<HistoryState[]>([]);
-	selectedState = new BehaviorSubject<HistoryStateContainer>({state: undefined});
-	
-	constructor(
-		private readonly eventsService: GlobalEventsService
-	) {
-	}
-	
+	selectedState = new BehaviorSubject<HistoryStateContainer>({
+		state: undefined,
+	});
+
 	init(state: HistoryState) {
 		this.selectedState.value.state = state;
 		this.states.next([state]);
 	}
-	
-	saveState(state: {
-		icon: string;
-		name: string;
-		json?: string;
-	}, ignoreCheck = false) {
+
+	saveState(
+		state: {
+			icon: string;
+			name: string;
+			json?: string;
+		},
+		ignoreCheck = false,
+	) {
 		if (!state.json) {
 			const newState = Globals.map.exportMap();
 			const stateJson = JSON.stringify(newState);
@@ -51,7 +53,7 @@ export class StateHistoryService {
 		}
 
 		this.eventsService.hasUnsavedChanges.next(true);
-		
+
 		const states = this.states.getValue();
 		const selected = this.selectedState.getValue();
 		const i = states.indexOf(selected.state!);
@@ -63,7 +65,7 @@ export class StateHistoryService {
 		states.push(selected.state);
 		this.states.next(states);
 	}
-	
+
 	undo() {
 		const states = this.states.getValue();
 		const selected = this.selectedState.getValue();
@@ -72,9 +74,9 @@ export class StateHistoryService {
 			return;
 		}
 		i--;
-		this.selectedState.next({state: states[i]});
+		this.selectedState.next({ state: states[i] });
 	}
-	
+
 	redo() {
 		const states = this.states.getValue();
 		const selected = this.selectedState.getValue();
@@ -83,6 +85,6 @@ export class StateHistoryService {
 			return;
 		}
 		i++;
-		this.selectedState.next({state: states[i]});
+		this.selectedState.next({ state: states[i] });
 	}
 }

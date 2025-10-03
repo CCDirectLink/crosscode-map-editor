@@ -15,26 +15,27 @@ export class DoAction extends AbstractEvent<any> {
 		},
 		repeating: {
 			type: 'Boolean',
-			description: 'Repeat Action'
+			description: 'Repeat Action',
 		},
 		wait: {
 			type: 'Boolean',
-			description: 'Wait until action is finished'
+			description: 'Wait until action is finished',
 		},
 		keepState: {
 			type: 'Boolean',
-			description: 'Don\'t reset entity state after action'
+			description: "Don't reset entity state after action",
 		},
 		immediately: {
 			type: 'Boolean',
-			description: 'If true: execute action immediately not interrupting currently running action. Will only execute steps without wait duration.'
-		}
+			description:
+				'If true: execute action immediately not interrupting currently running action. Will only execute steps without wait duration.',
+		},
 	};
-	
+
 	getAttributes() {
 		return this.attributes;
 	}
-	
+
 	update() {
 		this.info = this.combineStrings(
 			this.getTypeString('#8fe174'),
@@ -43,10 +44,10 @@ export class DoAction extends AbstractEvent<any> {
 			this.getPropString('repeating'),
 			this.getPropString('wait'),
 			this.getPropString('keepState'),
-			this.getPropString('immediately')
+			this.getPropString('immediately'),
 		);
 	}
-	
+
 	protected generateNewDataInternal() {
 		return {
 			entity: {},

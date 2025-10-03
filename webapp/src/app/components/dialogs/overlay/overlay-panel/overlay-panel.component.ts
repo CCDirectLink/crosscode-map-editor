@@ -23,20 +23,17 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 	templateUrl: './overlay-panel.component.html',
 	styleUrls: ['./overlay-panel.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	standalone: false
+	standalone: false,
 })
 export class OverlayPanelComponent {
-	
 	@Input() title = '';
 	@Input() allowDrag = true;
-	@Input() customSize?: { width?: string, height?: string };
+	@Input() customSize?: { width?: string; height?: string };
 	@Input() left?: string;
 	@Input() top?: string;
 	@Input() showButtonDivider = false;
-	
-	classes: { [key: string]: boolean } = {};
-	
-	constructor() {
-	}
-	
+
+	classes: Record<string, boolean> = {};
+
+	constructor() {}
 }

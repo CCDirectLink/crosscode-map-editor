@@ -1,6 +1,13 @@
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!">
-	<label class="property-name">{{key}}:</label>
-	<input type="button" class="default-input"
-	       [value]="this.settings.propConfig?.name || '[ null ]'"
-	       (click)="open()">
+<div
+	fxLayout="row"
+	class="property-container"
+	[matTooltip]="attribute?.description!"
+>
+	<label class="property-name">{{ key }}:</label>
+	<input
+		type="button"
+		class="default-input"
+		[value]="this.settings.propConfig?.name || '[ null ]'"
+		(click)="open()"
+	/>
 </div>

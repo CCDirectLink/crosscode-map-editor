@@ -1,23 +1,45 @@
-<div class="container mat-elevation-z8"
-     [style.width]="width"
-     [style.top]="top"
-     [style.right]="right"
-     (stopped)="onDragEnd()"
-     cdkDrag
+<div
+	class="container mat-elevation-z8"
+	[style.width]="width"
+	[style.top]="top"
+	[style.right]="right"
+	(stopped)="onDragEnd()"
+	cdkDrag
 >
 	<div class="toolbar" fxLayout="row" fxLayoutAlign="center" cdkDragHandle>
-		<span fxFlexAlign="center" class="title" style="pointer-events: none;" fxFlex>{{ title }}</span>
+		<span
+			fxFlexAlign="center"
+			class="title"
+			style="pointer-events: none"
+			fxFlex
+			>{{ title }}</span
+		>
 		@if (showMin) {
-			<button mat-button color="primary" fxFlexAlign="center" class="toolbar-button minimize-button"
-			        (click)="toggle()">-
+			<button
+				mat-button
+				color="primary"
+				fxFlexAlign="center"
+				class="toolbar-button minimize-button"
+				(click)="toggle()"
+			>
+				-
 			</button>
-		} @if (showClose) {
-		<button mat-button color="warn" fxFlexAlign="center" class="toolbar-button close-button"
-		        (click)="onClose()">x
-		</button>
-	}
+		}
+		@if (showClose) {
+			<button
+				mat-button
+				color="warn"
+				fxFlexAlign="center"
+				class="toolbar-button close-button"
+				(click)="onClose()"
+			>
+				x
+			</button>
+		}
 	</div>
 	<div class="content" [ngStyle]="contentStyle">
-		<ng-content [ngStyle]="{display: visible ? 'inherit' : 'none'}"></ng-content>
+		<ng-content
+			[ngStyle]="{ display: visible ? 'inherit' : 'none' }"
+		></ng-content>
 	</div>
 </div>

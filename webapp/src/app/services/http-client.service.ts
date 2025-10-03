@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { api } from 'cc-map-editor-common';
 import { lastValueFrom, Observable } from 'rxjs';
 import { FileInfos } from '../models/file-infos';
@@ -8,18 +8,14 @@ import { Globals } from './globals';
 import { SettingsService } from './settings.service';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class HttpClientService {
+	private http = inject(HttpClient);
+	private electron = inject(ElectronService);
+	private settingsService = inject(SettingsService);
 
 	private readonly fileName = 'config.json';
-
-	constructor(
-		private http: HttpClient,
-		private electron: ElectronService,
-		private settingsService: SettingsService
-	) {
-	}
 
 	getAllFiles(): Observable<FileInfos> {
 		return this.request('api/allFiles', api.getAllFiles);
@@ -30,40 +26,70 @@ export class HttpClientService {
 	}
 
 	getMaps(): Observable<string[]> {
-		const includeVanillaMaps = this.settingsService.getSettings().includeVanillaMaps;
-		return this.request(`api/allMaps?includeVanillaMaps=${includeVanillaMaps}`, api.getAllMaps, includeVanillaMaps);
+		const includeVanillaMaps =
+			this.settingsService.getSettings().includeVanillaMaps;
+		return this.request(
+			`api/allMaps?includeVanillaMaps=${includeVanillaMaps}`,
+			api.getAllMaps,
+			includeVanillaMaps,
+		);
 	}
 
 	getProps(): Observable<string[]> {
 		const folder = 'data/props/';
 		const extension = 'json';
-		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
+		return this.request(
+			`api/allFilesInFolder?folder=${folder}&extension=${extension}`,
+			api.getAllFilesInFolder,
+			folder,
+			extension,
+		);
 	}
 
 	getScalableProps(): Observable<string[]> {
 		const folder = 'data/scale-props/';
 		const extension = 'json';
-		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
+		return this.request(
+			`api/allFilesInFolder?folder=${folder}&extension=${extension}`,
+			api.getAllFilesInFolder,
+			folder,
+			extension,
+		);
 	}
 
 	getEnemies(): Observable<string[]> {
 		const folder = 'data/enemies/';
 		const extension = 'json';
-		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
+		return this.request(
+			`api/allFilesInFolder?folder=${folder}&extension=${extension}`,
+			api.getAllFilesInFolder,
+			folder,
+			extension,
+		);
 	}
 
 	getCharacters(): Observable<string[]> {
 		const folder = 'data/characters/';
 		const extension = 'json';
-		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
+		return this.request(
+			`api/allFilesInFolder?folder=${folder}&extension=${extension}`,
+			api.getAllFilesInFolder,
+			folder,
+			extension,
+		);
 	}
 
-	getMods(): Observable<{ id: string, displayName: string }[]> {
+	getMods(): Observable<{ id: string; displayName: string }[]> {
 		return this.request('api/allMods', api.getAllMods);
 	}
-	
+
 	getModMapEditorConfigs() {
-		return lastValueFrom(this.request('api/allModMapEditorConfigs', api.getAllModMapEditorConfigs));
+		return lastValueFrom(
+			this.request(
+				'api/allModMapEditorConfigs',
+				api.getAllModMapEditorConfigs,
+			),
+		);
 	}
 
 	getAssetsFile<T>(path: string): Observable<T> {
@@ -76,7 +102,9 @@ export class HttpClientService {
 
 	resolveFile(path: string): Observable<string> {
 		if (!Globals.isElectron) {
-			return this.http.post<string>(Globals.URL + 'api/resolve', { path });
+			return this.http.post<string>(Globals.URL + 'api/resolve', {
+				path,
+			});
 		}
 		const cc = this.electron.getAssetsPath();
 		return this.toObservable(api.resolve(cc, path));
@@ -88,7 +116,9 @@ export class HttpClientService {
 			return this.http.post<string>(Globals.URL + 'api/saveFile', file);
 		}
 
-		return this.toObservable(api.saveFile(this.electron.getAssetsPath(), file));
+		return this.toObservable(
+			api.saveFile(this.electron.getAssetsPath(), file),
+		);
 	}
 
 	/**
@@ -97,7 +127,11 @@ export class HttpClientService {
 	 * @param common 	Direct call to common
 	 * @param args      Additional arguments for common
 	 */
-	private request<T, A extends unknown[]>(url: string, common: (path: string, ...args: A) => Promise<T>, ...args: A): Observable<T> {
+	private request<T, A extends unknown[]>(
+		url: string,
+		common: (path: string, ...args: A) => Promise<T>,
+		...args: A
+	): Observable<T> {
 		if (!Globals.isElectron) {
 			return this.http.get<T>(Globals.URL + url);
 		}
@@ -106,10 +140,10 @@ export class HttpClientService {
 	}
 
 	private toObservable<T>(promise: Promise<T>): Observable<T> {
-		return new Observable<T>(subsriber => {
+		return new Observable<T>((subsriber) => {
 			promise
-				.then(value => subsriber.next(value))
-				.catch(err => subsriber.error(err))
+				.then((value) => subsriber.next(value))
+				.catch((err) => subsriber.error(err))
 				.finally(() => subsriber.complete());
 		});
 	}

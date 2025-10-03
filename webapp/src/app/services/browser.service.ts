@@ -3,11 +3,11 @@ import { Globals } from './globals';
 import { SharedService } from './shared-service';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class BrowserService implements SharedService {
 	private static readonly modName = 'selectedMod';
-	
+
 	constructor() {
 		if (Globals.isElectron) {
 			return;
@@ -18,7 +18,7 @@ export class BrowserService implements SharedService {
 		if (Globals.isElectron) {
 			return;
 		}
-		
+
 		const selectedMod = localStorage.getItem(this.modName) || '';
 
 		try {
@@ -27,18 +27,18 @@ export class BrowserService implements SharedService {
 			console.error('Could not select mod: ', ex); //Don't crash when backend is not available
 		}
 	}
-	
+
 	private static async updateMod(mod: string): Promise<void> {
 		//We cant use HttpClient because this is called really early
 		await fetch(Globals.URL + 'api/select', {
 			method: 'POST',
 			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({mod})
+			body: JSON.stringify({ mod }),
 		});
-	}    
+	}
 
 	public async saveModSelect(mod: string): Promise<void> {
 		localStorage.setItem(BrowserService.modName, mod ?? '');
@@ -48,7 +48,7 @@ export class BrowserService implements SharedService {
 	public getSelectedMod(): string {
 		return localStorage.getItem(BrowserService.modName) || '';
 	}
-	
+
 	public relaunch(): void {
 		location.reload();
 	}

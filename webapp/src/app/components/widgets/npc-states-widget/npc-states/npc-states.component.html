@@ -3,88 +3,185 @@
 		<div class="toolbar" fxLayout="row" fxFlexAlign="start">
 			<button mat-stroked-button (click)="newPage()">New Page</button>
 			<button mat-stroked-button (click)="copyPage()">Copy Page</button>
-			<button mat-stroked-button (click)="pastePage()" [disabled]="!clipboard">Paste Page</button>
-			<button mat-stroked-button (click)="removePage()">Remove Page</button>
+			<button
+				mat-stroked-button
+				(click)="pastePage()"
+				[disabled]="!clipboard"
+			>
+				Paste Page
+			</button>
+			<button mat-stroked-button (click)="removePage()">
+				Remove Page
+			</button>
 		</div>
 	</ng-container>
 	<ng-container ngProjectAs="content">
 		<div fxLayout="column" class="container">
-			
-			<mat-tab-group fxFlex="0 0 auto"
-			               id="groupTabGroup"
-			               animationDuration="0ms"
-			               mat-stretch-tabs="false"
-			               (selectedIndexChange)="selectTab($event)"
-			               [selectedIndex]="index">
+			<mat-tab-group
+				fxFlex="0 0 auto"
+				id="groupTabGroup"
+				animationDuration="0ms"
+				mat-stretch-tabs="false"
+				(selectedIndexChange)="selectTab($event)"
+				[selectedIndex]="index"
+			>
 				@for (state of states; track state; let index = $index) {
-					<mat-tab class="stretched-tabs"
-					         [label]="state.pageName && state.pageName.trim() ? state.pageName : ((index + 1) + '')">
+					<mat-tab
+						class="stretched-tabs"
+						[label]="
+							state.pageName && state.pageName.trim()
+								? state.pageName
+								: index + 1 + ''
+						"
+					>
 					</mat-tab>
 				}
 			</mat-tab-group>
-			
+
 			@if (currentState) {
 				<div class="tab-content" fxLayout="column" fxFlex="1 1 0">
-					
 					<!-- condition -->
 					<div fxFlex="0 0 54px" fxLayout="row">
 						<div fxLayout="row" fxFlexAlign="center" fxFlex="auto">
-							<label for="condition" class="condition-label" fxFlexAlign="center">condition:</label>
-							<input class="default-input condition-padding" id="condition"
-							       [(ngModel)]="currentState.condition">
+							<label
+								for="condition"
+								class="condition-label"
+								fxFlexAlign="center"
+								>condition:</label
+							>
+							<input
+								class="default-input condition-padding"
+								id="condition"
+								[(ngModel)]="currentState.condition"
+							/>
 							<div class="condition-icon">
 								<!--TODO: search icon-->
 							</div>
 						</div>
 					</div>
-					<div fxFlex="1 1 0" fxLayout="row" class="middle-container tab-content-inner">
-						<div class="content-left" fxFlex="0 0 225px" fxLayout="column">
-							
+					<div
+						fxFlex="1 1 0"
+						fxLayout="row"
+						class="middle-container tab-content-inner"
+					>
+						<div
+							class="content-left"
+							fxFlex="0 0 225px"
+							fxLayout="column"
+						>
 							<!-- Position -->
 							<div fxFlex="0 0 auto">
 								<div fxLayout="row" class="attribute">
-									<mat-checkbox color="primary" [(ngModel)]="currentState.position!.active">Position
+									<mat-checkbox
+										color="primary"
+										[(ngModel)]="
+											currentState.position!.active
+										"
+										>Position
 									</mat-checkbox>
 								</div>
 							</div>
 							@if (currentState.position!.active) {
 								<div fxFlex="0 1 auto">
-									<div fxLayout="row" class="property-container">
-										<label fxFlexAlign="center" class="pos-label">Pos:</label>
-										
-										<label class="property-name-small">X:</label>
-										<input type="number" class="default-input small-input"
-										       [(ngModel)]="currentState.position!.x">
-										
-										<label class="property-name-small">Y:</label>
-										<input type="number" class="default-input small-input"
-										       [(ngModel)]="currentState.position!.y">
+									<div
+										fxLayout="row"
+										class="property-container"
+									>
+										<label
+											fxFlexAlign="center"
+											class="pos-label"
+											>Pos:</label
+										>
+
+										<label class="property-name-small"
+											>X:</label
+										>
+										<input
+											type="number"
+											class="default-input small-input"
+											[(ngModel)]="
+												currentState.position!.x
+											"
+										/>
+
+										<label class="property-name-small"
+											>Y:</label
+										>
+										<input
+											type="number"
+											class="default-input small-input"
+											[(ngModel)]="
+												currentState.position!.y
+											"
+										/>
 									</div>
-									
-									<div fxLayout="row" class="property-container">
-										<label fxFlexAlign="center" class="pos-label" for="level">Level:</label>
-										
-										<input id="level" type="number" class="default-input small-input" min="0"
-										       [(ngModel)]="currentState.position!.lvl">
-										
-										<label for="offset" class="property-name-small">+</label>
-										<input disabled id="offset" type="number" class="default-input small-input">
+
+									<div
+										fxLayout="row"
+										class="property-container"
+									>
+										<label
+											fxFlexAlign="center"
+											class="pos-label"
+											for="level"
+											>Level:</label
+										>
+
+										<input
+											id="level"
+											type="number"
+											class="default-input small-input"
+											min="0"
+											[(ngModel)]="
+												currentState.position!.lvl
+											"
+										/>
+
+										<label
+											for="offset"
+											class="property-name-small"
+											>+</label
+										>
+										<input
+											disabled
+											id="offset"
+											type="number"
+											class="default-input small-input"
+										/>
 									</div>
-									<br><br>
+									<br /><br />
 								</div>
 							}
-							
+
 							<!-- page name -->
-							<div fxLayout="row" class="attribute" fxFlex="0 0 auto">
-								<span fxFlex="0 0 87px" fxFlexAlign="center">Page name: </span>
-								<input class="default-input" [(ngModel)]="currentState.pageName">
+							<div
+								fxLayout="row"
+								class="attribute"
+								fxFlex="0 0 auto"
+							>
+								<span fxFlex="0 0 87px" fxFlexAlign="center"
+									>Page name:
+								</span>
+								<input
+									class="default-input"
+									[(ngModel)]="currentState.pageName"
+								/>
 							</div>
-							
+
 							<!-- Event type -->
-							<div fxLayout="row" class="attribute" fxFlex="0 0 auto">
-								<span fxFlex="0 0 87px" fxFlexAlign="center">Event type: </span>
-								<select class="default-input select-input" [(ngModel)]="eventType"
-								        (ngModelChange)="updateDisplayedWarnings()">
+							<div
+								fxLayout="row"
+								class="attribute"
+								fxFlex="0 0 auto"
+							>
+								<span fxFlex="0 0 87px" fxFlexAlign="center"
+									>Event type:
+								</span>
+								<select
+									class="default-input select-input"
+									[(ngModel)]="eventType"
+									(ngModelChange)="updateDisplayedWarnings()"
+								>
 									@for (type of eventTypes; track type) {
 										<option [value]="type">
 											{{ type }}
@@ -92,23 +189,47 @@
 									}
 								</select>
 							</div>
-							
+
 							<!-- Trader -->
 							@if (isTradeEvent) {
-								<div fxLayout="row" class="attribute" fxFlex="0 0 auto">
-									<span fxFlex="0 0 87px" fxFlexAlign="center">Trader: </span>
-									<input class="default-input" [(ngModel)]="trader"
-									       (ngModelChange)="updateDisplayedWarnings()">
+								<div
+									fxLayout="row"
+									class="attribute"
+									fxFlex="0 0 auto"
+								>
+									<span fxFlex="0 0 87px" fxFlexAlign="center"
+										>Trader:
+									</span>
+									<input
+										class="default-input"
+										[(ngModel)]="trader"
+										(ngModelChange)="
+											updateDisplayedWarnings()
+										"
+									/>
 								</div>
 							}
-							
+
 							<!-- Other -->
 							@for (prop of props | keyvalue; track prop) {
-								<div fxLayout="row" class="attribute" fxFlex="0 0 auto">
-									<span fxFlex="0 0 87px" fxFlexAlign="center">{{ prop.key }}: </span>
-									<mat-select class="default-input select-input"
-									            [(ngModel)]="$any(currentState)[$any(prop.key)]">
-										@for (item of $any(prop.value); track item) {
+								<div
+									fxLayout="row"
+									class="attribute"
+									fxFlex="0 0 auto"
+								>
+									<span fxFlex="0 0 87px" fxFlexAlign="center"
+										>{{ prop.key }}:
+									</span>
+									<mat-select
+										class="default-input select-input"
+										[(ngModel)]="
+											$any(currentState)[$any(prop.key)]
+										"
+									>
+										@for (
+											item of $any(prop.value);
+											track item
+										) {
 											<mat-option [value]="item">
 												{{ item }}
 											</mat-option>
@@ -116,20 +237,31 @@
 									</mat-select>
 								</div>
 							}
-							
+
 							<!-- Warnings -->
 							@for (warning of warnings; track warning) {
 								<div fxLayout="row" class="warning-message">
 									<mat-icon>warning</mat-icon>
-									<span fxFlexAlign="center">{{ warning }}</span>
+									<span fxFlexAlign="center">{{
+										warning
+									}}</span>
 								</div>
 							}
 						</div>
-						<div fxFlex="1 1 0" fxLayout="column" class="event-container">
+						<div
+							fxFlex="1 1 0"
+							fxLayout="column"
+							class="event-container"
+						>
 							<!-- Event Editor -->
-							<app-event-editor #eventEditor class="event-block" fxLayout="column"
-							                  [eventData]="currentState.event"
-							                  (eventsChanged)="updateTradeEventWarning($event)"
+							<app-event-editor
+								#eventEditor
+								class="event-block"
+								fxLayout="column"
+								[eventData]="currentState.event"
+								(eventsChanged)="
+									updateTradeEventWarning($event)
+								"
 							></app-event-editor>
 						</div>
 					</div>

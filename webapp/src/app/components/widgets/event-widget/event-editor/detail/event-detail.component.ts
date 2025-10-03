@@ -1,4 +1,14 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+	ChangeDetectorRef,
+	Component,
+	EventEmitter,
+	Input,
+	OnDestroy,
+	Output,
+	ViewChild,
+	ViewContainerRef,
+	inject,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { HostDirective } from '../../../../../directives/host.directive';
 import { AttributeValue } from '../../../../../services/phaser/entities/cc-entity';
@@ -14,60 +24,60 @@ export type RefreshType = 'Node' | 'Full';
 	selector: 'app-event-detail',
 	templateUrl: './event-detail.component.html',
 	styleUrls: ['./event-detail.component.scss'],
-	standalone: false
+	standalone: false,
 })
 export class EventDetailComponent implements OnDestroy {
-	@ViewChild(HostDirective, {static: true}) appHost!: HostDirective;
-	
+	private widgetRegistry = inject(WidgetRegistryService);
+	private helper = inject(EventHelperService);
+	private ref = inject(ChangeDetectorRef);
+
+	@ViewChild(HostDirective, { static: true }) appHost!: HostDirective;
+
 	@Input() event!: AbstractEvent<any>;
 	@Output() close = new EventEmitter<void>();
 	@Output() refresh = new EventEmitter<RefreshType>();
-	
+
 	newData: any;
 	unknownObj?: { data: any };
 	warning = false;
-	
+
 	private changeSubscriptions: Subscription[] = [];
-	
-	constructor(
-		private widgetRegistry: WidgetRegistryService,
-		private helper: EventHelperService,
-		private ref: ChangeDetectorRef,
-	) {
-	}
-	
+
 	ngOnDestroy(): void {
 		this.clearSubscriptions();
 	}
-	
+
 	closeDetails(): void {
 		this.close.emit();
 	}
-	
+
 	public loadEvent(event: AbstractEvent<any>) {
 		if (this.event !== event) {
 			this.event = event;
 			this.loadSettings();
 		}
 	}
-	
+
 	private clearSubscriptions() {
 		for (const sub of this.changeSubscriptions) {
 			sub.unsubscribe();
 		}
 		this.changeSubscriptions = [];
 	}
-	
+
 	private loadSettings() {
 		this.clearSubscriptions();
-		
+
 		const ref = this.appHost.viewContainerRef;
-		
+
 		ref.clear();
-		
+
 		const exported = this.event.export();
-		this.newData = this.helper.getEventFromType(exported, this.event.actionStep).data;
-		
+		this.newData = this.helper.getEventFromType(
+			exported,
+			this.event.actionStep,
+		).data;
+
 		if (!this.event.getAttributes) {
 			console.log('wtf', this);
 		}
@@ -79,34 +89,50 @@ export class EventDetailComponent implements OnDestroy {
 			});
 		} else {
 			this.warning = true;
-			this.unknownObj = {data: this.newData};
-			const instance = this.generateWidget(this.unknownObj, 'data', {
-				type: '',
-				description: ''
-			}, ref) as JsonWidgetComponent;
+			this.unknownObj = { data: this.newData };
+			const instance = this.generateWidget(
+				this.unknownObj,
+				'data',
+				{
+					type: '',
+					description: '',
+				},
+				ref,
+			) as JsonWidgetComponent;
 			instance.noPropName = true;
 		}
-		
+
 		this.ref.detectChanges();
 	}
-	
-	private generateWidget(data: any, key: string, val: AttributeValue, ref: ViewContainerRef) {
-		const componentRef = ref.createComponent(this.widgetRegistry.getWidget(val.type));
-		const instance = <AbstractWidget>componentRef.instance;
+
+	private generateWidget(
+		data: any,
+		key: string,
+		val: AttributeValue,
+		ref: ViewContainerRef,
+	) {
+		const componentRef = ref.createComponent(
+			this.widgetRegistry.getWidget(val.type),
+		);
+		const instance = componentRef.instance as AbstractWidget;
 		instance.custom = data;
 		instance.key = key;
 		instance.attribute = val;
 		const sub = instance.onChange.subscribe(() => this.update());
-		
+
 		this.changeSubscriptions.push(sub);
 		return instance;
 	}
-	
+
 	private update() {
 		this.event.data = this.unknownObj ? this.unknownObj.data : this.newData;
 		const previousChildCount = this.event.children.length;
 		this.event.update();
 		const childCount = this.event.children.length;
-		this.refresh.emit((childCount > 0 || previousChildCount !== childCount) ? 'Full' : 'Node');
+		this.refresh.emit(
+			childCount > 0 || previousChildCount !== childCount
+				? 'Full'
+				: 'Node',
+		);
 	}
 }

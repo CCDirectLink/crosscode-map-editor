@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener } from '@angular/core';
+import { AfterViewInit, Component, HostListener, inject } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import * as Phaser from 'phaser';
 
@@ -6,32 +6,33 @@ import { EditorView } from '../../../../models/editor-view';
 import { GlobalEventsService } from '../../../../services/global-events.service';
 import { TileSelectorScene } from './tile-selector.scene';
 
-
 @Component({
 	selector: 'app-tile-selector',
 	templateUrl: './tile-selector.component.html',
 	styleUrls: ['./tile-selector.component.scss'],
-	standalone: false
+	standalone: false,
 })
 export class TileSelectorComponent implements AfterViewInit {
 	private display?: Phaser.Game;
 	private scene?: TileSelectorScene;
 	hide = false;
-	
-	constructor(
-		globalEvents: GlobalEventsService,
-		router: Router
-	) {
-		globalEvents.currentView.subscribe(view => this.hide = view !== EditorView.Layers);
-		
+
+	constructor() {
+		const globalEvents = inject(GlobalEventsService);
+		const router = inject(Router);
+
+		globalEvents.currentView.subscribe(
+			(view) => (this.hide = view !== EditorView.Layers),
+		);
+
 		// TODO: floating windows should be handled globally
-		router.events.subscribe(event => {
+		router.events.subscribe((event) => {
 			if (event instanceof NavigationStart) {
 				this.hide = event.url === '/3d';
 			}
 		});
 	}
-	
+
 	ngAfterViewInit() {
 		this.scene = new TileSelectorScene();
 		this.display = new Phaser.Game({
@@ -41,16 +42,16 @@ export class TileSelectorComponent implements AfterViewInit {
 			parent: 'tile-selector-content',
 			scale: {
 				mode: Phaser.Scale.ScaleModes.NONE,
-				zoom: 1 / window.devicePixelRatio
+				zoom: 1 / window.devicePixelRatio,
 			},
 			render: {
-				pixelArt: true
+				pixelArt: true,
 			},
 			zoom: 1,
-			scene: [this.scene]
+			scene: [this.scene],
 		});
 	}
-	
+
 	@HostListener('window:resize', ['$event'])
 	onResize(event: Event) {
 		if (!this.display) {
@@ -58,12 +59,12 @@ export class TileSelectorComponent implements AfterViewInit {
 		}
 		this.display.scale.refresh();
 	}
-	
+
 	onDragEnd() {
 		if (!this.display || !this.scene) {
 			return;
 		}
-		
+
 		this.scene.resize();
 	}
 }

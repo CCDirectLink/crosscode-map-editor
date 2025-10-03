@@ -1,13 +1,23 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+	Component,
+	EventEmitter,
+	Input,
+	OnChanges,
+	Output,
+	SimpleChanges,
+	inject,
+} from '@angular/core';
 import { SearchFilterService } from '../../../../services/search-filter.service';
 
 @Component({
 	selector: 'app-autocompleted-textbox',
 	templateUrl: './autocompleted-textbox.component.html',
 	styleUrls: ['./autocompleted-textbox.component.scss', '../../widget.scss'],
-	standalone: false
+	standalone: false,
 })
 export class AutocompletedTextboxComponent implements OnChanges {
+	private searchFilterService = inject(SearchFilterService);
+
 	@Input() availableOptions!: string[];
 	@Input() text = '';
 	@Output() textChange = new EventEmitter<string>();
@@ -15,20 +25,18 @@ export class AutocompletedTextboxComponent implements OnChanges {
 	suggestedOptions = new Set<string>();
 	disableTooltip = false;
 	showWarning = false;
-	
-	constructor(
-		private searchFilterService: SearchFilterService,
-	) {
-	}
-	
+
 	ngOnChanges(changes: SimpleChanges) {
 		this.updateSuggestedOptions();
 	}
-	
+
 	updateSuggestedOptions() {
 		const inputText = this.text;
-		const searchResults = this.searchFilterService.filterOptions(this.availableOptions, inputText);
-		
+		const searchResults = this.searchFilterService.filterOptions(
+			this.availableOptions,
+			inputText,
+		);
+
 		this.suggestedOptions.clear();
 		if (searchResults.includes(inputText)) {
 			this.showWarning = false;
@@ -40,11 +48,17 @@ export class AutocompletedTextboxComponent implements OnChanges {
 					this.suggestedOptions.add(searchResult);
 				}
 			}
-			searchResults.forEach(searchResult => this.suggestedOptions.add(searchResult));
-			this.availableOptions.forEach(option => this.suggestedOptions.add(option));
+			searchResults.forEach((searchResult) =>
+				this.suggestedOptions.add(searchResult),
+			);
+			this.availableOptions.forEach((option) =>
+				this.suggestedOptions.add(option),
+			);
 		} else {
 			this.showWarning = true;
-			searchResults.forEach(searchResult => this.suggestedOptions.add(searchResult));
+			searchResults.forEach((searchResult) =>
+				this.suggestedOptions.add(searchResult),
+			);
 		}
 	}
 }

@@ -1,24 +1,27 @@
 export enum BasePath {
 	MAPS = 'data/maps/',
 	ENEMIES = 'data/enemies/',
-	ANIMATIONS = 'data/animations/'
+	ANIMATIONS = 'data/animations/',
 }
 
 export enum FileExtension {
 	NONE = '',
 	PNG = '.png',
 	JSON = '.json',
-	OGG = '.ogg'
+	OGG = '.ogg',
 }
 
 export class PathResolver {
-	
 	/**
 	 * @param base The path in relation to assets.
 	 * @param name The name of the asset in relation to base using '.' as separator.
 	 * @param extension
 	 */
-	public static convertToPath(base: BasePath, name: string, extension: FileExtension) {
+	public static convertToPath(
+		base: BasePath,
+		name: string,
+		extension: FileExtension,
+	) {
 		return base + name.replace(/\./g, '/') + extension;
 	}
 

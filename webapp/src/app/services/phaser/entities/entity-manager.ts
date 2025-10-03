@@ -8,37 +8,36 @@ import { CCEntity } from './cc-entity';
 import { SelectionBox } from './selection-box';
 
 export class EntityManager extends BaseObject {
-	
 	// TODO: If ? is really required, add a description why.
 	private map?: CCMap;
 	private _entities: CCEntity[] = [];
 	get entities(): CCEntity[] {
 		return this._entities;
 	}
-	
+
 	private multiSelectKey!: Phaser.Input.Keyboard.Key;
 	private deleteKey!: Phaser.Input.Keyboard.Key;
 	private gridKey!: Phaser.Input.Keyboard.Key;
 	private visibilityKey!: Phaser.Input.Keyboard.Key;
 	private leftPointerDown = false;
 	private rightPointerDown = false;
-	
+
 	private skipEdit = false;
-	
+
 	private copyListener = async () => {
 		if (Helper.isInputFocused()) {
 			return;
 		}
 		await this.copy();
 	};
-	
+
 	private pasteListener = async () => {
 		if (Helper.isInputFocused()) {
 			return;
 		}
 		await this.paste();
 	};
-	
+
 	private cutListener = async () => {
 		if (Helper.isInputFocused()) {
 			return;
@@ -46,7 +45,7 @@ export class EntityManager extends BaseObject {
 		await this.copy();
 		this.deleteSelectedEntities();
 	};
-	
+
 	private leftClickOpts: {
 		prevTimer: number;
 		prevEntity: CCEntity | undefined;
@@ -58,22 +57,19 @@ export class EntityManager extends BaseObject {
 		prevEntity: undefined,
 		entity: undefined,
 		timer: 0,
-		pos: {x: 0, y: 0}
+		pos: { x: 0, y: 0 },
 	};
-	
+
 	private selectedEntities: CCEntity[] = [];
-	
+
 	private gameObjectDown = false;
-	
+
 	private selectionBox!: SelectionBox;
-	
-	constructor(
-		scene: Phaser.Scene,
-		active = true
-	) {
+
+	constructor(scene: Phaser.Scene, active = true) {
 		super(scene, 'entityManager', active);
 	}
-	
+
 	protected init(): void {
 		const keyboard = this.scene.input.keyboard;
 		const keyCodes = Phaser.Input.Keyboard.KeyCodes;
@@ -81,57 +77,68 @@ export class EntityManager extends BaseObject {
 		this.deleteKey = keyboard!.addKey(keyCodes.DELETE, false);
 		this.gridKey = keyboard!.addKey(keyCodes.G, false);
 		this.visibilityKey = keyboard!.addKey(keyCodes.R, false);
-		
+
 		this.selectionBox = new SelectionBox(this.scene);
-		
-		Globals.globalEventsService.updateEntities.subscribe(() => this.resetEntities());
+
+		Globals.globalEventsService.updateEntities.subscribe(() =>
+			this.resetEntities(),
+		);
 	}
-	
-	
+
 	protected deactivate() {
 		document.removeEventListener('copy', this.copyListener);
 		document.removeEventListener('paste', this.pasteListener);
 		document.removeEventListener('cut', this.cutListener);
-		
+
 		this.selectEntity();
-		this._entities.forEach(entity => {
+		this._entities.forEach((entity) => {
 			entity.setActive(false);
 			entity.setSelected(false);
 		});
 	}
-	
+
 	protected activate() {
 		document.addEventListener('copy', this.copyListener);
 		document.addEventListener('paste', this.pasteListener);
 		document.addEventListener('cut', this.cutListener);
-		this._entities.forEach(entity => {
+		this._entities.forEach((entity) => {
 			entity.setActive(true);
 		});
-		const sub2 = Globals.globalEventsService.selectedEntity.subscribe(entity => {
-			if (this.selectedEntities.length > 0 && !this.skipEdit) {
-				Globals.stateHistoryService.saveState({
-					name: 'Entity edited',
-					icon: 'build',
-				}, false);
-			}
-			this.skipEdit = false;
-			this.selectedEntities.forEach(e => e.setSelected(false));
-			this.selectedEntities = [];
-			if (entity) {
-				entity.setSelected(true);
-				this.selectedEntities.push(entity);
-			}
-		});
+		const sub2 = Globals.globalEventsService.selectedEntity.subscribe(
+			(entity) => {
+				if (this.selectedEntities.length > 0 && !this.skipEdit) {
+					Globals.stateHistoryService.saveState(
+						{
+							name: 'Entity edited',
+							icon: 'build',
+						},
+						false,
+					);
+				}
+				this.skipEdit = false;
+				this.selectedEntities.forEach((e) => e.setSelected(false));
+				this.selectedEntities = [];
+				if (entity) {
+					entity.setSelected(true);
+					this.selectedEntities.push(entity);
+				}
+			},
+		);
 		this.addSubscription(sub2);
-		
-		const sub3 = Globals.globalEventsService.generateNewEntity.subscribe(async entity => {
-			await this.generateNewEntity(entity);
-		});
+
+		const sub3 = Globals.globalEventsService.generateNewEntity.subscribe(
+			async (entity) => {
+				await this.generateNewEntity(entity);
+			},
+		);
 		this.addSubscription(sub3);
-		
+
 		this.addKeybinding({
 			event: 'pointerdown',
-			fun: (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
+			fun: (
+				pointer: Phaser.Input.Pointer,
+				gameObject: Phaser.GameObjects.GameObject[],
+			) => {
 				if (pointer.rightButtonDown()) {
 					this.rightPointerDown = true;
 				}
@@ -139,89 +146,101 @@ export class EntityManager extends BaseObject {
 					return;
 				}
 				this.leftPointerDown = true;
-				
-				
+
 				let entity;
 				if (gameObject.length > 0) {
 					entity = gameObject[0].getData('entity') as CCEntity;
 				}
-				
+
 				this.leftClickOpts.prevTimer = this.leftClickOpts.timer;
 				this.leftClickOpts.prevEntity = this.leftClickOpts.entity;
 				this.leftClickOpts.timer = 0;
 				this.leftClickOpts.entity = entity;
 				this.leftClickOpts.pos.x = pointer.worldX;
 				this.leftClickOpts.pos.y = pointer.worldY;
-				
+
 				// if panning return once entity as been selected to prevent dragging of selected entities
 				if (Globals.panning) {
 					return;
 				}
-				
+
 				if (entity) {
 					this.gameObjectDown = true;
-					
+
 					// to allow instant drag of a single entity
 					if (this.selectedEntities.indexOf(entity) < 0) {
 						if (!this.multiSelectKey.isDown) {
 							this.selectEntity(entity);
 						}
 					}
-					this.selectedEntities.forEach(entity => {
-						entity.startOffset.x = pointer.worldX - entity.container.x;
-						entity.startOffset.y = pointer.worldY - entity.container.y;
+					this.selectedEntities.forEach((entity) => {
+						entity.startOffset.x =
+							pointer.worldX - entity.container.x;
+						entity.startOffset.y =
+							pointer.worldY - entity.container.y;
 						entity.isDragged = true;
 					});
 				} else {
 					this.selectionBox.onInputDown(pointer);
 				}
 			},
-			emitter: this.scene.input
+			emitter: this.scene.input,
 		});
-		
-		const pointerUpFun = (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
+
+		const pointerUpFun = (
+			pointer: Phaser.Input.Pointer,
+			gameObject: Phaser.GameObjects.GameObject[],
+		) => {
 			if (pointer.rightButtonReleased() && this.rightPointerDown) {
 				this.rightPointerDown = false;
 				this.selectEntity();
 				this.showAddEntityMenu();
 			} else if (pointer.leftButtonReleased() && this.leftPointerDown) {
 				this.leftPointerDown = false;
-				this.selectedEntities.forEach(entity => {
+				this.selectedEntities.forEach((entity) => {
 					entity.isDragged = false;
 				});
-				
+
 				// if panning do not deselect entities
 				if (Globals.panning) {
 					return;
 				}
-				
+
 				if (this.gameObjectDown) {
 					this.gameObjectDown = false;
 					Globals.stateHistoryService.saveState({
 						name: 'Entity moved',
-						icon: 'open_with'
+						icon: 'open_with',
 					});
 				} else {
 					const entities = this.selectionBox.onInputUp();
-					
+
 					if (!this.multiSelectKey.isDown) {
 						this.selectEntity();
 					}
-					entities.forEach(entity => {
+					entities.forEach((entity) => {
 						this.selectEntity(entity, true);
 					});
 				}
-				
+
 				let entity;
 				if (gameObject.length > 0) {
 					entity = gameObject[0].getData('entity');
 				}
 				if (entity) {
-					const p = {x: pointer.worldX, y: pointer.worldY};
-					if (this.leftClickOpts.timer < 200 && Vec2.distance2(p, this.leftClickOpts.pos) < 10) {
+					const p = { x: pointer.worldX, y: pointer.worldY };
+					if (
+						this.leftClickOpts.timer < 200 &&
+						Vec2.distance2(p, this.leftClickOpts.pos) < 10
+					) {
 						this.selectEntity(entity, this.multiSelectKey.isDown);
-						
-						if (!this.multiSelectKey.isDown && this.leftClickOpts.prevEntity === this.leftClickOpts.entity && this.leftClickOpts.prevTimer < 500) {
+
+						if (
+							!this.multiSelectKey.isDown &&
+							this.leftClickOpts.prevEntity ===
+								this.leftClickOpts.entity &&
+							this.leftClickOpts.prevTimer < 500
+						) {
 							entity.doubleClick();
 						}
 					} else {
@@ -231,19 +250,19 @@ export class EntityManager extends BaseObject {
 				}
 			}
 		};
-		
+
 		this.addKeybinding({
 			event: 'pointerup',
 			fun: pointerUpFun,
-			emitter: this.scene.input
+			emitter: this.scene.input,
 		});
-		
+
 		this.addKeybinding({
 			event: 'pointerupoutside',
 			fun: pointerUpFun,
-			emitter: this.scene.input
+			emitter: this.scene.input,
 		});
-		
+
 		this.addKeybinding({
 			event: 'up',
 			emitter: this.gridKey,
@@ -251,13 +270,13 @@ export class EntityManager extends BaseObject {
 				if (Helper.isInputFocused()) {
 					return;
 				}
-				Globals.gridSettings.update(settings => ({
+				Globals.gridSettings.update((settings) => ({
 					...settings,
-					enableGrid: !settings.enableGrid
+					enableGrid: !settings.enableGrid,
 				}));
-			}
+			},
 		});
-		
+
 		// TODO: still triggers when npc editor is open
 		this.addKeybinding({
 			event: 'up',
@@ -267,9 +286,9 @@ export class EntityManager extends BaseObject {
 					return;
 				}
 				this.deleteSelectedEntities();
-			}
+			},
 		});
-		
+
 		this.addKeybinding({
 			event: 'up',
 			emitter: this.visibilityKey,
@@ -278,36 +297,33 @@ export class EntityManager extends BaseObject {
 					return;
 				}
 				this.hideEntities();
-			}
+			},
 		});
-		
-		
 	}
-	
+
 	preUpdate(time: number, delta: number): void {
 		this.leftClickOpts.timer += delta;
 		this.selectionBox.update(this._entities);
 	}
-	
-	
+
 	hideEntities() {
-		this._entities.forEach(e => {
+		this._entities.forEach((e) => {
 			e.container.visible = !e.container.visible;
 		});
 	}
-	
+
 	/** generates all entities and adds proper input handling */
 	async initialize(map: CrossCodeMap, ccMap: CCMap) {
 		this.map = ccMap;
 		if (this._entities) {
-			this._entities.forEach(e => e.destroy());
+			this._entities.forEach((e) => e.destroy());
 		}
 		this._entities = [];
-		
+
 		if (!map.entities) {
 			return;
 		}
-		
+
 		// concurrent entity loading
 		const promises: Promise<any>[] = [];
 		for (const entity of map.entities) {
@@ -315,56 +331,73 @@ export class EntityManager extends BaseObject {
 		}
 		await Promise.all(promises);
 	}
-	
-	
+
 	selectEntity(entity?: CCEntity, multiple = false) {
 		if (multiple) {
 			if (!entity) {
-				throw new Error('select entity is undefined, but multiple is true');
-				
+				throw new Error(
+					'select entity is undefined, but multiple is true',
+				);
 			}
-			const i = this.selectedEntities.indexOf(entity as CCEntity);
+			const i = this.selectedEntities.indexOf(entity);
 			if (i >= 0) {
 				entity.setSelected(false);
 				this.selectedEntities.splice(i, 1);
 			} else {
 				entity.setSelected(true);
-				this.selectedEntities.push(entity!);
+				this.selectedEntities.push(entity);
 			}
-			
+
 			if (this.selectedEntities.length === 1) {
 				Globals.globalEventsService.selectedEntity.next(entity);
 			}
-		} else if (this.selectedEntities[0] !== entity || this.selectedEntities.length !== 1) {
+		} else if (
+			this.selectedEntities[0] !== entity ||
+			this.selectedEntities.length !== 1
+		) {
 			Globals.globalEventsService.selectedEntity.next(entity);
 		}
 	}
-	
-	public async generateNewEntity(entity: MapEntity): Promise<CCEntity | undefined> {
+
+	public async generateNewEntity(
+		entity: MapEntity,
+	): Promise<CCEntity | undefined> {
 		if (!this.map) {
 			return;
 		}
 		// TODO: better generate level from collision tiles
 		entity.level = this.map.masterLevel;
 		const e = await this.generateEntity(entity);
-		
+
 		// entity manager is activated
 		e.setActive(true);
 		this.selectEntity(e);
-		
-		Globals.stateHistoryService.saveState({
-			name: 'Entity added',
-			icon: 'add'
-		}, true);
-		
+
+		Globals.stateHistoryService.saveState(
+			{
+				name: 'Entity added',
+				icon: 'add',
+			},
+			true,
+		);
+
 		return e;
 	}
-	
+
 	async generateEntity(entity: MapEntity): Promise<CCEntity> {
 		const entityClass = Globals.entityRegistry.getEntity(entity.type);
-		console.assert(this.map, 'I dont think map is ever undefined, but if it ever happens check the TODO on private map?: CCMap;');
+		console.assert(
+			this.map,
+			'I dont think map is ever undefined, but if it ever happens check the TODO on private map?: CCMap;',
+		);
 		const map = this.map!;
-		const ccEntity = new entityClass(this.scene, map, entity.x, entity.y, entity.type);
+		const ccEntity = new entityClass(
+			this.scene,
+			map,
+			entity.x,
+			entity.y,
+			entity.type,
+		);
 		if (!entity.settings.mapId) {
 			entity.settings.mapId = map.getUniqueMapid();
 		}
@@ -374,21 +407,26 @@ export class EntityManager extends BaseObject {
 		this._entities.push(ccEntity);
 		return ccEntity;
 	}
-	
+
 	async copy() {
-		const entities = this.selectedEntities.map(v => v.exportEntity());
+		const entities = this.selectedEntities.map((v) => v.exportEntity());
 		if (entities.length === 0) {
 			return;
 		}
 		await navigator.clipboard.writeText(JSON.stringify(entities));
-		Globals.snackbar.open('copied entity to clipboard', undefined, {duration: 1000});
-		
+		Globals.snackbar.open('copied entity to clipboard', undefined, {
+			duration: 1000,
+		});
 	}
-	
+
 	isMapEntity(obj: Partial<MapEntity> | undefined): obj is MapEntity {
-		return typeof obj?.type === 'string' && typeof obj.x === 'number' && typeof obj.settings === 'object';
+		return (
+			typeof obj?.type === 'string' &&
+			typeof obj.x === 'number' &&
+			typeof obj.settings === 'object'
+		);
 	}
-	
+
 	async paste() {
 		if (!this.map) {
 			return;
@@ -400,12 +438,16 @@ export class EntityManager extends BaseObject {
 			if (!Array.isArray(parsed)) {
 				parsed = [parsed];
 			}
-			entities = (parsed as any[]).filter(v => this.isMapEntity(v));
+			entities = (parsed as any[]).filter((v) => this.isMapEntity(v));
 		} catch (e) {
-			Globals.snackbar.open('could not parse entities from clipboard', undefined, {
-				duration: 2000,
-				panelClass: 'snackbar-error'
-			});
+			Globals.snackbar.open(
+				'could not parse entities from clipboard',
+				undefined,
+				{
+					duration: 2000,
+					panelClass: 'snackbar-error',
+				},
+			);
 			return;
 		}
 		if (entities.length === 0) {
@@ -422,7 +464,7 @@ export class EntityManager extends BaseObject {
 		offset.y -= levelOffset;
 		const mousePos = Helper.getPointerPos(this.scene.input.activePointer);
 		this.selectEntity();
-		
+
 		for (const e of entities) {
 			e.settings.mapId = undefined;
 			Vec2.sub(e, offset);
@@ -431,9 +473,8 @@ export class EntityManager extends BaseObject {
 			newEntity.setActive(true);
 			this.selectEntity(newEntity, entities.length > 1);
 		}
-		
 	}
-	
+
 	private async resetEntities() {
 		if (!this.map) {
 			return;
@@ -446,33 +487,37 @@ export class EntityManager extends BaseObject {
 			}
 		}
 	}
-	
+
 	deleteSelectedEntities() {
 		this.skipEdit = true;
 		const saveHistory = this.selectedEntities.length > 0;
-		this.selectedEntities.forEach(e => {
+		this.selectedEntities.forEach((e) => {
 			const i = this._entities.indexOf(e);
 			this._entities.splice(i, 1);
 			e.destroy();
 		});
 		this.selectEntity();
-		
+
 		if (saveHistory) {
-			Globals.stateHistoryService.saveState({
-				name: 'Entity deleted',
-				icon: 'delete'
-			}, true);
+			Globals.stateHistoryService.saveState(
+				{
+					name: 'Entity deleted',
+					icon: 'delete',
+				},
+				true,
+			);
 		}
 	}
-	
+
 	exportEntities(): MapEntity[] {
 		const out: MapEntity[] = [];
-		this._entities.forEach(e => out.push(e.exportEntity()));
+		this._entities.forEach((e) => out.push(e.exportEntity()));
 		return out;
 	}
-	
+
 	private showAddEntityMenu() {
-		
-		Globals.globalEventsService.showAddEntityMenu.next(Helper.getPointerPos(this.scene.input.activePointer));
+		Globals.globalEventsService.showAddEntityMenu.next(
+			Helper.getPointerPos(this.scene.input.activePointer),
+		);
 	}
 }

@@ -24,7 +24,8 @@
 						"index": "src/index.html",
 						"tsConfig": "src/tsconfig.app.json",
 						"polyfills": [
-							"src/polyfills.ts"
+							"zone.js",
+							"phaser/dist/phaser"
 						],
 						"assets": [
 							"src/assets",
@@ -85,7 +86,10 @@
 					"options": {
 						"main": "src/test.ts",
 						"karmaConfig": "./karma.conf.js",
-						"polyfills": "src/polyfills.ts",
+						"polyfills": [
+							"zone.js",
+							"phaser/dist/phaser"
+						],
 						"tsConfig": "src/tsconfig.spec.json",
 						"sourceMap": true,
 						"scripts": [],
@@ -107,9 +111,10 @@
 					"builder": "@angular-eslint/builder:lint",
 					"options": {
 						"lintFilePatterns": [
-							"src/**/*.ts"
+							"src/**/*.ts",
+							"src/**/*.html"
 						],
-						"eslintConfig": "./.eslintrc.json"
+						"eslintConfig": "./eslint.config.mjs"
 					}
 				}
 			}

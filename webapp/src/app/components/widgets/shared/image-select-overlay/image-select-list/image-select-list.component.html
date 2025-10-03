@@ -1,7 +1,6 @@
 <div class="overflow-auto">
 	@if (showFilter) {
 		<mat-form-field
-			
 			class="no-padding-form-field autoscale-form-field p-4"
 			appearance="outline"
 		>
@@ -12,35 +11,36 @@
 				type="text"
 				[(ngModel)]="filter"
 				(ngModelChange)="filterChange.emit($event)"
+			/>
+			<button
+				matSuffix
+				mat-icon-button
+				aria-label="Clear"
+				(click)="filter = ''"
 			>
-			<button matSuffix mat-icon-button aria-label="Clear" (click)="filter=''">
 				<mat-icon>close</mat-icon>
 			</button>
 		</mat-form-field>
-	} @if (title) {
-	<h2 class="pl-4 headline">{{ title }}</h2>
-}
+	}
+	@if (title) {
+		<h2 class="pl-4 headline">{{ title }}</h2>
+	}
 	<div class="pl-4 pr-4">
 		<ng-content></ng-content>
 	</div>
 	<div class="list">
-		@if (items|listFilter:filter:filterItems; as filteredItems) {
-			
+		@if (items | listFilter: filter : filterItems; as filteredItems) {
 			@for (prop of filteredItems; track prop) {
 				<app-image-select-card
-					
 					[card]="prop"
 					[selected]="selected === prop.name"
 					[filter]="filter"
 					(onClick)="selectedChange.emit(prop.name)"
 				></app-image-select-card>
-			} @if (filteredItems.length === 0 && items.length > 0) {
-				<div class="w-60">
-					No items matching the filter
-				</div>
 			}
-			
+			@if (filteredItems.length === 0 && items.length > 0) {
+				<div class="w-60">No items matching the filter</div>
+			}
 		}
-	
 	</div>
 </div>

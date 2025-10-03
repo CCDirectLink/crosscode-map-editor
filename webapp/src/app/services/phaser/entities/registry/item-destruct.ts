@@ -8,9 +8,7 @@ import { SheetReference } from './destructible';
 import { GlobalSettings } from '../../global-settings';
 import { Globals } from '../../../globals';
 
-export interface ItemDestructTypes {
-	[name: string]: ItemDestructType;
-}
+export type ItemDestructTypes = Record<string, ItemDestructType>;
 
 export interface ItemDestructType {
 	size: Point3;
@@ -33,7 +31,6 @@ export interface ItemDestructAttributes {
 }
 
 export class ItemDestruct extends DefaultEntity {
-	
 	override getAttributes(): EntityAttributes {
 		const attributes = super.getAttributes();
 		attributes['desType'].type = 'CustomDesType';
@@ -43,51 +40,58 @@ export class ItemDestruct extends DefaultEntity {
 		};
 		const objOrder: { [key in keyof ItemDestructAttributes]: null } = {
 			desType: null,
-			__GLOBAL__: null
+			__GLOBAL__: null,
 		};
 		return Object.assign(objOrder, attributes);
 	}
-	
+
 	protected override async setupType(settings: any) {
-		const globalSettings = await Helper.getJsonPromise('data/global-settings') as GlobalSettings.GlobalSettings;
+		const globalSettings = (await Helper.getJsonPromise(
+			'data/global-settings',
+		)) as GlobalSettings.GlobalSettings;
 		let desType = '';
 		if (settings.desType) {
 			desType = settings.desType;
 		} else {
-			const config = globalSettings.ENTITY.ItemDestruct[settings.__GLOBAL__];
+			const config =
+				globalSettings.ENTITY.ItemDestruct[settings.__GLOBAL__];
 			if (config) {
 				desType = config.desType;
 			}
 		}
-		const destructibles = await Globals.jsonLoader.loadJsonMerged<ItemDestructTypes>('destructibles.json');
+		const destructibles =
+			await Globals.jsonLoader.loadJsonMerged<ItemDestructTypes>(
+				'destructibles.json',
+			);
 		const type = destructibles[desType];
 		if (!type) {
-			this.generateNoImageType(0xFF0000, 1);
+			this.generateNoImageType(0xff0000, 1);
 			return;
 		}
 		const animSheet = type.anims.sheet as AnimSheet;
-		const gfx = (typeof animSheet === 'string') ? animSheet : animSheet.src;
-		
+		const gfx = typeof animSheet === 'string' ? animSheet : animSheet.src;
+
 		const exists = await Helper.loadTexture(gfx, this.scene);
-		
+
 		if (!exists) {
 			this.generateErrorImage();
 			return;
 		}
-		
-		this.entitySettings = <any>{
+
+		this.entitySettings = {
 			sheets: {
-				fix: [{
-					gfx: gfx,
-					x: animSheet.offX || 0,
-					y: animSheet.offY || 0,
-					w: animSheet.width || 0,
-					h: animSheet.height || 0,
-				}]
+				fix: [
+					{
+						gfx: gfx,
+						x: animSheet.offX || 0,
+						y: animSheet.offY || 0,
+						w: animSheet.width || 0,
+						h: animSheet.height || 0,
+					},
+				],
 			},
-			baseSize: type.size
-		};
+			baseSize: type.size,
+		} as any;
 		this.updateSettings();
-		
 	}
 }

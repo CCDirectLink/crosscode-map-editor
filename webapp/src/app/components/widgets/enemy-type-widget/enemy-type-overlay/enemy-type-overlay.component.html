@@ -1,24 +1,78 @@
 <cc-overlay-panel
 	title="Enemy type"
-	[customSize]="{width: '301px'}"
+	[customSize]="{ width: '301px' }"
 	[showButtonDivider]="true"
 >
 	<!-- 301px is the same as the width of a sidenav -->
 	<ng-container ngProjectAs="content">
 		<div class="enemy-settings-container" fxLayout="column">
-			<app-enemy-single-type-widget [entity]="entity" [custom]="settings[key]" key="type"></app-enemy-single-type-widget>
-			<app-string-widget [entity]="entity" [custom]="settings[key]" key="group"></app-string-widget>
-			<app-string-widget [entity]="entity" [custom]="settings[key]" key="state"></app-string-widget>
-			<app-json-widget [entity]="entity" [custom]="settings[key]" key="startEffect"></app-json-widget>
-			<app-json-widget [entity]="entity" [custom]="settings[key]" key="hideEffect"></app-json-widget>
-			<app-string-widget [entity]="entity" [custom]="settings[key]" key="varIncrease"></app-string-widget>
-			<app-json-widget [entity]="entity" [custom]="settings[key]" key="attribs"></app-json-widget>
-			<app-boolean-widget [entity]="entity" [custom]="settings[key]" key="targetOnSpawn"></app-boolean-widget>
-			<app-boolean-widget [entity]="entity" [custom]="settings[key]" key="disableNoScale"></app-boolean-widget>
-			<app-json-widget [entity]="entity" [custom]="settings[key]" key="level"></app-json-widget>
-			<app-string-widget [entity]="entity" [custom]="settings[key]" [attribute]="partyAttributes" key="party"></app-string-widget>
-			<app-string-widget [entity]="entity" [custom]="settings[key]" [attribute]="faceAttributes" key="face"></app-string-widget>
-			<app-number-widget [entity]="entity" [custom]="settings[key]" key="dropHealOrb"></app-number-widget>
+			<app-enemy-single-type-widget
+				[entity]="entity"
+				[custom]="settings[key]"
+				key="type"
+			></app-enemy-single-type-widget>
+			<app-string-widget
+				[entity]="entity"
+				[custom]="settings[key]"
+				key="group"
+			></app-string-widget>
+			<app-string-widget
+				[entity]="entity"
+				[custom]="settings[key]"
+				key="state"
+			></app-string-widget>
+			<app-json-widget
+				[entity]="entity"
+				[custom]="settings[key]"
+				key="startEffect"
+			></app-json-widget>
+			<app-json-widget
+				[entity]="entity"
+				[custom]="settings[key]"
+				key="hideEffect"
+			></app-json-widget>
+			<app-string-widget
+				[entity]="entity"
+				[custom]="settings[key]"
+				key="varIncrease"
+			></app-string-widget>
+			<app-json-widget
+				[entity]="entity"
+				[custom]="settings[key]"
+				key="attribs"
+			></app-json-widget>
+			<app-boolean-widget
+				[entity]="entity"
+				[custom]="settings[key]"
+				key="targetOnSpawn"
+			></app-boolean-widget>
+			<app-boolean-widget
+				[entity]="entity"
+				[custom]="settings[key]"
+				key="disableNoScale"
+			></app-boolean-widget>
+			<app-json-widget
+				[entity]="entity"
+				[custom]="settings[key]"
+				key="level"
+			></app-json-widget>
+			<app-string-widget
+				[entity]="entity"
+				[custom]="settings[key]"
+				[attribute]="partyAttributes"
+				key="party"
+			></app-string-widget>
+			<app-string-widget
+				[entity]="entity"
+				[custom]="settings[key]"
+				[attribute]="faceAttributes"
+				key="face"
+			></app-string-widget>
+			<app-number-widget
+				[entity]="entity"
+				[custom]="settings[key]"
+				key="dropHealOrb"
+			></app-number-widget>
 		</div>
 	</ng-container>
 	<ng-container ngProjectAs="actions">

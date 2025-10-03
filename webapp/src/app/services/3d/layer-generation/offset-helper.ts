@@ -5,9 +5,14 @@ export function getLevelOffset(level: number) {
 	if (level >= map.levels.length) {
 		let maxDiff = 80;
 		if (map.levels.length > 1) {
-			maxDiff = map.levels[map.levels.length - 1].height - map.levels[map.levels.length - 2].height;
+			maxDiff =
+				map.levels[map.levels.length - 1].height -
+				map.levels[map.levels.length - 2].height;
 		}
-		return map.levels[map.levels.length - 1].height + maxDiff * (level - map.levels.length + 1);
+		return (
+			map.levels[map.levels.length - 1].height +
+			maxDiff * (level - map.levels.length + 1)
+		);
 	} else if (level < 0) {
 		let minDiff = 80;
 		if (map.levels.length > 1) {
@@ -25,7 +30,7 @@ export function getLevelOffsetTile(level: number) {
 // adjust level dependent on masterLevel. level < masterLevel => level+1
 export function adjustLevel(level: number) {
 	if (level < Globals.map.masterLevel) {
-		return level += 1;
+		return (level += 1);
 	}
 	return level;
 }

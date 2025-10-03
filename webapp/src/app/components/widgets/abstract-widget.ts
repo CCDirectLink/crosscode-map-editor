@@ -1,25 +1,36 @@
-import { Directive, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { AttributeValue, CCEntity } from '../../services/phaser/entities/cc-entity';
+import {
+	Directive,
+	EventEmitter,
+	Input,
+	OnChanges,
+	OnInit,
+	Output,
+} from '@angular/core';
+import {
+	AttributeValue,
+	CCEntity,
+} from '../../services/phaser/entities/cc-entity';
 
 @Directive()
-// eslint-disable-next-line @angular-eslint/directive-class-suffix
-export abstract class AbstractWidget<T = any, Attr = AttributeValue> implements OnInit, OnChanges {
+export abstract class AbstractWidget<T = any, Attr = AttributeValue>
+	implements OnInit, OnChanges
+{
 	@Input() key!: string;
 	@Input() attribute!: Attr;
 	@Input() entity?: CCEntity;
 	@Input() custom?: T;
-	
+
 	// Cannot subscribe to
 	@Input() changeVal = (val: T) => {};
-	
+
 	@Output() onChange = new EventEmitter<any>();
-	
+
 	settings: T = {} as any;
-	
+
 	ngOnInit() {
 		this.ngOnChanges();
 	}
-	
+
 	ngOnChanges(): void {
 		if (this.custom) {
 			this.settings = this.custom;
@@ -29,12 +40,17 @@ export abstract class AbstractWidget<T = any, Attr = AttributeValue> implements 
 			throw new Error('entity and custom settings not defined');
 		}
 	}
-	
-	setSetting(key: string | string[], value: any, updateType = true, parse = false) {
+
+	setSetting(
+		key: string | string[],
+		value: any,
+		updateType = true,
+		parse = false,
+	) {
 		if (parse) {
 			value = JSON.parse(value);
 		}
-		
+
 		if (typeof key === 'string') {
 			this.settings[key as keyof T] = value;
 		} else {
@@ -46,14 +62,14 @@ export abstract class AbstractWidget<T = any, Attr = AttributeValue> implements 
 			}
 			node[key[key.length - 1]] = value;
 		}
-		
+
 		if (updateType) {
 			this.updateType(value);
 		}
 	}
-	
+
 	updateType(value: any) {
-		this.entity?.updateType();
+		void this.entity?.updateType();
 		this.onChange.emit(value);
 		this.changeVal(value);
 	}

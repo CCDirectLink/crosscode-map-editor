@@ -1,37 +1,22 @@
 <cc-overlay-panel
 	title="Offset Map"
-	[customSize]="{width: '250px', height: 'auto'}"
+	[customSize]="{ width: '250px', height: 'auto' }"
 >
 	<ng-container ngProjectAs="content">
 		<div class="flex flex-col p-3">
 			<div class="flex items-baseline">
-				<label class="w-6">
-					X:
-				</label>
+				<label class="w-6"> X: </label>
 				<mat-form-field class="flex-auto">
-					<input
-						matInput
-						[(ngModel)]="offset.x"
-						type="number"
-					>
+					<input matInput [(ngModel)]="offset.x" type="number" />
 				</mat-form-field>
 			</div>
 			<div class="flex items-baseline">
-				<label class="w-6">
-					Y:
-				</label>
+				<label class="w-6"> Y: </label>
 				<mat-form-field class="flex-auto">
-					<input
-						matInput
-						[(ngModel)]="offset.y"
-						type="number"
-					>
+					<input matInput [(ngModel)]="offset.y" type="number" />
 				</mat-form-field>
 			</div>
-			<mat-checkbox
-				color="primary"
-				[(ngModel)]="entities"
-			>
+			<mat-checkbox color="primary" [(ngModel)]="entities">
 				Offset Entities
 			</mat-checkbox>
 		</div>

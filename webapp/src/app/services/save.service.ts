@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EventManager } from '@angular/platform-browser';
 import { GlobalEventsService } from './global-events.service';
@@ -8,35 +8,39 @@ import { Helper } from './phaser/helper';
 import { CCMap } from './phaser/tilemap/cc-map';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class SaveService {
+	private http = inject(HttpClientService);
+	private snackbar = inject(MatSnackBar);
+	private readonly eventsService = inject(GlobalEventsService);
 
-	constructor(
-		private http: HttpClientService,
-		private snackbar: MatSnackBar,
-		mapLoader: MapLoaderService,
-		eventManager: EventManager,
-		private readonly eventsService: GlobalEventsService,
-	) {
-		eventManager.addEventListener(document as any, 'keydown', (event: KeyboardEvent) => {
-			if (Helper.isInputFocused()) {
-				return;
-			}
+	constructor() {
+		const mapLoader = inject(MapLoaderService);
+		const eventManager = inject(EventManager);
 
-			if (event.ctrlKey && event.key.toLowerCase() === 's') {
-				event.preventDefault();
-				const map = mapLoader.tileMap.getValue();
-				if (!map) {
+		eventManager.addEventListener(
+			document as any,
+			'keydown',
+			(event: KeyboardEvent) => {
+				if (Helper.isInputFocused()) {
 					return;
 				}
-				if (event.shiftKey) {
-					this.saveMapAs(map);
-				} else {
-					this.saveMap(map);
+
+				if (event.ctrlKey && event.key.toLowerCase() === 's') {
+					event.preventDefault();
+					const map = mapLoader.tileMap.getValue();
+					if (!map) {
+						return;
+					}
+					if (event.shiftKey) {
+						this.saveMapAs(map);
+					} else {
+						this.saveMap(map);
+					}
 				}
-			}
-		});
+			},
+		);
 	}
 
 	saveMap(map: CCMap) {
@@ -45,19 +49,26 @@ export class SaveService {
 			return this.saveMapAs(map);
 		}
 		this.http.saveFile(map.path, this.generateMapJson(map)).subscribe({
-			next: msg => {
+			next: (msg) => {
 				console.log(msg);
 				this.eventsService.hasUnsavedChanges.next(false);
-				this.snackbar.open('successfully saved map', 'ok', { duration: 3000 });
-			}, error: err => {
+				this.snackbar.open('successfully saved map', 'ok', {
+					duration: 3000,
+				});
+			},
+			error: (err) => {
 				console.error(err);
-				this.snackbar.open('failed to save map', 'ok', {panelClass: 'snackbar-error'});
-			}
+				this.snackbar.open('failed to save map', 'ok', {
+					panelClass: 'snackbar-error',
+				});
+			},
 		});
 	}
 
 	saveMapAs(map: CCMap) {
-		const file = new Blob([this.generateMapJson(map)], { type: 'application/json' });
+		const file = new Blob([this.generateMapJson(map)], {
+			type: 'application/json',
+		});
 		const a = document.createElement('a'),
 			url = URL.createObjectURL(file);
 		a.href = url;

@@ -61,9 +61,8 @@ export class EventHistory {
 		});
 
 		this.undoHistory = [];
-
 	}
-	
+
 	public undo(): void {
 		this.commitEdits();
 
@@ -114,48 +113,52 @@ export class EventHistory {
 
 	private applyRestorePoint(rp: RestorePoint): void {
 		switch (rp.type) {
-		case 'edit':
-			rp.ref.data = JSON.parse(rp.data);
-			rp.ref.update();
-			if (this.selected?.ref === rp.ref) {
-				this.selected = rp;
-			}
-			break;
-		case 'move':
-			Object.assign(rp.toRef, rp.to);
-			Object.assign(rp.fromRef, rp.from);
-			rp.toRef.length = rp.to.length;
-			rp.fromRef.length = rp.from.length;
-			break;
-		case 'addDelete':
-			Object.assign(rp.fromRef, rp.from);
-			rp.fromRef.length = rp.from.length;
-			break;
+			case 'edit':
+				rp.ref.data = JSON.parse(rp.data);
+				rp.ref.update();
+				if (this.selected?.ref === rp.ref) {
+					this.selected = rp;
+				}
+				break;
+			case 'move':
+				Object.assign(rp.toRef, rp.to);
+				Object.assign(rp.fromRef, rp.from);
+				rp.toRef.length = rp.to.length;
+				rp.fromRef.length = rp.from.length;
+				break;
+			case 'addDelete':
+				Object.assign(rp.fromRef, rp.from);
+				rp.fromRef.length = rp.from.length;
+				break;
 		}
 	}
 
 	private invertRestorePoint(rp: RestorePoint): RestorePoint {
 		switch (rp.type) {
-		case 'edit':
-			return this.createRestorePoint(rp.ref);
-		case 'move':
-			return {
-				type: 'move',
-				from: Object.assign([], rp.fromRef),
-				fromRef: rp.fromRef,
-				to: Object.assign([], rp.toRef),
-				toRef: rp.toRef,
-			};
-		case 'addDelete':
-			return {
-				type: 'addDelete',
-				from: Object.assign([], rp.fromRef),
-				fromRef: rp.fromRef,
-			};
+			case 'edit':
+				return this.createRestorePoint(rp.ref);
+			case 'move':
+				return {
+					type: 'move',
+					from: Object.assign([], rp.fromRef),
+					fromRef: rp.fromRef,
+					to: Object.assign([], rp.toRef),
+					toRef: rp.toRef,
+				};
+			case 'addDelete':
+				return {
+					type: 'addDelete',
+					from: Object.assign([], rp.fromRef),
+					fromRef: rp.fromRef,
+				};
 		}
 	}
 
-	private hasChanged(selected: EditRestorePoint | undefined): selected is EditRestorePoint {
-		return !!selected && JSON.stringify(selected.ref.data) !== selected.data;
+	private hasChanged(
+		selected: EditRestorePoint | undefined,
+	): selected is EditRestorePoint {
+		return (
+			!!selected && JSON.stringify(selected.ref.data) !== selected.data
+		);
 	}
 }

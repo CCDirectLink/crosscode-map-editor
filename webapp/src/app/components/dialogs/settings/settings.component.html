@@ -5,8 +5,11 @@
 				<form fxLayout="row" class="option-row">
 					<mat-form-field fxFlex="auto">
 						<mat-label>Assets folder</mat-label>
-						<input matInput placeholder="C:\Program Files (x86)\Steam\steamapps\common\CrossCode\assets"
-						       [formControl]="folderFormControl">
+						<input
+							matInput
+							placeholder="C:\Program Files (x86)\Steam\steamapps\common\CrossCode\assets"
+							[formControl]="folderFormControl"
+						/>
 						<mat-hint>Path to CrossCode Assets folder</mat-hint>
 						@if (folderFormControl.hasError('invalid')) {
 							<mat-error>
@@ -15,10 +18,14 @@
 						}
 					</mat-form-field>
 					<div class="actions-container" fxLayout="row">
-						<button mat-stroked-button (click)="select()">Select</button>
+						<button mat-stroked-button (click)="select()">
+							Select
+						</button>
 						<button mat-stroked-button (click)="check()">
 							Check
-							<mat-icon [ngClass]="iconCss" class="icon-base">{{ icon }}</mat-icon>
+							<mat-icon [ngClass]="iconCss" class="icon-base">{{
+								icon
+							}}</mat-icon>
 						</button>
 					</div>
 				</form>
@@ -26,13 +33,21 @@
 			<div fxLayout="row" class="option-row">
 				<mat-form-field fxFlex="auto">
 					<mat-label>Mod</mat-label>
-					<mat-select [(value)]="mod" (selectionChange)="modSelectEvent($event.value)">
+					<mat-select
+						[(value)]="mod"
+						(selectionChange)="modSelectEvent($event.value)"
+					>
 						<mat-option>None</mat-option>
 						@for (mod of mods; track mod) {
-							<mat-option [value]="mod.id"><span [appColoredText]="mod.displayName"></span></mat-option>
+							<mat-option [value]="mod.id"
+								><span [appColoredText]="mod.displayName"></span
+							></mat-option>
 						}
 					</mat-select>
-					<mat-hint>Maps will be stored and loaded from the selected mod</mat-hint>
+					<mat-hint
+						>Maps will be stored and loaded from the selected
+						mod</mat-hint
+					>
 				</mat-form-field>
 			</div>
 			<div fxLayout="row" class="option-row">
@@ -53,7 +68,7 @@
 				</mat-checkbox>
 			</div>
 			<div class="flex flex-col pt-5">
-				<h2 class="mat-h2 ">Selection Box Style</h2>
+				<h2 class="mat-h2">Selection Box Style</h2>
 				<div class="flex flex-row gap-4">
 					<app-image-select-card
 						[card]="cardLight"

@@ -1,24 +1,19 @@
 <div class="flex flex-row items-center h-full">
 	@if (gridSettings(); as settings) {
-		
 		<mat-checkbox
 			[ngModel]="settings.enableGrid"
-			(ngModelChange)="update({enableGrid: $event})"
+			(ngModelChange)="update({ enableGrid: $event })"
 			color="primary"
 		>
 			Entity Grid
 		</mat-checkbox>
 		<div class="ml-2">
-			<button
-				mat-icon-button
-				(click)="toggleSettings()"
-			>
+			<button mat-icon-button (click)="toggleSettings()">
 				<mat-icon>settings</mat-icon>
 			</button>
 		</div>
 		@if (settings.showSettings) {
 			<div
-				
 				@openClose
 				class="flex flex-row gap-2.5 items-center extended-menu ml-2"
 			>
@@ -29,10 +24,10 @@
 					<mat-label>Size</mat-label>
 					<app-point-input
 						[ngModel]="settings.size"
-						(ngModelChange)="update({size: $event})"
+						(ngModelChange)="update({ size: $event })"
 					></app-point-input>
 				</mat-form-field>
-				
+
 				<mat-form-field
 					appearance="outline"
 					class="no-padding-form-field point-form-field"
@@ -41,23 +36,22 @@
 					<app-point-input
 						[ngModel]="settings.offset"
 						[min]="-999"
-						(ngModelChange)="update({offset: $event})"
+						(ngModelChange)="update({ offset: $event })"
 					></app-point-input>
 				</mat-form-field>
 				<input
 					type="color"
 					[ngModel]="settings.color"
-					(ngModelChange)="update({color: $event})"
+					(ngModelChange)="update({ color: $event })"
 				/>
 				<mat-checkbox
 					[ngModel]="settings.visible"
-					(ngModelChange)="update({visible: $event})"
+					(ngModelChange)="update({ visible: $event })"
 					color="primary"
 				>
 					Visible
 				</mat-checkbox>
 			</div>
 		}
-		
 	}
 </div>

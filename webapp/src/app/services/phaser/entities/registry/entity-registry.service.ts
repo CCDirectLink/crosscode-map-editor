@@ -10,11 +10,11 @@ import { Prop } from './prop';
 import { ScalableProp } from './scalable-prop';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class EntityRegistryService {
-	private entities: { [type: string]: typeof CCEntity } = {};
-	
+	private entities: Record<string, typeof CCEntity> = {};
+
 	constructor() {
 		this.register('Prop', Prop);
 		this.register('ScalableProp', ScalableProp);
@@ -24,11 +24,11 @@ export class EntityRegistryService {
 		this.register('EventTrigger', EventTrigger);
 		this.register('Enemy', Enemy);
 	}
-	
+
 	private register(type: string, entity: typeof CCEntity) {
 		this.entities[type] = entity;
 	}
-	
+
 	public getDefaultEntity(): typeof DefaultEntity {
 		return DefaultEntity;
 	}
@@ -36,7 +36,7 @@ export class EntityRegistryService {
 	public getAll() {
 		return this.entities;
 	}
-	
+
 	// typed as DefaultEntity so constructor can be used with parameter checking.
 	// CCEntity is abstract and doesn't allow using the constructor
 	public getEntity(type: string): typeof DefaultEntity {

@@ -1,4 +1,11 @@
-import { Component, OnChanges, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+	Component,
+	OnChanges,
+	Type,
+	ViewChild,
+	ViewContainerRef,
+	inject,
+} from '@angular/core';
 import { AbstractWidget } from '../abstract-widget';
 import { FlexModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -19,9 +26,7 @@ export interface ArrayAttributes extends AttributeValue {
 	sub: ArrayWidgetSub;
 }
 
-interface ArraySettings {
-	[key: string]: unknown[] | undefined;
-}
+type ArraySettings = Record<string, unknown[] | undefined>;
 
 interface DynamicComponent {
 	comp: Type<AbstractWidget>;
@@ -36,34 +41,32 @@ interface DynamicComponent {
 		MatTooltip,
 		NgComponentOutlet,
 		MatIconButton,
-		MatIcon
+		MatIcon,
 	],
 	templateUrl: './array-widget.component.html',
-	styleUrls: ['./array-widget.component.scss', '../widget.scss']
+	styleUrls: ['./array-widget.component.scss', '../widget.scss'],
 })
-export class ArrayWidgetComponent extends AbstractWidget<ArraySettings, ArrayAttributes> implements OnChanges {
-	
-	@ViewChild('compContainer', {read: ViewContainerRef, static: true}) compContainer!: ViewContainerRef;
-	
+export class ArrayWidgetComponent
+	extends AbstractWidget<ArraySettings, ArrayAttributes>
+	implements OnChanges
+{
+	private widgetRegistry = inject(WidgetRegistryService);
+
+	@ViewChild('compContainer', { read: ViewContainerRef, static: true })
+	compContainer!: ViewContainerRef;
+
 	dynamicComponents: DynamicComponent[] = [];
-	
-	constructor(
-		private widgetRegistry: WidgetRegistryService,
-	) {
-		super();
-	}
-	
-	
+
 	override ngOnChanges() {
 		super.ngOnChanges();
 		this.init();
 	}
-	
+
 	override updateType(value: any) {
 		super.updateType(value);
 		this.init();
 	}
-	
+
 	init() {
 		this.dynamicComponents = [];
 		const arrayOptions = this.settings[this.key] ?? [];
@@ -78,24 +81,24 @@ export class ArrayWidgetComponent extends AbstractWidget<ArraySettings, ArrayAtt
 					attribute: {
 						type: this.attribute.sub._type,
 						description: '',
-						options: this.attribute.sub._select
+						options: this.attribute.sub._select,
 					},
-					changeVal: val => this.update()
-				}
+					changeVal: (val) => this.update(),
+				},
 			});
 		}
 	}
-	
+
 	remove(index: number) {
 		this.settings[this.key]?.splice(index, 1);
 		this.update();
 	}
-	
+
 	add() {
 		this.settings[this.key]?.push(undefined);
 		this.update();
 	}
-	
+
 	private update() {
 		this.updateType(this.settings[this.key]);
 	}

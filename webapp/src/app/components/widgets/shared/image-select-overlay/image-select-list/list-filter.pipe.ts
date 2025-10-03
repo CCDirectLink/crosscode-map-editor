@@ -3,15 +3,21 @@ import { PropListCard } from '../image-select-card/image-select-card.component';
 
 @Pipe({
 	name: 'listFilter',
-	standalone: true
+	standalone: true,
 })
 export class ListFilterPipe implements PipeTransform {
-	
-	transform(items: PropListCard[], filter?: string, enable = true): PropListCard[] {
+	transform(
+		items: PropListCard[],
+		filter?: string,
+		enable = true,
+	): PropListCard[] {
 		if (!filter || !enable) {
 			return items;
 		}
-		return items.filter(v => (v.searchName ?? v.name).toLowerCase().includes(filter.toLowerCase().trim()));
+		return items.filter((v) =>
+			(v.searchName ?? v.name)
+				.toLowerCase()
+				.includes(filter.toLowerCase().trim()),
+		);
 	}
-	
 }

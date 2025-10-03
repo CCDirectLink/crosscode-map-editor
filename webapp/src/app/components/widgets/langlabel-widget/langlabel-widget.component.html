@@ -1,12 +1,18 @@
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!">
+<div
+	fxLayout="row"
+	class="property-container"
+	[matTooltip]="attribute?.description!"
+>
 	<label class="property-name">{{ key }}:</label>
-	
+
 	<div fxLayout="column" fxFlex="1 1 0">
 		<div fxLayout="row" class="property-row has-value">
 			<label class="property-name">Has value: </label>
 			<mat-checkbox
 				[ngModel]="hasValue"
-				(ngModelChange)="setSetting([key], $event? defaultValue : undefined)"
+				(ngModelChange)="
+					setSetting([key], $event ? defaultValue : undefined)
+				"
 				class="material-input"
 				color="primary"
 			></mat-checkbox>
@@ -18,24 +24,28 @@
 						<label class="property-name">{{ language }}</label>
 						<!-- textarea inside div with padding because autosize does not like textareas with padding -->
 						<div class="default-input padded-autosize-textarea">
-					<textarea
-						class="default-input"
-						[ngModel]="settings[key][language]"
-						(ngModelChange)="setSetting([key, language], $event)"
-						cdkTextareaAutosize
-					></textarea>
+							<textarea
+								class="default-input"
+								[ngModel]="settings[key][language]"
+								(ngModelChange)="
+									setSetting([key, language], $event)
+								"
+								cdkTextareaAutosize
+							></textarea>
 						</div>
 					</div>
 				}
 				<div fxLayout="row" class="property-row uid">
-					<label for="{{key}}.langUid" class="property-name">langUid</label>
+					<label for="{{ key }}.langUid" class="property-name"
+						>langUid</label
+					>
 					<input
 						type="number"
 						[ngModel]="settings[key].langUid"
 						(ngModelChange)="setSetting([key, 'langUid'], $event)"
 						class="default-input"
 						placeholder="undefined"
-					>
+					/>
 				</div>
 			</div>
 		}

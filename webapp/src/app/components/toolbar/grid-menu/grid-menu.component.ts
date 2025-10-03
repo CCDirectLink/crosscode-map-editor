@@ -1,4 +1,4 @@
-import { Component, effect, OnInit } from '@angular/core';
+import { Component, effect, OnInit, inject } from '@angular/core';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -9,7 +9,13 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { PointInputComponent } from '../vec-input/point-input.component';
 import { Helper } from '../../../services/phaser/helper';
 import { Point } from '../../../models/cross-code-map';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+	animate,
+	state,
+	style,
+	transition,
+	trigger,
+} from '@angular/animations';
 import { GlobalEventsService } from '../../../services/global-events.service';
 
 export interface GridSettings {
@@ -27,14 +33,15 @@ const gridSettingsKey = 'gridSettingsKey';
 	selector: 'app-grid-menu',
 	animations: [
 		trigger('openClose', [
-			state('void', style({
-				width: '0',
-				margin: '0'
-			})),
-			transition('* <=> *', [
-				animate('100ms ease'),
-			]),
-		])
+			state(
+				'void',
+				style({
+					width: '0',
+					margin: '0',
+				}),
+			),
+			transition('* <=> *', [animate('100ms ease')]),
+		]),
 	],
 	imports: [
 		MatCheckbox,
@@ -43,50 +50,50 @@ const gridSettingsKey = 'gridSettingsKey';
 		FormsModule,
 		MatFormField,
 		MatLabel,
-		PointInputComponent
+		PointInputComponent,
 	],
 	templateUrl: './grid-menu.component.html',
-	styleUrl: './grid-menu.component.scss'
+	styleUrl: './grid-menu.component.scss',
 })
 export class GridMenuComponent implements OnInit {
-	
 	gridSettings = Globals.gridSettings;
-	
-	constructor(
-		events: GlobalEventsService
-	) {
+
+	constructor() {
+		const events = inject(GlobalEventsService);
+
 		effect(() => {
 			const settings = this.gridSettings();
 			localStorage.setItem(gridSettingsKey, JSON.stringify(settings));
 			events.gridSettings.next(settings);
 		});
 	}
-	
+
 	ngOnInit() {
 		try {
-			const settings = JSON.parse(localStorage.getItem(gridSettingsKey)!) as Partial<GridSettings>;
-			Globals.gridSettings.update(old => ({
+			const settings = JSON.parse(
+				localStorage.getItem(gridSettingsKey)!,
+			) as Partial<GridSettings>;
+			Globals.gridSettings.update((old) => ({
 				...old,
-				...settings
+				...settings,
 			}));
-		} catch (e) {
-		}
+		} catch (e) {}
 	}
-	
+
 	update(newSettings: Partial<GridSettings>) {
-		Globals.gridSettings.update(old => {
+		Globals.gridSettings.update((old) => {
 			const cpy = Helper.copy(old);
 			Object.assign(cpy, newSettings);
 			return cpy;
 		});
 	}
-	
+
 	protected readonly MatCheckbox = MatCheckbox;
-	
+
 	toggleSettings() {
-		Globals.gridSettings.update(old => ({
+		Globals.gridSettings.update((old) => ({
 			...old,
-			showSettings: !old.showSettings
+			showSettings: !old.showSettings,
 		}));
 	}
 }

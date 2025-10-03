@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 	selector: 'app-input-with-button',
 	imports: [MatTooltipModule, FormsModule, MatButtonModule, MatIconModule],
 	templateUrl: './input-with-button.component.html',
-	styleUrls: ['./input-with-button.component.scss', '../../widget.scss']
+	styleUrls: ['./input-with-button.component.scss', '../../widget.scss'],
 })
 export class InputWithButtonComponent {
 	@Input() description?: string;

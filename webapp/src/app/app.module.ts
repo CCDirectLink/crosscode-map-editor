@@ -1,7 +1,10 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+	provideHttpClient,
+	withInterceptorsFromDi,
+} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -117,11 +120,8 @@ const WIDGETS = [
 		SettingsComponent,
 		HistoryComponent,
 		OverlayPanelComponent,
-		HostDirective,
-		ModalDirective,
 		JsonEditorComponent,
 		FloatingWindowComponent,
-		KeepHtmlPipe,
 		ListSearchOverlayComponent,
 		EventWindowComponent,
 		RowTextComponent,
@@ -129,7 +129,6 @@ const WIDGETS = [
 		EnemyTypeWidgetOverlayComponent,
 		ImageSelectOverlayComponent,
 		ConfirmCloseComponent,
-		ResizedDirective,
 		...WIDGETS,
 	],
 	imports: [
@@ -151,12 +150,13 @@ const WIDGETS = [
 		CombinedTooltipPipe,
 		InputWithButtonComponent,
 		ToolbarDividerComponent,
-		GridMenuComponent
+		GridMenuComponent,
+		KeepHtmlPipe,
+		ResizedDirective,
+		ModalDirective,
+		HostDirective,
 	],
-	providers: [
-		provideHttpClient(withInterceptorsFromDi())
-	],
+	providers: [provideHttpClient(withInterceptorsFromDi())],
 	bootstrap: [AppComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

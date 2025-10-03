@@ -1,20 +1,19 @@
-import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, inject } from '@angular/core';
 import { ColorService } from '../services/color.service';
 
 @Directive({
 	selector: '[appColoredText]',
-	standalone: true
+	standalone: true,
 })
 export class ColoredTextDirective implements OnChanges {
+	private element = inject(ElementRef);
+	private colorService = inject(ColorService);
 
 	@Input({ required: true }) appColoredText!: string;
 
-	constructor(
-		private element: ElementRef,
-		private colorService: ColorService,
-	) { }
-
 	ngOnChanges(): void {
-		this.element.nativeElement.innerHTML = this.colorService.processText(this.appColoredText);
+		this.element.nativeElement.innerHTML = this.colorService.processText(
+			this.appColoredText,
+		);
 	}
 }

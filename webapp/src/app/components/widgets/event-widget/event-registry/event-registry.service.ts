@@ -27,16 +27,16 @@ import { SetMsgExpression } from './set-msg-expression';
 type EventConstructor<T extends EventType> = new (
 	domSanitizer: DomSanitizer,
 	data: T,
-	actionStep: boolean
+	actionStep: boolean,
 ) => AbstractEvent<T>;
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class EventRegistryService {
-	private events: { [type: string]: any } = {};
+	private events: Record<string, any> = {};
 	private defaultEvent: any;
-	
+
 	constructor() {
 		this.setDefaultEvent(DefaultEvent);
 		this.register('ADD_MSG_PERSON', AddMsgPerson);
@@ -60,29 +60,28 @@ export class EventRegistryService {
 		this.register('SHOW_SIDE_MSG', ShowSideMsg);
 		this.register('SHOW_MODAL_CHOICE', ShowModalChoice);
 		this.register('SET_MSG_EXPRESSION', SetMsgExpression);
-		
 	}
-	
+
 	private setDefaultEvent(event: any) {
 		this.defaultEvent = event;
 	}
-	
+
 	private register(type: string, event: any) {
 		this.events[type] = event;
 	}
-	
+
 	public getDefaultEvent(): any {
 		return this.defaultEvent;
 	}
-	
+
 	public getEvent<T extends EventType>(type: string): EventConstructor<T> {
 		return this.events[type] || this.defaultEvent;
 	}
-	
+
 	public getAll() {
 		return this.events;
 	}
-	
+
 	private hasEvent(type: string): boolean {
 		return Object.prototype.hasOwnProperty.call(this.events, type);
 	}

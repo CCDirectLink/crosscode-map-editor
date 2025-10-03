@@ -1,13 +1,33 @@
 import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { destructureEventArray, EventArray } from '../../../../../models/events';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	ElementRef,
+	EventEmitter,
+	inject,
+	Input,
+	OnChanges,
+	OnInit,
+	Output,
+	ViewChild,
+} from '@angular/core';
+import {
+	MatTreeFlatDataSource,
+	MatTreeFlattener,
+} from '@angular/material/tree';
+import {
+	destructureEventArray,
+	EventArray,
+} from '../../../../../models/events';
 import { SettingsService } from '../../../../../services/settings.service';
 import { SplitPaneComponent } from '../../../../split-pane/split-pane.component';
 import { AbstractEvent, EventType } from '../../event-registry/abstract-event';
 import { AddEventService } from '../add/add-event.service';
-import { EventDetailComponent, RefreshType } from '../detail/event-detail.component';
+import {
+	EventDetailComponent,
+	RefreshType,
+} from '../detail/event-detail.component';
 import { EventDisplay } from '../event-display.model';
 import { EventHelperService } from '../event-helper.service';
 import { EventHistory } from './event-history';
@@ -17,164 +37,193 @@ import { EventHistory } from './event-history';
 	templateUrl: './event-editor.component.html',
 	styleUrls: ['./event-editor.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	standalone: false
+	standalone: false,
 })
 export class EventEditorComponent implements OnChanges, OnInit {
+	private helper = inject(EventHelperService);
+	private addEvent = inject(AddEventService);
+	private settingsService = inject(SettingsService);
+
 	private static globalBase = 0;
-	
+
 	@ViewChild('splitpane') splitPane?: SplitPaneComponent;
-	@ViewChild('eventDetail', {static: true}) eventDetail?: unknown; //EventDetailComponent but it errors for some reason
-	@ViewChild('eventTree', {read: ElementRef}) eventTree?: ElementRef<HTMLElement>;
-	
-	@Input() eventData: EventArray | unknown = [];
+	@ViewChild('eventDetail', { static: true }) eventDetail?: unknown; //EventDetailComponent but it errors for some reason
+	@ViewChild('eventTree', { read: ElementRef })
+	eventTree?: ElementRef<HTMLElement>;
+
+	@Input() eventData: EventArray = [];
 	@Input() actionStep = false;
-	
+
 	@Output() eventsChanged = new EventEmitter<EventType[]>();
-	
+
 	get base() {
 		return EventEditorComponent.globalBase;
 	}
-	
+
 	set base(value: number) {
 		EventEditorComponent.globalBase = value;
 	}
-	
+
 	detailsShown = false;
 	wrapText!: boolean;
-	
-	treeControl = new FlatTreeControl<EventDisplay>(e => e.level, e => e.children != null);
+
+	treeControl = new FlatTreeControl<EventDisplay>(
+		(e) => e.level,
+		(e) => e.children != null,
+	);
 	private treeFlattener = new MatTreeFlattener(
 		(node: EventDisplay, level: number) => {
 			node.level = level;
 			return node;
 		},
-		e => e.level,
-		e => e.children != null,
-		e => this.convertNodes(e.children!));
-	dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-	
+		(e) => e.level,
+		(e) => e.children != null,
+		(e) => this.convertNodes(e.children!),
+	);
+	dataSource = new MatTreeFlatDataSource(
+		this.treeControl,
+		this.treeFlattener,
+	);
+
 	private history = new EventHistory();
 	private workingData: AbstractEvent<any>[] = [];
 	private selectedNode?: EventDisplay;
 	private shownNode?: EventDisplay;
 	private copiedNode?: EventDisplay;
-	
-	constructor(
-		private helper: EventHelperService,
-		private addEvent: AddEventService,
-		private settingsService: SettingsService
-	) {
-	}
-	
+
 	ngOnInit() {
 		this.wrapText = this.settingsService.getSettings().wrapEventEditorLines;
 	}
-	
+
 	ngOnChanges() {
-		const eventCopy: EventArray = JSON.parse(JSON.stringify(this.eventData));
+		const eventCopy: EventArray = JSON.parse(
+			JSON.stringify(this.eventData),
+		);
 		try {
-			const {events} = destructureEventArray(eventCopy);
-			this.workingData = events?.map((val: EventType) => this.helper.getEventFromType(val, this.actionStep)) ?? [];
+			const { events } = destructureEventArray(eventCopy);
+			this.workingData =
+				events?.map((val: EventType) =>
+					this.helper.getEventFromType(val, this.actionStep),
+				) ?? [];
 		} catch (destructuringError) {
 			this.workingData = [];
 			if (destructuringError instanceof TypeError) {
-				console.error(`Error while reading events, invalid format. Using empty event array as fallback.\n\nException:\n${destructuringError.stack}`);
+				console.error(
+					`Error while reading events, invalid format. Using empty event array as fallback.\n\nException:\n${destructuringError.stack}`,
+				);
 			} else {
-				console.error('Unknown exception while reading events. Using empty event array as fallback.\n\nException in message below.');
+				console.error(
+					'Unknown exception while reading events. Using empty event array as fallback.\n\nException in message below.',
+				);
 				console.error(destructuringError);
 			}
 		}
 		this.refreshAll();
 	}
-	
+
 	show() {
 		this.detailsShown = false;
 	}
-	
-	sortPredicate(index: number, item: CdkDrag<EventDisplay>, drop: CdkDropList<EventDisplay>) {
+
+	sortPredicate(
+		index: number,
+		item: CdkDrag<EventDisplay>,
+		drop: CdkDropList<EventDisplay>,
+	) {
 		//TODO: Prevent placeholder if element cannot go there (this.isChildOf(...))
 		return index < this.treeControl.dataNodes.length - 1;
 	}
-	
+
 	refresh(refreshType: RefreshType) {
 		if (this.shownNode) {
 			this.shownNode.text = this.shownNode.data?.info ?? ' ';
 			this.shownNode.changeDetector?.detectChanges();
-			
+
 			if (refreshType === 'Full') {
 				this.refreshAll();
 			}
 		}
 	}
-	
+
 	hideDetails(): void {
 		this.detailsShown = false;
 	}
-	
+
 	export(): EventType[] {
-		return this.workingData.map(event => event.export());
+		return this.workingData.map((event) => event.export());
 	}
-	
+
 	drop(event: CdkDragDrop<EventDisplay>) {
 		if (event.currentIndex === event.previousIndex) {
 			return;
 		}
-		
+
 		const moved = event.item.data as EventDisplay;
-		const belowIndex = event.currentIndex + (event.currentIndex > event.previousIndex ? 1 : 0); //Add 1 to compensate for a missing this.treeControl.dataNodes.splice
+		const belowIndex =
+			event.currentIndex +
+			(event.currentIndex > event.previousIndex ? 1 : 0); //Add 1 to compensate for a missing this.treeControl.dataNodes.splice
 		const below = this.treeControl.dataNodes[belowIndex];
-		
+
 		if (this.isChildOf(below, moved)) {
 			return;
 		}
-		
+
 		const fromParent = this.getParent(moved);
 		const toParent = this.getParent(below);
-		
+
 		this.history.move(fromParent, toParent);
-		
+
 		fromParent.splice(fromParent.indexOf(moved.data!), 1);
-		
+
 		const toIndex = toParent.indexOf(below?.data!);
-		toParent.splice(toIndex >= 0 ? toIndex : toParent.length, 0, moved.data!);
-		
+		toParent.splice(
+			toIndex >= 0 ? toIndex : toParent.length,
+			0,
+			moved.data!,
+		);
+
 		this.refreshAll();
 		this.focus();
 	}
-	
+
 	eventClicked(_: MouseEvent, node: EventDisplay | null) {
 		this.select(node);
 	}
-	
+
 	openAddMenu(event: Event, node: EventDisplay | null) {
 		this.select(node);
-		
+
 		event.stopPropagation();
 		if (event.cancelable) {
 			event.preventDefault();
 		}
-		
-		this.addEvent.showAddEventMenu({
-			left: 'calc(18vw)',
-			top: '6vh'
-		}, this.actionStep).subscribe(newEvent => {
-			this.history.add(this.getParent(this.selectedNode));
-			
-			const index = this.getIndex(this.selectedNode);
-			const parent = this.getParent(this.selectedNode);
-			parent.splice(index, 0, newEvent);
-			
-			this.refreshAll();
-			this.selectAbstractEvent(newEvent);
-			this.focus();
-		});
+
+		this.addEvent
+			.showAddEventMenu(
+				{
+					left: 'calc(18vw)',
+					top: '6vh',
+				},
+				this.actionStep,
+			)
+			.subscribe((newEvent) => {
+				this.history.add(this.getParent(this.selectedNode));
+
+				const index = this.getIndex(this.selectedNode);
+				const parent = this.getParent(this.selectedNode);
+				parent.splice(index, 0, newEvent);
+
+				this.refreshAll();
+				this.selectAbstractEvent(newEvent);
+				this.focus();
+			});
 	}
-	
+
 	keyPress(event: KeyboardEvent) {
 		if (event.cancelable) {
 			event.preventDefault();
 		}
-		
+
 		switch (event.code) {
 			case 'ArrowUp':
 			case 'ArrowLeft':
@@ -194,7 +243,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 				this.deselect();
 				return;
 		}
-		
+
 		if (event.ctrlKey) {
 			switch (event.key.toLowerCase()) {
 				case 'c':
@@ -217,36 +266,38 @@ export class EventEditorComponent implements OnChanges, OnInit {
 			}
 		}
 	}
-	
+
 	private refreshTree() {
 		this.dataSource.data = this.convertNodes(this.workingData);
 		this.treeControl.expandAll();
 	}
-	
+
 	private focus() {
 		this.eventTree?.nativeElement.focus();
 	}
-	
-	private getParent(node: EventDisplay | null | undefined): AbstractEvent<any>[] {
+
+	private getParent(
+		node: EventDisplay | null | undefined,
+	): AbstractEvent<any>[] {
 		return node?.parent ?? this.workingData;
 	}
-	
+
 	private select(node: EventDisplay | null | undefined) {
 		if (!node) {
 			return;
 		}
-		
+
 		if (this.selectedNode) {
 			this.selectedNode.isSelected = false;
 			this.selectedNode.changeDetector?.detectChanges();
 		}
-		
+
 		node.isSelected = true;
 		node.changeDetector?.detectChanges();
 		this.selectedNode = node;
 		this.showEvent(node);
 	}
-	
+
 	private showEvent(node: EventDisplay) {
 		if (node.data) {
 			(this.eventDetail as EventDetailComponent).loadEvent(node.data);
@@ -255,102 +306,113 @@ export class EventEditorComponent implements OnChanges, OnInit {
 			this.history.select(node.data);
 		}
 	}
-	
+
 	private selectAbstractEvent(event: AbstractEvent<any>) {
-		const node = this.treeControl.dataNodes.find(n => n.data === event)!;
+		const node = this.treeControl.dataNodes.find((n) => n.data === event)!;
 		this.select(node);
 	}
-	
+
 	private selectUp() {
 		const index = this.treeControl.dataNodes.indexOf(this.selectedNode!);
-		const finalIndex = index <= 0 ? this.treeControl.dataNodes.length - 1 : index - 1;
+		const finalIndex =
+			index <= 0 ? this.treeControl.dataNodes.length - 1 : index - 1;
 		this.select(this.treeControl.dataNodes[finalIndex]);
 	}
-	
+
 	private selectDown() {
 		const index = this.treeControl.dataNodes.indexOf(this.selectedNode!);
-		const finalIndex = index < 0 || index === this.treeControl.dataNodes.length - 1 ? 0 : index + 1;
+		const finalIndex =
+			index < 0 || index === this.treeControl.dataNodes.length - 1
+				? 0
+				: index + 1;
 		this.select(this.treeControl.dataNodes[finalIndex]);
 	}
-	
+
 	private deselect() {
 		this.detailsShown = false;
 		this.shownNode = undefined;
-		
+
 		if (this.selectedNode) {
 			this.selectedNode.isSelected = false;
 			this.selectedNode.changeDetector?.detectChanges();
 			this.selectedNode = undefined;
 		}
 	}
-	
+
 	private delete() {
 		if (!this.selectedNode?.data) {
 			return;
 		}
-		
+
 		this.history.delete(this.selectedNode.parent);
-		
-		const globalIndex = this.treeControl.dataNodes.findIndex(n => n === this.selectedNode);
-		
+
+		const globalIndex = this.treeControl.dataNodes.findIndex(
+			(n) => n === this.selectedNode,
+		);
+
 		const index = this.getIndex(this.selectedNode);
 		const parent = this.getParent(this.selectedNode);
 		parent.splice(index, 1);
-		
+
 		this.refreshAll();
-		
+
 		if (this.shownNode === this.selectedNode) {
 			this.detailsShown = false;
 			this.shownNode = undefined;
 		}
-		
-		const selectIndex = globalIndex >= this.treeControl.dataNodes.length ? 0 : globalIndex;
+
+		const selectIndex =
+			globalIndex >= this.treeControl.dataNodes.length ? 0 : globalIndex;
 		this.select(this.treeControl.dataNodes[selectIndex]);
-		
+
 		this.focus();
 	}
-	
+
 	private copy() {
 		if (this.selectedNode?.data) {
 			this.copiedNode = this.selectedNode;
 		}
 	}
-	
+
 	private paste() {
 		if (this.copiedNode) {
 			this.history.add(this.getParent(this.selectedNode));
-			
-			const cpy = JSON.parse(JSON.stringify(this.copiedNode.data?.export()));
+
+			const cpy = JSON.parse(
+				JSON.stringify(this.copiedNode.data?.export()),
+			);
 			const event = this.helper.getEventFromType(cpy, this.actionStep);
-			
-			const index = !this.selectedNode ? 0 : this.getIndex(this.selectedNode!);
+
+			const index = !this.selectedNode
+				? 0
+				: this.getIndex(this.selectedNode);
 			const parent = this.getParent(this.selectedNode);
 			parent.splice(index, 0, event);
-			
+
 			this.refreshAll();
 			this.selectAbstractEvent(event);
 			this.focus();
 		}
 	}
-	
+
 	private undo() {
 		this.history.undo();
 		this.refreshAll();
 		this.focus();
 	}
-	
+
 	private redo() {
 		this.history.redo();
 		this.refreshAll();
 		this.focus();
 	}
-	
+
 	private refreshAll() {
 		const selected = this.selectedNode?.data;
 		const selectedParent = this.selectedNode?.parent;
 		const shown = this.detailsShown;
 		const shownData = this.shownNode?.data;
-		
+
 		this.refreshTree();
 		this.deselect();
 		if (shownData) {
@@ -358,32 +420,36 @@ export class EventEditorComponent implements OnChanges, OnInit {
 		}
 		if (selectedParent) {
 			//Similar to this.selectAbstractEvent but also handles undefined as data
-			const node = this.treeControl.dataNodes.find(n => n.parent === selectedParent && n.data === selected);
+			const node = this.treeControl.dataNodes.find(
+				(n) => n.parent === selectedParent && n.data === selected,
+			);
 			this.select(node);
 		}
 		this.detailsShown = shown;
 		this.eventsChanged.emit(this.export());
 	}
-	
+
 	private getIndex(event: EventDisplay | null | undefined) {
 		const parent = this.getParent(event);
 		const index = parent.indexOf(event?.data!);
 		return index === -1 ? parent.length : index;
 	}
-	
+
 	private isChildOf(child: EventDisplay, parent: EventDisplay): boolean {
 		let node: EventDisplay | undefined = child;
 		while (node) {
 			if (node === parent || (node.data && node.data === parent.data)) {
 				return true;
 			}
-			
-			node = this.treeControl.dataNodes.find(n => n.children === node!.parent);
+
+			node = this.treeControl.dataNodes.find(
+				(n) => n.children === node!.parent,
+			);
 		}
-		
+
 		return false;
 	}
-	
+
 	private convertNodes(nodes: AbstractEvent<any>[]): EventDisplay[] {
 		const result: EventDisplay[] = [];
 		for (const node of nodes) {
@@ -396,24 +462,26 @@ export class EventEditorComponent implements OnChanges, OnInit {
 				parent: nodes,
 				level: 0,
 			};
-			
-			if (node.children
-				&& node.children.length > 0
-				&& node.children[0].title == null) {
+
+			if (
+				node.children &&
+				node.children.length > 0 &&
+				node.children[0].title == null
+			) {
 				entry.children = node.children[0].events;
 			}
-			
+
 			result.push(entry);
-			
+
 			if (node.children == null) {
 				continue;
 			}
-			
+
 			for (const child of node.children) {
 				if (!child.title) {
 					continue;
 				}
-				
+
 				result.push({
 					text: child.title,
 					draggable: child.draggable || false,
@@ -426,7 +494,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 				});
 			}
 		}
-		
+
 		result.push({
 			text: ' ',
 			draggable: false,
@@ -435,7 +503,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 			level: 0,
 			parent: nodes,
 		});
-		
+
 		return result;
 	}
 }
