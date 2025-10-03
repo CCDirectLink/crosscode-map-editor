@@ -6,23 +6,24 @@ import { AbstractWidget } from '../abstract-widget';
 	selector: 'app-langlabel-widget',
 	templateUrl: './langlabel-widget.component.html',
 	styleUrls: ['./langlabel-widget.component.scss', '../widget.scss'],
-	standalone: false
+	standalone: false,
 })
 export class LangLabelWidgetComponent extends AbstractWidget {
-	@ViewChildren(CdkTextareaAutosize) inputTextareas!: QueryList<CdkTextareaAutosize>;
+	@ViewChildren(CdkTextareaAutosize)
+	inputTextareas!: QueryList<CdkTextareaAutosize>;
 	languages: string[] = [
 		'en_US',
 		'de_DE',
 		'ja_JP',
 		'ko_KR',
 		'zh_CN',
-		'zh_TW'
+		'zh_TW',
 	];
-	
+
 	get hasValue(): boolean {
 		return this.settings[this.key] !== undefined;
 	}
-	
+
 	get defaultValue() {
 		const value: any = {};
 		for (const language of this.languages) {
@@ -30,8 +31,10 @@ export class LangLabelWidgetComponent extends AbstractWidget {
 		}
 		return value;
 	}
-	
+
 	resizeTextareas() {
-		this.inputTextareas.forEach(autosize => autosize.resizeToFitContent(true));
+		this.inputTextareas.forEach((autosize) =>
+			autosize.resizeToFitContent(true),
+		);
 	}
 }

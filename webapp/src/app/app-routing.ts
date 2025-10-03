@@ -1,6 +1,6 @@
-import {Routes} from '@angular/router';
-import {EditorComponent} from './components/editor/editor.component';
-import {BabylonComponent} from './components/babylon/babylon.component';
+import { Routes } from '@angular/router';
+import { EditorComponent } from './components/editor/editor.component';
+import { BabylonComponent } from './components/babylon/babylon.component';
 
 export const routes: Routes = [
 	{
@@ -10,12 +10,12 @@ export const routes: Routes = [
 			{
 				path: '',
 				pathMatch: 'full',
-				redirectTo: ''
+				redirectTo: '',
 			},
 			{
 				path: '3d',
-				component: BabylonComponent
-			}
-		]
-	}
+				component: BabylonComponent,
+			},
+		],
+	},
 ];

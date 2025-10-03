@@ -1,43 +1,44 @@
 <!-- This 'wrapping' controls whether text is wrapped in multiple lines or is left to overflow -->
-<div class="event-container" [ngClass]="{'wrapping': wrapText}" fxLayout="row">
+<div class="event-container" [ngClass]="{ wrapping: wrapText }" fxLayout="row">
 	<app-split-pane
 		#splitpane
-		[bounds]="{left: 10, right: 10}"
+		[bounds]="{ left: 10, right: 10 }"
 		[opened]="detailsShown"
 		[(base)]="base"
 	>
 		<ng-container ngProjectAs="left">
-			<div class="event-inner-container"
+			<div
+				class="event-inner-container"
 				fxFlex="1 1 0"
 				cdkDropList
-				(cdkDropListDropped)="drop($event)">
+				(cdkDropListDropped)="drop($event)"
+			>
 				<!--Add [cdkDropListSortPredicate]="sortPredicate" once Anglular is upraded to 11 or higher-->
 				<mat-tree
 					#eventTree
 					fxLayout="column"
 					[dataSource]="dataSource"
 					[treeControl]="treeControl"
-
 					(dblclick)="openAddMenu($event, null)"
 					(contextmenu)="openAddMenu($event, null)"
 					(keydown)="keyPress($event)"
-					tabindex="0">
+					tabindex="0"
+				>
 					<!-- This 'wrapping' controls how things look like when dragged, only works when top div also has 'wrapping' -->
 					<mat-tree-node
-						[ngClass]="{'wrapping': wrapText}"
+						[ngClass]="{ wrapping: wrapText }"
 						*matTreeNodeDef="let node"
 						matTreeNodePadding
 						[matTreeNodePaddingIndent]="16"
-
 						cdkDrag
 						cdkDragLockAxis="y"
 						[cdkDragData]="node"
 						[cdkDragDisabled]="!node.draggable"
 						cdkDragHandle
-						
 						(click)="eventClicked($event, node)"
 						(dblclick)="openAddMenu($event, node)"
-						(contextmenu)="openAddMenu($event, node)">
+						(contextmenu)="openAddMenu($event, node)"
+					>
 						<app-row-text [display]="node"></app-row-text>
 					</mat-tree-node>
 				</mat-tree>
@@ -45,7 +46,11 @@
 		</ng-container>
 		<ng-container ngProjectAs="right">
 			<div class="details-container">
-				<app-event-detail #eventDetail (refresh)="refresh($event)" (close)="hideDetails()"></app-event-detail>
+				<app-event-detail
+					#eventDetail
+					(refresh)="refresh($event)"
+					(close)="hideDetails()"
+				></app-event-detail>
 			</div>
 		</ng-container>
 	</app-split-pane>

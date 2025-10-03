@@ -1,11 +1,20 @@
-import { NPCState, NPCStatesWidgetComponent } from '../../../../components/widgets/npc-states-widget/npc-states-widget.component';
+import {
+	NPCState,
+	NPCStatesWidgetComponent,
+} from '../../../../components/widgets/npc-states-widget/npc-states-widget.component';
 import { Point, Point3 } from '../../../../models/cross-code-map';
-import { Helper } from '../../helper';
-import { DefaultEntity } from './default-entity';
 import { Label } from '../../../../models/events';
-import { Anims, flattenSUBs, IfThen, prepareSheet, SubJsonParam } from '../../sheet-parser';
-import { getNPCTemplates } from './npc-templates';
 import { Globals } from '../../../globals';
+import { Helper } from '../../helper';
+import {
+	Anims,
+	flattenSUBs,
+	IfThen,
+	prepareSheet,
+	SubJsonParam,
+} from '../../sheet-parser';
+import { DefaultEntity } from './default-entity';
+import { getNPCTemplates } from './npc-templates';
 
 export interface CharacterSettings {
 	jsonINSTANCE?: string;
@@ -48,7 +57,7 @@ export interface CharacterSettings {
 
 export interface Face {
 	[key: number]: string | undefined;
-	
+
 	width?: number;
 	height?: number;
 	centerX?: number;
@@ -57,16 +66,12 @@ export interface Face {
 	parts?: Part[];
 	expressions?: Expressions;
 	ABSTRACT?: string | SubJsonParam;
-	subImages?: { [key: string]: string };
+	subImages?: Record<string, string>;
 }
 
-export interface Part {
-	[key: string]: DetailPart | number;
-}
+export type Part = Record<string, DetailPart | number>;
 
-export interface Expressions {
-	[key: string]: Faces;
-}
+export type Expressions = Record<string, Faces>;
 
 export interface Faces {
 	faces: string[][];
@@ -85,18 +90,16 @@ export interface DetailPart {
 	hideOnClip?: boolean;
 }
 
-export interface WalkAnimSet {
-	[key: string]: { [key: string]: string | WalkAnimSetInner | undefined } | undefined;
-}
+export type WalkAnimSet = Record<
+	string,
+	Record<string, string | WalkAnimSetInner | undefined> | undefined
+>;
 
 export interface WalkAnimSetInner extends IfThen {
 	[key: string]: string | undefined;
 }
 
-
-export interface Configs {
-	[key: string]: ConfigSet;
-}
+export type Configs = Record<string, ConfigSet>;
 
 export interface ConfigSet {
 	relativeVel?: number;
@@ -127,9 +130,8 @@ export const FACE8 = {
 	SOUTH: 4,
 	SOUTH_WEST: 5,
 	WEST: 6,
-	NORTH_WEST: 7
+	NORTH_WEST: 7,
 };
-
 
 export interface NpcAttributes {
 	characterName?: string;
@@ -144,50 +146,69 @@ export interface Analyzable {
 }
 
 export class NPC extends DefaultEntity {
-	
 	protected override async setupType(settings: NpcAttributes) {
-		
-		let charSettings = await Helper.getJsonPromise(this.getPath('data/characters/', settings.characterName)) as CharacterSettings | undefined;
+		let charSettings = (await Helper.getJsonPromise(
+			this.getPath('data/characters/', settings.characterName),
+		)) as CharacterSettings | undefined;
 		if (!charSettings) {
-			console.warn(`no char settings found for character name: [${settings.characterName}]`);
+			console.warn(
+				`no char settings found for character name: [${settings.characterName}]`,
+			);
 			this.generateNoImageType();
 			return;
 		}
 		if (typeof charSettings.animSheet === 'string') {
-			const path = this.getPath('data/animations/', charSettings.animSheet);
-			charSettings.animSheet = await Helper.getJsonPromise(path) as Anims;
+			const path = this.getPath(
+				'data/animations/',
+				charSettings.animSheet,
+			);
+			const sheetName = charSettings.animSheet;
+			charSettings.animSheet = (await Helper.getJsonPromise(
+				path,
+			)) as Anims;
 			if (!charSettings.animSheet) {
-				throw new Error('no anim sheet found for: ' + charSettings.animSheet + ' in path: ' + path);
+				throw new Error(
+					'no anim sheet found for: ' +
+						sheetName +
+						' in path: ' +
+						path,
+				);
 			}
 		}
-		
+
 		charSettings.jsonTEMPLATES = getNPCTemplates();
 		charSettings = prepareSheet(charSettings);
 		delete charSettings.jsonTEMPLATES;
-		
+
 		if (typeof charSettings.animSheet === 'string') {
 			throw new Error('should never be string');
 		}
-		
+
 		const state = settings.npcStates?.[0] ?? {};
 		const config = state.config ?? 'normal';
 		const face = state.face || 'SOUTH';
 		const walkAnims = charSettings.configs?.[config]?.walkAnims ?? 'normal';
-		const animSet = charSettings.walkAnimSet?.[walkAnims] || Object.values(charSettings.walkAnimSet ?? {})[0];
-		
-		const usedSet = animSet?.['idle'] || animSet?.['move'] || Object.values(animSet ?? {})[0];
-		
+		const animSet =
+			charSettings.walkAnimSet?.[walkAnims] ||
+			Object.values(charSettings.walkAnimSet ?? {})[0];
+
+		const usedSet =
+			animSet?.['idle'] ||
+			animSet?.['move'] ||
+			Object.values(animSet ?? {})[0];
+
 		const subName = usedSet as string;
-		
-		
+
 		if (!Array.isArray(charSettings.animSheet?.SUB)) {
-			console.warn(`animSheet is not an array, abort: [${settings.characterName}]`);
+			console.warn(
+				`animSheet is not an array, abort: [${settings.characterName}]`,
+			);
 			this.generateNoImageType();
 			return;
 		}
-		const subs = flattenSUBs(charSettings.animSheet!, {});
-		
-		let sub = subs.find(v => v.name === subName);
+		const subs = flattenSUBs(charSettings.animSheet, {});
+
+		let sub = subs.find((v) => v.name === subName);
 		if (!sub) {
 			sub = subs[0];
 		}
@@ -197,27 +218,28 @@ export class NPC extends DefaultEntity {
 			return;
 		}
 		const exists = await Helper.loadTexture(sheet?.src, this.scene);
-		
+
 		if (!exists) {
 			this.generateErrorImage();
 			return;
 		}
-		
+
 		let x = sheet.offX ?? 0;
 		let y = sheet.offY ?? 0;
 		let flipX = false;
-		
+
 		let dirIndex = 0;
-		const subDirs = typeof sub.dirs === 'string' ? parseInt(sub.dirs, 10) : sub.dirs;
+		const subDirs =
+			typeof sub.dirs === 'string' ? parseInt(sub.dirs, 10) : sub.dirs;
 		if (subDirs === 8) {
 			dirIndex = FACE8[face];
 		} else if (subDirs === 4) {
 			dirIndex = FACE4[face as keyof typeof FACE4];
 		}
-		
+
 		const img = Globals.scene.textures.get(sheet.src).getSourceImage();
 		const xCount = sheet.xCount ?? img.width / sheet.width;
-		
+
 		// flip x with some serious type checking
 		if (sub.flipX) {
 			if (typeof sub.flipX === 'boolean') {
@@ -229,29 +251,31 @@ export class NPC extends DefaultEntity {
 				}
 			}
 		}
-		
+
 		const tileOffsets = sub.tileOffsets;
 		const idleFrame = sub.frames?.[0] ?? 0;
 		const offset = (tileOffsets?.[dirIndex] ?? 0) + idleFrame;
-		
+
 		x += (offset % xCount) * sheet.width;
 		y += Math.floor(offset / xCount) * sheet.height;
-		
+
 		this.entitySettings.sheets = {
-			fix: [{
-				gfx: sheet?.src,
-				x: x,
-				y: y,
-				w: sheet?.width ?? 16,
-				h: sheet?.height ?? 16,
-				flipX: flipX,
-				flipY: false
-			}]
+			fix: [
+				{
+					gfx: sheet?.src,
+					x: x,
+					y: y,
+					w: sheet?.width ?? 16,
+					h: sheet?.height ?? 16,
+					flipX: flipX,
+					flipY: false,
+				},
+			],
 		};
-		this.entitySettings.baseSize = {x: 12, y: 12, z: 28};
+		this.entitySettings.baseSize = { x: 12, y: 12, z: 28 };
 		this.updateSettings();
 	}
-	
+
 	private getPath(prefix: string, path?: string): string {
 		if (!path) {
 			path = '';
@@ -260,8 +284,7 @@ export class NPC extends DefaultEntity {
 		const name = split.splice(-1, 1)[0];
 		return prefix + split.join('/') + '/' + name;
 	}
-	
-	
+
 	public override doubleClick(): void {
 		(this.widgets['npcStates'] as NPCStatesWidgetComponent).open();
 	}

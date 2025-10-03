@@ -34,31 +34,31 @@ export class SetPlayerCore extends AbstractEvent<any> {
 				MENU_BOTANICS: 25,
 				ITEMS: 26,
 				MONEY: 27,
-				MODIFIER: 28
-			}
+				MODIFIER: 28,
+			},
 		},
 		value: {
 			type: 'Boolean',
-			description: 'True to activate core.'
-		}
+			description: 'True to activate core.',
+		},
 	};
-	
+
 	getAttributes() {
 		return this.attributes;
 	}
-	
+
 	update() {
 		this.info = this.combineStrings(
 			this.getTypeString('#8fe174'),
 			this.getPropString('core'),
-			this.getPropString('value')
+			this.getPropString('value'),
 		);
 	}
-	
+
 	protected generateNewDataInternal() {
 		return {
 			core: 'MOVE',
-			value: true
+			value: true,
 		};
 	}
 }

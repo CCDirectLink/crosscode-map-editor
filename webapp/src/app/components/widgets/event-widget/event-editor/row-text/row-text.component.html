@@ -1,4 +1,7 @@
-<button class="event-row-text event-row" [ngClass]="{'event-row-focused': display.isSelected}">
+<button
+	class="event-row-text event-row"
+	[ngClass]="{ 'event-row-focused': display.isSelected }"
+>
 	<mat-icon class="event-row-icon">fiber_manual_record</mat-icon>
 	<span class="no-click" [innerHTML]="display.text | keepHtml"></span>
 	<ng-content></ng-content>

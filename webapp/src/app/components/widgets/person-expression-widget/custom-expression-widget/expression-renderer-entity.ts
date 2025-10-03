@@ -9,8 +9,9 @@ export interface ExpressionRendererSettings {
 }
 
 export class ExpressionRendererEntity extends DefaultEntity {
-	
-	protected override async setupType(settings: ExpressionRendererSettings): Promise<void> {
+	protected override async setupType(
+		settings: ExpressionRendererSettings,
+	): Promise<void> {
 		if (!settings?.face) {
 			return;
 		}
@@ -42,14 +43,15 @@ export class ExpressionRendererEntity extends DefaultEntity {
 				y: part.srcY,
 				w: part.width,
 				h: part.height,
-				offsetX: part.destX + subX + part.width / 2 - (face.centerX ?? 0),
+				offsetX:
+					part.destX + subX + part.width / 2 - (face.centerX ?? 0),
 				offsetY: part.destY + subY + part.height,
 			};
-			
+
 			if (sheet.offsetY! > renderHeight) {
 				renderHeight = sheet.offsetY!;
 			}
-			
+
 			sheets.push(sheet);
 			subX += part.subX ?? 0;
 			subY += part.subY ?? 0;
@@ -59,10 +61,10 @@ export class ExpressionRendererEntity extends DefaultEntity {
 			sheet.offsetY! -= renderHeight;
 			await Helper.loadTexture(sheet.gfx, this.scene);
 		}
-		
+
 		this.entitySettings = {
 			sheets: {
-				fix: sheets
+				fix: sheets,
 			},
 			baseSize: {
 				x: 0,

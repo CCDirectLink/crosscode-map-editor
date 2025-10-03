@@ -5,11 +5,11 @@ export class SetCameraBetween extends AbstractEvent<any> {
 	private attributes: EntityAttributes = {
 		entity1: {
 			type: 'Entity',
-			description: 'First entity'
+			description: 'First entity',
 		},
 		entity2: {
 			type: 'Entity',
-			description: 'Second entity'
+			description: 'Second entity',
 		},
 		speed: {
 			type: 'String',
@@ -25,8 +25,8 @@ export class SetCameraBetween extends AbstractEvent<any> {
 				SLOWEST: 0.3,
 				SLOWESTEST: 0.5,
 				SLOWEST_DREAM: 1,
-				IMMEDIATELY: 1E-6
-			}
+				IMMEDIATELY: 1e-6,
+			},
 		},
 		transition: {
 			type: 'String',
@@ -41,15 +41,16 @@ export class SetCameraBetween extends AbstractEvent<any> {
 				JUMPY: 0,
 				EASE_OUT_STRONG: 0,
 				EASE_IN_STRONG: 0,
-			}
+			},
 		},
 		wait: {
 			type: 'Boolean',
-			description: 'Wait until camera movement is done'
+			description: 'Wait until camera movement is done',
 		},
 		waitSkip: {
 			type: 'Number',
-			description: 'The amount of seconds to skip waiting before target is reached.'
+			description:
+				'The amount of seconds to skip waiting before target is reached.',
 		},
 		zoom: {
 			type: 'Number',
@@ -57,26 +58,27 @@ export class SetCameraBetween extends AbstractEvent<any> {
 		},
 		name: {
 			type: 'String',
-			description: 'If set, camera target will remain even after event is done and can only be removed explictly via its name.',
-		}
+			description:
+				'If set, camera target will remain even after event is done and can only be removed explictly via its name.',
+		},
 	};
-	
+
 	getAttributes() {
 		return this.attributes;
 	}
-	
+
 	update() {
 		this.info = this.combineStrings(
 			this.getTypeString('#eeee30'),
-			this.getAllPropStrings()
+			this.getAllPropStrings(),
 		);
 	}
-	
+
 	protected generateNewDataInternal() {
 		return {
 			entity1: {},
 			entity2: {},
-			zoom: 1
+			zoom: 1,
 		};
 	}
 }

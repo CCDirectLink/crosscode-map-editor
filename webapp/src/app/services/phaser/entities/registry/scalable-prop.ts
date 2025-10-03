@@ -1,7 +1,12 @@
 import { Point, Point3 } from '../../../../models/cross-code-map';
 import { Helper } from '../../helper';
 import { Fix } from '../cc-entity';
-import { BallKill, Effects, prepareScalableProp, ScalablePropSheet } from '../../sheet-parser';
+import {
+	BallKill,
+	Effects,
+	prepareScalableProp,
+	ScalablePropSheet,
+} from '../../sheet-parser';
 import { DefaultEntity } from './default-entity';
 
 export interface ScalablePropDef {
@@ -54,9 +59,7 @@ export interface EntryGfxEnds {
 	south?: GfxEndsDir;
 }
 
-export interface GfxEndsDir {
-	[key: string]: Patterns;
-}
+export type GfxEndsDir = Record<string, Patterns>;
 
 export interface ScalablePropConfig {
 	sheet?: string;
@@ -68,7 +71,7 @@ export interface ScalablePropConfig {
 
 export interface ScalablePropAttributes {
 	propConfig?: ScalablePropConfig;
-	
+
 	// TODO: not implemented, probably easier with Phaser.GameObjects.TileSprite
 	patternOffset?: Point;
 	timeOffset?: number;
@@ -79,13 +82,12 @@ export interface ScalablePropAttributes {
 }
 
 export class ScalableProp extends DefaultEntity {
-	
 	private _onlyEnds = false;
-	
+
 	set onlyEnds(val: boolean) {
 		this._onlyEnds = val;
 	}
-	
+
 	protected override async setupType(settings: ScalablePropAttributes) {
 		const propConfig = settings.propConfig;
 		if (!propConfig) {
@@ -93,14 +95,16 @@ export class ScalableProp extends DefaultEntity {
 			this.resetScaleSettings();
 			return this.generateErrorImage();
 		}
-		const sheet = await Helper.getJsonPromise('data/scale-props/' + propConfig.sheet) as ScalablePropSheet | undefined;
-		
+		const sheet = (await Helper.getJsonPromise(
+			'data/scale-props/' + propConfig.sheet,
+		)) as ScalablePropSheet | undefined;
+
 		if (!sheet) {
 			console.warn('sheet not found: ' + propConfig.sheet);
 			this.resetScaleSettings();
 			return this.generateErrorImage();
 		}
-		
+
 		let prop: ScalablePropDef = sheet.entries[propConfig.name!];
 		if (!prop) {
 			console.error('scale-prop not found: ' + propConfig.name);
@@ -108,26 +112,28 @@ export class ScalableProp extends DefaultEntity {
 			return this.generateErrorImage();
 		}
 		prop = prepareScalableProp(prop, sheet);
-		
-		this.entitySettings = <any>{};
-		
+
+		this.entitySettings = {} as any;
+
 		const scaleSettings = this.getScaleSettings()!;
-		
+
 		scaleSettings.scalableX = prop.scalableX!;
 		scaleSettings.scalableY = prop.scalableY!;
 		scaleSettings.scalableStep = prop.scalableStep!;
 		scaleSettings.baseSize = prop.baseSize!;
-		
-		const size = (this.details.settings['size'] as Point | undefined) ?? {x: 1, y: 1};
-		
+
+		const size = (this.details.settings['size'] as Point | undefined) ?? {
+			x: 1,
+			y: 1,
+		};
+
 		if (!scaleSettings.scalableX) {
 			size.x = scaleSettings.baseSize.x;
 		}
 		if (!scaleSettings.scalableY) {
 			size.y = scaleSettings.baseSize.y;
 		}
-		
-		
+
 		let scaleableFix: Fix | undefined;
 		if (prop.gfx) {
 			await Helper.loadTexture(prop.gfx, this.scene);
@@ -150,13 +156,13 @@ export class ScalableProp extends DefaultEntity {
 			this.resetScaleSettings();
 			return this.generateErrorImage();
 		}
-		
+
 		const scale = {
 			x: 0,
 			y: 0,
-			...this.details.settings['size']
+			...this.details.settings['size'],
 		} as Point;
-		
+
 		for (const [d, key] of Object.entries(propConfig.ends ?? {})) {
 			if (!key) {
 				continue;
@@ -201,19 +207,19 @@ export class ScalableProp extends DefaultEntity {
 					break;
 			}
 		}
-		
+
 		Object.assign(this.entitySettings, scaleSettings);
 		this.entitySettings.collType = prop.collType!;
 		this.entitySettings.pivot = prop.pivot!;
 		this.updateSettings();
 	}
-	
+
 	private resetScaleSettings() {
 		const scaleSettings = this.getScaleSettings()!;
-		
+
 		scaleSettings.scalableX = true;
 		scaleSettings.scalableY = true;
 		scaleSettings.scalableStep = 1;
-		scaleSettings.baseSize = {x: 1, y: 1};
+		scaleSettings.baseSize = { x: 1, y: 1 };
 	}
 }

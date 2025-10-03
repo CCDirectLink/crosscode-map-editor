@@ -1,12 +1,10 @@
 <p class="bottom-container version caption">{{ version }}</p>
 <p class="bottom-container bottom-elements">
 	@for (el of uiElements; track el) {
-		
 		@if (el.active) {
 			<span class="caption">
-			{{ el.text }}
-		</span>
+				{{ el.text }}
+			</span>
 		}
-		
 	}
 </p>

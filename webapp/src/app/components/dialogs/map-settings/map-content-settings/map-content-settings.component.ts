@@ -6,11 +6,11 @@ import { CrossCodeMap } from '../../../../models/cross-code-map';
 	selector: 'app-map-content-settings',
 	templateUrl: './map-content-settings.component.html',
 	styleUrls: ['./map-content-settings.component.scss'],
-	standalone: false
+	standalone: false,
 })
 export class MapContentSettingsComponent implements OnInit {
 	@Input() settings!: CrossCodeMap;
-	
+
 	// TODO: why is there an output?
 	//  All other components using this event just set the setting to the object,
 	//  this could be handled here without emitting an event
@@ -19,50 +19,47 @@ export class MapContentSettingsComponent implements OnInit {
 		value: any;
 	}>();
 	mapSettings = mapSettingsjson;
-	
-	constructor() {
-	}
-	
+
+	constructor() {}
+
 	ngOnInit() {
-		
 		if (this.settings.levels.length < 1) {
 			this.settings.levels.push({
-				height: 0
+				height: 0,
 			});
 		}
 	}
-	
+
 	onNumberChange(event: Event, property: string): void {
 		const numElement = event.target as HTMLInputElement;
 		if (numElement) {
 			const min = Number(numElement.min || -Infinity);
 			const max = Number(numElement.max || Infinity);
 			let value = Number(numElement.value);
-			
-			
+
 			if (isNaN(value)) {
 				value = min;
 			} else if (!Number.isInteger(value)) {
 				value = Math.round(value);
 			}
-			
+
 			if (value < min) {
 				value = min;
 			} else if (value > max) {
 				value = max;
 			}
-			
+
 			// Parent won't update field if same value
 			// force update value property
 			numElement.value = value + '';
-			
+
 			this.onSettingsChange.emit({
 				property,
-				value
+				value,
 			});
 		}
 	}
-	
+
 	guessHeight(): number {
 		const levels = this.settings.levels;
 		if (levels.length === 0) {

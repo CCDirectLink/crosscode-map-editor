@@ -1,4 +1,11 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import {
+	Component,
+	Input,
+	OnChanges,
+	OnDestroy,
+	OnInit,
+	inject,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CrossCodeMap } from '../../../models/cross-code-map';
 import { MapLoaderService } from '../../../services/map-loader.service';
@@ -8,23 +15,29 @@ import { AbstractWidget } from '../abstract-widget';
 	selector: 'app-level-widget',
 	templateUrl: './level-widget.component.html',
 	styleUrls: ['./level-widget.component.scss', '../widget.scss'],
-	standalone: false
+	standalone: false,
 })
-export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDestroy, OnChanges {
-	
+export class LevelWidgetComponent
+	extends AbstractWidget
+	implements OnInit, OnDestroy, OnChanges
+{
+	private maploader = inject(MapLoaderService);
+
 	@Input() displayName = '';
 	map?: CrossCodeMap;
 	private subscription: Subscription;
-	
-	constructor(private maploader: MapLoaderService) {
+
+	constructor() {
 		super();
-		this.subscription = this.maploader.map.subscribe(map => this.map = map);
+		this.subscription = this.maploader.map.subscribe(
+			(map) => (this.map = map),
+		);
 	}
-	
+
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe();
 	}
-	
+
 	setLevel(level: number) {
 		this.settings[this.key].level = Number(level);
 		if (this.entity) {
@@ -32,7 +45,7 @@ export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDe
 		}
 		this.updateType(level);
 	}
-	
+
 	setOffset(offset: number) {
 		this.settings[this.key].offset = Number(offset);
 		if (this.entity) {
@@ -40,5 +53,4 @@ export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDe
 		}
 		this.updateType(offset);
 	}
-	
 }

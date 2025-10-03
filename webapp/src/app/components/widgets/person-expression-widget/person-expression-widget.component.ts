@@ -5,20 +5,22 @@ import { AbstractWidget } from '../abstract-widget';
 	selector: 'app-person-expression-widget',
 	templateUrl: './person-expression-widget.component.html',
 	styleUrls: ['./person-expression-widget.component.scss', '../widget.scss'],
-	standalone: false
+	standalone: false,
 })
-export class PersonExpressionWidgetComponent extends AbstractWidget implements OnChanges {
-	
+export class PersonExpressionWidgetComponent
+	extends AbstractWidget
+	implements OnChanges
+{
 	constructor() {
 		super();
 	}
-	
+
 	override ngOnChanges(): void {
 		super.ngOnChanges();
 		if (!this.settings[this.key]) {
 			this.settings[this.key] = {
 				person: '',
-				expression: ''
+				expression: '',
 			};
 		}
 	}

@@ -7,12 +7,11 @@ import { EntityGenerator } from './entity-generator';
 const EDGE_WIDTH = 6;
 
 export class EntityManager3d {
-	
 	private meshMap = new Map<Mesh, CCEntity>();
 	private entityMap = new Map<CCEntity, Mesh>();
 	private prevSelected?: Mesh;
 	private sub?: Subscription;
-	
+
 	/** Called after all entities are added */
 	init(entityGenerator: EntityGenerator, scene: Scene) {
 		for (const [mesh, entity] of this.meshMap) {
@@ -21,21 +20,23 @@ export class EntityManager3d {
 				break;
 			}
 		}
-		
-		this.sub = Globals.globalEventsService.updateEntitySettings.subscribe(async entity => {
-			await entityGenerator.generateEntity(entity, scene);
-			const m = this.entityMap.get(entity)!;
-			m.edgesWidth = EDGE_WIDTH;
-			this.prevSelected = m;
-		});
+
+		this.sub = Globals.globalEventsService.updateEntitySettings.subscribe(
+			async (entity) => {
+				await entityGenerator.generateEntity(entity, scene);
+				const m = this.entityMap.get(entity)!;
+				m.edgesWidth = EDGE_WIDTH;
+				this.prevSelected = m;
+			},
+		);
 	}
-	
+
 	destroy() {
 		if (this.sub) {
 			this.sub.unsubscribe();
 		}
 	}
-	
+
 	onClick(m: Mesh) {
 		if (this.prevSelected) {
 			this.select(this.prevSelected, false);
@@ -51,7 +52,7 @@ export class EntityManager3d {
 		}
 		entity.doubleClick();
 	}
-	
+
 	select(m: Mesh, activate: boolean) {
 		if (activate) {
 			m.edgesWidth = EDGE_WIDTH;
@@ -60,12 +61,11 @@ export class EntityManager3d {
 				throw new Error('entity should always exist');
 			}
 			Globals.globalEventsService.selectedEntity.next(entity);
-			
 		} else {
 			m.edgesWidth = 0;
 		}
 	}
-	
+
 	registerEntity(entity: CCEntity, m: Mesh) {
 		this.meshMap.set(m, entity);
 		const prev = this.entityMap.get(entity);

@@ -12,7 +12,7 @@ export class Filler {
 		if (newTile === prev) {
 			return;
 		}
-		
+
 		let toCheck: Point[] = [p];
 		while (toCheck.length > 0) {
 			const currP = toCheck.pop()!;
@@ -23,23 +23,23 @@ export class Filler {
 			}
 		}
 	}
-	
+
 	private static getNeighbours(p: Point, layer: CCMapLayer): Point[] {
 		const out: Point[] = [];
-		
+
 		if (p.x > 0) {
-			out.push({x: p.x - 1, y: p.y});
+			out.push({ x: p.x - 1, y: p.y });
 		}
 		if (p.x < layer.details.width - 1) {
-			out.push({x: p.x + 1, y: p.y});
+			out.push({ x: p.x + 1, y: p.y });
 		}
 		if (p.y > 0) {
-			out.push({x: p.x, y: p.y - 1});
+			out.push({ x: p.x, y: p.y - 1 });
 		}
 		if (p.y < layer.details.height - 1) {
-			out.push({x: p.x, y: p.y + 1});
+			out.push({ x: p.x, y: p.y + 1 });
 		}
-		
+
 		return out;
 	}
 }

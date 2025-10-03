@@ -1,5 +1,9 @@
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!"
-     [matTooltipDisabled]="disableTooltip">
+<div
+	fxLayout="row"
+	class="property-container"
+	[matTooltip]="attribute?.description!"
+	[matTooltipDisabled]="disableTooltip"
+>
 	<label class="property-name">{{ key }}:</label>
 	@if (attribute?.options) {
 		<div class="mat-select-container">
@@ -11,22 +15,18 @@
 			></app-autocompleted-textbox>
 		</div>
 	} @else {
-	
-	@if (!attribute?.large) {
-		<input class="default-input"
-		       
-		       [ngModel]="settings[key]"
-		       (input)="setSetting(key, $any($event.target).value)">
-	} @else {
-		
-		<textarea class="default-input"
-		          [ngModel]="settings[key]"
-		          (input)="setSetting(key, $any($event.target).value)"
-		></textarea>
-		
+		@if (!attribute?.large) {
+			<input
+				class="default-input"
+				[ngModel]="settings[key]"
+				(input)="setSetting(key, $any($event.target).value)"
+			/>
+		} @else {
+			<textarea
+				class="default-input"
+				[ngModel]="settings[key]"
+				(input)="setSetting(key, $any($event.target).value)"
+			></textarea>
+		}
 	}
-	
-}
-
-
 </div>

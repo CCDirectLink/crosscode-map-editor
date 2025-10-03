@@ -9,7 +9,7 @@ export class SetCameraZoom extends AbstractEvent<any> {
 		},
 		duration: {
 			type: 'Number',
-			description: 'Duration of zoom transition'
+			description: 'Duration of zoom transition',
 		},
 		transition: {
 			type: 'String',
@@ -24,25 +24,25 @@ export class SetCameraZoom extends AbstractEvent<any> {
 				JUMPY: 0,
 				EASE_OUT_STRONG: 0,
 				EASE_IN_STRONG: 0,
-			}
-		}
+			},
+		},
 	};
-	
+
 	getAttributes() {
 		return this.attributes;
 	}
-	
+
 	update() {
 		this.info = this.combineStrings(
 			this.getTypeString('#eeee30'),
-			this.getAllPropStrings()
+			this.getAllPropStrings(),
 		);
 	}
-	
+
 	protected generateNewDataInternal() {
 		return {
 			zoom: 1,
-			transition: 'EASE_IN_OUT'
+			transition: 'EASE_IN_OUT',
 		};
 	}
 }

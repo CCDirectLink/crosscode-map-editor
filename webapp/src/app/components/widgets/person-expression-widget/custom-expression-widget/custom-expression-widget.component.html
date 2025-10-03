@@ -1,25 +1,25 @@
-<div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!">
-	<label class="property-name">{{key}}:</label>
+<div
+	fxLayout="row"
+	class="property-container"
+	[matTooltip]="attribute?.description!"
+>
+	<label class="property-name">{{ key }}:</label>
 	<div class="img-btn-container">
-		<button
-			matRipple
-			class="img-btn"
-			(click)="open()"
-		>
+		<button matRipple class="img-btn" (click)="open()">
 			<img
 				[src]="preview"
 				[style.visibility]="preview ? 'initial' : 'hidden'"
 				width="489"
 				height="571"
-			>
+			/>
 		</button>
 		<div class="flex">
-			<input type="text"
-			       class="default-input expression-input"
-			       [ngModel]="settings?.expression"
-			       (ngModelChange)="setSetting(key, $event); updatePreviewImg()"
-			>
+			<input
+				type="text"
+				class="default-input expression-input"
+				[ngModel]="settings?.expression"
+				(ngModelChange)="setSetting(key, $event); updatePreviewImg()"
+			/>
 		</div>
 	</div>
-
 </div>

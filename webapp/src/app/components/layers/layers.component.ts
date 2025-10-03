@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { GlobalEventsService } from '../../services/global-events.service';
@@ -15,39 +15,44 @@ import { StateHistoryService } from '../dialogs/floating-window/history/state-hi
 	templateUrl: './layers.component.html',
 	styleUrls: ['./layers.component.scss'],
 	encapsulation: ViewEncapsulation.None,
-	standalone: false
+	standalone: false,
 })
 export class LayersComponent implements OnInit {
+	private mapLoader = inject(MapLoaderService);
+	private stateHistory = inject(StateHistoryService);
+	private http = inject(HttpClientService);
+
 	static tilesets: string[] = []; //Cache
-	
+
 	selectedLayer?: CCMapLayer;
 	map?: CCMap;
 	newLayerName = '';
 	tilesets: string[] = []; //Angular view data
-	
+
 	width = 0;
 	height = 0;
-	
-	constructor(private mapLoader: MapLoaderService,
-		private stateHistory: StateHistoryService,
-		private http: HttpClientService,
-		events: GlobalEventsService) {
+
+	constructor() {
+		const events = inject(GlobalEventsService);
+
 		events.toggleVisibility.subscribe(() => {
 			if (this.selectedLayer) {
-				this.toggleVisibility({
-					stopPropagation: () => {
-					}
-				} as Event, this.selectedLayer);
+				this.toggleVisibility(
+					{
+						stopPropagation: () => {},
+					} as Event,
+					this.selectedLayer,
+				);
 			}
 		});
-		
-		this.loadTilesets();
+
+		void this.loadTilesets();
 	}
-	
+
 	ngOnInit() {
-		this.mapLoader.selectedLayer.subscribe(layer => {
+		this.mapLoader.selectedLayer.subscribe((layer) => {
 			this.selectedLayer = layer;
-			for (const layer of (this.map?.layers ?? [])) {
+			for (const layer of this.map?.layers ?? []) {
 				layer.select(false);
 			}
 			if (layer) {
@@ -56,13 +61,13 @@ export class LayersComponent implements OnInit {
 				this.height = layer.details.height;
 			}
 		});
-		this.mapLoader.tileMap.subscribe(tilemap => this.map = tilemap);
+		this.mapLoader.tileMap.subscribe((tilemap) => (this.map = tilemap));
 	}
-	
+
 	getDisplayName(layer: CCMapLayer): string {
 		return `${layer.details.name} (${layer.details.levelName ?? layer.details.level})`;
 	}
-	
+
 	toggleVisibility(event: Event, layer: CCMapLayer) {
 		event.stopPropagation();
 		layer.visible = !layer.visible;
@@ -70,18 +75,18 @@ export class LayersComponent implements OnInit {
 			this.selectLayer(layer);
 		}
 	}
-	
+
 	async addNewLayer() {
 		if (!this.map) {
 			return;
 		}
 		const map = this.map;
 		const tilemap = map.getTilemap();
-		
+
 		if (!tilemap) {
 			return;
 		}
-		
+
 		const data: number[][] = [];
 		for (let y = 0; y < map.mapHeight; y++) {
 			data[y] = [];
@@ -101,18 +106,21 @@ export class LayersComponent implements OnInit {
 			repeat: false,
 			distance: 1,
 			tilesize: Globals.TILE_SIZE,
-			moveSpeed: {x: 0, y: 0},
+			moveSpeed: { x: 0, y: 0 },
 			data: data,
 		});
 		console.log(layer);
 		map.addLayer(layer);
 		this.newLayerName = '';
-		this.stateHistory.saveState({
-			name: 'Layer added',
-			icon: 'add'
-		}, true);
+		this.stateHistory.saveState(
+			{
+				name: 'Layer added',
+				icon: 'add',
+			},
+			true,
+		);
 	}
-	
+
 	deleteSelected() {
 		const layer = this.selectedLayer;
 		if (!layer) {
@@ -122,62 +130,67 @@ export class LayersComponent implements OnInit {
 			throw new Error('no tilemap defined');
 		}
 		this.map.removeLayer(layer);
-		this.stateHistory.saveState({
-			name: 'Layer deleted',
-			icon: 'delete'
-		}, true);
-		
+		this.stateHistory.saveState(
+			{
+				name: 'Layer deleted',
+				icon: 'delete',
+			},
+			true,
+		);
+
 		this.selectLayer(undefined);
 	}
-	
+
 	selectLayer(layer?: CCMapLayer) {
 		this.mapLoader.selectedLayer.next(layer);
 	}
-	
+
 	updateTilesetName(name: string) {
 		if (!this.selectedLayer) {
 			throw new Error('no layer selected');
 		}
-		this.selectedLayer.updateTileset(name);
+		void this.selectedLayer.updateTileset(name);
 		this.mapLoader.selectedLayer.next(this.selectedLayer);
 	}
-	
+
 	getTilesetName(path: string): string {
 		return path.substring('media/map/'.length, path.length - '.png'.length);
 	}
-	
+
 	private async loadTilesets() {
 		if (LayersComponent.tilesets.length > 0) {
 			this.tilesets = LayersComponent.tilesets;
 			return;
 		}
-		
-		LayersComponent.tilesets = await firstValueFrom(this.http.getAllTilesets());
+
+		LayersComponent.tilesets = await firstValueFrom(
+			this.http.getAllTilesets(),
+		);
 		this.tilesets = LayersComponent.tilesets;
 	}
-	
+
 	updateLevel(level: number | string) {
 		if (!this.selectedLayer) {
 			throw new Error('no layer selected');
 		}
 		this.selectedLayer.updateLevel(level);
 	}
-	
+
 	updateSize() {
 		this.selectedLayer?.resize(this.width, this.height);
 		this.stateHistory.saveState({
 			name: 'Layer resized',
-			icon: 'resize'
+			icon: 'resize',
 		});
 	}
-	
+
 	updateDistance() {
 		this.stateHistory.saveState({
 			name: 'Distance changed',
-			icon: 'fit_screen'
+			icon: 'fit_screen',
 		});
 	}
-	
+
 	drop(event: CdkDragDrop<string[]>) {
 		if (event.previousIndex === event.currentIndex) {
 			return;
@@ -185,11 +198,18 @@ export class LayersComponent implements OnInit {
 		if (!this.map) {
 			throw new Error('tilemap not defined');
 		}
-		moveItemInArray(this.map.layers, event.previousIndex, event.currentIndex);
+		moveItemInArray(
+			this.map.layers,
+			event.previousIndex,
+			event.currentIndex,
+		);
 		this.map.updateLayerIndices();
-		this.stateHistory.saveState({
-			name: 'Layer moved',
-			icon: 'open_with',
-		}, true);
+		this.stateHistory.saveState(
+			{
+				name: 'Layer moved',
+				icon: 'open_with',
+			},
+			true,
+		);
 	}
 }

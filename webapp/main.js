@@ -1,18 +1,18 @@
 // @ts-check
 'use strict';
 
-const {app, protocol, BrowserWindow} = require('electron');
+const { app, protocol, BrowserWindow } = require('electron');
 const electronRemote = require('@electron/remote/main');
 const windowStateKeeper = require('electron-window-state');
 const path = require('path');
 const url = require('url');
-const {autoUpdater} = require('electron-updater');
+const { autoUpdater } = require('electron-updater');
 const contextMenu = require('electron-context-menu').default;
-const IPC = require("@achrinza/node-ipc").default;
+const IPC = require('@achrinza/node-ipc').default;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 const args = process.argv.slice(1);
-const dev = args.some(val => val === '--dev');
+const dev = args.some((val) => val === '--dev');
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
 
 electronRemote.initialize();
@@ -21,14 +21,13 @@ let openWindows = 0;
 
 function openWindow() {
 	let win;
-	
+
 	function createWindow() {
-		
 		const mainWindowState = windowStateKeeper({
 			defaultWidth: 1000,
-			defaultHeight: 800
+			defaultHeight: 800,
 		});
-		
+
 		win = new BrowserWindow({
 			x: mainWindowState.x,
 			y: mainWindowState.y,
@@ -37,15 +36,15 @@ function openWindow() {
 			webPreferences: {
 				webSecurity: false,
 				nodeIntegration: true,
-				contextIsolation: false
-			}
+				contextIsolation: false,
+			},
 		});
 		electronRemote.enable(win.webContents);
-		
+
 		if (dev) {
 			console.log('dev');
 			contextMenu({
-				showInspectElement: true
+				showInspectElement: true,
 			});
 			win.loadURL('http://localhost:4200/index.html');
 			win.webContents.openDevTools();
@@ -54,11 +53,11 @@ function openWindow() {
 			const indexPath = url.format({
 				pathname: path.join(__dirname, 'distAngular', 'index.html'),
 				protocol: 'file',
-				slashes: true
+				slashes: true,
 			});
 			console.log('path', indexPath);
 			win.loadURL(indexPath);
-			
+
 			const log = require('electron-log');
 			log.transports.file.level = 'debug';
 			autoUpdater.logger = log;
@@ -66,7 +65,7 @@ function openWindow() {
 			// win.webContents.openDevTools();
 			win.setMenu(null);
 		}
-		
+
 		openWindows++;
 		win.on('closed', () => {
 			win = null;
@@ -75,10 +74,10 @@ function openWindow() {
 				app.quit();
 			}
 		});
-		
+
 		mainWindowState.manage(win);
 	}
-	
+
 	app.on('activate', () => {
 		// On macOS it's common to re-create a window in the app when the
 		// dock icon is clicked and there are no other windows open.
@@ -86,7 +85,7 @@ function openWindow() {
 			createWindow();
 		}
 	});
-	
+
 	createWindow();
 }
 
@@ -108,7 +107,6 @@ app.on('window-all-closed', () => {
 	}
 });
 
-
 const sub = new IPC.IPC();
 sub.config.silent = true;
 sub.config.maxRetries = 1;
@@ -119,7 +117,7 @@ sub.connectTo('crosscode-map-editor', () => {
 	});
 	sub.of['crosscode-map-editor'].on('error', () => {
 		sub.disconnect('crosscode-map-editor');
-		
+
 		const master = new IPC.IPC();
 		master.config.silent = true;
 		master.config.id = 'crosscode-map-editor';
@@ -129,4 +127,3 @@ sub.connectTo('crosscode-map-editor', () => {
 		master.server.start();
 	});
 });
-

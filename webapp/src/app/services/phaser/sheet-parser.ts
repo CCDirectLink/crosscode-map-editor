@@ -1,17 +1,13 @@
-import { Helper } from './helper';
 import { Point, Point3 } from '../../models/cross-code-map';
 import { Fix } from './entities/cc-entity';
-import { ScalablePropDef } from './entities/registry/scalable-prop';
 import { CharacterSettings } from './entities/registry/npc';
+import { ScalablePropDef } from './entities/registry/scalable-prop';
+import { Helper } from './helper';
 
 export interface ScalablePropSheet {
 	DOCTYPE: string;
-	entries: {
-		[key: string]: ScalablePropDef;
-	};
-	jsonTEMPLATES?: {
-		[key: string]: ScalablePropDef;
-	};
+	entries: Record<string, ScalablePropDef>;
+	jsonTEMPLATES?: Record<string, ScalablePropDef>;
 }
 
 export interface PropSheet {
@@ -20,9 +16,7 @@ export interface PropSheet {
 	jsonTEMPLATES?: JsonTemplates;
 }
 
-export interface JsonTemplates {
-	[key: string]: Anims | Anims[keyof Anims];
-}
+export type JsonTemplates = Record<string, Anims | Anims[keyof Anims]>;
 
 export interface PropDef {
 	name?: string;
@@ -91,10 +85,10 @@ export interface Anims extends IfThen {
 	gfxOffset?: Partial<Point>;
 	aboveZ?: number;
 	offX?: number;
-	namedSheets?: { [key: string]: AnimSheet };
+	namedSheets?: Record<string, AnimSheet>;
 	framesSpriteOffset?: number[];
 	globalTiming?: boolean;
-	
+
 	// used in NPC
 	DOCTYPE?: string;
 	dirs?: number | string;
@@ -122,7 +116,7 @@ export interface SubJsonInstance {
 
 export interface SubJsonParam {
 	jsonPARAM: string;
-	
+
 	// can't find any usages of it, but code references it
 	default?: any;
 }
@@ -136,7 +130,6 @@ export interface Effect {
 	name: string;
 }
 
-
 export function isJsonInstance(obj: any): obj is SubJsonInstance {
 	const key: keyof SubJsonInstance = 'jsonINSTANCE';
 	return obj && obj[key];
@@ -147,25 +140,38 @@ export function isJsonParam(obj: any): obj is SubJsonParam {
 	return obj && obj[key];
 }
 
-export function prepareSheet<T extends PropSheet | ScalablePropSheet | CharacterSettings>(sheetDef: T): T {
+export function prepareSheet<
+	T extends PropSheet | ScalablePropSheet | CharacterSettings,
+>(sheetDef: T): T {
 	const sheet = Helper.copy(sheetDef);
 	return recSearchTemplateInstance(sheet, sheet.jsonTEMPLATES, {});
 }
 
 export function prepareProp(propDef: PropDef, sheetDef: PropSheet): Anims {
-	return recSearchTemplateInstance(Helper.copy(propDef.anims), sheetDef.jsonTEMPLATES, {});
+	return recSearchTemplateInstance(
+		Helper.copy(propDef.anims),
+		sheetDef.jsonTEMPLATES,
+		{},
+	);
 }
 
-export function prepareScalableProp(propDef: ScalablePropDef, sheetDef: ScalablePropSheet): ScalablePropDef {
-	return recSearchTemplateInstance(Helper.copy(propDef), sheetDef.jsonTEMPLATES, {});
+export function prepareScalableProp(
+	propDef: ScalablePropDef,
+	sheetDef: ScalablePropSheet,
+): ScalablePropDef {
+	return recSearchTemplateInstance(
+		Helper.copy(propDef),
+		sheetDef.jsonTEMPLATES,
+		{},
+	);
 }
 
 function recSearchTemplateInstance(
 	json: Anims | Anims[keyof Anims],
 	templates?: JsonTemplates,
-	tmpTemplates?: JsonTemplates
+	tmpTemplates?: JsonTemplates,
 ) {
-	if (!json || typeof (json) != 'object') {
+	if (!json || typeof json != 'object') {
 		return json;
 	}
 	if (isJsonInstance(json)) {
@@ -173,64 +179,80 @@ function recSearchTemplateInstance(
 	}
 	if (json instanceof Array) {
 		for (let i = 0; i < json.length; i++) {
-			json[i] = recSearchTemplateInstance(json[i], templates, tmpTemplates);
+			json[i] = recSearchTemplateInstance(
+				json[i],
+				templates,
+				tmpTemplates,
+			);
 		}
 		return json;
 	}
 	for (const key of Object.keys(json)) {
-		// @ts-ignore
-		json[key] = recSearchTemplateInstance(json[key], templates, tmpTemplates);
-		
+		//@ts-expect-error no index signature
+		json[key] = recSearchTemplateInstance(
+			//@ts-expect-error no index signature
+			json[key],
+			templates,
+			tmpTemplates,
+		);
 	}
-	
+
 	return json;
 }
 
 function resolveTemplateInstance(
 	instanceData: SubJsonInstance,
 	templates: JsonTemplates,
-	tmpTemplates: JsonTemplates
+	tmpTemplates: JsonTemplates,
 ) {
 	const templateName = instanceData.jsonINSTANCE;
 	const template = tmpTemplates[templateName] || templates[templateName];
 	if (!template) {
-		console.error('Could not find template \'' + templateName + '\'');
+		console.error("Could not find template '" + templateName + "'");
 		return;
 	}
-	return recResolveTemplateInstance(template, instanceData, templates, tmpTemplates);
+	return recResolveTemplateInstance(
+		template,
+		instanceData,
+		templates,
+		tmpTemplates,
+	);
 }
 
 function recResolveTemplateInstance(
 	template: JsonTemplates[''],
 	instanceData: any,
 	templates: JsonTemplates,
-	tmpTemplates: JsonTemplates
+	tmpTemplates: JsonTemplates,
 ): any {
-	if (!template || typeof (template) != 'object') {
+	if (!template || typeof template != 'object') {
 		return template;
 	}
-	
+
 	if (isJsonInstance(template)) {
 		const templateCopy = Helper.copy(template);
 		return resolveTemplateInstance(templateCopy, templates, tmpTemplates);
 	}
-	
+
 	if (isJsonParam(template)) {
 		let value = instanceData[template['jsonPARAM']];
-		
+
 		if (value === undefined || value === null) {
 			if (template['default'] !== undefined) {
 				value = template['default'];
 			} else {
-				throw new Error('Could not find template parameters \'' + template['jsonPARAM'] + '\' ');
+				throw new Error(
+					"Could not find template parameters '" +
+						template['jsonPARAM'] +
+						"' ",
+				);
 			}
 		}
 		return recSearchTemplateInstance(value);
 	} else {
 		if (Array.isArray(template)) {
 			const result = [];
-			for (let i = 0; i < template.length; ++i) {
-				let entry = template[i] as any;
+			for (let entry of template as any[]) {
 				if (typeof entry !== 'number' && entry['jsonIF']) {
 					if (instanceData[entry['jsonIF']] === undefined) {
 						continue;
@@ -242,7 +264,12 @@ function recResolveTemplateInstance(
 						delete entry['jsonIF'];
 					}
 				}
-				const sub = recResolveTemplateInstance(entry, instanceData, templates, tmpTemplates);
+				const sub = recResolveTemplateInstance(
+					entry,
+					instanceData,
+					templates,
+					tmpTemplates,
+				);
 				result.push(sub);
 			}
 			return result;
@@ -261,18 +288,22 @@ function recResolveTemplateInstance(
 					delete entry['jsonIF'];
 				}
 			}
-			result[name] = recResolveTemplateInstance(entry, instanceData, templates, tmpTemplates);
+			result[name] = recResolveTemplateInstance(
+				entry,
+				instanceData,
+				templates,
+				tmpTemplates,
+			);
 		}
 		return result;
 	}
 }
 
-
 export function flattenSUBs(obj: Anims, parent: Anims): Anims[] {
 	const out: Anims[] = [];
 	const merged = {
 		...parent,
-		...obj
+		...obj,
 	};
 	if (Array.isArray(obj.SUB)) {
 		for (const sub of obj.SUB) {
@@ -281,7 +312,7 @@ export function flattenSUBs(obj: Anims, parent: Anims): Anims[] {
 	} else {
 		out.push({
 			...parent,
-			...obj
+			...obj,
 		});
 	}
 	return out;

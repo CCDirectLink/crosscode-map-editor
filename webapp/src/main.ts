@@ -12,8 +12,11 @@ if (environment.production) {
 	enableProdMode();
 }
 
-// @ts-ignore
-if (typeof process !== 'undefined' && typeof process.versions === 'object' && !!process.versions.electron) {
+if (
+	typeof process !== 'undefined' &&
+	typeof process.versions === 'object' &&
+	!!process.versions.electron
+) {
 	Globals.isElectron = true;
 }
 console.log('is electron: ', Globals.isElectron);
@@ -21,5 +24,5 @@ console.log('is electron: ', Globals.isElectron);
 (async () => {
 	await ElectronService.init();
 	await BrowserService.init();
-	platformBrowserDynamic().bootstrapModule(AppModule);
-})();
+	await platformBrowserDynamic().bootstrapModule(AppModule);
+})().catch((err) => console.error(err));

@@ -1,12 +1,22 @@
 <div class="outer-container">
 	<mat-sidenav-container style="height: 100%">
-		<mat-sidenav #sidenavLoadMap [autoFocus]="false" (openedStart)="focusInput()">
+		<mat-sidenav
+			#sidenavLoadMap
+			[autoFocus]="false"
+			(openedStart)="focusInput()"
+		>
 			<app-load-map #loadmap [sidenav]="sidenavLoadMap"></app-load-map>
 		</mat-sidenav>
 		<mat-sidenav-content style="height: 100%" fxLayout="column">
 			<app-toolbar (loadMapClicked)="loadMapClicked()"></app-toolbar>
 			<mat-sidenav-container fxFlex="1 1 auto">
-				<mat-sidenav disableClose #sidenav mode="side" opened="true" class="mat-primary">
+				<mat-sidenav
+					disableClose
+					#sidenav
+					mode="side"
+					opened="true"
+					class="mat-primary"
+				>
 					<app-sidenav></app-sidenav>
 				</mat-sidenav>
 				<mat-sidenav-content>

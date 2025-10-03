@@ -1,5 +1,10 @@
 import { Subscription } from 'rxjs';
-import { Attributes, CrossCodeMap, MapLayer, Point } from '../../../models/cross-code-map';
+import {
+	Attributes,
+	CrossCodeMap,
+	MapLayer,
+	Point,
+} from '../../../models/cross-code-map';
 import { Globals } from '../../globals';
 import { EntityManager } from '../entities/entity-manager';
 import { CCMapLayer } from './cc-map-layer';
@@ -20,78 +25,92 @@ export class CCMap {
 	mapHeight = 0;
 	masterLevel = 0;
 	layers: CCMapLayer[] = [];
-	attributes: Attributes = <any>{};
-	screen: Point = {x: 0, y: 0};
-	
+	attributes: Attributes = {} as any;
+	screen: Point = { x: 0, y: 0 };
+
 	private lastMapId = 1;
 	private tileMap?: Phaser.Tilemaps.Tilemap;
-	
+
 	private subs: Subscription[] = [];
-	
+
 	filename = '';
 	path?: string;
-	
+
 	private inputLayers?: MapLayer[];
-	
+
 	constructor(
 		private game: Phaser.Game,
 		private scene: Phaser.Scene,
-		public entityManager: EntityManager
+		public entityManager: EntityManager,
 	) {
 		const stateHistory = Globals.stateHistoryService;
-		this.subs.push(stateHistory.selectedState.subscribe(async container => {
-			if (!container || !container.state) {
-				return;
-			}
-			
-			const makeLayerKey = (layer: CCMapLayer) => {
-				return `${layer.details.name}\n${layer.details.levelName}\n${layer.details.level}`;
-			};
-			
-			const selectedLayer = Globals.mapLoaderService.selectedLayer;
-			const oldLayers = this.layers.map(v => ({
-				key: makeLayerKey(v),
-				visible: v.visible,
-				selected: v === selectedLayer.getValue()
-			}));
-			
-			await this.loadMap(JSON.parse(container.state.json), true);
-			
-			for (const layer of this.layers) {
-				const key = makeLayerKey(layer);
-				const oldLayer = oldLayers.find(v => v.key === key);
-				if (!oldLayer) {
-					continue;
+		this.subs.push(
+			stateHistory.selectedState.subscribe(async (container) => {
+				if (!container || !container.state) {
+					return;
 				}
-				layer.visible = oldLayer.visible;
-				if (oldLayer.selected) {
-					selectedLayer.next(layer);
+
+				const makeLayerKey = (layer: CCMapLayer) => {
+					return `${layer.details.name}\n${layer.details.levelName}\n${layer.details.level}`;
+				};
+
+				const selectedLayer = Globals.mapLoaderService.selectedLayer;
+				const oldLayers = this.layers.map((v) => ({
+					key: makeLayerKey(v),
+					visible: v.visible,
+					selected: v === selectedLayer.getValue(),
+				}));
+
+				await this.loadMap(JSON.parse(container.state.json), true);
+
+				for (const layer of this.layers) {
+					const key = makeLayerKey(layer);
+					const oldLayer = oldLayers.find((v) => v.key === key);
+					if (!oldLayer) {
+						continue;
+					}
+					layer.visible = oldLayer.visible;
+					if (oldLayer.selected) {
+						selectedLayer.next(layer);
+					}
 				}
-			}
-		}));
-		
-		this.subs.push(Globals.globalEventsService.offsetMap.subscribe(offset => this.offsetMap(offset)));
-		this.subs.push(Globals.globalEventsService.offsetEntities.subscribe(offset => this.offsetEntities(offset)));
-		this.subs.push(Globals.globalEventsService.resizeMap.subscribe(size => this.resize(size.x, size.y)));
+			}),
+		);
+
+		this.subs.push(
+			Globals.globalEventsService.offsetMap.subscribe((offset) =>
+				this.offsetMap(offset),
+			),
+		);
+		this.subs.push(
+			Globals.globalEventsService.offsetEntities.subscribe((offset) =>
+				this.offsetEntities(offset),
+			),
+		);
+		this.subs.push(
+			Globals.globalEventsService.resizeMap.subscribe((size) =>
+				this.resize(size.x, size.y),
+			),
+		);
 	}
-	
+
 	destroy() {
 		for (const sub of this.subs) {
 			sub.unsubscribe();
 		}
 		this.subs = [];
 	}
-	
+
 	async loadMap(map: CrossCodeMap, skipInit = false) {
 		const tileMap = this.scene.make.tilemap({
 			width: map.mapWidth,
 			height: map.mapHeight,
 			tileHeight: Globals.TILE_SIZE,
-			tileWidth: Globals.TILE_SIZE
+			tileWidth: Globals.TILE_SIZE,
 		});
-		
+
 		this.tileMap = tileMap;
-		
+
 		this.name = map.name;
 		this.levels = map.levels;
 		this.mapWidth = map.mapWidth;
@@ -101,14 +120,14 @@ export class CCMap {
 		this.screen = map.screen;
 		this.filename = map.filename || 'untitled';
 		this.path = map.path;
-		
+
 		this.inputLayers = map.layer;
-		
+
 		// cleanup everything before loading new map
-		this.layers.forEach(layer => layer.destroy());
-		
+		this.layers.forEach((layer) => layer.destroy());
+
 		this.layers = [];
-		
+
 		// generate Map Layers
 		if (this.inputLayers) {
 			for (const layer of this.inputLayers) {
@@ -116,12 +135,12 @@ export class CCMap {
 				await ccLayer.init(layer);
 				this.layers.push(ccLayer);
 			}
-			
+
 			this.updateLayerIndices();
-			
+
 			this.inputLayers = undefined;
 		}
-		
+
 		this.lastMapId = 1;
 		for (const entity of map.entities) {
 			const mapId = entity.settings.mapId ?? 0;
@@ -129,27 +148,27 @@ export class CCMap {
 				this.lastMapId = mapId;
 			}
 		}
-		
+
 		// generate entities
 		await this.entityManager.initialize(map, this);
-		
+
 		if (!skipInit) {
 			Globals.stateHistoryService.init({
 				name: 'load',
 				icon: 'insert_drive_file',
-				json: JSON.stringify(this.exportMap())
+				json: JSON.stringify(this.exportMap()),
 			});
 		}
-		
+
 		Globals.mapLoaderService.tileMap.next(this);
 		Globals.mapLoaderService.selectedLayer.next(this.layers[0]);
 	}
-	
+
 	private resize(width: number, height: number) {
 		this.mapWidth = width;
 		this.mapHeight = height;
-		
-		this.layers.forEach(layer => {
+
+		this.layers.forEach((layer) => {
 			// only update layers with distance: 1
 			// Parallax Layers shouldn't be updated because they usually have different dimensions than the map
 			if (layer.details.distance === 1) {
@@ -157,52 +176,52 @@ export class CCMap {
 			}
 		});
 	}
-	
+
 	offsetMap(offset: Point, borderTiles = false) {
-		this.layers.forEach(layer => layer.offsetLayer(offset, borderTiles));
+		this.layers.forEach((layer) => layer.offsetLayer(offset, borderTiles));
 	}
-	
+
 	offsetEntities(offset: Point) {
 		for (const entity of this.entityManager.entities) {
 			entity.addPosition(offset.x, offset.y);
 		}
 	}
-	
+
 	addLayer(layer: CCMapLayer) {
 		this.layers.push(layer);
 		this.updateLayerIndices();
 	}
-	
+
 	removeLayer(layer: CCMapLayer) {
 		const index = this.layers.indexOf(layer);
 		this.layers.splice(index, 1);
 		layer.destroy();
 	}
-	
+
 	updateLayerIndices() {
 		for (let i = 0; i < this.layers.length; i++) {
 			this.layers[i].updateIndex(i);
 		}
 	}
-	
+
 	public getTilemap() {
 		return this.tileMap;
 	}
-	
+
 	public getUniqueMapid() {
 		return ++this.lastMapId;
 	}
-	
+
 	exportMap(): CrossCodeMap {
-		const out: CrossCodeMap = <any>{};
-		
+		const out: CrossCodeMap = {} as any;
+
 		for (const level of this.levels) {
 			const number = Number(level.height);
 			if (!Number.isNaN(number)) {
 				level.height = number;
 			}
 		}
-		
+
 		out.name = this.name;
 		out.levels = this.levels;
 		out.mapWidth = this.mapWidth;
@@ -210,14 +229,14 @@ export class CCMap {
 		out.masterLevel = this.masterLevel;
 		out.attributes = this.attributes;
 		out.screen = this.screen;
-		
+
 		out.path = this.path;
 		out.filename = this.filename;
-		
+
 		out.entities = this.entityManager.exportEntities();
 		out.layer = [];
-		this.layers.forEach(l => out.layer.push(l.exportLayer()));
-		
+		this.layers.forEach((l) => out.layer.push(l.exportLayer()));
+
 		return out;
 	}
 }

@@ -1,29 +1,41 @@
 @if (!entity && !hideFilter) {
 	<label class="filter no-error-msg" fxLayout="column">
-		<mat-form-field
-			appearance="outline"
-		>
-			<input #filterInput matInput type="text" placeholder="Filter" [(ngModel)]="filter"
-			       (ngModelChange)="updateFilter()"/>
+		<mat-form-field appearance="outline">
+			<input
+				#filterInput
+				matInput
+				type="text"
+				placeholder="Filter"
+				[(ngModel)]="filter"
+				(ngModelChange)="updateFilter()"
+			/>
 		</mat-form-field>
 	</label>
 }
 <h2 class="mat-h2">{{ entity?.details?.type }}</h2>
 <div class="entity-settings-container" fxLayout="column">
-	
 	@if (entity) {
 		<app-string-widget [key]="'name'" [entity]="entity"></app-string-widget>
 	}
-	
+
 	<!--<app-json-widget [key]="'details'" [custom]="entity" [entity]="entity" *ngIf="entity"></app-json-widget>-->
-	
+
 	@if (entity) {
-		<app-vec2-widget [key]="'container'" [custom]="entity" [entity]="entity" [displayName]="'Pos'"
+		<app-vec2-widget
+			[key]="'container'"
+			[custom]="entity"
+			[entity]="entity"
+			[displayName]="'Pos'"
 		></app-vec2-widget>
-	} @if (entity) {
-	<app-level-widget [key]="'level'" [custom]="$any(entity.details)" [entity]="entity" [displayName]="'Level'"
-	></app-level-widget>
-}
-	
+	}
+	@if (entity) {
+		<app-level-widget
+			[key]="'level'"
+			[custom]="$any(entity.details)"
+			[entity]="entity"
+			[displayName]="'Level'"
+		></app-level-widget>
+	}
+
 	<ng-template appHost></ng-template>
 </div>

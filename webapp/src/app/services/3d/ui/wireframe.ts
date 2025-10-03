@@ -6,7 +6,7 @@ export function addWireframeButton(toggle: ToggleMesh, meshes: Mesh[]) {
 	for (const mesh of meshes) {
 		materials.add(mesh.material!);
 	}
-	
+
 	toggle.addButton('wireframe', () => {
 		for (const mat of materials) {
 			mat.wireframe = !mat.wireframe;

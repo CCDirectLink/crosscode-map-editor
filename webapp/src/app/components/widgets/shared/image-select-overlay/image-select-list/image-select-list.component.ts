@@ -1,6 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { ImageSelectCardComponent, PropListCard } from '../image-select-card/image-select-card.component';
+import {
+	ImageSelectCardComponent,
+	PropListCard,
+} from '../image-select-card/image-select-card.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
@@ -10,9 +13,17 @@ import { AutofocusDirective } from '../../../../../directives/autofocus.directiv
 
 @Component({
 	selector: 'app-image-select-list',
-	imports: [ImageSelectCardComponent, MatInputModule, MatIconModule, FormsModule, MatButtonModule, ListFilterPipe, AutofocusDirective],
+	imports: [
+		ImageSelectCardComponent,
+		MatInputModule,
+		MatIconModule,
+		FormsModule,
+		MatButtonModule,
+		ListFilterPipe,
+		AutofocusDirective,
+	],
 	templateUrl: './image-select-list.component.html',
-	styleUrls: ['./image-select-list.component.scss']
+	styleUrls: ['./image-select-list.component.scss'],
 })
 export class ImageSelectListComponent {
 	@Input() title?: string;
@@ -20,9 +31,9 @@ export class ImageSelectListComponent {
 	@Input() items: PropListCard[] = [];
 	@Input() showFilter = false;
 	@Input() filterItems = true;
-	
+
 	@Input() filter = '';
 	@Output() filterChange = new EventEmitter<string>();
-	
+
 	@Output() selectedChange = new EventEmitter<string>();
 }

@@ -6,7 +6,7 @@ import { MapNode } from './mapNode.model';
 export class VirtualMapNode {
 	private original: MapNode;
 	private knownChildren = new WeakMap<MapNode, VirtualMapNode>();
-	
+
 	public constructor(original: MapNode) {
 		this.original = original;
 
@@ -57,10 +57,12 @@ export class VirtualMapNode {
 
 	private get containsSingleDirectory(): boolean {
 		const realChildren = this.realChildren;
-		return realChildren !== undefined
-			&& realChildren.length === 1
-			&& realChildren[0].isDirectory
-			&& !this.isRoot;
+		return (
+			realChildren !== undefined &&
+			realChildren.length === 1 &&
+			realChildren[0].isDirectory &&
+			!this.isRoot
+		);
 	}
 
 	private get realChildren(): VirtualMapNode[] | undefined {
@@ -69,9 +71,9 @@ export class VirtualMapNode {
 		}
 
 		return this.original.children
-			.filter(n => n.displayed)
+			.filter((n) => n.displayed)
 			.sort((a, b) => this.sort(a, b))
-			.map(n => this.resolve(n));
+			.map((n) => this.resolve(n));
 	}
 
 	private sort(a: MapNode, b: MapNode): number {
@@ -82,6 +84,6 @@ export class VirtualMapNode {
 			return aIsDir ? -1 : 1;
 		}
 
-		return a.name.localeCompare(b.name, undefined, {numeric: true});
+		return a.name.localeCompare(b.name, undefined, { numeric: true });
 	}
 }

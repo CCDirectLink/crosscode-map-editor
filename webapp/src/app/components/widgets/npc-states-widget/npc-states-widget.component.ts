@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, inject } from '@angular/core';
 
 import { EventArray } from '../../../models/events';
 import { OverlayRefControl } from '../../dialogs/overlay/overlay-ref-control';
@@ -29,18 +29,18 @@ export interface NPCState {
 	selector: 'app-npcstates-widget',
 	templateUrl: './npc-states-widget.component.html',
 	styleUrls: ['./npc-states-widget.component.scss', '../widget.scss'],
-	standalone: false
+	standalone: false,
 })
-export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, OnChanges, OnDestroy {
-	
+export class NPCStatesWidgetComponent
+	extends AbstractWidget
+	implements OnInit, OnChanges, OnDestroy
+{
+	private overlayService = inject(OverlayService);
+	private overlay = inject(Overlay);
+
 	npcStates: NPCState[] = [];
 	private ref?: OverlayRefControl;
-	
-	constructor(private overlayService: OverlayService,
-		private overlay: Overlay) {
-		super();
-	}
-	
+
 	override ngOnChanges(): void {
 		super.ngOnChanges();
 		this.npcStates = this.settings[this.key];
@@ -49,36 +49,39 @@ export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, 
 			this.settings[this.key] = this.npcStates;
 		}
 	}
-	
+
 	ngOnDestroy() {
 		if (this.ref) {
 			this.ref.close();
 		}
 	}
-	
+
 	open() {
 		if (this.ref && this.ref.isOpen()) {
 			return;
 		}
 		const obj = this.overlayService.open(NpcStatesComponent, {
-			positionStrategy: this.overlay.position().global()
+			positionStrategy: this.overlay
+				.position()
+				.global()
 				.left('23vw')
 				.top('calc(64px + 6vh / 2)'),
 			hasBackdrop: true,
-			disablePhaserInput: true
+			disablePhaserInput: true,
 		});
-		
+
 		this.ref = obj.ref;
-		
+
 		obj.instance.states = JSON.parse(JSON.stringify(this.npcStates));
-		
-		obj.instance.exit.subscribe((v: any) => {
-			obj.ref.close();
-			this.settings[this.key] = v;
-			this.npcStates = v;
-			this.updateType(v);
-		}, () => obj.ref.close());
+
+		obj.instance.exit.subscribe(
+			(v: any) => {
+				obj.ref.close();
+				this.settings[this.key] = v;
+				this.npcStates = v;
+				this.updateType(v);
+			},
+			() => obj.ref.close(),
+		);
 	}
-	
-	
 }

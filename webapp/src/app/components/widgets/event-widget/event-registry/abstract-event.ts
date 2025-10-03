@@ -1,11 +1,16 @@
 import { SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { PartialPoint3, Point, Point3 } from '../../../../models/cross-code-map';
+import {
+	PartialPoint3,
+	Point,
+	Point3,
+} from '../../../../models/cross-code-map';
 import { Label } from '../../../../models/events';
 import { ColorService } from '../../../../services/color.service';
 import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
 
-export type WMTypeNames = 'Action'
+export type WMTypeNames =
+	| 'Action'
 	| 'Actor'
 	| 'Analyzable'
 	| 'AnimSheetRef'
@@ -104,14 +109,13 @@ export type WMTypeNames = 'Action'
 	| 'WalkAnimConfig'
 	| 'XenoDialog';
 
-
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace WMTypes {
 	export type VarExpression<T> =
-		T |
-		{ indirect: string } |
-		{ varName: string } |
-		{ actorAttrib: string }
-		;
+		| T
+		| { indirect: string }
+		| { varName: string }
+		| { actorAttrib: string };
 
 	export type Color = string;
 
@@ -126,10 +130,12 @@ export namespace WMTypes {
 
 	export type Offset = Point3;
 
-	export type VarName = string | {
-		actorAttrib?: string;
-		indirect?: string;
-	};
+	export type VarName =
+		| string
+		| {
+				actorAttrib?: string;
+				indirect?: string;
+		  };
 
 	export interface Entity {
 		player?: boolean;
@@ -165,7 +171,6 @@ export interface EventTypeChild {
 }
 
 export abstract class AbstractEvent<T extends EventType> {
-
 	public info = '---';
 	public children: EventTypeChild[] = [];
 
@@ -175,15 +180,14 @@ export abstract class AbstractEvent<T extends EventType> {
 		private domSanitizer: DomSanitizer,
 		public data: T,
 		public actionStep = false,
-	) {
-	}
+	) {}
 
-	protected abstract generateNewDataInternal(): { [key: string]: any };
+	protected abstract generateNewDataInternal(): Record<string, any>;
 
 	public generateNewData() {
 		const data = this.generateNewDataInternal();
 		data['type'] = this.data.type;
-		this.data = <any>data;
+		this.data = data as any;
 	}
 
 	public abstract getAttributes(): EntityAttributes | undefined;
@@ -201,8 +205,8 @@ export abstract class AbstractEvent<T extends EventType> {
 	protected getAllPropStrings(): string {
 		const keys = Object.keys(this.data);
 		return keys
-			.filter(key => key !== 'type')
-			.map(key => this.getPropString(key))
+			.filter((key) => key !== 'type')
+			.map((key) => this.getPropString(key))
 			.join(' ');
 	}
 
@@ -219,7 +223,10 @@ export abstract class AbstractEvent<T extends EventType> {
 					break;
 				case 'Vec2':
 				case 'Vec2Expression': {
-					value = this.getVarExpressionValue(value as WMTypes.Vec2Expression, true);
+					value = this.getVarExpressionValue(
+						value as WMTypes.Vec2Expression,
+						true,
+					);
 					if (typeof value !== 'string') {
 						const vec2 = value as WMTypes.Vec2;
 						value = this.getVec2String(vec2.x, vec2.y);
@@ -228,16 +235,28 @@ export abstract class AbstractEvent<T extends EventType> {
 				}
 				case 'Vec3':
 				case 'Vec3Expression':
-					value = this.getVarExpressionValue(value as WMTypes.Vec3Expression, true);
+					value = this.getVarExpressionValue(
+						value as WMTypes.Vec3Expression,
+						true,
+					);
 					if (typeof value !== 'string') {
 						const vec3 = value as WMTypes.Vec3;
-						value = this.getVec3String(vec3.x, vec3.y, vec3.z, vec3.lvl);
+						value = this.getVec3String(
+							vec3.x,
+							vec3.y,
+							vec3.z,
+							vec3.lvl,
+						);
 					}
 					break;
 				case 'Offset':
 					if (value) {
 						const offset = value as WMTypes.Offset;
-						value = this.getVec3String(offset.x, offset.y, offset.z);
+						value = this.getVec3String(
+							offset.x,
+							offset.y,
+							offset.z,
+						);
 					}
 					break;
 				case 'Entity': {
@@ -263,7 +282,8 @@ export abstract class AbstractEvent<T extends EventType> {
 				case 'NumberExpression':
 				case 'StringExpression':
 				case 'BooleanExpression': {
-					const expression = value as WMTypes.NumberExpression
+					const expression = value as
+						| WMTypes.NumberExpression
 						| WMTypes.StringExpression
 						| WMTypes.BooleanExpression;
 					value = this.getVarExpressionValue(expression);
@@ -296,7 +316,10 @@ export abstract class AbstractEvent<T extends EventType> {
 		return `<span style="display: inline-block;"><span style="color: #858585">${key}</span>: ${value}</span>`;
 	}
 
-	protected getVarExpressionValue<T>(value: WMTypes.VarExpression<T>, supportsActorAttrib = false): T | string {
+	protected getVarExpressionValue<T>(
+		value: WMTypes.VarExpression<T>,
+		supportsActorAttrib = false,
+	): T | string {
 		if (value && typeof value == 'object') {
 			if ('indirect' in value) {
 				return `[indirect: ${value.indirect}]`;
@@ -313,7 +336,12 @@ export abstract class AbstractEvent<T extends EventType> {
 		return `(${this.sanitize(x)}, ${this.sanitize(y)})`;
 	}
 
-	protected getVec3String(x: number, y: number, z?: number, level?: number): string {
+	protected getVec3String(
+		x: number,
+		y: number,
+		z?: number,
+		level?: number,
+	): string {
 		if (level !== undefined) {
 			return `(${this.sanitize(x)}, ${this.sanitize(y)}, lvl ${this.sanitize(level)})`;
 		} else {

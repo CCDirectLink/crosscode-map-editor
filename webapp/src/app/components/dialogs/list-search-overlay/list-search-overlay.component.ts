@@ -1,5 +1,20 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+	animate,
+	state,
+	style,
+	transition,
+	trigger,
+} from '@angular/animations';
+import {
+	Component,
+	ElementRef,
+	EventEmitter,
+	Input,
+	OnInit,
+	Output,
+	ViewChild,
+	inject,
+} from '@angular/core';
 
 import { SearchFilterService } from '../../../services/search-filter.service';
 
@@ -18,66 +33,67 @@ const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 			transition('* => slide', [
 				style({
 					transform: 'translate(80px, 0)',
-					opacity: 0
+					opacity: 0,
 				}),
-				animate(ANIMATION_TIMING)
+				animate(ANIMATION_TIMING),
 			]),
-			state('scale', style({'transform-origin': '0 0 0'})),
+			state('scale', style({ 'transform-origin': '0 0 0' })),
 			transition('* => scale', [
 				style({
 					'transform-origin': '0 0 0',
-					transform: 'scale(0, 0)'
+					transform: 'scale(0, 0)',
 				}),
-				animate(ANIMATION_TIMING)
+				animate(ANIMATION_TIMING),
 			]),
-		])
+		]),
 	],
 	selector: 'app-list-search-overlay',
 	templateUrl: './list-search-overlay.component.html',
 	styleUrls: ['./list-search-overlay.component.scss'],
-	standalone: false
+	standalone: false,
 })
 export class ListSearchOverlayComponent implements OnInit {
-	@ViewChild('filterInput', {static: true}) filterInput!: ElementRef<HTMLInputElement>;
-	
+	private searchFilterService = inject(SearchFilterService);
+
+	@ViewChild('filterInput', { static: true })
+	filterInput!: ElementRef<HTMLInputElement>;
+
 	@Input() list: string[] = [];
 	@Input() animation: 'slide' | 'scale' | 'none' = 'slide';
 	@Output() selected = new EventEmitter<string>();
-	
+
 	currentIndex = 0;
 	filteredList: string[] = [];
-	
+
 	private _filterText = ' ';
-	
+
 	get filterText() {
 		return this._filterText;
 	}
-	
+
 	set filterText(text) {
 		if (text === this._filterText) {
 			return;
 		}
-		
+
 		this.currentIndex = 0;
 		this._filterText = text;
-		
-		this.filteredList = this.searchFilterService.filterOptions(this.list, text);
+
+		this.filteredList = this.searchFilterService.filterOptions(
+			this.list,
+			text,
+		);
 	}
-	
-	constructor(
-		private searchFilterService: SearchFilterService,
-	) {
-	}
-	
+
 	ngOnInit() {
 		this.filterInput.nativeElement.focus();
 		this.filterText = '';
 	}
-	
+
 	select(item: string) {
 		this.selected.emit(item);
 	}
-	
+
 	onKeyDown(event: KeyboardEvent) {
 		if (event.key === 'Enter') {
 			const item = this.filteredList[this.currentIndex];
@@ -86,7 +102,7 @@ export class ListSearchOverlayComponent implements OnInit {
 			}
 			return;
 		}
-		
+
 		if (event.key === 'ArrowDown') {
 			this.currentIndex += 1;
 			this.currentIndex %= this.filteredList.length;

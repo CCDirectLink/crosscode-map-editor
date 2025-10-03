@@ -10,7 +10,7 @@ export interface CrossCodeMap {
 	layer: MapLayer[];
 	attributes: Attributes;
 	screen: Point;
-	
+
 	filename?: string;
 	path?: string;
 }
@@ -43,7 +43,7 @@ export interface MapEntity {
 	type: string;
 	x: number;
 	y: number;
-	level: number | { level: number, offset: number };
+	level: number | { level: number; offset: number };
 	settings: Partial<DetailSettings>;
 }
 

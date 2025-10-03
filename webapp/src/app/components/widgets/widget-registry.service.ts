@@ -16,12 +16,12 @@ import { CharacterWidgetComponent } from './character-widget/character-widget.co
 import { ArrayWidgetComponent } from './array-widget/array-widget.component';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class WidgetRegistryService {
-	private widgets: { [type: string]: any } = {};
+	private widgets: Record<string, any> = {};
 	private defaultWidget: any;
-	
+
 	constructor() {
 		this.setDefaultWidget(JsonWidgetComponent);
 		this.register('String', StringWidgetComponent);
@@ -43,26 +43,26 @@ export class WidgetRegistryService {
 		this.register('VarCondition', StringWidgetComponent);
 		this.register('Array', ArrayWidgetComponent);
 	}
-	
+
 	private setDefaultWidget(widget: any) {
 		this.defaultWidget = widget;
 	}
-	
+
 	private register(type: string, widget: any) {
 		this.widgets[type] = widget;
 	}
-	
+
 	public getDefaultWidget(): any {
 		return this.defaultWidget;
 	}
-	
+
 	public getWidget(type: string): any {
 		if (this.hasWidget(type)) {
 			return this.widgets[type];
 		}
 		return this.defaultWidget;
 	}
-	
+
 	private hasWidget(type: string): boolean {
 		return Object.prototype.hasOwnProperty.call(this.widgets, type);
 	}

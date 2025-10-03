@@ -55,7 +55,10 @@ export class NodeGrid {
 			for (let j = i + 1; j < result.length; j++) {
 				const sub = result[j];
 				const node = sub.points[0];
-				if (poly.contains(node.x, node.y) && subPolys.every(p => !p.contains(node.x, node.y))) {
+				if (
+					poly.contains(node.x, node.y) &&
+					subPolys.every((p) => !p.contains(node.x, node.y))
+				) {
 					desc.holes.push(sub.points);
 					desc.holePolys.push(sub.poly);
 					result.splice(j, 1);
@@ -67,7 +70,9 @@ export class NodeGrid {
 		return result;
 	}
 
-	private findPolygon(found: PolygonDescription[]): PolygonDescription | null {
+	private findPolygon(
+		found: PolygonDescription[],
+	): PolygonDescription | null {
 		let start: Node | undefined;
 		for (const node of this.nodes) {
 			if (node.hasConnections) {
@@ -95,50 +100,58 @@ export class NodeGrid {
 			nodes = nodes.reverse();
 		}
 
-		const p = new Phaser.Geom.Polygon(nodes as unknown as Phaser.Geom.Point[]);
+		const p = new Phaser.Geom.Polygon(
+			nodes as unknown as Phaser.Geom.Point[],
+		);
 		return { points: nodes, holes: [], poly: p, holePolys: [] };
 	}
 
-	private connect(index: number, n11: Node, n12: Node, n21: Node, n22: Node): void {
+	private connect(
+		index: number,
+		n11: Node,
+		n12: Node,
+		n21: Node,
+		n22: Node,
+	): void {
 		switch (index) {
-		case 0:
-			return;
-		case 2: // ■
-			n11.connectTo(n21); //Left
-			n12.connectTo(n22); //Right
-			n11.connectTo(n12); //Top
-			n21.connectTo(n22); //Bottom
-			return;
-		case 8: // ◣
-		case 20:
-		case 24:
-			n11.connectTo(n21); //Left
-			n21.connectTo(n22); //Bottom
-			n11.connectTo(n22); //Top -> bottom
-			return;
-		case 9: // ◤
-		case 21:
-		case 25:
-			n11.connectTo(n21); //Left
-			n11.connectTo(n12); //Top
-			n21.connectTo(n12); //Bottom -> top
-			return;
-		case 10: // ◥
-		case 22:
-		case 26:
-			n12.connectTo(n22); //Right
-			n11.connectTo(n12); //Top
-			n11.connectTo(n22); //Top -> bottom
-			return;
-		case 11: // ◢
-		case 23:
-		case 27:
-			n12.connectTo(n22); //Right
-			n21.connectTo(n22); //Bottom
-			n21.connectTo(n12); //Bottom -> top
-			return;
-		default:
-			return;
+			case 0:
+				return;
+			case 2: // ■
+				n11.connectTo(n21); //Left
+				n12.connectTo(n22); //Right
+				n11.connectTo(n12); //Top
+				n21.connectTo(n22); //Bottom
+				return;
+			case 8: // ◣
+			case 20:
+			case 24:
+				n11.connectTo(n21); //Left
+				n21.connectTo(n22); //Bottom
+				n11.connectTo(n22); //Top -> bottom
+				return;
+			case 9: // ◤
+			case 21:
+			case 25:
+				n11.connectTo(n21); //Left
+				n11.connectTo(n12); //Top
+				n21.connectTo(n12); //Bottom -> top
+				return;
+			case 10: // ◥
+			case 22:
+			case 26:
+				n12.connectTo(n22); //Right
+				n11.connectTo(n12); //Top
+				n11.connectTo(n22); //Top -> bottom
+				return;
+			case 11: // ◢
+			case 23:
+			case 27:
+				n12.connectTo(n22); //Right
+				n21.connectTo(n22); //Bottom
+				n21.connectTo(n12); //Bottom -> top
+				return;
+			default:
+				return;
 			//throw new Error('Unknown collision tile: ' + index);
 		}
 	}
@@ -151,8 +164,10 @@ export class NodeGrid {
 		const conn1 = { x: next.x - node.x, y: next.y - node.y };
 		const conn2 = { x: prev.x - node.x, y: prev.y - node.y };
 
-		return (conn1.x === conn2.x && conn1.y > conn2.y) // ◥
-			|| (conn1.x > conn2.x); // ■, ◣, ◤, ◢
+		return (
+			(conn1.x === conn2.x && conn1.y > conn2.y) || // ◥
+			conn1.x > conn2.x
+		); // ■, ◣, ◤, ◢
 	}
 }
 
@@ -177,7 +192,8 @@ export class Node {
 		const connIndex = this.connections.indexOf(node);
 		if (connIndex >= 0) {
 			this.connections[connIndex] = undefined as unknown as Node;
-			node.connections[node.connections.indexOf(this)] = undefined as unknown as Node;
+			node.connections[node.connections.indexOf(this)] =
+				undefined as unknown as Node;
 		} else {
 			this.connections[this.nextConnection] = node;
 			node.connections[node.nextConnection] = this;
@@ -188,7 +204,7 @@ export class Node {
 	}
 
 	public get hasConnections(): boolean {
-		return this.connections.filter(c => !!c).length > 0;
+		return this.connections.filter((c) => !!c).length > 0;
 	}
 
 	public get firstConnection(): Node {
@@ -201,7 +217,12 @@ export class Node {
 		return result;
 	}
 
-	private findRouteToGo(node: Node, from: Node, hole: boolean, result: Node[]): void {
+	private findRouteToGo(
+		node: Node,
+		from: Node,
+		hole: boolean,
+		result: Node[],
+	): void {
 		this.connectTo(from); //Removes the connection.
 
 		if (node === this && node !== from) {
@@ -211,7 +232,9 @@ export class Node {
 		result.push(this);
 
 		const fromDir = this.direction(from);
-		const nextNode = hole ? this.rightNode(fromDir) : this.leftNode(fromDir);
+		const nextNode = hole
+			? this.rightNode(fromDir)
+			: this.leftNode(fromDir);
 		if (nextNode) {
 			return nextNode.findRouteToGo(node, this, hole, result);
 		}
@@ -269,34 +292,34 @@ export class Node {
 		const dirY = connection.y - this.y;
 
 		switch (dirY) {
-		case -1:
-			switch (dirX) {
 			case -1:
-				return 7;
+				switch (dirX) {
+					case -1:
+						return 7;
+					case 0:
+						return 0;
+					case 1:
+						return 1;
+				}
+				break;
 			case 0:
-				return 0;
+				switch (dirX) {
+					case -1:
+						return 6;
+					case 1:
+						return 2;
+				}
+				break;
 			case 1:
-				return 1;
-			}
-			break;
-		case 0:
-			switch (dirX) {
-			case -1:
-				return 6;
-			case 1:
-				return 2;
-			}
-			break;
-		case 1:
-			switch (dirX) {
-			case -1:
-				return 5;
-			case 0:
-				return 4;
-			case 1:
-				return 3;
-			}
-			break;
+				switch (dirX) {
+					case -1:
+						return 5;
+					case 0:
+						return 4;
+					case 1:
+						return 3;
+				}
+				break;
 		}
 		throw new Error('Invalid connection');
 	}

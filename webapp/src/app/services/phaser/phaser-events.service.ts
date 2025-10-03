@@ -3,9 +3,8 @@ import { Subject } from 'rxjs';
 import { SelectedTile } from '../../models/tile-selector';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class PhaserEventsService {
-	
 	changeSelectedTiles = new Subject<SelectedTile[]>();
 }

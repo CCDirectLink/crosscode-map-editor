@@ -1,22 +1,30 @@
 import { Scene } from '@babylonjs/core';
-import { AdvancedDynamicTexture, Button, Control, StackPanel } from '@babylonjs/gui';
+import {
+	AdvancedDynamicTexture,
+	Button,
+	Control,
+	StackPanel,
+} from '@babylonjs/gui';
 
 export class ToggleMesh {
-	
 	private texture: AdvancedDynamicTexture;
 	private buttonWidth = 150;
 	private padding = 5;
 	private panel: StackPanel;
-	
+
 	constructor(scene: Scene) {
-		this.texture = AdvancedDynamicTexture.CreateFullscreenUI('myui', true, scene);
+		this.texture = AdvancedDynamicTexture.CreateFullscreenUI(
+			'myui',
+			true,
+			scene,
+		);
 		this.panel = new StackPanel();
 		this.panel.isVertical = false;
 		this.panel.horizontalAlignment = Control.HORIZONTAL_ALIGNMENT_LEFT;
 		this.panel.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
 		this.texture.addControl(this.panel);
 	}
-	
+
 	addButton(title: string, action: () => void) {
 		const button1 = Button.CreateSimpleButton('but1', title);
 		button1.widthInPixels = this.buttonWidth;

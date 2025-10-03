@@ -7,7 +7,7 @@ import { GridSettings } from '../components/toolbar/grid-menu/grid-menu.componen
 import { Globals } from './globals';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class GlobalEventsService {
 	currentView = new BehaviorSubject<EditorView | undefined>(undefined);
@@ -23,16 +23,16 @@ export class GlobalEventsService {
 	toggleVisibility = new Subject<void>();
 	showAddEntityMenu = new Subject<Point>();
 	updateEntities = new Subject<boolean>();
-	
+
 	updateCoords = new Subject<Point3 | undefined>();
 	updateTileSelectionSize = new Subject<Point | undefined>();
 	isAutotile = new BehaviorSubject(false);
 	showIngamePreview = new BehaviorSubject(false);
 	hasUnsavedChanges = new BehaviorSubject(false);
 	gridSettings = new BehaviorSubject<GridSettings>(Globals.gridSettings());
-	
+
 	babylonLoading = new BehaviorSubject<boolean>(false);
 	is3D = new BehaviorSubject<boolean>(false);
-	
+
 	constructor() {}
 }

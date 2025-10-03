@@ -5,15 +5,15 @@ export class SetCameraTarget extends AbstractEvent<any> {
 	private attributes: EntityAttributes = {
 		entity: {
 			type: 'Entity',
-			description: 'Entity to focus camera on'
+			description: 'Entity to focus camera on',
 		},
 		offsetX: {
 			type: 'Number',
-			description: 'x offset to target entity'
+			description: 'x offset to target entity',
 		},
 		offsetY: {
 			type: 'Number',
-			description: 'y offset to target entity'
+			description: 'y offset to target entity',
 		},
 		speed: {
 			type: 'String',
@@ -30,8 +30,8 @@ export class SetCameraTarget extends AbstractEvent<any> {
 				SLOWEST: 0.3,
 				SLOWESTEST: 0.5,
 				SLOWEST_DREAM: 1,
-				IMMEDIATELY: 1E-6
-			}
+				IMMEDIATELY: 1e-6,
+			},
 		},
 		transition: {
 			type: 'String',
@@ -46,36 +46,41 @@ export class SetCameraTarget extends AbstractEvent<any> {
 				JUMPY: 0,
 				EASE_OUT_STRONG: 0,
 				EASE_IN_STRONG: 0,
-			}
+			},
 		},
 		wait: {
 			type: 'Boolean',
-			description: 'Wait until camera movement is done'
+			description: 'Wait until camera movement is done',
 		},
 		waitSkip: {
 			type: 'Number',
-			description: 'The amount of seconds to skip waiting before target is reached.'
+			description:
+				'The amount of seconds to skip waiting before target is reached.',
 		},
 		zoom: {
 			type: 'Number',
 			description: 'Zoom Value. 1=default, 2=twice pixel size',
-			ab: 1
+			ab: 1,
 		},
 		name: {
 			type: 'String',
-			description: 'If set, camera target will remain even after event is done and can only be removed explictly via its name.',
-			I: true
-		}
+			description:
+				'If set, camera target will remain even after event is done and can only be removed explictly via its name.',
+			I: true,
+		},
 	};
-	
+
 	getAttributes() {
 		return this.attributes;
 	}
-	
+
 	update() {
 		this.info = this.combineStrings(
 			this.getTypeString('#eeee30'),
-			this.getPropString('offset', this.getVec2String(this.data.offsetX, this.data.offsetY)),
+			this.getPropString(
+				'offset',
+				this.getVec2String(this.data.offsetX, this.data.offsetY),
+			),
 			this.getPropString('speed'),
 			this.getPropString('transition'),
 			this.getPropString('wait'),
@@ -84,7 +89,7 @@ export class SetCameraTarget extends AbstractEvent<any> {
 			this.getPropString('name'),
 		);
 	}
-	
+
 	protected generateNewDataInternal() {
 		return {
 			offsetX: 0,

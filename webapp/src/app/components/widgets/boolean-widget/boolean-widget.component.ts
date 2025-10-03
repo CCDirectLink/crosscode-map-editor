@@ -5,7 +5,6 @@ import { AbstractWidget } from '../abstract-widget';
 	selector: 'app-boolean-widget',
 	templateUrl: './boolean-widget.component.html',
 	styleUrls: ['./boolean-widget.component.scss', '../widget.scss'],
-	standalone: false
+	standalone: false,
 })
-export class BooleanWidgetComponent extends AbstractWidget {
-}
+export class BooleanWidgetComponent extends AbstractWidget {}

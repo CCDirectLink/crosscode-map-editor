@@ -7,16 +7,21 @@ interface SetMsgExpressionData extends EventType {
 }
 
 export class SetMsgExpression extends DefaultEvent<SetMsgExpressionData> {
-    override update() {
-        this.info = this.combineStrings(
-            this.getTypeString('#7ea3ff'),
-			this.getPropString('person', this.data.person.person + '>&#8203;' + this.data.person.expression),
-        );
-    }
+	override update() {
+		this.info = this.combineStrings(
+			this.getTypeString('#7ea3ff'),
+			this.getPropString(
+				'person',
+				this.data.person.person +
+					'>&#8203;' +
+					this.data.person.expression,
+			),
+		);
+	}
 
-    override generateNewDataInternal() {
+	override generateNewDataInternal() {
 		return {
-			person: {}
+			person: {},
 		};
 	}
 }

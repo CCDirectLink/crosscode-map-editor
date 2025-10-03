@@ -3,11 +3,13 @@
 import IsInLayerBounds = Phaser.Tilemaps.Components.IsInLayerBounds;
 import Tile = Phaser.Tilemaps.Tile;
 
-export function customPutTilesAt(tiles: (number | null | undefined)[][] | Tile[][], layer: Phaser.Tilemaps.TilemapLayer) {
-	
+export function customPutTilesAt(
+	tiles: (number | null | undefined)[][] | Tile[][],
+	layer: Phaser.Tilemaps.TilemapLayer,
+) {
 	const height = tiles.length;
 	const width = tiles[0].length;
-	
+
 	for (let ty = 0; ty < height; ty++) {
 		for (let tx = 0; tx < width; tx++) {
 			const tile = tiles[ty][tx] ?? 0;
@@ -17,12 +19,16 @@ export function customPutTilesAt(tiles: (number | null | undefined)[][] | Tile[]
 	}
 }
 
-export function customPutTileAt(tile: number, tileX: number, tileY: number, layer: Phaser.Tilemaps.LayerData) {
-	
+export function customPutTileAt(
+	tile: number,
+	tileX: number,
+	tileY: number,
+	layer: Phaser.Tilemaps.LayerData,
+) {
 	if (!IsInLayerBounds(tileX, tileY, layer)) {
 		return null;
 	}
-	
+
 	if (layer.data[tileY][tileX] === null) {
 		layer.data[tileY][tileX] = new Tile(
 			layer,
@@ -32,16 +38,16 @@ export function customPutTileAt(tile: number, tileX: number, tileY: number, laye
 			layer.tileWidth,
 			layer.tileHeight,
 			layer.baseTileWidth,
-			layer.baseTileHeight
+			layer.baseTileHeight,
 		);
 	} else {
 		layer.data[tileY][tileX].index = tile;
 	}
-	
+
 	const newTile = layer.data[tileY][tileX];
-	
+
 	newTile.width = layer.tileWidth;
 	newTile.height = layer.tileHeight;
-	
+
 	return newTile;
 }

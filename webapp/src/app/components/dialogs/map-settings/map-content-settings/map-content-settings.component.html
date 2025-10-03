@@ -2,23 +2,37 @@
 	<!-- Map Name -->
 	<div class="flex flex-row gap-2 items-baseline">
 		<span class="w-24">Map Name: </span>
-		<input type="text" class="default-input grow" [(ngModel)]="settings.name">
+		<input
+			type="text"
+			class="default-input grow"
+			[(ngModel)]="settings.name"
+		/>
 	</div>
-	<hr>
-	
+	<hr />
+
 	<!--Map Size-->
 	<div class="flex flex-row gap-2 items-baseline">
 		<span class="w-24">Map Size:</span>
 		<span>width: </span>
-		<input type="number" class="default-input small-input" min="1" [ngModel]="settings.mapWidth"
-		       (change)="onNumberChange($event, 'mapWidth')">
+		<input
+			type="number"
+			class="default-input small-input"
+			min="1"
+			[ngModel]="settings.mapWidth"
+			(change)="onNumberChange($event, 'mapWidth')"
+		/>
 		<span>height: </span>
-		<input type="number" class="default-input small-input" min="1" [ngModel]="settings.mapHeight"
-		       (change)="onNumberChange($event, 'mapHeight')">
+		<input
+			type="number"
+			class="default-input small-input"
+			min="1"
+			[ngModel]="settings.mapHeight"
+			(change)="onNumberChange($event, 'mapHeight')"
+		/>
 	</div>
-	
-	<hr>
-	
+
+	<hr />
+
 	<!--Levels-->
 	<div class="flex flex-row gap-2">
 		<span class="w-24">Levels: </span>
@@ -32,26 +46,38 @@
 						class="default-input grow"
 						[ngModel]="level.height"
 						(ngModelChange)="level.height = +$event"
-					>
+					/>
 					@if (settings.levels.length > 1) {
-						<button mat-stroked-button (click)="settings.levels.splice(i, 1)"
-						        tabindex="-1">Remove
+						<button
+							mat-stroked-button
+							(click)="settings.levels.splice(i, 1)"
+							tabindex="-1"
+						>
+							Remove
 						</button>
 					}
 				</div>
 			}
 			<div>
-				<button mat-stroked-button (click)="settings.levels.push({height: guessHeight()})">Add Level</button>
+				<button
+					mat-stroked-button
+					(click)="settings.levels.push({ height: guessHeight() })"
+				>
+					Add Level
+				</button>
 			</div>
 		</div>
 	</div>
-	
+
 	<!--Master Level-->
-	<hr>
+	<hr />
 	<div class="flex flex-row gap-2 items-baseline">
 		<span class="w-24">Master Level: </span>
 		<div class="grow">
-			<mat-select [(ngModel)]="settings.masterLevel" class="default-input">
+			<mat-select
+				[(ngModel)]="settings.masterLevel"
+				class="default-input"
+			>
 				@for (level of settings.levels; track level; let i = $index) {
 					<mat-option [value]="i">
 						{{ i }}
@@ -60,22 +86,28 @@
 			</mat-select>
 		</div>
 	</div>
-	<hr>
-	
+	<hr />
+
 	<!--Attributes-->
 	<div class="attributes-container flex flex-rwo flex-wrap">
 		<div class="attribute-tile">
 			<div class="attribute flex flex-row items-baseline">
 				<span>cameraInBounds: </span>
-				<mat-checkbox class="material-input" color="primary"
-				              [(ngModel)]="settings.attributes.cameraInBounds"></mat-checkbox>
+				<mat-checkbox
+					class="material-input"
+					color="primary"
+					[(ngModel)]="settings.attributes.cameraInBounds"
+				></mat-checkbox>
 			</div>
 		</div>
-		
+
 		@for (prop of mapSettings | keyvalue; track prop) {
 			<div class="attribute-tile">
-				<app-string-widget [key]="$any(prop.key)" [custom]="$any(settings.attributes)"
-				                   [attribute]="$any({options:prop.value})"></app-string-widget>
+				<app-string-widget
+					[key]="$any(prop.key)"
+					[custom]="$any(settings.attributes)"
+					[attribute]="$any({ options: prop.value })"
+				></app-string-widget>
 			</div>
 		}
 	</div>

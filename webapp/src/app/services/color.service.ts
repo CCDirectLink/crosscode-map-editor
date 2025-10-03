@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class ColorService {
 	public processText(text: string): string {
 		const textColors = [
-			null,	   // \c[0] White
+			null, // \c[0] White
 			'#ff6969', // \c[1] Red
 			'#65ff89', // \c[2] Green
 			'#ffe430', // \c[3] Yellow

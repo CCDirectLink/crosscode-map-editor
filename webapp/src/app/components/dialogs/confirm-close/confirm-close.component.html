@@ -1,10 +1,12 @@
 <cc-overlay-panel
-	cdkTrapFocus [cdkTrapFocusAutoCapture]="true"
+	cdkTrapFocus
+	[cdkTrapFocusAutoCapture]="true"
 	title="You have unsaved changes"
-	[customSize]="{width: '30em', height: 'auto'}"
+	[customSize]="{ width: '30em', height: 'auto' }"
 	left="-50%"
 	top="-25%"
-> <!-- Why is top 25%? Nobody knows! It just works -->
+>
+	<!-- Why is top 25%? Nobody knows! It just works -->
 	<ng-container ngProjectAs="content">
 		<div class="p-3 text-center">
 			Are you sure you want to discard your changes?
@@ -12,10 +14,15 @@
 	</ng-container>
 	<ng-container ngProjectAs="actions">
 		@if (showDevMode && devMode) {
-			<button mat-stroked-button (click)="close(null)" cdkFocusInitial>DEV: Reload
+			<button mat-stroked-button (click)="close(null)" cdkFocusInitial>
+				DEV: Reload
 			</button>
 		}
-		<button mat-stroked-button (click)="close(false)" cdkFocusInitial>Go back</button>
-		<button mat-stroked-button (click)="close(true)">Discard changes</button>
+		<button mat-stroked-button (click)="close(false)" cdkFocusInitial>
+			Go back
+		</button>
+		<button mat-stroked-button (click)="close(true)">
+			Discard changes
+		</button>
 	</ng-container>
 </cc-overlay-panel>

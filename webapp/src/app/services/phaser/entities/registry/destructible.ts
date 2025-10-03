@@ -26,7 +26,8 @@ export class Destructible extends CCEntity {
 		},
 		permaDestruct: {
 			type: 'Boolean',
-			description: 'If true, then destructible stays destroyed after reentering map',
+			description:
+				'If true, then destructible stays destroyed after reentering map',
 		},
 		onDestructIncrease: {
 			type: 'VarName',
@@ -34,47 +35,51 @@ export class Destructible extends CCEntity {
 		},
 		onPreDestructIncrease: {
 			type: 'VarName',
-			description: 'Variable to increase by one when destroyed'
-		}
+			description: 'Variable to increase by one when destroyed',
+		},
 	};
-	
+
 	public getAttributes(): EntityAttributes {
 		return this.attributes;
 	}
-	
+
 	public getScaleSettings(): ScaleSettings | undefined {
 		return undefined;
 	}
-	
+
 	protected async setupType(settings: any): Promise<void> {
-		const types = await Globals.jsonLoader.loadJsonMerged<DestructibleTypes>('destructible-types.json');
-		
+		const types =
+			await Globals.jsonLoader.loadJsonMerged<DestructibleTypes>(
+				'destructible-types.json',
+			);
+
 		this.attributes['desType'].options = {};
 		for (const name of Object.keys(types)) {
 			this.attributes['desType'].options[name] = name;
 		}
-		
+
 		const type = types[settings.desType];
 		if (!type) {
-			this.generateNoImageType(0xFF0000, 1);
+			this.generateNoImageType(0xff0000, 1);
 			return;
 		}
-		
+
 		const sheets: Fix[] = [];
 		const defaultSheet = type.anims.sheet as AnimSheet;
-		
-		for (const sub of (type.anims.SUB as Anims[])) {
-			const sheet = defaultSheet || type.anims.namedSheets![sub.sheet as string];
+
+		for (const sub of type.anims.SUB as Anims[]) {
+			const sheet =
+				defaultSheet || type.anims.namedSheets![sub.sheet as string];
 			let frame = sub.frames ? sub.frames[0] : 0;
-			
+
 			// frame 1 is always glow, don't show in map editor
 			if (frame === 1) {
 				frame = 0;
 			}
-			
+
 			const offset: Partial<Point> = {
 				x: 0,
-				y: 0
+				y: 0,
 			};
 			if (type.anims.offset) {
 				offset.x = type.anims.offset.x;
@@ -91,17 +96,17 @@ export class Destructible extends CCEntity {
 				h: sheet.height,
 				offsetX: offset.x,
 				offsetY: offset.y,
-				renderMode: sub.renderMode
+				renderMode: sub.renderMode,
 			});
 		}
-		
-		this.entitySettings = <any>{
+
+		this.entitySettings = {
 			sheets: {
 				fix: sheets,
 			},
 			baseSize: type.size,
-		};
-		
+		} as any;
+
 		const mapStyle = Helper.getMapStyle(Globals.map, 'destruct');
 		for (const sheet of sheets) {
 			if (!sheet.gfx) {
@@ -112,19 +117,16 @@ export class Destructible extends CCEntity {
 				console.error('sheet does not exist: ' + sheet.gfx);
 			}
 		}
-		
+
 		if (sheets.length === 0) {
 			this.generateErrorImage();
 		}
-		
+
 		this.updateSettings();
 	}
-	
 }
 
-interface DestructibleTypes {
-	[name: string]: DestructibleType;
-}
+type DestructibleTypes = Record<string, DestructibleType>;
 
 interface DestructibleType {
 	hitCount: number;

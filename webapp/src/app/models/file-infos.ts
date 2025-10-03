@@ -1,4 +1,4 @@
 export interface FileInfos {
-    images: string[];
-    data: string[];
+	images: string[];
+	data: string[];
 }

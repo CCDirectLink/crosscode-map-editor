@@ -1,8 +1,10 @@
-<app-floating-window [right]="'4px'"
-                     [top]="'240px'"
-                     [title]="'Tile selector'"
-                     (dragEnd)="onDragEnd()"
-                     [style.display]="hide ? 'none' : ''">
+<app-floating-window
+	[right]="'4px'"
+	[top]="'240px'"
+	[title]="'Tile selector'"
+	(dragEnd)="onDragEnd()"
+	[style.display]="hide ? 'none' : ''"
+>
 	<div class="tile-selector-container">
 		<div id="tile-selector-content"></div>
 	</div>
