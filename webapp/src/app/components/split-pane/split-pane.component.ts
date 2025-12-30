@@ -1,6 +1,19 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, inject } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	ElementRef,
+	EventEmitter,
+	HostListener,
+	inject,
+	Input,
+	OnChanges,
+	OnInit,
+	Output,
+	SimpleChanges,
+	ViewChild
+} from '@angular/core';
 import { FlexModule } from '@angular/flex-layout/flex';
-import { EditorComponent } from '../editor/editor.component';
 
 /** values in % [0, 100] */
 export interface Bounds {
@@ -9,15 +22,15 @@ export interface Bounds {
 }
 
 @Component({
-    selector: 'app-split-pane',
-    templateUrl: './split-pane.component.html',
-    styleUrls: ['./split-pane.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [FlexModule, EditorComponent]
+	selector: 'app-split-pane',
+	templateUrl: './split-pane.component.html',
+	styleUrls: ['./split-pane.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [FlexModule]
 })
 export class SplitPaneComponent implements OnInit, OnChanges {
 	private ref = inject(ChangeDetectorRef);
-
+	
 	
 	@ViewChild('container') container!: ElementRef<HTMLElement>;
 	
