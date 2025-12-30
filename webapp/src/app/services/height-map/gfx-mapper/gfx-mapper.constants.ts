@@ -35,9 +35,7 @@ export interface GfxMaps {
 		BASE: GfxMap;
 		SHADOW: GfxMap;
 		BACK_WALL: GfxMap;
-		BORDER: {
-			[key in GFX_TYPE]: number[][][];
-		};
+		BORDER: Record<GFX_TYPE, number[][][]>;
 		CHASM_FLOOR?: GfxMap;
 		ignoreTerrain?: GFX_TYPE[];
 		ignoreTerrainKeepWallBase?: GFX_TYPE[];
@@ -46,44 +44,40 @@ export interface GfxMaps {
 	chasmTileAdd: number;
 }
 
-type GfxBaseMap = { [key in GFX_TYPE]: number[][]; } & {
+type GfxBaseMap = Record<GFX_TYPE, number[][]> & {
 	offset?: Point;
 };
 
 export type GfxMap = GfxBaseMap & {
-	wallYVariance?: {
-		[key in GFX_TYPE]: {
+	wallYVariance?: Record<GFX_TYPE, {
 			loop: number[];
 			end: number[];
 			start?: number[];
-		}
-	};
+		}>;
 };
 
 export type GfxMapChasm = GfxBaseMap & {
-	wallYVariance?: {
-		[key in GFX_TYPE]: {
+	wallYVariance?: Record<GFX_TYPE, {
 			start: number[];
-		}
-	};
+		}>;
 };
 
-export const GFX_MAPS: { [key: string]: GfxMaps } = {};
+export const GFX_MAPS: Record<string, GfxMaps> = {};
 
 let map: GfxMaps = {
-	BASE: <any>{},
-	ALT: <any>{},
-	SHADOW: <any>{},
-	CHASM: <any>{},
-	DARK_WALL: <any>{},
-	CHASM_FLOOR: <any>{},
-	BACK_WALL: <any>{},
+	BASE: {} as any,
+	ALT: {} as any,
+	SHADOW: {} as any,
+	CHASM: {} as any,
+	DARK_WALL: {} as any,
+	CHASM_FLOOR: {} as any,
+	BACK_WALL: {} as any,
 	
 	SUB: {
-		BASE: <any>{},
-		SHADOW: <any>{},
-		BACK_WALL: <any>{},
-		BORDER: <any>{}
+		BASE: {} as any,
+		SHADOW: {} as any,
+		BACK_WALL: {} as any,
+		BORDER: {} as any
 	},
 	
 	hasShadowSide: true,
@@ -124,7 +118,7 @@ map['SHADOW'][GFX_TYPE.FILL] = [[0, 0]];
 map['SHADOW'][GFX_TYPE.INVISIBLE_WALL] = [[5, 0]];
 
 map['CHASM'].offset = {x: 0, y: 1};
-map['CHASM'].wallYVariance = <any>{};
+map['CHASM'].wallYVariance = {} as any;
 map['CHASM'].wallYVariance![GFX_TYPE.WALL_SOUTH] = {start: [1, 0]};
 map['CHASM'].wallYVariance![GFX_TYPE.WALL_SE] = {start: [1, 0]};
 map['CHASM'].wallYVariance![GFX_TYPE.WALL_SW] = {start: [1, 0]};
@@ -161,19 +155,19 @@ map['SUB']['BORDER'][GFX_TYPE.SOUTH] = [[[2, 6]], [[3, 6]]];
 map['SUB']['BORDER'][GFX_TYPE.WEST] = [[[1, 5]], [[1, 6]]];
 
 map = {
-	BASE: <any>{},
-	ALT: <any>{},
-	SHADOW: <any>{},
-	CHASM: <any>{},
-	DARK_WALL: <any>{},
-	CHASM_FLOOR: <any>{},
-	BACK_WALL: <any>{},
+	BASE: {} as any,
+	ALT: {} as any,
+	SHADOW: {} as any,
+	CHASM: {} as any,
+	DARK_WALL: {} as any,
+	CHASM_FLOOR: {} as any,
+	BACK_WALL: {} as any,
 	
 	SUB: {
-		BASE: <any>{},
-		SHADOW: <any>{},
-		BACK_WALL: <any>{},
-		BORDER: <any>{}
+		BASE: {} as any,
+		SHADOW: {} as any,
+		BACK_WALL: {} as any,
+		BORDER: {} as any
 	},
 	
 	hasShadowSide: false,
@@ -212,7 +206,7 @@ map['BASE'][GFX_TYPE.WALL_END_WEST] = [[3, 0]];
 map['BASE'][GFX_TYPE.WALL_END_WEST_BASE] = [[3, 1]];
 map['BASE'][GFX_TYPE.WALL_END_EAST] = [[4, 0]];
 map['BASE'][GFX_TYPE.WALL_END_EAST_BASE] = [[4, 1]];
-map['BASE'].wallYVariance = <any>{};
+map['BASE'].wallYVariance = {} as any;
 map['BASE'].wallYVariance![GFX_TYPE.WALL_SOUTH] = {loop: [1, 2], end: [0]};
 map['BASE'].wallYVariance![GFX_TYPE.WALL_SE] = {loop: [1, 2], end: [0]};
 map['BASE'].wallYVariance![GFX_TYPE.WALL_SW] = {loop: [1, 2], end: [0]};
@@ -224,7 +218,7 @@ map['SHADOW'][GFX_TYPE.FILL] = [[1, 1]];
 map['SHADOW'][GFX_TYPE.INVISIBLE_WALL] = [[1, 2]];
 map['SHADOW'][GFX_TYPE.EAST] = [[1, 1]];
 map['SHADOW'][GFX_TYPE.WEST] = [[1, 1]];
-map['SHADOW'].wallYVariance = <any>{};
+map['SHADOW'].wallYVariance = {} as any;
 
 map['CHASM'].offset = {x: 0, y: 8};
 map['CHASM'][GFX_TYPE.WALL_SE_BASE] = [[3, 2]];
@@ -234,7 +228,7 @@ map['CHASM'][GFX_TYPE.WALL_SQR_SW] = [[0, 2]];
 map['CHASM'][GFX_TYPE.WALL_SQR_SE] = [[2, 2]];
 map['CHASM'][GFX_TYPE.WALL_SE] = [[3, 3]];
 map['CHASM'][GFX_TYPE.WALL_SW] = [[4, 3]];
-map['CHASM'].wallYVariance = <any>{};
+map['CHASM'].wallYVariance = {} as any;
 map['CHASM'].wallYVariance![GFX_TYPE.WALL_SOUTH] = {start: [2, 1, 0]};
 map['CHASM'].wallYVariance![GFX_TYPE.WALL_SE] = {start: [2, 1, 0]};
 map['CHASM'].wallYVariance![GFX_TYPE.WALL_SW] = {start: [2, 1, 0]};
@@ -250,7 +244,7 @@ map['CHASM_FLOOR'][GFX_TYPE.WALL_SQR_SW] = [[0, 1]];
 map['CHASM_FLOOR'][GFX_TYPE.WALL_SQR_SE] = [[2, 1]];
 map['CHASM_FLOOR'][GFX_TYPE.WALL_SE] = [[3, 1]];
 map['CHASM_FLOOR'][GFX_TYPE.WALL_SW] = [[4, 1]];
-map['CHASM_FLOOR'].wallYVariance = <any>{};
+map['CHASM_FLOOR'].wallYVariance = {} as any;
 map['CHASM_FLOOR'].wallYVariance![GFX_TYPE.WALL_SOUTH] = {start: [3, 2, 0]};
 map['CHASM_FLOOR'].wallYVariance![GFX_TYPE.WALL_SE] = {start: [4, 3, 0]};
 map['CHASM_FLOOR'].wallYVariance![GFX_TYPE.WALL_SW] = {start: [4, 3, 0]};
@@ -279,7 +273,7 @@ map['BACK_WALL'][GFX_TYPE.WALL_SQR_SE_BASE] = [[4, 5]];
 map['BACK_WALL'][GFX_TYPE.WALL_SQR_SW_BASE] = [[3, 5]];
 map['BACK_WALL'][GFX_TYPE.EAST] = [[1, 0]];
 map['BACK_WALL'][GFX_TYPE.WEST] = [[1, 0]];
-map['BACK_WALL'].wallYVariance = <any>{};
+map['BACK_WALL'].wallYVariance = {} as any;
 map['BACK_WALL'].wallYVariance![GFX_TYPE.WALL_SOUTH] = {loop: [1], end: [0]};
 map['BACK_WALL'].wallYVariance![GFX_TYPE.WALL_SE] = {loop: [1], end: [0]};
 map['BACK_WALL'].wallYVariance![GFX_TYPE.WALL_SW] = {loop: [1], end: [0]};
@@ -316,14 +310,14 @@ map['SUB']['BORDER'][GFX_TYPE.EAST] = [[[4, 5]], [[4, 6]]];
 map['SUB']['BORDER'][GFX_TYPE.SOUTH] = [[[2, 6]], [[3, 6]]];
 map['SUB']['BORDER'][GFX_TYPE.WEST] = [[[1, 5]], [[1, 6]]];
 
-map['SUB']['CHASM_FLOOR'] = <any>{};
+map['SUB']['CHASM_FLOOR'] = {} as any;
 map['SUB']['CHASM_FLOOR']![GFX_TYPE.DIAGONAL_SE] = [[0, 5]];
 map['SUB']['CHASM_FLOOR']![GFX_TYPE.DIAGONAL_SW] = [[0, 6]];
 
 
 export const BASE_GFX = [GFX_TYPE.WALL_SOUTH_BASE, GFX_TYPE.WALL_SE_BASE, GFX_TYPE.WALL_SW_BASE];
 
-export const BACK_WALL_MAP: { [key in GFX_TYPE]: GFX_TYPE } = <any>{};
+export const BACK_WALL_MAP: Record<GFX_TYPE, GFX_TYPE> = {} as any;
 BACK_WALL_MAP[GFX_TYPE.WEST] = GFX_TYPE.WEST;
 BACK_WALL_MAP[GFX_TYPE.EAST] = GFX_TYPE.EAST;
 BACK_WALL_MAP[GFX_TYPE.DIAGONAL_NW] = GFX_TYPE.DIAGONAL_SE;
@@ -331,21 +325,21 @@ BACK_WALL_MAP[GFX_TYPE.DIAGONAL_NE] = GFX_TYPE.DIAGONAL_SW;
 
 export const SHADOW_GROUND = [GFX_TYPE.DIAGONAL_NE, GFX_TYPE.DIAGONAL_NW, GFX_TYPE.NORTH, GFX_TYPE.EAST, GFX_TYPE.WEST, GFX_TYPE.CORNER_NE, GFX_TYPE.CORNER_NW];
 
-export const BLOCK_MAP: { [key in FILL_TYPE]: number } = <any>{};
+export const BLOCK_MAP: Record<FILL_TYPE, number> = {} as any;
 BLOCK_MAP[FILL_TYPE.SQUARE] = 2;
 BLOCK_MAP[FILL_TYPE.NORTHEAST] = 8;
 BLOCK_MAP[FILL_TYPE.SOUTHEAST] = 9;
 BLOCK_MAP[FILL_TYPE.SOUTHWEST] = 10;
 BLOCK_MAP[FILL_TYPE.NORTHWEST] = 11;
 
-export const HOLE_MAP: { [key in FILL_TYPE]: number } = <any>{};
+export const HOLE_MAP: Record<FILL_TYPE, number> = {} as any;
 HOLE_MAP[FILL_TYPE.SQUARE] = 1;
 HOLE_MAP[FILL_TYPE.NORTHEAST] = 6;
 HOLE_MAP[FILL_TYPE.SOUTHEAST] = 7;
 HOLE_MAP[FILL_TYPE.SOUTHWEST] = 4;
 HOLE_MAP[FILL_TYPE.NORTHWEST] = 5;
 
-export const HOLE_BLOCK_MAP: { [key in FILL_TYPE]: number } = <any>{};
+export const HOLE_BLOCK_MAP: Record<FILL_TYPE, number> = {} as any;
 HOLE_BLOCK_MAP[FILL_TYPE.SQUARE] = 2;
 HOLE_BLOCK_MAP[FILL_TYPE.NORTHEAST] = 24;
 HOLE_BLOCK_MAP[FILL_TYPE.SOUTHEAST] = 25;

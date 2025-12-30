@@ -5,14 +5,14 @@ import { Point } from '../../models/cross-code-map';
 export class Vec2 {
 	
 	public static create(otherVec?: Point) {
-		const res = <Point>{};
+		const res = {} as Point;
 		res.x = (otherVec && otherVec.x || 0);
 		res.y = (otherVec && otherVec.y || 0);
 		return res;
 	}
 	
 	public static createC(x?: number, y?: number) {
-		const res = <Point>{};
+		const res = {} as Point;
 		res.x = (x || 0);
 		res.y = (y || 0);
 		return res;

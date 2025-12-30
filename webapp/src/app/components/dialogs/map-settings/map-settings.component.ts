@@ -15,10 +15,10 @@ import { GlobalEventsService } from '../../../services/global-events.service';
 export class MapSettingsComponent {
 	
 	private readonly tileMap: CCMap;
-	settings: CrossCodeMap = <any>{
+	settings: CrossCodeMap = {
 		levels: [{height: -32}, {height: 0}, {height: 32}, {height: 64}],
 		attributes: {},
-	};
+	} as any;
 	
 	constructor(
 		loader: MapLoaderService,

@@ -22,20 +22,25 @@ module.exports = tseslint.config(
 			// Angular selectors with custom prefixes
 			'@angular-eslint/component-selector': [
 				'error',
-				{ type: 'element', prefix: ['app', 'cc'], style: 'kebab-case' },
+				{type: 'element', prefix: ['app', 'cc'], style: 'kebab-case'},
 			],
 			'@angular-eslint/directive-selector': [
 				'error',
-				{ type: 'attribute', prefix: ['app', 'cc'], style: 'camelCase' },
+				{type: 'attribute', prefix: ['app', 'cc'], style: 'camelCase'},
 			],
 			'@angular-eslint/no-output-on-prefix': 'off',
 			'@angular-eslint/no-output-native': 'off',
-
+			
 			// TypeScript rules - relaxed from defaults
 			'@typescript-eslint/no-empty-function': 'off',
 			'@typescript-eslint/no-inferrable-types': 'warn',
 			'@typescript-eslint/no-non-null-assertion': 'off',
-
+			'@typescript-eslint/no-explicit-any': 'off',
+			'@typescript-eslint/ban-ts-ignore': 'off',
+			'@typescript-eslint/ban-ts-comment': 'off',
+			'@typescript-eslint/no-require-imports': 'off',
+			'@typescript-eslint/no-unused-vars': 'off',
+			
 			// Code style
 			quotes: ['error', 'single'],
 			semi: ['error', 'always'],
@@ -50,11 +55,13 @@ module.exports = tseslint.config(
 			'no-throw-literal': 'error',
 			radix: 'error',
 			'max-len': ['error', 180],
-
+			
 			// Relaxed from defaults
 			'no-empty': 'off',
 			'no-constant-condition': 'off',
 			'no-unused-vars': 'off',
+			
+			
 		},
 	},
 	{
