@@ -6,14 +6,13 @@ import { EditorView } from '../../../../models/editor-view';
 import { GlobalEventsService } from '../../../../services/global-events.service';
 import { TileSelectorScene } from './tile-selector.scene';
 import { FloatingWindowComponent } from '../floating-window.component';
-import { EditorComponent } from '../../../editor/editor.component';
 
 
 @Component({
     selector: 'app-tile-selector',
     templateUrl: './tile-selector.component.html',
     styleUrls: ['./tile-selector.component.scss'],
-    imports: [FloatingWindowComponent, EditorComponent]
+    imports: [FloatingWindowComponent]
 })
 export class TileSelectorComponent implements AfterViewInit {
 	private display?: Phaser.Game;

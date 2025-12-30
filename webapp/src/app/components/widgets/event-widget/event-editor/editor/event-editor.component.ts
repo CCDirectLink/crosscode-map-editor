@@ -1,7 +1,7 @@
-import { CdkDrag, CdkDragDrop, CdkDropList, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, inject } from '@angular/core';
-import { MatTreeFlatDataSource, MatTreeFlattener, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodePadding } from '@angular/material/tree';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { MatTree, MatTreeFlatDataSource, MatTreeFlattener, MatTreeNode, MatTreeNodeDef, MatTreeNodePadding } from '@angular/material/tree';
 import { destructureEventArray, EventArray } from '../../../../../models/events';
 import { SettingsService } from '../../../../../services/settings.service';
 import { SplitPaneComponent } from '../../../../split-pane/split-pane.component';
@@ -17,17 +17,31 @@ import { ExtendedModule } from '@angular/flex-layout/extended';
 import { RowTextComponent } from '../row-text/row-text.component';
 
 @Component({
-    selector: 'app-event-editor',
-    templateUrl: './event-editor.component.html',
-    styleUrls: ['./event-editor.component.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [FlexModule, NgClass, ExtendedModule, SplitPaneComponent, CdkDropList, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodePadding, CdkDrag, CdkDragHandle, RowTextComponent, EventDetailComponent]
+	selector: 'app-event-editor',
+	templateUrl: './event-editor.component.html',
+	styleUrls: ['./event-editor.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [
+		FlexModule,
+		NgClass,
+		ExtendedModule,
+		SplitPaneComponent,
+		CdkDropList,
+		MatTree,
+		MatTreeNodeDef,
+		MatTreeNode,
+		MatTreeNodePadding,
+		CdkDrag,
+		CdkDragHandle,
+		RowTextComponent,
+		EventDetailComponent
+	]
 })
 export class EventEditorComponent implements OnChanges, OnInit {
 	private helper = inject(EventHelperService);
 	private addEvent = inject(AddEventService);
 	private settingsService = inject(SettingsService);
-
+	
 	private static globalBase = 0;
 	
 	@ViewChild('splitpane') splitPane?: SplitPaneComponent;

@@ -9,7 +9,7 @@ import { CCMap } from './phaser/tilemap/cc-map';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SettingsService } from './settings.service';
 import { signal } from '@angular/core';
-import { GridSettings } from '../components/toolbar/grid-menu/grid-menu.component';
+import { type GridSettings } from '../components/toolbar/grid-menu/grid-menu.component';
 import { JsonLoaderService } from './json-loader.service';
 
 export class Globals {

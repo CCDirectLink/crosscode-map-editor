@@ -1,4 +1,4 @@
-import { Component, ViewChild, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 
 import { AddEntityMenuService } from '../../services/add-entity-menu.service';
@@ -13,10 +13,22 @@ import { HistoryComponent } from '../dialogs/floating-window/history/history.com
 import { TileSelectorComponent } from '../dialogs/floating-window/tile-selector/tile-selector.component';
 
 @Component({
-    selector: 'app-editor',
-    templateUrl: './editor.component.html',
-    styleUrls: ['./editor.component.scss'],
-    imports: [MatSidenavContainer, MatSidenav, LoadMapComponent, MatSidenavContent, FlexModule, ToolbarComponent, SidenavComponent, PhaserComponent, RouterOutlet, HistoryComponent, TileSelectorComponent]
+	selector: 'app-editor',
+	templateUrl: './editor.component.html',
+	styleUrls: ['./editor.component.scss'],
+	imports: [
+		MatSidenavContainer,
+		MatSidenav,
+		LoadMapComponent,
+		MatSidenavContent,
+		FlexModule,
+		ToolbarComponent,
+		SidenavComponent,
+		PhaserComponent,
+		RouterOutlet,
+		HistoryComponent,
+		TileSelectorComponent
+	]
 })
 export class EditorComponent {
 	@ViewChild('loadmap', {static: true})
@@ -28,7 +40,7 @@ export class EditorComponent {
 	constructor() {
 		const addEntity = inject(AddEntityMenuService);
 		const jsonLoader = inject(JsonLoaderService);
-
+		
 		addEntity.init();
 		
 		// makes sure they are synchronously available
