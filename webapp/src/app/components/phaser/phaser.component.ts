@@ -75,7 +75,7 @@ export class PhaserComponent implements AfterViewInit {
 		Globals.scene = scene;
 	}
 	
-	@HostListener('window:resize', ['$event'])
+	@HostListener('window:resize')
 	onResize() {
 		if (!Globals.game) {
 			return;
