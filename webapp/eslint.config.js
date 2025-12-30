@@ -41,6 +41,7 @@ module.exports = tseslint.config(
 			'@typescript-eslint/no-require-imports': 'off',
 			'@typescript-eslint/no-unused-vars': 'off',
 			'@typescript-eslint/prefer-for-of': 'off',
+			'@typescript-eslint/consistent-indexed-object-style': 'off',
 			
 			// Code style
 			quotes: ['error', 'single'],

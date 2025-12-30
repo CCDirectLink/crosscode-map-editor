@@ -114,7 +114,7 @@ export abstract class CCEntity extends BaseObject {
 			offset: number;
 		}; type: string;
 		settings: DetailSettings;
-	} = <any>{};
+	} = {} as any;
 	entitySettings: {
 		collType?: string;
 		baseSize: PartialPoint3;
@@ -129,7 +129,7 @@ export abstract class CCEntity extends BaseObject {
 		scalableY?: boolean;
 		scalableStep?: number;
 		pivot?: Point;
-	} = <any>{};
+	} = {} as any;
 	
 	protected constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
 		super(scene, typeName, false);
@@ -137,9 +137,9 @@ export abstract class CCEntity extends BaseObject {
 		this.map = map;
 		this.container.x = Math.round(x);
 		this.container.y = Math.round(y);
-		this.details = <any>{
+		this.details = {
 			type: typeName
-		};
+		} as any;
 		
 		this.filterSubscription = Globals.globalEventsService.filterEntity.subscribe(filter => this.setVisible(this.filter(filter)));
 	}
@@ -486,7 +486,7 @@ export abstract class CCEntity extends BaseObject {
 		
 		baseSize.z = settings['zHeight'] || settings['wallZHeight'] || 0;
 		
-		this.entitySettings = <any>{};
+		this.entitySettings = {} as any;
 		this.entitySettings.baseSize = baseSize;
 		const scaleSettings = this.getScaleSettings();
 		if (scaleSettings) {
@@ -715,7 +715,7 @@ export abstract class CCEntity extends BaseObject {
 		return CCEntity.renderBackground;
 	}
 	
-	public async generateHtmlImage(withBackground = true, offsetY: number = 0, entityScale = 1) {
+	public async generateHtmlImage(withBackground = true, offsetY = 0, entityScale = 1) {
 		const width = 16 * 6 * entityScale;
 		const height = 16 * 7 * entityScale;
 		
