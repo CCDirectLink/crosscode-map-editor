@@ -4,6 +4,7 @@ import { PreUpdate } from './pre-update';
 
 export interface KeyBinding {
 	event: string;
+	// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 	fun: Function;
 	emitter: Phaser.Events.EventEmitter;
 }

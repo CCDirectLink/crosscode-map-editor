@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
-import { PropListCard, ImageSelectCardComponent } from './image-select-card/image-select-card.component';
+import { ImageSelectCardComponent, PropListCard } from './image-select-card/image-select-card.component';
 import { OverlayPanelComponent } from '../../../dialogs/overlay/overlay-panel/overlay-panel.component';
 import { AutocompletedTextboxComponent } from '../../string-widget/autocompleted-textbox/autocompleted-textbox.component';
 import { SplitPaneComponent } from '../../../split-pane/split-pane.component';
 import { ImageSelectListComponent } from './image-select-list/image-select-list.component';
-import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { MatFormField, MatInput, MatLabel } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
@@ -18,10 +18,23 @@ export interface PropListGroup {
 }
 
 @Component({
-    selector: 'app-image-select-overlay',
-    templateUrl: './image-select-overlay.component.html',
-    styleUrls: ['./image-select-overlay.component.scss'],
-    imports: [OverlayPanelComponent, AutocompletedTextboxComponent, SplitPaneComponent, ImageSelectListComponent, MatFormField, MatLabel, MatInput, FormsModule, MatCheckbox, MatProgressSpinner, ImageSelectCardComponent, MatButton]
+	selector: 'app-image-select-overlay',
+	templateUrl: './image-select-overlay.component.html',
+	styleUrls: ['./image-select-overlay.component.scss'],
+	imports: [
+		OverlayPanelComponent,
+		AutocompletedTextboxComponent,
+		SplitPaneComponent,
+		ImageSelectListComponent,
+		MatFormField,
+		MatLabel,
+		MatInput,
+		FormsModule,
+		MatCheckbox,
+		MatProgressSpinner,
+		ImageSelectCardComponent,
+		MatButton
+	]
 })
 export class ImageSelectOverlayComponent implements OnChanges, OnDestroy {
 	
