@@ -25,7 +25,7 @@ export class GfxMapper {
 	
 	private TILESET_CONFIG: Record<string, ChipsetConfig | undefined> = {};
 	
-	private mapping: { [key in AutotileType]: Map<number, keyof FillType> } = <any>{};
+	private mapping: { [key in AutotileType]: Map<number, keyof FillType> } = {} as any;
 	private cliffBorderMapping = new Map<number, keyof FillType>();
 	private cliffMapping = new Map<number, keyof FillType>();
 	private cliffAltMapping = new Map<number, keyof FillType>();

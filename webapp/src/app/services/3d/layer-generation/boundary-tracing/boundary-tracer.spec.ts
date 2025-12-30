@@ -704,7 +704,7 @@ describe('boundary tracing', () => {
 		return rotate(path, index);
 	}
 	
-	function rotate(arr: Array<any>, n: number) {
+	function rotate(arr: any[], n: number) {
 		return arr.slice(n, arr.length).concat(arr.slice(0, n));
 	}
 });

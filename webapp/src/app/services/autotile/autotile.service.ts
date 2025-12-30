@@ -166,10 +166,10 @@ export class AutotileService {
 			y: tile.pos.y + dir.dy
 		};
 		
-		const out: TileData = <any>{
+		const out: TileData = {
 			pos: newPos,
 			fill: 'OOOO'
-		};
+		} as any;
 		
 		if (newPos.x < 0 || newPos.y < 0 || newPos.x >= layer.details.width || newPos.y >= layer.details.height) {
 			out.fill = 'XXXX';

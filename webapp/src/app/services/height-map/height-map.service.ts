@@ -585,7 +585,7 @@ export class HeightMapService {
 	
 	private setSquareGfx(x: number, y: number, entry: TileData) {
 		const level = entry.level;
-		entry.gfx = <any>null;
+		entry.gfx = null as any;
 		for (let i = 0; i < SQUARE_CORNER_CHECK.length; ++i) {
 			const sqrCheck = SQUARE_CORNER_CHECK[i];
 			const check1 = CHECK_DIR[sqrCheck.dir1], check2 = CHECK_DIR[sqrCheck.dir2];

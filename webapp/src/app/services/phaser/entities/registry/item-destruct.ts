@@ -75,7 +75,7 @@ export class ItemDestruct extends DefaultEntity {
 			return;
 		}
 		
-		this.entitySettings = <any>{
+		this.entitySettings = {
 			sheets: {
 				fix: [{
 					gfx: gfx,
@@ -86,7 +86,7 @@ export class ItemDestruct extends DefaultEntity {
 				}]
 			},
 			baseSize: type.size
-		};
+		} as any;
 		this.updateSettings();
 		
 	}

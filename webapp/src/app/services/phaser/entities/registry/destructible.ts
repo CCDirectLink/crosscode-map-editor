@@ -95,12 +95,12 @@ export class Destructible extends CCEntity {
 			});
 		}
 		
-		this.entitySettings = <any>{
+		this.entitySettings = {
 			sheets: {
 				fix: sheets,
 			},
 			baseSize: type.size,
-		};
+		} as any;
 		
 		const mapStyle = Helper.getMapStyle(Globals.map, 'destruct');
 		for (const sheet of sheets) {
