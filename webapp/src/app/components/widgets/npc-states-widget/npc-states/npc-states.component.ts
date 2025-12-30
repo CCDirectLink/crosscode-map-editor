@@ -7,19 +7,27 @@ import { type NPCState } from '../npc-states-widget.component';
 import { OverlayPanelComponent } from '../../../dialogs/overlay/overlay-panel/overlay-panel.component';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { MatButton } from '@angular/material/button';
-import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { FormsModule } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
-import { MatSelect } from '@angular/material/select';
-import { MatOption } from '@angular/material/autocomplete';
 import { MatIcon } from '@angular/material/icon';
 import { KeyValuePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-npc-states',
-    templateUrl: './npc-states.component.html',
-    styleUrls: ['./npc-states.component.scss', '../../widget.scss'],
-    imports: [OverlayPanelComponent, FlexModule, MatButton, MatTabGroup, MatTab, FormsModule, MatCheckbox, MatSelect, MatOption, MatIcon, EventEditorComponent, KeyValuePipe]
+	selector: 'app-npc-states',
+	templateUrl: './npc-states.component.html',
+	styleUrls: ['./npc-states.component.scss', '../../widget.scss'],
+	imports: [OverlayPanelComponent,
+		FlexModule,
+		MatButton,
+		MatTabGroup,
+		MatTab,
+		FormsModule,
+		MatCheckbox,
+		MatIcon,
+		EventEditorComponent,
+		KeyValuePipe
+	]
 })
 export class NpcStatesComponent implements OnInit {
 	@ViewChild('eventEditor', {static: false}) eventEditor?: EventEditorComponent;
