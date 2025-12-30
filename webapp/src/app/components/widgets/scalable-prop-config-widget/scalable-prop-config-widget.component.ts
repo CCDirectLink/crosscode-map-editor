@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ImageSelectOverlayComponent, PropListGroup } from '../shared/image-select-overlay/image-select-overlay.component';
 import { HttpClientService } from '../../../services/http-client.service';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
@@ -19,17 +19,18 @@ import Point = Electron.Point;
 	standalone: false
 })
 export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePropAttributes> implements OnInit, OnDestroy {
+	private http = inject(HttpClientService);
+
 	private sheetKey = ['propConfig', 'sheet'];
 	private nameKey = ['propConfig', 'name'];
 	
 	private comp: ImageSelectOverlayComponent = new ImageSelectOverlayComponent();
 	private sheet?: ScalablePropSheet;
 	
-	constructor(
-		private http: HttpClientService,
-		overlayService: OverlayService,
-		overlay: Overlay
-	) {
+	constructor() {
+		const overlayService = inject(OverlayService);
+		const overlay = inject(Overlay);
+
 		super(overlayService, overlay);
 	}
 	

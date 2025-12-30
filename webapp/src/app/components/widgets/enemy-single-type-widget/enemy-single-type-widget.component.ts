@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { OverlayWidget } from '../overlay-widget';
 import { ImageSelectOverlayComponent, PropListGroup } from '../shared/image-select-overlay/image-select-overlay.component';
 import { HttpClientService } from '../../../services/http-client.service';
@@ -14,6 +14,8 @@ import { EnemyAttributes } from '../../../services/phaser/entities/registry/enem
 	standalone: false
 })
 export class EnemySingleTypeWidgetComponent extends OverlayWidget {
+	private http = inject(HttpClientService);
+
 	
 	private props: {
 		prefix: string;
@@ -27,11 +29,10 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget {
 	
 	private comp: ImageSelectOverlayComponent = new ImageSelectOverlayComponent();
 	
-	constructor(
-		private http: HttpClientService,
-		overlayService: OverlayService,
-		overlay: Overlay
-	) {
+	constructor() {
+		const overlayService = inject(OverlayService);
+		const overlay = inject(Overlay);
+
 		super(overlayService, overlay);
 	}
 	

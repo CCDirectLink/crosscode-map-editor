@@ -1,4 +1,4 @@
-import { Component, OnChanges, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnChanges, Type, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { AbstractWidget } from '../abstract-widget';
 import { FlexModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -42,16 +42,12 @@ interface DynamicComponent {
 	styleUrls: ['./array-widget.component.scss', '../widget.scss']
 })
 export class ArrayWidgetComponent extends AbstractWidget<ArraySettings, ArrayAttributes> implements OnChanges {
+	private widgetRegistry = inject(WidgetRegistryService);
+
 	
 	@ViewChild('compContainer', {read: ViewContainerRef, static: true}) compContainer!: ViewContainerRef;
 	
 	dynamicComponents: DynamicComponent[] = [];
-	
-	constructor(
-		private widgetRegistry: WidgetRegistryService,
-	) {
-		super();
-	}
 	
 	
 	override ngOnChanges() {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, inject } from '@angular/core';
 import { OverlayWidget } from '../../overlay-widget';
 import { ImageSelectOverlayComponent } from '../../shared/image-select-overlay/image-select-overlay.component';
 import { HttpClientService } from '../../../../services/http-client.service';
@@ -21,17 +21,18 @@ import { JsonLoaderService } from '../../../../services/json-loader.service';
 	standalone: false
 })
 export class CustomExpressionWidgetComponent extends OverlayWidget<Person> implements OnChanges {
+	private http = inject(HttpClientService);
+	private changeDetectorRef = inject(ChangeDetectorRef);
+	private jsonLoader = inject(JsonLoaderService);
+
 	
 	private comp: ImageSelectOverlayComponent = new ImageSelectOverlayComponent();
 	preview = '';
 	
-	constructor(
-		private http: HttpClientService,
-		private changeDetectorRef: ChangeDetectorRef,
-		private jsonLoader: JsonLoaderService,
-		overlayService: OverlayService,
-		overlay: Overlay,
-	) {
+	constructor() {
+		const overlayService = inject(OverlayService);
+		const overlay = inject(Overlay);
+
 		super(overlayService, overlay);
 	}
 	

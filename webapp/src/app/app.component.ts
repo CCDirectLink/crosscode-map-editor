@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { ConfirmCloseComponent } from './components/dialogs/confirm-close/confirm-close.component';
 import { OverlayService } from './components/dialogs/overlay/overlay.service';
 import { GlobalEventsService } from './services/global-events.service';
@@ -10,11 +10,9 @@ import { GlobalEventsService } from './services/global-events.service';
 	standalone: false
 })
 export class AppComponent {
-	constructor(
-		private readonly eventsService: GlobalEventsService,
-		private readonly overlayService: OverlayService,
-	) {
-	}
+	private readonly eventsService = inject(GlobalEventsService);
+	private readonly overlayService = inject(OverlayService);
+
 	
 	@HostListener('window:beforeunload', ['$event'])
 	onUnload($event: any) {

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { HostDirective } from '../../../../../directives/host.directive';
 import { AttributeValue } from '../../../../../services/phaser/entities/cc-entity';
@@ -17,6 +17,10 @@ export type RefreshType = 'Node' | 'Full';
 	standalone: false
 })
 export class EventDetailComponent implements OnDestroy {
+	private widgetRegistry = inject(WidgetRegistryService);
+	private helper = inject(EventHelperService);
+	private ref = inject(ChangeDetectorRef);
+
 	@ViewChild(HostDirective, {static: true}) appHost!: HostDirective;
 	
 	@Input() event!: AbstractEvent<any>;
@@ -28,13 +32,6 @@ export class EventDetailComponent implements OnDestroy {
 	warning = false;
 	
 	private changeSubscriptions: Subscription[] = [];
-	
-	constructor(
-		private widgetRegistry: WidgetRegistryService,
-		private helper: EventHelperService,
-		private ref: ChangeDetectorRef,
-	) {
-	}
 	
 	ngOnDestroy(): void {
 		this.clearSubscriptions();

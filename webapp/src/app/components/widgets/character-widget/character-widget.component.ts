@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { OverlayWidget } from '../overlay-widget';
 import { ImageSelectOverlayComponent, PropListGroup } from '../shared/image-select-overlay/image-select-overlay.component';
 import { HttpClientService } from '../../../services/http-client.service';
@@ -15,6 +15,8 @@ import { Helper } from '../../../services/phaser/helper';
 	standalone: false
 })
 export class CharacterWidgetComponent extends OverlayWidget {
+	private http = inject(HttpClientService);
+
 	
 	@Input() onlyFaces = false;
 	
@@ -30,11 +32,10 @@ export class CharacterWidgetComponent extends OverlayWidget {
 	
 	private comp: ImageSelectOverlayComponent = new ImageSelectOverlayComponent();
 	
-	constructor(
-		private http: HttpClientService,
-		overlayService: OverlayService,
-		overlay: Overlay
-	) {
+	constructor() {
+		const overlayService = inject(OverlayService);
+		const overlay = inject(Overlay);
+
 		super(overlayService, overlay);
 	}
 	

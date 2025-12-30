@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, inject } from '@angular/core';
 
 import { EventArray } from '../../../models/events';
 import { OverlayRefControl } from '../../dialogs/overlay/overlay-ref-control';
@@ -32,14 +32,12 @@ export interface NPCState {
 	standalone: false
 })
 export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, OnChanges, OnDestroy {
+	private overlayService = inject(OverlayService);
+	private overlay = inject(Overlay);
+
 	
 	npcStates: NPCState[] = [];
 	private ref?: OverlayRefControl;
-	
-	constructor(private overlayService: OverlayService,
-		private overlay: Overlay) {
-		super();
-	}
 	
 	override ngOnChanges(): void {
 		super.ngOnChanges();

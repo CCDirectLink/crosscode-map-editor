@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { SearchFilterService } from '../../../services/search-filter.service';
 import { AbstractWidget } from '../abstract-widget';
 
@@ -9,15 +9,11 @@ import { AbstractWidget } from '../abstract-widget';
 	standalone: false
 })
 export class StringWidgetComponent extends AbstractWidget implements OnInit {
+	private searchFilterService = inject(SearchFilterService);
+
 	
 	keys: string[] = [];
 	disableTooltip = false;
-	
-	constructor(
-		private searchFilterService: SearchFilterService,
-	) {
-		super();
-	}
 	
 	override ngOnInit() {
 		super.ngOnInit();

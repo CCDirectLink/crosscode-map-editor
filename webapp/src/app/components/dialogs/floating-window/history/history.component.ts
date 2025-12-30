@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
 import { NavigationStart, Router } from '@angular/router';
 
@@ -12,6 +12,9 @@ import { HistoryState, HistoryStateContainer, StateHistoryService } from './stat
 	standalone: false
 })
 export class HistoryComponent implements OnInit, OnDestroy {
+	private stateHistory = inject(StateHistoryService);
+	private eventManager = inject(EventManager);
+
 	
 	@ViewChild('listContainer', {static: false}) list?: ElementRef;
 	
@@ -22,11 +25,10 @@ export class HistoryComponent implements OnInit, OnDestroy {
 	selectedIndex = 0;
 	hide = false;
 	
-	constructor(
-		private stateHistory: StateHistoryService,
-		private eventManager: EventManager,
-		router: Router,
-	) {
+	constructor() {
+		const stateHistory = this.stateHistory;
+		const router = inject(Router);
+
 		stateHistory.states.subscribe(states => {
 			this.states = states;
 			this.updateSelected(this.selected);

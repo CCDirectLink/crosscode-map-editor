@@ -1,17 +1,4 @@
-import {
-	ChangeDetectionStrategy,
-	ChangeDetectorRef,
-	Component,
-	ElementRef,
-	EventEmitter,
-	HostListener,
-	Input,
-	OnChanges,
-	OnInit,
-	Output,
-	SimpleChanges,
-	ViewChild
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, inject } from '@angular/core';
 
 /** values in % [0, 100] */
 export interface Bounds {
@@ -27,6 +14,8 @@ export interface Bounds {
 	standalone: false
 })
 export class SplitPaneComponent implements OnInit, OnChanges {
+	private ref = inject(ChangeDetectorRef);
+
 	
 	@ViewChild('container') container!: ElementRef<HTMLElement>;
 	
@@ -63,11 +52,6 @@ export class SplitPaneComponent implements OnInit, OnChanges {
 	noAnims = false;
 	private offset = 0;
 	private scale = 0;
-	
-	constructor(
-		private ref: ChangeDetectorRef
-	) {
-	}
 	
 	ngOnInit(): void {
 		// sets initial values without animating to them

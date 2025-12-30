@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener } from '@angular/core';
+import { AfterViewInit, Component, HostListener, inject } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import * as Phaser from 'phaser';
 
@@ -18,10 +18,10 @@ export class TileSelectorComponent implements AfterViewInit {
 	private scene?: TileSelectorScene;
 	hide = false;
 	
-	constructor(
-		globalEvents: GlobalEventsService,
-		router: Router
-	) {
+	constructor() {
+		const globalEvents = inject(GlobalEventsService);
+		const router = inject(Router);
+
 		globalEvents.currentView.subscribe(view => this.hide = view !== EditorView.Layers);
 		
 		// TODO: floating windows should be handled globally

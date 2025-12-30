@@ -1,5 +1,5 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, ViewChild, inject } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 
@@ -22,6 +22,13 @@ import { VirtualMapNode } from './virtualMapNode.model';
 	standalone: false
 })
 export class LoadMapComponent {
+	private mapLoader = inject(MapLoaderService);
+	private http = inject(HttpClientService);
+	private ref = inject(ChangeDetectorRef);
+	private searchFilterService = inject(SearchFilterService);
+	private readonly eventsService = inject(GlobalEventsService);
+	private readonly overlayService = inject(OverlayService);
+
 	
 	@ViewChild('fileUpload', {static: true})
 	fileUpload!: ElementRef<HTMLInputElement>;
@@ -41,14 +48,7 @@ export class LoadMapComponent {
 	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering.
 	filter = '';
 	
-	constructor(
-		private mapLoader: MapLoaderService,
-		private http: HttpClientService,
-		private ref: ChangeDetectorRef,
-		private searchFilterService: SearchFilterService,
-		private readonly eventsService: GlobalEventsService,
-		private readonly overlayService: OverlayService
-	) {
+	constructor() {
 		this.mapsSource.data = [];
 		this.refresh();
 	}

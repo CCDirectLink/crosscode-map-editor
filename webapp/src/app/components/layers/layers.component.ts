@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { GlobalEventsService } from '../../services/global-events.service';
@@ -18,6 +18,10 @@ import { StateHistoryService } from '../dialogs/floating-window/history/state-hi
 	standalone: false
 })
 export class LayersComponent implements OnInit {
+	private mapLoader = inject(MapLoaderService);
+	private stateHistory = inject(StateHistoryService);
+	private http = inject(HttpClientService);
+
 	static tilesets: string[] = []; //Cache
 	
 	selectedLayer?: CCMapLayer;
@@ -28,10 +32,9 @@ export class LayersComponent implements OnInit {
 	width = 0;
 	height = 0;
 	
-	constructor(private mapLoader: MapLoaderService,
-		private stateHistory: StateHistoryService,
-		private http: HttpClientService,
-		events: GlobalEventsService) {
+	constructor() {
+		const events = inject(GlobalEventsService);
+
 		events.toggleVisibility.subscribe(() => {
 			if (this.selectedLayer) {
 				this.toggleVisibility({

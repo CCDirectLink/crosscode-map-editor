@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
 
 import { StateHistoryService } from '../../components/dialogs/floating-window/history/state-history.service';
@@ -49,6 +49,12 @@ interface TileData {
 	providedIn: 'root'
 })
 export class HeightMapService {
+	private events = inject(GlobalEventsService);
+	private mapLoader = inject(MapLoaderService);
+	private stateHistory = inject(StateHistoryService);
+	private autotile = inject(AutotileService);
+	private jsonLoader = inject(JsonLoaderService);
+
 	private data: (TileData | null)[][] = [];
 	private lastData: (TileData | null)[][] = [];
 	private minLevel = 0;
@@ -59,14 +65,9 @@ export class HeightMapService {
 	
 	private c_wallProps = {start: 0, end: 0};
 	
-	constructor(
-		private events: GlobalEventsService,
-		private mapLoader: MapLoaderService,
-		private stateHistory: StateHistoryService,
-		private autotile: AutotileService,
-		private jsonLoader: JsonLoaderService,
-		eventManager: EventManager
-	) {
+	constructor() {
+		const eventManager = inject(EventManager);
+
 		
 		eventManager.addEventListener(document as any, 'keydown', (event: KeyboardEvent) => {
 			if (Helper.isInputFocused()) {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
 import { EventDisplay } from '../event-display.model';
 
 @Component({
@@ -9,12 +9,9 @@ import { EventDisplay } from '../event-display.model';
 	standalone: false
 })
 export class RowTextComponent implements OnInit {
+	private ref = inject(ChangeDetectorRef);
+
 	@Input() display!: EventDisplay;
-	
-	constructor(
-		private ref: ChangeDetectorRef,
-	) {
-	}
 	
 	ngOnInit(): void {
 		this.display.changeDetector = this.ref;

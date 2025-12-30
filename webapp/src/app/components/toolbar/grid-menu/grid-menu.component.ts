@@ -1,4 +1,4 @@
-import { Component, effect, OnInit } from '@angular/core';
+import { Component, effect, OnInit, inject } from '@angular/core';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -52,9 +52,9 @@ export class GridMenuComponent implements OnInit {
 	
 	gridSettings = Globals.gridSettings;
 	
-	constructor(
-		events: GlobalEventsService
-	) {
+	constructor() {
+		const events = inject(GlobalEventsService);
+
 		effect(() => {
 			const settings = this.gridSettings();
 			localStorage.setItem(gridSettingsKey, JSON.stringify(settings));

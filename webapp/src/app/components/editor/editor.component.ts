@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, inject } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 
 import { AddEntityMenuService } from '../../services/add-entity-menu.service';
@@ -18,10 +18,10 @@ export class EditorComponent {
 	@ViewChild('sidenavLoadMap', {static: true})
 	sidenavLoadMap!: MatSidenav;
 	
-	constructor(
-		addEntity: AddEntityMenuService,
-		jsonLoader: JsonLoaderService
-	) {
+	constructor() {
+		const addEntity = inject(AddEntityMenuService);
+		const jsonLoader = inject(JsonLoaderService);
+
 		addEntity.init();
 		
 		// makes sure they are synchronously available

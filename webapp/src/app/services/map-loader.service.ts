@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { CrossCodeMap } from '../models/cross-code-map';
@@ -13,6 +13,10 @@ import { CCMapLayer } from './phaser/tilemap/cc-map-layer';
 	providedIn: 'root'
 })
 export class MapLoaderService {
+	private snackBar = inject(MatSnackBar);
+	private http = inject(HttpClientService);
+	private electron = inject(ElectronService);
+
 	
 	tileMap = new BehaviorSubject<CCMap | undefined>(undefined);
 	selectedLayer = new BehaviorSubject<CCMapLayer | undefined>(undefined);
@@ -20,13 +24,6 @@ export class MapLoaderService {
 	private _map = new BehaviorSubject<CrossCodeMap>(undefined as any);
 	get map(): Observable<CrossCodeMap> {
 		return this._map.asObservable();
-	}
-	
-	constructor(
-		private snackBar: MatSnackBar,
-		private http: HttpClientService,
-		private electron: ElectronService
-	) {
 	}
 	
 	loadMap(event: Event) {

@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { HostDirective } from '../../directives/host.directive';
 import { GlobalEventsService } from '../../services/global-events.service';
 import { MapLoaderService } from '../../services/map-loader.service';
@@ -15,17 +15,19 @@ import { WidgetRegistryService } from '../widgets/widget-registry.service';
 	standalone: false
 })
 export class EntitiesComponent {
+	private widgetRegistry = inject(WidgetRegistryService);
+	private events = inject(GlobalEventsService);
+
 	@ViewChild(HostDirective, {static: false}) appHost?: HostDirective;
 	entity?: CCEntity;
 	map?: CCMap;
 	filter = '';
 	hideFilter = false;
 	
-	constructor(
-		private widgetRegistry: WidgetRegistryService,
-		private events: GlobalEventsService,
-		loader: MapLoaderService
-	) {
+	constructor() {
+		const events = this.events;
+		const loader = inject(MapLoaderService);
+
 		events.selectedEntity.subscribe(e => {
 			// clear focus of input fields to enable phaser inputs again ONLY if not a canvas
 			if (document.activeElement && document.activeElement.tagName !== 'CANVAS') {

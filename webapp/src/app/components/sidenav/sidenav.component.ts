@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { EditorView } from '../../models/editor-view';
 import { GlobalEventsService } from '../../services/global-events.service';
@@ -13,16 +13,13 @@ import { CCMap } from '../../services/phaser/tilemap/cc-map';
 	standalone: false
 })
 export class SidenavComponent implements OnInit {
+	private mapLoader = inject(MapLoaderService);
+	private globalEvents = inject(GlobalEventsService);
+
 	
 	activeTab = EditorView.Layers;
 	tilemap?: CCMap;
 	disableLayersTab = false;
-	
-	constructor(
-		private mapLoader: MapLoaderService,
-		private globalEvents: GlobalEventsService
-	) {
-	}
 	
 	ngOnInit() {
 		this.mapLoader.tileMap.subscribe(tilemap => {

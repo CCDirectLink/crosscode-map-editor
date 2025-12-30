@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { CrossCodeMap } from '../../../models/cross-code-map';
 import { MapLoaderService } from '../../../services/map-loader.service';
@@ -13,6 +13,9 @@ import { GlobalEventsService } from '../../../services/global-events.service';
 	standalone: false
 })
 export class MapSettingsComponent {
+	ref = inject(OverlayRefControl);
+	private events = inject(GlobalEventsService);
+
 	
 	private readonly tileMap: CCMap;
 	settings: CrossCodeMap = {
@@ -20,11 +23,9 @@ export class MapSettingsComponent {
 		attributes: {},
 	} as any;
 	
-	constructor(
-		loader: MapLoaderService,
-		public ref: OverlayRefControl,
-		private events: GlobalEventsService
-	) {
+	constructor() {
+		const loader = inject(MapLoaderService);
+
 		const tileMap = loader.tileMap.getValue();
 		
 		if (!tileMap) {

@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
 
 import { SearchFilterService } from '../../../services/search-filter.service';
 
@@ -38,6 +38,8 @@ const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 	standalone: false
 })
 export class ListSearchOverlayComponent implements OnInit {
+	private searchFilterService = inject(SearchFilterService);
+
 	@ViewChild('filterInput', {static: true}) filterInput!: ElementRef<HTMLInputElement>;
 	
 	@Input() list: string[] = [];
@@ -62,11 +64,6 @@ export class ListSearchOverlayComponent implements OnInit {
 		this._filterText = text;
 		
 		this.filteredList = this.searchFilterService.filterOptions(this.list, text);
-	}
-	
-	constructor(
-		private searchFilterService: SearchFilterService,
-	) {
 	}
 	
 	ngOnInit() {

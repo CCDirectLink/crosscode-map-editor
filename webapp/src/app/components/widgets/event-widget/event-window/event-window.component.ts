@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
 import { EventArray } from '../../../../models/events';
 import { EventEditorComponent } from '../event-editor/editor/event-editor.component';
 import { EventHelperService } from '../event-editor/event-helper.service';
@@ -10,17 +10,14 @@ import { EventHelperService } from '../event-editor/event-helper.service';
 	standalone: false
 })
 export class EventWindowComponent {
+	private helper = inject(EventHelperService);
+
 	
 	@ViewChild('eventEditor', {static: false}) eventEditor!: EventEditorComponent;
 	
 	@Input() event: EventArray | unknown = [];
 	@Input() actionStep = false;
 	@Output() exit = new EventEmitter<EventArray>();
-	
-	constructor(
-		private helper: EventHelperService
-	) {
-	}
 	
 	save() {
 		this.exit.emit(this.eventEditor.export());

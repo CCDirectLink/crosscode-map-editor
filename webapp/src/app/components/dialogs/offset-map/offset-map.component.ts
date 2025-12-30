@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Point } from '../../../models/cross-code-map';
 import { GlobalEventsService } from '../../../services/global-events.service';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
@@ -12,16 +12,13 @@ import { StateHistoryService } from '../floating-window/history/state-history.se
 	standalone: false
 })
 export class OffsetMapComponent {
+	private events = inject(GlobalEventsService);
+	private history = inject(StateHistoryService);
+	ref = inject(OverlayRefControl);
+
 	
 	offset: Point = {x: 0, y: 0};
 	entities = false;
-	
-	constructor(
-		private events: GlobalEventsService,
-		private history: StateHistoryService,
-		public ref: OverlayRefControl,
-	) {
-	}
 	
 	update() {
 		if (this.offset.x === 0 && this.offset.y === 0) {

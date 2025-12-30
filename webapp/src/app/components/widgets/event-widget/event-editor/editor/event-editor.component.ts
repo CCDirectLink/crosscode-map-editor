@@ -1,6 +1,6 @@
 import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, inject } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { destructureEventArray, EventArray } from '../../../../../models/events';
 import { SettingsService } from '../../../../../services/settings.service';
@@ -20,6 +20,10 @@ import { EventHistory } from './event-history';
 	standalone: false
 })
 export class EventEditorComponent implements OnChanges, OnInit {
+	private helper = inject(EventHelperService);
+	private addEvent = inject(AddEventService);
+	private settingsService = inject(SettingsService);
+
 	private static globalBase = 0;
 	
 	@ViewChild('splitpane') splitPane?: SplitPaneComponent;
@@ -58,13 +62,6 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	private selectedNode?: EventDisplay;
 	private shownNode?: EventDisplay;
 	private copiedNode?: EventDisplay;
-	
-	constructor(
-		private helper: EventHelperService,
-		private addEvent: AddEventService,
-		private settingsService: SettingsService
-	) {
-	}
 	
 	ngOnInit() {
 		this.wrapText = this.settingsService.getSettings().wrapEventEditorLines;

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, inject } from '@angular/core';
 import * as Phaser from 'phaser';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,23 +22,29 @@ import { JsonLoaderService } from '../../services/json-loader.service';
 	standalone: false
 })
 export class PhaserComponent implements AfterViewInit {
+	private element = inject(ElementRef);
+	private mapLoader = inject(MapLoaderService);
+	private globalEvents = inject(GlobalEventsService);
+	private stateHistory = inject(StateHistoryService);
+	private phaserEventsService = inject(PhaserEventsService);
+	private heightMap = inject(HeightMapService);
+	private http = inject(HttpClientService);
+
 	
 	@ViewChild('content', {static: true}) content!: ElementRef<HTMLElement>;
 	
-	constructor(
-		private element: ElementRef,
-		private mapLoader: MapLoaderService,
-		private globalEvents: GlobalEventsService,
-		private stateHistory: StateHistoryService,
-		private phaserEventsService: PhaserEventsService,
-		private heightMap: HeightMapService,
-		private http: HttpClientService,
-		snackbar: MatSnackBar,
-		registry: EntityRegistryService,
-		autotile: AutotileService,
-		settingsService: SettingsService,
-		jsonLoader: JsonLoaderService,
-	) {
+	constructor() {
+		const mapLoader = this.mapLoader;
+		const globalEvents = this.globalEvents;
+		const stateHistory = this.stateHistory;
+		const phaserEventsService = this.phaserEventsService;
+		const http = this.http;
+		const snackbar = inject(MatSnackBar);
+		const registry = inject(EntityRegistryService);
+		const autotile = inject(AutotileService);
+		const settingsService = inject(SettingsService);
+		const jsonLoader = inject(JsonLoaderService);
+
 		Globals.stateHistoryService = stateHistory;
 		Globals.mapLoaderService = mapLoader;
 		Globals.phaserEventsService = phaserEventsService;

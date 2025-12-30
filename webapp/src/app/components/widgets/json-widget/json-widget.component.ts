@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { JsonEditorComponent } from '../../json-editor/json-editor.component';
 import { AbstractWidget } from '../abstract-widget';
@@ -10,14 +10,12 @@ import { AbstractWidget } from '../abstract-widget';
 	standalone: false
 })
 export class JsonWidgetComponent extends AbstractWidget {
+	private dialog = inject(MatDialog);
+
 	
 	@Input() noPropName = false;
 	private timer = -1;
 	json = JSON;
-	
-	constructor(private dialog: MatDialog) {
-		super();
-	}
 	
 	openJsonEditor() {
 		const ref = this.dialog.open(JsonEditorComponent, {

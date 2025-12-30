@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ImageSelectOverlayComponent } from '../shared/image-select-overlay/image-select-overlay.component';
 import { HttpClientService } from '../../../services/http-client.service';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
@@ -17,14 +17,15 @@ import { PropListCard } from '../shared/image-select-overlay/image-select-card/i
 	standalone: false
 })
 export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttributes> {
+	private http = inject(HttpClientService);
+
 	
 	private comp: ImageSelectOverlayComponent = new ImageSelectOverlayComponent();
 	
-	constructor(
-		private http: HttpClientService,
-		overlayService: OverlayService,
-		overlay: Overlay
-	) {
+	constructor() {
+		const overlayService = inject(OverlayService);
+		const overlay = inject(Overlay);
+
 		super(overlayService, overlay);
 	}
 	

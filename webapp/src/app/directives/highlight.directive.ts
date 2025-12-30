@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, inject } from '@angular/core';
 import { SearchFilterService } from '../services/search-filter.service';
 
 @Directive({
@@ -6,16 +6,12 @@ import { SearchFilterService } from '../services/search-filter.service';
 	standalone: true
 })
 export class HighlightDirective implements OnChanges {
+	private element = inject(ElementRef);
+	private searchFilterService = inject(SearchFilterService);
+
 	
 	@Input() highlightText?: string;
 	@Input() highlightMatch?: string;
-	
-	constructor(
-		private element: ElementRef,
-		private searchFilterService: SearchFilterService,
-	) {
-	
-	}
 	
 	ngOnChanges(): void {
 		this.element.nativeElement.innerHTML = this.highlight();

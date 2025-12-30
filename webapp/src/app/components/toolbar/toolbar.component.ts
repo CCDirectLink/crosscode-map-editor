@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
@@ -21,6 +21,14 @@ import { SettingsComponent } from '../dialogs/settings/settings.component';
 	standalone: false
 })
 export class ToolbarComponent implements OnInit {
+	private mapLoader = inject(MapLoaderService);
+	events = inject(GlobalEventsService);
+	private dialog = inject(MatDialog);
+	private overlayService = inject(OverlayService);
+	private overlay = inject(Overlay);
+	private router = inject(Router);
+	private save = inject(SaveService);
+
 	
 	map?: CCMap;
 	loaded = false;
@@ -30,16 +38,6 @@ export class ToolbarComponent implements OnInit {
 	
 	@Output()
 	public loadMapClicked = new EventEmitter<void>(false);
-	
-	constructor(private mapLoader: MapLoaderService,
-		public events: GlobalEventsService,
-		private dialog: MatDialog,
-		private overlayService: OverlayService,
-		private overlay: Overlay,
-		private router: Router,
-		private save: SaveService,
-	) {
-	}
 	
 	ngOnInit() {
 		this.mapLoader.tileMap.subscribe(map => {

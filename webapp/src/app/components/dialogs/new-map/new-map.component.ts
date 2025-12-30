@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { CrossCodeMap } from '../../../models/cross-code-map';
 import { MapLoaderService } from '../../../services/map-loader.service';
@@ -11,9 +11,12 @@ import { OverlayRefControl } from '../overlay/overlay-ref-control';
 	standalone: false
 })
 export class NewMapComponent {
+	private mapLoader = inject(MapLoaderService);
+	ref = inject(OverlayRefControl);
+
 	map: CrossCodeMap;
 	
-	constructor(private mapLoader: MapLoaderService, public ref: OverlayRefControl) {
+	constructor() {
 		this.map = this.createDefaultMap();
 	}
 	

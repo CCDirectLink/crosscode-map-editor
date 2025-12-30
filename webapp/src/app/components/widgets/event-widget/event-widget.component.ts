@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Component, OnChanges } from '@angular/core';
+import { Component, OnChanges, inject } from '@angular/core';
 
 import { OverlayRefControl } from '../../dialogs/overlay/overlay-ref-control';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
@@ -14,15 +14,11 @@ import { EventWindowComponent } from './event-window/event-window.component';
 	standalone: false
 })
 export class EventWidgetComponent extends AbstractWidget implements OnChanges {
+	private overlayService = inject(OverlayService);
+	private overlay = inject(Overlay);
+
 	
 	private ref?: OverlayRefControl;
-	
-	constructor(
-		private overlayService: OverlayService,
-		private overlay: Overlay
-	) {
-		super();
-	}
 	
 	override ngOnChanges(): void {
 		super.ngOnChanges();

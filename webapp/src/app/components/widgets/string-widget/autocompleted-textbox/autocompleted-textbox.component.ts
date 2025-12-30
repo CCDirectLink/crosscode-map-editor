@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { SearchFilterService } from '../../../../services/search-filter.service';
 
 @Component({
@@ -8,6 +8,8 @@ import { SearchFilterService } from '../../../../services/search-filter.service'
 	standalone: false
 })
 export class AutocompletedTextboxComponent implements OnChanges {
+	private searchFilterService = inject(SearchFilterService);
+
 	@Input() availableOptions!: string[];
 	@Input() text = '';
 	@Output() textChange = new EventEmitter<string>();
@@ -15,11 +17,6 @@ export class AutocompletedTextboxComponent implements OnChanges {
 	suggestedOptions = new Set<string>();
 	disableTooltip = false;
 	showWarning = false;
-	
-	constructor(
-		private searchFilterService: SearchFilterService,
-	) {
-	}
 	
 	ngOnChanges(changes: SimpleChanges) {
 		this.updateSuggestedOptions();

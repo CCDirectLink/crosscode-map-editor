@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -18,6 +18,12 @@ import { OverlayRefControl } from '../overlay/overlay-ref-control';
 	standalone: false
 })
 export class SettingsComponent implements OnInit {
+	private ref = inject(OverlayRefControl);
+	private electron = inject(ElectronService);
+	private browser = inject(BrowserService);
+	private settingsService = inject(SettingsService);
+	private snackBar = inject(MatSnackBar);
+
 	
 	isElectron = Globals.isElectron;
 	folderFormControl = new FormControl();
@@ -40,14 +46,11 @@ export class SettingsComponent implements OnInit {
 	
 	private readonly sharedService: SharedService;
 	
-	constructor(
-		private ref: OverlayRefControl,
-		private electron: ElectronService,
-		private browser: BrowserService,
-		private settingsService: SettingsService,
-		private snackBar: MatSnackBar,
-		http: HttpClientService
-	) {
+	constructor() {
+		const electron = this.electron;
+		const browser = this.browser;
+		const http = inject(HttpClientService);
+
 		if (Globals.isElectron) {
 			this.sharedService = electron;
 		} else {

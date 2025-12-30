@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EventManager } from '@angular/platform-browser';
 import { GlobalEventsService } from './global-events.service';
@@ -11,14 +11,15 @@ import { CCMap } from './phaser/tilemap/cc-map';
 	providedIn: 'root'
 })
 export class SaveService {
+	private http = inject(HttpClientService);
+	private snackbar = inject(MatSnackBar);
+	private readonly eventsService = inject(GlobalEventsService);
 
-	constructor(
-		private http: HttpClientService,
-		private snackbar: MatSnackBar,
-		mapLoader: MapLoaderService,
-		eventManager: EventManager,
-		private readonly eventsService: GlobalEventsService,
-	) {
+
+	constructor() {
+		const mapLoader = inject(MapLoaderService);
+		const eventManager = inject(EventManager);
+
 		eventManager.addEventListener(document as any, 'keydown', (event: KeyboardEvent) => {
 			if (Helper.isInputFocused()) {
 				return;

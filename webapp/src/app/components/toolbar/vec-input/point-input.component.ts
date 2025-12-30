@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, Input, OnDestroy, Optional, Self } from '@angular/core';
+import { Component, ElementRef, HostBinding, Input, OnDestroy, inject } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { Point } from '../../../models/cross-code-map';
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -16,6 +16,9 @@ import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 	styleUrl: './point-input.component.scss'
 })
 export class PointInputComponent implements MatFormFieldControl<Point>, OnDestroy, ControlValueAccessor {
+	private elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+	ngControl = inject(NgControl, { optional: true, self: true });
+
 	parts: FormGroup;
 	stateChanges = new Subject<void>();
 	
@@ -106,11 +109,9 @@ export class PointInputComponent implements MatFormFieldControl<Point>, OnDestro
 		}
 	}
 	
-	constructor(
-		fb: FormBuilder,
-		private elementRef: ElementRef<HTMLElement>,
-		@Optional() @Self() public ngControl: NgControl,
-	) {
+	constructor() {
+		const fb = inject(FormBuilder);
+
 		this.parts = fb.group<Point>({
 			x: 0,
 			y: 0
