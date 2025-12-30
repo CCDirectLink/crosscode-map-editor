@@ -42,10 +42,15 @@ $color2: #343434;
 	white-space: nowrap;
 
 	cursor: move;
+
 	&.cdk-drag-placeholder {
-	  opacity: 0;
-	  transition-duration: 0s; //The placeholder should move instantly so the dragged element can transition to the correct position on release
+		opacity: 0;
+		transition-duration: 0s; //The placeholder should move instantly so the dragged element can transition to the correct position on release
 	}
+}
+
+.event-inner-container {
+	overflow-y: auto;
 }
 
 .wrapping .event-inner-container .mat-tree-node {
@@ -58,6 +63,7 @@ $color2: #343434;
 		background-color: $color2; //Starts with brighter color (which happens to be $color2)
 		//repeating-linear-gradient(180deg, #3a3a3a, #3a3a3a 26px, #343434 26px, #343434 52px)
 	}
+
 	&:nth-child(odd) {
 		background-color: $color1;
 	}
