@@ -1,11 +1,16 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { SearchFilterService } from '../../../../services/search-filter.service';
+import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
+import { FormsModule } from '@angular/forms';
+import { HighlightDirective } from '../../../../directives/highlight.directive';
+import { MatIcon } from '@angular/material/icon';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
-	selector: 'app-autocompleted-textbox',
-	templateUrl: './autocompleted-textbox.component.html',
-	styleUrls: ['./autocompleted-textbox.component.scss', '../../widget.scss'],
-	standalone: false
+    selector: 'app-autocompleted-textbox',
+    templateUrl: './autocompleted-textbox.component.html',
+    styleUrls: ['./autocompleted-textbox.component.scss', '../../widget.scss'],
+    imports: [MatAutocompleteTrigger, FormsModule, MatAutocomplete, MatOption, HighlightDirective, MatIcon, MatTooltip]
 })
 export class AutocompletedTextboxComponent implements OnChanges {
 	private searchFilterService = inject(SearchFilterService);

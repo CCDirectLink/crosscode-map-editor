@@ -2,12 +2,15 @@ import { AfterViewInit, Component, ElementRef, inject, ViewChild } from '@angula
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import JSONEditor, { JSONEditorOptions } from 'jsoneditor';
 import { Globals } from '../../services/globals';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-	selector: 'app-json-editor',
-	templateUrl: './json-editor.component.html',
-	styleUrls: ['./json-editor.component.scss'],
-	standalone: false
+    selector: 'app-json-editor',
+    templateUrl: './json-editor.component.html',
+    styleUrls: ['./json-editor.component.scss'],
+    imports: [FlexModule, FormsModule, MatButton]
 })
 export class JsonEditorComponent implements AfterViewInit {
 	ref = inject<MatDialogRef<JsonEditorComponent>>(MatDialogRef);

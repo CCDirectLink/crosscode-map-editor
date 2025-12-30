@@ -7,12 +7,17 @@ import { CCMap } from '../../services/phaser/tilemap/cc-map';
 import { AbstractWidget } from '../widgets/abstract-widget';
 import { Vec2WidgetComponent } from '../widgets/vec2-widget/vec2-widget.component';
 import { WidgetRegistryService } from '../widgets/widget-registry.service';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { StringWidgetComponent } from '../widgets/string-widget/string-widget.component';
+import { LevelWidgetComponent } from '../widgets/level-widget/level-widget.component';
 
 @Component({
-	selector: 'app-entities',
-	templateUrl: './entities.component.html',
-	styleUrls: ['./entities.component.scss'],
-	standalone: false
+    selector: 'app-entities',
+    templateUrl: './entities.component.html',
+    styleUrls: ['./entities.component.scss'],
+    imports: [FlexModule, MatFormField, MatInput, FormsModule, StringWidgetComponent, Vec2WidgetComponent, LevelWidgetComponent, HostDirective]
 })
 export class EntitiesComponent {
 	private widgetRegistry = inject(WidgetRegistryService);

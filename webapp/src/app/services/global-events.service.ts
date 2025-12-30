@@ -3,7 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { MapEntity, Point, Point3 } from '../models/cross-code-map';
 import { EditorView } from '../models/editor-view';
 import { CCEntity } from './phaser/entities/cc-entity';
-import { GridSettings } from '../components/toolbar/grid-menu/grid-menu.component';
+import { type GridSettings } from '../components/toolbar/grid-menu/grid-menu.component';
 import { Globals } from './globals';
 
 @Injectable({

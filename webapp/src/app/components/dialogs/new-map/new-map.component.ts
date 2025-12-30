@@ -3,12 +3,16 @@ import { Component, inject } from '@angular/core';
 import { CrossCodeMap } from '../../../models/cross-code-map';
 import { MapLoaderService } from '../../../services/map-loader.service';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
+import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
+import { MapContentSettingsComponent } from '../map-settings/map-content-settings/map-content-settings.component';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-	selector: 'app-new-map',
-	templateUrl: './new-map.component.html',
-	styleUrls: ['./new-map.component.scss'],
-	standalone: false
+    selector: 'app-new-map',
+    templateUrl: './new-map.component.html',
+    styleUrls: ['./new-map.component.scss'],
+    imports: [OverlayPanelComponent, MapContentSettingsComponent, FlexModule, MatButton]
 })
 export class NewMapComponent {
 	private mapLoader = inject(MapLoaderService);

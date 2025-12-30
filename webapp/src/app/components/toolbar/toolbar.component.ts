@@ -13,12 +13,21 @@ import { NewMapComponent } from '../dialogs/new-map/new-map.component';
 import { OffsetMapComponent } from '../dialogs/offset-map/offset-map.component';
 import { OverlayService } from '../dialogs/overlay/overlay.service';
 import { SettingsComponent } from '../dialogs/settings/settings.component';
+import { MatToolbar } from '@angular/material/toolbar';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { ToolbarDividerComponent } from './toolbar-divider/toolbar-divider.component';
+import { GridMenuComponent } from './grid-menu/grid-menu.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-	selector: 'app-toolbar',
-	templateUrl: './toolbar.component.html',
-	styleUrls: ['./toolbar.component.scss'],
-	standalone: false
+    selector: 'app-toolbar',
+    templateUrl: './toolbar.component.html',
+    styleUrls: ['./toolbar.component.scss'],
+    imports: [MatToolbar, FlexModule, MatButton, MatMenuTrigger, MatMenu, MatMenuItem, MatCheckbox, ToolbarDividerComponent, GridMenuComponent, MatProgressSpinner, AsyncPipe]
 })
 export class ToolbarComponent implements OnInit {
 	private mapLoader = inject(MapLoaderService);

@@ -7,6 +7,8 @@ import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { AbstractWidget } from '../abstract-widget';
 import { NpcStatesComponent } from './npc-states/npc-states.component';
 import { FACE8 } from '../../../services/phaser/entities/registry/npc';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatTooltip } from '@angular/material/tooltip';
 
 export interface NPCState {
 	reactType: string;
@@ -26,10 +28,10 @@ export interface NPCState {
 }
 
 @Component({
-	selector: 'app-npcstates-widget',
-	templateUrl: './npc-states-widget.component.html',
-	styleUrls: ['./npc-states-widget.component.scss', '../widget.scss'],
-	standalone: false
+    selector: 'app-npcstates-widget',
+    templateUrl: './npc-states-widget.component.html',
+    styleUrls: ['./npc-states-widget.component.scss', '../widget.scss'],
+    imports: [FlexModule, MatTooltip]
 })
 export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, OnChanges, OnDestroy {
 	private overlayService = inject(OverlayService);

@@ -1,16 +1,19 @@
 import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatTabChangeEvent, MatTabGroup, MatTab } from '@angular/material/tabs';
 import { EditorView } from '../../models/editor-view';
 import { GlobalEventsService } from '../../services/global-events.service';
 import { MapLoaderService } from '../../services/map-loader.service';
 import { CCMap } from '../../services/phaser/tilemap/cc-map';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { LayersComponent } from '../layers/layers.component';
+import { EntitiesComponent } from '../entities/entities.component';
 
 @Component({
-	selector: 'app-sidenav',
-	templateUrl: './sidenav.component.html',
-	styleUrls: ['./sidenav.component.scss'],
-	encapsulation: ViewEncapsulation.None,
-	standalone: false
+    selector: 'app-sidenav',
+    templateUrl: './sidenav.component.html',
+    styleUrls: ['./sidenav.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    imports: [FlexModule, MatTabGroup, MatTab, LayersComponent, EntitiesComponent]
 })
 export class SidenavComponent implements OnInit {
 	private mapLoader = inject(MapLoaderService);

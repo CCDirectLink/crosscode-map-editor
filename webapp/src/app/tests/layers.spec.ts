@@ -23,15 +23,14 @@ describe('Layers', () => {
 	let fixture: ComponentFixture<PhaserComponent>;
 	
 	beforeEach(() => TestBed.configureTestingModule({
-		declarations: [PhaserComponent, LayersComponent],
-		imports: [NoopAnimationsModule, AppModule, MaterialModule],
-		providers: [
-			{provide: AutotileService, useValue: new SimpleServiceMock()},
-			{provide: HeightMapService, useValue: new SimpleServiceMock()},
-			StateHistoryService,
-			provideHttpClient(withInterceptorsFromDi())
-		]
-	}).compileComponents());
+    imports: [NoopAnimationsModule, AppModule, MaterialModule, PhaserComponent, LayersComponent],
+    providers: [
+        { provide: AutotileService, useValue: new SimpleServiceMock() },
+        { provide: HeightMapService, useValue: new SimpleServiceMock() },
+        StateHistoryService,
+        provideHttpClient(withInterceptorsFromDi())
+    ]
+}).compileComponents());
 	
 	beforeEach(() => {
 		jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;

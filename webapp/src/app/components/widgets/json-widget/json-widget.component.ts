@@ -2,12 +2,15 @@ import { Component, Input, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { JsonEditorComponent } from '../../json-editor/json-editor.component';
 import { AbstractWidget } from '../abstract-widget';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatTooltip } from '@angular/material/tooltip';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-	selector: 'app-json-widget',
-	templateUrl: './json-widget.component.html',
-	styleUrls: ['./json-widget.component.scss', '../widget.scss'],
-	standalone: false
+    selector: 'app-json-widget',
+    templateUrl: './json-widget.component.html',
+    styleUrls: ['./json-widget.component.scss', '../widget.scss'],
+    imports: [FlexModule, MatTooltip, FormsModule]
 })
 export class JsonWidgetComponent extends AbstractWidget {
 	private dialog = inject(MatDialog);

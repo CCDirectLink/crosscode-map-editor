@@ -14,12 +14,14 @@ import { PhaserEventsService } from '../../services/phaser/phaser-events.service
 import { SettingsService } from '../../services/settings.service';
 import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
 import { JsonLoaderService } from '../../services/json-loader.service';
+import { CaptionsComponent } from '../captions/captions.component';
+import { EditorComponent } from '../editor/editor.component';
 
 @Component({
-	selector: 'app-phaser',
-	templateUrl: './phaser.component.html',
-	styleUrls: ['./phaser.component.scss'],
-	standalone: false
+    selector: 'app-phaser',
+    templateUrl: './phaser.component.html',
+    styleUrls: ['./phaser.component.scss'],
+    imports: [CaptionsComponent, EditorComponent]
 })
 export class PhaserComponent implements AfterViewInit {
 	private element = inject(ElementRef);

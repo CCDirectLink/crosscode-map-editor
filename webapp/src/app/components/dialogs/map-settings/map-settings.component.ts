@@ -5,12 +5,15 @@ import { MapLoaderService } from '../../../services/map-loader.service';
 import { CCMap } from '../../../services/phaser/tilemap/cc-map';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
 import { GlobalEventsService } from '../../../services/global-events.service';
+import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
+import { MapContentSettingsComponent } from './map-content-settings/map-content-settings.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-	selector: 'app-map-settings',
-	templateUrl: './map-settings.component.html',
-	styleUrls: ['./map-settings.component.scss'],
-	standalone: false
+    selector: 'app-map-settings',
+    templateUrl: './map-settings.component.html',
+    styleUrls: ['./map-settings.component.scss'],
+    imports: [OverlayPanelComponent, MapContentSettingsComponent, MatButton]
 })
 export class MapSettingsComponent {
 	ref = inject(OverlayRefControl);

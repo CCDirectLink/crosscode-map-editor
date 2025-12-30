@@ -7,12 +7,13 @@ import { Overlay } from '@angular/cdk/overlay';
 import { lastValueFrom } from 'rxjs';
 import { CharacterSettings, NPC, NpcAttributes } from '../../../services/phaser/entities/registry/npc';
 import { Helper } from '../../../services/phaser/helper';
+import { InputWithButtonComponent } from '../inputs/input-with-button/input-with-button.component';
 
 @Component({
-	selector: 'app-character-widget',
-	templateUrl: './character-widget.component.html',
-	styleUrls: ['./character-widget.component.scss', '../widget.scss'],
-	standalone: false
+    selector: 'app-character-widget',
+    templateUrl: './character-widget.component.html',
+    styleUrls: ['./character-widget.component.scss', '../widget.scss'],
+    imports: [InputWithButtonComponent]
 })
 export class CharacterWidgetComponent extends OverlayWidget {
 	private http = inject(HttpClientService);

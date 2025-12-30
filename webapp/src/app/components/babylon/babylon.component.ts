@@ -6,10 +6,9 @@ import { GlobalEventsService } from '../../services/global-events.service';
 import { Globals } from '../../services/globals';
 
 @Component({
-	selector: 'app-babylon',
-	templateUrl: './babylon.component.html',
-	styleUrls: ['./babylon.component.scss'],
-	standalone: false
+    selector: 'app-babylon',
+    templateUrl: './babylon.component.html',
+    styleUrls: ['./babylon.component.scss']
 })
 export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {
 	private router = inject(Router);

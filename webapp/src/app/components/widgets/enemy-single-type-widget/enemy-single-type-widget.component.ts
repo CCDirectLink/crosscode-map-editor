@@ -6,12 +6,13 @@ import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
 import { lastValueFrom } from 'rxjs';
 import { EnemyAttributes } from '../../../services/phaser/entities/registry/enemy';
+import { InputWithButtonComponent } from '../inputs/input-with-button/input-with-button.component';
 
 @Component({
-	selector: 'app-enemy-single-type-widget',
-	templateUrl: './enemy-single-type-widget.component.html',
-	styleUrls: ['./enemy-single-type-widget.component.scss', '../widget.scss'],
-	standalone: false
+    selector: 'app-enemy-single-type-widget',
+    templateUrl: './enemy-single-type-widget.component.html',
+    styleUrls: ['./enemy-single-type-widget.component.scss', '../widget.scss'],
+    imports: [InputWithButtonComponent]
 })
 export class EnemySingleTypeWidgetComponent extends OverlayWidget {
 	private http = inject(HttpClientService);

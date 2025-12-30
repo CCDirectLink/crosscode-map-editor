@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { BrowserService } from '../../../services/browser.service';
@@ -8,14 +8,25 @@ import { Globals } from '../../../services/globals';
 import { HttpClientService } from '../../../services/http-client.service';
 import { AppSettings, SettingsService } from '../../../services/settings.service';
 import { SharedService } from '../../../services/shared-service';
-import { PropListCard } from '../../widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
+import { PropListCard, ImageSelectCardComponent } from '../../widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
+import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatFormField, MatLabel, MatInput, MatHint, MatError } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { NgClass } from '@angular/common';
+import { ExtendedModule } from '@angular/flex-layout/extended';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/autocomplete';
+import { ColoredTextDirective } from '../../../directives/colored-text.directive';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
-	selector: 'app-settings',
-	templateUrl: './settings.component.html',
-	styleUrls: ['./settings.component.scss'],
-	standalone: false
+    selector: 'app-settings',
+    templateUrl: './settings.component.html',
+    styleUrls: ['./settings.component.scss'],
+    imports: [OverlayPanelComponent, FlexModule, FormsModule, MatFormField, MatLabel, MatInput, ReactiveFormsModule, MatHint, MatError, MatButton, MatIcon, NgClass, ExtendedModule, MatSelect, MatOption, ColoredTextDirective, MatCheckbox, ImageSelectCardComponent]
 })
 export class SettingsComponent implements OnInit {
 	private ref = inject(OverlayRefControl);

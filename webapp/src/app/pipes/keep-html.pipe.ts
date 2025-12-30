@@ -2,8 +2,7 @@ import { Pipe, PipeTransform, inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Pipe({
-	name: 'keepHtml', pure: false,
-	standalone: false
+    name: 'keepHtml', pure: false
 })
 export class KeepHtmlPipe implements PipeTransform {
 	private sanitizer = inject(DomSanitizer);

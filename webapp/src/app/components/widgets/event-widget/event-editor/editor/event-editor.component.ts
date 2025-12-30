@@ -1,7 +1,7 @@
-import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDropList, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild, inject } from '@angular/core';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodePadding } from '@angular/material/tree';
 import { destructureEventArray, EventArray } from '../../../../../models/events';
 import { SettingsService } from '../../../../../services/settings.service';
 import { SplitPaneComponent } from '../../../../split-pane/split-pane.component';
@@ -11,13 +11,17 @@ import { EventDetailComponent, RefreshType } from '../detail/event-detail.compon
 import { EventDisplay } from '../event-display.model';
 import { EventHelperService } from '../event-helper.service';
 import { EventHistory } from './event-history';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { NgClass } from '@angular/common';
+import { ExtendedModule } from '@angular/flex-layout/extended';
+import { RowTextComponent } from '../row-text/row-text.component';
 
 @Component({
-	selector: 'app-event-editor',
-	templateUrl: './event-editor.component.html',
-	styleUrls: ['./event-editor.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	standalone: false
+    selector: 'app-event-editor',
+    templateUrl: './event-editor.component.html',
+    styleUrls: ['./event-editor.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [FlexModule, NgClass, ExtendedModule, SplitPaneComponent, CdkDropList, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodePadding, CdkDrag, CdkDragHandle, RowTextComponent, EventDetailComponent]
 })
 export class EventEditorComponent implements OnChanges, OnInit {
 	private helper = inject(EventHelperService);

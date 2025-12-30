@@ -10,13 +10,15 @@ import { Globals } from '../../../services/globals';
 import { OverlayWidget } from '../overlay-widget';
 import { EntryGfxEnds, GfxEndsDir, ScalableProp, ScalablePropAttributes, ScalablePropConfig, ScalablePropDef } from '../../../services/phaser/entities/registry/scalable-prop';
 import { PropListCard } from '../shared/image-select-overlay/image-select-card/image-select-card.component';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatTooltip } from '@angular/material/tooltip';
 import Point = Electron.Point;
 
 @Component({
-	selector: 'app-scalable-prop-config-widget',
-	templateUrl: './scalable-prop-config-widget.component.html',
-	styleUrls: ['./scalable-prop-config-widget.component.scss', '../widget.scss'],
-	standalone: false
+    selector: 'app-scalable-prop-config-widget',
+    templateUrl: './scalable-prop-config-widget.component.html',
+    styleUrls: ['./scalable-prop-config-widget.component.scss', '../widget.scss'],
+    imports: [FlexModule, MatTooltip]
 })
 export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePropAttributes> implements OnInit, OnDestroy {
 	private http = inject(HttpClientService);

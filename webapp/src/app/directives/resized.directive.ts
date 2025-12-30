@@ -8,10 +8,7 @@ export interface ResizedEvent {
 	isFirst: boolean;
 }
 
-@Directive({
-	selector: '[appResized]',
-	standalone: false
-})
+@Directive({ selector: '[appResized]' })
 export class ResizedDirective implements OnInit, OnDestroy {
 	private readonly element = inject(ElementRef);
 	private readonly zone = inject(NgZone);

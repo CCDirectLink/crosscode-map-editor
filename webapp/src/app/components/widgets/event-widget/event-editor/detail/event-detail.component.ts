@@ -7,14 +7,17 @@ import { JsonWidgetComponent } from '../../../json-widget/json-widget.component'
 import { WidgetRegistryService } from '../../../widget-registry.service';
 import { AbstractEvent } from '../../event-registry/abstract-event';
 import { EventHelperService } from '../event-helper.service';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 export type RefreshType = 'Node' | 'Full';
 
 @Component({
-	selector: 'app-event-detail',
-	templateUrl: './event-detail.component.html',
-	styleUrls: ['./event-detail.component.scss'],
-	standalone: false
+    selector: 'app-event-detail',
+    templateUrl: './event-detail.component.html',
+    styleUrls: ['./event-detail.component.scss'],
+    imports: [FlexModule, MatIconButton, MatIcon, HostDirective]
 })
 export class EventDetailComponent implements OnDestroy {
 	private widgetRegistry = inject(WidgetRegistryService);

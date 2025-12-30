@@ -9,12 +9,14 @@ import { Prop, PropAttributes } from '../../../services/phaser/entities/registry
 import { Helper } from '../../../services/phaser/helper';
 import { Anims, prepareSheet, PropDef, PropSheet } from '../../../services/phaser/sheet-parser';
 import { PropListCard } from '../shared/image-select-overlay/image-select-card/image-select-card.component';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
-	selector: 'app-prop-type-widget',
-	templateUrl: './prop-type-widget.component.html',
-	styleUrls: ['./prop-type-widget.component.scss', '../widget.scss'],
-	standalone: false
+    selector: 'app-prop-type-widget',
+    templateUrl: './prop-type-widget.component.html',
+    styleUrls: ['./prop-type-widget.component.scss', '../widget.scss'],
+    imports: [FlexModule, MatTooltip]
 })
 export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 	private http = inject(HttpClientService);

@@ -4,12 +4,17 @@ import { GlobalEventsService } from '../../../services/global-events.service';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
 import { Globals } from '../../../services/globals';
 import { StateHistoryService } from '../floating-window/history/state-history.service';
+import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-	selector: 'app-offset-map',
-	templateUrl: './offset-map.component.html',
-	styleUrls: ['./offset-map.component.scss'],
-	standalone: false
+    selector: 'app-offset-map',
+    templateUrl: './offset-map.component.html',
+    styleUrls: ['./offset-map.component.scss'],
+    imports: [OverlayPanelComponent, MatFormField, MatInput, FormsModule, MatCheckbox, MatButton]
 })
 export class OffsetMapComponent {
 	private events = inject(GlobalEventsService);

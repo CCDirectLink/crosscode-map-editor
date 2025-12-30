@@ -5,7 +5,7 @@ import { CCMap } from '../tilemap/cc-map';
 import { Vec2 } from '../vec2';
 
 import { Subscription } from 'rxjs';
-import { AbstractWidget } from '../../../components/widgets/abstract-widget';
+import { type AbstractWidget } from '../../../components/widgets/abstract-widget';
 import { Globals } from '../../globals';
 import { BaseObject } from '../base-object';
 

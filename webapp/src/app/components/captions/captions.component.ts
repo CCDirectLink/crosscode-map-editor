@@ -8,10 +8,9 @@ export interface BottomUiElement {
 }
 
 @Component({
-	selector: 'app-captions',
-	templateUrl: './captions.component.html',
-	styleUrls: ['./captions.component.scss'],
-	standalone: false
+    selector: 'app-captions',
+    templateUrl: './captions.component.html',
+    styleUrls: ['./captions.component.scss']
 })
 export class CaptionsComponent implements OnInit {
 	version = environment.version;

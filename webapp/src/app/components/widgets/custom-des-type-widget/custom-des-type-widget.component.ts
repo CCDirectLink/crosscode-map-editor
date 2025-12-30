@@ -9,12 +9,13 @@ import { ItemDestruct, ItemDestructAttributes, ItemDestructTypes } from '../../.
 import { Helper } from '../../../services/phaser/helper';
 import { GlobalSettings } from '../../../services/phaser/global-settings';
 import { PropListCard } from '../shared/image-select-overlay/image-select-card/image-select-card.component';
+import { InputWithButtonComponent } from '../inputs/input-with-button/input-with-button.component';
 
 @Component({
-	selector: 'app-custom-des-type-widget',
-	templateUrl: './custom-des-type-widget.component.html',
-	styleUrls: ['./custom-des-type-widget.component.scss', '../widget.scss'],
-	standalone: false
+    selector: 'app-custom-des-type-widget',
+    templateUrl: './custom-des-type-widget.component.html',
+    styleUrls: ['./custom-des-type-widget.component.scss', '../widget.scss'],
+    imports: [InputWithButtonComponent]
 })
 export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttributes> {
 	private http = inject(HttpClientService);

@@ -22,15 +22,14 @@ describe('Map Loading', () => {
 	let fixture: ComponentFixture<PhaserComponent>;
 	
 	beforeEach(() => TestBed.configureTestingModule({
-		declarations: [PhaserComponent],
-		imports: [AppModule],
-		providers: [
-			{provide: AutotileService, useValue: new SimpleServiceMock()},
-			{provide: HeightMapService, useValue: new SimpleServiceMock()},
-			StateHistoryService,
-			provideHttpClient(withInterceptorsFromDi())
-		]
-	}).compileComponents());
+    imports: [AppModule, PhaserComponent],
+    providers: [
+        { provide: AutotileService, useValue: new SimpleServiceMock() },
+        { provide: HeightMapService, useValue: new SimpleServiceMock() },
+        StateHistoryService,
+        provideHttpClient(withInterceptorsFromDi())
+    ]
+}).compileComponents());
 	
 	beforeEach(() => {
 		jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;

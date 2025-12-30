@@ -4,12 +4,18 @@ import { NavigationStart, Router } from '@angular/router';
 
 import { Helper } from '../../../../services/phaser/helper';
 import { HistoryState, HistoryStateContainer, StateHistoryService } from './state-history.service';
+import { FloatingWindowComponent } from '../floating-window.component';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatButton } from '@angular/material/button';
+import { NgClass } from '@angular/common';
+import { ExtendedModule } from '@angular/flex-layout/extended';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-	selector: 'app-history',
-	templateUrl: './history.component.html',
-	styleUrls: ['./history.component.scss'],
-	standalone: false
+    selector: 'app-history',
+    templateUrl: './history.component.html',
+    styleUrls: ['./history.component.scss'],
+    imports: [FloatingWindowComponent, FlexModule, MatButton, NgClass, ExtendedModule, MatIcon]
 })
 export class HistoryComponent implements OnInit, OnDestroy {
 	private stateHistory = inject(StateHistoryService);

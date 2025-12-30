@@ -2,6 +2,13 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild, inject } from '@angular/core';
 
 import { SearchFilterService } from '../../../services/search-filter.service';
+import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatNavList, MatListItem, MatDivider } from '@angular/material/list';
+import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
+import { HighlightDirective } from '../../../directives/highlight.directive';
 
 const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 
@@ -13,29 +20,29 @@ const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
  * height can be configured through the overlay config, width is fixed
  */
 @Component({
-	animations: [
-		trigger('slideContent', [
-			transition('* => slide', [
-				style({
-					transform: 'translate(80px, 0)',
-					opacity: 0
-				}),
-				animate(ANIMATION_TIMING)
-			]),
-			state('scale', style({'transform-origin': '0 0 0'})),
-			transition('* => scale', [
-				style({
-					'transform-origin': '0 0 0',
-					transform: 'scale(0, 0)'
-				}),
-				animate(ANIMATION_TIMING)
-			]),
-		])
-	],
-	selector: 'app-list-search-overlay',
-	templateUrl: './list-search-overlay.component.html',
-	styleUrls: ['./list-search-overlay.component.scss'],
-	standalone: false
+    animations: [
+        trigger('slideContent', [
+            transition('* => slide', [
+                style({
+                    transform: 'translate(80px, 0)',
+                    opacity: 0
+                }),
+                animate(ANIMATION_TIMING)
+            ]),
+            state('scale', style({ 'transform-origin': '0 0 0' })),
+            transition('* => scale', [
+                style({
+                    'transform-origin': '0 0 0',
+                    transform: 'scale(0, 0)'
+                }),
+                animate(ANIMATION_TIMING)
+            ]),
+        ])
+    ],
+    selector: 'app-list-search-overlay',
+    templateUrl: './list-search-overlay.component.html',
+    styleUrls: ['./list-search-overlay.component.scss'],
+    imports: [OverlayPanelComponent, FlexModule, MatFormField, MatInput, FormsModule, MatNavList, CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf, MatListItem, HighlightDirective, MatDivider]
 })
 export class ListSearchOverlayComponent implements OnInit {
 	private searchFilterService = inject(SearchFilterService);

@@ -13,12 +13,16 @@ import { getNPCTemplates } from '../../../../services/phaser/entities/registry/n
 import { ExpressionRendererEntity, ExpressionRendererSettings } from './expression-renderer-entity';
 import { Globals } from '../../../../services/globals';
 import { JsonLoaderService } from '../../../../services/json-loader.service';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatRipple } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-	selector: 'app-custom-expression-widget',
-	templateUrl: './custom-expression-widget.component.html',
-	styleUrls: ['./custom-expression-widget.component.scss', '../../widget.scss'],
-	standalone: false
+    selector: 'app-custom-expression-widget',
+    templateUrl: './custom-expression-widget.component.html',
+    styleUrls: ['./custom-expression-widget.component.scss', '../../widget.scss'],
+    imports: [FlexModule, MatTooltip, MatRipple, FormsModule]
 })
 export class CustomExpressionWidgetComponent extends OverlayWidget<Person> implements OnChanges {
 	private http = inject(HttpClientService);
