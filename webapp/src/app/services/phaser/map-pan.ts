@@ -74,7 +74,7 @@ export class MapPan extends Phaser.GameObjects.GameObject implements PreUpdate{
 			
 			// @ts-ignore
 			cam.preRender(this.scene.scale.resolution);
-			cam.getWorldPoint(pointer.x, pointer.y, <any>mouse);
+			cam.getWorldPoint(pointer.x, pointer.y, mouse as any);
 			cam.scrollX += oldX - mouse.x;
 			cam.scrollY += oldY - mouse.y;
 		}
