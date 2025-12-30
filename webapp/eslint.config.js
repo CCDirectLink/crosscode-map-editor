@@ -42,6 +42,9 @@ module.exports = tseslint.config(
 			'@typescript-eslint/no-unused-vars': 'off',
 			'@typescript-eslint/prefer-for-of': 'off',
 			'@typescript-eslint/consistent-indexed-object-style': 'off',
+			'@typescript-eslint/no-namespace': 'off',
+			'@typescript-eslint/no-non-null-asserted-optional-chain': 'off',
+			'@typescript-eslint/no-unsafe-function-type': 'off',
 			
 			// Code style
 			quotes: ['error', 'single'],

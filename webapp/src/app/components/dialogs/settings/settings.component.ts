@@ -26,7 +26,26 @@ import { MatCheckbox } from '@angular/material/checkbox';
     selector: 'app-settings',
     templateUrl: './settings.component.html',
     styleUrls: ['./settings.component.scss'],
-    imports: [OverlayPanelComponent, FlexModule, FormsModule, MatFormField, MatLabel, MatInput, ReactiveFormsModule, MatHint, MatError, MatButton, MatIcon, NgClass, ExtendedModule, MatSelect, MatOption, ColoredTextDirective, MatCheckbox, ImageSelectCardComponent]
+    imports: [
+		OverlayPanelComponent, 
+	    FlexModule, 
+	    FormsModule, 
+	    MatFormField, 
+	    MatLabel, 
+	    MatInput, 
+	    ReactiveFormsModule, 
+	    MatHint, 
+	    MatError, 
+	    MatButton, 
+	    MatIcon, 
+	    NgClass, 
+	    ExtendedModule, 
+	    MatSelect, 
+	    MatOption, 
+	    ColoredTextDirective,
+	    MatCheckbox,
+	    ImageSelectCardComponent
+    ]
 })
 export class SettingsComponent implements OnInit {
 	private ref = inject(OverlayRefControl);

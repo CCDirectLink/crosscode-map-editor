@@ -36,7 +36,7 @@ export class EntitiesComponent {
 		events.selectedEntity.subscribe(e => {
 			// clear focus of input fields to enable phaser inputs again ONLY if not a canvas
 			if (document.activeElement && document.activeElement.tagName !== 'CANVAS') {
-				(<HTMLElement>document.activeElement).blur();
+				(document.activeElement as HTMLElement).blur();
 			}
 			this.entity = e;
 			this.loadSettings(e);
@@ -61,14 +61,14 @@ export class EntitiesComponent {
 		
 		const def = entity.getScaleSettings();
 		if (def && (def.scalableX || def.scalableY)) {
-			const vec2Widget: Vec2WidgetComponent = <Vec2WidgetComponent>this.generateWidget(
+			const vec2Widget: Vec2WidgetComponent = this.generateWidget(
 				entity,
 				'size', {
 					type: 'Vec2',
 					description: ''
 				},
 				ref
-			);
+			) as Vec2WidgetComponent;
 			vec2Widget.def = def;
 		}
 		const widgets: Record<string, AbstractWidget> = {};
@@ -84,7 +84,7 @@ export class EntitiesComponent {
 	
 	private generateWidget(entity: CCEntity, key: string, val: AttributeValue, ref: ViewContainerRef) {
 		const componentRef = ref.createComponent(this.widgetRegistry.getWidget(val.type));
-		const instance = <AbstractWidget>componentRef.instance;
+		const instance = componentRef.instance as AbstractWidget;
 		instance.entity = entity;
 		instance.key = key;
 		instance.attribute = val;

@@ -183,7 +183,7 @@ export abstract class AbstractEvent<T extends EventType> {
 	public generateNewData() {
 		const data = this.generateNewDataInternal();
 		data['type'] = this.data.type;
-		this.data = <any>data;
+		this.data = data as any;
 	}
 
 	public abstract getAttributes(): EntityAttributes | undefined;

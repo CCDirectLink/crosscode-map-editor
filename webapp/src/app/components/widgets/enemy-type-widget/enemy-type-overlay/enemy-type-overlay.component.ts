@@ -11,10 +11,19 @@ import { NumberWidgetComponent } from '../../number-widget/number-widget.compone
 import { MatButton } from '@angular/material/button';
 
 @Component({
-    selector: 'app-enemy-type-overlay',
-    templateUrl: './enemy-type-overlay.component.html',
-    styleUrls: ['./enemy-type-overlay.component.scss', '../../widget.scss'],
-    imports: [OverlayPanelComponent, FlexModule, EnemySingleTypeWidgetComponent, StringWidgetComponent, JsonWidgetComponent, BooleanWidgetComponent, NumberWidgetComponent, MatButton]
+	selector: 'app-enemy-type-overlay',
+	templateUrl: './enemy-type-overlay.component.html',
+	styleUrls: ['./enemy-type-overlay.component.scss', '../../widget.scss'],
+	imports: [
+		OverlayPanelComponent,
+		FlexModule,
+		EnemySingleTypeWidgetComponent,
+		StringWidgetComponent,
+		JsonWidgetComponent,
+		BooleanWidgetComponent,
+		NumberWidgetComponent,
+		MatButton
+	]
 })
 export class EnemyTypeWidgetOverlayComponent extends AbstractWidget implements OnInit {
 	@Output() exit = new EventEmitter<void>();

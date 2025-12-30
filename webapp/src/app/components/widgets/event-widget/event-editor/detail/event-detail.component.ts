@@ -92,7 +92,7 @@ export class EventDetailComponent implements OnDestroy {
 	
 	private generateWidget(data: any, key: string, val: AttributeValue, ref: ViewContainerRef) {
 		const componentRef = ref.createComponent(this.widgetRegistry.getWidget(val.type));
-		const instance = <AbstractWidget>componentRef.instance;
+		const instance = componentRef.instance as AbstractWidget;
 		instance.custom = data;
 		instance.key = key;
 		instance.attribute = val;

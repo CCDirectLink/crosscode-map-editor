@@ -2,7 +2,6 @@ import { Directive, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { AttributeValue, CCEntity } from '../../services/phaser/entities/cc-entity';
 
 @Directive()
-// eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class AbstractWidget<T = any, Attr = AttributeValue> implements OnInit, OnChanges {
 	@Input() key!: string;
 	@Input() attribute!: Attr;
