@@ -1,4 +1,8 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { NgClass } from '@angular/common';
+import { ExtendedModule } from '@angular/flex-layout/extended';
 
 /**
  * Used to display an overlay with the basic styles (draggable toolbar, scrollable content and buttons at the bottom)
@@ -19,10 +23,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
  * ```
  */
 @Component({
-	selector: 'cc-overlay-panel',
-	templateUrl: './overlay-panel.component.html',
-	styleUrls: ['./overlay-panel.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'cc-overlay-panel',
+    templateUrl: './overlay-panel.component.html',
+    styleUrls: ['./overlay-panel.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [FlexModule, CdkDrag, CdkDragHandle, NgClass, ExtendedModule]
 })
 export class OverlayPanelComponent {
 	

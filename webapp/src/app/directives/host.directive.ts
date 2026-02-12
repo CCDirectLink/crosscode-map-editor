@@ -1,11 +1,7 @@
-import { Directive, ViewContainerRef } from '@angular/core';
+import { Directive, ViewContainerRef, inject } from '@angular/core';
 
-@Directive({
-	selector: '[appHost]'
-})
+@Directive({ selector: '[appHost]' })
 export class HostDirective {
-
-	constructor(public viewContainerRef: ViewContainerRef) {
-	}
-
+	viewContainerRef = inject(ViewContainerRef);
+	
 }

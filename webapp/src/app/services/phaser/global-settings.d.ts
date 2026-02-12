@@ -8,7 +8,7 @@ export namespace GlobalSettings {
 	}
 	
 	export interface Entity {
-		ItemDestruct: { [key: string]: ItemDestruct };
+		ItemDestruct: Record<string, ItemDestruct>;
 		JumpPanel: JumpPanel;
 		HiddenBlock: HiddenBlock;
 	}

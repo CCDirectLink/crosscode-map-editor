@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Color3, Engine, FreeCamera, HemisphericLight, Mesh, Scene, Vector3 } from '@babylonjs/core';
 import { EditorView } from '../../models/editor-view';
 import { GlobalEventsService } from '../global-events.service';
@@ -23,6 +23,8 @@ interface CamStore {
 	providedIn: 'root'
 })
 export class BabylonViewerService {
+	private globalEvents = inject(GlobalEventsService);
+
 	private engine?: Engine;
 	private scene?: Scene;
 	private cam?: FreeCamera;
@@ -30,11 +32,6 @@ export class BabylonViewerService {
 	private textureGenerator = new TextureGenerator();
 	private groundLayers: CCMapLayer[] = [];
 	private entityManager?: EntityManager3d;
-	
-	public constructor(
-		private globalEvents: GlobalEventsService
-	) {
-	}
 	
 	public async init(canvas: HTMLCanvasElement) {
 		try {

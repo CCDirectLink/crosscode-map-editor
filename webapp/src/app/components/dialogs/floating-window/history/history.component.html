@@ -7,16 +7,19 @@
 	[style.display]="hide ? 'none' : ''"
 >
 	<div class="history-container" fxLayout="column">
-		<div fxFlex="1 1 auto" class="history-list small-dark-scrollbar small-list" #listContainer>
-			<button mat-button fxLayout="row" class="history-list-item"
-			        [ngClass]="{'item-selected': state === selected?.state}"
-			        *ngFor="let state of states; let i = index"
-			        (click)="selectState(state)">
-				<mat-icon class="history-list-icon" fxFlexAlign="center"
-				          [ngClass]="{'history-is-future': i > selectedIndex}">{{state.icon}}
-				</mat-icon>
-				<span fxFlexAlign="center" [ngClass]="{'history-is-future': i > selectedIndex}">{{state.name}}</span>
-			</button>
+		<div fxFlex="1 1 auto" class="history-list small-list" #listContainer>
+			@for (state of states; track state; let i = $index) {
+				<button mat-button fxLayout="row" class="history-list-item"
+				        [ngClass]="{'item-selected': state === selected?.state}"
+				        
+				        (click)="selectState(state)">
+					<mat-icon class="history-list-icon" fxFlexAlign="center"
+					          [ngClass]="{'history-is-future': i > selectedIndex}">{{ state.icon }}
+					</mat-icon>
+					<span fxFlexAlign="center"
+					      [ngClass]="{'history-is-future': i > selectedIndex}">{{ state.name }}</span>
+				</button>
+			}
 		</div>
 		<!--<div fxFlex="0 0 auto" fxFlexAlign="end" class="button-container">-->
 		<!--<button mat-button>delete</button>-->

@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Observable, Subject } from 'rxjs';
 
@@ -15,6 +15,12 @@ import { ActionsJson, EventsJson } from '../../event-registry/default-event';
 	providedIn: 'root'
 })
 export class AddEventService {
+	private eventRegistry = inject(EventRegistryService);
+	private overlayService = inject(OverlayService);
+	private overlay = inject(Overlay);
+	private domSanitizer = inject(DomSanitizer);
+	private jsonLoader = inject(JsonLoaderService);
+
 	private selectedEvent = new Subject<AbstractEvent<any>>();
 	private actionStep = false;
 	
@@ -23,13 +29,7 @@ export class AddEventService {
 	
 	private ref?: OverlayRefControl;
 	
-	constructor(
-		private eventRegistry: EventRegistryService,
-		private overlayService: OverlayService,
-		private overlay: Overlay,
-		private domSanitizer: DomSanitizer,
-		private jsonLoader: JsonLoaderService,
-	) {
+	constructor() {
 		this.init();
 	}
 	

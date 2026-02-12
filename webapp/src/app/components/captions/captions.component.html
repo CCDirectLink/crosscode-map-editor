@@ -1,8 +1,12 @@
 <p class="bottom-container version caption">{{ version }}</p>
 <p class="bottom-container bottom-elements">
-	<ng-container *ngFor="let el of uiElements">
-		<span class="caption" *ngIf="el.active">
+	@for (el of uiElements; track el) {
+		
+		@if (el.active) {
+			<span class="caption">
 			{{ el.text }}
 		</span>
-	</ng-container>
+		}
+		
+	}
 </p>

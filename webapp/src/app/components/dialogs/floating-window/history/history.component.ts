@@ -1,17 +1,26 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
 import { NavigationStart, Router } from '@angular/router';
 
 import { Helper } from '../../../../services/phaser/helper';
 import { HistoryState, HistoryStateContainer, StateHistoryService } from './state-history.service';
+import { FloatingWindowComponent } from '../floating-window.component';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatButton } from '@angular/material/button';
+import { NgClass } from '@angular/common';
+import { ExtendedModule } from '@angular/flex-layout/extended';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-	selector: 'app-history',
-	templateUrl: './history.component.html',
-	styleUrls: ['./history.component.scss'],
-	encapsulation: ViewEncapsulation.None
+    selector: 'app-history',
+    templateUrl: './history.component.html',
+    styleUrls: ['./history.component.scss'],
+    imports: [FloatingWindowComponent, FlexModule, MatButton, NgClass, ExtendedModule, MatIcon]
 })
 export class HistoryComponent implements OnInit, OnDestroy {
+	private stateHistory = inject(StateHistoryService);
+	private eventManager = inject(EventManager);
+
 	
 	@ViewChild('listContainer', {static: false}) list?: ElementRef;
 	
@@ -22,11 +31,10 @@ export class HistoryComponent implements OnInit, OnDestroy {
 	selectedIndex = 0;
 	hide = false;
 	
-	constructor(
-		private stateHistory: StateHistoryService,
-		private eventManager: EventManager,
-		router: Router,
-	) {
+	constructor() {
+		const stateHistory = this.stateHistory;
+		const router = inject(Router);
+
 		stateHistory.states.subscribe(states => {
 			this.states = states;
 			this.updateSelected(this.selected);

@@ -1,7 +1,7 @@
-import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { MatTree, MatTreeFlatDataSource, MatTreeFlattener, MatTreeNode, MatTreeNodeDef, MatTreeNodePadding } from '@angular/material/tree';
 import { destructureEventArray, EventArray } from '../../../../../models/events';
 import { SettingsService } from '../../../../../services/settings.service';
 import { SplitPaneComponent } from '../../../../split-pane/split-pane.component';
@@ -11,14 +11,37 @@ import { EventDetailComponent, RefreshType } from '../detail/event-detail.compon
 import { EventDisplay } from '../event-display.model';
 import { EventHelperService } from '../event-helper.service';
 import { EventHistory } from './event-history';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { NgClass } from '@angular/common';
+import { ExtendedModule } from '@angular/flex-layout/extended';
+import { RowTextComponent } from '../row-text/row-text.component';
 
 @Component({
 	selector: 'app-event-editor',
 	templateUrl: './event-editor.component.html',
 	styleUrls: ['./event-editor.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [
+		FlexModule,
+		NgClass,
+		ExtendedModule,
+		SplitPaneComponent,
+		CdkDropList,
+		MatTree,
+		MatTreeNodeDef,
+		MatTreeNode,
+		MatTreeNodePadding,
+		CdkDrag,
+		CdkDragHandle,
+		RowTextComponent,
+		EventDetailComponent
+	]
 })
 export class EventEditorComponent implements OnChanges, OnInit {
+	private helper = inject(EventHelperService);
+	private addEvent = inject(AddEventService);
+	private settingsService = inject(SettingsService);
+	
 	private static globalBase = 0;
 	
 	@ViewChild('splitpane') splitPane?: SplitPaneComponent;
@@ -33,6 +56,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	get base() {
 		return EventEditorComponent.globalBase;
 	}
+	
 	set base(value: number) {
 		EventEditorComponent.globalBase = value;
 	}
@@ -56,13 +80,6 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	private selectedNode?: EventDisplay;
 	private shownNode?: EventDisplay;
 	private copiedNode?: EventDisplay;
-	
-	constructor(
-		private helper: EventHelperService,
-		private addEvent: AddEventService,
-		private settingsService: SettingsService
-	) {
-	}
 	
 	ngOnInit() {
 		this.wrapText = this.settingsService.getSettings().wrapEventEditorLines;
@@ -172,46 +189,46 @@ export class EventEditorComponent implements OnChanges, OnInit {
 		if (event.cancelable) {
 			event.preventDefault();
 		}
-
+		
 		switch (event.code) {
-		case 'ArrowUp':
-		case 'ArrowLeft':
-			this.selectUp();
-			return;
-		case 'ArrowDown':
-		case 'ArrowRight':
-			this.selectDown();
-			return;
-		case 'Enter':
-			this.openAddMenu(event, null);
-			return;
-		case 'Delete':
-			this.delete();
-			return;
-		case 'Escape':
-			this.deselect();
-			return;
-		}
-
-		if (event.ctrlKey) {
-			switch (event.key.toLowerCase()) {
-			case 'c':
-				this.copy();
+			case 'ArrowUp':
+			case 'ArrowLeft':
+				this.selectUp();
 				return;
-			case 'x':
-				this.copy();
+			case 'ArrowDown':
+			case 'ArrowRight':
+				this.selectDown();
+				return;
+			case 'Enter':
+				this.openAddMenu(event, null);
+				return;
+			case 'Delete':
 				this.delete();
 				return;
-			case 'v':
-				this.paste();
+			case 'Escape':
+				this.deselect();
 				return;
-			case 'z':
-				if (event.shiftKey) {
-					this.redo();
-				} else {
-					this.undo();
-				}
-				return;
+		}
+		
+		if (event.ctrlKey) {
+			switch (event.key.toLowerCase()) {
+				case 'c':
+					this.copy();
+					return;
+				case 'x':
+					this.copy();
+					this.delete();
+					return;
+				case 'v':
+					this.paste();
+					return;
+				case 'z':
+					if (event.shiftKey) {
+						this.redo();
+					} else {
+						this.undo();
+					}
+					return;
 			}
 		}
 	}

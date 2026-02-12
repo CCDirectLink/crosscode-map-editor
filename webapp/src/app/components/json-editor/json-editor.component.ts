@@ -1,14 +1,20 @@
-import { AfterViewInit, Component, ElementRef, Inject, Optional, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AfterViewInit, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import JSONEditor, { JSONEditorOptions } from 'jsoneditor';
 import { Globals } from '../../services/globals';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 
 @Component({
-	selector: 'app-json-editor',
-	templateUrl: './json-editor.component.html',
-	styleUrls: ['./json-editor.component.scss']
+    selector: 'app-json-editor',
+    templateUrl: './json-editor.component.html',
+    styleUrls: ['./json-editor.component.scss'],
+    imports: [FlexModule, FormsModule, MatButton]
 })
 export class JsonEditorComponent implements AfterViewInit {
+	ref = inject<MatDialogRef<JsonEditorComponent>>(MatDialogRef);
+	
 	@ViewChild('editor', {static: false}) container?: ElementRef;
 	
 	private editor?: JSONEditor;
@@ -17,8 +23,13 @@ export class JsonEditorComponent implements AfterViewInit {
 	private key: string;
 	json = JSON;
 	
-	constructor(@Optional() @Inject(MAT_DIALOG_DATA) data: { key: string, val: any },
-				public ref: MatDialogRef<JsonEditorComponent>) {
+	constructor() {
+		const data = inject<{
+			key: string;
+			val: any;
+		}>(MAT_DIALOG_DATA, {optional: false});
+		const ref = this.ref;
+		
 		this.data = data.val;
 		this.key = data.key;
 		ref.afterClosed().subscribe(() => {

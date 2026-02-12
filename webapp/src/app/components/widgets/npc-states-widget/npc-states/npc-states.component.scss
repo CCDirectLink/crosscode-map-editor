@@ -1,7 +1,4 @@
 @use '@angular/material' as mat;
-@import "theme";
-
-$accent: map-get($theme, accent);
 
 .container {
 	height: 100%;
@@ -21,7 +18,7 @@ $accent: map-get($theme, accent);
 	}
 
 	&::ng-deep.mat-tab-label-active {
-		background: mat.get-color-from-palette($accent, 600);
+		background: var(--gray-600);
 	}
 
 	&::ng-deep .mat-tab-body-wrapper {
@@ -36,14 +33,14 @@ $accent: map-get($theme, accent);
 .tab-content {
 	flex-direction: column;
 	min-height: 0;
-	border-top: 1px solid mat.get-color-from-palette(mat.$gray-palette, 600);
+	border-top: 1px solid var(--gray-600);
 }
 
 .tab-content-inner {
 	padding-left: 12px;
 	padding-right: 12px;
-	border-bottom: 1px solid mat.get-color-from-palette(mat.$gray-palette, 600);
-	border-top: 1px solid mat.get-color-from-palette(mat.$gray-palette, 600);
+	border-bottom: 1px solid var(--gray-600);
+	border-top: 1px solid var(--gray-600);
 }
 
 .condition-label {
@@ -61,7 +58,7 @@ $accent: map-get($theme, accent);
 		height: 26px;
 
 		option {
-			background-color: mat.get-color-from-palette($accent, 800);
+			background-color: var(--gray-800);
 		}
 	}
 

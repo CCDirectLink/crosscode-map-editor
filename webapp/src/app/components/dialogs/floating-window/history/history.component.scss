@@ -1,14 +1,8 @@
-@use '@angular/material' as mat;
-@import "theme";
-
-$primary: map-get($theme, primary);
-$accent: map-get($theme, accent);
-
 $listItemHeight: 28px;
 
 .history-container {
 	position: relative;
-	background-color: mat.get-color-from-palette($accent, 800);
+	background-color: var(--gray-800);
 	height: 100%;
 	width: 100%;
 }
@@ -29,17 +23,18 @@ $listItemHeight: 28px;
 	width: 100% !important;
 	text-transform: none;
 	justify-content: start !important;
+
 	.mat-button-wrapper {
 		line-height: 1em;
 	}
 }
 
-.history-is-future{
-	color: mat.get-color-from-palette(mat.$grey-palette, 500);
+.history-is-future {
+	color: var(--gray-500);
 }
 
 .item-selected {
-	background-color: mat.get-color-from-palette(mat.$grey-palette, 700) !important;
+	background-color: rgba(white, 0.2) !important;
 }
 
 .history-list-icon {

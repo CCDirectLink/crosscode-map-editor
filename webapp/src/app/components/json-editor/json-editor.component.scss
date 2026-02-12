@@ -1,19 +1,14 @@
 
-@use '@angular/material' as mat;
-@import "theme";
-$primary: map-get($theme, primary);
-$accent: map-get($theme, accent);
-
 .dialog-container {
 	width: 70vw;
 	height: 85vh;
 }
 
-.input-container{
+.input-container {
 	width: 50%;
 }
 
-.button-container{
+.button-container {
 	margin-top: 16px;
 }
 
@@ -22,5 +17,5 @@ $accent: map-get($theme, accent);
 	font-family: droid sans mono, consolas, monospace, courier new, courier, sans-serif;
 	resize: none;
 	color: white;
-	background-color: mat.get-color-from-palette($accent, 700);
+	background-color: var(--gray-700);
 }

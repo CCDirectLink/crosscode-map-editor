@@ -1,27 +1,26 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Component, OnChanges } from '@angular/core';
+import { Component, OnChanges, inject } from '@angular/core';
 
 import { OverlayRefControl } from '../../dialogs/overlay/overlay-ref-control';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { AbstractWidget } from '../abstract-widget';
 import { EventType } from './event-registry/abstract-event';
 import { EventWindowComponent } from './event-window/event-window.component';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
-	selector: 'app-event-widget',
-	templateUrl: './event-widget.component.html',
-	styleUrls: ['./event-widget.component.scss', '../widget.scss']
+    selector: 'app-event-widget',
+    templateUrl: './event-widget.component.html',
+    styleUrls: ['./event-widget.component.scss', '../widget.scss'],
+    imports: [FlexModule, MatTooltip]
 })
 export class EventWidgetComponent extends AbstractWidget implements OnChanges {
+	private overlayService = inject(OverlayService);
+	private overlay = inject(Overlay);
+
 	
 	private ref?: OverlayRefControl;
-	
-	constructor(
-		private overlayService: OverlayService,
-		private overlay: Overlay
-	) {
-		super();
-	}
 	
 	override ngOnChanges(): void {
 		super.ngOnChanges();

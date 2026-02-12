@@ -3,12 +3,14 @@
 		<button mat-icon-button (click)="closeDetails()">
 			<mat-icon>close</mat-icon>
 		</button>
-		<h2 class="title" fxFlex="auto">{{event?.data?.type}}</h2>
+		<h2 class="title" fxFlex="auto">{{ event?.data?.type }}</h2>
 	</div>
-	<div *ngIf="warning">
-		<span>WARNING: type cannot be changed</span>
-		<br><br>
-	</div>
+	@if (warning) {
+		<div>
+			<span>WARNING: type cannot be changed</span>
+			<br><br>
+		</div>
+	}
 	<ng-template appHost></ng-template>
 </div>
 

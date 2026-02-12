@@ -1,5 +1,5 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDragPreview, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { GlobalEventsService } from '../../services/global-events.service';
@@ -9,14 +9,55 @@ import { MapLoaderService } from '../../services/map-loader.service';
 import { CCMap } from '../../services/phaser/tilemap/cc-map';
 import { CCMapLayer } from '../../services/phaser/tilemap/cc-map-layer';
 import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
+import { MatListItem, MatNavList } from '@angular/material/list';
+import { NgClass } from '@angular/common';
+import { ExtendedModule } from '@angular/flex-layout/extended';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatInput, MatPrefix } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import { MatSelect } from '@angular/material/select';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatOption } from '@angular/material/autocomplete';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
 	selector: 'app-layers',
 	templateUrl: './layers.component.html',
 	styleUrls: ['./layers.component.scss'],
-	encapsulation: ViewEncapsulation.None
+	encapsulation: ViewEncapsulation.None,
+	imports: [
+		MatNavList,
+		CdkDropList,
+		MatListItem,
+		CdkDrag,
+		NgClass,
+		ExtendedModule,
+		CdkDragPreview,
+		CdkDragHandle,
+		MatIconButton,
+		MatIcon,
+		MatInput,
+		FormsModule,
+		MatAccordion,
+		MatExpansionPanel,
+		MatExpansionPanelHeader,
+		MatExpansionPanelTitle,
+		MatFormField,
+		MatPrefix,
+		MatSelect,
+		FlexModule,
+		MatOption,
+		MatCheckbox,
+		MatButton
+	]
 })
 export class LayersComponent implements OnInit {
+	private mapLoader = inject(MapLoaderService);
+	private stateHistory = inject(StateHistoryService);
+	private http = inject(HttpClientService);
+	
 	static tilesets: string[] = []; //Cache
 	
 	selectedLayer?: CCMapLayer;
@@ -27,10 +68,9 @@ export class LayersComponent implements OnInit {
 	width = 0;
 	height = 0;
 	
-	constructor(private mapLoader: MapLoaderService,
-		private stateHistory: StateHistoryService,
-		private http: HttpClientService,
-		events: GlobalEventsService) {
+	constructor() {
+		const events = inject(GlobalEventsService);
+		
 		events.toggleVisibility.subscribe(() => {
 			if (this.selectedLayer) {
 				this.toggleVisibility({

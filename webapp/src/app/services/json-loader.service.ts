@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClientService } from './http-client.service';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
@@ -8,17 +8,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 	providedIn: 'root'
 })
 export class JsonLoaderService {
+	private http = inject(HttpClientService);
+	private angularHttp = inject(HttpClient);
+	private snackbar = inject(MatSnackBar);
+
 	
 	private readonly initialized?: Promise<void>;
 	private configs = new Map<string, unknown[]>;
 	
 	private cache: Record<string, unknown> = {};
 	
-	constructor(
-		private http: HttpClientService,
-		private angularHttp: HttpClient,
-		private snackbar: MatSnackBar,
-	) {
+	constructor() {
 		this.initialized = this.init();
 	}
 	

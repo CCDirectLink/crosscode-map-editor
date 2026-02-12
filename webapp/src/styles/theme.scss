@@ -1,12 +1,10 @@
 @use '@angular/material' as mat;
 
-//$anms-black-primary: mat.define-palette(mat.$grey-palette, 900, 500, 900);
-$anms-black-primary: mat.define-palette(mat.$blue-palette, A200);
-//$anms-black-accent: mat.define-palette(mat.$blue-palette, A200);
-$anms-black-accent: mat.define-palette(mat.$grey-palette, 900, 500, 900);
-$anms-black-warn: mat.define-palette(mat.$red-palette, A200);
+$anms-black-primary: mat.m2-define-palette(mat.$m2-blue-palette, 400);
+$anms-black-accent: mat.m2-define-palette(mat.$m2-grey-palette, 900, 500, 900);
+$anms-black-warn: mat.m2-define-palette(mat.$m2-red-palette, A200);
 
-$theme: mat.define-dark-theme((
+$theme: mat.m2-define-dark-theme((
 	color: (
 		primary: $anms-black-primary,
 		accent: $anms-black-accent,
@@ -14,3 +12,33 @@ $theme: mat.define-dark-theme((
 	),
 	density: -1,
 ));
+
+:root {
+	--gray-500: #9e9e9e;
+	--gray-600: #757575;
+	--gray-700: #616161;
+	--gray-800: #424242;
+	--gray-900: #212121;
+}
+
+html {
+	color-scheme: dark;
+	scrollbar-color: var(--gray-600) transparent;
+
+	@include mat.all-component-themes($theme);
+
+	@include mat.toolbar-overrides((
+		container-background-color: var(--gray-900),
+	));
+
+	@include mat.tooltip-overrides((
+		container-color: var(--gray-700),
+		supporting-text-color: white,
+	));
+
+	@include mat.sidenav-overrides((
+		scrim-color: rgba(black, 0.5),
+	));
+
+	@include mat.form-field-density(-3);
+}

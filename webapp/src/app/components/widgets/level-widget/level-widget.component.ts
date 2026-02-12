@@ -1,21 +1,26 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CrossCodeMap } from '../../../models/cross-code-map';
 import { MapLoaderService } from '../../../services/map-loader.service';
 import { AbstractWidget } from '../abstract-widget';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-	selector: 'app-level-widget',
-	templateUrl: './level-widget.component.html',
-	styleUrls: ['./level-widget.component.scss', '../widget.scss']
+    selector: 'app-level-widget',
+    templateUrl: './level-widget.component.html',
+    styleUrls: ['./level-widget.component.scss', '../widget.scss'],
+    imports: [FlexModule, FormsModule]
 })
 export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDestroy, OnChanges {
+	private maploader = inject(MapLoaderService);
+
 	
 	@Input() displayName = '';
 	map?: CrossCodeMap;
 	private subscription: Subscription;
 	
-	constructor(private maploader: MapLoaderService) {
+	constructor() {
 		super();
 		this.subscription = this.maploader.map.subscribe(map => this.map = map);
 	}

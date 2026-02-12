@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { GlobalEventsService } from '../../../../services/global-events.service';
@@ -18,15 +18,12 @@ export interface HistoryState {
 	providedIn: 'root'
 })
 export class StateHistoryService {
+	private readonly eventsService = inject(GlobalEventsService);
+
 	maxStates = 100;
 	
 	states = new BehaviorSubject<HistoryState[]>([]);
 	selectedState = new BehaviorSubject<HistoryStateContainer>({state: undefined});
-	
-	constructor(
-		private readonly eventsService: GlobalEventsService
-	) {
-	}
 	
 	init(state: HistoryState) {
 		this.selectedState.value.state = state;

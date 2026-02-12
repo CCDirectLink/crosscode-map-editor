@@ -1,7 +1,4 @@
 @use '@angular/material' as mat;
-@import "theme";
-$primary: map-get($theme, primary);
-$accent: map-get($theme, accent);
 
 /* dark styling of the editor */
 div.jsoneditor,
@@ -13,7 +10,6 @@ div.jsoneditor-menu {
 }
 div.jsoneditor-tree,
 div.jsoneditor textarea.jsoneditor-text {
-	background-color: mat.get-color-from-palette($accent, 700);
 	color: #ffffff;
 }
 div.jsoneditor-field,

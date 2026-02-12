@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 
 import { ListSearchOverlayComponent } from '../components/dialogs/list-search-overlay/list-search-overlay.component';
 import { OverlayRefControl } from '../components/dialogs/overlay/overlay-ref-control';
@@ -15,6 +15,12 @@ import { EntitiesJson } from './phaser/entities/registry/default-entity';
 	providedIn: 'root'
 })
 export class AddEntityMenuService {
+	private events = inject(GlobalEventsService);
+	private overlayService = inject(OverlayService);
+	private overlay = inject(Overlay);
+	private entityRegistry = inject(EntityRegistryService);
+	private jsonLoader = inject(JsonLoaderService);
+
 	
 	private ref?: OverlayRefControl;
 	private worldPos: Point = {x: 0, y: 0};
@@ -22,15 +28,6 @@ export class AddEntityMenuService {
 	
 	pos: Point = {x: 0, y: 0};
 	keys: string[] = [];
-	
-	constructor(
-		private events: GlobalEventsService,
-		private overlayService: OverlayService,
-		private overlay: Overlay,
-		private entityRegistry: EntityRegistryService,
-		private jsonLoader: JsonLoaderService,
-	) {
-	}
 	
 	public async init() {
 		const entities = await this.jsonLoader.loadJsonMerged<EntitiesJson>('entities.json');

@@ -4,8 +4,11 @@
 		<div [style.visibility]="is3d ? 'hidden': 'visible'" class="flex flex-row items-center">
 			<button mat-button [matMenuTriggerFor]="file">File</button>
 			<mat-menu #file="matMenu">
-				<button mat-menu-item *ngIf="loaded" (click)="newMap()">New Map</button>
-				<button mat-menu-item *ngIf="loaded" (click)="loadMapClicked.emit()">Load Map</button>
+				@if (loaded) {
+					<button mat-menu-item (click)="newMap()">New Map</button>
+				} @if (loaded) {
+				<button mat-menu-item (click)="loadMapClicked.emit()">Load Map</button>
+			}
 				<button [disabled]="!map" mat-menu-item (click)="saveMap(false)">Save Map (Ctrl + S)</button>
 				<button [disabled]="!map" mat-menu-item (click)="saveMap(true)">Save Map as... (Ctrl + Shift + S)
 				</button>
@@ -64,11 +67,16 @@
 	
 	<div fxLayoutAlign="end" [style.visibility]="is3d ? 'hidden': 'visible'">
 		<div>
-			<button *ngIf="map" mat-button (click)="openMapSettings()">Map Settings</button>
-			<ng-container *ngIf="!loaded">
-				<span class="load-error">{{ error }}</span>
-				<mat-spinner *ngIf="!error" [diameter]="40" [strokeWidth]="5"></mat-spinner>
-			</ng-container>
+			@if (map) {
+				<button mat-button (click)="openMapSettings()">Map Settings</button>
+			} @if (!loaded) {
+			
+			<span class="load-error">{{ error }}</span>
+			@if (!error) {
+				<mat-spinner [diameter]="40" [strokeWidth]="5"></mat-spinner>
+			}
+			
+		}
 		</div>
 	</div>
 </mat-toolbar>

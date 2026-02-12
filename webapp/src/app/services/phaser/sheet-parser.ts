@@ -6,12 +6,8 @@ import { CharacterSettings } from './entities/registry/npc';
 
 export interface ScalablePropSheet {
 	DOCTYPE: string;
-	entries: {
-		[key: string]: ScalablePropDef;
-	};
-	jsonTEMPLATES?: {
-		[key: string]: ScalablePropDef;
-	};
+	entries: Record<string, ScalablePropDef>;
+	jsonTEMPLATES?: Record<string, ScalablePropDef>;
 }
 
 export interface PropSheet {
@@ -20,9 +16,7 @@ export interface PropSheet {
 	jsonTEMPLATES?: JsonTemplates;
 }
 
-export interface JsonTemplates {
-	[key: string]: Anims | Anims[keyof Anims];
-}
+export type JsonTemplates = Record<string, Anims | Anims[keyof Anims]>;
 
 export interface PropDef {
 	name?: string;
@@ -91,7 +85,7 @@ export interface Anims extends IfThen {
 	gfxOffset?: Partial<Point>;
 	aboveZ?: number;
 	offX?: number;
-	namedSheets?: { [key: string]: AnimSheet };
+	namedSheets?: Record<string, AnimSheet>;
 	framesSpriteOffset?: number[];
 	globalTiming?: boolean;
 	

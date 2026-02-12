@@ -1,5 +1,5 @@
 import { Mesh, MeshBuilder, Scene, Vector3, Vector4 } from '@babylonjs/core';
-import * as earcut from 'earcut';
+import earcut from 'earcut';
 import { Globals } from '../../globals';
 import { CCMapLayer } from '../../phaser/tilemap/cc-map-layer';
 import { NodeGrid, PolygonDescription } from './boundary-tracing/node-grid';
@@ -80,35 +80,35 @@ export class LayerMeshGenerator {
 			}
 		}
 	}
-
+	
 	private reverseTileIndex(index: number) {
 		switch (index) {
-		// empty
-		case 0:
-			return 2;
+			// empty
+			case 0:
+				return 2;
 			
 			// ■
-		case 1:
-			return 0;
+			case 1:
+				return 0;
 			
 			// ◣
-		case 4:
-			return 10;
+			case 4:
+				return 10;
 			
 			// ◤
-		case 5:
-			return 11;
+			case 5:
+				return 11;
 			
 			// ◥
-		case 6:
-			return 8;
+			case 6:
+				return 8;
 			
 			// ◢
-		case 7:
-			return 9;
+			case 7:
+				return 9;
 			
-		default:
-			return index;
+			default:
+				return index;
 		}
 	}
 	

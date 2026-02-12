@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, inject } from '@angular/core';
 import { OverlayWidget } from '../../overlay-widget';
 import { ImageSelectOverlayComponent } from '../../shared/image-select-overlay/image-select-overlay.component';
 import { HttpClientService } from '../../../../services/http-client.service';
@@ -13,24 +13,30 @@ import { getNPCTemplates } from '../../../../services/phaser/entities/registry/n
 import { ExpressionRendererEntity, ExpressionRendererSettings } from './expression-renderer-entity';
 import { Globals } from '../../../../services/globals';
 import { JsonLoaderService } from '../../../../services/json-loader.service';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatRipple } from '@angular/material/core';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-	selector: 'app-custom-expression-widget',
-	templateUrl: './custom-expression-widget.component.html',
-	styleUrls: ['./custom-expression-widget.component.scss', '../../widget.scss']
+    selector: 'app-custom-expression-widget',
+    templateUrl: './custom-expression-widget.component.html',
+    styleUrls: ['./custom-expression-widget.component.scss', '../../widget.scss'],
+    imports: [FlexModule, MatTooltip, MatRipple, FormsModule]
 })
 export class CustomExpressionWidgetComponent extends OverlayWidget<Person> implements OnChanges {
+	private http = inject(HttpClientService);
+	private changeDetectorRef = inject(ChangeDetectorRef);
+	private jsonLoader = inject(JsonLoaderService);
+
 	
 	private comp: ImageSelectOverlayComponent = new ImageSelectOverlayComponent();
 	preview = '';
 	
-	constructor(
-		private http: HttpClientService,
-		private changeDetectorRef: ChangeDetectorRef,
-		private jsonLoader: JsonLoaderService,
-		overlayService: OverlayService,
-		overlay: Overlay,
-	) {
+	constructor() {
+		const overlayService = inject(OverlayService);
+		const overlay = inject(Overlay);
+
 		super(overlayService, overlay);
 	}
 	

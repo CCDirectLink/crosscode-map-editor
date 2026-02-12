@@ -7,9 +7,8 @@ const windowStateKeeper = require('electron-window-state');
 const path = require('path');
 const url = require('url');
 const {autoUpdater} = require('electron-updater');
-const contextMenu = require('electron-context-menu');
-const {IPC} = require('node-ipc');
-
+const contextMenu = require('electron-context-menu').default;
+const IPC = require("@achrinza/node-ipc").default;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 const args = process.argv.slice(1);
@@ -110,7 +109,7 @@ app.on('window-all-closed', () => {
 });
 
 
-const sub = new IPC();
+const sub = new IPC.IPC();
 sub.config.silent = true;
 sub.config.maxRetries = 1;
 sub.connectTo('crosscode-map-editor', () => {
@@ -121,7 +120,7 @@ sub.connectTo('crosscode-map-editor', () => {
 	sub.of['crosscode-map-editor'].on('error', () => {
 		sub.disconnect('crosscode-map-editor');
 		
-		const master = new IPC();
+		const master = new IPC.IPC();
 		master.config.silent = true;
 		master.config.id = 'crosscode-map-editor';
 		master.serve(() => {

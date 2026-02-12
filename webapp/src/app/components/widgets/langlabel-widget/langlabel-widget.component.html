@@ -1,5 +1,5 @@
 <div fxLayout="row" class="property-container" [matTooltip]="attribute?.description!">
-	<label class="property-name">{{key}}:</label>
+	<label class="property-name">{{ key }}:</label>
 	
 	<div fxLayout="column" fxFlex="1 1 0">
 		<div fxLayout="row" class="property-row has-value">
@@ -11,29 +11,33 @@
 				color="primary"
 			></mat-checkbox>
 		</div>
-		<div *ngIf="hasValue" class="properties-container" (appResized)="resizeTextareas()">
-			<div *ngFor="let language of languages" fxLayout="row" class="property-row language">
-				<label class="property-name">{{language}}</label>
-				<!-- textarea inside div with padding because autosize does not like textareas with padding -->
-				<div class="default-input padded-autosize-textarea">
+		@if (hasValue) {
+			<div class="properties-container" (appResized)="resizeTextareas()">
+				@for (language of languages; track language) {
+					<div fxLayout="row" class="property-row language">
+						<label class="property-name">{{ language }}</label>
+						<!-- textarea inside div with padding because autosize does not like textareas with padding -->
+						<div class="default-input padded-autosize-textarea">
 					<textarea
 						class="default-input"
 						[ngModel]="settings[key][language]"
 						(ngModelChange)="setSetting([key, language], $event)"
 						cdkTextareaAutosize
 					></textarea>
+						</div>
+					</div>
+				}
+				<div fxLayout="row" class="property-row uid">
+					<label for="{{key}}.langUid" class="property-name">langUid</label>
+					<input
+						type="number"
+						[ngModel]="settings[key].langUid"
+						(ngModelChange)="setSetting([key, 'langUid'], $event)"
+						class="default-input"
+						placeholder="undefined"
+					>
 				</div>
 			</div>
-			<div fxLayout="row" class="property-row uid">
-				<label for="{{key}}.langUid" class="property-name">langUid</label>
-				<input
-					type="number"
-					[ngModel]="settings[key].langUid"
-					(ngModelChange)="setSetting([key, 'langUid'], $event)"
-					class="default-input"
-					placeholder="undefined"
-				>
-			</div>
-		</div>
+		}
 	</div>
 </div>

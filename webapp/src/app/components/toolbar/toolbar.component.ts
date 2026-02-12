@@ -1,7 +1,6 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
 
 import { environment } from '../../../environments/environment';
@@ -14,13 +13,31 @@ import { NewMapComponent } from '../dialogs/new-map/new-map.component';
 import { OffsetMapComponent } from '../dialogs/offset-map/offset-map.component';
 import { OverlayService } from '../dialogs/overlay/overlay.service';
 import { SettingsComponent } from '../dialogs/settings/settings.component';
+import { MatToolbar } from '@angular/material/toolbar';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { ToolbarDividerComponent } from './toolbar-divider/toolbar-divider.component';
+import { GridMenuComponent } from './grid-menu/grid-menu.component';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-	selector: 'app-toolbar',
-	templateUrl: './toolbar.component.html',
-	styleUrls: ['./toolbar.component.scss']
+    selector: 'app-toolbar',
+    templateUrl: './toolbar.component.html',
+    styleUrls: ['./toolbar.component.scss'],
+    imports: [MatToolbar, FlexModule, MatButton, MatMenuTrigger, MatMenu, MatMenuItem, MatCheckbox, ToolbarDividerComponent, GridMenuComponent, MatProgressSpinner, AsyncPipe]
 })
 export class ToolbarComponent implements OnInit {
+	private mapLoader = inject(MapLoaderService);
+	events = inject(GlobalEventsService);
+	private dialog = inject(MatDialog);
+	private overlayService = inject(OverlayService);
+	private overlay = inject(Overlay);
+	private router = inject(Router);
+	private save = inject(SaveService);
+
 	
 	map?: CCMap;
 	loaded = false;
@@ -30,16 +47,6 @@ export class ToolbarComponent implements OnInit {
 	
 	@Output()
 	public loadMapClicked = new EventEmitter<void>(false);
-	
-	constructor(private mapLoader: MapLoaderService,
-		public events: GlobalEventsService,
-		private dialog: MatDialog,
-		private overlayService: OverlayService,
-		private overlay: Overlay,
-		private router: Router,
-		private save: SaveService,
-	) {
-	}
 	
 	ngOnInit() {
 		this.mapLoader.tileMap.subscribe(map => {
@@ -52,21 +59,25 @@ export class ToolbarComponent implements OnInit {
 		
 		// Use this to automatically load a map on startup for faster testing
 		if (!environment.production) {
+			console.warn('DEBUG: auto load map');
 			this.events.loadComplete.subscribe(async () => {
 				// await (await import('rxjs')).firstValueFrom(this.mapLoader.tileMap);
-				// this.mapLoader.loadMapByName('autumn/entrance');
+				// this.mapLoader.loadMapByName('arid/river-1');
+				// this.mapLoader.loadMapByName('tests/all-overlays');
+				// this.mapLoader.loadMapByName('tests/rhombus-sqr_beach-sw');
+				this.mapLoader.loadMapByName('autumn-fall/raid/raid-end');
 				
-				// automatically opens npc event editor
+				// automatically opens event editor
 				// console.log('after map load');
 				// await new Promise(r => setTimeout(r, 500));
 				// Globals.scene.cameras.main.setZoom(4, 4);
-				// Globals.scene.cameras.main.pan(330, 160, 0);
-				// const npc = this.map?.entityManager.entities.find(e => e.details.type === 'NPC');
+				// Globals.scene.cameras.main.pan(800, 1460, 0);
+				// const npc = this.map?.entityManager.entities.find(e => e.details.settings['name'] === 'BossGoesBoom');
 				// this.events.currentView.next(EditorView.Entities);
 				// await new Promise(r => setTimeout(r, 300));
 				// this.events.selectedEntity.next(npc);
-				// await new Promise(r => setTimeout(r, 400));
-				// const el = document.getElementsByTagName('app-npcstates-widget');
+				// await new Promise(r => setTimeout(r, 500));
+				// const el = document.getElementsByTagName('app-event-widget');
 				// el[0].getElementsByTagName('input')[0].click();
 			});
 		}

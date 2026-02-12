@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { HostDirective } from '../../directives/host.directive';
 import { GlobalEventsService } from '../../services/global-events.service';
 import { MapLoaderService } from '../../services/map-loader.service';
@@ -7,28 +7,36 @@ import { CCMap } from '../../services/phaser/tilemap/cc-map';
 import { AbstractWidget } from '../widgets/abstract-widget';
 import { Vec2WidgetComponent } from '../widgets/vec2-widget/vec2-widget.component';
 import { WidgetRegistryService } from '../widgets/widget-registry.service';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { StringWidgetComponent } from '../widgets/string-widget/string-widget.component';
+import { LevelWidgetComponent } from '../widgets/level-widget/level-widget.component';
 
 @Component({
-	selector: 'app-entities',
-	templateUrl: './entities.component.html',
-	styleUrls: ['./entities.component.scss']
+    selector: 'app-entities',
+    templateUrl: './entities.component.html',
+    styleUrls: ['./entities.component.scss'],
+    imports: [FlexModule, MatFormField, MatInput, FormsModule, StringWidgetComponent, Vec2WidgetComponent, LevelWidgetComponent, HostDirective]
 })
 export class EntitiesComponent {
+	private widgetRegistry = inject(WidgetRegistryService);
+	private events = inject(GlobalEventsService);
+
 	@ViewChild(HostDirective, {static: false}) appHost?: HostDirective;
 	entity?: CCEntity;
 	map?: CCMap;
 	filter = '';
 	hideFilter = false;
 	
-	constructor(
-		private widgetRegistry: WidgetRegistryService,
-		private events: GlobalEventsService,
-		loader: MapLoaderService
-	) {
+	constructor() {
+		const events = this.events;
+		const loader = inject(MapLoaderService);
+
 		events.selectedEntity.subscribe(e => {
 			// clear focus of input fields to enable phaser inputs again ONLY if not a canvas
 			if (document.activeElement && document.activeElement.tagName !== 'CANVAS') {
-				(<HTMLElement>document.activeElement).blur();
+				(document.activeElement as HTMLElement).blur();
 			}
 			this.entity = e;
 			this.loadSettings(e);
@@ -53,14 +61,14 @@ export class EntitiesComponent {
 		
 		const def = entity.getScaleSettings();
 		if (def && (def.scalableX || def.scalableY)) {
-			const vec2Widget: Vec2WidgetComponent = <Vec2WidgetComponent>this.generateWidget(
+			const vec2Widget: Vec2WidgetComponent = this.generateWidget(
 				entity,
 				'size', {
 					type: 'Vec2',
 					description: ''
 				},
 				ref
-			);
+			) as Vec2WidgetComponent;
 			vec2Widget.def = def;
 		}
 		const widgets: Record<string, AbstractWidget> = {};
@@ -76,7 +84,7 @@ export class EntitiesComponent {
 	
 	private generateWidget(entity: CCEntity, key: string, val: AttributeValue, ref: ViewContainerRef) {
 		const componentRef = ref.createComponent(this.widgetRegistry.getWidget(val.type));
-		const instance = <AbstractWidget>componentRef.instance;
+		const instance = componentRef.instance as AbstractWidget;
 		instance.entity = entity;
 		instance.key = key;
 		instance.attribute = val;

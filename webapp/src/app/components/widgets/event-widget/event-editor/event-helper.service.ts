@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { AbstractEvent, EventType } from '../event-registry/abstract-event';
@@ -8,14 +8,11 @@ import { EventRegistryService } from '../event-registry/event-registry.service';
 	providedIn: 'root'
 })
 export class EventHelperService {
+	private eventRegistry = inject(EventRegistryService);
+	private domSanitizer = inject(DomSanitizer);
+
 	
 	selectedEvent: BehaviorSubject<AbstractEvent<any> | null> = new BehaviorSubject<AbstractEvent<any> | null>(null);
-	
-	constructor(
-		private eventRegistry: EventRegistryService,
-		private domSanitizer: DomSanitizer,
-	) {
-	}
 	
 	public getEventFromType(val: EventType, actionStep: boolean): AbstractEvent<any> {
 		const eventClass = this.eventRegistry.getEvent(val.type);

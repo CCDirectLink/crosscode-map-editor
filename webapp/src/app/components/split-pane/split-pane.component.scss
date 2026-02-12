@@ -48,6 +48,6 @@
 }
 
 .show-gutter {
-	background: mat.get-color-from-palette(mat.$gray-palette, 700);
+	background: var(--gray-700);
 	opacity: 1;
 }

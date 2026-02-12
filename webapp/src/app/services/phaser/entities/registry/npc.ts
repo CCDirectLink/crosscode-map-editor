@@ -57,16 +57,12 @@ export interface Face {
 	parts?: Part[];
 	expressions?: Expressions;
 	ABSTRACT?: string | SubJsonParam;
-	subImages?: { [key: string]: string };
+	subImages?: Record<string, string>;
 }
 
-export interface Part {
-	[key: string]: DetailPart | number;
-}
+export type Part = Record<string, DetailPart | number>;
 
-export interface Expressions {
-	[key: string]: Faces;
-}
+export type Expressions = Record<string, Faces>;
 
 export interface Faces {
 	faces: string[][];
@@ -85,18 +81,15 @@ export interface DetailPart {
 	hideOnClip?: boolean;
 }
 
-export interface WalkAnimSet {
-	[key: string]: { [key: string]: string | WalkAnimSetInner | undefined } | undefined;
-}
+export type WalkAnimSet = Record<string, Record<string, string | WalkAnimSetInner | undefined> | undefined>;
+
 
 export interface WalkAnimSetInner extends IfThen {
 	[key: string]: string | undefined;
 }
 
 
-export interface Configs {
-	[key: string]: ConfigSet;
-}
+export type Configs = Record<string, ConfigSet>;
 
 export interface ConfigSet {
 	relativeVel?: number;

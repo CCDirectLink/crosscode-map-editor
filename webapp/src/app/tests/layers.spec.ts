@@ -1,17 +1,16 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { AppModule } from '../app.module';
 
 import { StateHistoryService } from '../components/dialogs/floating-window/history/state-history.service';
 import { LayersComponent } from '../components/layers/layers.component';
 import { PhaserComponent } from '../components/phaser/phaser.component';
-import { MaterialModule } from '../external-modules/material.module';
 import { AutotileService } from '../services/autotile/autotile.service';
 import { HeightMapService } from '../services/height-map/height-map.service';
 import { HttpClientService } from '../services/http-client.service';
 import { MapLoaderService } from '../services/map-loader.service';
 import { TestHelper } from './test-helper';
+import { AppComponent } from '../app.component';
 
 class SimpleServiceMock {
 	init() {
@@ -23,13 +22,12 @@ describe('Layers', () => {
 	let fixture: ComponentFixture<PhaserComponent>;
 	
 	beforeEach(() => TestBed.configureTestingModule({
-		declarations: [PhaserComponent, LayersComponent],
-		imports: [NoopAnimationsModule, AppModule, HttpClientModule, MaterialModule],
+		imports: [NoopAnimationsModule, AppComponent, PhaserComponent, LayersComponent],
 		providers: [
 			{provide: AutotileService, useValue: new SimpleServiceMock()},
 			{provide: HeightMapService, useValue: new SimpleServiceMock()},
-			
-			StateHistoryService
+			StateHistoryService,
+			provideHttpClient(withInterceptorsFromDi())
 		]
 	}).compileComponents());
 	
@@ -48,8 +46,8 @@ describe('Layers', () => {
 		const comp = fixture.componentInstance;
 		fixture.detectChanges();
 		
-		const service: MapLoaderService = TestBed.get(MapLoaderService);
-		const http: HttpClientService = TestBed.get(HttpClientService);
+		const service: MapLoaderService = TestBed.inject(MapLoaderService);
+		const http: HttpClientService = TestBed.inject(HttpClientService);
 		const res = await TestHelper.loadMap(service, http, 'autumn/entrance');
 		const map = res.ccmap;
 		const export1 = map.exportMap();

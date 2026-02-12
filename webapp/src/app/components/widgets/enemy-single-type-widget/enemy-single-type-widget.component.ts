@@ -1,18 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { OverlayWidget } from '../overlay-widget';
 import { ImageSelectOverlayComponent, PropListGroup } from '../shared/image-select-overlay/image-select-overlay.component';
 import { HttpClientService } from '../../../services/http-client.service';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
 import { lastValueFrom } from 'rxjs';
-import { EnemyAttributes, EnemyInfo } from '../../../services/phaser/entities/registry/enemy';
+import { EnemyAttributes } from '../../../services/phaser/entities/registry/enemy';
+import { InputWithButtonComponent } from '../inputs/input-with-button/input-with-button.component';
 
 @Component({
-	selector: 'app-enemy-single-type-widget',
-	templateUrl: './enemy-single-type-widget.component.html',
-	styleUrls: ['./enemy-single-type-widget.component.scss', '../widget.scss']
+    selector: 'app-enemy-single-type-widget',
+    templateUrl: './enemy-single-type-widget.component.html',
+    styleUrls: ['./enemy-single-type-widget.component.scss', '../widget.scss'],
+    imports: [InputWithButtonComponent]
 })
 export class EnemySingleTypeWidgetComponent extends OverlayWidget {
+	private http = inject(HttpClientService);
+
 	
 	private props: {
 		prefix: string;
@@ -26,11 +30,10 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget {
 	
 	private comp: ImageSelectOverlayComponent = new ImageSelectOverlayComponent();
 	
-	constructor(
-		private http: HttpClientService,
-		overlayService: OverlayService,
-		overlay: Overlay
-	) {
+	constructor() {
+		const overlayService = inject(OverlayService);
+		const overlay = inject(Overlay);
+
 		super(overlayService, overlay);
 	}
 	

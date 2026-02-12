@@ -1,19 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
-@import "reset";
-@import "jsoneditor/darktheme";
+@use "reset";
+@use "jsoneditor/darktheme";
+@use "elevation";
+@use "theme";
 
-@include mat.core();
-
-@import "theme";
-
+@include mat.app-background();
 @tailwind base;
 @tailwind utilities;
 
-$config: mat.define-typography-config();
+$config: mat.m2-define-typography-config();
 
 // Use the default configuration.
-$my-typography: mat.define-typography-config();
+$my-typography: mat.m2-define-typography-config();
 @include mat.typography-hierarchy($my-typography);
 
 
@@ -41,22 +40,12 @@ body {
 	overflow: hidden !important;
 }
 
-.theme {
-	@include mat.all-component-themes($theme);
-
-	.mat-drawer-backdrop.mat-drawer-shown {
-		background: rgba(0, 0, 0, 0.32);
-	}
-
-	@include mat.form-field-density(-3);
-}
-
-
 .default-input {
 	$font-type: subtitle-1;
-	font-family: mat.font-family($config);
-	font-size: mat.font-size($config, $font-type);
-	font-weight: mat.font-weight($config, $font-type);
+	$focus-color: #2196f3;
+	font-family: mat.m2-font-family($config);
+	font-size: mat.m2-font-size($config, $font-type);
+	font-weight: mat.m2-font-weight($config, $font-type);
 	height: 24px;
 	color: white;
 	outline: solid 1px #c9c9c9;
@@ -70,28 +59,7 @@ body {
 
 	&:focus, &.focus {
 		outline-offset: 0;
-		outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500);
-	}
-
-
-	&.mat-mdc-select {
-		line-height: 24px;
-		outline: solid 1px #c9c9c9 !important;
-		padding-left: 4px;
-		padding-right: 4px;
-
-
-		&:disabled {
-			outline: dotted 1px rgba(201, 201, 201, 0.34) !important;
-		}
-
-		&:focus, &.focus {
-			outline: solid 1px mat.get-color-from-palette(mat.$blue-palette, 500) !important;
-		}
-
-		& .mat-select-value-text {
-			padding-left: 4px;
-		}
+		outline: solid 1px $focus-color;
 	}
 }
 
@@ -122,41 +90,6 @@ button {
 
 .green {
 	background-color: #5ad972;
-}
-
-// sick scrollbar
-.dark-scrollbar {
-	&::-webkit-scrollbar-track {
-		background-color: mat.get-color-from-palette($accent, 800);
-	}
-
-	&::-webkit-scrollbar {
-		width: 12px;
-		background-color: #F5F5F5;
-	}
-
-	&::-webkit-scrollbar-thumb {
-		background-color: mat.get-color-from-palette($accent, 600);
-	}
-
-	// non standard value, makes scrollbar not take additional space.
-	// More information: https://stackoverflow.com/a/43051077/5244460
-	// noinspection CssInvalidPropertyValue
-	overflow: overlay;
-}
-
-.dark-scrollbar-auto {
-	@extend .dark-scrollbar;
-	overflow: auto;
-}
-
-.small-dark-scrollbar {
-	@extend .dark-scrollbar;
-
-	&::-webkit-scrollbar {
-		width: 8px;
-		background-color: #F5F5F5;
-	}
 }
 
 .highlight {
@@ -195,7 +128,7 @@ body {
 
 .snackbar-error {
 	> * {
-		background: mat.get-color-from-palette(mat.$red-palette, 700) !important;
+		background: #d32f2f !important;
 	}
 
 	button {

@@ -1,20 +1,19 @@
-import { Component, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, HostListener, inject } from '@angular/core';
 import { ConfirmCloseComponent } from './components/dialogs/confirm-close/confirm-close.component';
 import { OverlayService } from './components/dialogs/overlay/overlay.service';
 import { GlobalEventsService } from './services/global-events.service';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.scss']
+	styleUrls: ['./app.component.scss'],
+	imports: [RouterOutlet]
 })
 export class AppComponent {
-	constructor(
-		private readonly eventsService: GlobalEventsService,
-		private readonly overlayService: OverlayService,
-	) {
-	}
+	private readonly eventsService = inject(GlobalEventsService);
+	private readonly overlayService = inject(OverlayService);
+	
 	
 	@HostListener('window:beforeunload', ['$event'])
 	onUnload($event: any) {

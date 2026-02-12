@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { firstValueFrom } from 'rxjs';
 import { AppModule } from '../app.module';
@@ -22,15 +22,14 @@ describe('Map Loading', () => {
 	let fixture: ComponentFixture<PhaserComponent>;
 	
 	beforeEach(() => TestBed.configureTestingModule({
-		declarations: [PhaserComponent],
-		imports: [AppModule, HttpClientModule],
-		providers: [
-			{provide: AutotileService, useValue: new SimpleServiceMock()},
-			{provide: HeightMapService, useValue: new SimpleServiceMock()},
-			
-			StateHistoryService
-		]
-	}).compileComponents());
+    imports: [AppModule, PhaserComponent],
+    providers: [
+        { provide: AutotileService, useValue: new SimpleServiceMock() },
+        { provide: HeightMapService, useValue: new SimpleServiceMock() },
+        StateHistoryService,
+        provideHttpClient(withInterceptorsFromDi())
+    ]
+}).compileComponents());
 	
 	beforeEach(() => {
 		jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
@@ -47,16 +46,16 @@ describe('Map Loading', () => {
 	});
 	
 	it('should export same map as imported (autumn/entrance)', async () => {
-		const service: MapLoaderService = TestBed.get(MapLoaderService);
-		const http: HttpClientService = TestBed.get(HttpClientService);
+		const service: MapLoaderService = TestBed.inject(MapLoaderService);
+		const http: HttpClientService = TestBed.inject(HttpClientService);
 		const output = await loadMap(service, http, 'autumn/entrance');
 		expect(output.exported).toEqual(output.imported);
 	});
 	
 	it('should export same map as imported (lots of maps)', async () => {
 		
-		const service: MapLoaderService = TestBed.get(MapLoaderService);
-		const http: HttpClientService = TestBed.get(HttpClientService);
+		const service: MapLoaderService = TestBed.inject(MapLoaderService);
+		const http: HttpClientService = TestBed.inject(HttpClientService);
 		
 		const paths = await firstValueFrom(http.getMaps());
 		

@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppModule } from '../app.module';
 
@@ -21,15 +21,14 @@ describe('Entities', () => {
 	let fixture: ComponentFixture<PhaserComponent>;
 	
 	beforeEach(() => TestBed.configureTestingModule({
-		declarations: [PhaserComponent],
-		imports: [AppModule, HttpClientModule],
-		providers: [
-			{provide: AutotileService, useValue: new SimpleServiceMock()},
-			{provide: HeightMapService, useValue: new SimpleServiceMock()},
-			
-			StateHistoryService
-		]
-	}).compileComponents());
+    imports: [AppModule, PhaserComponent],
+    providers: [
+        { provide: AutotileService, useValue: new SimpleServiceMock() },
+        { provide: HeightMapService, useValue: new SimpleServiceMock() },
+        StateHistoryService,
+        provideHttpClient(withInterceptorsFromDi())
+    ]
+}).compileComponents());
 	
 	beforeEach(() => {
 		jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
@@ -42,8 +41,8 @@ describe('Entities', () => {
 	});
 	
 	it('make new npc and export map', async () => {
-		const service: MapLoaderService = TestBed.get(MapLoaderService);
-		const http: HttpClientService = TestBed.get(HttpClientService);
+		const service: MapLoaderService = TestBed.inject(MapLoaderService);
+		const http: HttpClientService = TestBed.inject(HttpClientService);
 		const res = await TestHelper.loadMap(service, http, 'autumn/entrance');
 		const map = res.ccmap;
 		const exported1 = map.exportMap();
@@ -58,8 +57,8 @@ describe('Entities', () => {
 	
 	
 	it('entities should have a unique mapId (instanceof Number)', async () => {
-		const service: MapLoaderService = TestBed.get(MapLoaderService);
-		const http: HttpClientService = TestBed.get(HttpClientService);
+		const service: MapLoaderService = TestBed.inject(MapLoaderService);
+		const http: HttpClientService = TestBed.inject(HttpClientService);
 		const res = await TestHelper.loadMap(service, http, 'autumn/entrance');
 		const map = res.ccmap;
 		
@@ -71,8 +70,8 @@ describe('Entities', () => {
 	});
 	
 	it('copy paste entity', async () => {
-		const service: MapLoaderService = TestBed.get(MapLoaderService);
-		const http: HttpClientService = TestBed.get(HttpClientService);
+		const service: MapLoaderService = TestBed.inject(MapLoaderService);
+		const http: HttpClientService = TestBed.inject(HttpClientService);
 		const res = await TestHelper.loadMap(service, http, 'autumn/entrance');
 		const map = res.ccmap;
 		

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { api } from 'cc-map-editor-common';
 import { lastValueFrom, Observable } from 'rxjs';
 import { FileInfos } from '../models/file-infos';
@@ -11,15 +11,12 @@ import { SettingsService } from './settings.service';
 	providedIn: 'root'
 })
 export class HttpClientService {
+	private http = inject(HttpClient);
+	private electron = inject(ElectronService);
+	private settingsService = inject(SettingsService);
+
 
 	private readonly fileName = 'config.json';
-
-	constructor(
-		private http: HttpClient,
-		private electron: ElectronService,
-		private settingsService: SettingsService
-	) {
-	}
 
 	getAllFiles(): Observable<FileInfos> {
 		return this.request('api/allFiles', api.getAllFiles);

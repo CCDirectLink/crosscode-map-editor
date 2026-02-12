@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, inject } from '@angular/core';
 import * as Phaser from 'phaser';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,30 +14,38 @@ import { PhaserEventsService } from '../../services/phaser/phaser-events.service
 import { SettingsService } from '../../services/settings.service';
 import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
 import { JsonLoaderService } from '../../services/json-loader.service';
+import { CaptionsComponent } from '../captions/captions.component';
 
 @Component({
-	selector: 'app-phaser',
-	templateUrl: './phaser.component.html',
-	styleUrls: ['./phaser.component.scss']
+    selector: 'app-phaser',
+    templateUrl: './phaser.component.html',
+    styleUrls: ['./phaser.component.scss'],
+    imports: [CaptionsComponent]
 })
 export class PhaserComponent implements AfterViewInit {
+	private element = inject(ElementRef);
+	private mapLoader = inject(MapLoaderService);
+	private globalEvents = inject(GlobalEventsService);
+	private stateHistory = inject(StateHistoryService);
+	private phaserEventsService = inject(PhaserEventsService);
+	private heightMap = inject(HeightMapService);
+	private http = inject(HttpClientService);
 
-	@ViewChild('content', { static: true }) content!: ElementRef<HTMLElement>;
+	
+	@ViewChild('content', {static: true}) content!: ElementRef<HTMLElement>;
+	
+	constructor() {
+		const mapLoader = this.mapLoader;
+		const globalEvents = this.globalEvents;
+		const stateHistory = this.stateHistory;
+		const phaserEventsService = this.phaserEventsService;
+		const http = this.http;
+		const snackbar = inject(MatSnackBar);
+		const registry = inject(EntityRegistryService);
+		const autotile = inject(AutotileService);
+		const settingsService = inject(SettingsService);
+		const jsonLoader = inject(JsonLoaderService);
 
-	constructor(
-		private element: ElementRef,
-		private mapLoader: MapLoaderService,
-		private globalEvents: GlobalEventsService,
-		private stateHistory: StateHistoryService,
-		private phaserEventsService: PhaserEventsService,
-		private heightMap: HeightMapService,
-		private http: HttpClientService,
-		snackbar: MatSnackBar,
-		registry: EntityRegistryService,
-		autotile: AutotileService,
-		settingsService: SettingsService,
-		jsonLoader: JsonLoaderService,
-	) {
 		Globals.stateHistoryService = stateHistory;
 		Globals.mapLoaderService = mapLoader;
 		Globals.phaserEventsService = phaserEventsService;
@@ -49,8 +57,8 @@ export class PhaserComponent implements AfterViewInit {
 		Globals.settingsService = settingsService;
 		Globals.jsonLoader = jsonLoader;
 	}
-
-
+	
+	
 	ngAfterViewInit() {
 		this.heightMap.init();
 		const scene = new MainScene();
@@ -73,8 +81,8 @@ export class PhaserComponent implements AfterViewInit {
 		});
 		Globals.scene = scene;
 	}
-
-	@HostListener('window:resize', ['$event'])
+	
+	@HostListener('window:resize')
 	onResize() {
 		if (!Globals.game) {
 			return;
@@ -86,7 +94,7 @@ export class PhaserComponent implements AfterViewInit {
 		);
 		Globals.game.scale.setZoom(1 / window.devicePixelRatio);
 	}
-
+	
 	private getScale() {
 		const rect = this.content.nativeElement.getBoundingClientRect();
 		return {

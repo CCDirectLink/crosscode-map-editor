@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { HostDirective } from '../../../../../directives/host.directive';
 import { AttributeValue } from '../../../../../services/phaser/entities/cc-entity';
@@ -7,15 +7,23 @@ import { JsonWidgetComponent } from '../../../json-widget/json-widget.component'
 import { WidgetRegistryService } from '../../../widget-registry.service';
 import { AbstractEvent } from '../../event-registry/abstract-event';
 import { EventHelperService } from '../event-helper.service';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 export type RefreshType = 'Node' | 'Full';
 
 @Component({
-	selector: 'app-event-detail',
-	templateUrl: './event-detail.component.html',
-	styleUrls: ['./event-detail.component.scss']
+    selector: 'app-event-detail',
+    templateUrl: './event-detail.component.html',
+    styleUrls: ['./event-detail.component.scss'],
+    imports: [FlexModule, MatIconButton, MatIcon, HostDirective]
 })
 export class EventDetailComponent implements OnDestroy {
+	private widgetRegistry = inject(WidgetRegistryService);
+	private helper = inject(EventHelperService);
+	private ref = inject(ChangeDetectorRef);
+
 	@ViewChild(HostDirective, {static: true}) appHost!: HostDirective;
 	
 	@Input() event!: AbstractEvent<any>;
@@ -28,13 +36,6 @@ export class EventDetailComponent implements OnDestroy {
 	
 	private changeSubscriptions: Subscription[] = [];
 	
-	constructor(
-		private widgetRegistry: WidgetRegistryService,
-		private helper: EventHelperService,
-		private ref: ChangeDetectorRef,
-	) {
-	}
-	
 	ngOnDestroy(): void {
 		this.clearSubscriptions();
 	}
@@ -44,7 +45,7 @@ export class EventDetailComponent implements OnDestroy {
 	}
 	
 	public loadEvent(event: AbstractEvent<any>) {
-		if(this.event !== event) {
+		if (this.event !== event) {
 			this.event = event;
 			this.loadSettings();
 		}
@@ -91,7 +92,7 @@ export class EventDetailComponent implements OnDestroy {
 	
 	private generateWidget(data: any, key: string, val: AttributeValue, ref: ViewContainerRef) {
 		const componentRef = ref.createComponent(this.widgetRegistry.getWidget(val.type));
-		const instance = <AbstractWidget>componentRef.instance;
+		const instance = componentRef.instance as AbstractWidget;
 		instance.custom = data;
 		instance.key = key;
 		instance.attribute = val;

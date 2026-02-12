@@ -2,11 +2,15 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { Point } from '../../../models/cross-code-map';
 import { ScaleSettings } from '../../../services/phaser/entities/cc-entity';
 import { AbstractWidget } from '../abstract-widget';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatTooltip } from '@angular/material/tooltip';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-	selector: 'app-vec2-widget',
-	templateUrl: './vec2-widget.component.html',
-	styleUrls: ['./vec2-widget.component.scss', '../widget.scss']
+    selector: 'app-vec2-widget',
+    templateUrl: './vec2-widget.component.html',
+    styleUrls: ['./vec2-widget.component.scss', '../widget.scss'],
+    imports: [FlexModule, MatTooltip, FormsModule]
 })
 export class Vec2WidgetComponent extends AbstractWidget implements OnChanges {
 	

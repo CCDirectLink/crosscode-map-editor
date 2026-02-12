@@ -71,7 +71,7 @@ export class Helper {
 		return JSON.parse(JSON.stringify(obj));
 	}
 	
-	public static typedKeys<T extends {}>(obj: T): (keyof T)[] {
+	public static typedKeys<T extends object>(obj: T): (keyof T)[] {
 		return Object.keys(obj) as (keyof T)[];
 	}
 	

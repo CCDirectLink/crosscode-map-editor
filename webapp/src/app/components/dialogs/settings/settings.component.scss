@@ -22,13 +22,13 @@
 }
 
 .icon-undefined {
-	color: mat.get-color-from-palette(mat.$blue-palette, 500);
+	color: #2196f3;
 }
 
 .icon-valid {
-	color: mat.get-color-from-palette(mat.$green-palette, 500);
+	color: #4caf50;
 }
 
 .icon-invalid {
-	color: mat.get-color-from-palette(mat.$red-palette, 500);
+	color: #f44336;
 }

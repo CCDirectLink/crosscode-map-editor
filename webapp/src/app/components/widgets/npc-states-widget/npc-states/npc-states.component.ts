@@ -1,14 +1,33 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import * as settingsJson from '../../../../../assets/npc-settings.json';
+import settingsJson from '../../../../../assets/npc-settings.json';
 import { createEventArray, destructureEventArray, EventArrayType } from '../../../../models/events';
 import { EventEditorComponent } from '../../event-widget/event-editor/editor/event-editor.component';
 import { EventType } from '../../event-widget/event-registry/abstract-event';
-import { NPCState } from '../npc-states-widget.component';
+import { type NPCState } from '../npc-states-widget.component';
+import { OverlayPanelComponent } from '../../../dialogs/overlay/overlay-panel/overlay-panel.component';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatButton } from '@angular/material/button';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { FormsModule } from '@angular/forms';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatIcon } from '@angular/material/icon';
+import { KeyValuePipe } from '@angular/common';
 
 @Component({
 	selector: 'app-npc-states',
 	templateUrl: './npc-states.component.html',
 	styleUrls: ['./npc-states.component.scss', '../../widget.scss'],
+	imports: [OverlayPanelComponent,
+		FlexModule,
+		MatButton,
+		MatTabGroup,
+		MatTab,
+		FormsModule,
+		MatCheckbox,
+		MatIcon,
+		EventEditorComponent,
+		KeyValuePipe
+	]
 })
 export class NpcStatesComponent implements OnInit {
 	@ViewChild('eventEditor', {static: false}) eventEditor?: EventEditorComponent;
@@ -18,7 +37,7 @@ export class NpcStatesComponent implements OnInit {
 	currentState?: NPCState;
 	index = 0;
 	
-	props = settingsJson.default;
+	props = settingsJson;
 	eventTypes = Object.values(EventArrayType);
 	warnings: string[] = [];
 	private missingTradeEvent = false;

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ImageSelectOverlayComponent, PropListGroup } from '../shared/image-select-overlay/image-select-overlay.component';
 import { HttpClientService } from '../../../services/http-client.service';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
@@ -10,25 +10,29 @@ import { Globals } from '../../../services/globals';
 import { OverlayWidget } from '../overlay-widget';
 import { EntryGfxEnds, GfxEndsDir, ScalableProp, ScalablePropAttributes, ScalablePropConfig, ScalablePropDef } from '../../../services/phaser/entities/registry/scalable-prop';
 import { PropListCard } from '../shared/image-select-overlay/image-select-card/image-select-card.component';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatTooltip } from '@angular/material/tooltip';
 import Point = Electron.Point;
 
 @Component({
-	selector: 'app-scalable-prop-config-widget',
-	templateUrl: './scalable-prop-config-widget.component.html',
-	styleUrls: ['./scalable-prop-config-widget.component.scss', '../widget.scss']
+    selector: 'app-scalable-prop-config-widget',
+    templateUrl: './scalable-prop-config-widget.component.html',
+    styleUrls: ['./scalable-prop-config-widget.component.scss', '../widget.scss'],
+    imports: [FlexModule, MatTooltip]
 })
 export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePropAttributes> implements OnInit, OnDestroy {
+	private http = inject(HttpClientService);
+
 	private sheetKey = ['propConfig', 'sheet'];
 	private nameKey = ['propConfig', 'name'];
 	
 	private comp: ImageSelectOverlayComponent = new ImageSelectOverlayComponent();
 	private sheet?: ScalablePropSheet;
 	
-	constructor(
-		private http: HttpClientService,
-		overlayService: OverlayService,
-		overlay: Overlay
-	) {
+	constructor() {
+		const overlayService = inject(OverlayService);
+		const overlay = inject(Overlay);
+
 		super(overlayService, overlay);
 	}
 	

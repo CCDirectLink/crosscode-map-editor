@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Point } from '../../models/cross-code-map';
 import { CHECK_DIR, CHECK_ITERATE, CheckDir } from '../height-map/heightmap.constants';
 import { CCMapLayer } from '../phaser/tilemap/cc-map-layer';
@@ -24,12 +24,12 @@ export class AutotileService {
 	
 	private gfxMapper: GfxMapper;
 	
-	constructor(
-		phaserEvents: PhaserEventsService,
-		mapLoader: MapLoaderService,
-		events: GlobalEventsService,
-		jsonLoader: JsonLoaderService,
-	) {
+	constructor() {
+		const phaserEvents = inject(PhaserEventsService);
+		const mapLoader = inject(MapLoaderService);
+		const events = inject(GlobalEventsService);
+		const jsonLoader = inject(JsonLoaderService);
+
 		this.gfxMapper = new GfxMapper(jsonLoader);
 		combineLatest([
 			phaserEvents.changeSelectedTiles.asObservable(),
@@ -166,10 +166,10 @@ export class AutotileService {
 			y: tile.pos.y + dir.dy
 		};
 		
-		const out: TileData = <any>{
+		const out: TileData = {
 			pos: newPos,
 			fill: 'OOOO'
-		};
+		} as any;
 		
 		if (newPos.x < 0 || newPos.y < 0 || newPos.x >= layer.details.width || newPos.y >= layer.details.height) {
 			out.fill = 'XXXX';

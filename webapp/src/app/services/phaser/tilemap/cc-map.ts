@@ -20,7 +20,7 @@ export class CCMap {
 	mapHeight = 0;
 	masterLevel = 0;
 	layers: CCMapLayer[] = [];
-	attributes: Attributes = <any>{};
+	attributes: Attributes = {} as any;
 	screen: Point = {x: 0, y: 0};
 	
 	private lastMapId = 1;
@@ -194,7 +194,7 @@ export class CCMap {
 	}
 	
 	exportMap(): CrossCodeMap {
-		const out: CrossCodeMap = <any>{};
+		const out: CrossCodeMap = {} as any;
 		
 		for (const level of this.levels) {
 			const number = Number(level.height);

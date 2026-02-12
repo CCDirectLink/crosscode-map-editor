@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { HighlightDirective } from '../../../../../directives/highlight.directive';
 
 export interface PropListCard {
@@ -12,8 +12,7 @@ export interface PropListCard {
 
 @Component({
 	selector: 'app-image-select-card',
-	standalone: true,
-	imports: [CommonModule, HighlightDirective],
+	imports: [HighlightDirective],
 	templateUrl: './image-select-card.component.html',
 	styleUrls: ['./image-select-card.component.scss']
 })

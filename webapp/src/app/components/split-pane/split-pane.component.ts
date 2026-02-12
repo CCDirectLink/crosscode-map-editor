@@ -5,6 +5,7 @@ import {
 	ElementRef,
 	EventEmitter,
 	HostListener,
+	inject,
 	Input,
 	OnChanges,
 	OnInit,
@@ -12,6 +13,7 @@ import {
 	SimpleChanges,
 	ViewChild
 } from '@angular/core';
+import { FlexModule } from '@angular/flex-layout/flex';
 
 /** values in % [0, 100] */
 export interface Bounds {
@@ -23,9 +25,12 @@ export interface Bounds {
 	selector: 'app-split-pane',
 	templateUrl: './split-pane.component.html',
 	styleUrls: ['./split-pane.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [FlexModule]
 })
 export class SplitPaneComponent implements OnInit, OnChanges {
+	private ref = inject(ChangeDetectorRef);
+	
 	
 	@ViewChild('container') container!: ElementRef<HTMLElement>;
 	
@@ -62,11 +67,6 @@ export class SplitPaneComponent implements OnInit, OnChanges {
 	noAnims = false;
 	private offset = 0;
 	private scale = 0;
-	
-	constructor(
-		private ref: ChangeDetectorRef
-	) {
-	}
 	
 	ngOnInit(): void {
 		// sets initial values without animating to them

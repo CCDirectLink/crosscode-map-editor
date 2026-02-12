@@ -1,7 +1,14 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
 
 import { SearchFilterService } from '../../../services/search-filter.service';
+import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatDivider, MatListItem, MatNavList } from '@angular/material/list';
+import { CdkFixedSizeVirtualScroll, CdkVirtualForOf, CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { HighlightDirective } from '../../../directives/highlight.directive';
 
 const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 
@@ -22,7 +29,6 @@ const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 				}),
 				animate(ANIMATION_TIMING)
 			]),
-			
 			state('scale', style({'transform-origin': '0 0 0'})),
 			transition('* => scale', [
 				style({
@@ -35,9 +41,25 @@ const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 	],
 	selector: 'app-list-search-overlay',
 	templateUrl: './list-search-overlay.component.html',
-	styleUrls: ['./list-search-overlay.component.scss']
+	styleUrls: ['./list-search-overlay.component.scss'],
+	imports: [
+		OverlayPanelComponent,
+		FlexModule,
+		MatFormField,
+		MatInput,
+		FormsModule,
+		MatNavList,
+		CdkVirtualScrollViewport,
+		CdkFixedSizeVirtualScroll,
+		CdkVirtualForOf,
+		MatListItem,
+		HighlightDirective,
+		MatDivider
+	]
 })
 export class ListSearchOverlayComponent implements OnInit {
+	private searchFilterService = inject(SearchFilterService);
+	
 	@ViewChild('filterInput', {static: true}) filterInput!: ElementRef<HTMLInputElement>;
 	
 	@Input() list: string[] = [];
@@ -62,11 +84,6 @@ export class ListSearchOverlayComponent implements OnInit {
 		this._filterText = text;
 		
 		this.filteredList = this.searchFilterService.filterOptions(this.list, text);
-	}
-	
-	constructor(
-		private searchFilterService: SearchFilterService,
-	) {
 	}
 	
 	ngOnInit() {

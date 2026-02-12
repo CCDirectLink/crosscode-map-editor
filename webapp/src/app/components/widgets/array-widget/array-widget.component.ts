@@ -1,15 +1,13 @@
-import { Component, OnChanges, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, OnChanges, Type, ViewChild, ViewContainerRef, inject } from '@angular/core';
 import { AbstractWidget } from '../abstract-widget';
 import { FlexModule } from '@angular/flex-layout';
-import { MatRipple } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTooltip } from '@angular/material/tooltip';
-import { JsonPipe, NgComponentOutlet, NgIf } from '@angular/common';
+import { NgComponentOutlet } from '@angular/common';
 import { AttributeValue } from '../../../services/phaser/entities/cc-entity';
 import { WidgetRegistryService } from '../widget-registry.service';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { MatDivider } from '@angular/material/divider';
 
 export interface ArrayWidgetSub {
 	_type: string;
@@ -32,33 +30,24 @@ interface DynamicComponent {
 
 @Component({
 	selector: 'app-array-widget',
-	standalone: true,
 	imports: [
 		FlexModule,
-		MatRipple,
 		ReactiveFormsModule,
 		MatTooltip,
-		NgIf,
-		JsonPipe,
 		NgComponentOutlet,
 		MatIconButton,
-		MatIcon,
-		MatDivider
+		MatIcon
 	],
 	templateUrl: './array-widget.component.html',
 	styleUrls: ['./array-widget.component.scss', '../widget.scss']
 })
 export class ArrayWidgetComponent extends AbstractWidget<ArraySettings, ArrayAttributes> implements OnChanges {
+	private widgetRegistry = inject(WidgetRegistryService);
+
 	
 	@ViewChild('compContainer', {read: ViewContainerRef, static: true}) compContainer!: ViewContainerRef;
 	
 	dynamicComponents: DynamicComponent[] = [];
-	
-	constructor(
-		private widgetRegistry: WidgetRegistryService,
-	) {
-		super();
-	}
 	
 	
 	override ngOnChanges() {

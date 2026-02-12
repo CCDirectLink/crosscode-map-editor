@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { OverlayWidget } from '../overlay-widget';
 import { ImageSelectOverlayComponent, PropListGroup } from '../shared/image-select-overlay/image-select-overlay.component';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
@@ -9,13 +9,18 @@ import { Prop, PropAttributes } from '../../../services/phaser/entities/registry
 import { Helper } from '../../../services/phaser/helper';
 import { Anims, prepareSheet, PropDef, PropSheet } from '../../../services/phaser/sheet-parser';
 import { PropListCard } from '../shared/image-select-overlay/image-select-card/image-select-card.component';
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatTooltip } from '@angular/material/tooltip';
 
 @Component({
-	selector: 'app-prop-type-widget',
-	templateUrl: './prop-type-widget.component.html',
-	styleUrls: ['./prop-type-widget.component.scss', '../widget.scss']
+    selector: 'app-prop-type-widget',
+    templateUrl: './prop-type-widget.component.html',
+    styleUrls: ['./prop-type-widget.component.scss', '../widget.scss'],
+    imports: [FlexModule, MatTooltip]
 })
 export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
+	private http = inject(HttpClientService);
+
 	
 	private sheetKey = ['propType', 'sheet'];
 	private nameKey = ['propType', 'name'];
@@ -33,11 +38,10 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 	
 	private comp: ImageSelectOverlayComponent = new ImageSelectOverlayComponent();
 	
-	constructor(
-		private http: HttpClientService,
-		overlayService: OverlayService,
-		overlay: Overlay
-	) {
+	constructor() {
+		const overlayService = inject(OverlayService);
+		const overlay = inject(Overlay);
+
 		super(overlayService, overlay);
 	}
 	

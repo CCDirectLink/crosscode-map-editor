@@ -1,12 +1,11 @@
-import { Component, effect, OnInit } from '@angular/core';
+import { Component, effect, OnInit, inject } from '@angular/core';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { Globals } from '../../../services/globals';
-import { NgIf } from '@angular/common';
+
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
 import { PointInputComponent } from '../vec-input/point-input.component';
 import { Helper } from '../../../services/phaser/helper';
 import { Point } from '../../../models/cross-code-map';
@@ -26,7 +25,6 @@ const gridSettingsKey = 'gridSettingsKey';
 
 @Component({
 	selector: 'app-grid-menu',
-	standalone: true,
 	animations: [
 		trigger('openClose', [
 			state('void', style({
@@ -43,9 +41,7 @@ const gridSettingsKey = 'gridSettingsKey';
 		MatIconButton,
 		MatIcon,
 		FormsModule,
-		NgIf,
 		MatFormField,
-		MatInput,
 		MatLabel,
 		PointInputComponent
 	],
@@ -56,9 +52,9 @@ export class GridMenuComponent implements OnInit {
 	
 	gridSettings = Globals.gridSettings;
 	
-	constructor(
-		events: GlobalEventsService
-	) {
+	constructor() {
+		const events = inject(GlobalEventsService);
+
 		effect(() => {
 			const settings = this.gridSettings();
 			localStorage.setItem(gridSettingsKey, JSON.stringify(settings));

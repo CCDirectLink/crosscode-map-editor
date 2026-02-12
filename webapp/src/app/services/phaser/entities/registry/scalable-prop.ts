@@ -109,7 +109,7 @@ export class ScalableProp extends DefaultEntity {
 		}
 		prop = prepareScalableProp(prop, sheet);
 		
-		this.entitySettings = <any>{};
+		this.entitySettings = {} as any;
 		
 		const scaleSettings = this.getScaleSettings()!;
 		

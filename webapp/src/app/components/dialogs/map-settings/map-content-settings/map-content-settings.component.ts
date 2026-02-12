@@ -1,11 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import * as mapSettingsjson from '../../../../../assets/map-settings.json';
+import mapSettingsjson from '../../../../../assets/map-settings.json';
 import { CrossCodeMap } from '../../../../models/cross-code-map';
+import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/autocomplete';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { StringWidgetComponent } from '../../../widgets/string-widget/string-widget.component';
+import { KeyValuePipe } from '@angular/common';
 
 @Component({
-	selector: 'app-map-content-settings',
-	templateUrl: './map-content-settings.component.html',
-	styleUrls: ['./map-content-settings.component.scss']
+    selector: 'app-map-content-settings',
+    templateUrl: './map-content-settings.component.html',
+    styleUrls: ['./map-content-settings.component.scss'],
+    imports: [FormsModule, MatButton, MatSelect, MatOption, MatCheckbox, StringWidgetComponent, KeyValuePipe]
 })
 export class MapContentSettingsComponent implements OnInit {
 	@Input() settings!: CrossCodeMap;
@@ -17,7 +25,7 @@ export class MapContentSettingsComponent implements OnInit {
 		property: any;
 		value: any;
 	}>();
-	mapSettings = mapSettingsjson.default;
+	mapSettings = mapSettingsjson;
 	
 	constructor() {
 	}

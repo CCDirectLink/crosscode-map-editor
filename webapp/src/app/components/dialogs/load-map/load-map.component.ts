@@ -1,7 +1,7 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, inject, Input, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { MatNestedTreeNode, MatTree, MatTreeNestedDataSource, MatTreeNode, MatTreeNodeDef, MatTreeNodeOutlet, MatTreeNodeToggle } from '@angular/material/tree';
 
 import { firstValueFrom } from 'rxjs';
 import { GlobalEventsService } from '../../../services/global-events.service';
@@ -12,24 +12,55 @@ import { ConfirmCloseComponent } from '../confirm-close/confirm-close.component'
 import { OverlayService } from '../overlay/overlay.service';
 import { MapNode, MapNodeRoot } from './mapNode.model';
 import { VirtualMapNode } from './virtualMapNode.model';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { HighlightDirective } from '../../../directives/highlight.directive';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 
 @Component({
 	selector: 'app-load-map',
 	templateUrl: './load-map.component.html',
 	styleUrls: ['./load-map.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [
+		MatToolbar,
+		MatIconButton,
+		MatIcon,
+		MatFormField,
+		MatInput,
+		FormsModule,
+		MatTree,
+		MatTreeNodeDef,
+		MatTreeNode,
+		MatButton,
+		HighlightDirective,
+		MatNestedTreeNode,
+		MatTreeNodeToggle,
+		MatTreeNodeOutlet,
+		MatProgressSpinner
+	]
 })
 export class LoadMapComponent {
+	private mapLoader = inject(MapLoaderService);
+	private http = inject(HttpClientService);
+	private ref = inject(ChangeDetectorRef);
+	private searchFilterService = inject(SearchFilterService);
+	private readonly eventsService = inject(GlobalEventsService);
+	private readonly overlayService = inject(OverlayService);
+	
 	
 	@ViewChild('fileUpload', {static: true})
-		fileUpload!: ElementRef<HTMLInputElement>;
+	fileUpload!: ElementRef<HTMLInputElement>;
 	
 	@ViewChild('filterInput', {static: true})
-		filterInput!: ElementRef<HTMLInputElement>;
+	filterInput!: ElementRef<HTMLInputElement>;
 	
 	@Input()
-		sidenav!: MatSidenav;
+	sidenav!: MatSidenav;
 	
 	loading = false;
 	
@@ -40,14 +71,7 @@ export class LoadMapComponent {
 	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering.
 	filter = '';
 	
-	constructor(
-		private mapLoader: MapLoaderService,
-		private http: HttpClientService,
-		private ref: ChangeDetectorRef,
-		private searchFilterService: SearchFilterService,
-		private readonly eventsService: GlobalEventsService,
-		private readonly overlayService: OverlayService
-	) {
+	constructor() {
 		this.mapsSource.data = [];
 		this.refresh();
 	}
@@ -71,15 +95,15 @@ export class LoadMapComponent {
 		}
 		this.mapsSource.data = [];
 		this.mapsSource.data = this.virtualRoot.children || [];
-		this.ref.detectChanges();
+		this.ref.markForCheck();
 	}
-
+	
 	private async showConfirmDialog() {
 		const hasUnsavedChanges = await firstValueFrom(this.eventsService.hasUnsavedChanges);
 		if (!hasUnsavedChanges) {
 			return true;
 		}
-
+		
 		const dialogRef = this.overlayService.open(ConfirmCloseComponent, {
 			hasBackdrop: true,
 		});
