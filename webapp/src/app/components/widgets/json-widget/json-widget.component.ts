@@ -23,13 +23,17 @@ export class JsonWidgetComponent extends AbstractWidget {
 	
 	override ngOnInit() {
 		super.ngOnInit();
-		const setting = this.getJsonVal();
+		this.updateRows();
+	}
+	
+	private updateRows(newVal?: string) {
+		const setting = this.getJsonVal(newVal);
 		const rows = setting?.split('\n').length ?? 1;
 		this.rows.set(Helper.clamp(rows, 1, 5));
 	}
 	
-	getJsonVal() {
-		return JSON.stringify(this.settings[this.key], null, 2);
+	getJsonVal(newVal?: string) {
+		return JSON.stringify(newVal ?? this.settings[this.key], null, 2);
 	}
 	
 	openJsonEditor() {
@@ -51,6 +55,16 @@ export class JsonWidgetComponent extends AbstractWidget {
 		if (this.timer >= 0) {
 			clearTimeout(this.timer);
 		}
+		
+		// scales textarea when copy pasting into empty field
+		try {
+			const newVal = JSON.parse(value);
+			const prev = this.settings[key];
+			if (!prev && newVal) {
+				this.updateRows(newVal);
+			}
+		} catch (e) {}
+		
 		this.timer = window.setTimeout(() => {
 			value = JSON.parse(value);
 			this.settings[key] = value;
