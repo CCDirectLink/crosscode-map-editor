@@ -1,24 +1,36 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, inject, Input, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { JsonEditorComponent } from '../../json-editor/json-editor.component';
 import { AbstractWidget } from '../abstract-widget';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { MatTooltip } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
+import { Helper } from '../../../services/phaser/helper';
 
 @Component({
-    selector: 'app-json-widget',
-    templateUrl: './json-widget.component.html',
-    styleUrls: ['./json-widget.component.scss', '../widget.scss'],
-    imports: [FlexModule, MatTooltip, FormsModule]
+	selector: 'app-json-widget',
+	templateUrl: './json-widget.component.html',
+	styleUrls: ['./json-widget.component.scss', '../widget.scss'],
+	imports: [FlexModule, MatTooltip, FormsModule]
 })
 export class JsonWidgetComponent extends AbstractWidget {
 	private dialog = inject(MatDialog);
-
 	
 	@Input() noPropName = false;
 	private timer = -1;
-	json = JSON;
+	
+	rows = signal(1);
+	
+	override ngOnInit() {
+		super.ngOnInit();
+		const setting = this.getJsonVal();
+		const rows = setting?.split('\n').length ?? 1;
+		this.rows.set(Helper.clamp(rows, 1, 5));
+	}
+	
+	getJsonVal() {
+		return JSON.stringify(this.settings[this.key], null, 2);
+	}
 	
 	openJsonEditor() {
 		const ref = this.dialog.open(JsonEditorComponent, {
@@ -45,4 +57,5 @@ export class JsonWidgetComponent extends AbstractWidget {
 			this.updateType(value);
 		}, 500);
 	}
+	
 }
