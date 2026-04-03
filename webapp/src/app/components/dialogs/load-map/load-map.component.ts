@@ -1,5 +1,5 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, ElementRef, inject, Input, signal, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, ElementRef, inject, Input, resource, signal, untracked, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatNestedTreeNode, MatTree, MatTreeNestedDataSource, MatTreeNode, MatTreeNodeDef, MatTreeNodeOutlet, MatTreeNodeToggle } from '@angular/material/tree';
 
@@ -44,8 +44,8 @@ import { MatCheckbox } from '@angular/material/checkbox';
 		MatTreeNodeToggle,
 		MatTreeNodeOutlet,
 		MatProgressSpinner,
-		MatCheckbox
-	]
+		MatCheckbox,
+	],
 })
 export class LoadMapComponent {
 	private mapLoader = inject(MapLoaderService);
@@ -57,21 +57,27 @@ export class LoadMapComponent {
 	private readonly sharedService = inject(SHARED_SERVICE);
 	
 	
-	@ViewChild('fileUpload', {static: true})
+	@ViewChild('fileUpload', { static: true })
 	fileUpload!: ElementRef<HTMLInputElement>;
 	
-	@ViewChild('filterInput', {static: true})
+	@ViewChild('filterInput', { static: true })
 	filterInput!: ElementRef<HTMLInputElement>;
 	
 	@Input()
 	sidenav!: MatSidenav;
 	
-	loading = signal(false);
+	paths = resource({
+		params: () => ({ vanillaMaps: this.vanillaMaps() }),
+		loader: async ({ params }) => {
+			const req = params.vanillaMaps ? this.http.getVanillaMaps() : this.http.getMaps();
+			return await firstValueFrom(req);
+		},
+	});
 	
 	treeControl = new NestedTreeControl<VirtualMapNode>(node => node.children);
 	mapsSource = new MatTreeNestedDataSource<VirtualMapNode>();
 	
-	root: MapNodeRoot = {name: '', displayed: true, children: []}; // The root itself is never displayed. It is used as a datasource for virtualRoot.
+	root: MapNodeRoot = { name: '', displayed: true, children: [] }; // The root itself is never displayed. It is used as a datasource for virtualRoot.
 	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering.
 	filter = '';
 	
@@ -79,27 +85,23 @@ export class LoadMapComponent {
 	vanillaMaps = signal(false);
 	
 	constructor() {
-		effect(() => {
-			this.vanillaMaps();
-			this.refresh();
-		});
-		
 		this.mapsSource.data = [];
 		this.currentMod = this.sharedService.getSelectedMod();
+		
+		effect(() => {
+			const paths = this.paths.value();
+			if (!paths) {
+				return;
+			}
+			untracked(() => {
+				this.displayMaps(paths);
+				this.update();
+			});
+		});
 	}
 	
 	focusInput() {
 		this.filterInput.nativeElement.focus();
-	}
-	
-	async refresh() {
-		const req = this.vanillaMaps() ? this.http.getVanillaMaps() : this.http.getMaps();
-		this.loading.set(true);
-		const paths = await firstValueFrom(req);
-		this.loading.set(false);
-		
-		this.displayMaps(paths);
-		this.update();
 	}
 	
 	update() {
@@ -120,7 +122,7 @@ export class LoadMapComponent {
 		const dialogRef = this.overlayService.open(ConfirmCloseComponent, {
 			hasBackdrop: true,
 		});
-		const result = await firstValueFrom(dialogRef.ref.onClose, {defaultValue: false});
+		const result = await firstValueFrom(dialogRef.ref.onClose, { defaultValue: false });
 		if (result) {
 			this.eventsService.hasUnsavedChanges.next(false);
 		}
@@ -159,7 +161,7 @@ export class LoadMapComponent {
 			const node = this.resolve(data, path, lastNode, lastPath);
 			const name = path.substring(path.lastIndexOf('.') + 1);
 			
-			node.push({name, path, displayed: true});
+			node.push({ name, path, displayed: true });
 			
 			lastPath = path;
 			lastNode = node;
