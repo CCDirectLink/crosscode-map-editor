@@ -29,17 +29,6 @@ export class SettingsService {
 		}
 	}
 	
-	/**
-	 * @deprecated Use signalSettings instead.
-	 */
-	getSettings(): Readonly<AppSettings> {
-		const out = {} as AppSettings;
-		for (const [key, val] of Object.entries(this.settings)) {
-			out[key as keyof AppSettings] = val();
-		}
-		return out;
-	}
-	
 	signalSettings(): Signalify<AppSettings> {
 		return this.settings;
 	}
@@ -48,15 +37,5 @@ export class SettingsService {
 		const loadedValue = localStorage.getItem(key);
 		const val = loadedValue === null ? defaultValue : (loadedValue === 'true');
 		return signal(val);
-	}
-	
-	/**
-	 * @deprecated set signals directly instead
-	 */
-	public updateSettings(newSettings: Partial<AppSettings>) {
-		for (const [k, val] of Object.entries(newSettings)) {
-			const key = k as keyof AppSettings;
-			this.settings[key].set(val);
-		}
 	}
 }

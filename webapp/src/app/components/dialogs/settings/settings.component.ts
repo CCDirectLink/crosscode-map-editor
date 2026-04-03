@@ -43,8 +43,8 @@ import { MatCheckbox } from '@angular/material/checkbox';
 		MatOption,
 		ColoredTextDirective,
 		MatCheckbox,
-		ImageSelectCardComponent
-	]
+		ImageSelectCardComponent,
+	],
 })
 export class SettingsComponent implements OnInit {
 	private ref = inject(OverlayRefControl);
@@ -78,7 +78,11 @@ export class SettingsComponent implements OnInit {
 		
 		http.getMods().subscribe(mods => this.mods = mods);
 		this.mod = this.sharedService.getSelectedMod();
-		this.settings = JSON.parse(JSON.stringify(this.settingsService.getSettings()));
+		
+		this.settings = {} as AppSettings;
+		for (const [key, val] of Object.entries(this.settingsService.signalSettings())) {
+			this.settings[key as keyof AppSettings] = val();
+		}
 	}
 	
 	ngOnInit() {
@@ -119,7 +123,7 @@ export class SettingsComponent implements OnInit {
 			this.folderFormControl.setErrors(null);
 		} else {
 			this.folderFormControl.setErrors({
-				invalid: true
+				invalid: true,
 			});
 		}
 	}
@@ -129,10 +133,16 @@ export class SettingsComponent implements OnInit {
 			this.electron.saveAssetsPath(this.folderFormControl.value);
 		}
 		this.sharedService.saveModSelect(this.mod);
-		this.settingsService.updateSettings(this.settings);
+		
+		const settings = this.settingsService.signalSettings();
+		for (const [k, val] of Object.entries(this.settings)) {
+			const key = k as keyof AppSettings;
+			settings[key].set(val);
+		}
+		
 		this.close();
 		const ref = this.snackBar.open('Changing the path requires to restart the editor', 'Restart', {
-			duration: 6000
+			duration: 6000,
 		});
 		
 		ref.onAction().subscribe(() => this.sharedService.relaunch());
