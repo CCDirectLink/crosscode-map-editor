@@ -1,36 +1,62 @@
-import { Injectable } from '@angular/core';
+import { effect, Injectable, signal, WritableSignal } from '@angular/core';
+
+export type Signalify<T> = {
+	[K in keyof T]: WritableSignal<T[K]>;
+};
 
 export interface AppSettings {
 	wrapEventEditorLines: boolean;
 	selectionBoxDark: boolean;
+	showVanillaMaps: boolean;
 }
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class SettingsService {
-
-	private settings: AppSettings = {
+	
+	private readonly settings: Signalify<AppSettings> = {
 		wrapEventEditorLines: this.loadBooleanOrDefault('wrapEventEditorLines', true),
 		selectionBoxDark: this.loadBooleanOrDefault('selectionBoxDark', true),
+		showVanillaMaps: this.loadBooleanOrDefault('showVanillaMaps', false),
 	};
 	
+	constructor() {
+		for (const [key, val] of Object.entries(this.settings)) {
+			effect(() => {
+				localStorage.setItem(key, val().toString());
+			});
+		}
+	}
+	
+	/**
+	 * @deprecated Use signalSettings instead.
+	 */
 	getSettings(): Readonly<AppSettings> {
+		const out = {} as AppSettings;
+		for (const [key, val] of Object.entries(this.settings)) {
+			out[key as keyof AppSettings] = val();
+		}
+		return out;
+	}
+	
+	signalSettings(): Signalify<AppSettings> {
 		return this.settings;
 	}
 	
-	private loadBooleanOrDefault(key: keyof AppSettings, defaultValue: boolean): boolean {
+	private loadBooleanOrDefault(key: keyof AppSettings, defaultValue: boolean): WritableSignal<boolean> {
 		const loadedValue = localStorage.getItem(key);
-		return loadedValue === null ? defaultValue : (loadedValue === 'true');
+		const val = loadedValue === null ? defaultValue : (loadedValue === 'true');
+		return signal(val);
 	}
 	
+	/**
+	 * @deprecated set signals directly instead
+	 */
 	public updateSettings(newSettings: Partial<AppSettings>) {
-		this.settings = {
-			...this.settings,
-			...newSettings
-		};
-		for (const [key, value] of Object.entries(this.settings)) {
-			localStorage.setItem(key, (value as boolean).toString());
+		for (const [k, val] of Object.entries(newSettings)) {
+			const key = k as keyof AppSettings;
+			this.settings[key].set(val);
 		}
 	}
 }

@@ -1,5 +1,5 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, ElementRef, inject, Input, resource, signal, untracked, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, ElementRef, inject, Input, resource, untracked, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatNestedTreeNode, MatTree, MatTreeNestedDataSource, MatTreeNode, MatTreeNodeDef, MatTreeNodeOutlet, MatTreeNodeToggle } from '@angular/material/tree';
 
@@ -21,6 +21,7 @@ import { HighlightDirective } from '../../../directives/highlight.directive';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { SHARED_SERVICE } from '../../../services/shared-service';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { SettingsService } from '../../../services/settings.service';
 
 
 @Component({
@@ -55,6 +56,7 @@ export class LoadMapComponent {
 	private readonly eventsService = inject(GlobalEventsService);
 	private readonly overlayService = inject(OverlayService);
 	private readonly sharedService = inject(SHARED_SERVICE);
+	private readonly settingsService = inject(SettingsService);
 	
 	
 	@ViewChild('fileUpload', { static: true })
@@ -82,7 +84,7 @@ export class LoadMapComponent {
 	filter = '';
 	
 	currentMod = '';
-	vanillaMaps = signal(false);
+	vanillaMaps = this.settingsService.signalSettings().showVanillaMaps;
 	
 	constructor() {
 		this.mapsSource.data = [];
