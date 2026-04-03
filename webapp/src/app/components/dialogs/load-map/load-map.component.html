@@ -20,9 +20,10 @@
 		<div class="filter no-error-msg flex flex-col">
 			@if (currentMod) {
 				<div class="mb-3">
-					<mat-checkbox 
-						color="primary" 
+					<mat-checkbox
+						color="primary"
 						[(ngModel)]="vanillaMaps"
+						[disabled]="loading()"
 					>
 						Vanilla Maps
 					</mat-checkbox>
