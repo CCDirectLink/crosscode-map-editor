@@ -2,11 +2,11 @@ import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { BrowserService } from '../../../services/browser.service';
 import { ElectronService } from '../../../services/electron.service';
 import { Globals } from '../../../services/globals';
 import { HttpClientService } from '../../../services/http-client.service';
 import { AppSettings, SettingsService } from '../../../services/settings.service';
+import { SHARED_SERVICE } from '../../../services/shared-service';
 import { ImageSelectCardComponent, PropListCard } from '../../widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
 import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
@@ -71,7 +71,7 @@ export class SettingsComponent implements OnInit {
 		imgSrc: 'assets/selection-dark.png',
 	};
 	
-	private readonly sharedService = this.settingsService.sharedService;
+	private readonly sharedService = inject(SHARED_SERVICE);
 	
 	constructor() {
 		const http = inject(HttpClientService);

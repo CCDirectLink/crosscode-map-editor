@@ -19,7 +19,7 @@ import { MatFormField, MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { HighlightDirective } from '../../../directives/highlight.directive';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { SettingsService } from '../../../services/settings.service';
+import { SHARED_SERVICE } from '../../../services/shared-service';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 
@@ -54,7 +54,7 @@ export class LoadMapComponent {
 	private searchFilterService = inject(SearchFilterService);
 	private readonly eventsService = inject(GlobalEventsService);
 	private readonly overlayService = inject(OverlayService);
-	private readonly settingsService = inject(SettingsService);
+	private readonly sharedService = inject(SHARED_SERVICE);
 	
 	
 	@ViewChild('fileUpload', {static: true})
@@ -85,7 +85,7 @@ export class LoadMapComponent {
 		});
 		
 		this.mapsSource.data = [];
-		this.currentMod = this.settingsService.sharedService.getSelectedMod();
+		this.currentMod = this.sharedService.getSelectedMod();
 	}
 	
 	focusInput() {
