@@ -243,7 +243,7 @@ export class BaseTileDrawer extends BaseObject {
 		
 		let textColor = 'rgba(0,0,0,0.6)';
 		let backgroundColor = 0xffffff;
-		if (Globals.settingsService.getSettings().selectionBoxDark) {
+		if (Globals.settingsService.signalSettings().selectionBoxDark()) {
 			textColor = 'rgba(255,255,255,0.9)';
 			backgroundColor = 0x333333;
 		}

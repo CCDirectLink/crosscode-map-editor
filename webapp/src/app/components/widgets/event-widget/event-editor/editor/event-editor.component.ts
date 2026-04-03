@@ -82,7 +82,7 @@ export class EventEditorComponent implements OnChanges, OnInit {
 	private copiedNode?: EventDisplay;
 	
 	ngOnInit() {
-		this.wrapText = this.settingsService.getSettings().wrapEventEditorLines;
+		this.wrapText = this.settingsService.signalSettings().wrapEventEditorLines();
 	}
 	
 	ngOnChanges() {

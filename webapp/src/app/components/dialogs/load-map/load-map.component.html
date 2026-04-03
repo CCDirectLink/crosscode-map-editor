@@ -8,7 +8,7 @@
 				<button mat-icon-button (click)="fileUpload.click()">
 					<mat-icon>open_in_new</mat-icon>
 				</button>
-				<button mat-icon-button (click)="refresh()">
+				<button mat-icon-button (click)="paths.reload()">
 					<mat-icon>refresh</mat-icon>
 				</button>
 				<button mat-icon-button (click)="close()">
@@ -18,6 +18,18 @@
 		</mat-toolbar>
 		
 		<div class="filter no-error-msg flex flex-col">
+			@if (currentMod) {
+				<div class="mb-3">
+					<mat-checkbox
+						color="primary"
+						[(ngModel)]="vanillaMaps"
+						[disabled]="paths.isLoading()"
+					>
+						Vanilla Maps
+					</mat-checkbox>
+				</div>
+			}
+			
 			<mat-form-field
 				appearance="outline"
 			>
@@ -28,7 +40,7 @@
 		<input #fileUpload type="file" class="hidden" (change)="loadMap($event)" accept=".json"/>
 	</div>
 	<div class="map-list">
-		@if (!loading) {
+		@if (!paths.isLoading()) {
 			<mat-tree [dataSource]="mapsSource" [treeControl]="treeControl" class="mapTree">
 				<mat-tree-node *matTreeNodeDef="let node">
 					<li class="mat-tree-node">
@@ -37,11 +49,11 @@
 							<mat-icon class="icon">edit</mat-icon>
 							@for (name of node.names; track name; let isLast = $last) {
 								<span>
-							<a appHighlight [highlightText]="name" [highlightMatch]="filter"></a>
+									<a appHighlight [highlightText]="name" [highlightMatch]="filter"></a>
 									@if (!isLast) {
 										<a class="separator">/</a>
 									}
-						</span>
+								</span>
 							}
 						</button>
 					</li>
@@ -55,11 +67,11 @@
 							</mat-icon>
 							@for (name of node.names; track name; let isLast = $last) {
 								<span>
-							<a appHighlight [highlightText]="name" [highlightMatch]="filter"></a>
+									<a appHighlight [highlightText]="name" [highlightMatch]="filter"></a>
 									@if (!isLast) {
 										<a class="separator">/</a>
 									}
-						</span>
+								</span>
 							}
 						</button>
 						@if (treeControl.isExpanded(node)) {
@@ -71,12 +83,12 @@
 				</mat-nested-tree-node>
 			</mat-tree>
 		} @else {
-		
-		<div class="loader">
-			<mat-spinner [diameter]="40" [strokeWidth]="5"></mat-spinner>
-		</div>
-		
-	}
+			
+			<div class="loader">
+				<mat-spinner [diameter]="40" [strokeWidth]="5"></mat-spinner>
+			</div>
+			
+		}
 	
 	</div>
 </div>

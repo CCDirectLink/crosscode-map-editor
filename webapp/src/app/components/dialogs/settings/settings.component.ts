@@ -1,18 +1,17 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { BrowserService } from '../../../services/browser.service';
 import { ElectronService } from '../../../services/electron.service';
 import { Globals } from '../../../services/globals';
 import { HttpClientService } from '../../../services/http-client.service';
 import { AppSettings, SettingsService } from '../../../services/settings.service';
-import { SharedService } from '../../../services/shared-service';
-import { PropListCard, ImageSelectCardComponent } from '../../widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
+import { SHARED_SERVICE } from '../../../services/shared-service';
+import { ImageSelectCardComponent, PropListCard } from '../../widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
 import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
 import { FlexModule } from '@angular/flex-layout/flex';
-import { MatFormField, MatLabel, MatInput, MatHint, MatError } from '@angular/material/input';
+import { MatError, MatFormField, MatHint, MatInput, MatLabel } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { NgClass } from '@angular/common';
@@ -23,37 +22,36 @@ import { ColoredTextDirective } from '../../../directives/colored-text.directive
 import { MatCheckbox } from '@angular/material/checkbox';
 
 @Component({
-    selector: 'app-settings',
-    templateUrl: './settings.component.html',
-    styleUrls: ['./settings.component.scss'],
-    imports: [
-		OverlayPanelComponent, 
-	    FlexModule, 
-	    FormsModule, 
-	    MatFormField, 
-	    MatLabel, 
-	    MatInput, 
-	    ReactiveFormsModule, 
-	    MatHint, 
-	    MatError, 
-	    MatButton, 
-	    MatIcon, 
-	    NgClass, 
-	    ExtendedModule, 
-	    MatSelect, 
-	    MatOption, 
-	    ColoredTextDirective,
-	    MatCheckbox,
-	    ImageSelectCardComponent
-    ]
+	selector: 'app-settings',
+	templateUrl: './settings.component.html',
+	styleUrls: ['./settings.component.scss'],
+	imports: [
+		OverlayPanelComponent,
+		FlexModule,
+		FormsModule,
+		MatFormField,
+		MatLabel,
+		MatInput,
+		ReactiveFormsModule,
+		MatHint,
+		MatError,
+		MatButton,
+		MatIcon,
+		NgClass,
+		ExtendedModule,
+		MatSelect,
+		MatOption,
+		ColoredTextDirective,
+		MatCheckbox,
+		ImageSelectCardComponent,
+	],
 })
 export class SettingsComponent implements OnInit {
 	private ref = inject(OverlayRefControl);
 	private electron = inject(ElectronService);
-	private browser = inject(BrowserService);
 	private settingsService = inject(SettingsService);
 	private snackBar = inject(MatSnackBar);
-
+	
 	
 	isElectron = Globals.isElectron;
 	folderFormControl = new FormControl();
@@ -62,7 +60,6 @@ export class SettingsComponent implements OnInit {
 	mods: { id: string, displayName: string }[] = [];
 	mod = '';
 	settings: AppSettings;
-	isIncludeVanillaMapsDisabled: boolean;
 	
 	cardLight: PropListCard = {
 		name: 'Light',
@@ -74,23 +71,18 @@ export class SettingsComponent implements OnInit {
 		imgSrc: 'assets/selection-dark.png',
 	};
 	
-	private readonly sharedService: SharedService;
+	private readonly sharedService = inject(SHARED_SERVICE);
 	
 	constructor() {
-		const electron = this.electron;
-		const browser = this.browser;
 		const http = inject(HttpClientService);
-
-		if (Globals.isElectron) {
-			this.sharedService = electron;
-		} else {
-			this.sharedService = browser;
-		}
 		
 		http.getMods().subscribe(mods => this.mods = mods);
 		this.mod = this.sharedService.getSelectedMod();
-		this.isIncludeVanillaMapsDisabled = !this.mod;
-		this.settings = JSON.parse(JSON.stringify(this.settingsService.getSettings()));
+		
+		this.settings = {} as AppSettings;
+		for (const [key, val] of Object.entries(this.settingsService.signalSettings())) {
+			this.settings[key as keyof AppSettings] = val();
+		}
 	}
 	
 	ngOnInit() {
@@ -131,13 +123,9 @@ export class SettingsComponent implements OnInit {
 			this.folderFormControl.setErrors(null);
 		} else {
 			this.folderFormControl.setErrors({
-				invalid: true
+				invalid: true,
 			});
 		}
-	}
-	
-	modSelectEvent(selectedMod: string) {
-		this.isIncludeVanillaMapsDisabled = !selectedMod;
 	}
 	
 	save() {
@@ -145,10 +133,16 @@ export class SettingsComponent implements OnInit {
 			this.electron.saveAssetsPath(this.folderFormControl.value);
 		}
 		this.sharedService.saveModSelect(this.mod);
-		this.settingsService.updateSettings(this.settings);
+		
+		const settings = this.settingsService.signalSettings();
+		for (const [k, val] of Object.entries(this.settings)) {
+			const key = k as keyof AppSettings;
+			settings[key].set(val);
+		}
+		
 		this.close();
 		const ref = this.snackBar.open('Changing the path requires to restart the editor', 'Restart', {
-			duration: 6000
+			duration: 6000,
 		});
 		
 		ref.onAction().subscribe(() => this.sharedService.relaunch());

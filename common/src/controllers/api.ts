@@ -218,14 +218,13 @@ export async function getAllTilesets(dir: string) {
 	return result.sort();
 }
 
-export async function getAllMaps(dir: string, includeVanillaMaps: boolean) {
+export async function getAllMaps(dir: string, vanillaMaps: boolean) {
 	const path = await pathPromise;
 	const paths: string[] = [];
 	
-	if (mods.length === 0 || includeVanillaMaps) {
+	if (mods.length === 0 || vanillaMaps) {
 		await listAllFiles(path.resolve(dir, 'data/maps/'), paths, 'json', path.resolve(dir));
-	}
-	if (mods.length > 0) {
+	} else {
 		const modDir = path.join(dir, 'mods', mods[0], 'assets');
 		await listAllFiles(path.resolve(modDir, 'data/maps/'), paths, 'json', path.resolve(modDir));
 	}
