@@ -1,8 +1,11 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { SharedService } from './shared-service';
+import { Globals } from './globals';
+import { ElectronService } from './electron.service';
+import { BrowserService } from './browser.service';
 
 export interface AppSettings {
 	wrapEventEditorLines: boolean;
-	includeVanillaMaps: boolean;
 	selectionBoxDark: boolean;
 }
 
@@ -11,9 +14,18 @@ export interface AppSettings {
 })
 export class SettingsService {
 	
+	public readonly sharedService: SharedService;
+	
+	constructor() {
+		if (Globals.isElectron) {
+			this.sharedService = inject(ElectronService);
+		} else {
+			this.sharedService = inject(BrowserService);
+		}
+	}
+	
 	private settings: AppSettings = {
 		wrapEventEditorLines: this.loadBooleanOrDefault('wrapEventEditorLines', true),
-		includeVanillaMaps: this.loadBooleanOrDefault('includeVanillaMaps', false),
 		selectionBoxDark: this.loadBooleanOrDefault('selectionBoxDark', true),
 	};
 	

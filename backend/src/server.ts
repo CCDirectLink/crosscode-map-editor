@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
  */
 app.get('/api/allFiles', async (_, res) => res.json(await api.getAllFiles(config.pathToCrosscode)));
 app.get('/api/allTilesets', async (_, res) => res.json(await api.getAllTilesets(config.pathToCrosscode)));
-app.get('/api/allMaps', async (req, res) => res.json(await api.getAllMaps(config.pathToCrosscode, req.query['includeVanillaMaps'] == 'true')));
+app.get('/api/allMaps', async (req, res) => res.json(await api.getAllMaps(config.pathToCrosscode, req.query['vanillaMaps'] == 'true')));
 app.get('/api/allFilesInFolder', async (req, res) => res.json(await api.getAllFilesInFolder(config.pathToCrosscode, req.query['folder'] as string, req.query['extension'] as string)));
 app.get('/api/allMods', async (_, res) => res.json(await api.getAllMods(config.pathToCrosscode)));
 app.get('/api/allModMapEditorConfigs', async (_, res) => res.json(await api.getAllModMapEditorConfigs(config.pathToCrosscode)));

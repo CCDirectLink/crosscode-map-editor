@@ -1,5 +1,5 @@
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, inject, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, ElementRef, inject, Input, signal, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatNestedTreeNode, MatTree, MatTreeNestedDataSource, MatTreeNode, MatTreeNodeDef, MatTreeNodeOutlet, MatTreeNodeToggle } from '@angular/material/tree';
 
@@ -19,6 +19,8 @@ import { MatFormField, MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { HighlightDirective } from '../../../directives/highlight.directive';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { SettingsService } from '../../../services/settings.service';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 
 @Component({
@@ -41,7 +43,8 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 		MatNestedTreeNode,
 		MatTreeNodeToggle,
 		MatTreeNodeOutlet,
-		MatProgressSpinner
+		MatProgressSpinner,
+		MatCheckbox
 	]
 })
 export class LoadMapComponent {
@@ -51,6 +54,7 @@ export class LoadMapComponent {
 	private searchFilterService = inject(SearchFilterService);
 	private readonly eventsService = inject(GlobalEventsService);
 	private readonly overlayService = inject(OverlayService);
+	private readonly settingsService = inject(SettingsService);
 	
 	
 	@ViewChild('fileUpload', {static: true})
@@ -62,7 +66,7 @@ export class LoadMapComponent {
 	@Input()
 	sidenav!: MatSidenav;
 	
-	loading = false;
+	loading = signal(false);
 	
 	treeControl = new NestedTreeControl<VirtualMapNode>(node => node.children);
 	mapsSource = new MatTreeNestedDataSource<VirtualMapNode>();
@@ -71,22 +75,31 @@ export class LoadMapComponent {
 	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering.
 	filter = '';
 	
+	currentMod = '';
+	vanillaMaps = signal(false);
+	
 	constructor() {
+		effect(() => {
+			this.vanillaMaps();
+			this.refresh();
+		});
+		
 		this.mapsSource.data = [];
-		this.refresh();
+		this.currentMod = this.settingsService.sharedService.getSelectedMod();
 	}
 	
 	focusInput() {
 		this.filterInput.nativeElement.focus();
 	}
 	
-	refresh() {
-		this.loading = true;
-		this.http.getMaps().subscribe(paths => {
-			this.loading = false;
-			this.displayMaps(paths);
-			this.update();
-		});
+	async refresh() {
+		const req = this.vanillaMaps() ? this.http.getVanillaMaps() : this.http.getMaps();
+		this.loading.set(true);
+		const paths = await firstValueFrom(req);
+		this.loading.set(false);
+		
+		this.displayMaps(paths);
+		this.update();
 	}
 	
 	update() {
