@@ -62,7 +62,7 @@ export class ItemDestruct extends DefaultEntity {
 		const destructibles = await Globals.jsonLoader.loadJsonMerged<ItemDestructTypes>('destructibles.json');
 		const type = destructibles[desType];
 		if (!type) {
-			this.generateNoImageType(0xFF0000, 1);
+			this.generateErrorImage();
 			return;
 		}
 		

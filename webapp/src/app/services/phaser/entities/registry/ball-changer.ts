@@ -1,4 +1,3 @@
-import { ScaleSettings } from '../cc-entity';
 import { Anims } from '../../sheet-parser';
 import { DefaultEntity } from './default-entity';
 import { FACE8 } from './npc';
@@ -95,11 +94,7 @@ function resolveChangerIcon(changerType: NonNullable<BallChangerAttributes['chan
 }
 
 export class BallChanger extends DefaultEntity {
-	
-	public override getScaleSettings(): ScaleSettings | undefined {
-		return undefined;
-	}
-	
+
 	protected override async setupType(settings: BallChangerAttributes): Promise<void> {
 		if (!settings.changerType) {
 			this.generateNoImageType();

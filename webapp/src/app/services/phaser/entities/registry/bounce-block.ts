@@ -1,6 +1,5 @@
 import { Point3 } from '../../../../models/cross-code-map';
 import { Globals } from '../../../globals';
-import { ScaleSettings } from '../cc-entity';
 import { Anims } from '../../sheet-parser';
 import { DefaultEntity } from './default-entity';
 
@@ -13,10 +12,6 @@ export interface BounceBlockAttributes {
 
 export class BounceBlock extends DefaultEntity {
 
-	public override getScaleSettings(): ScaleSettings | undefined {
-		return undefined;
-	}
-
 	protected override async setupType(settings: BounceBlockAttributes): Promise<void> {
 		const types = await Globals.jsonLoader.loadJsonMerged<BounceBlockTypes>('bounce-block-types.json');
 		
@@ -28,10 +23,10 @@ export class BounceBlock extends DefaultEntity {
 		
 		const type = types[settings.blockType];
 		if (!type) {
-			this.generateNoImageType(0xFF0000, 1);
+			this.generateErrorImage();
 			return;
 		}
-
+		
 		const ok = await this.applyAnims(type.anims, undefined, settings.blockType, 'puzzle2');
 		if (!ok) {
 			this.generateErrorImage();

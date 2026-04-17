@@ -1,11 +1,5 @@
-import { ScaleSettings } from '../cc-entity';
 import { Anims } from '../../sheet-parser';
 import { DefaultEntity } from './default-entity';
-
-export interface WaterBlockAttributes {
-	blockType: string;
-	changeDuration?: number;
-}
 
 interface BlockTypeDef {
 	offY: number;
@@ -13,7 +7,7 @@ interface BlockTypeDef {
 	wallY: number;
 }
 
-const BLOCK_TYPES: Record<string, BlockTypeDef> = {
+const BLOCK_TYPES: Record<string, BlockTypeDef | undefined> = {
 	SQUARE: { offY: 128, flipX: false, wallY: 0 },
 	CORNER_NE: { offY: 64, flipX: false, wallY: 0 },
 	CORNER_SE: { offY: 0, flipX: false, wallY: 1 },
@@ -21,22 +15,17 @@ const BLOCK_TYPES: Record<string, BlockTypeDef> = {
 	CORNER_NW: { offY: 64, flipX: true, wallY: 0 },
 };
 
+export interface WaterBlockAttributes {
+	blockType: string;
+	changeDuration?: number;
+}
+
 export class WaterBlock extends DefaultEntity {
-	
-	public override getScaleSettings(): ScaleSettings | undefined {
-		return undefined;
-	}
-	
+
 	protected override async setupType(settings: WaterBlockAttributes): Promise<void> {
-		const attributes = this.getAttributes();
-		attributes['blockType'].options = {};
-		for (const name of Object.keys(BLOCK_TYPES)) {
-			attributes['blockType'].options[name] = name;
-		}
-		
 		const type = BLOCK_TYPES[settings.blockType];
 		if (!type) {
-			this.generateNoImageType(0xFF0000, 1);
+			this.generateErrorImage();
 			return;
 		}
 		

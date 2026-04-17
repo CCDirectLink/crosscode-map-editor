@@ -24,17 +24,17 @@ export class Destructible extends DefaultEntity {
 		
 		const type = types[settings.desType];
 		if (!type) {
-			this.generateNoImageType(0xFF0000, 1);
+			this.generateErrorImage();
 			return;
 		}
 		
 		const anims = Helper.copy(type.anims);
-
+		
 		// frame 1 is always glow, don't show in map editor
 		if (Array.isArray(anims.SUB)) {
 			anims.SUB = anims.SUB.filter(sub => sub.frames?.[0] !== 1);
 		}
-
+		
 		// sheet src is null in json; CrossCode fills it from the current map's destruct style.
 		const ok = await this.applyAnims(anims, undefined, settings.desType, 'destruct');
 		if (!ok) {
