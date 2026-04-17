@@ -38,6 +38,7 @@ interface PropSprite {
 	offset?: Partial<Point3>;
 	renderMode?: string;
 	flipX?: boolean;
+	flipY?: boolean;
 	aboveZ?: number;
 }
 
@@ -193,6 +194,7 @@ export class DefaultEntity extends CCEntity {
 				offsetX: 0,
 				offsetY: 0,
 				flipX: sprite.flipX,
+				flipY: sprite.flipY,
 				renderMode: sprite.renderMode,
 				aboveZ: sprite.aboveZ
 			};
@@ -279,6 +281,7 @@ export class DefaultEntity extends CCEntity {
 			tileOffset: settings.tileOffset ?? 0,
 			renderMode: settings.renderMode,
 			flipX: Array.isArray(settings.flipX) ? !!settings.flipX[frame] : settings.flipX,
+			flipY: settings.flipY,
 			aboveZ: settings.aboveZ
 		});
 		return firstName;
