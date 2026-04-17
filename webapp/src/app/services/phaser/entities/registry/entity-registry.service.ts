@@ -10,6 +10,7 @@ import { ItemDestruct } from './item-destruct';
 import { NPC } from './npc';
 import { Prop } from './prop';
 import { ScalableProp } from './scalable-prop';
+import { WaterBlock } from './water-block';
 
 @Injectable({
 	providedIn: 'root'
@@ -24,6 +25,7 @@ export class EntityRegistryService {
 		this.register('Destructible', Destructible);
 		this.register('BounceBlock', BounceBlock);
 		this.register('BallChanger', BallChanger);
+		this.register('WaterBlock', WaterBlock);
 		this.register('NPC', NPC);
 		this.register('EventTrigger', EventTrigger);
 		this.register('Enemy', Enemy);
