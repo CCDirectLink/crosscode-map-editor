@@ -2782,6 +2782,69 @@
 				"type": "Boolean",
 				"description": "Make sure puzzle element is not slowed down by assist mode"
 			}
+		},
+		"size": {
+			"x": 16,
+			"y": 16,
+			"z": 32
+		},
+		"anims": {
+			"namedSheets": {
+				"floor": {
+					"mapStyle": "pipes",
+					"width": 16,
+					"height": 16,
+					"xCount": 1,
+					"offX": 80,
+					"offY": 64
+				},
+				"top": {
+					"mapStyle": "pipes",
+					"width": 16,
+					"height": 32,
+					"xCount": 1,
+					"offX": 64,
+					"offY": 64
+				}
+			},
+			"SUB": [
+				{
+					"name": "default",
+					"sheet": "floor",
+					"time": 0.2,
+					"frames": [
+						0,
+						1,
+						2,
+						1
+					],
+					"repeat": true,
+					"size": {
+						"x": 16,
+						"y": 16,
+						"z": 0
+					}
+				},
+				{
+					"name": "default",
+					"sheet": "top",
+					"time": 0.1,
+					"frames": [
+						0
+					],
+					"repeat": true,
+					"size": {
+						"x": 16,
+						"y": 16,
+						"z": 16
+					},
+					"offset": {
+						"x": 0,
+						"y": 0,
+						"z": 12
+					}
+				}
+			]
 		}
 	},
 	"TeslaCoil": {

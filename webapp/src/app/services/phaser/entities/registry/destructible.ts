@@ -36,8 +36,7 @@ export class Destructible extends DefaultEntity {
 		}
 
 		// sheet src is null in json; CrossCode fills it from the current map's destruct style.
-		const fallbackGfx = Helper.getMapStyle(Globals.map, 'destruct')?.sheet;
-		const ok = await this.applyAnims(anims, undefined, settings.desType, fallbackGfx);
+		const ok = await this.applyAnims(anims, undefined, settings.desType, 'destruct');
 		if (!ok) {
 			this.generateErrorImage();
 			return;

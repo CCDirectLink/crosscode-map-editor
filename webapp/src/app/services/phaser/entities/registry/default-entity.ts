@@ -134,7 +134,20 @@ export class DefaultEntity extends CCEntity {
 
 	}
 
-	protected async applyAnims(anims: Anims, animName: string | undefined, label?: string, fallbackGfx?: string): Promise<boolean> {
+	protected resolveSheet(sheet: AnimSheet): AnimSheet {
+		if (!sheet.mapStyle) {
+			return sheet;
+		}
+		const style = Helper.getMapStyle(Globals.map, sheet.mapStyle);
+		return {
+			...sheet,
+			src: style?.sheet ?? '',
+			offX: (sheet.offX ?? 0) + (style?.x ?? 0),
+			offY: (sheet.offY ?? 0) + (style?.y ?? 0),
+		};
+	}
+
+	protected async applyAnims(anims: Anims, animName: string | undefined, label?: string, mapStyle?: string): Promise<boolean> {
 		const sprites: PropSprite[] = [];
 		const resolvedAnim = animName || 'default';
 
@@ -145,7 +158,7 @@ export class DefaultEntity extends CCEntity {
 			}
 		} else if (anims.sheet) {
 			sprites.push({
-				sheet: anims.sheet as AnimSheet,
+				sheet: this.resolveSheet(anims.sheet as AnimSheet),
 				alpha: anims.framesAlpha?.[0] ?? 1,
 				tileOffset: anims.tileOffset ?? 0,
 				renderMode: anims.renderMode,
@@ -183,8 +196,8 @@ export class DefaultEntity extends CCEntity {
 				fix.offsetY = (sprite.offset.y || 0) - (sprite.offset.z || 0);
 			}
 
-			if (!fix.gfx && fallbackGfx) {
-				fix.gfx = fallbackGfx;
+			if (!fix.gfx && mapStyle) {
+				fix.gfx = Helper.getMapStyle(Globals.map, mapStyle)?.sheet ?? '';
 			}
 			if (!await this.pushFix(fix, i === 0)) {
 				return false;
@@ -222,6 +235,7 @@ export class DefaultEntity extends CCEntity {
 			console.error('anim sheet not found, skip: ', label);
 			return firstName;
 		}
+		sheet = this.resolveSheet(sheet);
 
 		const offset: Point3 = {
 			x: 0,

@@ -102,7 +102,8 @@ export interface IfThen {
 }
 
 export interface AnimSheet {
-	src: string;
+	src?: string;
+	mapStyle?: string;
 	width: number;
 	height: number;
 	offX?: number;

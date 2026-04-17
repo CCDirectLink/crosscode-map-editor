@@ -10,4 +10,6 @@ export interface MapStyleType {
 
 export interface MapStyle {
 	sheet?: string;
+	x?: number;
+	y?: number;
 }

@@ -208,7 +208,7 @@ export class NPC extends DefaultEntity {
 			dirIndex = FACE4[face as keyof typeof FACE4];
 		}
 		
-		const img = Globals.scene.textures.get(sheet.src).getSourceImage();
+		const img = Globals.scene.textures.get(sheet.src!).getSourceImage();
 		const xCount = sheet.xCount ?? img.width / sheet.width;
 		
 		// flip x with some serious type checking
