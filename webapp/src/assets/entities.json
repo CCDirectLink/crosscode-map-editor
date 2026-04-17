@@ -1414,6 +1414,31 @@
 				"optional": true,
 				"description": "Time coal will be cooled by ice disks created from these bubbles"
 			}
+		},
+		"size": {
+			"x": 24,
+			"y": 24,
+			"z": 0
+		},
+		"anims": {
+			"sheet": {
+				"mapStyle": "puzzle2",
+				"width": 24,
+				"height": 24,
+				"xCount": 2,
+				"offX": 0,
+				"offY": 112
+			},
+			"SUB": [
+				{
+					"name": "on",
+					"time": 1,
+					"frames": [
+						1
+					],
+					"repeat": false
+				}
+			]
 		}
 	},
 	"Compressor": {
