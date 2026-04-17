@@ -53,7 +53,12 @@ export class Prop extends DefaultEntity {
 				return this.generateErrorImage();
 			}
 		} else if (prop.fix) {
-			const ok = await this.pushFix(prop.fix, true);
+			// TODO: "offY" currently only fixed in Prop. 
+			//  Find out if this causes issues somewhere else and move the fix to a better place
+			const fix = Helper.copy(prop.fix);
+			fix.offsetY = (fix.offsetY ?? 0) + (fix.offY ?? 0);
+			delete fix.offY;
+			const ok = await this.pushFix(fix, true);
 			if (!ok) {
 				return this.generateErrorImage();
 			}

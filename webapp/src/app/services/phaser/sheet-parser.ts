@@ -18,12 +18,16 @@ export interface PropSheet {
 
 export type JsonTemplates = Record<string, Anims | Anims[keyof Anims]>;
 
+export interface PropFix extends Fix {
+	offY?: number;
+}
+
 export interface PropDef {
 	name?: string;
 	terrain?: string;
 	size: Point3;
 	collType: string;
-	fix?: Fix;
+	fix?: PropFix;
 	shapeType?: string;
 	effects?: Effects;
 	anims?: Anims;
