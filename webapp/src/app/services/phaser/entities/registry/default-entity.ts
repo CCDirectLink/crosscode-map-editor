@@ -38,6 +38,7 @@ interface PropSprite {
 	offset?: Partial<Point3>;
 	renderMode?: string;
 	flipX?: boolean;
+	aboveZ?: number;
 }
 
 interface SizeOverride {
@@ -162,7 +163,8 @@ export class DefaultEntity extends CCEntity {
 				alpha: anims.framesAlpha?.[0] ?? 1,
 				tileOffset: anims.tileOffset ?? 0,
 				renderMode: anims.renderMode,
-				offset: anims.offset
+				offset: anims.offset,
+				aboveZ: anims.aboveZ
 			});
 		}
 
@@ -170,6 +172,9 @@ export class DefaultEntity extends CCEntity {
 			console.warn('failed creating entity from anims:', label);
 			return false;
 		}
+
+		// sort so sprites with higher aboveZ render on top of lower ones
+		sprites.sort((a, b) => (a.aboveZ ?? 0) - (b.aboveZ ?? 0));
 
 		for (let i = 0; i < sprites.length; i++) {
 			const sprite = sprites[i];
@@ -188,7 +193,8 @@ export class DefaultEntity extends CCEntity {
 				offsetX: 0,
 				offsetY: 0,
 				flipX: sprite.flipX,
-				renderMode: sprite.renderMode
+				renderMode: sprite.renderMode,
+				aboveZ: sprite.aboveZ
 			};
 
 			if (sprite.offset) {
@@ -272,7 +278,8 @@ export class DefaultEntity extends CCEntity {
 			offset: offset,
 			tileOffset: settings.tileOffset ?? 0,
 			renderMode: settings.renderMode,
-			flipX: Array.isArray(settings.flipX) ? !!settings.flipX[frame] : settings.flipX
+			flipX: Array.isArray(settings.flipX) ? !!settings.flipX[frame] : settings.flipX,
+			aboveZ: settings.aboveZ
 		});
 		return firstName;
 	}
