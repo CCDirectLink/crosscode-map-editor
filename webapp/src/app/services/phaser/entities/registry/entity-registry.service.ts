@@ -5,6 +5,7 @@ import { BounceBlock } from './bounce-block';
 import { DefaultEntity } from './default-entity';
 import { Destructible } from './destructible';
 import { ElementPole } from './element-pole';
+import { ElementPoleDest } from './element-pole-dest';
 import { Enemy } from './enemy';
 import { EventTrigger } from './event-trigger';
 import { ItemDestruct } from './item-destruct';
@@ -30,6 +31,7 @@ export class EntityRegistryService {
 		this.register('WaterBlock', WaterBlock);
 		this.register('KeyPanel', KeyPanel);
 		this.register('ElementPole', ElementPole);
+		this.register('ElementPoleDest', ElementPoleDest);
 		this.register('NPC', NPC);
 		this.register('EventTrigger', EventTrigger);
 		this.register('Enemy', Enemy);
