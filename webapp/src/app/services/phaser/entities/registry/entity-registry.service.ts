@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CCEntity } from '../cc-entity';
+import { BallChanger } from './ball-changer';
 import { BounceBlock } from './bounce-block';
 import { DefaultEntity } from './default-entity';
 import { Destructible } from './destructible';
@@ -22,6 +23,7 @@ export class EntityRegistryService {
 		this.register('ItemDestruct', ItemDestruct);
 		this.register('Destructible', Destructible);
 		this.register('BounceBlock', BounceBlock);
+		this.register('BallChanger', BallChanger);
 		this.register('NPC', NPC);
 		this.register('EventTrigger', EventTrigger);
 		this.register('Enemy', Enemy);

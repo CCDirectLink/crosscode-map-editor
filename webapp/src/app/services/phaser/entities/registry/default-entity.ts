@@ -262,11 +262,13 @@ export class DefaultEntity extends CCEntity {
 		}
 
 		const frame = settings.frames?.[0] ?? 0;
+		const tileOffset = settings.tileOffset ?? 0;
+		const effectiveFrame = frame + tileOffset;
 
-		if (frame > 0) {
+		if (effectiveFrame > 0) {
 			const xCount = sheet.xCount || 999;
-			const xOffset = (frame % xCount) * sheet.width;
-			const yOffset = Math.floor(frame / xCount) * sheet.height;
+			const xOffset = (effectiveFrame % xCount) * sheet.width;
+			const yOffset = Math.floor(effectiveFrame / xCount) * sheet.height;
 			sheet = {
 				...sheet,
 				offX: (sheet.offX ?? 0) + xOffset,
@@ -278,7 +280,7 @@ export class DefaultEntity extends CCEntity {
 			sheet: sheet,
 			alpha: settings.framesAlpha?.[frame] ?? 1,
 			offset: offset,
-			tileOffset: settings.tileOffset ?? 0,
+			tileOffset: 0,
 			renderMode: settings.renderMode,
 			flipX: Array.isArray(settings.flipX) ? !!settings.flipX[frame] : settings.flipX,
 			flipY: settings.flipY,

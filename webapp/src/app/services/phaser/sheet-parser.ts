@@ -74,6 +74,7 @@ export interface Anims extends IfThen {
 	shapeType?: string;
 	framesAlpha?: number[];
 	flipX?: boolean | number[];
+	flipY?: boolean;
 	SUB?: Anims[] | SubJsonInstance | SubJsonParam;
 	tileOffset?: number;
 	wallY?: number;
