@@ -7,6 +7,7 @@ import { Destructible } from './destructible';
 import { Enemy } from './enemy';
 import { EventTrigger } from './event-trigger';
 import { ItemDestruct } from './item-destruct';
+import { KeyPanel } from './key-panel';
 import { NPC } from './npc';
 import { Prop } from './prop';
 import { ScalableProp } from './scalable-prop';
@@ -26,6 +27,7 @@ export class EntityRegistryService {
 		this.register('BounceBlock', BounceBlock);
 		this.register('BallChanger', BallChanger);
 		this.register('WaterBlock', WaterBlock);
+		this.register('KeyPanel', KeyPanel);
 		this.register('NPC', NPC);
 		this.register('EventTrigger', EventTrigger);
 		this.register('Enemy', Enemy);
