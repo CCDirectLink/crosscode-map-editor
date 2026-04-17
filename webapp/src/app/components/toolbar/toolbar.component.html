@@ -12,6 +12,7 @@
 				<button [disabled]="!map" mat-menu-item (click)="saveMap(false)">Save Map (Ctrl + S)</button>
 				<button [disabled]="!map" mat-menu-item (click)="saveMap(true)">Save Map as... (Ctrl + Shift + S)
 				</button>
+				<button [disabled]="!map" mat-menu-item (click)="exportPng()">Export PNG</button>
 			</mat-menu>
 			
 			<button mat-button [matMenuTriggerFor]="menu">Edit</button>

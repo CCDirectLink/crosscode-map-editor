@@ -8,6 +8,7 @@ import { GlobalEventsService } from '../../services/global-events.service';
 import { MapLoaderService } from '../../services/map-loader.service';
 import { CCMap } from '../../services/phaser/tilemap/cc-map';
 import { SaveService } from '../../services/save.service';
+import { PhaserExportService } from '../../services/phaser-export.service';
 import { MapSettingsComponent } from '../dialogs/map-settings/map-settings.component';
 import { NewMapComponent } from '../dialogs/new-map/new-map.component';
 import { OffsetMapComponent } from '../dialogs/offset-map/offset-map.component';
@@ -37,6 +38,7 @@ export class ToolbarComponent implements OnInit {
 	private overlay = inject(Overlay);
 	private router = inject(Router);
 	private save = inject(SaveService);
+	private exporter = inject(PhaserExportService);
 
 	
 	map?: CCMap;
@@ -95,6 +97,14 @@ export class ToolbarComponent implements OnInit {
 		} else {
 			this.save.saveMap(this.map);
 		}
+	}
+
+	async exportPng() {
+		if (!this.map) {
+			throw new Error('no map loaded');
+		}
+
+		await this.exporter.exportMapPng(this.map);
 	}
 	
 	newMap() {
