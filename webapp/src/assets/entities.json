@@ -1705,7 +1705,21 @@
 		},
 		"scalableX": true,
 		"scalableY": true,
-		"scalableStep": 8
+		"scalableStep": 8,
+		"anims": {
+			"sheet": {
+				"mapStyle": "puzzle",
+				"width": 16,
+				"height": 16,
+				"xCount": 4,
+				"offX": 176,
+				"offY": 80
+			},
+			"SUB": [
+				{"name": "off", "frames": [0]},
+				{"name": "on", "frames": [3]}
+			]
+		}
 	},
 	"Lorry": {
 		"spawnable": true,
