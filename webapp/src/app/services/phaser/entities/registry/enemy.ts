@@ -40,6 +40,7 @@ export interface LevelClass {
 	varName: string;
 }
 
+// TODO: use DefaultEntity functions for displaying sprites
 export class Enemy extends DefaultEntity {
 	protected override async setupType(settings: EnemyAttributes) {
 		settings.enemyInfo = settings.enemyInfo || {};

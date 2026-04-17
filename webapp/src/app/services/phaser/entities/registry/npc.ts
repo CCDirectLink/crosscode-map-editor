@@ -135,7 +135,7 @@ export interface Analyzable {
 	text?: Label;
 	active?: boolean;
 }
-
+// TODO: use DefaultEntity functions for displaying sprites
 export class NPC extends DefaultEntity {
 	
 	protected override async setupType(settings: NpcAttributes) {

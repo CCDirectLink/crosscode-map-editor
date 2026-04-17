@@ -4,6 +4,7 @@ import { Fix } from '../cc-entity';
 import { BallKill, Effects, prepareScalableProp, ScalablePropSheet } from '../../sheet-parser';
 import { DefaultEntity } from './default-entity';
 
+
 export interface ScalablePropDef {
 	baseSize?: Point3;
 	renderHeight?: number;
@@ -108,9 +109,7 @@ export class ScalableProp extends DefaultEntity {
 			return this.generateErrorImage();
 		}
 		prop = prepareScalableProp(prop, sheet);
-		
-		this.entitySettings = {} as any;
-		
+
 		const scaleSettings = this.getScaleSettings()!;
 		
 		scaleSettings.scalableX = prop.scalableX!;
@@ -130,7 +129,6 @@ export class ScalableProp extends DefaultEntity {
 		
 		let scaleableFix: Fix | undefined;
 		if (prop.gfx) {
-			await Helper.loadTexture(prop.gfx, this.scene);
 			scaleableFix = {
 				gfx: prop.gfx,
 				x: prop.gfxBaseX! + prop.patterns!.x,
@@ -139,12 +137,12 @@ export class ScalableProp extends DefaultEntity {
 				h: prop.patterns!.h,
 				renderHeight: prop.renderHeight,
 				alpha: this._onlyEnds ? 0 : 1,
-				scalable: true,
 			};
-			this.entitySettings.sheets = {
-				fix: [scaleableFix],
-				renderMode: prop.renderMode,
-			};
+			if (!await this.pushFix(scaleableFix, true)) {
+				this.resetScaleSettings();
+				return this.generateErrorImage();
+			}
+			this.entitySettings.sheets.renderMode = prop.renderMode;
 		} else {
 			console.error('scalable prop has no gfx');
 			this.resetScaleSettings();
@@ -176,8 +174,9 @@ export class ScalableProp extends DefaultEntity {
 				renderHeight: pattern.renderHeight,
 				flipX: pattern.flipX,
 				renderMode: pattern.renderMode,
+				scalable: false,
 			};
-			this.entitySettings.sheets.fix.push(fix);
+			await this.pushFix(fix);
 			switch (dir) {
 				case 'west':
 					scaleableFix.offsetX = pattern.w;

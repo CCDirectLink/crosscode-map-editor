@@ -1,5 +1,5 @@
 import { Helper } from '../../helper';
-import { Anims, AnimSheet } from '../../sheet-parser';
+import { Anims } from '../../sheet-parser';
 import { DefaultEntity } from './default-entity';
 import { Point3 } from '../../../../models/cross-code-map';
 import { EntityAttributes } from '../cc-entity';
@@ -43,7 +43,7 @@ export class ItemDestruct extends DefaultEntity {
 		};
 		const objOrder: { [key in keyof ItemDestructAttributes]: null } = {
 			desType: null,
-			__GLOBAL__: null
+			__GLOBAL__: null,
 		};
 		return Object.assign(objOrder, attributes);
 	}
@@ -65,29 +65,20 @@ export class ItemDestruct extends DefaultEntity {
 			this.generateNoImageType(0xFF0000, 1);
 			return;
 		}
-		const animSheet = type.anims.sheet as AnimSheet;
-		const gfx = (typeof animSheet === 'string') ? animSheet : animSheet.src;
 		
-		const exists = await Helper.loadTexture(gfx, this.scene);
 		
-		if (!exists) {
+		// only frame 1 is relevant
+		let anims = type.anims;
+		if (Array.isArray(anims.SUB) && anims.SUB.length > 1) {
+			anims = { ...type.anims, SUB: anims.SUB.slice(0, 1) };
+		}
+		
+		const ok = await this.applyAnims(anims, undefined, desType);
+		if (!ok) {
 			this.generateErrorImage();
 			return;
 		}
-		
-		this.entitySettings = {
-			sheets: {
-				fix: [{
-					gfx: gfx,
-					x: animSheet.offX || 0,
-					y: animSheet.offY || 0,
-					w: animSheet.width || 0,
-					h: animSheet.height || 0,
-				}]
-			},
-			baseSize: type.size
-		} as any;
+		this.entitySettings.baseSize = type.size;
 		this.updateSettings();
-		
 	}
 }
