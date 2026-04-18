@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { ListSearchOverlayComponent } from '../components/dialogs/list-search-overlay/list-search-overlay.component';
 import { OverlayRefControl } from '../components/dialogs/overlay/overlay-ref-control';
@@ -10,9 +10,11 @@ import { EntityRegistryService } from './phaser/entities/registry/entity-registr
 import { Vec2 } from './phaser/vec2';
 import { JsonLoaderService } from './json-loader.service';
 import { EntitiesJson } from './phaser/entities/registry/default-entity';
+import { Globals } from './globals';
+import { Helper } from './phaser/helper';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class AddEntityMenuService {
 	private events = inject(GlobalEventsService);
@@ -20,13 +22,13 @@ export class AddEntityMenuService {
 	private overlay = inject(Overlay);
 	private entityRegistry = inject(EntityRegistryService);
 	private jsonLoader = inject(JsonLoaderService);
-
+	
 	
 	private ref?: OverlayRefControl;
-	private worldPos: Point = {x: 0, y: 0};
-	private mousePos: Point = {x: 0, y: 0};
+	private worldPos: Point = { x: 0, y: 0 };
+	private mousePos: Point = { x: 0, y: 0 };
 	
-	pos: Point = {x: 0, y: 0};
+	pos: Point = { x: 0, y: 0 };
 	keys: string[] = [];
 	
 	public async init() {
@@ -61,7 +63,7 @@ export class AddEntityMenuService {
 			height: '50vh',
 			backdropClickClose: true,
 			hasBackdrop: true,
-			disablePhaserInput: true
+			disablePhaserInput: true,
 		});
 		this.ref = obj.ref;
 		
@@ -80,15 +82,26 @@ export class AddEntityMenuService {
 	}
 	
 	generateEntity(key: string) {
+		const entities = Globals.jsonLoader.loadJsonMergedSync<EntitiesJson>('entities.json');
+		const typeDef = entities[key];
+		
 		const entity: MapEntity = {
 			x: this.worldPos.x,
 			y: this.worldPos.y,
 			type: key,
 			level: 0,
 			settings: {
-				size: {x: 16, y: 16}
-			}
+				size: { x: 16, y: 16 },
+			},
 		};
+		if (typeDef) {
+			for (const [key, prop] of Object.entries(typeDef.attributes)) {
+				entity.settings[key] = Helper.copy(prop.default);
+			}
+			if (typeDef.size) {
+				entity.settings['size'] = Helper.copy(typeDef.size);
+			}
+		}
 		this.events.generateNewEntity.next(entity);
 	}
 }

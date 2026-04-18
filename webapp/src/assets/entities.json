@@ -1563,6 +1563,11 @@
 	"WallHorizontal": {
 		"spawnable": true,
 		"scalableX": true,
+		"scalableStep": 4,
+		"size": {
+			"x": 16,
+			"y": 8
+		},
 		"attributes": {
 			"skipRender": {
 				"type": "Boolean",

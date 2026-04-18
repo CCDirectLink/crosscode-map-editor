@@ -23,6 +23,7 @@ export interface EntityAttributes {
 
 export interface AttributeValue {
 	type: string;
+	default?: any;
 	description: string;
 	options?: { [key: string]: any };
 	withNull?: boolean;

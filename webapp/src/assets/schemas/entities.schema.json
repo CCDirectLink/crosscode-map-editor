@@ -54,7 +54,7 @@
           "$ref": "#/$defs/Anims"
         },
         "size": {
-          "$ref": "#/$defs/Point3"
+          "$ref": "#/$defs/PartialPoint3"
         }
       },
       "additionalProperties": false
