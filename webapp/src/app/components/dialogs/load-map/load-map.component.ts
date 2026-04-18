@@ -4,12 +4,9 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { MatNestedTreeNode, MatTree, MatTreeNestedDataSource, MatTreeNode, MatTreeNodeDef, MatTreeNodeOutlet, MatTreeNodeToggle } from '@angular/material/tree';
 
 import { firstValueFrom } from 'rxjs';
-import { GlobalEventsService } from '../../../services/global-events.service';
 import { HttpClientService } from '../../../services/http-client.service';
 import { MapLoaderService } from '../../../services/map-loader.service';
 import { SearchFilterService } from '../../../services/search-filter.service';
-import { ConfirmCloseComponent } from '../confirm-close/confirm-close.component';
-import { OverlayService } from '../overlay/overlay.service';
 import { MapNode, MapNodeRoot } from './mapNode.model';
 import { VirtualMapNode } from './virtualMapNode.model';
 import { MatToolbar } from '@angular/material/toolbar';
@@ -53,8 +50,6 @@ export class LoadMapComponent {
 	private http = inject(HttpClientService);
 	private ref = inject(ChangeDetectorRef);
 	private searchFilterService = inject(SearchFilterService);
-	private readonly eventsService = inject(GlobalEventsService);
-	private readonly overlayService = inject(OverlayService);
 	private readonly sharedService = inject(SHARED_SERVICE);
 	private readonly settingsService = inject(SettingsService);
 	
@@ -115,35 +110,13 @@ export class LoadMapComponent {
 		this.ref.markForCheck();
 	}
 	
-	private async showConfirmDialog() {
-		const hasUnsavedChanges = await firstValueFrom(this.eventsService.hasUnsavedChanges);
-		if (!hasUnsavedChanges) {
-			return true;
-		}
-		
-		const dialogRef = this.overlayService.open(ConfirmCloseComponent, {
-			hasBackdrop: true,
-		});
-		const result = await firstValueFrom(dialogRef.ref.onClose, { defaultValue: false });
-		if (result) {
-			this.eventsService.hasUnsavedChanges.next(false);
-		}
-		return result;
-	}
-	
 	async loadMap(event: Event) {
-		if (!await this.showConfirmDialog()) {
-			return;
-		}
-		this.mapLoader.loadMap(event);
+		this.mapLoader.loadMap(event, true);
 		this.fileUpload.nativeElement.value = '';
 	}
 	
 	async load(name: string) {
-		if (!await this.showConfirmDialog()) {
-			return;
-		}
-		this.mapLoader.loadMapByName(name);
+		await this.mapLoader.loadMapByName(name, true);
 	}
 	
 	hasChild(_: number, node: VirtualMapNode) {

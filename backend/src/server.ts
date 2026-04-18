@@ -29,7 +29,11 @@ app.get('/api/allFilesInFolder', async (req, res) => res.json(await api.getAllFi
 app.get('/api/allMods', async (_, res) => res.json(await api.getAllMods(config.pathToCrosscode)));
 app.get('/api/allModMapEditorConfigs', async (_, res) => res.json(await api.getAllModMapEditorConfigs(config.pathToCrosscode)));
 app.post('/api/get', async (req, res) => {
-	res.json(await api.get(config.pathToCrosscode, req.body.path));
+	try {
+		res.json(await api.get(config.pathToCrosscode, req.body.path));
+	} catch (err) {
+		res.status(404).json(err);
+	}
 });
 app.post('/api/resolve', async (req, res) => {
 	try {
