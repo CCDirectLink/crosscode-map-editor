@@ -17,6 +17,7 @@ import { Prop } from './prop';
 import { RegenDestruct } from './regen-destruct';
 import { ScalableProp } from './scalable-prop';
 import { SteamPipe } from './steam-pipe';
+import { SteamTurnout } from './steam-turnout';
 import { TeleportStairs } from './teleport-stairs';
 import { WallHorizontal } from './wall-horizontal';
 import { WallVertical } from './wall-vertical';
@@ -46,6 +47,7 @@ export class EntityRegistryService {
 		this.register('Door', Door);
 		this.register('OneTimeSwitch', OneTimeSwitch);
 		this.register('SteamPipe', SteamPipe);
+		this.register('SteamTurnout', SteamTurnout);
 		this.register('TeleportStairs', TeleportStairs);
 		this.register('WallHorizontal', WallHorizontal);
 		this.register('WallVertical', WallVertical);
