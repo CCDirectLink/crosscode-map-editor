@@ -12,6 +12,7 @@ import { EventTrigger } from './event-trigger';
 import { ItemDestruct } from './item-destruct';
 import { KeyPanel } from './key-panel';
 import { NPC } from './npc';
+import { OneTimeSwitch } from './one-time-switch';
 import { Prop } from './prop';
 import { ScalableProp } from './scalable-prop';
 import { WaterBlock } from './water-block';
@@ -37,6 +38,7 @@ export class EntityRegistryService {
 		this.register('EventTrigger', EventTrigger);
 		this.register('Enemy', Enemy);
 		this.register('Door', Door);
+		this.register('OneTimeSwitch', OneTimeSwitch);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {

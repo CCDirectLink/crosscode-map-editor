@@ -1858,7 +1858,8 @@
 					"steamPipe": 0,
 					"teslaSwitch": 0,
 					"arSwitch": 0,
-					"waveSwitch": 0
+					"waveSwitch": 0,
+					"ferroSwitch": 0
 				}
 			},
 			"variable": {

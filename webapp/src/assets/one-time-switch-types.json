@@ -1,0 +1,91 @@
+{
+    "default": {
+        "size": {"x": 16, "y": 16, "z": 17},
+        "anims": {
+            "sheet": {"src": null, "width": 16, "height": 32},
+            "SUB": [{"name": "off", "frames": [0, 1, 2, 3]}]
+        }
+    },
+    "turret-switch": {
+        "size": {"x": 24, "y": 24, "z": 21},
+        "anims": {
+            "offset": {"x": -1, "y": 1, "z": 0},
+            "sheet": {"src": "media/entity/objects/switch-special.png", "width": 24, "height": 48},
+            "SUB": [{"name": "off", "frames": [0]}]
+        }
+    },
+    "propeller": {
+        "size": {"x": 16, "y": 16, "z": 24},
+        "anims": {
+            "sheet": {"src": "media/map/heat-dng.png", "width": 24, "height": 32, "offX": 320, "offY": 256},
+            "SUB": [{"name": "off", "frames": [0]}]
+        }
+    },
+    "steamPipe": {
+        "size": {"x": 16, "y": 16, "z": 10},
+        "anims": {
+            "sheet": {"src": "media/map/heat-dng.png", "width": 16, "height": 24, "offX": 368, "offY": 208, "xCount": 1},
+            "wallY": 1,
+            "SUB": [{"name": "off", "frames": [0]}]
+        }
+    },
+    "teslaSwitch": {
+        "size": {"x": 16, "y": 16, "z": 16},
+        "anims": {
+            "sheet": {"src": "media/map/shockwave-dng.png", "width": 16, "height": 32, "offX": 208, "offY": 368, "xCount": 2},
+            "wallY": 0,
+            "SUB": [{"name": "off", "frames": [0]}]
+        }
+    },
+    "arSwitch": {
+        "size": {"x": 16, "y": 16, "z": 17},
+        "anims": {
+            "offset": {"x": 0, "y": 0, "z": 0},
+            "sheet": {"src": "media/entity/objects/dungeon-ar.png", "width": 16, "height": 32, "offX": 192, "offY": 64, "xCount": 4},
+            "renderMode": "lighter",
+            "SUB": [{"name": "off", "frames": [0, 1, 2, 3]}]
+        }
+    },
+    "waveSwitch": {
+        "size": {"x": 24, "y": 24, "z": 24},
+        "anims": {
+            "namedSheets": {
+                "box": {"src": "media/map/shockwave-dng.png", "width": 24, "height": 48, "offX": 0, "offY": 0, "xCount": 1},
+                "shock": {"src": "media/map/shockwave-dng.png", "width": 24, "height": 40, "offX": 24, "offY": 8}
+            },
+            "SUB": [
+                {
+                    "wallY": 1,
+                    "sheet": "box",
+                    "SUB": [{"name": "off", "frames": [0]}]
+                },
+                {
+                    "sheet": "shock",
+                    "renderMode": "lighter",
+                    "SUB": [{"name": "off", "frames": [0, 1, 2, 3]}]
+                }
+            ]
+        }
+    },
+    "ferroSwitch": {
+        "size": {"x": 16, "y": 16, "z": 24},
+        "anims": {
+            "namedSheets": {
+                "ground": {"src": "media/entity/objects/ferro.png", "width": 16, "height": 16, "offX": 144, "offY": 352},
+                "holo": {"src": "media/entity/objects/ferro.png", "width": 16, "height": 16, "offX": 144, "offY": 320, "xCount": 6}
+            },
+            "SUB": [
+                {
+                    "wallY": 0,
+                    "sheet": "ground",
+                    "SUB": [{"name": "off", "frames": [1]}]
+                },
+                {
+                    "sheet": "holo",
+                    "renderMode": "lighter",
+                    "SUB": [{"name": "off", "frames": [0, 1, 2, 3], "offset": {"x": 0, "y": 0, "z": 14}}]
+                }
+            ]
+        }
+    }
+}
