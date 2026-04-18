@@ -1933,7 +1933,21 @@
 				"optional": true,
 				"description": "If specified: Switch will always stick while condition is true"
 			}
-		}
+		},
+		"anims": {
+			"sheet": {
+				"mapStyle": "puzzle2",
+				"width": 16,
+				"height": 16,
+				"offX": 0,
+				"offY": 48
+			},
+			"SUB": [
+				{"name": "off", "frames": [0]},
+				{"name": "on", "frames": [1]}
+			]
+		},
+		"size": {"x": 16, "y": 16, "z": 1}
 	},
 	"Magnet": {
 		"spawnable": true,
