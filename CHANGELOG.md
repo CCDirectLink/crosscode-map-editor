@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - Added "File > Export PNG" to export the current map as a pixel perfect PNG image.
 - Added "Maps" widget which shows a button to load the target map directly
+- Generating new entities now adds default properties to it
 
 ## [2.2.0] 2026-04-03
 ### Changed
