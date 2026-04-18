@@ -14,6 +14,9 @@ import { MatIconModule } from '@angular/material/icon';
 export class InputWithButtonComponent {
 	readonly description = input<string>();
 	readonly key = input('');
+	readonly icon = input('collections');
+	
 	readonly val = model<string>();
+	
 	readonly buttonClick = output<void>();
 }
