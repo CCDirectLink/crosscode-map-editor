@@ -546,7 +546,9 @@
 					"COLD_DUNGEON": 0,
 					"HEAT_DUNGEON_ENTRANCE": 0,
 					"HEAT_DUNGEON_MASTER_DOOR": 0,
-					"SHOCKWAVE_DNG_DOOR": 0
+					"SHOCKWAVE_DNG_DOOR": 0,
+					"FINAL_DNG_DOOR": 0,
+					"FINAL_DNG_DOOR_SAPPHIRE": 0
 				}
 			},
 			"condition": {

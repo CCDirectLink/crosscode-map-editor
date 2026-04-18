@@ -4,6 +4,7 @@ import { BallChanger } from './ball-changer';
 import { BounceBlock } from './bounce-block';
 import { DefaultEntity } from './default-entity';
 import { Destructible } from './destructible';
+import { Door } from './door';
 import { ElementPole } from './element-pole';
 import { ElementPoleDest } from './element-pole-dest';
 import { Enemy } from './enemy';
@@ -35,6 +36,7 @@ export class EntityRegistryService {
 		this.register('NPC', NPC);
 		this.register('EventTrigger', EventTrigger);
 		this.register('Enemy', Enemy);
+		this.register('Door', Door);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {

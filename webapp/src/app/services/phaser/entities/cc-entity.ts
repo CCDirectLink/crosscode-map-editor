@@ -332,8 +332,7 @@ export abstract class CCEntity extends BaseObject {
 					
 					let cropY = fix.y;
 					if (fix.flipY) {
-						// TODO: untested
-						cropY = img.displayWidth - fix.y - fix.h;
+						cropY = img.displayHeight - fix.y - fix.h;
 					}
 					
 					// crop offset
