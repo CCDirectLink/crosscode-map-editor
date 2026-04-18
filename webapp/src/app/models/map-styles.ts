@@ -18,6 +18,16 @@ export interface MapStyle {
 	doorGlow?: DoorGlow;
 	doorVariations?: Record<string, DoorVariation | undefined>;
 	stairDoor?: Point;
+	colors?: WallColors;
+}
+
+export interface WallColors {
+	blockFront: string;
+	blockTop: string;
+	pBlockFront: string;
+	pBlockTop: string;
+	npBlockFront: string;
+	npBlockTop: string;
 }
 
 export interface DoorGlow {

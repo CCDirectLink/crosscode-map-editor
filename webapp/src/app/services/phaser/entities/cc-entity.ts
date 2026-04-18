@@ -130,6 +130,7 @@ export abstract class CCEntity extends BaseObject {
 		scalableY?: boolean;
 		scalableStep?: number;
 		pivot?: Point;
+		bboxYOffset?: number;
 	} = {} as any;
 	
 	protected constructor(scene: Phaser.Scene, map: CCMap, x: number, y: number, typeName: string) {
@@ -636,7 +637,7 @@ export abstract class CCEntity extends BaseObject {
 		}
 		
 		collImg.x = inputArea.x;
-		collImg.y = inputArea.y - (size.z || 0) + this.levelOffset;
+		collImg.y = inputArea.y - (size.z || 0) + this.levelOffset + (this.entitySettings.bboxYOffset ?? 0);
 		
 		const shape = new Phaser.Geom.Rectangle(0, 0, size.x, size.y + (size.z || 0));
 		

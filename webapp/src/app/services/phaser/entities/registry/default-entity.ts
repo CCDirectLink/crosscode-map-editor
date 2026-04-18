@@ -309,15 +309,18 @@ export class DefaultEntity extends CCEntity {
 			console.error('texture does not exist: ' + fix.gfx);
 			return false;
 		}
-		if (fix.scalable === undefined) {
-			const scale = this.getScaleSettings();
-			if (scale && (scale.scalableX || scale.scalableY)) {
-				fix.scalable = true;
-			}
+		const scale = this.getScaleSettings();
+		if (fix.scalable === undefined && scale && (scale.scalableX || scale.scalableY)) {
+			fix.scalable = true;
 		}
 		if (reset || !this.entitySettings) {
 			this.entitySettings = { sheets: { fix: [] } } as any;
 		}
+		if (fix.scalable) {
+			this.entitySettings.scalableX = scale?.scalableX;
+			this.entitySettings.scalableY = scale?.scalableY;
+		}
+		this.entitySettings.baseSize ??= { x: 16, y: 16, z: 0, ...this.typeDef?.size };
 		this.entitySettings.sheets ??= { fix: [] };
 		this.entitySettings.sheets.fix ??= [];
 		this.entitySettings.sheets.fix.push(fix);

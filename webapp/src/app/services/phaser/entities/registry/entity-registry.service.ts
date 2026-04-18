@@ -18,6 +18,7 @@ import { RegenDestruct } from './regen-destruct';
 import { ScalableProp } from './scalable-prop';
 import { SteamPipe } from './steam-pipe';
 import { TeleportStairs } from './teleport-stairs';
+import { WallHorizontal } from './wall-horizontal';
 import { WaterBlock } from './water-block';
 
 @Injectable({
@@ -45,6 +46,7 @@ export class EntityRegistryService {
 		this.register('OneTimeSwitch', OneTimeSwitch);
 		this.register('SteamPipe', SteamPipe);
 		this.register('TeleportStairs', TeleportStairs);
+		this.register('WallHorizontal', WallHorizontal);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {
