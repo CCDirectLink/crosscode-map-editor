@@ -2009,6 +2009,84 @@
 				"type": "String",
 				"description": "Group Name to assign bouncing blocks to switch"
 			}
+		},
+		"size": {
+			"x": 24,
+			"y": 24,
+			"z": 24
+		},
+		"anims": {
+			"namedSheets": {
+				"base": {
+					"mapStyle": "puzzle2",
+					"width": 24,
+					"height": 28,
+					"offX": 168,
+					"xCount": 2
+				},
+				"cube": {
+					"mapStyle": "puzzle2",
+					"width": 16,
+					"height": 24,
+					"offX": 224,
+					"xCount": 2
+				},
+				"top": {
+					"mapStyle": "puzzle2",
+					"width": 8,
+					"height": 8,
+					"offX": 216,
+					"offY": 48
+				}
+			},
+			"SUB": [
+				{
+					"sheet": "base",
+					"size": {
+						"x": 24,
+						"y": 26,
+						"z": 0
+					},
+					"offset": {
+						"y": 0
+					},
+					"SUB": [
+						{ "name": "off", "frames": [0] },
+						{ "name": "on", "frames": [3] }
+					]
+				},
+				{
+					"sheet": "cube",
+					"size": {
+						"x": 16,
+						"y": 16,
+						"z": 8
+					},
+					"offset": {
+						"z": 12,
+						"y": -4
+					},
+					"SUB": [
+						{ "name": "off", "frames": [0] }
+					]
+				},
+				{
+					"sheet": "top",
+					"size": {
+						"x": 8,
+						"y": 8,
+						"z": 0
+					},
+					"offset": {
+						"z": 20,
+						"y": -8
+					},
+					"frames": [0],
+					"SUB": [
+						{ "name": "off" }
+					]
+				}
+			]
 		}
 	},
 	"BounceBlock": {
