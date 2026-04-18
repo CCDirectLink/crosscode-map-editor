@@ -1299,7 +1299,7 @@
 			}
 		},
 		"drawBox": true,
-		"boxColor": "rgba(255,0,0, 0.5)",
+		"boxColor": "rgba(0, 50, 255, 0.7)",
 		"noZLine": true
 	},
 	"LocationEvent": {
