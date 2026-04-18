@@ -662,8 +662,6 @@
 			}
 		},
 		"drawBox": true,
-		"boxColor": "rgba(255,255,0, 0.5)",
-		"frontColor": "rgba(120,120,0, 0.8)",
 		"alwaysRecreate": true
 	},
 	"NPCWaypoint": {
@@ -824,8 +822,7 @@
 				"description": "Condition for entity to become transparent"
 			}
 		},
-		"drawBox": true,
-		"boxColor": "rgba(255,255,0, 0.5)"
+		"drawBox": true
 	},
 	"ScalableProp": {
 		"spawnable": true,
@@ -862,8 +859,7 @@
 				"description": "Condition for entity to become transparent"
 			}
 		},
-		"drawBox": true,
-		"boxColor": "rgba(255,255,0, 0.5)"
+		"drawBox": true
 	},
 	"Note": {
 		"spawnable": true,
@@ -903,8 +899,7 @@
 				"description": "Instead of killing the enemy, set specified variable to true."
 			}
 		},
-		"drawBox": true,
-		"boxColor": "rgba(255,0,0, 0.5)"
+		"drawBox": true
 	},
 	"EnemySpawner": {
 		"spawnable": true,
@@ -1210,9 +1205,7 @@
 					"RHOMBUS_SQR_STATION_START": 0
 				}
 			}
-		},
-		"boxColor": "rgba(255,255,0, 0.5)",
-		"frontColor": "rgba(120,120,0, 0.8)"
+		}
 	},
 	"RhombusPoint": {
 		"spawnable": true,
@@ -1331,7 +1324,6 @@
 			}
 		},
 		"drawBox": true,
-		"boxColor": "rgba(255,0,122, 0.5)",
 		"noZLine": true
 	},
 	"NPC": {
@@ -1361,8 +1353,7 @@
 				"description": "Condition for entity to become transparent"
 			}
 		},
-		"drawBox": true,
-		"boxColor": "rgba(0,0,255, 0.5)"
+		"drawBox": true
 	},
 	"Block": {
 		"spawnable": true,
@@ -1567,8 +1558,7 @@
 				"description": "If true, bounces are reset when this changer is hit"
 			}
 		},
-		"drawBox": true,
-		"boxColor": "rgba(255,255,0, 0.5)"
+		"drawBox": true
 	},
 	"WallHorizontal": {
 		"spawnable": true,
@@ -2051,8 +2041,8 @@
 						"y": 0
 					},
 					"SUB": [
-						{ "name": "off", "frames": [0] },
-						{ "name": "on", "frames": [3] }
+						{"name": "off", "frames": [0]},
+						{"name": "on", "frames": [3]}
 					]
 				},
 				{
@@ -2067,7 +2057,7 @@
 						"y": -4
 					},
 					"SUB": [
-						{ "name": "off", "frames": [0] }
+						{"name": "off", "frames": [0]}
 					]
 				},
 				{
@@ -2083,7 +2073,7 @@
 					},
 					"frames": [0],
 					"SUB": [
-						{ "name": "off" }
+						{"name": "off"}
 					]
 				}
 			]
@@ -3090,8 +3080,6 @@
 			}
 		},
 		"drawBox": false,
-		"boxColor": "rgba(120,255,120, 0.5)",
-		"frontColor": "rgba(80,244,80, 0.5)",
 		"alwaysRecreate": true
 	},
 	"Analyzable": {
