@@ -15,6 +15,7 @@ import { NPC } from './npc';
 import { OneTimeSwitch } from './one-time-switch';
 import { Prop } from './prop';
 import { ScalableProp } from './scalable-prop';
+import { SteamPipe } from './steam-pipe';
 import { WaterBlock } from './water-block';
 
 @Injectable({
@@ -39,6 +40,7 @@ export class EntityRegistryService {
 		this.register('Enemy', Enemy);
 		this.register('Door', Door);
 		this.register('OneTimeSwitch', OneTimeSwitch);
+		this.register('SteamPipe', SteamPipe);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {

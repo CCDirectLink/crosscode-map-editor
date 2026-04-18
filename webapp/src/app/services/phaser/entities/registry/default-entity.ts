@@ -1,7 +1,7 @@
 import { CCMap } from '../../tilemap/cc-map';
 import { CCEntity, EntityAttributes, Fix, ScaleSettings } from '../cc-entity';
 import { Globals } from '../../../globals';
-import { Point3 } from '../../../../models/cross-code-map';
+import { Point, Point3 } from '../../../../models/cross-code-map';
 import { Anims, AnimSheet } from '../../sheet-parser';
 import { Helper } from '../../helper';
 
@@ -139,6 +139,24 @@ export class DefaultEntity extends CCEntity {
 		
 	}
 	
+	protected snapSizeToScale(scaleSettings: ScaleSettings) {
+		const size = this.details.settings['size'] as Point | undefined;
+		if (!size) {
+			return;
+		}
+		const step = scaleSettings.scalableStep;
+		if (scaleSettings.scalableX) {
+			size.x = Math.max(step, Math.round(size.x / step) * step);
+		} else {
+			size.x = scaleSettings.baseSize.x;
+		}
+		if (scaleSettings.scalableY) {
+			size.y = Math.max(step, Math.round(size.y / step) * step);
+		} else {
+			size.y = scaleSettings.baseSize.y;
+		}
+	}
+
 	protected resolveSheet(sheet: AnimSheet): AnimSheet {
 		if (!sheet.mapStyle) {
 			return sheet;
