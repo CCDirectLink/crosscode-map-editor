@@ -19,6 +19,7 @@ import { ScalableProp } from './scalable-prop';
 import { SteamPipe } from './steam-pipe';
 import { TeleportStairs } from './teleport-stairs';
 import { WallHorizontal } from './wall-horizontal';
+import { WallVertical } from './wall-vertical';
 import { WaterBlock } from './water-block';
 
 @Injectable({
@@ -47,6 +48,7 @@ export class EntityRegistryService {
 		this.register('SteamPipe', SteamPipe);
 		this.register('TeleportStairs', TeleportStairs);
 		this.register('WallHorizontal', WallHorizontal);
+		this.register('WallVertical', WallVertical);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {

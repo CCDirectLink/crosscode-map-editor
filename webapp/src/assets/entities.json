@@ -1618,6 +1618,11 @@
 	"WallVertical": {
 		"spawnable": true,
 		"scalableY": true,
+		"scalableStep": 4,
+		"size": {
+			"x": 8,
+			"y": 16
+		},
 		"attributes": {
 			"skipRender": {
 				"type": "Boolean",
