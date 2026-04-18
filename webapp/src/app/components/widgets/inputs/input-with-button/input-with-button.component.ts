@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,12 +8,12 @@ import { MatIconModule } from '@angular/material/icon';
 	selector: 'app-input-with-button',
 	imports: [MatTooltipModule, FormsModule, MatButtonModule, MatIconModule],
 	templateUrl: './input-with-button.component.html',
-	styleUrls: ['./input-with-button.component.scss', '../../widget.scss']
+	styleUrls: ['./input-with-button.component.scss', '../../widget.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputWithButtonComponent {
-	@Input() description?: string;
-	@Input() key = '';
-	@Input() model?: string;
-	@Output() modelChange = new EventEmitter<string>();
-	@Output() buttonClick = new EventEmitter<void>();
+	readonly description = input<string>();
+	readonly key = input('');
+	readonly val = model<string>();
+	readonly buttonClick = output<void>();
 }

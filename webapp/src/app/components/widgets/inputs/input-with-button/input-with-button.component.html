@@ -1,9 +1,10 @@
-<div class="property-container flex flex-row" [matTooltip]="description ?? ''">
-	<label class="property-name">{{key}}:</label>
+<div class="property-container flex flex-row" [matTooltip]="description() ?? ''">
+	<label class="property-name">{{ key() }}:</label>
 	<div class="default-input input-container">
-		<input class="default-input"
-		       [ngModel]="model"
-		       (ngModelChange)="modelChange.emit($event)">
+		<input
+			class="default-input"
+			[(ngModel)]="val"
+		/>
 		<button
 			mat-icon-button
 			(click)="buttonClick.emit()"
