@@ -103,6 +103,53 @@
 			}
 		}
 	},
+	"evo-outside": {
+		"map": {
+			"sheet": "media/entity/style/evo-village-map.png",
+			"hasDoorMat": false,
+			"doorSound": "EVO",
+			"doorGlow": {
+				"x": 128,
+				"y": 0,
+				"xCount": 1
+			},
+			"teleportField": {
+				"x": 0,
+				"y": 160,
+				"xCount": 3,
+				"zHeight": 0
+			},
+			"doorVariations": {
+				"bright": {
+					"x": 160,
+					"y": 0,
+					"doorMat": false
+				},
+				"transparent": {
+					"x": 160,
+					"y": 48,
+					"doorMat": false
+				}
+			}
+		}
+	},
+	"evo-inner": {
+		"map": {
+			"sheet": "media/entity/style/evo-village-inner-map.png",
+			"hasDoorMat": false,
+			"doorSound": "EVO",
+			"doorVariations": {
+				"brick": {
+					"x": 160,
+					"y": 0
+				}
+			},
+			"stairDoor": {
+				"x": 160,
+				"y": 48
+			}
+		}
+	},
 	"rhombus-interior": {
 		"map": {
 			"sheet": "media/entity/style/rhombus-interior-map.png",
@@ -632,6 +679,9 @@
 		"puzzle": {
 			"sheet": "media/entity/style/jungle-city-puzzle.png"
 		},
+		"puzzle2": {
+			"sheet": "media/entity/style/shockwave-dng-puzzle-2.png"
+		},
 		"magnet": {
 			"sheet": "media/map/shockwave-dng.png",
 			"x": 160,
@@ -848,6 +898,165 @@
 			"sheet": "media/map/lab.png",
 			"x": 320,
 			"y": 576
+		},
+		"coals": {
+			"sheet": "media/map/lab.png",
+			"x": 448,
+			"y": 176
+		}
+	},
+	"final-dng-inner": {
+		"walls": {
+			"colors": {
+				"blockFront": "#475ae2",
+				"blockTop": "#d9eeff",
+				"pBlockFront": "#80ff83",
+				"pBlockTop": "#b3c9ff",
+				"npBlockFront": "#eb8835",
+				"npBlockTop": "#fff7e5"
+			},
+			"alpha": 0.55
+		},
+		"map": {
+			"sheet": "media/entity/style/final-dng-map.png",
+			"hasDoorMat": true,
+			"teleportField": {
+				"x": 0,
+				"y": 160,
+				"xCount": 3,
+				"zHeight": 0
+			},
+			"doorGlow": {
+				"x": 144,
+				"y": 0,
+				"xCount": 1,
+				"sideX": 160,
+				"sideY": 96
+			}
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/final-dng-puzzle.png"
+		},
+		"puzzle2": {
+			"sheet": "media/entity/style/final-dng-puzzle-2.png"
+		},
+		"destruct": {
+			"sheet": "media/entity/style/final-dng-destruct.png"
+		},
+		"pipes": {
+			"sheet": "media/map/final-dungeon-inner.png",
+			"x": 64,
+			"y": 368
+		},
+		"pipeSwitch": {
+			"sheet": "media/map/final-dungeon-inner.png",
+			"x": 112,
+			"y": 432
+		},
+		"propeller": {
+			"sheet": "media/map/final-dungeon-inner.png",
+			"x": 64,
+			"y": 480
+		},
+		"magnet": {
+			"sheet": "media/map/final-dungeon-inner.png",
+			"x": 176,
+			"y": 368
+		},
+		"tesla": {
+			"sheet": "media/map/final-dungeon-inner.png",
+			"x": 208,
+			"y": 400
+		},
+		"teslaSwitch": {
+			"sheet": "media/map/final-dungeon-inner.png",
+			"x": 176,
+			"y": 400
+		},
+		"anticompressor": {
+			"sheet": "media/map/final-dungeon-inner.png",
+			"x": 208,
+			"y": 448
+		},
+		"dynPlatformSmall": {
+			"sheet": "media/map/final-dungeon-inner.png",
+			"x": 32,
+			"y": 480
+		},
+		"dynPlatformMedium": {
+			"sheet": "media/map/final-dungeon-inner.png",
+			"x": 424,
+			"y": 464
+		},
+		"effect": {
+			"sheet": "area.cold-dng"
+		},
+		"rotateBlocker": {
+			"sheet": "media/map/final-dungeon-inner.png",
+			"x": 256,
+			"y": 400
+		},
+		"waveSwitch": {
+			"sheet": "media/map/final-dungeon-inner.png",
+			"x": 256,
+			"y": 464
+		},
+		"waveblock": {
+			"sheet": "media/map/final-dungeon-inner.png",
+			"x": 352,
+			"y": 400
+		},
+		"bouncer": {
+			"sheet": "media/map/final-dungeon-inner.png",
+			"x": 384,
+			"y": 368
+		},
+		"lorry": {
+			"sheet": "media/map/final-dungeon-inner.png",
+			"railX": 304,
+			"railY": 256,
+			"lorryX": 464,
+			"lorryY": 320
+		}
+	},
+	"final-dng-outer": {
+		"map": {
+			"sheet": "media/entity/style/final-dng-outer-map.png",
+			"hasDoorMat": true,
+			"teleportField": {
+				"x": 0,
+				"y": 160,
+				"xCount": 3,
+				"zHeight": 0
+			},
+			"doorGlow": {
+				"x": 144,
+				"y": 0,
+				"xCount": 1,
+				"sideX": 160,
+				"sideY": 96
+			}
+		},
+		"puzzle": {
+			"sheet": "media/entity/style/final-dng-puzzle.png"
+		},
+		"puzzle2": {
+			"sheet": "media/entity/style/final-dng-puzzle-2.png"
+		},
+		"destruct": {
+			"sheet": "media/entity/style/final-dng-destruct.png"
+		}
+	},
+	"final-dng-space": {
+		"ferro": {
+			"space": true
+		}
+	},
+	"office": {
+		"map": {
+			"sheet": "media/entity/style/office-map.png",
+			"hasDoorMat": false,
+			"doorSound": "EVO"
 		}
 	}
 }
