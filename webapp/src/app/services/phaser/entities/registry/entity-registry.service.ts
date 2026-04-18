@@ -14,6 +14,7 @@ import { KeyPanel } from './key-panel';
 import { NPC } from './npc';
 import { OneTimeSwitch } from './one-time-switch';
 import { Prop } from './prop';
+import { RegenDestruct } from './regen-destruct';
 import { ScalableProp } from './scalable-prop';
 import { SteamPipe } from './steam-pipe';
 import { TeleportStairs } from './teleport-stairs';
@@ -30,6 +31,7 @@ export class EntityRegistryService {
 		this.register('ScalableProp', ScalableProp);
 		this.register('ItemDestruct', ItemDestruct);
 		this.register('Destructible', Destructible);
+		this.register('RegenDestruct', RegenDestruct);
 		this.register('BounceBlock', BounceBlock);
 		this.register('BallChanger', BallChanger);
 		this.register('WaterBlock', WaterBlock);

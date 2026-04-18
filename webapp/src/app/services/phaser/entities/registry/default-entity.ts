@@ -281,6 +281,12 @@ export class DefaultEntity extends CCEntity {
 			offset.x += settings.gfxOffset.x ?? 0;
 			offset.y += settings.gfxOffset.y ?? 0;
 		}
+
+		if (settings.framesSpriteOffset) {
+			offset.x += settings.framesSpriteOffset[0] ?? 0;
+			offset.y += settings.framesSpriteOffset[1] ?? 0;
+			offset.z += settings.framesSpriteOffset[2] ?? 0;
+		}
 		
 		const frame = settings.frames?.[0] ?? 0;
 		const tileOffset = settings.tileOffset ?? 0;

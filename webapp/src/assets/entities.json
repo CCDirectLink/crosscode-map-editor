@@ -2444,7 +2444,11 @@
 				"options": {
 					"iceBlock": 0,
 					"flame": 0,
-					"shock": 0
+					"shock": 0,
+					"ferroHeat": 0,
+					"ferroCold": 0,
+					"ferroShock": 0,
+					"ferroWave": 0
 				}
 			},
 			"spawnCondition": {
@@ -2456,6 +2460,11 @@
 				"type": "VarCondition",
 				"popup": true,
 				"description": "Condition for destructible to be active. Otherwise is always 'destroyed'"
+			},
+			"onDestroyIncrease": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Variable to increase when destroyed"
 			},
 			"blockNavMap": {
 				"type": "Boolean",
