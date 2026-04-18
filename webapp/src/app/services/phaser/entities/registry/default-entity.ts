@@ -42,21 +42,7 @@ interface PropSprite {
 	aboveZ?: number;
 }
 
-interface SizeOverride {
-	x?: number;
-	y?: number;
-}
-
 export class DefaultEntity extends CCEntity {
-	
-	private static BASE_SIZE_OVERRIDES: { [entityType: string]: SizeOverride } = {
-		'WallHorizontal': {
-			y: 8,
-		},
-		'WallVertical': {
-			x: 8,
-		},
-	};
 	
 	constructor(
 		scene: Phaser.Scene,
@@ -99,14 +85,15 @@ export class DefaultEntity extends CCEntity {
 		}
 		
 		const step = this.typeDef.scalableStep || 1;
+		const size = this.settings['size'] as Point | undefined;
 		
 		this.scaleSettings = {
 			scalableX: !!this.typeDef.scalableX,
 			scalableY: !!this.typeDef.scalableY,
 			scalableStep: step,
 			baseSize: {
-				x: DefaultEntity.BASE_SIZE_OVERRIDES[this.typeName]?.x ?? step,
-				y: DefaultEntity.BASE_SIZE_OVERRIDES[this.typeName]?.y ?? step,
+				x: size?.x ?? step,
+				y: size?.y ?? step,
 			},
 		};
 		
@@ -281,7 +268,7 @@ export class DefaultEntity extends CCEntity {
 			offset.x += settings.gfxOffset.x ?? 0;
 			offset.y += settings.gfxOffset.y ?? 0;
 		}
-
+		
 		if (settings.framesSpriteOffset) {
 			offset.x += settings.framesSpriteOffset[0] ?? 0;
 			offset.y += settings.framesSpriteOffset[1] ?? 0;
