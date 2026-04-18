@@ -1,8 +1,5 @@
-import { Globals } from '../../../globals';
-import { Helper } from '../../helper';
 import { Fix } from '../cc-entity';
-import { DefaultEntity } from './default-entity';
-import { END_OFF_X, resolveWallColors, SHEET_OFF_Y, TILE_H, TILE_W, WALL_ALPHA, wallEffectOverlayFix } from './wall-shared';
+import { BaseWall, END_OFF_X, SHEET_OFF_Y, TILE_H, TILE_W } from './base-wall';
 
 const MIDDLE_TILE_H = 16;
 
@@ -27,7 +24,7 @@ const BOTTOM_TILE_IDX: Record<string, number | undefined> = {
 	CORNER_RIGHT: 9,
 };
 
-export class WallVertical extends DefaultEntity {
+export class WallVertical extends BaseWall {
 	
 	protected override async setupType(settings: WallVerticalAttributes): Promise<void> {
 		if (settings.skipRender) {
@@ -35,16 +32,12 @@ export class WallVertical extends DefaultEntity {
 			return;
 		}
 		
-		const puzzleStyle = Helper.getMapStyle(Globals.map, 'puzzle');
-		const wallsStyle = Helper.getMapStyle(Globals.map, 'walls');
-		const sheet = puzzleStyle?.sheet;
-		const colors = wallsStyle?.colors;
-		if (!sheet || !colors) {
+		const ctx = this.resolveWallContext(settings.collType);
+		if (!ctx) {
 			this.generateErrorImage();
 			return;
 		}
-		
-		const { front: frontTint, top: topTint } = resolveWallColors(settings.collType, colors);
+		const { sheet, frontTint, topTint } = ctx;
 		
 		const wallZHeight = settings.wallZHeight ?? 32;
 		const topIdx = settings.topEnd ? TOP_TILE_IDX[settings.topEnd] : undefined;
@@ -95,42 +88,7 @@ export class WallVertical extends DefaultEntity {
 			await pushEndTile(botIdx, 1);
 		}
 		
-		// front face
-		await this.pushFix({
-			gfx: 'pixel',
-			x: 0,
-			y: 0,
-			w: BASE_X,
-			h: wallZHeight,
-			scaleX: BASE_X,
-			scaleY: wallZHeight,
-			tint: frontTint,
-			alpha: WALL_ALPHA,
-			scalable: false,
-			offsetX: BASE_X / 2,
-			offsetY: -1,
-			ignoreBoundingboxX: true,
-		});
-		
-		// top slab
-		await this.pushFix({
-			gfx: 'pixel',
-			x: 0,
-			y: 0,
-			w: BASE_X,
-			h: length,
-			scaleX: BASE_X,
-			scaleY: length,
-			tint: topTint,
-			alpha: WALL_ALPHA,
-			scalable: false,
-			offsetX: BASE_X / 2,
-			offsetY: -wallZHeight - 1,
-			ignoreBoundingboxX: true,
-		});
-		
-		// effect overlay (lighter blend)
-		await this.pushFix(wallEffectOverlayFix(wallZHeight));
+		await this.pushWallBody(BASE_X, length, wallZHeight, frontTint, topTint);
 		
 		this.entitySettings.bboxYOffset = -1;
 		this.updateSettings();

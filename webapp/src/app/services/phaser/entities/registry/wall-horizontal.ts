@@ -1,16 +1,5 @@
-import { Globals } from '../../../globals';
-import { Helper } from '../../helper';
 import { Fix } from '../cc-entity';
-import { DefaultEntity } from './default-entity';
-import {
-	END_OFF_X,
-	resolveWallColors,
-	SHEET_OFF_Y,
-	TILE_H,
-	TILE_W,
-	WALL_ALPHA,
-	wallEffectOverlayFix,
-} from './wall-shared';
+import { BaseWall, END_OFF_X, SHEET_OFF_Y, TILE_H, TILE_W } from './base-wall';
 
 export interface WallHorizontalAttributes {
 	skipRender?: boolean;
@@ -22,32 +11,28 @@ export interface WallHorizontalAttributes {
 
 const BASE_Y = 8;
 
-export class WallHorizontal extends DefaultEntity {
-
+export class WallHorizontal extends BaseWall {
+	
 	protected override async setupType(settings: WallHorizontalAttributes): Promise<void> {
 		if (settings.skipRender) {
 			this.generateNoImageType();
 			return;
 		}
-
-		const puzzleStyle = Helper.getMapStyle(Globals.map, 'puzzle');
-		const wallsStyle = Helper.getMapStyle(Globals.map, 'walls');
-		const sheet = puzzleStyle?.sheet;
-		const colors = wallsStyle?.colors;
-		if (!sheet || !colors) {
+		
+		const ctx = this.resolveWallContext(settings.collType);
+		if (!ctx) {
 			this.generateErrorImage();
 			return;
 		}
-
-		const { front: frontTint, top: topTint } = resolveWallColors(settings.collType, colors);
-
+		const { sheet, frontTint, topTint } = ctx;
+		
 		const wallZHeight = settings.wallZHeight ?? 32;
 		const leftEnd = settings.leftEnd && settings.leftEnd !== 'CONTINUE';
 		const rightEnd = settings.rightEnd && settings.rightEnd !== 'CONTINUE';
-
+		
 		const size = this.details.settings['size'] as { x: number; y: number } | undefined;
 		const width = size?.x ?? TILE_W;
-
+		
 		const middle: Fix = {
 			gfx: sheet,
 			x: 176,
@@ -61,7 +46,7 @@ export class WallHorizontal extends DefaultEntity {
 			this.generateErrorImage();
 			return;
 		}
-
+		
 		if (leftEnd) {
 			await this.pushFix({
 				gfx: sheet,
@@ -76,7 +61,7 @@ export class WallHorizontal extends DefaultEntity {
 			});
 			middle.offsetX = TILE_W;
 		}
-
+		
 		if (rightEnd) {
 			await this.pushFix({
 				gfx: sheet,
@@ -91,44 +76,9 @@ export class WallHorizontal extends DefaultEntity {
 			});
 			middle.offsetWidth = TILE_W;
 		}
-
-		// front face
-		await this.pushFix({
-			gfx: 'pixel',
-			x: 0,
-			y: 0,
-			w: width,
-			h: wallZHeight,
-			scaleX: width,
-			scaleY: wallZHeight,
-			tint: frontTint,
-			alpha: WALL_ALPHA,
-			scalable: false,
-			offsetX: width / 2,
-			offsetY: -1,
-			ignoreBoundingboxX: true,
-		});
-
-		// top face
-		await this.pushFix({
-			gfx: 'pixel',
-			x: 0,
-			y: 0,
-			w: width,
-			h: BASE_Y,
-			scaleX: width,
-			scaleY: BASE_Y,
-			tint: topTint,
-			alpha: WALL_ALPHA,
-			scalable: false,
-			offsetX: width / 2,
-			offsetY: -wallZHeight - 1,
-			ignoreBoundingboxX: true,
-		});
-
-		// effect overlay (lighter blend)
-		await this.pushFix(wallEffectOverlayFix(wallZHeight));
-
+		
+		await this.pushWallBody(width, BASE_Y, wallZHeight, frontTint, topTint);
+		
 		this.entitySettings.bboxYOffset = -1;
 		this.updateSettings();
 	}
