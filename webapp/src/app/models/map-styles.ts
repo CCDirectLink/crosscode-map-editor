@@ -1,3 +1,5 @@
+import { Point } from './cross-code-map';
+
 export interface MapStyles {
 	default: MapStyleType;
 	
@@ -15,6 +17,7 @@ export interface MapStyle {
 	hasDoorMat?: boolean;
 	doorGlow?: DoorGlow;
 	doorVariations?: Record<string, DoorVariation | undefined>;
+	stairDoor?: Point;
 }
 
 export interface DoorGlow {
