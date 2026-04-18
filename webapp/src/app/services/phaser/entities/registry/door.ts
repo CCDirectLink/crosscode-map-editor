@@ -10,6 +10,7 @@ export interface DoorAttributes {
 	doorType?: string;
 	dir?: Dir;
 	variation?: string;
+	condition?: string;
 }
 
 interface DoorTypeDef {
@@ -92,7 +93,9 @@ export class Door extends DefaultEntity {
 				flipY: dir === 'NORTH',
 				offset: { x: matOffsetX, y: matOffsetY, z: 0 },
 				aboveZ: -1,
-				SUB: [{ name: 'idle', frames: [0] }],
+				SUB: [
+					{ name: 'idle', frames: [settings.condition ? 0 : 4] },
+				],
 			});
 		}
 		
