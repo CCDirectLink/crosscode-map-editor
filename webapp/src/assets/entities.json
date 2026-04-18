@@ -1669,29 +1669,6 @@
 			}
 		}
 	},
-	"WallBlocker": {
-		"spawnable": false,
-		"attributes": {
-			"collType": {
-				"type": "String",
-				"description": "Top End Type",
-				"options": {
-					"NONE": 0,
-					"IGNORE": 0,
-					"PROJECTILE": 0,
-					"VIRTUAL": 0,
-					"PBLOCK": 0,
-					"NPBLOCK": 0,
-					"BLOCK": 0,
-					"TRIGGER": 0,
-					"PASSIVE": 0,
-					"SEMI_IGNORE": 0,
-					"FENCE": 0,
-					"NPFENCE": 0
-				}
-			}
-		}
-	},
 	"GlowingLine": {
 		"spawnable": true,
 		"attributes": {
