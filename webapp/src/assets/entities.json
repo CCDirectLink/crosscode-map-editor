@@ -2845,6 +2845,11 @@
 				"type": "Marker",
 				"description": "Marker on map to teleport player to"
 			}
+		},
+		"size": {"x": 32, "y": 32, "z": 0},
+		"anims": {
+			"sheet": {"mapStyle": "quicksand", "width": 32, "height": 32},
+			"SUB": [{"name": "defaukt", "time": 0.2, "frames": [0], "repeat": true}]
 		}
 	},
 	"SteamPipe": {
