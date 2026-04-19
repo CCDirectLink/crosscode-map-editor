@@ -2240,6 +2240,14 @@
 				"type": "VarName",
 				"description": "Variable set to true when switch is hit"
 			}
+		},
+		"size": {"x": 16, "y": 16, "z": 24},
+		"anims": {
+			"sheet": {"mapStyle": "puzzle", "width": 24, "height": 24, "offX": 0, "offY": 64},
+			"SUB": [
+				{"name": "off", "frames": [6]},
+				{"name": "off", "frames": [0], "offset": {"x": 0, "y": 0, "z": 12}}
+			]
 		}
 	},
 	"Destructible": {
