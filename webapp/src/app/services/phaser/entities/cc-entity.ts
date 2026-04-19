@@ -106,7 +106,7 @@ export abstract class CCEntity extends BaseObject {
 	
 	// drag
 	public isDragged = false;
-	public startOffset: Point = {x: 0, y: 0};
+	public startOffset: Point = { x: 0, y: 0 };
 	
 	// zIndex: number;
 	details: {
@@ -140,7 +140,7 @@ export abstract class CCEntity extends BaseObject {
 		this.container.x = Math.round(x);
 		this.container.y = Math.round(y);
 		this.details = {
-			type: typeName
+			type: typeName,
 		} as any;
 		
 		this.filterSubscription = Globals.globalEventsService.filterEntity.subscribe(filter => this.setVisible(this.filter(filter)));
@@ -229,7 +229,7 @@ export abstract class CCEntity extends BaseObject {
 		this.images = [];
 		
 		// bound box offset
-		const boundBoxOffset = {x: 0, y: 0};
+		const boundBoxOffset = { x: 0, y: 0 };
 		if (s.baseSize) {
 			boundBoxOffset.x = s.baseSize.x / 2;
 			boundBoxOffset.y = s.baseSize.y;
@@ -385,7 +385,7 @@ export abstract class CCEntity extends BaseObject {
 		} else {
 			details.level = {
 				level: level,
-				offset: 0
+				offset: 0,
 			};
 		}
 		
@@ -453,7 +453,7 @@ export abstract class CCEntity extends BaseObject {
 			x: this.container.x,
 			y: this.container.y,
 			level: this.details.level.offset ? this.details.level : this.details.level.level,
-			settings: this.details.settings
+			settings: this.details.settings,
 		};
 		return JSON.parse(JSON.stringify(out));
 	}
@@ -465,7 +465,7 @@ export abstract class CCEntity extends BaseObject {
 	protected abstract setupType(settings: any): Promise<void>;
 	
 	public doubleClick(): void {
-	
+		
 	}
 	
 	public async updateType() {
@@ -481,7 +481,7 @@ export abstract class CCEntity extends BaseObject {
 	public generateNoImageType(rgbTop = 0xc06040, aTop = 0.5, rgb = 0x800000, a = 0.5) {
 		const settings = this.details.settings;
 		
-		const baseSize: Point3 = {x: 16, y: 16, z: 0};
+		const baseSize: Point3 = { x: 16, y: 16, z: 0 };
 		if (settings['size']) {
 			baseSize.x = settings['size'].x;
 			baseSize.y = settings['size'].y;
@@ -533,7 +533,7 @@ export abstract class CCEntity extends BaseObject {
 					scaleX: size.x,
 					scaleY: size.y,
 					tint: rgbTop,
-					alpha: aTop
+					alpha: aTop,
 				}],
 			};
 		} else {
@@ -548,7 +548,7 @@ export abstract class CCEntity extends BaseObject {
 					scaleX: size.x,
 					scaleY: size.z,
 					tint: rgb,
-					alpha: a
+					alpha: a,
 				}, {
 					gfx: 'pixel',
 					x: 0,
@@ -559,7 +559,7 @@ export abstract class CCEntity extends BaseObject {
 					scaleX: size.x,
 					scaleY: size.y,
 					tint: rgbTop,
-					alpha: aTop
+					alpha: aTop,
 				}],
 			};
 		}
@@ -587,7 +587,7 @@ export abstract class CCEntity extends BaseObject {
 			this.inputZone.x + this.container.x,
 			this.inputZone.y + this.container.y,
 			hitArea.width,
-			hitArea.height
+			hitArea.height,
 		);
 		return box;
 	}
@@ -654,7 +654,7 @@ export abstract class CCEntity extends BaseObject {
 				this.text = this.scene.add.text(0, 0, '', {
 					font: '400 18pt Roboto',
 					color: 'white',
-					resolution: window.devicePixelRatio * 3
+					resolution: window.devicePixelRatio * 3,
 				});
 				this.text.setOrigin(0.5, 0.5);
 				this.text.setScale(0.3);
@@ -700,7 +700,7 @@ export abstract class CCEntity extends BaseObject {
 	
 	private getRenderBackground(width: number, height: number) {
 		if (!CCEntity.renderBackground) {
-			const g = this.scene.add.graphics({fillStyle: {color: 0x616161, alpha: 1}});
+			const g = this.scene.add.graphics({ fillStyle: { color: 0x616161, alpha: 1 } });
 			g.fillRect(0, 0, width, height);
 			g.fillStyle(0, 0.15);
 			for (let x = 0; x < width; x += 16) {
@@ -743,12 +743,12 @@ export abstract class CCEntity extends BaseObject {
 			
 			img.setScale(
 				sx * scale,
-				sy * scale
+				sy * scale,
 			);
 			texture.draw(
 				img,
 				x + img.x * scale,
-				y + img.y * scale
+				y + img.y * scale,
 			);
 			
 			img.setScale(sx, sy);
