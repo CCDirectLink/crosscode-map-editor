@@ -42,14 +42,13 @@ export class ElementPole extends DefaultEntity {
 			SUB: [{ name: 'on', frames: [0] }],
 		};
 
-		const ok = await this.applyAnims(anims, 'on', settings.poleType, 'puzzle2');
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-
-		this.entitySettings.baseSize = { x: 16, y: 16, z: type.sizeZ };
-		this.updateSettings();
+		await this.applyAnims({
+			anims,
+			animName: 'on',
+			label: settings.poleType,
+			mapStyle: 'puzzle2',
+			baseSize: { x: 16, y: 16, z: type.sizeZ },
+		});
 	}
 
 }

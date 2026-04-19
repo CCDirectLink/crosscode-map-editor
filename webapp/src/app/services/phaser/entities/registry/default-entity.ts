@@ -31,6 +31,14 @@ interface JsonEntityType {
 	size?: Point3;
 }
 
+interface ApplyAnimsOpts {
+	anims: Anims;
+	animName?: string;
+	label?: string;
+	mapStyle?: string;
+	baseSize?: Point3;
+}
+
 interface PropSprite {
 	sheet: AnimSheet;
 	tileOffset: number;
@@ -111,15 +119,11 @@ export class DefaultEntity extends CCEntity {
 		}
 		
 		if (this.typeDef.anims) {
-			const ok = await this.applyAnims(this.typeDef.anims, undefined, this.typeName);
-			if (!ok) {
-				return this.generateErrorImage();
-			}
-			this.entitySettings.baseSize = { x: 16, y: 16, z: 0, ...this.typeDef.size };
-			const scale = this.getScaleSettings();
-			this.entitySettings.scalableX = scale?.scalableX;
-			this.entitySettings.scalableY = scale?.scalableY;
-			this.updateSettings();
+			await this.applyAnims({
+				anims: this.typeDef.anims,
+				label: this.typeName,
+				baseSize: { x: 16, y: 16, z: 0, ...this.typeDef.size },
+			});
 			return;
 		}
 		
@@ -160,15 +164,16 @@ export class DefaultEntity extends CCEntity {
 		};
 	}
 	
-	protected async applyAnims(anims: Anims, animName: string | undefined, label?: string, mapStyle?: string, baseSize?: Point3): Promise<boolean> {
-		const ok = await this.buildAnims(anims, animName, label, mapStyle, baseSize);
+	protected async applyAnims(opts: ApplyAnimsOpts): Promise<boolean> {
+		const ok = await this.buildAnims(opts);
 		if (!ok) {
 			this.generateErrorImage();
 		}
 		return ok;
 	}
 
-	private async buildAnims(anims: Anims, animName: string | undefined, label: string | undefined, mapStyle: string | undefined, baseSize: Point3 | undefined): Promise<boolean> {
+	private async buildAnims(opts: ApplyAnimsOpts): Promise<boolean> {
+		const { anims, animName, label, mapStyle, baseSize } = opts;
 		const sprites: PropSprite[] = [];
 		const resolvedAnim = animName || 'default';
 

@@ -46,14 +46,13 @@ export class KeyPanel extends DefaultEntity {
 			],
 		};
 		
-		const ok = await this.applyAnims(anims, 'off', settings.keyType, 'puzzle2');
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-		
-		this.entitySettings.baseSize = type.size;
-		this.updateSettings();
+		await this.applyAnims({
+			anims,
+			animName: 'off',
+			label: settings.keyType,
+			mapStyle: 'puzzle2',
+			baseSize: type.size,
+		});
 	}
 	
 }

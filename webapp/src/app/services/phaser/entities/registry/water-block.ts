@@ -49,14 +49,13 @@ export class WaterBlock extends DefaultEntity {
 			}],
 		};
 		
-		const ok = await this.applyAnims(anims, 'water', settings.blockType, 'waterblock');
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-		
-		this.entitySettings.baseSize = { x: 32, y: 32, z: 32 };
-		this.updateSettings();
+		await this.applyAnims({
+			anims,
+			animName: 'water',
+			label: settings.blockType,
+			mapStyle: 'waterblock',
+			baseSize: { x: 32, y: 32, z: 32 },
+		});
 	}
 	
 }

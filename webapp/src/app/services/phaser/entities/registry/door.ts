@@ -27,13 +27,12 @@ export class Door extends DefaultEntity {
 		const type = settings.doorType ? types[settings.doorType] : undefined;
 		
 		if (type) {
-			const ok = await this.applyAnims(type.anims, 'idle', `Door ${settings.doorType}`);
-			if (!ok) {
-				this.generateErrorImage();
-				return;
-			}
-			this.entitySettings.baseSize = type.size;
-			this.updateSettings();
+			await this.applyAnims({
+				anims: type.anims,
+				animName: 'idle',
+				label: `Door ${settings.doorType}`,
+				baseSize: type.size,
+			});
 			return;
 		}
 		
@@ -99,16 +98,16 @@ export class Door extends DefaultEntity {
 			});
 		}
 		
-		const ok = await this.applyAnims(anims, 'idle', 'Door', 'map');
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-		
-		this.entitySettings.baseSize = sideways
+		const baseSize = sideways
 			? { x: 16, y: 32, z: 48 }
 			: { x: 32, y: 16, z: 48 };
-		this.updateSettings();
+		await this.applyAnims({
+			anims,
+			animName: 'idle',
+			label: 'Door',
+			mapStyle: 'map',
+			baseSize,
+		});
 	}
 	
 }

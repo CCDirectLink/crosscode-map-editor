@@ -58,20 +58,13 @@ export class SteamPipe extends DefaultEntity {
 		
 		this.snapSizeToScale(scaleSettings);
 		
-		const ok = await this.applyAnims(anims, 'default', settings.pipeType, 'pipes');
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-		
-		this.entitySettings.baseSize = {
-			x: type.size.x, 
-			y: type.size.y,
-			z: type.renderHeight,
-		};
-		this.entitySettings.scalableX = scaleSettings.scalableX;
-		this.entitySettings.scalableY = scaleSettings.scalableY;
-		this.updateSettings();
+		await this.applyAnims({
+			anims,
+			animName: 'default',
+			label: settings.pipeType,
+			mapStyle: 'pipes',
+			baseSize: { x: type.size.x, y: type.size.y, z: type.renderHeight ?? 0 },
+		});
 	}
 	
 }

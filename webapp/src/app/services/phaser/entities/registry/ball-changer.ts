@@ -94,7 +94,7 @@ function resolveChangerIcon(changerType: NonNullable<BallChangerAttributes['chan
 }
 
 export class BallChanger extends DefaultEntity {
-
+	
 	protected override async setupType(settings: BallChangerAttributes): Promise<void> {
 		if (!settings.changerType) {
 			this.generateNoImageType();
@@ -132,14 +132,12 @@ export class BallChanger extends DefaultEntity {
 			}],
 		};
 		
-		const ok = await this.applyAnims(anims, 'on', 'BallChanger');
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-		
-		this.entitySettings.baseSize = { x: 24, y: 24, z: 0 };
-		this.updateSettings();
+		await this.applyAnims({
+			anims,
+			animName: 'on',
+			label: 'BallChanger',
+			baseSize: { x: 24, y: 24, z: 0 },
+		});
 	}
 	
 }

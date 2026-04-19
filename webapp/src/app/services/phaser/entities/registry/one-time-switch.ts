@@ -44,14 +44,13 @@ export class OneTimeSwitch extends DefaultEntity {
 			return;
 		}
 
-		const ok = await this.applyAnims(type.anims, 'off', `OneTimeSwitch ${settings.switchType}`, FALLBACK_MAPSTYLE[settings.switchType]);
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-
-		this.entitySettings.baseSize = type.size;
-		this.updateSettings();
+		await this.applyAnims({
+			anims: type.anims,
+			animName: 'off',
+			label: `OneTimeSwitch ${settings.switchType}`,
+			mapStyle: FALLBACK_MAPSTYLE[settings.switchType],
+			baseSize: type.size,
+		});
 	}
 
 }

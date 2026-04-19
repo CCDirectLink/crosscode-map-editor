@@ -47,14 +47,13 @@ export class TeleportStairs extends DefaultEntity {
 			SUB: [{ name: 'idle', frames: [0] }],
 		};
 		
-		const ok = await this.applyAnims(anims, 'idle', 'TeleportStairs', 'map');
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-		
-		this.entitySettings.baseSize = { x: 32, y: 16, z: 48 };
-		this.updateSettings();
+		await this.applyAnims({
+			anims,
+			animName: 'idle',
+			label: 'TeleportStairs',
+			mapStyle: 'map',
+			baseSize: { x: 32, y: 16, z: 48 },
+		});
 	}
 	
 }

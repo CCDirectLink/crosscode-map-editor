@@ -51,7 +51,12 @@ export class Chest extends DefaultEntity {
 			}],
 		};
 
-		await this.applyAnims(anims, type.anim, 'Chest', undefined, { x: 17, y: 13, z: 12 });
+		await this.applyAnims({
+			anims,
+			animName: type.anim,
+			label: 'Chest',
+			baseSize: { x: 17, y: 13, z: 12 },
+		});
 	}
 
 }

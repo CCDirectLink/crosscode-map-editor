@@ -38,14 +38,13 @@ export class RegenDestruct extends DefaultEntity {
 			return;
 		}
 
-		const ok = await this.applyAnims(type.anims, 'default', `RegenDestruct ${settings.desType}`, 'destruct');
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-
-		this.entitySettings.baseSize = type.size;
-		this.updateSettings();
+		await this.applyAnims({
+			anims: type.anims,
+			animName: 'default',
+			label: `RegenDestruct ${settings.desType}`,
+			mapStyle: 'destruct',
+			baseSize: type.size,
+		});
 	}
 
 }

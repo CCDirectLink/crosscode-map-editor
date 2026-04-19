@@ -21,7 +21,7 @@ export interface PropAttributes {
 }
 
 export class Prop extends DefaultEntity {
-
+	
 	protected override async setupType(settings: PropAttributes) {
 		if (!settings.propType) {
 			console.warn('prop without prop type');
@@ -32,7 +32,7 @@ export class Prop extends DefaultEntity {
 			console.warn('prop without sheet', settings);
 			return this.generateErrorImage();
 		}
-
+		
 		let prop: PropDef | undefined;
 		for (let i = 0; i < sheet.props.length; i++) {
 			const p = sheet.props[i];
@@ -45,12 +45,16 @@ export class Prop extends DefaultEntity {
 			console.error('prop not found: ' + settings.propType.name);
 			return this.generateErrorImage();
 		}
-
+		
 		if (prop.anims) {
 			const anims = prepareProp(prop, sheet);
-			const ok = await this.applyAnims(anims, settings.propAnim, prop.name);
+			const ok = await this.applyAnims({
+				anims,
+				animName: settings.propAnim,
+				label: prop.name,
+			});
 			if (!ok) {
-				return this.generateErrorImage();
+				return;
 			}
 		} else if (prop.fix) {
 			// TODO: "offY" currently only fixed in Prop. 

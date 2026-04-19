@@ -36,14 +36,12 @@ export class Destructible extends DefaultEntity {
 		}
 		
 		// sheet src is null in json; CrossCode fills it from the current map's destruct style.
-		const ok = await this.applyAnims(anims, undefined, settings.desType, 'destruct');
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-		
-		this.entitySettings.baseSize = type.size;
-		this.updateSettings();
+		await this.applyAnims({
+			anims,
+			label: settings.desType,
+			mapStyle: 'destruct',
+			baseSize: type.size,
+		});
 	}
 	
 }

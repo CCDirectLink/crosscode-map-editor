@@ -27,14 +27,12 @@ export class BounceBlock extends DefaultEntity {
 			return;
 		}
 		
-		const ok = await this.applyAnims(type.anims, undefined, settings.blockType, 'puzzle2');
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-		
-		this.entitySettings.baseSize = type.size;
-		this.updateSettings();
+		await this.applyAnims({
+			anims: type.anims,
+			label: settings.blockType,
+			mapStyle: 'puzzle2',
+			baseSize: type.size,
+		});
 	}
 	
 }

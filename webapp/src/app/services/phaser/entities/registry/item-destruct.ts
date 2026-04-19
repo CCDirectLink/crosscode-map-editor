@@ -73,12 +73,10 @@ export class ItemDestruct extends DefaultEntity {
 			anims = { ...type.anims, SUB: anims.SUB.slice(0, 1) };
 		}
 		
-		const ok = await this.applyAnims(anims, undefined, desType);
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-		this.entitySettings.baseSize = type.size;
-		this.updateSettings();
+		await this.applyAnims({
+			anims,
+			label: desType,
+			baseSize: type.size,
+		});
 	}
 }

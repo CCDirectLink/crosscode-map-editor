@@ -41,14 +41,13 @@ export class SteamTurnout extends DefaultEntity {
 			],
 		};
 
-		const ok = await this.applyAnims(anims, 'off', settings.turnDefault, 'pipes');
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-
-		this.entitySettings.baseSize = { x: 16, y: 16, z: 10 };
-		this.updateSettings();
+		await this.applyAnims({
+			anims,
+			animName: 'off',
+			label: settings.turnDefault,
+			mapStyle: 'pipes',
+			baseSize: { x: 16, y: 16, z: 10 },
+		});
 	}
 
 }

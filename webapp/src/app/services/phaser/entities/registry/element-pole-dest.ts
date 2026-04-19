@@ -36,14 +36,13 @@ export class ElementPoleDest extends DefaultEntity {
 			}],
 		};
 		
-		const ok = await this.applyAnims(anims, 'on', 'ElementPoleDest', 'puzzle2');
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-		
-		this.entitySettings.baseSize = { x: 16, y: 16, z: 0 };
-		this.updateSettings();
+		await this.applyAnims({
+			anims,
+			animName: 'on',
+			label: 'ElementPoleDest',
+			mapStyle: 'puzzle2',
+			baseSize: { x: 16, y: 16, z: 0 },
+		});
 	}
 	
 }
