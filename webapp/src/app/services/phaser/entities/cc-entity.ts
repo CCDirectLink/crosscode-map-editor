@@ -259,7 +259,7 @@ export abstract class CCEntity extends BaseObject {
 						const imgWidth = Math.min(fix.w, width - x);
 						for (let y = 0; y < height; y += fix.h) {
 							const imgHeight = Math.min(fix.h, height - y);
-							const imgY = flat ? y + imgHeight : -y + settings['size'].y;
+							const imgY = flat ? y + imgHeight : (settings['size'].y - height) + y + imgHeight;
 							const img = this.scene.add.image(x, imgY, gfx);
 							img.setCrop(fix.x, fix.y, imgWidth, imgHeight);
 							
