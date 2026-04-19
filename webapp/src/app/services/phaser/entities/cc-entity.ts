@@ -245,7 +245,7 @@ export abstract class CCEntity extends BaseObject {
 			
 			for (const fix of s.sheets.fix) {
 				const gfx = fix.gfx.trim();
-				if (!s.sheets.ignoreScalable && (s.scalableX || s.scalableY) && fix.scalable) {
+				if (!s.sheets.ignoreScalable && fix.scalable) {
 					// scalable
 					const offsetX = fix.offsetX ?? 0;
 					const offsetY = fix.offsetY ?? 0;

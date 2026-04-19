@@ -85,15 +85,15 @@ export class DefaultEntity extends CCEntity {
 		}
 		
 		const step = this.typeDef.scalableStep || 1;
-		const size = this.settings['size'] as Point | undefined;
-		
+		const typeSize = this.typeDef.size;
+
 		this.scaleSettings = {
 			scalableX: !!this.typeDef.scalableX,
 			scalableY: !!this.typeDef.scalableY,
 			scalableStep: step,
 			baseSize: {
-				x: size?.x ?? step,
-				y: size?.y ?? step,
+				x: typeSize?.x ?? step,
+				y: typeSize?.y ?? step,
 			},
 		};
 		
@@ -310,7 +310,7 @@ export class DefaultEntity extends CCEntity {
 			return false;
 		}
 		const scale = this.getScaleSettings();
-		if (fix.scalable === undefined && scale && (scale.scalableX || scale.scalableY)) {
+		if (fix.scalable === undefined && (fix.renderHeight || (scale && (scale.scalableX || scale.scalableY)))) {
 			fix.scalable = true;
 		}
 		if (reset || !this.entitySettings) {

@@ -118,7 +118,8 @@ export class ScalableProp extends DefaultEntity {
 		scaleSettings.baseSize = prop.baseSize!;
 		
 		const size = (this.details.settings['size'] as Point | undefined) ?? {x: 1, y: 1};
-		
+		this.details.settings['size'] = size;
+
 		if (!scaleSettings.scalableX) {
 			size.x = scaleSettings.baseSize.x;
 		}
@@ -135,7 +136,7 @@ export class ScalableProp extends DefaultEntity {
 				y: prop.gfxBaseY! + prop.patterns!.y,
 				w: prop.patterns!.w,
 				h: prop.patterns!.h,
-				renderHeight: prop.renderHeight,
+				renderHeight: prop.renderHeight ?? prop.baseSize?.z,
 				alpha: this._onlyEnds ? 0 : 1,
 			};
 			if (!await this.pushFix(scaleableFix, true)) {
