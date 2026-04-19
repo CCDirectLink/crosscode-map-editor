@@ -1685,6 +1685,10 @@
 		"scalableX": true,
 		"scalableY": true,
 		"scalableStep": 8,
+		"size": {
+			"x": 8,
+			"y": 8
+		},
 		"anims": {
 			"sheet": {
 				"mapStyle": "puzzle",

@@ -175,7 +175,7 @@ export class ScalableProp extends DefaultEntity {
 				renderHeight: pattern.renderHeight,
 				flipX: pattern.flipX,
 				renderMode: pattern.renderMode,
-				scalable: false,
+				scalable: false
 			};
 			await this.pushFix(fix);
 			switch (dir) {

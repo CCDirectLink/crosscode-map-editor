@@ -112,7 +112,7 @@ export class DefaultEntity extends CCEntity {
 			if (!ok) {
 				return this.generateErrorImage();
 			}
-			this.entitySettings.baseSize = this.typeDef.size ?? { x: 16, y: 16, z: 0 };
+			this.entitySettings.baseSize = { x: 16, y: 16, z: 0, ...this.typeDef.size };
 			const scale = this.getScaleSettings();
 			this.entitySettings.scalableX = scale?.scalableX;
 			this.entitySettings.scalableY = scale?.scalableY;
