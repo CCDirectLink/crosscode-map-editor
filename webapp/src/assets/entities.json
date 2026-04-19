@@ -2829,6 +2829,12 @@
 				"optional": true,
 				"default": true,
 				"description": "If true, this chest is not tracked in the area counter"
+			},
+			"detectCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for Detector to pick up the chest"
 			}
 		}
 	},

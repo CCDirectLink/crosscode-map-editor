@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CCEntity } from '../cc-entity';
 import { BallChanger } from './ball-changer';
 import { BounceBlock } from './bounce-block';
+import { Chest } from './chest';
 import { DefaultEntity } from './default-entity';
 import { Destructible } from './destructible';
 import { Door } from './door';
@@ -38,6 +39,7 @@ export class EntityRegistryService {
 		this.register('BounceBlock', BounceBlock);
 		this.register('BallChanger', BallChanger);
 		this.register('WaterBlock', WaterBlock);
+		this.register('Chest', Chest);
 		this.register('KeyPanel', KeyPanel);
 		this.register('ElementPole', ElementPole);
 		this.register('ElementPoleDest', ElementPoleDest);
