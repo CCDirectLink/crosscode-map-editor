@@ -27,6 +27,7 @@ export class Chest extends DefaultEntity {
 
 		const anims: Anims = {
 			offset: { x: 0.5, y: 0, z: 6 },
+			shadow: { size: 16 },
 			SUB: [{
 				sheet: { src: 'media/entity/objects/treasure.png', width: 16, height: 24 },
 				frames: [0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5],
@@ -50,14 +51,7 @@ export class Chest extends DefaultEntity {
 			}],
 		};
 
-		const ok = await this.applyAnims(anims, type.anim, 'Chest');
-		if (!ok) {
-			this.generateErrorImage();
-			return;
-		}
-
-		this.entitySettings.baseSize = { x: 17, y: 13, z: 12 };
-		this.updateSettings();
+		await this.applyAnims(anims, type.anim, 'Chest', undefined, { x: 17, y: 13, z: 12 });
 	}
 
 }

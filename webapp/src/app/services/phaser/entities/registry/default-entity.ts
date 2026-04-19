@@ -2,7 +2,7 @@ import { CCMap } from '../../tilemap/cc-map';
 import { CCEntity, EntityAttributes, Fix, ScaleSettings } from '../cc-entity';
 import { Globals } from '../../../globals';
 import { Point, Point3 } from '../../../../models/cross-code-map';
-import { Anims, AnimSheet } from '../../sheet-parser';
+import { Anims, AnimSheet, ShadowSpec } from '../../sheet-parser';
 import { Helper } from '../../helper';
 
 export interface EntitiesJson {
@@ -43,6 +43,9 @@ interface PropSprite {
 }
 
 export class DefaultEntity extends CCEntity {
+	
+	private static readonly SHADOW_SHEET = 'media/entity/shadow.png';
+	
 	
 	constructor(
 		scene: Phaser.Scene,
@@ -86,7 +89,7 @@ export class DefaultEntity extends CCEntity {
 		
 		const step = this.typeDef.scalableStep || 1;
 		const typeSize = this.typeDef.size;
-
+		
 		this.scaleSettings = {
 			scalableX: !!this.typeDef.scalableX,
 			scalableY: !!this.typeDef.scalableY,
@@ -143,7 +146,7 @@ export class DefaultEntity extends CCEntity {
 			size.y = scaleSettings.baseSize.y;
 		}
 	}
-
+	
 	protected resolveSheet(sheet: AnimSheet): AnimSheet {
 		if (!sheet.mapStyle) {
 			return sheet;
@@ -157,10 +160,18 @@ export class DefaultEntity extends CCEntity {
 		};
 	}
 	
-	protected async applyAnims(anims: Anims, animName: string | undefined, label?: string, mapStyle?: string): Promise<boolean> {
+	protected async applyAnims(anims: Anims, animName: string | undefined, label?: string, mapStyle?: string, baseSize?: Point3): Promise<boolean> {
+		const ok = await this.buildAnims(anims, animName, label, mapStyle, baseSize);
+		if (!ok) {
+			this.generateErrorImage();
+		}
+		return ok;
+	}
+
+	private async buildAnims(anims: Anims, animName: string | undefined, label: string | undefined, mapStyle: string | undefined, baseSize: Point3 | undefined): Promise<boolean> {
 		const sprites: PropSprite[] = [];
 		const resolvedAnim = animName || 'default';
-		
+
 		if (Array.isArray(anims.SUB)) {
 			const firstName = this.setupAnimRecursive(resolvedAnim, anims, label, {}, sprites);
 			if (sprites.length === 0 && firstName) {
@@ -176,22 +187,22 @@ export class DefaultEntity extends CCEntity {
 				aboveZ: anims.aboveZ,
 			});
 		}
-		
+
 		if (sprites.length === 0) {
 			console.warn('failed creating entity from anims:', label);
 			return false;
 		}
-		
+
 		// sort so sprites with higher aboveZ render on top of lower ones
 		sprites.sort((a, b) => (a.aboveZ ?? 0) - (b.aboveZ ?? 0));
-		
+
 		for (let i = 0; i < sprites.length; i++) {
 			const sprite = sprites[i];
 			if (!sprite.sheet) {
 				console.error('anim sheet not found, ', label);
 				return false;
 			}
-			
+
 			const fix: Fix = {
 				gfx: sprite.sheet.src,
 				w: sprite.sheet.width,
@@ -206,12 +217,12 @@ export class DefaultEntity extends CCEntity {
 				renderMode: sprite.renderMode,
 				aboveZ: sprite.aboveZ,
 			};
-			
+
 			if (sprite.offset) {
 				fix.offsetX = sprite.offset.x || 0;
 				fix.offsetY = (sprite.offset.y || 0) - (sprite.offset.z || 0);
 			}
-			
+
 			if (!fix.gfx && mapStyle) {
 				fix.gfx = Helper.getMapStyle(Globals.map, mapStyle)?.sheet ?? '';
 			}
@@ -219,8 +230,34 @@ export class DefaultEntity extends CCEntity {
 				return false;
 			}
 		}
-		
+
+		if (baseSize) {
+			this.entitySettings.baseSize = baseSize;
+			if (anims.shadow && anims.shadow.size > 0) {
+				await this.pushShadowFix(anims.shadow, baseSize);
+			}
+		}
+		this.updateSettings();
+
 		return true;
+	}
+	
+	private async pushShadowFix(spec: ShadowSpec, baseSize: Point3) {
+		await Helper.loadTexture(DefaultEntity.SHADOW_SHEET, this.scene);
+		
+		const tile = Helper.clamp(8 - Math.floor(spec.size / 4), 0, 7);
+		// default fix render places img at boundBoxOffset.y - h; compensate to center at baseSize.y/2
+		this.entitySettings.sheets.fix.unshift({
+			gfx: DefaultEntity.SHADOW_SHEET,
+			w: 32,
+			h: 32,
+			x: tile * 32,
+			y: 0,
+			offsetX: spec.offset?.x ?? 0,
+			offsetY: (spec.offset?.y ?? 0) + 16 - baseSize.y / 2,
+			alpha: 0.5,
+			scaleY: spec.scaleY ?? 1,
+		});
 	}
 	
 	protected setupAnimRecursive(propAnim: string, anims: Anims, label: string | undefined, settings: Anims, sprites: PropSprite[]): string | undefined {

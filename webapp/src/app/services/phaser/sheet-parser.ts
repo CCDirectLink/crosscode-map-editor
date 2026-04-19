@@ -99,6 +99,13 @@ export interface Anims extends IfThen {
 	dirs?: number | string;
 	tileOffsets?: number[];
 	guiSprites?: boolean;
+	shadow?: ShadowSpec;
+}
+
+export interface ShadowSpec {
+	size: number;
+	scaleY?: number;
+	offset?: Partial<Point>;
 }
 
 export interface IfThen {
