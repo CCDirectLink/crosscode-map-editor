@@ -1206,6 +1206,7 @@
 				"options": {
 					"SOLID": 0,
 					"AR": 0,
+					"AR_FINAL": 0,
 					"RHOMBUS_SQR_LEFT": 0,
 					"RHOMBUS_SQR_RIGHT": 0,
 					"BERGEN_LEFT": 0,

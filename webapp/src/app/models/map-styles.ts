@@ -18,7 +18,15 @@ export interface MapStyle {
 	doorGlow?: DoorGlow;
 	doorVariations?: Record<string, DoorVariation | undefined>;
 	stairDoor?: Point;
+	teleportField?: TeleportField;
 	colors?: WallColors;
+}
+
+export interface TeleportField {
+	x: number;
+	y: number;
+	xCount: number;
+	zHeight?: number;
 }
 
 export interface WallColors {
