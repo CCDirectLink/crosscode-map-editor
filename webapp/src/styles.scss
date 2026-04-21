@@ -50,13 +50,13 @@ body {
 	color: white;
 	outline: solid 1px #c9c9c9;
 	//transition: border 0.3s;
-
+	
 	&:disabled {
 		outline-offset: 0;
 		outline: dotted 1px rgba(201, 201, 201, 0.34);
 		color: rgba(255, 255, 255, 0.5);
 	}
-
+	
 	&:focus, &.focus {
 		outline-offset: 0;
 		outline: solid 1px $focus-color;
@@ -74,7 +74,7 @@ input[type=text].default-input, input:not([type]).default-input, input[type=numb
 
 button {
 	//text-transform: uppercase;
-
+	
 	&:disabled {
 		color: rgba(255, 255, 255, 0.5);
 	}
@@ -106,8 +106,8 @@ button {
 	min-width: 0;
 	flex: 1;
 	width: 100%;
-
-
+	
+	
 	.mat-mdc-form-field-infix {
 		width: 0;
 	}
@@ -130,12 +130,17 @@ body {
 	> * {
 		background: #d32f2f !important;
 	}
-
+	
 	button {
 		color: white !important;
 	}
-
+	
 	.mat-mdc-snack-bar-label {
 		color: white !important;
 	}
+}
+
+.large-dropdown {
+	min-width: fit-content;
+	max-height: 512px !important;
 }

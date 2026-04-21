@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added "Maps" widget which shows a button to load the target map directly
 - Generating new entities now adds default properties to it
 
+### Changed
+- Increased dropdown size for String widget
+
 ### Fixed
 - Selecting an entity with the grid enabled no longer snaps it automatically until the user actually drags it.
 - Fixed rendering of preview image in ScalableProp causing layout jumps 
