@@ -1369,7 +1369,24 @@
 	},
 	"Block": {
 		"spawnable": true,
-		"attributes": {}
+		"attributes": {
+			"style": {
+				"type": "Number",
+				"description": "style"
+			}
+		},
+		"size": { "x": 16, "y": 16, "z": 16 },
+		"anims": {
+			"sheet": {
+				"src": "media/entity/objects/block.png",
+				"width": 32,
+				"height": 32
+			},
+			"SUB": [
+				{ "name": "normal", "frames": [0] },
+				{ "name": "touched", "frames": [1] }
+			]
+		}
 	},
 	"Blocker": {
 		"spawnable": true,
