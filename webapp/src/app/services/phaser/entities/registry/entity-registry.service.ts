@@ -25,6 +25,7 @@ import { SteamPipe } from './steam-pipe';
 import { SteamTurnout } from './steam-turnout';
 import { TeleportField } from './teleport-field';
 import { TeleportStairs } from './teleport-stairs';
+import { TeslaCoil } from './tesla-coil';
 import { WallHorizontal } from './wall-horizontal';
 import { WallVertical } from './wall-vertical';
 import { WaterBlock } from './water-block';
@@ -60,6 +61,7 @@ export class EntityRegistryService {
 		this.register('SteamTurnout', SteamTurnout);
 		this.register('TeleportField', TeleportField);
 		this.register('TeleportStairs', TeleportStairs);
+		this.register('TeslaCoil', TeslaCoil);
 		this.register('WallHorizontal', WallHorizontal);
 		this.register('WallVertical', WallVertical);
 		this.register('PushPullBlock', PushPullBlock);

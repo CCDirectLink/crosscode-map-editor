@@ -230,7 +230,10 @@ export class DefaultEntity extends CCEntity {
 			}
 			
 			if (!fix.gfx && mapStyle) {
-				fix.gfx = Helper.getMapStyle(Globals.map, mapStyle)?.sheet ?? '';
+				const style = Helper.getMapStyle(Globals.map, mapStyle);
+				fix.gfx = style?.sheet ?? '';
+				fix.x += style?.x ?? 0;
+				fix.y += style?.y ?? 0;
 			}
 			if (!await this.pushFix(fix, i === 0)) {
 				return false;
