@@ -250,10 +250,11 @@ export class DefaultEntity extends CCEntity {
 	
 	private async pushShadowFix(spec: ShadowSpec, baseSize: Point3) {
 		await Helper.loadTexture(DefaultEntity.SHADOW_SHEET, this.scene);
-		
+
 		const tile = Helper.clamp(8 - Math.floor(spec.size / 4), 0, 7);
+		const shadowAboveZ = spec.aboveZ ?? 0;
 		// default fix render places img at boundBoxOffset.y - h; compensate to center at baseSize.y/2
-		this.entitySettings.sheets.fix.unshift({
+		const fix: Fix = {
 			gfx: DefaultEntity.SHADOW_SHEET,
 			w: 32,
 			h: 32,
@@ -263,7 +264,14 @@ export class DefaultEntity extends CCEntity {
 			offsetY: (spec.offset?.y ?? 0) + 16 - baseSize.y / 2,
 			alpha: 0.5,
 			scaleY: spec.scaleY ?? 1,
-		});
+			aboveZ: shadowAboveZ,
+		};
+		const fixes = this.entitySettings.sheets.fix;
+		let insertIdx = 0;
+		while (insertIdx < fixes.length && Number(fixes[insertIdx].aboveZ ?? 0) < shadowAboveZ) {
+			insertIdx++;
+		}
+		fixes.splice(insertIdx, 0, fix);
 	}
 	
 	protected setupAnimRecursive(propAnim: string, anims: Anims, label: string | undefined, settings: Anims, sprites: PropSprite[]): string | undefined {

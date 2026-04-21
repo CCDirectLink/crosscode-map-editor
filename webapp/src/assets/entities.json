@@ -1426,22 +1426,47 @@
 			"z": 0
 		},
 		"anims": {
-			"sheet": {
-				"mapStyle": "puzzle2",
-				"width": 24,
-				"height": 24,
-				"xCount": 2,
-				"offX": 0,
-				"offY": 112
+			"shadow": {"size": 16, "aboveZ": 4},
+			"namedSheets": {
+				"panel": {
+					"mapStyle": "puzzle2",
+					"width": 24,
+					"height": 24,
+					"xCount": 2,
+					"offX": 0,
+					"offY": 112
+				},
+				"bubble": {
+					"src": "media/entity/objects/object-effects.png",
+					"width": 24,
+					"height": 24,
+					"xCount": 4,
+					"offX": 128,
+					"offY": 16
+				}
 			},
 			"SUB": [
 				{
-					"name": "on",
-					"time": 1,
-					"frames": [
-						1
-					],
-					"repeat": false
+					"sheet": "panel",
+					"SUB": [
+						{
+							"name": "on",
+							"time": 1,
+							"frames": [1],
+							"repeat": false
+						}
+					]
+				},
+				{
+					"sheet": "bubble",
+					"aboveZ": 8,
+					"offset": {"x": 0, "y": -3, "z": 8},
+					"SUB": [
+						{
+							"name": "on",
+							"frames": [1]
+						}
+					]
 				}
 			]
 		}

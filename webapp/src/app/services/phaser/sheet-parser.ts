@@ -106,6 +106,7 @@ export interface ShadowSpec {
 	size: number;
 	scaleY?: number;
 	offset?: Partial<Point>;
+	aboveZ?: number;
 }
 
 export interface IfThen {
