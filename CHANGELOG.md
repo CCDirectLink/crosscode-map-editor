@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added "Maps" widget which shows a button to load the target map directly
 - Generating new entities now adds default properties to it
 
+### Fixed
+- Selecting an entity with the grid enabled no longer snaps it automatically until the user actually drags it.
+
 ## [2.2.0] 2026-04-03
 ### Changed
 - Moved "vanilla maps" toggle from settings into the map loading dialog to allow quick switching between mod and vanilla maps [#347](https://github.com/CCDirectLink/crosscode-map-editor/issues/347)

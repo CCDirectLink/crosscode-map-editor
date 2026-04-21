@@ -107,6 +107,7 @@ export abstract class CCEntity extends BaseObject {
 	// drag
 	public isDragged = false;
 	public startOffset: Point = { x: 0, y: 0 };
+	public dragMoved = false;
 	
 	// zIndex: number;
 	details: {
@@ -193,10 +194,20 @@ export abstract class CCEntity extends BaseObject {
 		if (this.isDragged) {
 			const container = this.container;
 			const p = this.scene.input.activePointer;
+			const settings = Globals.gridSettings();
+
+			if (settings.enableGrid && !this.dragMoved) {
+				const dx = Math.abs(p.worldX - this.startOffset.x - container.x);
+				const dy = Math.abs(p.worldY - this.startOffset.y - container.y);
+				if (dx < settings.size.x / 2 && dy < settings.size.y / 2) {
+					return;
+				}
+				this.dragMoved = true;
+			}
+
 			container.x = Math.round(p.worldX - this.startOffset.x);
 			container.y = Math.round(p.worldY - this.startOffset.y);
-			
-			const settings = Globals.gridSettings();
+
 			if (settings.enableGrid) {
 				const diffX = (container.x - settings.offset.x) % settings.size.x;
 				if (diffX * 2 < settings.size.x) {
@@ -204,7 +215,7 @@ export abstract class CCEntity extends BaseObject {
 				} else {
 					container.x += settings.size.x - diffX;
 				}
-				
+
 				const diffY = (container.y - settings.offset.y) % settings.size.y;
 				if (diffY * 2 < settings.size.y) {
 					container.y -= diffY;
