@@ -13,6 +13,7 @@ import { EnemyCounter } from './enemy-counter';
 import { EventTrigger } from './event-trigger';
 import { ItemDestruct } from './item-destruct';
 import { KeyPanel } from './key-panel';
+import { Lorry } from './lorry';
 import { NPC } from './npc';
 import { OneTimeSwitch } from './one-time-switch';
 import { Prop } from './prop';
@@ -43,6 +44,7 @@ export class EntityRegistryService {
 		this.register('WaterBlock', WaterBlock);
 		this.register('Chest', Chest);
 		this.register('KeyPanel', KeyPanel);
+		this.register('Lorry', Lorry);
 		this.register('ElementPole', ElementPole);
 		this.register('ElementPoleDest', ElementPoleDest);
 		this.register('NPC', NPC);

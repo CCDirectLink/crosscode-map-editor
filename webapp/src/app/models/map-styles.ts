@@ -20,6 +20,8 @@ export interface MapStyle {
 	stairDoor?: Point;
 	teleportField?: TeleportField;
 	colors?: WallColors;
+	lorryX?: number;
+	lorryY?: number;
 }
 
 export interface TeleportField {
