@@ -7,6 +7,7 @@ import { Chest } from './chest';
 import { DefaultEntity } from './default-entity';
 import { Destructible } from './destructible';
 import { Door } from './door';
+import { DynamicPlatform } from './dynamic-platform';
 import { ElementPole } from './element-pole';
 import { ElementPoleDest } from './element-pole-dest';
 import { Enemy } from './enemy';
@@ -67,6 +68,7 @@ export class EntityRegistryService {
 		this.register('WallVertical', WallVertical);
 		this.register('PushPullBlock', PushPullBlock);
 		this.register('Blocker', Blocker);
+		this.register('DynamicPlatform', DynamicPlatform);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {
