@@ -11,6 +11,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 - Selecting an entity with the grid enabled no longer snaps it automatically until the user actually drags it.
+- Fixed rendering of preview image in ScalableProp causing layout jumps 
 
 ## [2.2.0] 2026-04-03
 ### Changed

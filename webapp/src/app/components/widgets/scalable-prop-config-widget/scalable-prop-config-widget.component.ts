@@ -161,7 +161,6 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 	}
 	
 	private async updatePreview() {
-		this.comp.preview = undefined;
 		const propConfig = this.settings.propConfig;
 		const def = this.sheet?.entries?.[propConfig?.name ?? ''];
 		if (!propConfig || !def) {
