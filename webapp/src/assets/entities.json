@@ -1503,6 +1503,16 @@
 				"optional": true,
 				"description": "Condition for Anti Compressor to spawn"
 			}
+		},
+		"size": { "x": 16, "y": 16, "z": 24 },
+		"anims": {
+			"sheet": {
+				"mapStyle": "anticompressor",
+				"width": 16,
+				"height": 16,
+				"xCount": 1
+			},
+			"SUB": [{ "name": "idle", "frames": [0] }]
 		}
 	},
 	"CompressorBouncer": {
