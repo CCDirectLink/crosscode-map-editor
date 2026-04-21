@@ -95,16 +95,16 @@ export class DefaultEntity extends CCEntity {
 			return undefined;
 		}
 		
-		const step = this.typeDef.scalableStep || 1;
+		const step = this.typeDef.scalableStep;
 		const typeSize = this.typeDef.size;
 		
 		this.scaleSettings = {
 			scalableX: !!this.typeDef.scalableX,
 			scalableY: !!this.typeDef.scalableY,
-			scalableStep: step,
+			scalableStep: step || 1,
 			baseSize: {
-				x: typeSize?.x ?? step,
-				y: typeSize?.y ?? step,
+				x: typeSize?.x ?? step ?? 16,
+				y: typeSize?.y ?? step ?? 16,
 			},
 		};
 		
