@@ -9,6 +9,7 @@ import { Door } from './door';
 import { ElementPole } from './element-pole';
 import { ElementPoleDest } from './element-pole-dest';
 import { Enemy } from './enemy';
+import { EnemyCounter } from './enemy-counter';
 import { EventTrigger } from './event-trigger';
 import { ItemDestruct } from './item-destruct';
 import { KeyPanel } from './key-panel';
@@ -47,6 +48,7 @@ export class EntityRegistryService {
 		this.register('NPC', NPC);
 		this.register('EventTrigger', EventTrigger);
 		this.register('Enemy', Enemy);
+		this.register('EnemyCounter', EnemyCounter);
 		this.register('Door', Door);
 		this.register('OneTimeSwitch', OneTimeSwitch);
 		this.register('SteamPipe', SteamPipe);
