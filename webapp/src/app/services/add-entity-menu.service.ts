@@ -90,9 +90,7 @@ export class AddEntityMenuService {
 			y: this.worldPos.y,
 			type: key,
 			level: 0,
-			settings: {
-				size: { x: 16, y: 16 },
-			},
+			settings: {},
 		};
 		if (typeDef) {
 			for (const [key, prop] of Object.entries(typeDef.attributes)) {
