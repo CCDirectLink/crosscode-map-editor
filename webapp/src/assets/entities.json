@@ -1008,6 +1008,17 @@
 				"popup": true,
 				"description": "A condition for this if any. "
 			}
+		},
+		"anims": {
+			"sheet": {
+				"src": "media/entity/objects/object-effects.png",
+				"width": 16,
+				"height": 16
+			},
+			"gfxOffset": {"x": 0, "y": -1},
+			"SUB": [
+				{"name": "glow", "frames": [2]}
+			]
 		}
 	},
 	"JumpPanelFar": {
