@@ -17,6 +17,7 @@ import { ItemDestruct } from './item-destruct';
 import { KeyPanel } from './key-panel';
 import { Lorry } from './lorry';
 import { LorryRail } from './lorry-rail';
+import { Magnet } from './magnet';
 import { NPC } from './npc';
 import { OneTimeSwitch } from './one-time-switch';
 import { Prop } from './prop';
@@ -69,6 +70,7 @@ export class EntityRegistryService {
 		this.register('PushPullBlock', PushPullBlock);
 		this.register('Blocker', Blocker);
 		this.register('DynamicPlatform', DynamicPlatform);
+		this.register('Magnet', Magnet);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {
