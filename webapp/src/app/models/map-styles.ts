@@ -22,6 +22,8 @@ export interface MapStyle {
 	colors?: WallColors;
 	lorryX?: number;
 	lorryY?: number;
+	railX?: number;
+	railY?: number;
 }
 
 export interface TeleportField {

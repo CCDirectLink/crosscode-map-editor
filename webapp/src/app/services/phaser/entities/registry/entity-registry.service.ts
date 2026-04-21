@@ -14,6 +14,7 @@ import { EventTrigger } from './event-trigger';
 import { ItemDestruct } from './item-destruct';
 import { KeyPanel } from './key-panel';
 import { Lorry } from './lorry';
+import { LorryRail } from './lorry-rail';
 import { NPC } from './npc';
 import { OneTimeSwitch } from './one-time-switch';
 import { Prop } from './prop';
@@ -45,6 +46,7 @@ export class EntityRegistryService {
 		this.register('Chest', Chest);
 		this.register('KeyPanel', KeyPanel);
 		this.register('Lorry', Lorry);
+		this.register('LorryRail', LorryRail);
 		this.register('ElementPole', ElementPole);
 		this.register('ElementPoleDest', ElementPoleDest);
 		this.register('NPC', NPC);
