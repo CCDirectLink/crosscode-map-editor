@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CCEntity } from '../cc-entity';
 import { BallChanger } from './ball-changer';
+import { Blocker } from './blocker';
 import { BounceBlock } from './bounce-block';
 import { Chest } from './chest';
 import { DefaultEntity } from './default-entity';
@@ -65,6 +66,7 @@ export class EntityRegistryService {
 		this.register('WallHorizontal', WallHorizontal);
 		this.register('WallVertical', WallVertical);
 		this.register('PushPullBlock', PushPullBlock);
+		this.register('Blocker', Blocker);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {
