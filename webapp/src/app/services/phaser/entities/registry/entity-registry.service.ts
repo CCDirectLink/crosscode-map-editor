@@ -18,6 +18,7 @@ import { LorryRail } from './lorry-rail';
 import { NPC } from './npc';
 import { OneTimeSwitch } from './one-time-switch';
 import { Prop } from './prop';
+import { PushPullBlock } from './push-pull-block';
 import { RegenDestruct } from './regen-destruct';
 import { ScalableProp } from './scalable-prop';
 import { SteamPipe } from './steam-pipe';
@@ -61,6 +62,7 @@ export class EntityRegistryService {
 		this.register('TeleportStairs', TeleportStairs);
 		this.register('WallHorizontal', WallHorizontal);
 		this.register('WallVertical', WallVertical);
+		this.register('PushPullBlock', PushPullBlock);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {

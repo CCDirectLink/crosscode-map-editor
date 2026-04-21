@@ -2240,6 +2240,12 @@
 				"popup": true,
 				"description": "Condition for Block to spawn"
 			}
+		},
+		"size": { "x": 32, "y": 32, "z": 32 },
+		"anims": {
+			"sheet": { "mapStyle": "waveblock", "width": 32, "height": 64 },
+			"aboveZ": 1,
+			"SUB": [{ "name": "default", "frames": [0] }]
 		}
 	},
 	"PushPullDest": {
