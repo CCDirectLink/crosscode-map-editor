@@ -2,6 +2,37 @@ import { Helper } from '../../helper';
 import { prepareProp, PropDef, PropSheet } from '../../sheet-parser';
 import { DefaultEntity } from './default-entity';
 
+function findProp(sheet: PropSheet, name: string): PropDef | undefined {
+	for (const p of sheet.props) {
+		if (p.name === name) {
+			return p;
+		}
+		if (p.sequence) {
+			const seq = p.sequence;
+			for (let j = 0; j < seq.entries.length; j++) {
+				const entry = seq.entries[j];
+				if (entry.name !== name) {
+					continue;
+				}
+				// CrossCode flattens sequence entries into synthetic fix-style props:
+				// parent fields + per-entry overrides + fix sub-rect stepped by index.
+				const merged: PropDef = { ...p, ...entry, name: entry.name };
+				delete (merged as any).sequence;
+				merged.fix = {
+					gfx: seq.sheet.gfx,
+					x: seq.sheet.x + seq.sheet.w * j,
+					y: seq.sheet.y,
+					w: seq.sheet.w,
+					h: seq.sheet.h,
+					flipX: false,
+				};
+				return merged;
+			}
+		}
+	}
+	return undefined;
+}
+
 export interface PropType {
 	sheet?: string;
 	name?: string;
@@ -33,14 +64,7 @@ export class Prop extends DefaultEntity {
 			return this.generateErrorImage();
 		}
 		
-		let prop: PropDef | undefined;
-		for (let i = 0; i < sheet.props.length; i++) {
-			const p = sheet.props[i];
-			if (settings.propType.name === p.name) {
-				prop = p;
-				break;
-			}
-		}
+		const prop = findProp(sheet, settings.propType.name ?? '');
 		if (!prop) {
 			console.error('prop not found: ' + settings.propType.name);
 			return this.generateErrorImage();

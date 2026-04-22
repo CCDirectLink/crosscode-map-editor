@@ -125,7 +125,18 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 		let sheet = await Helper.getJsonPromise('data/props/' + sheetPath) as PropSheet;
 		sheet = prepareSheet(sheet);
 		
-		const propDefs = sheet.props.filter(v => v.name) as (PropDef & { name: string })[];
+		const propDefs: (PropDef & { name: string })[] = [];
+		for (const p of sheet.props) {
+			if (p.name) {
+				propDefs.push(p as PropDef & { name: string });
+			} else if (p.sequence) {
+				for (const entry of p.sequence.entries) {
+					if (entry.name) {
+						propDefs.push({ ...p, name: entry.name } as PropDef & { name: string });
+					}
+				}
+			}
+		}
 		this.comp.showRightProps = false;
 		
 		await Promise.all(propDefs.map(async def => {
