@@ -20,6 +20,7 @@ import { ExtractPlatform } from './extract-platform';
 import { GlowingGround } from './glowing-ground';
 import { ItemDestruct } from './item-destruct';
 import { JumpPanelFar } from './jump-panel-far';
+import { JumpPanelFloat } from './jump-panel-float';
 import { KeyPanel } from './key-panel';
 import { Lorry } from './lorry';
 import { LorryRail } from './lorry-rail';
@@ -85,6 +86,7 @@ export class EntityRegistryService {
 		this.register('ExtractPlatform', ExtractPlatform);
 		this.register('GlowingGround', GlowingGround);
 		this.register('JumpPanelFar', JumpPanelFar);
+		this.register('JumpPanelFloat', JumpPanelFloat);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {
