@@ -217,20 +217,9 @@ export class DefaultEntity extends CCEntity {
 		const sprites: PropSprite[] = [];
 		const resolvedAnim = animName || 'default';
 		
-		if (Array.isArray(anims.SUB)) {
-			const firstName = this.setupAnimRecursive(resolvedAnim, anims, label, {}, sprites, opts.applyWallY, opts.dirIndex);
-			if (sprites.length === 0 && firstName) {
-				this.setupAnimRecursive(firstName, anims, label, {}, sprites, opts.applyWallY, opts.dirIndex);
-			}
-		} else if (anims.sheet) {
-			sprites.push({
-				sheet: this.resolveSheet(anims.sheet as AnimSheet),
-				alpha: anims.framesAlpha?.[0] ?? 1,
-				tileOffset: anims.tileOffset ?? 0,
-				renderMode: anims.renderMode,
-				offset: anims.offset,
-				aboveZ: anims.aboveZ,
-			});
+		const firstName = this.setupAnimRecursive(resolvedAnim, anims, label, {}, sprites, opts.applyWallY, opts.dirIndex);
+		if (sprites.length === 0 && firstName) {
+			this.setupAnimRecursive(firstName, anims, label, {}, sprites, opts.applyWallY, opts.dirIndex);
 		}
 		
 		if (sprites.length === 0) {
