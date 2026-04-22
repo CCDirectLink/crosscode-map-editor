@@ -141,7 +141,7 @@ export class DefaultEntity extends CCEntity {
 		
 		const boxColor = this.convertToColor(this.typeDef.boxColor);
 		const frontColor = this.convertToColor(this.typeDef.frontColor);
-		this.generateNoImageType(boxColor.rgb, boxColor.a, frontColor.rgb, frontColor.a);
+		this.generateNoImageType(boxColor.rgb, boxColor.a, frontColor.rgb, frontColor.a, this.typeDef.size);
 		
 	}
 	

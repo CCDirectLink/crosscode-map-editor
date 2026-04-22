@@ -400,7 +400,8 @@
 			}
 		},
 		"drawBox": true,
-		"boxColor": "rgba(255,255,125, 0.8)"
+		"boxColor": "rgba(255,255,125, 0.8)",
+		"size": {"x": 8, "y": 8, "z": 0}
 	},
 	"HiddenBlock": {
 		"spawnable": true,

@@ -489,10 +489,10 @@ export abstract class CCEntity extends BaseObject {
 		this.generateNoImageType(0xFF0000, 1);
 	}
 	
-	public generateNoImageType(rgbTop = 0xc06040, aTop = 0.5, rgb = 0x800000, a = 0.5) {
+	public generateNoImageType(rgbTop = 0xc06040, aTop = 0.5, rgb = 0x800000, a = 0.5, defaultSize?: Point3) {
 		const settings = this.details.settings;
-		
-		const baseSize: Point3 = { x: 16, y: 16, z: 0 };
+
+		const baseSize: Point3 = { x: defaultSize?.x ?? 16, y: defaultSize?.y ?? 16, z: 0 };
 		if (settings['size']) {
 			baseSize.x = settings['size'].x;
 			baseSize.y = settings['size'].y;
