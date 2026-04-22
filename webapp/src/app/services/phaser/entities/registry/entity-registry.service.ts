@@ -17,6 +17,7 @@ import { Enemy } from './enemy';
 import { EnemyCounter } from './enemy-counter';
 import { EventTrigger } from './event-trigger';
 import { ExtractPlatform } from './extract-platform';
+import { GlowingGround } from './glowing-ground';
 import { ItemDestruct } from './item-destruct';
 import { KeyPanel } from './key-panel';
 import { Lorry } from './lorry';
@@ -81,6 +82,7 @@ export class EntityRegistryService {
 		this.register('CompressorBouncer', CompressorBouncer);
 		this.register('Elevator', Elevator);
 		this.register('ExtractPlatform', ExtractPlatform);
+		this.register('GlowingGround', GlowingGround);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {
