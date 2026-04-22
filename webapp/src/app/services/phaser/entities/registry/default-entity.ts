@@ -37,6 +37,9 @@ interface ApplyAnimsOpts {
 	label?: string;
 	mapStyle?: string;
 	baseSize?: Point3;
+	
+	// currently only used in Prop, doesn't behave correctly for most other entities
+	applyWallY?: boolean;
 }
 
 interface PropSprite {
@@ -179,9 +182,9 @@ export class DefaultEntity extends CCEntity {
 		const resolvedAnim = animName || 'default';
 		
 		if (Array.isArray(anims.SUB)) {
-			const firstName = this.setupAnimRecursive(resolvedAnim, anims, label, {}, sprites);
+			const firstName = this.setupAnimRecursive(resolvedAnim, anims, label, {}, sprites, opts.applyWallY);
 			if (sprites.length === 0 && firstName) {
-				this.setupAnimRecursive(firstName, anims, label, {}, sprites);
+				this.setupAnimRecursive(firstName, anims, label, {}, sprites, opts.applyWallY);
 			}
 		} else if (anims.sheet) {
 			sprites.push({
@@ -253,7 +256,7 @@ export class DefaultEntity extends CCEntity {
 	
 	private async pushShadowFix(spec: ShadowSpec, baseSize: Point3) {
 		await Helper.loadTexture(DefaultEntity.SHADOW_SHEET, this.scene);
-
+		
 		const tile = Helper.clamp(8 - Math.floor(spec.size / 4), 0, 7);
 		const shadowAboveZ = spec.aboveZ ?? 0;
 		// default fix render places img at boundBoxOffset.y - h; compensate to center at baseSize.y/2
@@ -277,7 +280,7 @@ export class DefaultEntity extends CCEntity {
 		fixes.splice(insertIdx, 0, fix);
 	}
 	
-	protected setupAnimRecursive(propAnim: string, anims: Anims, label: string | undefined, settings: Anims, sprites: PropSprite[]): string | undefined {
+	protected setupAnimRecursive(propAnim: string, anims: Anims, label: string | undefined, settings: Anims, sprites: PropSprite[], applyWallY?: boolean): string | undefined {
 		let firstName = anims.name;
 		if (anims.name && anims.name !== propAnim) {
 			return firstName;
@@ -288,7 +291,7 @@ export class DefaultEntity extends CCEntity {
 		};
 		if (Array.isArray(anims.SUB)) {
 			for (const sub of anims.SUB) {
-				const animName = this.setupAnimRecursive(propAnim, sub, label, settings, sprites);
+				const animName = this.setupAnimRecursive(propAnim, sub, label, settings, sprites, applyWallY);
 				if (!firstName) {
 					firstName = animName;
 				}
@@ -313,6 +316,10 @@ export class DefaultEntity extends CCEntity {
 			z: 0,
 			...settings.offset,
 		};
+		
+		if (settings.wallY && applyWallY) {
+			offset.y += settings.wallY * (settings.size?.z ?? 0);
+		}
 		
 		if (settings.gfxOffset) {
 			offset.x += settings.gfxOffset.x ?? 0;

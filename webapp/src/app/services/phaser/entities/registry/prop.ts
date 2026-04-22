@@ -52,6 +52,7 @@ export class Prop extends DefaultEntity {
 				anims,
 				animName: settings.propAnim,
 				label: prop.name,
+				applyWallY: true,
 			});
 			if (!ok) {
 				return;
