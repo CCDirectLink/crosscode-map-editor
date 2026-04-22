@@ -44,6 +44,7 @@ export class WidgetRegistryService {
 		this.register('VarCondition', StringWidgetComponent);
 		this.register('Array', ArrayWidgetComponent);
 		this.register('Maps', MapsWidgetComponent);
+		this.register('Face', StringWidgetComponent);
 	}
 	
 	private setDefaultWidget(widget: any) {
