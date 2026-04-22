@@ -20,6 +20,7 @@ import { KeyPanel } from './key-panel';
 import { Lorry } from './lorry';
 import { LorryRail } from './lorry-rail';
 import { Magnet } from './magnet';
+import { MultiHitSwitch } from './multi-hit-switch';
 import { NPC } from './npc';
 import { OneTimeSwitch } from './one-time-switch';
 import { Prop } from './prop';
@@ -63,6 +64,7 @@ export class EntityRegistryService {
 		this.register('EnemyCounter', EnemyCounter);
 		this.register('Door', Door);
 		this.register('OneTimeSwitch', OneTimeSwitch);
+		this.register('MultiHitSwitch', MultiHitSwitch);
 		this.register('SteamPipe', SteamPipe);
 		this.register('SteamTurnout', SteamTurnout);
 		this.register('TeleportField', TeleportField);
