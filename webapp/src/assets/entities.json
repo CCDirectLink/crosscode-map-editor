@@ -2924,6 +2924,13 @@
 				"optional": true,
 				"description": "Set to true when one of the first switches in a group is hit."
 			}
+		},
+		"size": {"x": 16, "y": 16, "z": 17},
+		"anims": {
+			"sheet": {"mapStyle": "puzzle", "width": 16, "height": 32},
+			"SUB": [
+				{"name": "off", "time": 0.1, "frames": [0, 1, 2, 3], "repeat": true}
+			]
 		}
 	},
 	"Chest": {
