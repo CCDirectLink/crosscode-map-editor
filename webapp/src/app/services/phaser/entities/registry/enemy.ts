@@ -1,13 +1,74 @@
-import { Point, Point3 } from '../../../../models/cross-code-map';
+import { Point3 } from '../../../../models/cross-code-map';
 import { EnemyData } from '../../../../models/enemy';
-import { MultiDirAnimation } from '../../../../models/multi-dir-animation';
-import { MultiEntityAnimation } from '../../../../models/multi-entity-animation';
-import { SingleDirAnimation } from '../../../../models/single-dir-animation';
-import { TileSheet } from '../../../../models/tile-sheet';
 import { BasePath, FileExtension, PathResolver } from '../../../path-resolver';
+import { Globals } from '../../../globals';
+import { Fix } from '../cc-entity';
 import { Helper } from '../../helper';
+import { Anims, AnimSheet, Effect, flattenSUBs } from '../../sheet-parser';
 import { DefaultEntity } from './default-entity';
-import { Effect } from '../../sheet-parser';
+
+interface MultiEntityAnim extends Anims {
+	anims: Record<string, EntityAnim>;
+	baseSize: Point3;
+	parts: Record<string, EntityPart>;
+}
+
+interface EntityAnim {
+	partAnims: Record<string, PartAnim>;
+}
+
+interface PartAnim {
+	anim: string;
+	posFrames?: [number, number, number];
+}
+
+interface EntityPart {
+	anims: Anims;
+	pos: Point3;
+	size: Point3;
+}
+
+// Unit face vectors (screen coords: +y points down, so NORTH is -y). Mirrors CC's FACE8.
+const FACE_VECTORS: Record<string, { x: number; y: number }> = {
+	NORTH: { x: 0, y: -1 },
+	NORTH_EAST: { x: 1, y: -1 },
+	EAST: { x: 1, y: 0 },
+	SOUTH_EAST: { x: 1, y: 1 },
+	SOUTH: { x: 0, y: 1 },
+	SOUTH_WEST: { x: -1, y: 1 },
+	WEST: { x: -1, y: 0 },
+	NORTH_WEST: { x: -1, y: -1 },
+};
+
+// Port of ig.getDirectionIndex — picks a tileOffsets slot from a face vector + dir count.
+function getDirectionIndex(faceX: number, faceY: number, numDirs: number): number {
+	switch (numDirs) {
+		case 1:
+			return 0;
+		case 2:
+			return faceX >= 0 ? 0 : 1;
+		case 4:
+			return Math.abs(faceY) > Math.abs(faceX)
+				? (faceY < 0 ? 0 : 2)
+				: (faceX > 0 ? 1 : 3);
+		case 6:
+			return faceX >= 0
+				? (faceY <= 0
+					? 0 + (57 * faceX > -100 * faceY ? 1 : 0)
+					: 1 + (57 * faceX < 100 * faceY ? 1 : 0))
+				: (faceY <= 0
+					? 4 + (-57 * faceX < -100 * faceY ? 1 : 0)
+					: 3 + (-57 * faceX > 100 * faceY ? 1 : 0));
+		case 8:
+			return Math.abs(faceY) > 2.414 * Math.abs(faceX)
+				? (faceY < 0 ? 0 : 4)
+				: Math.abs(faceX) > 2.414 * Math.abs(faceY)
+					? (faceX > 0 ? 2 : 6)
+					: (faceX > 0 ? (faceY < 0 ? 1 : 3) : (faceY > 0 ? 5 : 7));
+		default:
+			return Math.floor(numDirs / 2);
+	}
+}
 
 export interface EnemyAttributes {
 	enemyInfo?: EnemyInfo;
@@ -40,252 +101,178 @@ export interface LevelClass {
 	varName: string;
 }
 
-// TODO: use DefaultEntity functions for displaying sprites
 export class Enemy extends DefaultEntity {
 	protected override async setupType(settings: EnemyAttributes) {
 		settings.enemyInfo = settings.enemyInfo || {};
-		
+
 		const enemyPath = PathResolver.convertToPath(BasePath.ENEMIES, settings.enemyInfo.type || '', FileExtension.NONE);
 		const enemyData = await Helper.getJsonPromise(enemyPath) as EnemyData | undefined;
 		if (!enemyData) {
 			this.generateErrorImage();
 			return;
 		}
-		
+
 		const sheetPath = PathResolver.convertToPath(BasePath.ANIMATIONS, enemyData.anims, FileExtension.NONE);
-		const rawSheet = await Helper.getJsonPromise(sheetPath);
+		const rawSheet = await Helper.getJsonPromise(sheetPath) as Anims | undefined;
 		if (!rawSheet) {
 			this.generateErrorImage();
 			return;
 		}
-		
-		const sheet = this.resolveSUB(rawSheet) as MultiDirAnimation[] | [MultiEntityAnimation];
-		if (!sheet || sheet.length === 0) {
+
+		if (rawSheet.DOCTYPE === 'MULTI_ENTITY_ANIMATION') {
+			const mea = rawSheet as MultiEntityAnim;
+			// Preload each part's anim tree (shares flattenSUBs-based walk via DefaultEntity).
+			// Namespaced sheet refs on part leaves resolve against the root namedSheets.
+			for (const part of Object.values(mea.parts)) {
+				const scoped: Anims = { ...part.anims, namedSheets: mea.namedSheets };
+				if (!await this.preloadAnimSheets(scoped)) {
+					this.generateErrorImage();
+					return;
+				}
+			}
+			if (!this.renderMultiEntity(mea, enemyData.size)) {
+				this.generateErrorImage();
+			}
+			return;
+		}
+
+		if (!await this.preloadAnimSheets(rawSheet)) {
 			this.generateErrorImage();
 			return;
 		}
-		
-		this.entitySettings.sheets = { fix: [] };
-		
-		if (this.isMultiDir(sheet)) {
-			const anims = sheet.filter(s => s.name === 'idle');
-			if (!await this.renderMultiDirAnims(anims.length > 0 ? anims : [sheet[0]])) {
-				this.generateErrorImage();
-				return;
-			}
-		} else {
-			if (!await this.renderMultiEntityAnim(sheet[0])) {
-				this.generateErrorImage();
-				return;
-			}
-		}
-		
-		this.entitySettings.baseSize = enemyData.size;
-		this.updateSettings();
-	}
-	
-	private resolveSUB(object: any): any[] {
-		if (!object.SUB || !(object.SUB instanceof Array)) {
-			return [object];
-		}
-		const SUB: any[] = object.SUB;
-		
-		const result = [];
-		for (const sub of SUB) {
-			for (const subSub of this.resolveSUB(sub)) {
-				const combined = Object.assign(Object.assign({}, subSub), object);
-				delete combined.SUB;
-				result.push(combined);
-			}
-		}
-		
-		return result;
-	}
-	
-	private isMultiDir(sheet: MultiDirAnimation[] | [MultiEntityAnimation]): sheet is MultiDirAnimation[] {
-		return sheet[0].DOCTYPE === 'MULTI_DIR_ANIMATION';
-	}
-	
-	
-	private async renderMultiDirAnims(anims: MultiDirAnimation[]): Promise<boolean> {
-		const results = await Promise.all(anims.map(anim => this.renderMultiDirAnim(anim)));
-		return results.every(r => r); //All results true
-	}
-	
-	private async renderMultiDirAnim(anim: MultiDirAnimation): Promise<boolean> {
-		const tileSheet = typeof anim.sheet === 'string' ? anim.namedSheets[anim.sheet] : anim.sheet;
-		
-		if (!await Helper.loadTexture(tileSheet.src, this.scene)) {
-			return false;
-		}
-		
-		const tileOffset = (anim.dirs && anim.tileOffsets) ? anim.tileOffsets[Math.floor(anim.dirs / 2)] : 0;
-		
-		this.render(tileSheet, {x: 0, y: 0}, anim.frames[0] + tileOffset);
-		
-		return true;
-	}
-	
-	private render(anim: TileSheet, pos: Point, frame: number): void {
-		const offsetX = (anim.offX || 0) + (anim.xCount ? (frame % anim.xCount * anim.width) : 0);
-		const offsetY = (anim.offY || 0) + (anim.xCount ? (Math.floor(frame / anim.xCount) * anim.height) : 0);
-		
-		this.entitySettings.sheets.fix.push({
-			gfx: anim.src.trim(),
-			h: anim.height,
-			w: anim.width,
-			x: offsetX,
-			y: offsetY,
-			offsetX: pos.x,  // + tileSheet.x
-			offsetY: pos.y, // + tileSheet.y,
+
+		await this.applyAnims({
+			anims: rawSheet,
+			animName: 'idle',
+			label: settings.enemyInfo.type,
+			baseSize: enemyData.size,
+			dirIndex: this.resolveDirIndex(rawSheet, settings.enemyInfo.face),
 		});
 	}
-	
-	private async renderMultiEntityAnim(animation: MultiEntityAnimation): Promise<boolean> {
-		const partAnims: Record<string, Record<string, SingleDirAnimation[]>> = {};
-		
-		//Load
-		const loading: Promise<void>[] = [];
-		if (animation.namedSheets) {
-			for (const sheet of Object.values(animation.namedSheets)) {
-				loading.push((async (name: string) => {
-					if (!await Helper.loadTexture(name, this.scene)) {
-						throw new Error('Could not load texture: ' + name);
-					}
-				})(sheet.src));
+
+	private resolveDirIndex(anims: Anims, face: string | undefined): number | undefined {
+		// Find the numDirs used by this anim tree: first tileOffsets array encountered.
+		let numDirs = 0;
+		for (const leaf of flattenSUBs(anims, {})) {
+			if (Array.isArray(leaf.tileOffsets) && leaf.tileOffsets.length > 0) {
+				numDirs = leaf.tileOffsets.length;
+				break;
 			}
 		}
-		
+		if (!numDirs) {
+			return undefined;
+		}
+		const vec = face ? FACE_VECTORS[face] : undefined;
+		if (!vec) {
+			return undefined;
+		}
+		return getDirectionIndex(vec.x, vec.y, numDirs);
+	}
+
+	private renderMultiEntity(animation: MultiEntityAnim, baseSize: Point3): boolean {
+		const anim = animation.anims['idle']
+			?? animation.anims['default']
+			?? animation.anims[Object.keys(animation.anims)[0]];
+		if (!anim) {
+			return false;
+		}
+
+		// Flatten each part's SUB tree once and resolve string sheet refs against namedSheets.
+		const partAnims: Record<string, Record<string, Anims[]>> = {};
 		for (const [partName, part] of Object.entries(animation.parts)) {
 			partAnims[partName] = {};
-			const partAnim = partAnims[partName];
-			const anims = this.resolveSUB(part.anims) as SingleDirAnimation[];
-			
-			for (const anim of anims) {
-				const entry = partAnim[anim.name] = partAnim[anim.name] || [];
-				entry.push(anim);
-				if (typeof anim.sheet === 'object') {
-					loading.push((async (name: string) => {
-						if (!await Helper.loadTexture(name, this.scene)) {
-							throw new Error('Could not load texture: ' + name);
-						}
-					})(anim.sheet.src));
-				} else {
-					anim.sheet = animation.namedSheets![anim.sheet];
+			for (const leaf of flattenSUBs(part.anims, {})) {
+				if (typeof leaf.sheet === 'string') {
+					leaf.sheet = animation.namedSheets?.[leaf.sheet];
 				}
+				if (!leaf.name) {
+					continue;
+				}
+				(partAnims[partName][leaf.name] ??= []).push(leaf);
 			}
 		}
-		
-		const success = await Promise.all(loading)
-			.then(() => true)
-			.catch(() => false);
-		if (!success) {
-			return false;
-		}
-		
-		//Render
-		const anim = animation.anims['idle'] || animation.anims['default'] || animation.anims[Object.keys(animation.anims)[0]];
-		
+
+		this.entitySettings = { sheets: { fix: [] } } as any;
+		this.entitySettings.baseSize = baseSize;
+
 		for (const [partName, partAnim] of Object.entries(anim.partAnims)) {
 			const part = animation.parts[partName];
-			
-			//back left bottom corner of entity
-			const offset: Point3 = {
-				x: (part.size.x - animation.baseSize.x) / 2,
-				y: (part.size.y - animation.baseSize.y) / 2,
-				z: 0, //(part.size.z - animation.baseSize.z) / 2,
-			};
-			
-			//position of part
-			offset.x += part.pos.x;
-			offset.y += part.pos.y;
-			offset.z += part.pos.z;
-			
-			//frame offset
-			offset.x += partAnim.posFrames[0];
-			offset.y += partAnim.posFrames[1];
-			offset.z += partAnim.posFrames[2];
-			
-			for (const entry of partAnims[partName][partAnim.anim]) {
-				//Move to top if wallY = 0
-				this.renderSingleDirAnim(entry, this.toPoint(offset), part.size);
+			if (!part) {
+				continue;
 			}
-			
-			/*
-			this.drawBoundingBoxAt({
-				x: offset.x - (part.size.x - animation.baseSize.x) / 2,
-				y: offset.y - (part.size.y - animation.baseSize.y) / 2,
-				z: offset.z - (part.size.z - animation.baseSize.z) / 2,
-			}, part.size);
-			*/
+
+			// Back-left-bottom corner of the part relative to the entity's baseSize.
+			const offset: Point3 = {
+				x: (part.size.x - animation.baseSize.x) / 2 + part.pos.x + (partAnim.posFrames?.[0] ?? 0),
+				y: (part.size.y - animation.baseSize.y) / 2 + part.pos.y + (partAnim.posFrames?.[1] ?? 0),
+				z: part.pos.z + (partAnim.posFrames?.[2] ?? 0),
+			};
+
+			for (const leaf of partAnims[partName]?.[partAnim.anim] ?? []) {
+				this.pushSingleDirFix(leaf, offset, part.size);
+			}
 		}
-		
+
+		this.updateSettings();
 		return true;
 	}
-	
-	private renderSingleDirAnim(anim: SingleDirAnimation, offset: Point, size: Point3): void {
-		//TODO: anim.framesAngle
-		
-		if (anim.framesSpriteOffset) {
-			offset.x += anim.framesSpriteOffset[0];
-			offset.y += anim.framesSpriteOffset[1] - anim.framesSpriteOffset[2];
+
+	/**
+	 * Enemy anim JSONs (unlike entities.json / type-json anims) often omit xCount on their sheets,
+	 * so we preload every referenced sheet and fill xCount from the image width before applyAnims
+	 * runs setupAnimRecursive, which needs xCount to compute frame offsets synchronously.
+	 */
+	private async preloadAnimSheets(anims: Anims): Promise<boolean> {
+		const sheets = new Set<AnimSheet>();
+		for (const leaf of flattenSUBs(anims, {})) {
+			const sheet = typeof leaf.sheet === 'string' ? leaf.namedSheets?.[leaf.sheet] : leaf.sheet;
+			if (sheet) {
+				sheets.add(sheet);
+			}
 		}
-		
-		const sheet = anim.sheet as TileSheet;
-		
-		//TODO: investigate wallY - this is probably wrong
-		offset.y += (1 - anim.wallY) * (size.y - sheet.height);
-		
-		const offsetX =
-			(sheet.offX || 0)
-			+ (sheet.xCount ? (anim.frames[0] % sheet.xCount * sheet.width) : 0);
-		const offsetY =
-			(sheet.offY || 0)
-			+ (sheet.xCount ? (Math.floor(anim.frames[0] / sheet.xCount) * sheet.height) : 0);
-		
-		this.entitySettings.sheets.fix.push({
+		for (const sheet of sheets) {
+			if (!sheet.src) {
+				continue;
+			}
+			if (!await Helper.loadTexture(sheet.src, this.scene)) {
+				return false;
+			}
+			if (!sheet.xCount) {
+				const img = Globals.scene.textures.get(sheet.src.trim()).getSourceImage();
+				sheet.xCount = Math.max(1, Math.floor(img.width / sheet.width));
+			}
+		}
+		return true;
+	}
+
+	private pushSingleDirFix(anim: Anims, partOffset: Point3, partSize: Point3): void {
+		const sheet = anim.sheet as AnimSheet | undefined;
+		if (!sheet || typeof sheet !== 'object' || !sheet.src) {
+			return;
+		}
+
+		const off = { x: partOffset.x, y: partOffset.y - partOffset.z };
+		if (anim.framesSpriteOffset) {
+			off.x += anim.framesSpriteOffset[0] ?? 0;
+			off.y += (anim.framesSpriteOffset[1] ?? 0) - (anim.framesSpriteOffset[2] ?? 0);
+		}
+
+		off.y += (1 - (anim.wallY ?? 0)) * (partSize.y - sheet.height);
+
+		const frame = anim.frames?.[0] ?? 0;
+		const xCount = sheet.xCount || 1;
+		const fix: Fix = {
 			gfx: sheet.src.trim(),
-			h: sheet.height,
 			w: sheet.width,
-			x: offsetX,
-			y: offsetY,
-			offsetX: offset.x,  // + tileSheet.x
-			offsetY: offset.y, // + tileSheet.y,
-			
-			flipX: anim.flipX,
+			h: sheet.height,
+			x: (sheet.offX ?? 0) + (frame % xCount) * sheet.width,
+			y: (sheet.offY ?? 0) + Math.floor(frame / xCount) * sheet.height,
+			offsetX: off.x,
+			offsetY: off.y,
+			flipX: Array.isArray(anim.flipX) ? !!anim.flipX[0] : anim.flipX,
 			flipY: anim.flipY,
-		});
-	}
-	
-	/*
-	private drawBoundingBoxAt(pos: Point3, size: Point3) {
-		const collImg = this.scene.add.graphics();
-		this.container.add(collImg);
-		
-		collImg.clear();
-		
-		const outline = 0;
-		const outlineAlpha = 1;
-		
-		const middleRect = new Phaser.Geom.Rectangle(0, size.y, size.x, size.z - 1);
-		Helper.drawRect(collImg, middleRect, 0xff0707, 0.5, outline, outlineAlpha);
-		
-		const topRect = new Phaser.Geom.Rectangle(0, 0, size.x, size.y);
-		Helper.drawRect(collImg, topRect, 0xffff07, 1, outline, outlineAlpha);
-		
-		const bottomRect = new Phaser.Geom.Rectangle(0, size.z, size.x, size.y - 1);
-		Helper.drawRect(collImg, bottomRect, 0xffff07, 0.1, outline, outlineAlpha);
-		
-		const pos2 = this.toPoint(pos);
-		
-		collImg.x = pos2.x;
-		collImg.y = pos2.y;
-	}*/
-	
-	private toPoint(point3: Point3): Point {
-		return {
-			x: point3.x,
-			y: point3.y - point3.z,
 		};
+		this.entitySettings.sheets.fix.push(fix);
 	}
+
 }

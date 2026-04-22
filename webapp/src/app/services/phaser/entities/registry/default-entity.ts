@@ -40,6 +40,9 @@ interface ApplyAnimsOpts {
 	
 	// currently only used in Prop, doesn't behave correctly for most other entities
 	applyWallY?: boolean;
+	
+	// direction to pick out of `tileOffsets` / dir-indexed `flipX`; falls back to the middle dir
+	dirIndex?: number;
 }
 
 interface PropSprite {
@@ -182,9 +185,9 @@ export class DefaultEntity extends CCEntity {
 		const resolvedAnim = animName || 'default';
 		
 		if (Array.isArray(anims.SUB)) {
-			const firstName = this.setupAnimRecursive(resolvedAnim, anims, label, {}, sprites, opts.applyWallY);
+			const firstName = this.setupAnimRecursive(resolvedAnim, anims, label, {}, sprites, opts.applyWallY, opts.dirIndex);
 			if (sprites.length === 0 && firstName) {
-				this.setupAnimRecursive(firstName, anims, label, {}, sprites, opts.applyWallY);
+				this.setupAnimRecursive(firstName, anims, label, {}, sprites, opts.applyWallY, opts.dirIndex);
 			}
 		} else if (anims.sheet) {
 			sprites.push({
@@ -280,7 +283,15 @@ export class DefaultEntity extends CCEntity {
 		fixes.splice(insertIdx, 0, fix);
 	}
 	
-	protected setupAnimRecursive(propAnim: string, anims: Anims, label: string | undefined, settings: Anims, sprites: PropSprite[], applyWallY?: boolean): string | undefined {
+	protected setupAnimRecursive(
+		propAnim: string,
+		anims: Anims,
+		label: string | undefined,
+		settings: Anims,
+		sprites: PropSprite[],
+		applyWallY?: boolean,
+		dirIndex?: number,
+	): string | undefined {
 		let firstName = anims.name;
 		if (anims.name && anims.name !== propAnim) {
 			return firstName;
@@ -291,7 +302,7 @@ export class DefaultEntity extends CCEntity {
 		};
 		if (Array.isArray(anims.SUB)) {
 			for (const sub of anims.SUB) {
-				const animName = this.setupAnimRecursive(propAnim, sub, label, settings, sprites, applyWallY);
+				const animName = this.setupAnimRecursive(propAnim, sub, label, settings, sprites, applyWallY, dirIndex);
 				if (!firstName) {
 					firstName = animName;
 				}
@@ -334,7 +345,16 @@ export class DefaultEntity extends CCEntity {
 		
 		const frame = settings.frames?.[0] ?? 0;
 		const tileOffset = settings.tileOffset ?? 0;
-		const effectiveFrame = frame + tileOffset;
+		let effectiveFrame = frame + tileOffset;
+		
+		// tileOffsets is a dir-indexed frame offset (multi-dir anims). The caller passes
+		// `dirIndex` (derived from the entity's facing); fall back to the middle direction.
+		let dirIdx = -1;
+		if (Array.isArray(settings.tileOffsets) && settings.tileOffsets.length > 0) {
+			const len = settings.tileOffsets.length;
+			dirIdx = Helper.clamp(dirIndex ?? Math.floor(len / 2), 0, len - 1);
+			effectiveFrame += settings.tileOffsets[dirIdx];
+		}
 		
 		if (effectiveFrame > 0) {
 			const xCount = sheet.xCount || 999;
@@ -347,13 +367,21 @@ export class DefaultEntity extends CCEntity {
 			};
 		}
 		
+		let flipX: boolean | undefined;
+		if (Array.isArray(settings.flipX)) {
+			const idx = dirIdx >= 0 && settings.flipX.length === (settings.tileOffsets?.length ?? -1) ? dirIdx : frame;
+			flipX = !!settings.flipX[idx];
+		} else {
+			flipX = settings.flipX;
+		}
+		
 		sprites.push({
 			sheet: sheet,
 			alpha: settings.framesAlpha?.[frame] ?? 1,
 			offset: offset,
 			tileOffset: 0,
 			renderMode: settings.renderMode,
-			flipX: Array.isArray(settings.flipX) ? !!settings.flipX[frame] : settings.flipX,
+			flipX: flipX,
 			flipY: settings.flipY,
 			aboveZ: settings.aboveZ,
 		});
