@@ -2025,10 +2025,10 @@
 				"default": "HEAT",
 				"description": "Element of shield",
 				"options": {
-					"0": 0,
-					"1": 0,
-					"2": 0,
-					"3": 0
+					"HEAT": 0,
+					"COLD": 0,
+					"SHOCK": 0,
+					"WAVE": 0
 				}
 			},
 			"onActivateAdd": {

@@ -11,6 +11,7 @@ import { Door } from './door';
 import { DynamicPlatform } from './dynamic-platform';
 import { ElementPole } from './element-pole';
 import { ElementPoleDest } from './element-pole-dest';
+import { ElementShieldSrc } from './element-shield-src';
 import { Enemy } from './enemy';
 import { EnemyCounter } from './enemy-counter';
 import { EventTrigger } from './event-trigger';
@@ -55,6 +56,7 @@ export class EntityRegistryService {
 		this.register('LorryRail', LorryRail);
 		this.register('ElementPole', ElementPole);
 		this.register('ElementPoleDest', ElementPoleDest);
+		this.register('ElementShieldSrc', ElementShieldSrc);
 		this.register('NPC', NPC);
 		this.register('EventTrigger', EventTrigger);
 		this.register('Enemy', Enemy);
