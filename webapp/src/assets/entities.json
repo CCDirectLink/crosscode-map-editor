@@ -3259,7 +3259,8 @@
 				"description": "Wall Y Value"
 			}
 		},
-		"drawBox": false,
+		"boxColor": "rgba(120,255,120, 0.5)",
+		"frontColor": "rgba(80,244,80, 0.5)",
 		"alwaysRecreate": true
 	},
 	"Analyzable": {
