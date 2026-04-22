@@ -9,6 +9,7 @@ import { DefaultEntity } from './default-entity';
 import { Destructible } from './destructible';
 import { Door } from './door';
 import { DynamicPlatform } from './dynamic-platform';
+import { Elevator } from './elevator';
 import { ElementPole } from './element-pole';
 import { ElementPoleDest } from './element-pole-dest';
 import { ElementShieldSrc } from './element-shield-src';
@@ -77,6 +78,7 @@ export class EntityRegistryService {
 		this.register('DynamicPlatform', DynamicPlatform);
 		this.register('Magnet', Magnet);
 		this.register('CompressorBouncer', CompressorBouncer);
+		this.register('Elevator', Elevator);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {
