@@ -30,6 +30,7 @@ import { NPC } from './npc';
 import { OneTimeSwitch } from './one-time-switch';
 import { Prop } from './prop';
 import { PushPullBlock } from './push-pull-block';
+import { PushPullDest } from './push-pull-dest';
 import { RegenDestruct } from './regen-destruct';
 import { ScalableProp } from './scalable-prop';
 import { SteamPipe } from './steam-pipe';
@@ -78,6 +79,7 @@ export class EntityRegistryService {
 		this.register('WallHorizontal', WallHorizontal);
 		this.register('WallVertical', WallVertical);
 		this.register('PushPullBlock', PushPullBlock);
+		this.register('PushPullDest', PushPullDest);
 		this.register('Blocker', Blocker);
 		this.register('DynamicPlatform', DynamicPlatform);
 		this.register('Magnet', Magnet);
