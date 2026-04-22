@@ -4,6 +4,7 @@ import { BallChanger } from './ball-changer';
 import { Blocker } from './blocker';
 import { BounceBlock } from './bounce-block';
 import { Chest } from './chest';
+import { CompressorBouncer } from './compressor-bouncer';
 import { DefaultEntity } from './default-entity';
 import { Destructible } from './destructible';
 import { Door } from './door';
@@ -71,6 +72,7 @@ export class EntityRegistryService {
 		this.register('Blocker', Blocker);
 		this.register('DynamicPlatform', DynamicPlatform);
 		this.register('Magnet', Magnet);
+		this.register('CompressorBouncer', CompressorBouncer);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {
