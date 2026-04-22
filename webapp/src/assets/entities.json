@@ -1336,6 +1336,7 @@
 			}
 		},
 		"drawBox": true,
+		"boxColor": "rgba(255,0,122, 0.5)",
 		"noZLine": true
 	},
 	"NPC": {
