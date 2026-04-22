@@ -32,6 +32,7 @@ import { Prop } from './prop';
 import { PushPullBlock } from './push-pull-block';
 import { PushPullDest } from './push-pull-dest';
 import { RegenDestruct } from './regen-destruct';
+import { RotateBlocker } from './rotate-blocker';
 import { ScalableProp } from './scalable-prop';
 import { SteamPipe } from './steam-pipe';
 import { SteamTurnout } from './steam-turnout';
@@ -89,6 +90,7 @@ export class EntityRegistryService {
 		this.register('GlowingGround', GlowingGround);
 		this.register('JumpPanelFar', JumpPanelFar);
 		this.register('JumpPanelFloat', JumpPanelFloat);
+		this.register('RotateBlocker', RotateBlocker);
 	}
 	
 	private register(type: string, entity: typeof CCEntity) {
