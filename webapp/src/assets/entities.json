@@ -3204,6 +3204,23 @@
 				"popup": true,
 				"description": "Condition for Enemy to spawn"
 			}
+		},
+		"anims": {
+			"shapeType": "Y_FLAT",
+			"shadow": {"size": 16},
+			"offset": {"x": 0, "y": -4, "z": 8},
+			"sheet": {
+				"src": "media/entity/objects/object-effects.png",
+				"width": 24,
+				"height": 24,
+				"xCount": 5,
+				"offX": 128,
+				"offY": 40
+			},
+			"SUB": [
+				{"name": "idle", "frames": [0], "framesAlpha": [0.5]},
+				{"name": "idle", "frames": [1], "renderMode": "lighter"}
+			]
 		}
 	},
 	"RotateBlocker": {
