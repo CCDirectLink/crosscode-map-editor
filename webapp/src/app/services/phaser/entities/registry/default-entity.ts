@@ -37,12 +37,18 @@ interface ApplyAnimsOpts {
 	label?: string;
 	mapStyle?: string;
 	baseSize?: Point3;
-	
+
 	// currently only used in Prop, doesn't behave correctly for most other entities
 	applyWallY?: boolean;
-	
+
 	// direction to pick out of `tileOffsets` / dir-indexed `flipX`; falls back to the middle dir
 	dirIndex?: number;
+
+	// CrossCode source-level `useStyleSheet`: the sheet src/offset should come from
+	// the current map's mapStyle entry. String form names a specific mapStyle and each
+	// AnimSheet is rewritten to resolve via it (src swapped, x/y added to offX/offY).
+	// Boolean `true` relies on the caller's `mapStyle` fallback for sheets with null src.
+	useStyleSheet?: string | boolean;
 }
 
 interface PropSprite {
@@ -158,6 +164,25 @@ export class DefaultEntity extends CCEntity {
 		}
 	}
 	
+	private static rewriteSheetsToMapStyle(anims: Anims, styleName: string): void {
+		if (anims.namedSheets) {
+			for (const key of Object.keys(anims.namedSheets)) {
+				const sheet = anims.namedSheets[key];
+				sheet.mapStyle = styleName;
+				sheet.src = undefined;
+			}
+		}
+		if (anims.sheet && typeof anims.sheet !== 'string') {
+			anims.sheet.mapStyle = styleName;
+			anims.sheet.src = undefined;
+		}
+		if (Array.isArray(anims.SUB)) {
+			for (const sub of anims.SUB) {
+				DefaultEntity.rewriteSheetsToMapStyle(sub, styleName);
+			}
+		}
+	}
+
 	protected resolveSheet(sheet: AnimSheet): AnimSheet {
 		if (!sheet.mapStyle) {
 			return sheet;
@@ -180,7 +205,12 @@ export class DefaultEntity extends CCEntity {
 	}
 	
 	private async buildAnims(opts: ApplyAnimsOpts): Promise<boolean> {
-		const { anims, animName, label, mapStyle, baseSize } = opts;
+		let { anims } = opts;
+		const { animName, label, mapStyle, baseSize } = opts;
+		if (typeof opts.useStyleSheet === 'string' && Helper.getMapStyle(Globals.map, opts.useStyleSheet)) {
+			anims = Helper.copy(anims);
+			DefaultEntity.rewriteSheetsToMapStyle(anims, opts.useStyleSheet);
+		}
 		const sprites: PropSprite[] = [];
 		const resolvedAnim = animName || 'default';
 		

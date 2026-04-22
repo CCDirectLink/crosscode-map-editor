@@ -15,6 +15,14 @@ export interface OneTimeSwitchAttributes {
 interface OneTimeSwitchType {
 	size: Point3;
 	anims: Anims;
+	useStyleSheet?: string;
+	collType?: number;
+	padding?: { x: number; y: number };
+	activeZHeight?: number;
+	preStopTime?: number;
+	ignoreInvalid?: boolean;
+	hideHitEffect?: boolean;
+	fx?: Record<string, { sheet: string; name: string }>;
 }
 
 type OneTimeSwitchTypes = Record<string, OneTimeSwitchType | undefined>;
@@ -50,6 +58,7 @@ export class OneTimeSwitch extends DefaultEntity {
 			label: `OneTimeSwitch ${settings.switchType}`,
 			mapStyle: FALLBACK_MAPSTYLE[settings.switchType],
 			baseSize: type.size,
+			useStyleSheet: type.useStyleSheet,
 		});
 	}
 
