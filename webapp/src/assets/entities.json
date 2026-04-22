@@ -1421,6 +1421,46 @@
 				"type": "Boolean",
 				"description": "No camera-follow with heat"
 			}
+		},
+		"size": {
+			"x": 24,
+			"y": 24,
+			"z": 0
+		},
+		"anims": {
+			"namedSheets": {
+				"panel": {
+					"mapStyle": "puzzle2",
+					"width": 24,
+					"height": 24,
+					"xCount": 2,
+					"offX": 0,
+					"offY": 88
+				},
+				"bomb": {
+					"mapStyle": "puzzle2",
+					"width": 24,
+					"height": 24,
+					"xCount": 5,
+					"offX": 0,
+					"offY": 64
+				}
+			},
+			"SUB": [
+				{
+					"sheet": "panel",
+					"SUB": [
+						{"name": "on", "frames": [1]}
+					]
+				},
+				{
+					"sheet": "bomb",
+					"offset": {"x": 0, "y": -6, "z": 0},
+					"SUB": [
+						{"name": "on", "frames": [0]}
+					]
+				}
+			]
 		}
 	},
 	"WaterBubblePanel": {

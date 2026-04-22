@@ -344,6 +344,39 @@
         },
         "guiSprites": {
           "type": "boolean"
+        },
+        "shadow": {
+          "$ref": "#/$defs/ShadowSpec"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ShadowSpec": {
+      "type": "object",
+      "required": [
+        "size"
+      ],
+      "properties": {
+        "size": {
+          "type": "number"
+        },
+        "scaleY": {
+          "type": "number"
+        },
+        "offset": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "aboveZ": {
+          "type": "number"
         }
       },
       "additionalProperties": false
