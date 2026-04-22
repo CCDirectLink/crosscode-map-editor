@@ -1,7 +1,6 @@
 import { Point3 } from '../../../../models/cross-code-map';
 import { EnemyData } from '../../../../models/enemy';
 import { BasePath, FileExtension, PathResolver } from '../../../path-resolver';
-import { Globals } from '../../../globals';
 import { Fix } from '../cc-entity';
 import { Helper } from '../../helper';
 import { Anims, AnimSheet, Effect, flattenSUBs } from '../../sheet-parser';
@@ -136,11 +135,6 @@ export class Enemy extends DefaultEntity {
 			return;
 		}
 
-		if (!await this.preloadAnimSheets(rawSheet)) {
-			this.generateErrorImage();
-			return;
-		}
-
 		await this.applyAnims({
 			anims: rawSheet,
 			animName: 'idle',
@@ -214,34 +208,6 @@ export class Enemy extends DefaultEntity {
 		}
 
 		this.updateSettings();
-		return true;
-	}
-
-	/**
-	 * Enemy anim JSONs (unlike entities.json / type-json anims) often omit xCount on their sheets,
-	 * so we preload every referenced sheet and fill xCount from the image width before applyAnims
-	 * runs setupAnimRecursive, which needs xCount to compute frame offsets synchronously.
-	 */
-	private async preloadAnimSheets(anims: Anims): Promise<boolean> {
-		const sheets = new Set<AnimSheet>();
-		for (const leaf of flattenSUBs(anims, {})) {
-			const sheet = typeof leaf.sheet === 'string' ? leaf.namedSheets?.[leaf.sheet] : leaf.sheet;
-			if (sheet) {
-				sheets.add(sheet);
-			}
-		}
-		for (const sheet of sheets) {
-			if (!sheet.src) {
-				continue;
-			}
-			if (!await Helper.loadTexture(sheet.src, this.scene)) {
-				return false;
-			}
-			if (!sheet.xCount) {
-				const img = Globals.scene.textures.get(sheet.src.trim()).getSourceImage();
-				sheet.xCount = Math.max(1, Math.floor(img.width / sheet.width));
-			}
-		}
 		return true;
 	}
 

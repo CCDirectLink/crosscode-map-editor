@@ -2,7 +2,7 @@ import { CCMap } from '../../tilemap/cc-map';
 import { CCEntity, EntityAttributes, Fix, ScaleSettings } from '../cc-entity';
 import { Globals } from '../../../globals';
 import { Point, Point3 } from '../../../../models/cross-code-map';
-import { Anims, AnimSheet, ShadowSpec } from '../../sheet-parser';
+import { Anims, AnimSheet, flattenSUBs, ShadowSpec } from '../../sheet-parser';
 import { Helper } from '../../helper';
 
 export interface EntitiesJson {
@@ -211,6 +211,9 @@ export class DefaultEntity extends CCEntity {
 			anims = Helper.copy(anims);
 			DefaultEntity.rewriteSheetsToMapStyle(anims, opts.useStyleSheet);
 		}
+		if (!await this.preloadAnimSheets(anims)) {
+			return false;
+		}
 		const sprites: PropSprite[] = [];
 		const resolvedAnim = animName || 'default';
 		
@@ -287,6 +290,33 @@ export class DefaultEntity extends CCEntity {
 		return true;
 	}
 	
+	// Prop/entity anim sheets commonly omit xCount. setupAnimRecursive runs synchronously
+	// and would fall back to 999, placing tileOffset>1 past the right edge of narrow sheets.
+	// Preload each referenced sheet and fill xCount from the actual image width.
+	// Also callable by subclasses with custom render paths that don't go through applyAnims.
+	protected async preloadAnimSheets(anims: Anims): Promise<boolean> {
+		const sheets = new Set<AnimSheet>();
+		for (const leaf of flattenSUBs(anims, {})) {
+			const sheet = typeof leaf.sheet === 'string' ? leaf.namedSheets?.[leaf.sheet] : leaf.sheet;
+			if (sheet) {
+				sheets.add(sheet);
+			}
+		}
+		for (const sheet of sheets) {
+			if (!sheet.src) {
+				continue;
+			}
+			if (!await Helper.loadTexture(sheet.src, this.scene)) {
+				return false;
+			}
+			if (!sheet.xCount) {
+				const img = Globals.scene.textures.get(sheet.src.trim()).getSourceImage();
+				sheet.xCount = Math.max(1, Math.floor(img.width / sheet.width));
+			}
+		}
+		return true;
+	}
+
 	private async pushShadowFix(spec: ShadowSpec, baseSize: Point3) {
 		await Helper.loadTexture(DefaultEntity.SHADOW_SHEET, this.scene);
 		
