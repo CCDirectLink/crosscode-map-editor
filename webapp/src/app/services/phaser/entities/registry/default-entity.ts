@@ -314,10 +314,6 @@ export class DefaultEntity extends CCEntity {
 			...settings.offset,
 		};
 		
-		if (settings.wallY) {
-			offset.y += settings.wallY * (settings.size?.z ?? 0);
-		}
-		
 		if (settings.gfxOffset) {
 			offset.x += settings.gfxOffset.x ?? 0;
 			offset.y += settings.gfxOffset.y ?? 0;
