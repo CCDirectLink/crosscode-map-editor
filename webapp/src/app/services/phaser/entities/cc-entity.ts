@@ -144,7 +144,11 @@ export abstract class CCEntity extends BaseObject {
 			type: typeName,
 		} as any;
 		
-		this.filterSubscription = Globals.globalEventsService.filterEntity.subscribe(filter => this.setVisible(this.filter(filter)));
+		this.filterSubscription = Globals.globalEventsService.filterEntity.subscribe(filter => {
+			const matchesShow = this.filter(filter.show);
+			const matchesHide = filter.hide.length > 0 && this.filter(filter.hide);
+			this.setVisible(matchesShow && !matchesHide);
+		});
 	}
 	
 	

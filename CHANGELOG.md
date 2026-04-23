@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Generating new entities now adds default properties to it
 - All entities with graphics should render correctly now
 - improved enemy rendering and respects face direction
+- Added "exclude" filter to entities
 
 ### Changed
 - Increased dropdown size for String widget

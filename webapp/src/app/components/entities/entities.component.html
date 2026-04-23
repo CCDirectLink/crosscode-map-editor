@@ -3,7 +3,15 @@
 		<mat-form-field
 			appearance="outline"
 		>
-			<input #filterInput matInput type="text" placeholder="Filter" [(ngModel)]="filter"
+			<input #filterInput matInput type="text" placeholder="Include" [(ngModel)]="filter"
+			       (ngModelChange)="updateFilter()"/>
+		</mat-form-field>
+	</label>
+	<label class="filter no-error-msg" fxLayout="column">
+		<mat-form-field
+			appearance="outline"
+		>
+			<input matInput type="text" placeholder="Exclude" [(ngModel)]="excludeFilter"
 			       (ngModelChange)="updateFilter()"/>
 		</mat-form-field>
 	</label>

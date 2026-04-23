@@ -27,6 +27,7 @@ export class EntitiesComponent {
 	entity?: CCEntity;
 	map?: CCMap;
 	filter = '';
+	excludeFilter = '';
 	hideFilter = false;
 	private lastShowSizeWidget = false;
 
@@ -51,6 +52,7 @@ export class EntitiesComponent {
 		loader.tileMap.subscribe(map => {
 			this.map = map;
 			this.filter = '';
+			this.excludeFilter = '';
 		});
 	}
 	
@@ -86,7 +88,7 @@ export class EntitiesComponent {
 	}
 	
 	updateFilter() {
-		this.events.filterEntity.next(this.filter);
+		this.events.filterEntity.next({ show: this.filter, hide: this.excludeFilter });
 	}
 	
 	private shouldShowSizeWidget(entity: CCEntity): boolean {

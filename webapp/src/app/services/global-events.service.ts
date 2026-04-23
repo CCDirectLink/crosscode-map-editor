@@ -14,7 +14,7 @@ export class GlobalEventsService {
 	selectedEntity = new BehaviorSubject<CCEntity | undefined>(undefined);
 	updateEntitySettings = new Subject<CCEntity>();
 	generateNewEntity = new Subject<MapEntity>();
-	filterEntity = new Subject<string>();
+	filterEntity = new Subject<{ show: string; hide: string }>();
 	loadComplete = new Subject<void>();
 	generateHeights = new Subject<boolean>();
 	offsetMap = new Subject<Point>();
