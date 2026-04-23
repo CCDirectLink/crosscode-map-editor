@@ -1377,7 +1377,7 @@
 				"description": "style"
 			}
 		},
-		"size": { "x": 16, "y": 16, "z": 16 },
+		"size": {"x": 16, "y": 16, "z": 16},
 		"anims": {
 			"sheet": {
 				"src": "media/entity/objects/block.png",
@@ -1385,8 +1385,8 @@
 				"height": 32
 			},
 			"SUB": [
-				{ "name": "normal", "frames": [0] },
-				{ "name": "touched", "frames": [1] }
+				{"name": "normal", "frames": [0]},
+				{"name": "touched", "frames": [1]}
 			]
 		}
 	},
@@ -1552,7 +1552,7 @@
 				"description": "Make sure puzzle element is not slowed down by assist mode"
 			}
 		},
-		"size": { "x": 16, "y": 16, "z": 24 },
+		"size": {"x": 16, "y": 16, "z": 24},
 		"anims": {
 			"namedSheets": {
 				"base": {
@@ -1576,15 +1576,15 @@
 				{
 					"sheet": "base",
 					"SUB": [
-						{ "name": "off", "frames": [0] }
+						{"name": "off", "frames": [0]}
 					]
 				},
 				{
 					"sheet": "ball",
-					"offset": { "x": 0, "y": 0, "z": 6 },
+					"offset": {"x": 0, "y": 0, "z": 6},
 					"aboveZ": 1,
 					"SUB": [
-						{ "name": "off", "frames": [0] }
+						{"name": "off", "frames": [0]}
 					]
 				}
 			]
@@ -1600,7 +1600,7 @@
 				"description": "Condition for Anti Compressor to spawn"
 			}
 		},
-		"size": { "x": 16, "y": 16, "z": 24 },
+		"size": {"x": 16, "y": 16, "z": 24},
 		"anims": {
 			"sheet": {
 				"mapStyle": "anticompressor",
@@ -1608,7 +1608,7 @@
 				"height": 16,
 				"xCount": 1
 			},
-			"SUB": [{ "name": "idle", "frames": [0] }]
+			"SUB": [{"name": "idle", "frames": [0]}]
 		}
 	},
 	"CompressorBouncer": {
@@ -2346,11 +2346,11 @@
 				"description": "Condition for Block to spawn"
 			}
 		},
-		"size": { "x": 32, "y": 32, "z": 32 },
+		"size": {"x": 32, "y": 32, "z": 32},
 		"anims": {
-			"sheet": { "mapStyle": "waveblock", "width": 32, "height": 64 },
+			"sheet": {"mapStyle": "waveblock", "width": 32, "height": 64},
 			"aboveZ": 1,
-			"SUB": [{ "name": "default", "frames": [0] }]
+			"SUB": [{"name": "default", "frames": [0]}]
 		}
 	},
 	"PushPullDest": {
@@ -2383,7 +2383,14 @@
 	},
 	"SlidingBlock": {
 		"spawnable": true,
-		"attributes": {}
+		"attributes": {},
+		"size": {"x": 32, "y": 32, "z": 32},
+		"anims": {
+			"sheet": {"mapStyle": "puzzle", "width": 32, "height": 64, "offX": 224, "offY": 192},
+			"aboveZ": 1,
+			"wallY": 0.1,
+			"SUB": [{"name": "default", "frames": [0]}]
+		}
 	},
 	"Switch": {
 		"spawnable": true,
