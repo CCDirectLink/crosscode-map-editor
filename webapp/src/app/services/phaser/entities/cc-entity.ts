@@ -199,7 +199,7 @@ export abstract class CCEntity extends BaseObject {
 			const container = this.container;
 			const p = this.scene.input.activePointer;
 			const settings = Globals.gridSettings();
-
+			
 			if (settings.enableGrid && !this.dragMoved) {
 				const dx = Math.abs(p.worldX - this.startOffset.x - container.x);
 				const dy = Math.abs(p.worldY - this.startOffset.y - container.y);
@@ -208,10 +208,10 @@ export abstract class CCEntity extends BaseObject {
 				}
 				this.dragMoved = true;
 			}
-
+			
 			container.x = Math.round(p.worldX - this.startOffset.x);
 			container.y = Math.round(p.worldY - this.startOffset.y);
-
+			
 			if (settings.enableGrid) {
 				const diffX = (container.x - settings.offset.x) % settings.size.x;
 				if (diffX * 2 < settings.size.x) {
@@ -219,7 +219,7 @@ export abstract class CCEntity extends BaseObject {
 				} else {
 					container.x += settings.size.x - diffX;
 				}
-
+				
 				const diffY = (container.y - settings.offset.y) % settings.size.y;
 				if (diffY * 2 < settings.size.y) {
 					container.y -= diffY;
@@ -495,18 +495,22 @@ export abstract class CCEntity extends BaseObject {
 	
 	public generateNoImageType(rgbTop = 0xc06040, aTop = 0.5, rgb = 0x800000, a = 0.5, defaultSize?: Point3) {
 		const settings = this.details.settings;
-
+		
 		const baseSize: Point3 = { x: defaultSize?.x ?? 16, y: defaultSize?.y ?? 16, z: 0 };
+		const scaleSettings = this.getScaleSettings();
 		if (settings['size']) {
-			baseSize.x = settings['size'].x;
-			baseSize.y = settings['size'].y;
+			if (!defaultSize || scaleSettings?.scalableX) {
+				baseSize.x = settings['size'].x;
+			}
+			if (!defaultSize || scaleSettings?.scalableY) {
+				baseSize.y = settings['size'].y;
+			}
 		}
 		
 		baseSize.z = settings['zHeight'] || settings['wallZHeight'] || 0;
 		
 		this.entitySettings = {} as any;
 		this.entitySettings.baseSize = baseSize;
-		const scaleSettings = this.getScaleSettings();
 		if (scaleSettings) {
 			if (scaleSettings.scalableX || scaleSettings.scalableY) {
 				this.entitySettings.scalableX = scaleSettings.scalableX;
@@ -603,6 +607,14 @@ export abstract class CCEntity extends BaseObject {
 	public getActualSize(): Point3 {
 		const s = this.entitySettings;
 		const size = Object.assign({}, this.details.settings['size'] || s.baseSize);
+		if (s?.baseSize) {
+			if (!s.scalableX) {
+				size.x = s.baseSize.x;
+			}
+			if (!s.scalableY) {
+				size.y = s.baseSize.y;
+			}
+		}
 		try {
 			size.x = Number(size.x);
 			size.y = Number(size.y);
