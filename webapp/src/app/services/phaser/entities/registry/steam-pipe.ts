@@ -1,30 +1,20 @@
-import { Point3 } from '../../../../models/cross-code-map';
+import { Point, Point3 } from '../../../../models/cross-code-map';
+import { Globals } from '../../../globals';
 import { Anims } from '../../sheet-parser';
 import { DefaultEntity } from './default-entity';
 
-interface PipeTypeDef {
-	gfxX: number;
-	gfxY: number;
-	gfxW?: number;
-	gfxH?: number;
+interface SteamPipeType {
+	gfx: { x: number; y: number; w?: number; h?: number };
 	scaleX?: boolean;
 	scaleY?: boolean;
 	size: Point3;
 	renderHeight?: number;
+	points: Point[];
 }
 
-const PIPE_TYPES: Record<string, PipeTypeDef | undefined> = {
-	HORIZONTAL: { gfxX: 32, gfxY: 0, scaleX: true, size: { x: 16, y: 12, z: 5 }, renderHeight: 4 },
-	VERTICAL: { gfxX: 32, gfxY: 16, scaleY: true, size: { x: 16, y: 16, z: 5 }, renderHeight: 0 },
-	CURVE_SE: { gfxX: 0, gfxY: 0, size: { x: 16, y: 12, z: 5 }, renderHeight: 4 },
-	CURVE_SW: { gfxX: 16, gfxY: 0, size: { x: 16, y: 12, z: 5 }, renderHeight: 4 },
-	CURVE_NE: { gfxX: 0, gfxY: 16, size: { x: 16, y: 16, z: 5 }, renderHeight: 0 },
-	CURVE_NW: { gfxX: 16, gfxY: 16, size: { x: 16, y: 16, z: 5 }, renderHeight: 0 },
-	END_NORTH: { gfxX: 48, gfxY: 6, size: { x: 16, y: 16, z: 5 }, renderHeight: 10 },
-	OVEN_EAST: { gfxX: 64, gfxY: 0, size: { x: 16, y: 12, z: 32 }, renderHeight: 20 },
-	OVEN_WEST: { gfxX: 80, gfxY: 0, size: { x: 16, y: 12, z: 32 }, renderHeight: 20 },
-	UPPER_PIPE: { gfxX: 96, gfxY: 0, gfxW: 16, gfxH: 32, scaleX: true, size: { x: 16, y: 12, z: 32 }, renderHeight: 20 },
-};
+interface SteamPipeTypes {
+	[name: string]: SteamPipeType;
+}
 
 export interface SteamPipeAttributes {
 	pipeType: string;
@@ -33,7 +23,15 @@ export interface SteamPipeAttributes {
 export class SteamPipe extends DefaultEntity {
 	
 	protected override async setupType(settings: SteamPipeAttributes): Promise<void> {
-		const type = PIPE_TYPES[settings.pipeType];
+		const types = await Globals.jsonLoader.loadJsonMerged<SteamPipeTypes>('steam-pipe-types.json');
+		
+		const attributes = this.getAttributes();
+		attributes['pipeType'].options = {};
+		for (const name of Object.keys(types)) {
+			attributes['pipeType'].options[name] = name;
+		}
+		
+		const type = types[settings.pipeType];
 		if (!type) {
 			this.generateErrorImage();
 			return;
@@ -42,10 +40,10 @@ export class SteamPipe extends DefaultEntity {
 		const anims: Anims = {
 			sheet: {
 				mapStyle: 'pipes',
-				width: type.gfxW ?? 16,
-				height: type.gfxH ?? (type.size.y + (type.renderHeight ?? 0)),
-				offX: type.gfxX,
-				offY: type.gfxY,
+				width: type.gfx.w ?? 16,
+				height: type.gfx.h ?? (type.size.y + (type.renderHeight ?? 0)),
+				offX: type.gfx.x,
+				offY: type.gfx.y,
 			},
 			SUB: [{ name: 'default', frames: [0] }],
 		};
