@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added "File > Export PNG" to export the current map as a pixel perfect PNG image.
 - Added "Maps" widget which shows a button to load the target map directly
 - Generating new entities now adds default properties to it
+- All entities with graphics should render correctly now
+- improved enemy rendering and respects face direction
 
 ### Changed
 - Increased dropdown size for String widget
