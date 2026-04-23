@@ -37,13 +37,13 @@ interface ApplyAnimsOpts {
 	label?: string;
 	mapStyle?: string;
 	baseSize?: Point3;
-
+	
 	// currently only used in Prop, doesn't behave correctly for most other entities
 	applyWallY?: boolean;
-
+	
 	// direction to pick out of `tileOffsets` / dir-indexed `flipX`; falls back to the middle dir
 	dirIndex?: number;
-
+	
 	// CrossCode source-level `useStyleSheet`: the sheet src/offset should come from
 	// the current map's mapStyle entry. String form names a specific mapStyle and each
 	// AnimSheet is rewritten to resolve via it (src swapped, x/y added to offX/offY).
@@ -164,29 +164,31 @@ export class DefaultEntity extends CCEntity {
 		}
 	}
 	
-	private static rewriteSheetsToMapStyle(anims: Anims, styleName: string): void {
+	private static rewriteSheetsToMapStyle(anims: Anims, styleName: string, replaceOffset: boolean): void {
 		if (anims.namedSheets) {
 			for (const key of Object.keys(anims.namedSheets)) {
-				DefaultEntity.rewriteSheetToMapStyle(anims.namedSheets[key], styleName);
+				DefaultEntity.rewriteSheetToMapStyle(anims.namedSheets[key], styleName, false);
 			}
 		}
 		if (anims.sheet && typeof anims.sheet !== 'string') {
-			DefaultEntity.rewriteSheetToMapStyle(anims.sheet, styleName);
+			DefaultEntity.rewriteSheetToMapStyle(anims.sheet, styleName, replaceOffset);
 		}
 		if (Array.isArray(anims.SUB)) {
 			for (const sub of anims.SUB) {
-				DefaultEntity.rewriteSheetsToMapStyle(sub, styleName);
+				DefaultEntity.rewriteSheetsToMapStyle(sub, styleName, replaceOffset);
 			}
 		}
 	}
 	
-	private static rewriteSheetToMapStyle(sheet: AnimSheet, styleName: string): void {
+	private static rewriteSheetToMapStyle(sheet: AnimSheet, styleName: string, replaceOffset: boolean): void {
 		sheet.mapStyle = styleName;
 		sheet.src = undefined;
-		sheet.offX = 0;
-		sheet.offY = 0;
+		if (replaceOffset) {
+			sheet.offX = 0;
+			sheet.offY = 0;
+		}
 	}
-
+	
 	protected resolveSheet(sheet: AnimSheet): AnimSheet {
 		if (!sheet.mapStyle) {
 			return sheet;
@@ -213,7 +215,7 @@ export class DefaultEntity extends CCEntity {
 		const { animName, label, mapStyle, baseSize } = opts;
 		if (typeof opts.useStyleSheet === 'string' && Helper.getMapStyle(Globals.map, opts.useStyleSheet)) {
 			anims = Helper.copy(anims);
-			DefaultEntity.rewriteSheetsToMapStyle(anims, opts.useStyleSheet);
+			DefaultEntity.rewriteSheetsToMapStyle(anims, opts.useStyleSheet, !anims.namedSheets);
 		}
 		if (!await this.preloadAnimSheets(anims)) {
 			return false;
@@ -309,7 +311,7 @@ export class DefaultEntity extends CCEntity {
 		}
 		return true;
 	}
-
+	
 	private async pushShadowFix(spec: ShadowSpec, baseSize: Point3) {
 		await Helper.loadTexture(DefaultEntity.SHADOW_SHEET, this.scene);
 		
