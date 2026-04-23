@@ -167,20 +167,24 @@ export class DefaultEntity extends CCEntity {
 	private static rewriteSheetsToMapStyle(anims: Anims, styleName: string): void {
 		if (anims.namedSheets) {
 			for (const key of Object.keys(anims.namedSheets)) {
-				const sheet = anims.namedSheets[key];
-				sheet.mapStyle = styleName;
-				sheet.src = undefined;
+				DefaultEntity.rewriteSheetToMapStyle(anims.namedSheets[key], styleName);
 			}
 		}
 		if (anims.sheet && typeof anims.sheet !== 'string') {
-			anims.sheet.mapStyle = styleName;
-			anims.sheet.src = undefined;
+			DefaultEntity.rewriteSheetToMapStyle(anims.sheet, styleName);
 		}
 		if (Array.isArray(anims.SUB)) {
 			for (const sub of anims.SUB) {
 				DefaultEntity.rewriteSheetsToMapStyle(sub, styleName);
 			}
 		}
+	}
+	
+	private static rewriteSheetToMapStyle(sheet: AnimSheet, styleName: string): void {
+		sheet.mapStyle = styleName;
+		sheet.src = undefined;
+		sheet.offX = 0;
+		sheet.offY = 0;
 	}
 
 	protected resolveSheet(sheet: AnimSheet): AnimSheet {
