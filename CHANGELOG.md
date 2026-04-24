@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+## [2.3.0] 2026-04-24
 ### Added
 - Added "File > Export PNG" to export the current map as a pixel perfect PNG image.
 - Added "Maps" widget which shows a button to load the target map directly
