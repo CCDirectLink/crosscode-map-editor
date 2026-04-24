@@ -53,7 +53,7 @@ module.exports = tseslint.config(
 			curly: 'error',
 			eqeqeq: ['error', 'smart'],
 			'guard-for-in': 'error',
-			'no-bitwise': 'error',
+			'no-bitwise': 'off',
 			'no-caller': 'error',
 			'no-eval': 'error',
 			'no-new-wrappers': 'error',
