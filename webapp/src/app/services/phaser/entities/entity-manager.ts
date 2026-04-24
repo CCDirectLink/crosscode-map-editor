@@ -170,6 +170,7 @@ export class EntityManager extends BaseObject {
 					this.selectedEntities.forEach(entity => {
 						entity.startOffset.x = pointer.worldX - entity.container.x;
 						entity.startOffset.y = pointer.worldY - entity.container.y;
+						entity.dragMoved = false;
 						entity.isDragged = true;
 					});
 				} else {

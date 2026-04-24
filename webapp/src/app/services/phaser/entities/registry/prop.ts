@@ -1,8 +1,37 @@
-import { Point3 } from '../../../../models/cross-code-map';
 import { Helper } from '../../helper';
-import { Fix } from '../cc-entity';
-import { Anims, AnimSheet, prepareProp, PropDef, PropSheet } from '../../sheet-parser';
+import { prepareProp, PropDef, PropSheet } from '../../sheet-parser';
 import { DefaultEntity } from './default-entity';
+
+function findProp(sheet: PropSheet, name: string): PropDef | undefined {
+	for (const p of sheet.props) {
+		if (p.name === name) {
+			return p;
+		}
+		if (p.sequence) {
+			const seq = p.sequence;
+			for (let j = 0; j < seq.entries.length; j++) {
+				const entry = seq.entries[j];
+				if (entry.name !== name) {
+					continue;
+				}
+				// CrossCode flattens sequence entries into synthetic fix-style props:
+				// parent fields + per-entry overrides + fix sub-rect stepped by index.
+				const merged: PropDef = { ...p, ...entry, name: entry.name };
+				delete (merged as any).sequence;
+				merged.fix = {
+					gfx: seq.sheet.gfx,
+					x: seq.sheet.x + seq.sheet.w * j,
+					y: seq.sheet.y,
+					w: seq.sheet.w,
+					h: seq.sheet.h,
+					flipX: false,
+				};
+				return merged;
+			}
+		}
+	}
+	return undefined;
+}
 
 export interface PropType {
 	sheet?: string;
@@ -22,15 +51,6 @@ export interface PropAttributes {
 	hideCondition?: string;
 }
 
-interface PropSprite {
-	sheet: AnimSheet;
-	tileOffset: number;
-	alpha: number;
-	offset?: Partial<Point3>;
-	renderMode?: string;
-	flipX?: boolean;
-}
-
 export class Prop extends DefaultEntity {
 	
 	protected override async setupType(settings: PropAttributes) {
@@ -44,30 +64,33 @@ export class Prop extends DefaultEntity {
 			return this.generateErrorImage();
 		}
 		
-		let prop: PropDef | undefined;
-		for (let i = 0; i < sheet.props.length; i++) {
-			const p = sheet.props[i];
-			if (settings.propType.name === p.name) {
-				prop = p;
-				break;
-			}
-		}
+		const prop = findProp(sheet, settings.propType.name ?? '');
 		if (!prop) {
 			console.error('prop not found: ' + settings.propType.name);
 			return this.generateErrorImage();
 		}
 		
-		this.entitySettings = {sheets: {fix: []}} as any;
 		if (prop.anims) {
-			await this.setupAnims(settings, prop, sheet);
+			const anims = prepareProp(prop, sheet);
+			const ok = await this.applyAnims({
+				anims,
+				animName: settings.propAnim,
+				label: prop.name,
+				applyWallY: true,
+			});
+			if (!ok) {
+				return;
+			}
 		} else if (prop.fix) {
-			const exists = await Helper.loadTexture(prop.fix.gfx, this.scene);
-			if (!exists) {
-				console.error('prop image does not exist: ' + prop.fix.gfx);
+			// TODO: "offY" currently only fixed in Prop. 
+			//  Find out if this causes issues somewhere else and move the fix to a better place
+			const fix = Helper.copy(prop.fix);
+			fix.offsetY = (fix.offsetY ?? 0) + (fix.offY ?? 0);
+			delete fix.offY;
+			const ok = await this.pushFix(fix, true);
+			if (!ok) {
 				return this.generateErrorImage();
 			}
-			
-			this.entitySettings.sheets.fix[0] = prop.fix;
 			this.entitySettings.sheets.renderMode = prop.fix.renderMode;
 		} else {
 			console.error('failed to create prop: ' + prop.name);
@@ -76,137 +99,5 @@ export class Prop extends DefaultEntity {
 		this.entitySettings.baseSize = prop.size;
 		this.entitySettings.collType = prop.collType;
 		this.updateSettings();
-	}
-	
-	private async setupAnims(settings: PropAttributes, propDef: PropDef, sheetDef: PropSheet) {
-		
-		const sprites: PropSprite[] = [];
-		
-		const anims: Anims = prepareProp(propDef, sheetDef);
-		
-		const propAnim = settings.propAnim || 'default';
-		
-		if (propAnim === 'floor4') {
-			console.log('as');
-		}
-		
-		if (Array.isArray(anims.SUB)) {
-			const firstName = this.setupAnim(propAnim, anims, propDef, {}, sprites);
-			
-			// no sheet found with propAnim. Just take first one
-			if (sprites.length === 0 && firstName) {
-				this.setupAnim(firstName, anims, propDef, {}, sprites);
-			}
-		} else if (anims.sheet) {
-			sprites.push({
-				sheet: anims.sheet as AnimSheet,
-				alpha: anims.framesAlpha?.[0] ?? 1,
-				tileOffset: anims.tileOffset ?? 0,
-				renderMode: anims.renderMode,
-				offset: anims.offset
-			});
-		}
-		
-		if (sprites.length === 0) {
-			console.warn('failed creating prop: ', settings);
-			return this.generateErrorImage();
-		}
-		
-		this.entitySettings.sheets.fix = [];
-		for (const sprite of sprites) {
-			
-			if (!sprite.sheet) {
-				console.error('prop sheet not found, ', propDef.name);
-				return this.generateErrorImage();
-			}
-			
-			await Helper.loadTexture(sprite.sheet.src, this.scene);
-			
-			const fix: Fix = {
-				gfx: sprite.sheet.src,
-				w: sprite.sheet.width,
-				h: sprite.sheet.height,
-				x: sprite.sheet.width * sprite.tileOffset + (sprite.sheet.offX || 0),
-				y: sprite.sheet.offY || 0,
-				alpha: sprite.alpha,
-				offsetX: 0,
-				offsetY: 0,
-				flipX: sprite.flipX,
-				renderMode: sprite.renderMode
-			};
-			
-			if (sprite.offset) {
-				fix.offsetX = sprite.offset.x || 0;
-				fix.offsetY = (sprite.offset.y || 0) - (sprite.offset.z || 0);
-			}
-			this.entitySettings.sheets.fix.push(fix);
-		}
-	}
-	
-	private setupAnim(propAnim: string, anims: Anims, propDef: PropDef, settings: Anims, sprites: PropSprite[]): string | undefined {
-		let firstName = anims.name;
-		if (anims.name && anims.name !== propAnim) {
-			return firstName;
-		}
-		settings = {
-			...settings,
-			...anims
-		};
-		if (Array.isArray(anims.SUB)) {
-			for (const sub of anims.SUB) {
-				const animName = this.setupAnim(propAnim, sub, propDef, settings, sprites);
-				if (!firstName) {
-					firstName = animName;
-				}
-			}
-			return firstName;
-		}
-		let sheet: AnimSheet | undefined;
-		if (typeof settings.sheet === 'string') {
-			sheet = settings.namedSheets?.[settings.sheet];
-		} else {
-			sheet = settings.sheet;
-		}
-		if (!sheet) {
-			console.error('anim sheet not found, skip: ', propDef);
-			return firstName;
-		}
-		
-		const offset: Point3 = {
-			x: 0,
-			y: 0,
-			z: 0,
-			...settings.offset
-		};
-		
-		// not sure about this one, fixes chair in propType: "booth", sheet: "trading-autumn"
-		if (settings.wallY) {
-			offset.y += settings.wallY * (settings.size?.z ?? 0);
-		}
-		
-		if (settings.gfxOffset) {
-			offset.x += settings.gfxOffset.x ?? 0;
-			offset.y += settings.gfxOffset.y ?? 0;
-		}
-		
-		const frame = settings.frames?.[0] ?? 0;
-		
-		if (frame > 0) {
-			const xCount = sheet.xCount || 999;
-			const xOffset = (frame % xCount) * sheet.width;
-			const yOffset = Math.floor(frame / xCount) * sheet.height;
-			sheet.offX = (sheet.offX ?? 0) + xOffset;
-			sheet.offY = (sheet.offY ?? 0) + yOffset;
-		}
-		
-		sprites.push({
-			sheet: sheet,
-			alpha: settings.framesAlpha?.[frame] ?? 1,
-			offset: offset,
-			tileOffset: settings.tileOffset ?? 0,
-			renderMode: settings.renderMode,
-			flipX: Array.isArray(settings.flipX) ? !!settings.flipX[frame] : settings.flipX
-		});
-		return firstName;
 	}
 }

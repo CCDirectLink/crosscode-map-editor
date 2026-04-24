@@ -14,6 +14,7 @@ import { ScalablePropConfigWidgetComponent } from './scalable-prop-config-widget
 import { CustomDesTypeWidgetComponent } from './custom-des-type-widget/custom-des-type-widget.component';
 import { CharacterWidgetComponent } from './character-widget/character-widget.component';
 import { ArrayWidgetComponent } from './array-widget/array-widget.component';
+import { MapsWidgetComponent } from './maps-widget/maps-widget.component';
 
 @Injectable({
 	providedIn: 'root'
@@ -42,6 +43,8 @@ export class WidgetRegistryService {
 		this.register('CustomDesType', CustomDesTypeWidgetComponent);
 		this.register('VarCondition', StringWidgetComponent);
 		this.register('Array', ArrayWidgetComponent);
+		this.register('Maps', MapsWidgetComponent);
+		this.register('Face', StringWidgetComponent);
 	}
 	
 	private setDefaultWidget(widget: any) {

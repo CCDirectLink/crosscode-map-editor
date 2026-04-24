@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Added
+- Added "File > Export PNG" to export the current map as a pixel perfect PNG image.
+- Added "Maps" widget which shows a button to load the target map directly
+- Generating new entities now adds default properties to it
+- All entities with graphics should render correctly now
+- improved enemy rendering and respects face direction
+- Added "exclude" filter to entities
+
+### Changed
+- Increased dropdown size for String widget
+
+### Fixed
+- Selecting an entity with the grid enabled no longer snaps it automatically until the user actually drags it.
+- Fixed rendering of preview image in ScalableProp causing layout jumps 
+
 ## [2.2.0] 2026-04-03
 ### Changed
 - Moved "vanilla maps" toggle from settings into the map loading dialog to allow quick switching between mod and vanilla maps [#347](https://github.com/CCDirectLink/crosscode-map-editor/issues/347)

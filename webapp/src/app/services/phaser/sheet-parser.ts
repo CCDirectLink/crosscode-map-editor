@@ -18,12 +18,16 @@ export interface PropSheet {
 
 export type JsonTemplates = Record<string, Anims | Anims[keyof Anims]>;
 
+export interface PropFix extends Fix {
+	offY?: number;
+}
+
 export interface PropDef {
 	name?: string;
 	terrain?: string;
 	size: Point3;
 	collType: string;
-	fix?: Fix;
+	fix?: PropFix;
 	shapeType?: string;
 	effects?: Effects;
 	anims?: Anims;
@@ -74,6 +78,7 @@ export interface Anims extends IfThen {
 	shapeType?: string;
 	framesAlpha?: number[];
 	flipX?: boolean | number[];
+	flipY?: boolean;
 	SUB?: Anims[] | SubJsonInstance | SubJsonParam;
 	tileOffset?: number;
 	wallY?: number;
@@ -94,6 +99,14 @@ export interface Anims extends IfThen {
 	dirs?: number | string;
 	tileOffsets?: number[];
 	guiSprites?: boolean;
+	shadow?: ShadowSpec;
+}
+
+export interface ShadowSpec {
+	size: number;
+	scaleY?: number;
+	offset?: Partial<Point>;
+	aboveZ?: number;
 }
 
 export interface IfThen {
@@ -102,7 +115,8 @@ export interface IfThen {
 }
 
 export interface AnimSheet {
-	src: string;
+	src?: string;
+	mapStyle?: string;
 	width: number;
 	height: number;
 	offX?: number;

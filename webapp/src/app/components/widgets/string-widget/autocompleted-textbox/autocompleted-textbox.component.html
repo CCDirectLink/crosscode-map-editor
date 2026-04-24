@@ -4,7 +4,11 @@
 	[ngModel]="text"
 	(ngModelChange)="textChange.emit($event)"
 >
-<mat-autocomplete #auto="matAutocomplete" [autoActiveFirstOption]="true">
+<mat-autocomplete
+	#auto="matAutocomplete"
+	class="large-dropdown"
+	[autoActiveFirstOption]="true"
+>
 	@for (option of suggestedOptions; track option) {
 		<mat-option [value]="option">
 			<span appHighlight [highlightText]="option" [highlightMatch]="text"></span>

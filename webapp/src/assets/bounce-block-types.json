@@ -1,0 +1,245 @@
+{
+    "default": {
+        "size": {
+            "x": 24,
+            "y": 24,
+            "z": 23
+        },
+        "shape": "RECTANGLE",
+        "anims": {
+            "namedSheets": {
+                "block": {
+                    "src": null,
+                    "width": 24,
+                    "height": 48
+                }
+            },
+            "sheet": "block",
+            "SUB": [{
+                "name": "off",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "on",
+                "time": 1,
+                "frames": [1],
+                "repeat": false
+            }]
+        }
+    },
+    "slopeNE": {
+        "size": {
+            "x": 24,
+            "y": 24,
+            "z": 23
+        },
+        "shape": "SLOPE_NE",
+        "anims": {
+            "namedSheets": {
+                "block": {
+                    "src": null,
+                    "width": 24,
+                    "height": 48,
+                    "offX": 48
+                },
+                "ground": {
+                    "src": null,
+                    "width": 24,
+                    "height": 24,
+                    "offX": 144
+                }
+            },
+            "SUB": [{
+                "sheet": "block",
+                "aboveZ": 1,
+                "SUB": [{
+                    "name": "off",
+                    "time": 1,
+                    "frames": [0],
+                    "repeat": false
+                }, {
+                    "name": "on",
+                    "time": 1,
+                    "frames": [1],
+                    "repeat": false
+                }]
+            }, {
+                "sheet": "ground",
+                "size": {
+                    "x": 24,
+                    "y": 24,
+                    "z": 0
+                },
+                "frames": [0],
+                "SUB": [{
+                    "name": "off"
+                }, {
+                    "name": "on"
+                }]
+            }]
+        }
+    },
+    "slopeSE": {
+        "size": {
+            "x": 24,
+            "y": 24,
+            "z": 23
+        },
+        "shape": "SLOPE_SE",
+        "anims": {
+            "namedSheets": {
+                "block": {
+                    "src": null,
+                    "width": 24,
+                    "height": 48,
+                    "offX": 96
+                },
+                "ground": {
+                    "src": null,
+                    "width": 24,
+                    "height": 24,
+                    "offX": 144,
+                    "offY": 24
+                }
+            },
+            "SUB": [{
+                "sheet": "block",
+                "wallY": 1,
+                "SUB": [{
+                    "name": "off",
+                    "time": 1,
+                    "frames": [0],
+                    "repeat": false
+                }, {
+                    "name": "on",
+                    "time": 1,
+                    "frames": [1],
+                    "repeat": false
+                }]
+            }, {
+                "sheet": "ground",
+                "size": {
+                    "x": 24,
+                    "y": 23,
+                    "z": 1
+                },
+                "frames": [0],
+                "wallY": 1,
+                "SUB": [{
+                    "name": "off"
+                }, {
+                    "name": "on"
+                }]
+            }]
+        }
+    },
+    "slopeSW": {
+        "size": {
+            "x": 24,
+            "y": 24,
+            "z": 23
+        },
+        "shape": "SLOPE_SW",
+        "anims": {
+            "namedSheets": {
+                "block": {
+                    "src": null,
+                    "width": 24,
+                    "height": 48,
+                    "offX": 96
+                },
+                "ground": {
+                    "src": null,
+                    "width": 24,
+                    "height": 24,
+                    "offX": 144,
+                    "offY": 24
+                }
+            },
+            "flipX": true,
+            "SUB": [{
+                "sheet": "block",
+                "wallY": 1,
+                "SUB": [{
+                    "name": "off",
+                    "time": 1,
+                    "frames": [0],
+                    "repeat": false
+                }, {
+                    "name": "on",
+                    "time": 1,
+                    "frames": [1],
+                    "repeat": false
+                }]
+            }, {
+                "sheet": "ground",
+                "size": {
+                    "x": 24,
+                    "y": 23,
+                    "z": 1
+                },
+                "frames": [0],
+                "wallY": 1,
+                "SUB": [{
+                    "name": "off"
+                }, {
+                    "name": "on"
+                }]
+            }]
+        }
+    },
+    "slopeNW": {
+        "size": {
+            "x": 24,
+            "y": 24,
+            "z": 23
+        },
+        "shape": "SLOPE_NW",
+        "anims": {
+            "namedSheets": {
+                "block": {
+                    "src": null,
+                    "width": 24,
+                    "height": 48,
+                    "offX": 48
+                },
+                "ground": {
+                    "src": null,
+                    "width": 24,
+                    "height": 24,
+                    "offX": 144
+                }
+            },
+            "flipX": true,
+            "SUB": [{
+                "sheet": "block",
+                "aboveZ": 1,
+                "SUB": [{
+                    "name": "off",
+                    "time": 1,
+                    "frames": [0],
+                    "repeat": false
+                }, {
+                    "name": "on",
+                    "time": 1,
+                    "frames": [1],
+                    "repeat": false
+                }]
+            }, {
+                "sheet": "ground",
+                "size": {
+                    "x": 24,
+                    "y": 24,
+                    "z": 0
+                },
+                "frames": [0],
+                "SUB": [{
+                    "name": "off"
+                }, {
+                    "name": "on"
+                }]
+            }]
+        }
+    }
+}

@@ -1,0 +1,8 @@
+<app-input-with-button
+	[key]="key"
+	[description]="attribute?.description"
+	[val]="settings?.[key]"
+	(buttonClick)="loadMap()"
+	(valChange)="setSetting(key, $event)"
+	icon="open_in_new"
+></app-input-with-button>

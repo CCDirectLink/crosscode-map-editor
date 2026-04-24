@@ -1,7 +1,7 @@
 <app-input-with-button
 	[description]="attribute?.description ?? ''"
 	[key]="key"
-	[model]="settings.desType"
+	[val]="settings.desType"
 	(buttonClick)="open()"
-	(modelChange)="setSetting(key, $event)"
+	(valChange)="setSetting(key, $event)"
 ></app-input-with-button>

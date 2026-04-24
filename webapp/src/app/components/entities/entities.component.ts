@@ -27,8 +27,10 @@ export class EntitiesComponent {
 	entity?: CCEntity;
 	map?: CCMap;
 	filter = '';
+	excludeFilter = '';
 	hideFilter = false;
-	
+	private lastShowSizeWidget = false;
+
 	constructor() {
 		const events = this.events;
 		const loader = inject(MapLoaderService);
@@ -41,10 +43,16 @@ export class EntitiesComponent {
 			this.entity = e;
 			this.loadSettings(e);
 		});
+		events.updateEntitySettings.subscribe(e => {
+			if (e === this.entity && this.shouldShowSizeWidget(e) !== this.lastShowSizeWidget) {
+				this.loadSettings(e);
+			}
+		});
 		events.is3D.subscribe(is3d => this.hideFilter = is3d);
 		loader.tileMap.subscribe(map => {
 			this.map = map;
 			this.filter = '';
+			this.excludeFilter = '';
 		});
 	}
 	
@@ -60,7 +68,8 @@ export class EntitiesComponent {
 		}
 		
 		const def = entity.getScaleSettings();
-		if (def && (def.scalableX || def.scalableY)) {
+		this.lastShowSizeWidget = this.shouldShowSizeWidget(entity);
+		if (this.lastShowSizeWidget) {
 			const vec2Widget: Vec2WidgetComponent = this.generateWidget(
 				entity,
 				'size', {
@@ -79,9 +88,14 @@ export class EntitiesComponent {
 	}
 	
 	updateFilter() {
-		this.events.filterEntity.next(this.filter);
+		this.events.filterEntity.next({ show: this.filter, hide: this.excludeFilter });
 	}
 	
+	private shouldShowSizeWidget(entity: CCEntity): boolean {
+		const def = entity.getScaleSettings();
+		return !!(def && (def.scalableX || def.scalableY));
+	}
+
 	private generateWidget(entity: CCEntity, key: string, val: AttributeValue, ref: ViewContainerRef) {
 		const componentRef = ref.createComponent(this.widgetRegistry.getWidget(val.type));
 		const instance = componentRef.instance as AbstractWidget;

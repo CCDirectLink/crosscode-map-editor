@@ -51,16 +51,17 @@
 										>
 									</mat-form-field>
 								</div>
-							} @if (showGlobalCheckbox) {
-							<mat-checkbox
-								
-								color="primary"
-								[(ngModel)]="global"
-								(ngModelChange)="globalChange.emit($event)"
-							>
-								use GLOBAL
-							</mat-checkbox>
-						}
+							}
+							@if (showGlobalCheckbox) {
+								<mat-checkbox
+									
+									color="primary"
+									[(ngModel)]="global"
+									(ngModelChange)="globalChange.emit($event)"
+								>
+									use GLOBAL
+								</mat-checkbox>
+							}
 						</app-image-select-list>
 						<div class="flex-auto grid justify-center items-center">
 							@if (loading) {
