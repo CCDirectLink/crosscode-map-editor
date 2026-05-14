@@ -34,5 +34,7 @@ export class GlobalEventsService {
 	babylonLoading = new BehaviorSubject<boolean>(false);
 	is3D = new BehaviorSubject<boolean>(false);
 	
+	renderLights = new BehaviorSubject(false);
+	
 	constructor() {}
 }

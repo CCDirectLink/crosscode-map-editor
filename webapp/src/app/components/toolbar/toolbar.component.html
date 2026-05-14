@@ -55,6 +55,17 @@
 					Ingame Preview
 				</mat-checkbox>
 			</div>
+			
+			<div>
+				<mat-checkbox
+					[checked]="(events.renderLights | async) ?? false"
+					[disabled]="is3d"
+					color="primary"
+					(change)="events.renderLights.next($event.checked)"
+				>
+					Render lights
+				</mat-checkbox>
+			</div>
 		</div>
 	</div>
 	

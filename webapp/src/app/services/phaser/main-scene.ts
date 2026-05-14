@@ -10,19 +10,21 @@ import { TileDrawer } from './tilemap/tile-drawer';
 import { LayerParallax } from './layer-parallax';
 import { IngamePreview } from './ingame-preview';
 import { EntityGrid } from './entity-grid';
+import { Lightmap } from './lightmap';
 
 export class MainScene extends Phaser.Scene {
 	
 	private sub?: Subscription;
 	
 	constructor() {
-		super({key: 'main'});
+		super({ key: 'main' });
 	}
 	
 	preload() {
 		
 		this.load.image('pixel', 'assets/pixel.png');
 		this.load.image('ingame', 'assets/ingame.png');
+		
 		
 		this.load.crossOrigin = 'anonymous';
 		
@@ -79,6 +81,9 @@ export class MainScene extends Phaser.Scene {
 		
 		const grid = new EntityGrid(this);
 		this.add.existing(grid);
+		
+		const lightmap = new Lightmap(this);
+		this.add.existing(lightmap);
 		
 		Globals.globalEventsService.currentView.subscribe(view => {
 			tileDrawer.setActive(false);
