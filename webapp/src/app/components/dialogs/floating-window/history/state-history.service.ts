@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 import { GlobalEventsService } from '../../../../services/global-events.service';
@@ -15,15 +15,15 @@ export interface HistoryState {
 }
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class StateHistoryService {
 	private readonly eventsService = inject(GlobalEventsService);
-
+	
 	maxStates = 100;
 	
 	states = new BehaviorSubject<HistoryState[]>([]);
-	selectedState = new BehaviorSubject<HistoryStateContainer>({state: undefined});
+	selectedState = new BehaviorSubject<HistoryStateContainer>({ state: undefined });
 	
 	init(state: HistoryState) {
 		this.selectedState.value.state = state;
@@ -34,19 +34,19 @@ export class StateHistoryService {
 		icon: string;
 		name: string;
 		json?: string;
-	}, ignoreCheck = false) {
+	}, ignoreCheck = false): boolean {
 		if (!state.json) {
 			const newState = Globals.map.exportMap();
 			const stateJson = JSON.stringify(newState);
 			if (!ignoreCheck) {
 				const val = this.selectedState.getValue();
 				if (val.state && val.state.json === stateJson) {
-					return;
+					return false;
 				}
 			}
 			state.json = stateJson;
 		}
-
+		
 		this.eventsService.hasUnsavedChanges.next(true);
 		
 		const states = this.states.getValue();
@@ -59,6 +59,7 @@ export class StateHistoryService {
 		}
 		states.push(selected.state);
 		this.states.next(states);
+		return true;
 	}
 	
 	undo() {
@@ -69,7 +70,7 @@ export class StateHistoryService {
 			return;
 		}
 		i--;
-		this.selectedState.next({state: states[i]});
+		this.selectedState.next({ state: states[i] });
 	}
 	
 	redo() {
@@ -80,6 +81,6 @@ export class StateHistoryService {
 			return;
 		}
 		i++;
-		this.selectedState.next({state: states[i]});
+		this.selectedState.next({ state: states[i] });
 	}
 }

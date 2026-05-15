@@ -26,7 +26,7 @@ export class TileDrawer extends BaseObject {
 	private visibilityKey!: Phaser.Input.Keyboard.Key;
 	private shiftKey!: Phaser.Input.Keyboard.Key;
 	private fillKey!: Phaser.Input.Keyboard.Key;
-	private lastDraw: Point = {x: -1, y: -1};
+	private lastDraw: Point = { x: -1, y: -1 };
 	
 	private dirty = false;
 	
@@ -75,8 +75,8 @@ export class TileDrawer extends BaseObject {
 		// draw tiles
 		// trigger only when mouse is over canvas element (the renderer), avoids triggering when interacting with ui
 		if (pointer.leftButtonDown() && pointer.downElement?.nodeName === 'CANVAS' && this.layer) {
-			const finalPos = {x: 0, y: 0};
-			const startPos = {x: 0, y: 0};
+			const finalPos = { x: 0, y: 0 };
+			const startPos = { x: 0, y: 0 };
 			
 			// skip drawing if last frame was the same
 			if (this.lastDraw.x === p.x && this.lastDraw.y === p.y) {
@@ -133,7 +133,7 @@ export class TileDrawer extends BaseObject {
 				this.fill();
 			}
 		};
-		this.addKeybinding({event: 'up', fun: fill, emitter: this.fillKey});
+		this.addKeybinding({ event: 'up', fun: fill, emitter: this.fillKey });
 		
 		
 		const leftUp = (pointer: Phaser.Input.Pointer) => {
@@ -152,13 +152,10 @@ export class TileDrawer extends BaseObject {
 			}
 			this.dirty = false;
 			
-			Globals.stateHistoryService.saveState({
-				name: 'Tile Drawer',
-				icon: 'create',
-			});
+			this.updateState('tile-drawer', 'create');
 		};
-		this.addKeybinding({event: 'pointerup', fun: leftUp, emitter: this.scene.input});
-		this.addKeybinding({event: 'pointerupoutside', fun: leftUp, emitter: this.scene.input});
+		this.addKeybinding({ event: 'pointerup', fun: leftUp, emitter: this.scene.input });
+		this.addKeybinding({ event: 'pointerupoutside', fun: leftUp, emitter: this.scene.input });
 		
 		const transparent = () => {
 			if (!Helper.isInputFocused()) {
@@ -166,14 +163,14 @@ export class TileDrawer extends BaseObject {
 				this.setLayerAlpha();
 			}
 		};
-		this.addKeybinding({event: 'up', fun: transparent, emitter: this.transparentKey});
+		this.addKeybinding({ event: 'up', fun: transparent, emitter: this.transparentKey });
 		
 		const visible = () => {
 			if (!Helper.isInputFocused()) {
 				Globals.globalEventsService.toggleVisibility.next();
 			}
 		};
-		this.addKeybinding({event: 'up', fun: visible, emitter: this.visibilityKey});
+		this.addKeybinding({ event: 'up', fun: visible, emitter: this.visibilityKey });
 	}
 	
 	private setLayerAlpha() {
@@ -198,11 +195,18 @@ export class TileDrawer extends BaseObject {
 		
 		if (this.selectedTiles.length > 0) {
 			Filler.fill(this.layer, this.selectedTiles[0].id, p);
-			Globals.stateHistoryService.saveState({
-				name: 'fill',
-				icon: 'format_color_fill'
-			});
+			this.updateState('fill', 'format_color_fill');
 		}
 		
+	}
+	
+	private updateState(name: string, icon: string) {
+		const stateAdded = Globals.stateHistoryService.saveState({
+			name: name,
+			icon: icon,
+		});
+		if (stateAdded && this.layer?.details.type === 'Light') {
+			Globals.globalEventsService.lightsChanged.next();
+		}
 	}
 }
