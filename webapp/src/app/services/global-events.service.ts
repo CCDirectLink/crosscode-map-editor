@@ -7,7 +7,7 @@ import { type GridSettings } from '../components/toolbar/grid-menu/grid-menu.com
 import { Globals } from './globals';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class GlobalEventsService {
 	currentView = new BehaviorSubject<EditorView | undefined>(undefined);
@@ -35,6 +35,7 @@ export class GlobalEventsService {
 	is3D = new BehaviorSubject<boolean>(false);
 	
 	renderLights = new BehaviorSubject(false);
+	lightsChanged = new Subject<void>();
 	
 	constructor() {}
 }
