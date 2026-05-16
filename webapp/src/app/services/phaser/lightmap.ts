@@ -115,7 +115,7 @@ export class Lightmap extends Phaser.GameObjects.GameObject {
 			...weatherTypes.NONE,
 			...weatherTypes[map.attributes.weather],
 		};
-		this.renderTexture.alpha = 1 - weatherType.lightMapDarkness;
+		this.renderTexture.alpha = weatherType.lightMapDarkness;
 		
 		const glowColor = Phaser.Display.Color.HexStringToColor(weatherType.glowColor).color;
 		const tileSize = Globals.TILE_SIZE;
