@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Fixed
+- Improved NPC rendering, positions should now match the game exactly [#130](https://github.com/CCDirectLink/crosscode-map-editor/issues/130), [#132](https://github.com/CCDirectLink/crosscode-map-editor/issues/132)
+
 ## [2.4.1] 2026-05-16
 ### Fixed
 - Fixed lightmap rendering using inverted black values
