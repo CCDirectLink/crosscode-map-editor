@@ -3,9 +3,9 @@ import { Point, Point3 } from '../../../../models/cross-code-map';
 import { Helper } from '../../helper';
 import { DefaultEntity } from './default-entity';
 import { Label } from '../../../../models/events';
-import { Anims, flattenSUBs, IfThen, prepareSheet, SubJsonParam } from '../../sheet-parser';
+import { Anims, IfThen, prepareSheet, SubJsonParam } from '../../sheet-parser';
 import { getNPCTemplates } from './npc-templates';
-import { Globals } from '../../../globals';
+import { resolveDirIndex } from './direction';
 
 export interface CharacterSettings {
 	jsonINSTANCE?: string;
@@ -135,11 +135,10 @@ export interface Analyzable {
 	text?: Label;
 	active?: boolean;
 }
-// TODO: use DefaultEntity functions for displaying sprites
 export class NPC extends DefaultEntity {
-	
+
 	protected override async setupType(settings: NpcAttributes) {
-		
+
 		let charSettings = await Helper.getJsonPromise(this.getPath('data/characters/', settings.characterName)) as CharacterSettings | undefined;
 		if (!charSettings) {
 			console.warn(`no char settings found for character name: [${settings.characterName}]`);
@@ -153,96 +152,40 @@ export class NPC extends DefaultEntity {
 				throw new Error('no anim sheet found for: ' + charSettings.animSheet + ' in path: ' + path);
 			}
 		}
-		
-		charSettings.jsonTEMPLATES = getNPCTemplates();
+
+		charSettings.jsonTEMPLATES = await getNPCTemplates();
 		charSettings = prepareSheet(charSettings);
 		delete charSettings.jsonTEMPLATES;
-		
-		if (typeof charSettings.animSheet === 'string') {
-			throw new Error('should never be string');
+
+		const animSheet = charSettings.animSheet;
+		if (!animSheet || typeof animSheet === 'string' || !Array.isArray(animSheet.SUB)) {
+			console.warn(`animSheet broken for character: [${settings.characterName}]`);
+			this.generateErrorImage();
+			return;
 		}
-		
+
 		const state = settings.npcStates?.[0] ?? {};
-		const config = state.config ?? 'normal';
-		const face = state.face || 'SOUTH';
-		const walkAnims = charSettings.configs?.[config]?.walkAnims ?? 'normal';
-		const animSet = charSettings.walkAnimSet?.[walkAnims] || Object.values(charSettings.walkAnimSet ?? {})[0];
-		
-		const usedSet = animSet?.['idle'] || animSet?.['move'] || Object.values(animSet ?? {})[0];
-		
-		const subName = usedSet as string;
-		
-		
-		if (!Array.isArray(charSettings.animSheet?.SUB)) {
-			console.warn(`animSheet is not an array, abort: [${settings.characterName}]`);
-			this.generateNoImageType();
-			return;
+		const config = state.config || 'normal';
+		const face = state.face || 'NORTH';
+
+		const walkAnims = charSettings.configs?.[config]?.walkAnims ?? charSettings.walkAnims ?? 'normal';
+		const animSet = charSettings.walkAnimSet?.[walkAnims] ?? Object.values(charSettings.walkAnimSet ?? {})[0];
+		const animName = (animSet?.['idle'] ?? animSet?.['move'] ?? Object.values(animSet ?? {})[0]) as string | undefined;
+
+		const baseSize: Point3 = charSettings.size ?? {x: 12, y: 12, z: 28};
+
+		const shadowSize = charSettings.configs?.[config]?.shadow ?? charSettings.shadow ?? 16;
+		if (shadowSize > 0) {
+			animSheet.shadow = {size: shadowSize, scaleY: charSettings.shadowScaleY};
 		}
-		const subs = flattenSUBs(charSettings.animSheet!, {});
-		
-		let sub = subs.find(v => v.name === subName);
-		if (!sub) {
-			sub = subs[0];
-		}
-		const sheet = sub.namedSheets?.[sub.sheet as string] ?? sub.sheet;
-		if (!sheet || typeof sheet === 'string') {
-			this.generateErrorImage();
-			return;
-		}
-		const exists = await Helper.loadTexture(sheet?.src, this.scene);
-		
-		if (!exists) {
-			this.generateErrorImage();
-			return;
-		}
-		
-		let x = sheet.offX ?? 0;
-		let y = sheet.offY ?? 0;
-		let flipX = false;
-		
-		let dirIndex = 0;
-		const subDirs = typeof sub.dirs === 'string' ? parseInt(sub.dirs, 10) : sub.dirs;
-		if (subDirs === 8) {
-			dirIndex = FACE8[face];
-		} else if (subDirs === 4) {
-			dirIndex = FACE4[face as keyof typeof FACE4];
-		}
-		
-		const img = Globals.scene.textures.get(sheet.src!).getSourceImage();
-		const xCount = sheet.xCount ?? img.width / sheet.width;
-		
-		// flip x with some serious type checking
-		if (sub.flipX) {
-			if (typeof sub.flipX === 'boolean') {
-				flipX = sub.flipX;
-			} else {
-				const flipXNum = sub.flipX?.[dirIndex];
-				if (typeof flipXNum === 'number') {
-					flipX = !!flipXNum;
-				}
-			}
-		}
-		
-		const tileOffsets = sub.tileOffsets;
-		const idleFrame = sub.frames?.[0] ?? 0;
-		const offset = (tileOffsets?.[dirIndex] ?? 0) + idleFrame;
-		
-		x += (offset % xCount) * sheet.width;
-		y += Math.floor(offset / xCount) * sheet.height;
-		
-		this.entitySettings.sheets = {
-			fix: [{
-				gfx: sheet?.src,
-				x: x,
-				y: y,
-				w: sheet?.width ?? 16,
-				h: sheet?.height ?? 16,
-				flipX: flipX,
-				flipY: false
-			}]
-		};
-		this.entitySettings.baseSize = {x: 12, y: 12, z: 28};
-		this.updateSettings();
+
+		await this.applyAnims({
+			anims: animSheet,
+			animName: animName,
+			label: settings.characterName,
+			baseSize: baseSize,
+			dirIndex: resolveDirIndex(animSheet, face, animName),
+		});
 	}
 	
 	private getPath(prefix: string, path?: string): string {

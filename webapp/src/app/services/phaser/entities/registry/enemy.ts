@@ -5,6 +5,7 @@ import { Fix } from '../cc-entity';
 import { Helper } from '../../helper';
 import { Anims, AnimSheet, Effect, flattenSUBs } from '../../sheet-parser';
 import { DefaultEntity } from './default-entity';
+import { resolveDirIndex } from './direction';
 
 interface MultiEntityAnim extends Anims {
 	anims: Record<string, EntityAnim>;
@@ -25,48 +26,6 @@ interface EntityPart {
 	anims: Anims;
 	pos: Point3;
 	size: Point3;
-}
-
-// Unit face vectors (screen coords: +y points down, so NORTH is -y). Mirrors CC's FACE8.
-const FACE_VECTORS: Record<string, { x: number; y: number }> = {
-	NORTH: { x: 0, y: -1 },
-	NORTH_EAST: { x: 1, y: -1 },
-	EAST: { x: 1, y: 0 },
-	SOUTH_EAST: { x: 1, y: 1 },
-	SOUTH: { x: 0, y: 1 },
-	SOUTH_WEST: { x: -1, y: 1 },
-	WEST: { x: -1, y: 0 },
-	NORTH_WEST: { x: -1, y: -1 },
-};
-
-// Port of ig.getDirectionIndex — picks a tileOffsets slot from a face vector + dir count.
-function getDirectionIndex(faceX: number, faceY: number, numDirs: number): number {
-	switch (numDirs) {
-		case 1:
-			return 0;
-		case 2:
-			return faceX >= 0 ? 0 : 1;
-		case 4:
-			return Math.abs(faceY) > Math.abs(faceX)
-				? (faceY < 0 ? 0 : 2)
-				: (faceX > 0 ? 1 : 3);
-		case 6:
-			return faceX >= 0
-				? (faceY <= 0
-					? 0 + (57 * faceX > -100 * faceY ? 1 : 0)
-					: 1 + (57 * faceX < 100 * faceY ? 1 : 0))
-				: (faceY <= 0
-					? 4 + (-57 * faceX < -100 * faceY ? 1 : 0)
-					: 3 + (-57 * faceX > 100 * faceY ? 1 : 0));
-		case 8:
-			return Math.abs(faceY) > 2.414 * Math.abs(faceX)
-				? (faceY < 0 ? 0 : 4)
-				: Math.abs(faceX) > 2.414 * Math.abs(faceY)
-					? (faceX > 0 ? 2 : 6)
-					: (faceX > 0 ? (faceY < 0 ? 1 : 3) : (faceY > 0 ? 5 : 7));
-		default:
-			return Math.floor(numDirs / 2);
-	}
 }
 
 export interface EnemyAttributes {
@@ -140,27 +99,8 @@ export class Enemy extends DefaultEntity {
 			animName: 'idle',
 			label: settings.enemyInfo.type,
 			baseSize: enemyData.size,
-			dirIndex: this.resolveDirIndex(rawSheet, settings.enemyInfo.face),
+			dirIndex: resolveDirIndex(rawSheet, settings.enemyInfo.face),
 		});
-	}
-
-	private resolveDirIndex(anims: Anims, face: string | undefined): number | undefined {
-		// Find the numDirs used by this anim tree: first tileOffsets array encountered.
-		let numDirs = 0;
-		for (const leaf of flattenSUBs(anims, {})) {
-			if (Array.isArray(leaf.tileOffsets) && leaf.tileOffsets.length > 0) {
-				numDirs = leaf.tileOffsets.length;
-				break;
-			}
-		}
-		if (!numDirs) {
-			return undefined;
-		}
-		const vec = face ? FACE_VECTORS[face] : undefined;
-		if (!vec) {
-			return undefined;
-		}
-		return getDirectionIndex(vec.x, vec.y, numDirs);
 	}
 
 	private renderMultiEntity(animation: MultiEntityAnim, baseSize: Point3): boolean {
