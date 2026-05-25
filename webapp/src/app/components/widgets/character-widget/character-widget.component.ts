@@ -121,7 +121,10 @@ export class CharacterWidgetComponent extends OverlayWidget {
 			const prop: typeof this.props[0] = {
 				prefix: char.split('.')[0],
 				full: char,
-				img: await this.generateImage<NpcAttributes>({characterName: char}, 'NPC')
+				img: await this.generateImage<NpcAttributes>({
+					characterName: char,
+					npcStates: [{face: 'SOUTH'}]
+				}, 'NPC')
 			};
 			return prop;
 		}));

@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Fixed
+- Character selector previews now render NPCs facing south.
+
 ## [2.4.2] 2026-05-23
 ### Fixed
 - Improved NPC rendering, positions should now match the game exactly [#130](https://github.com/CCDirectLink/crosscode-map-editor/issues/130), [#132](https://github.com/CCDirectLink/crosscode-map-editor/issues/132)
