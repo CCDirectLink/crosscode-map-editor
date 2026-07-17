@@ -488,6 +488,11 @@
 		"drawBox": true,
 		"scalableX": true,
 		"scalableY": true,
+		"scalableStep": 2,
+		"size": {
+			"x": 4,
+			"y": 4
+		},
 		"boxColor": "rgba(0,255,255, 0.5)",
 		"frontColor": "rgba(0,120,120, 0.8)"
 	},
