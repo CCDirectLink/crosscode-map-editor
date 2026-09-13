@@ -308,9 +308,6 @@ export class EntityManager extends BaseObject {
 		if (!map.entities) {
 			return;
 		}
-
-		// Preload entities since we need it for loadJsonMergedSync in the entities' constructor
-		await Globals.jsonLoader.loadJsonMerged('entities.json');
 		
 		// concurrent entity loading
 		const promises: Promise<any>[] = [];
@@ -377,6 +374,10 @@ export class EntityManager extends BaseObject {
 		const entityClass = Globals.entityRegistry.getEntity(entity.type);
 		console.assert(this.map, 'I dont think map is ever undefined, but if it ever happens check the TODO on private map?: CCMap;');
 		const map = this.map!;
+
+		// Preload entities since we need it for loadJsonMergedSync in the entity's constructor
+		await Globals.jsonLoader.loadJsonMerged('entities.json');
+
 		const ccEntity = new entityClass(this.scene, map, entity.x, entity.y, entity.type);
 		if (!entity.settings.mapId) {
 			entity.settings.mapId = map.getUniqueMapid();
