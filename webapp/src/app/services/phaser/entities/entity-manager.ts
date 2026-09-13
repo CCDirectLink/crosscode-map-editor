@@ -317,7 +317,14 @@ export class EntityManager extends BaseObject {
 		}
 
 		const newEntities = await Promise.all(promises);
-		entities.unshift(...newEntities); //Add at the start of the array, in case a user somehow managed to add a new entity while the map is loading
+
+		if (entities === this._entities) {
+			//Add at the start of the array, in case a user somehow managed to add a new entity while the map is loading
+			entities.unshift(...newEntities); 
+		} else {
+			// Someone called `this.initialize` before we finished loading map. Destroy everything.
+			newEntities.forEach(e => e.destroy()); 
+		}
 	}
 	
 	
