@@ -314,7 +314,15 @@ export class EntityManager extends BaseObject {
 		for (const entity of map.entities) {
 			promises.push(this.generateEntity(entity));
 		}
-		await Promise.all(promises);
+
+		const newEntities = await Promise.allSettled(promises);
+		for (const newEntity of newEntities) {
+			if (newEntity.status === 'fulfilled') {
+				this._entities.push(newEntity.value);
+			} else {
+				console.error('Error while generating entity: ', newEntity.reason);
+			}
+		}
 	}
 	
 	
@@ -348,6 +356,7 @@ export class EntityManager extends BaseObject {
 		// TODO: better generate level from collision tiles
 		entity.level = this.map.masterLevel;
 		const e = await this.generateEntity(entity);
+		this._entities.push(e);
 		
 		// entity manager is activated
 		e.setActive(true);
@@ -372,7 +381,6 @@ export class EntityManager extends BaseObject {
 		await ccEntity.setSettings(entity.settings);
 		ccEntity.level = entity.level;
 		ccEntity.setActive(false);
-		this._entities.push(ccEntity);
 		return ccEntity;
 	}
 	
@@ -429,6 +437,7 @@ export class EntityManager extends BaseObject {
 			Vec2.sub(e, offset);
 			Vec2.add(e, mousePos);
 			const newEntity = await this.generateEntity(e);
+			this._entities.push(newEntity);
 			newEntity.setActive(true);
 			this.selectEntity(newEntity, entities.length > 1);
 		}
