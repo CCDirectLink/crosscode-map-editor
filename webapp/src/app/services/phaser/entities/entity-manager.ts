@@ -308,6 +308,9 @@ export class EntityManager extends BaseObject {
 		if (!map.entities) {
 			return;
 		}
+
+		// Preload entities since we need it for loadJsonMergedSync in the entities' constructor
+		await Globals.jsonLoader.loadJsonMerged('entities.json');
 		
 		// concurrent entity loading
 		const promises: Promise<any>[] = [];
