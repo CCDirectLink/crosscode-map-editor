@@ -315,14 +315,7 @@ export class EntityManager extends BaseObject {
 			promises.push(this.generateEntity(entity));
 		}
 
-		const newEntities = await Promise.allSettled(promises);
-		for (const newEntity of newEntities) {
-			if (newEntity.status === 'fulfilled') {
-				this._entities.push(newEntity.value);
-			} else {
-				console.error('Error while generating entity: ', newEntity.reason);
-			}
-		}
+		this._entities = await Promise.all(promises);
 	}
 	
 	
