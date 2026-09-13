@@ -304,6 +304,7 @@ export class EntityManager extends BaseObject {
 			this._entities.forEach(e => e.destroy());
 		}
 		this._entities = [];
+		const entities = this._entities; // We need to store a reference to the array here to prevent race conditions if this method is called concurrently
 		
 		if (!map.entities) {
 			return;
@@ -315,7 +316,8 @@ export class EntityManager extends BaseObject {
 			promises.push(this.generateEntity(entity));
 		}
 
-		this._entities = await Promise.all(promises);
+		const newEntities = await Promise.all(promises);
+		entities.unshift(...newEntities); //Add at the start of the array, in case a user somehow managed to add a new entity while the map is loading
 	}
 	
 	

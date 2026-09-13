@@ -16,7 +16,7 @@ class SimpleServiceMock {
 	}
 }
 
-// TODO: fix map loading, order of entities doesn't matter
+// TODO: fix map loading, order of entities does matter
 describe('Map Loading', () => {
 	let component: PhaserComponent;
 	let fixture: ComponentFixture<PhaserComponent>;
