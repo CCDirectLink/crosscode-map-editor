@@ -304,17 +304,27 @@ export class EntityManager extends BaseObject {
 			this._entities.forEach(e => e.destroy());
 		}
 		this._entities = [];
+		const entities = this._entities; // We need to store a reference to the array here to prevent race conditions if this method is called concurrently
 		
 		if (!map.entities) {
 			return;
 		}
 		
 		// concurrent entity loading
-		const promises: Promise<any>[] = [];
+		const promises: Promise<CCEntity>[] = [];
 		for (const entity of map.entities) {
 			promises.push(this.generateEntity(entity));
 		}
-		await Promise.all(promises);
+
+		const newEntities = await Promise.all(promises);
+
+		if (entities === this._entities) {
+			//Add at the start of the array, in case a user somehow managed to add a new entity while the map is loading
+			entities.unshift(...newEntities); 
+		} else {
+			// Someone called `this.initialize` before we finished loading map. Destroy everything.
+			newEntities.forEach(e => e.destroy()); 
+		}
 	}
 	
 	
@@ -348,6 +358,7 @@ export class EntityManager extends BaseObject {
 		// TODO: better generate level from collision tiles
 		entity.level = this.map.masterLevel;
 		const e = await this.generateEntity(entity);
+		this._entities.push(e);
 		
 		// entity manager is activated
 		e.setActive(true);
@@ -365,6 +376,10 @@ export class EntityManager extends BaseObject {
 		const entityClass = Globals.entityRegistry.getEntity(entity.type);
 		console.assert(this.map, 'I dont think map is ever undefined, but if it ever happens check the TODO on private map?: CCMap;');
 		const map = this.map!;
+
+		// Preload entities since we need it for loadJsonMergedSync in the entity's constructor
+		await Globals.jsonLoader.loadJsonMerged('entities.json');
+
 		const ccEntity = new entityClass(this.scene, map, entity.x, entity.y, entity.type);
 		if (!entity.settings.mapId) {
 			entity.settings.mapId = map.getUniqueMapid();
@@ -372,7 +387,6 @@ export class EntityManager extends BaseObject {
 		await ccEntity.setSettings(entity.settings);
 		ccEntity.level = entity.level;
 		ccEntity.setActive(false);
-		this._entities.push(ccEntity);
 		return ccEntity;
 	}
 	
@@ -429,6 +443,7 @@ export class EntityManager extends BaseObject {
 			Vec2.sub(e, offset);
 			Vec2.add(e, mousePos);
 			const newEntity = await this.generateEntity(e);
+			this._entities.push(newEntity);
 			newEntity.setActive(true);
 			this.selectEntity(newEntity, entities.length > 1);
 		}
