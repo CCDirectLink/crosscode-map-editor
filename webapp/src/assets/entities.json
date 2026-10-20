@@ -2231,6 +2231,105 @@
 			]
 		}
 	},
+	"FerroSpot": {
+		"spawnable": true,
+		"attributes": {
+			"source": {
+				"type": "Boolean",
+				"description": "If true: is source of Ferro"
+			},
+			"variable": {
+				"type": "VarName",
+				"info": "Variable set to true when spot is reached by ferro element. When source: Only spawn if variable is set to true.",
+				"optional": true
+			},
+			"activeCondition": {
+				"type": "VarCondition",
+				"info": "Condition for FerroSpot to be active. Source spot disabled: will temporary disable all spots but keep reach state. Other spots disabled: will set reached to false ",
+				"popup": true
+			}
+		},
+		"size": {
+			"x": 32,
+			"y": 32,
+			"z": 24
+		},
+		"anims": {
+			"namedSheets": {
+				"floor": {
+					"src": "media/entity/objects/ferro.png",
+					"width": 32,
+					"height": 32,
+					"xCount": 3,
+					"offX": 0,
+					"offY": 280
+				},
+				"glow": {
+					"src": "media/entity/objects/ferro.png",
+					"width": 24,
+					"height": 24,
+					"xCount": 2,
+					"offX": 96,
+					"offY": 328
+				}
+			},
+			"repeat": true,
+			"SUB": [{
+				"sheet": "floor",
+				"frames": [0],
+				"time": 0.2,
+				"tileOffset": 0,
+				"size": {
+					"x": 32,
+					"y": 32,
+					"z": 0
+				},
+				"wallY": 0,
+				"SUB": [{
+					"name": "off"
+				}, {
+					"name": "on",
+					"tileOffset": 2
+				}, {
+					"name": "respawn",
+					"tileOffset": 2
+				}, {
+					"name": "standby",
+					"tileOffset": 1
+				}]
+			}, {
+				"sheet": "glow",
+				"frames": [0],
+				"time": 0.2,
+				"tileOffset": 0,
+				"renderMode": "lighter",
+				"SUB": [{
+					"name": "on",
+					"tileOffset": 0,
+					"offset": {
+						"y": -6
+					},
+					"size": {
+						"x": 24,
+						"y": 0,
+						"z": 24
+					}
+				}, {
+					"name": "on",
+					"tileOffset": 1,
+					"offset": {
+						"y": -16
+					},
+					"size": {
+						"x": 24,
+						"y": 8,
+						"z": 16
+					},
+					"wallY": 1
+				}]
+			}]
+		}
+	},
 	"BounceBlock": {
 		"spawnable": true,
 		"attributes": {
