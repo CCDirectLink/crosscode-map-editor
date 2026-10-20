@@ -2330,6 +2330,116 @@
 			}]
 		}
 	},
+	"FerroRespawner": {
+		"spawnable": true,
+		"attributes": {
+			"source": {
+				"type": "Entity",
+				"info": "FerroSpot connected to line",
+				"optional": true
+			}
+		},
+		"size": {
+			"x": 16,
+			"y": 16,
+			"z": 24
+		},
+		"anims": {
+			"namedSheets": {
+				"floor": {
+					"src": "media/entity/objects/ferro.png",
+					"width": 16,
+					"height": 16,
+					"xCount": 3,
+					"offX": 0,
+					"offY": 312
+				},
+				"pole": {
+					"src": "media/entity/objects/ferro.png",
+					"width": 16,
+					"height": 24,
+					"xCount": 6,
+					"offX": 0,
+					"offY": 328
+				}
+			},
+			"repeat": true,
+			"SUB": [{
+				"sheet": "floor",
+				"frames": [0],
+				"time": 0.033,
+				"tileOffset": 0,
+				"size": {
+					"x": 16,
+					"y": 16,
+					"z": 0
+				},
+				"wallY": 0,
+				"SUB": [{
+					"name": "off"
+				}, {
+					"name": "on",
+					"tileOffset": 2
+				}, {
+					"name": "poleUp",
+					"tileOffset": 2
+				}, {
+					"name": "poleDown",
+					"tileOffset": 2
+				}, {
+					"name": "pole0",
+					"tileOffset": 1
+				}, {
+					"name": "pole1",
+					"tileOffset": 1
+				}, {
+					"name": "pole2",
+					"tileOffset": 1
+				}, {
+					"name": "pole3",
+					"tileOffset": 2
+				}, {
+					"name": "respawn",
+					"tileOffset": 1
+				}]
+			}, {
+				"sheet": "pole",
+				"time": 0.033,
+				"tileOffset": 0,
+				"size": {
+					"x": 16,
+					"y": 0,
+					"z": 24
+				},
+				"repeat": false,
+				"offset": {
+					"y": -4
+				},
+				"SUB": [{
+					"name": "poleUp",
+					"frames": [5, 4, 3, 2, 1]
+				}, {
+					"name": "poleDown",
+					"frames": [3, 4, 5]
+				}, {
+					"name": "pole0",
+					"frames": [0]
+				}, {
+					"name": "pole1",
+					"frames": [1]
+				}, {
+					"name": "pole2",
+					"frames": [2]
+				}, {
+					"name": "pole3",
+					"frames": [3]
+				}, {
+					"name": "respawn",
+					"frames": [0, 1, 2]
+				}]
+			}]
+		}
+	},
 	"BounceBlock": {
 		"spawnable": true,
 		"attributes": {
