@@ -2440,6 +2440,37 @@
 			}]
 		}
 	},
+	"FerroLine": {
+		"spawnable": true,
+		"attributes": {
+			"spot": {
+				"type": "Entity",
+				"info": "FerroSpot connected to line",
+				"optional": true
+			}
+		},
+		"scalableX": true,
+		"scalableY": true,
+		"scalableStep": 8,
+		"size": {
+			"x": 8,
+			"y": 8,
+			"z": 0
+		},
+		"anims": {
+			"repeat": true,
+			"sheet": {
+				"src": "media/entity/objects/ferro.png",
+				"width": 8,
+				"height": 8,
+				"xCount": 4,
+				"offX": 96,
+				"offY": 280
+			},
+			"frames": [0],
+			"size": {"x": 8, "y": 8, "z": 0}
+		}
+	},
 	"BounceBlock": {
 		"spawnable": true,
 		"attributes": {
