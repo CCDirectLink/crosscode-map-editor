@@ -2231,6 +2231,246 @@
 			]
 		}
 	},
+	"FerroSpot": {
+		"spawnable": true,
+		"attributes": {
+			"source": {
+				"type": "Boolean",
+				"description": "If true: is source of Ferro"
+			},
+			"variable": {
+				"type": "VarName",
+				"info": "Variable set to true when spot is reached by ferro element. When source: Only spawn if variable is set to true.",
+				"optional": true
+			},
+			"activeCondition": {
+				"type": "VarCondition",
+				"info": "Condition for FerroSpot to be active. Source spot disabled: will temporary disable all spots but keep reach state. Other spots disabled: will set reached to false ",
+				"popup": true
+			}
+		},
+		"size": {
+			"x": 32,
+			"y": 32,
+			"z": 24
+		},
+		"anims": {
+			"namedSheets": {
+				"floor": {
+					"src": "media/entity/objects/ferro.png",
+					"width": 32,
+					"height": 32,
+					"xCount": 3,
+					"offX": 0,
+					"offY": 280
+				},
+				"glow": {
+					"src": "media/entity/objects/ferro.png",
+					"width": 24,
+					"height": 24,
+					"xCount": 2,
+					"offX": 96,
+					"offY": 328
+				}
+			},
+			"repeat": true,
+			"SUB": [{
+				"sheet": "floor",
+				"frames": [0],
+				"time": 0.2,
+				"tileOffset": 0,
+				"size": {
+					"x": 32,
+					"y": 32,
+					"z": 0
+				},
+				"wallY": 0,
+				"SUB": [{
+					"name": "off"
+				}, {
+					"name": "on",
+					"tileOffset": 2
+				}, {
+					"name": "respawn",
+					"tileOffset": 2
+				}, {
+					"name": "standby",
+					"tileOffset": 1
+				}]
+			}, {
+				"sheet": "glow",
+				"frames": [0],
+				"time": 0.2,
+				"tileOffset": 0,
+				"renderMode": "lighter",
+				"SUB": [{
+					"name": "on",
+					"tileOffset": 0,
+					"offset": {
+						"y": -6
+					},
+					"size": {
+						"x": 24,
+						"y": 0,
+						"z": 24
+					}
+				}, {
+					"name": "on",
+					"tileOffset": 1,
+					"offset": {
+						"y": -16
+					},
+					"size": {
+						"x": 24,
+						"y": 8,
+						"z": 16
+					},
+					"wallY": 1
+				}]
+			}]
+		}
+	},
+	"FerroRespawner": {
+		"spawnable": true,
+		"attributes": {
+			"source": {
+				"type": "Entity",
+				"info": "FerroSpot connected to line",
+				"optional": true
+			}
+		},
+		"size": {
+			"x": 16,
+			"y": 16,
+			"z": 24
+		},
+		"anims": {
+			"namedSheets": {
+				"floor": {
+					"src": "media/entity/objects/ferro.png",
+					"width": 16,
+					"height": 16,
+					"xCount": 3,
+					"offX": 0,
+					"offY": 312
+				},
+				"pole": {
+					"src": "media/entity/objects/ferro.png",
+					"width": 16,
+					"height": 24,
+					"xCount": 6,
+					"offX": 0,
+					"offY": 328
+				}
+			},
+			"repeat": true,
+			"SUB": [{
+				"sheet": "floor",
+				"frames": [0],
+				"time": 0.033,
+				"tileOffset": 0,
+				"size": {
+					"x": 16,
+					"y": 16,
+					"z": 0
+				},
+				"wallY": 0,
+				"SUB": [{
+					"name": "off"
+				}, {
+					"name": "on",
+					"tileOffset": 2
+				}, {
+					"name": "poleUp",
+					"tileOffset": 2
+				}, {
+					"name": "poleDown",
+					"tileOffset": 2
+				}, {
+					"name": "pole0",
+					"tileOffset": 1
+				}, {
+					"name": "pole1",
+					"tileOffset": 1
+				}, {
+					"name": "pole2",
+					"tileOffset": 1
+				}, {
+					"name": "pole3",
+					"tileOffset": 2
+				}, {
+					"name": "respawn",
+					"tileOffset": 1
+				}]
+			}, {
+				"sheet": "pole",
+				"time": 0.033,
+				"tileOffset": 0,
+				"size": {
+					"x": 16,
+					"y": 0,
+					"z": 24
+				},
+				"repeat": false,
+				"offset": {
+					"y": -4
+				},
+				"SUB": [{
+					"name": "poleUp",
+					"frames": [5, 4, 3, 2, 1]
+				}, {
+					"name": "poleDown",
+					"frames": [3, 4, 5]
+				}, {
+					"name": "pole0",
+					"frames": [0]
+				}, {
+					"name": "pole1",
+					"frames": [1]
+				}, {
+					"name": "pole2",
+					"frames": [2]
+				}, {
+					"name": "pole3",
+					"frames": [3]
+				}, {
+					"name": "respawn",
+					"frames": [0, 1, 2]
+				}]
+			}]
+		}
+	},
+	"FerroLine": {
+		"spawnable": true,
+		"attributes": {
+			"spot": {
+				"type": "Entity",
+				"info": "FerroSpot connected to line",
+				"optional": true
+			}
+		},
+		"scalableX": true,
+		"scalableY": true,
+		"scalableStep": 8,
+		"size": {
+			"x": 8,
+			"y": 8,
+			"z": 0
+		},
+		"anims": {
+			"repeat": true,
+			"sheet": {
+				"src": "media/entity/objects/ferro.png",
+				"width": 8,
+				"height": 8,
+				"xCount": 4,
+				"offX": 96,
+				"offY": 280
+			},
+			"frames": [0],
+			"size": {"x": 8, "y": 8, "z": 0}
+		}
+	},
 	"BounceBlock": {
 		"spawnable": true,
 		"attributes": {
