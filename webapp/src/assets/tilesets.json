@@ -27,6 +27,17 @@
 					"y": 5
 				},
 				"border": true
+			},
+			{
+				"ground": {
+					"x": 9,
+					"y": 12
+				},
+				"cliff": {
+					"x": 0,
+					"y": 5
+				},
+				"border": true
 			}
 		]
 	},
