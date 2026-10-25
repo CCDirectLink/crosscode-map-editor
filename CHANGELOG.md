@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Added
+- Add a water terrain to autumn height map generation.
+
+### Fixed
+- During height map generation chasms no longer cast shadows.
+
 ## [2.5.0] 2026-10-22
 ### Added
 - Added support for FerroSpot, FerroRespawner and FerroLine

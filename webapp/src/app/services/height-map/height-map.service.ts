@@ -5,30 +5,30 @@ import { StateHistoryService } from '../../components/dialogs/floating-window/hi
 import { AutotileService } from '../autotile/autotile.service';
 import { GlobalEventsService } from '../global-events.service';
 import { Globals } from '../globals';
+import { JsonLoaderService } from '../json-loader.service';
 import { MapLoaderService } from '../map-loader.service';
 import { Helper } from '../phaser/helper';
 import { CCMap } from '../phaser/tilemap/cc-map';
 import { CCMapLayer } from '../phaser/tilemap/cc-map-layer';
+import { customPutTileAt } from '../phaser/tilemap/layer-helper';
 import { GfxMapper } from './gfx-mapper/gfx-mapper';
 import { BACK_WALL_MAP, BLOCK_MAP, ChipsetConfig, HOLE_BLOCK_MAP, HOLE_MAP } from './gfx-mapper/gfx-mapper.constants';
 import {
-	CHECK_DIR,
-	CHECK_ITERATE,
-	CheckDir,
-	DIAG_GFX,
-	FILL_COUNT,
-	FILL_TYPE,
-	GFX_TYPE,
-	LEVEL_COUNT,
-	SECOND_LEVEL_CHECK,
-	SHADOW_CORNER_EXCEPTION,
-	SQUARE_CORNER_CHECK,
-	SUB_TYPE,
-	WALL_LINK,
-	WallLink
+    CHECK_DIR,
+    CHECK_ITERATE,
+    CheckDir,
+    DIAG_GFX,
+    FILL_COUNT,
+    FILL_TYPE,
+    GFX_TYPE,
+    LEVEL_COUNT,
+    SECOND_LEVEL_CHECK,
+    SHADOW_CORNER_EXCEPTION,
+    SQUARE_CORNER_CHECK,
+    SUB_TYPE,
+    WALL_LINK,
+    WallLink
 } from './heightmap.constants';
-import { customPutTileAt } from '../phaser/tilemap/layer-helper';
-import { JsonLoaderService } from '../json-loader.service';
 
 interface TilesetJson {
 	[key: string]: ChipsetConfig;
@@ -352,7 +352,7 @@ export class HeightMapService {
 						let subType: SUB_TYPE | null = null;
 						if (yAdd < yStart) {
 							let newTile = 0;
-							if (doShadow) {
+							if (doShadow && !doChasm) {
 								newTile = gfxMapper.getGfx(GFX_TYPE.FILL, x, y - yOff, SUB_TYPE.SHADOW, entry.lowerTerrain);
 							}
 							this.setLayerTile(layer, x, y - yOff - yAdd, newTile);
