@@ -9,6 +9,11 @@ interface EditorDB extends DBSchema {
 	};
 }
 
+export interface AssetFile {
+	path: string;
+	handle: FileSystemFileHandle;
+}
+
 const ASSETS_KEY = 'assets';
 
 @Service()
@@ -42,12 +47,16 @@ export class AssetsAccessService {
 		}
 	}
 
-	async getAllMaps(): Promise<string[]> {
+	async getAllMaps(): Promise<AssetFile[]> {
 		const folder = 'data/maps';
-		const paths = await this.listFiles(folder, '.json');
-		return paths
-			.sort()
-			.map(p => p.substring(folder.length + 1, p.length - '.json'.length).replaceAll('/', '.'));
+		return await this.listFiles(folder, '.json');
+	}
+
+	async getFile(path: string): Promise<AssetFile> {
+		const separator = path.lastIndexOf('/');
+		const dir = await this.getDirectory(path.substring(0, separator));
+		const handle = await dir.getFileHandle(path.substring(separator + 1));
+		return { path, handle };
 	}
 
 	private async getDirectory(path: string) {
@@ -58,16 +67,16 @@ export class AssetsAccessService {
 		return dir;
 	}
 
-	private async listFiles(path: string, extension: string): Promise<string[]> {
+	private async listFiles(path: string, extension: string): Promise<AssetFile[]> {
 		const dir = await this.getDirectory(path);
-		const files: string[] = [];
-		const subDirs: Promise<string[]>[] = [];
+		const files: AssetFile[] = [];
+		const subDirs: Promise<AssetFile[]>[] = [];
 		for await (const entry of dir.values()) {
 			const entryPath = `${path}/${entry.name}`;
 			if (entry.kind === 'directory') {
 				subDirs.push(this.listFiles(entryPath, extension));
 			} else if (entry.name.toLowerCase().endsWith(extension)) {
-				files.push(entryPath);
+				files.push({ path: entryPath, handle: entry });
 			}
 		}
 		return files.concat(...await Promise.all(subDirs));

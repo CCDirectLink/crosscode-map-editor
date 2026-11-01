@@ -1,3 +1,4 @@
+import { AssetFile } from '../../../services/assets-access.service';
 import { MapNode } from './mapNode.model';
 
 /**
@@ -25,8 +26,8 @@ export class VirtualMapNode {
 		return [this.original.name].concat(...this.realChildren![0].names);
 	}
 
-	public get path(): string | undefined {
-		return this.original.path;
+	public get file(): AssetFile | undefined {
+		return this.original.file;
 	}
 
 	public get children(): VirtualMapNode[] | undefined {

@@ -2,9 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { CrossCodeMap } from '../models/cross-code-map';
+import { AssetFile, AssetsAccessService } from './assets-access.service';
 import { ElectronService } from './electron.service';
 import { Globals } from './globals';
-import { HttpClientService } from './http-client.service';
 import { BasePath, FileExtension, PathResolver } from './path-resolver';
 import { CCMap } from './phaser/tilemap/cc-map';
 import { CCMapLayer } from './phaser/tilemap/cc-map-layer';
@@ -17,7 +17,7 @@ import { ConfirmCloseComponent } from '../components/dialogs/confirm-close/confi
 })
 export class MapLoaderService {
 	private readonly snackBar = inject(MatSnackBar);
-	private readonly http = inject(HttpClientService);
+	private readonly assets = inject(AssetsAccessService);
 	private readonly electron = inject(ElectronService);
 	private readonly eventsService = inject(GlobalEventsService);
 	private readonly overlayService = inject(OverlayService);
@@ -79,16 +79,29 @@ export class MapLoaderService {
 	
 	async loadMapByName(name: string, confirm = false) {
 		const path = PathResolver.convertToPath(BasePath.MAPS, name, FileExtension.JSON);
-		const filename = PathResolver.convertToFileName(name);
-		
+		let file: AssetFile;
 		try {
-			const map = await firstValueFrom(this.http.getAssetsFile<CrossCodeMap>(path));
-			await this.loadRawMap(map, filename, path, confirm);
+			file = await this.assets.getFile(path);
 		} catch (e: unknown) {
-			console.error(e);
-			this.snackBar.open(`failed to load map ${path}`, 'ok', { panelClass: 'snackbar-error', duration: 5000 });
+			this.showLoadError(path, e);
+			return;
 		}
-		
+		await this.loadMapByFile(file, confirm);
+	}
+
+	async loadMapByFile(file: AssetFile, confirm = false) {
+		try {
+			const content = await (await file.handle.getFile()).text();
+			const map = JSON.parse(content) as CrossCodeMap;
+			await this.loadRawMap(map, file.handle.name, file.path, confirm);
+		} catch (e: unknown) {
+			this.showLoadError(file.path, e);
+		}
+	}
+
+	private showLoadError(path: string, e: unknown) {
+		console.error(e);
+		this.snackBar.open(`failed to load map ${path}`, 'ok', { panelClass: 'snackbar-error', duration: 5000 });
 	}
 	
 	private async showConfirmDialog() {
