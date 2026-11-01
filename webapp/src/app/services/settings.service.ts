@@ -7,7 +7,6 @@ export type Signalify<T> = {
 export interface AppSettings {
 	wrapEventEditorLines: boolean;
 	selectionBoxDark: boolean;
-	showVanillaMaps: boolean;
 }
 
 @Injectable({
@@ -18,7 +17,6 @@ export class SettingsService {
 	private readonly settings: Signalify<AppSettings> = {
 		wrapEventEditorLines: this.loadBooleanOrDefault('wrapEventEditorLines', true),
 		selectionBoxDark: this.loadBooleanOrDefault('selectionBoxDark', true),
-		showVanillaMaps: this.loadBooleanOrDefault('showVanillaMaps', false),
 	};
 	
 	constructor() {

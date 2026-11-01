@@ -87,7 +87,6 @@ export class SaveService {
 
 	private generateMapJson(map: CCMap) {
 		const out = map.exportMap();
-		out.path = undefined;
 		out.filename = undefined;
 		return JSON.stringify(out);
 	}

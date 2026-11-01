@@ -29,7 +29,6 @@ export class CCMap {
 	private subs: Subscription[] = [];
 	
 	filename = '';
-	path?: string;
 	
 	private inputLayers?: MapLayer[];
 	
@@ -100,7 +99,6 @@ export class CCMap {
 		this.attributes = map.attributes;
 		this.screen = map.screen;
 		this.filename = map.filename || 'untitled';
-		this.path = map.path;
 		
 		this.inputLayers = map.layer;
 		
@@ -211,7 +209,6 @@ export class CCMap {
 		out.attributes = this.attributes;
 		out.screen = this.screen;
 		
-		out.path = this.path;
 		out.filename = this.filename;
 		
 		out.entities = this.entityManager.exportEntities();
