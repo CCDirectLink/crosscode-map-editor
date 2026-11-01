@@ -30,7 +30,8 @@ module.exports = tseslint.config(
 			],
 			'@angular-eslint/no-output-on-prefix': 'off',
 			'@angular-eslint/no-output-native': 'off',
-			
+			'@angular-eslint/prefer-on-push-component-change-detection': 'off',
+
 			// TypeScript rules - relaxed from defaults
 			'@typescript-eslint/no-empty-function': 'off',
 			'@typescript-eslint/no-inferrable-types': 'warn',
