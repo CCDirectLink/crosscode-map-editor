@@ -1,21 +1,18 @@
 // @ts-check
 'use strict';
 
-const {app, protocol, BrowserWindow} = require('electron');
-const electronRemote = require('@electron/remote/main');
+const {app, session, BrowserWindow} = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const path = require('path');
 const url = require('url');
 const {autoUpdater} = require('electron-updater');
 const contextMenu = require('electron-context-menu').default;
-const IPC = require("@achrinza/node-ipc").default;
+const IPC = require('@achrinza/node-ipc').default;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 const args = process.argv.slice(1);
 const dev = args.some(val => val === '--dev');
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
-
-electronRemote.initialize();
 
 let openWindows = 0;
 
@@ -35,13 +32,10 @@ function openWindow() {
 			width: mainWindowState.width,
 			height: mainWindowState.height,
 			webPreferences: {
-				webSecurity: false,
-				nodeIntegration: true,
-				contextIsolation: false
+				webSecurity: false
 			}
 		});
-		electronRemote.enable(win.webContents);
-		
+
 		if (dev) {
 			console.log('dev');
 			contextMenu({
@@ -91,9 +85,16 @@ function openWindow() {
 }
 
 app.whenReady().then(() => {
-	protocol.registerFileProtocol('file', (request, callback) => {
-		const pathname = decodeURI(request.url.replace('file:///', ''));
-		callback(pathname);
+	session.defaultSession.on('file-system-access-restricted', async (e, details, cb) => {
+		cb('allow');
+	});
+	
+	session.defaultSession.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
+		// Is used so electron doesn't ask for folder permissions on every restart. test if this is actually required.
+		if (permission === 'fileSystem') {
+			return true;
+		}
+		return true;
 	});
 });
 

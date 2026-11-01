@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { CrossCodeMap } from '../../../models/cross-code-map';
 import { MapLoaderService } from '../../../services/map-loader.service';
@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-level-widget',
     templateUrl: './level-widget.component.html',
     styleUrls: ['./level-widget.component.scss', '../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FlexModule, FormsModule]
 })
 export class LevelWidgetComponent extends AbstractWidget implements OnInit, OnDestroy, OnChanges {

@@ -1,4 +1,4 @@
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ConfirmCloseComponent } from './components/dialogs/confirm-close/confirm-close.component';
 import { OverlayService } from './components/dialogs/overlay/overlay.service';
 import { GlobalEventsService } from './services/global-events.service';
@@ -8,6 +8,7 @@ import { RouterOutlet } from '@angular/router';
 	selector: 'app-root',
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [RouterOutlet]
 })
 export class AppComponent {

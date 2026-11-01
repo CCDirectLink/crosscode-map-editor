@@ -1,14 +1,14 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClientService } from './http-client.service';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AssetsAccessService } from './assets-access.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class JsonLoaderService {
-	private http = inject(HttpClientService);
+	private assets = inject(AssetsAccessService);
 	private angularHttp = inject(HttpClient);
 	private snackbar = inject(MatSnackBar);
 	
@@ -24,7 +24,7 @@ export class JsonLoaderService {
 	}
 	
 	async init() {
-		const configs = await this.http.getModMapEditorConfigs();
+		const configs = await this.assets.getModMapEditorConfigs();
 		
 		for (const config of configs) {
 			let parsedFile: unknown;

@@ -1,7 +1,6 @@
-import { ChangeDetectorRef, Component, OnChanges, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnChanges } from '@angular/core';
 import { OverlayWidget } from '../../overlay-widget';
 import { ImageSelectOverlayComponent } from '../../shared/image-select-overlay/image-select-overlay.component';
-import { HttpClientService } from '../../../../services/http-client.service';
 import { OverlayService } from '../../../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
 import { PropListCard } from '../../shared/image-select-overlay/image-select-card/image-select-card.component';
@@ -19,16 +18,16 @@ import { MatRipple } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-custom-expression-widget',
-    templateUrl: './custom-expression-widget.component.html',
-    styleUrls: ['./custom-expression-widget.component.scss', '../../widget.scss'],
-    imports: [FlexModule, MatTooltip, MatRipple, FormsModule]
+	selector: 'app-custom-expression-widget',
+	templateUrl: './custom-expression-widget.component.html',
+	styleUrls: ['./custom-expression-widget.component.scss', '../../widget.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
+	imports: [FlexModule, MatTooltip, MatRipple, FormsModule],
 })
 export class CustomExpressionWidgetComponent extends OverlayWidget<Person> implements OnChanges {
-	private http = inject(HttpClientService);
 	private changeDetectorRef = inject(ChangeDetectorRef);
 	private jsonLoader = inject(JsonLoaderService);
-
+	
 	
 	private comp: ImageSelectOverlayComponent = new ImageSelectOverlayComponent();
 	preview = '';
@@ -36,7 +35,7 @@ export class CustomExpressionWidgetComponent extends OverlayWidget<Person> imple
 	constructor() {
 		const overlayService = inject(OverlayService);
 		const overlay = inject(Overlay);
-
+		
 		super(overlayService, overlay);
 	}
 	
@@ -49,7 +48,7 @@ export class CustomExpressionWidgetComponent extends OverlayWidget<Person> imple
 		const obj = this.overlayService.open(ImageSelectOverlayComponent, {
 			positionStrategy: this.overlay.position().global(),
 			hasBackdrop: false,
-			disablePhaserInput: true
+			disablePhaserInput: true,
 		});
 		
 		this.comp = obj.instance;
@@ -98,7 +97,7 @@ export class CustomExpressionWidgetComponent extends OverlayWidget<Person> imple
 			expressions.push({
 				name: name,
 				displayName: name.toLowerCase(),
-				imgSrc: await this.makeImage(face, name)
+				imgSrc: await this.makeImage(face, name),
 			});
 		}));
 		expressions.sort((a, b) => a.name.localeCompare(b.name));
@@ -127,7 +126,7 @@ export class CustomExpressionWidgetComponent extends OverlayWidget<Person> imple
 		const entity = new ExpressionRendererEntity(Globals.scene, Globals.map, -999999, 0, 'Custom');
 		return await this.generateImage<ExpressionRendererSettings>({
 			face: face,
-			expression: name
+			expression: name,
 		}, entity, 32, 1.7);
 	}
 }

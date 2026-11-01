@@ -1,14 +1,10 @@
-import { enableProdMode, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
-
-
-import { Globals } from './app/services/globals';
+import { enableProdMode, importProvidersFrom, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 import { environment } from './environments/environment';
 
-import { BrowserService } from './app/services/browser.service';
-import { ElectronService } from './app/services/electron.service';
+import { AssetsAccessService } from './app/services/assets-access.service';
 import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withHashLocation } from '@angular/router';
 import { routes } from './app/app-routing';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -27,15 +23,7 @@ if (environment.production) {
 	enableProdMode();
 }
 
-// @ts-ignore
-if (typeof process !== 'undefined' && typeof process.versions === 'object' && !!process.versions.electron) {
-	Globals.isElectron = true;
-}
-console.log('is electron: ', Globals.isElectron);
-
 (async () => {
-	await ElectronService.init();
-	await BrowserService.init();
 	await bootstrapApplication(AppComponent, {
 		providers: [
 			importProvidersFrom(
@@ -49,12 +37,13 @@ console.log('is electron: ', Globals.isElectron);
 				OverlayModule,
 			),
 			provideHttpClient(withInterceptorsFromDi()),
-			provideRouter(routes),
+			provideRouter(routes, withHashLocation()),
 			provideZoneChangeDetection(),
+			provideAppInitializer(() => inject(AssetsAccessService).init()),
 			{
 				provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
 				useValue: tooltipOptions,
 			},
-		]
+		],
 	});
 })();

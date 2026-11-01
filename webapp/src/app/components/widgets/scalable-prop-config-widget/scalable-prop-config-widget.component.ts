@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ImageSelectOverlayComponent, PropListGroup } from '../shared/image-select-overlay/image-select-overlay.component';
-import { HttpClientService } from '../../../services/http-client.service';
+import { AssetsAccessService } from '../../../services/assets-access.service';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
-import { lastValueFrom } from 'rxjs';
 import { Helper } from '../../../services/phaser/helper';
 import { prepareSheet, ScalablePropSheet } from '../../../services/phaser/sheet-parser';
 import { Globals } from '../../../services/globals';
@@ -12,16 +11,17 @@ import { EntryGfxEnds, GfxEndsDir, ScalableProp, ScalablePropAttributes, Scalabl
 import { PropListCard } from '../shared/image-select-overlay/image-select-card/image-select-card.component';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { MatTooltip } from '@angular/material/tooltip';
-import Point = Electron.Point;
+import { Point } from '../../../models/cross-code-map';
 
 @Component({
     selector: 'app-scalable-prop-config-widget',
     templateUrl: './scalable-prop-config-widget.component.html',
     styleUrls: ['./scalable-prop-config-widget.component.scss', '../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FlexModule, MatTooltip]
 })
 export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePropAttributes> implements OnInit, OnDestroy {
-	private http = inject(HttpClientService);
+	private assets = inject(AssetsAccessService);
 
 	private sheetKey = ['propConfig', 'sheet'];
 	private nameKey = ['propConfig', 'name'];
@@ -59,7 +59,7 @@ export class ScalablePropConfigWidgetComponent extends OverlayWidget<ScalablePro
 		this.comp.sheetChange.subscribe(sheet => this.setSheet(sheet));
 		this.comp.leftGroup.click = prop => this.setPropName(prop);
 		
-		this.comp.sheets = await lastValueFrom(this.http.getScalableProps());
+		this.comp.sheets = await this.assets.getAllFilesInFolder('data/scale-props');
 		await this.updateProps();
 		await this.updateRightGroups();
 		await this.updatePreview();

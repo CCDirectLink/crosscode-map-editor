@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { EventArray } from '../../../../models/events';
 import { EventEditorComponent } from '../event-editor/editor/event-editor.component';
 import { EventHelperService } from '../event-editor/event-helper.service';
@@ -10,6 +10,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-event-window',
     templateUrl: './event-window.component.html',
     styleUrls: ['./event-window.component.scss', '../../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [OverlayPanelComponent, EventEditorComponent, FlexModule, MatButton]
 })
 export class EventWindowComponent {

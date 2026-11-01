@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { EventManager } from '@angular/platform-browser';
 import { NavigationStart, Router } from '@angular/router';
 
@@ -15,6 +15,7 @@ import { MatIcon } from '@angular/material/icon';
     selector: 'app-history',
     templateUrl: './history.component.html',
     styleUrls: ['./history.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FloatingWindowComponent, FlexModule, MatButton, NgClass, ExtendedModule, MatIcon]
 })
 export class HistoryComponent implements OnInit, OnDestroy {

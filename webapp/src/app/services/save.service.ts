@@ -2,8 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EventManager } from '@angular/platform-browser';
 import { GlobalEventsService } from './global-events.service';
-import { HttpClientService } from './http-client.service';
-import { MapLoaderService } from './map-loader.service';
+import { isPickerAbort, MAP_FILE_TYPES, MapLoaderService } from './map-loader.service';
 import { Helper } from './phaser/helper';
 import { CCMap } from './phaser/tilemap/cc-map';
 
@@ -11,13 +10,12 @@ import { CCMap } from './phaser/tilemap/cc-map';
 	providedIn: 'root'
 })
 export class SaveService {
-	private http = inject(HttpClientService);
 	private snackbar = inject(MatSnackBar);
 	private readonly eventsService = inject(GlobalEventsService);
+	private readonly mapLoader = inject(MapLoaderService);
 
 
 	constructor() {
-		const mapLoader = inject(MapLoaderService);
 		const eventManager = inject(EventManager);
 
 		eventManager.addEventListener(document as any, 'keydown', (event: KeyboardEvent) => {
@@ -27,7 +25,7 @@ export class SaveService {
 
 			if (event.ctrlKey && event.key.toLowerCase() === 's') {
 				event.preventDefault();
-				const map = mapLoader.tileMap.getValue();
+				const map = this.mapLoader.tileMap.getValue();
 				if (!map) {
 					return;
 				}
@@ -40,40 +38,55 @@ export class SaveService {
 		});
 	}
 
-	saveMap(map: CCMap) {
-		if (!map.path) {
-			console.error('map has no path :/');
-			return this.saveMapAs(map);
+	async saveMap(map: CCMap) {
+		const handle = this.mapLoader.handle ?? await this.pickSaveFile(map);
+		if (!handle) {
+			return;
 		}
-		this.http.saveFile(map.path, this.generateMapJson(map)).subscribe({
-			next: msg => {
-				console.log(msg);
-				this.eventsService.hasUnsavedChanges.next(false);
-				this.snackbar.open('successfully saved map', 'ok', { duration: 3000 });
-			}, error: err => {
-				console.error(err);
-				this.snackbar.open('failed to save map', 'ok', {panelClass: 'snackbar-error'});
-			}
-		});
+		await this.writeMap(handle, map);
 	}
 
-	saveMapAs(map: CCMap) {
-		const file = new Blob([this.generateMapJson(map)], { type: 'application/json' });
-		const a = document.createElement('a'),
-			url = URL.createObjectURL(file);
-		a.href = url;
-		a.download = map.filename;
-		document.body.appendChild(a);
-		a.click();
-		setTimeout(function () {
-			document.body.removeChild(a);
-			window.URL.revokeObjectURL(url);
-		}, 0);
+	async saveMapAs(map: CCMap) {
+		const handle = await this.pickSaveFile(map);
+		if (!handle) {
+			return;
+		}
+		await this.writeMap(handle, map);
+	}
+
+	private async writeMap(handle: FileSystemFileHandle, map: CCMap) {
+		try {
+			const writable = await handle.createWritable();
+			await writable.write(this.generateMapJson(map));
+			await writable.close();
+			this.eventsService.hasUnsavedChanges.next(false);
+			this.snackbar.open('successfully saved map', 'ok', { duration: 3000 });
+		} catch (err) {
+			console.error(err);
+			this.snackbar.open('failed to save map', 'ok', {panelClass: 'snackbar-error'});
+		}
+	}
+
+	private async pickSaveFile(map: CCMap): Promise<FileSystemFileHandle | undefined> {
+		let handle: FileSystemFileHandle;
+		try {
+			handle = await window.showSaveFilePicker({
+				suggestedName: map.filename.endsWith('.json') ? map.filename : `${map.filename}.json`,
+				types: MAP_FILE_TYPES,
+			});
+		} catch (e: unknown) {
+			if (!isPickerAbort(e)) {
+				console.error(e);
+			}
+			return undefined;
+		}
+		this.mapLoader.handle = handle;
+		map.filename = handle.name;
+		return handle;
 	}
 
 	private generateMapJson(map: CCMap) {
 		const out = map.exportMap();
-		out.path = undefined;
 		out.filename = undefined;
 		return JSON.stringify(out);
 	}

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { Point } from '../../../models/cross-code-map';
 import { ScaleSettings } from '../../../services/phaser/entities/cc-entity';
 import { AbstractWidget } from '../abstract-widget';
@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-vec2-widget',
     templateUrl: './vec2-widget.component.html',
     styleUrls: ['./vec2-widget.component.scss', '../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FlexModule, MatTooltip, FormsModule]
 })
 export class Vec2WidgetComponent extends AbstractWidget implements OnChanges {

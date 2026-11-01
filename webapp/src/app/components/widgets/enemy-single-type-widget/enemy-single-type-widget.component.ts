@@ -1,10 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { OverlayWidget } from '../overlay-widget';
 import { ImageSelectOverlayComponent, PropListGroup } from '../shared/image-select-overlay/image-select-overlay.component';
-import { HttpClientService } from '../../../services/http-client.service';
+import { AssetsAccessService } from '../../../services/assets-access.service';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
-import { lastValueFrom } from 'rxjs';
 import { EnemyAttributes } from '../../../services/phaser/entities/registry/enemy';
 import { InputWithButtonComponent } from '../inputs/input-with-button/input-with-button.component';
 
@@ -12,10 +11,11 @@ import { InputWithButtonComponent } from '../inputs/input-with-button/input-with
     selector: 'app-enemy-single-type-widget',
     templateUrl: './enemy-single-type-widget.component.html',
     styleUrls: ['./enemy-single-type-widget.component.scss', '../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [InputWithButtonComponent]
 })
 export class EnemySingleTypeWidgetComponent extends OverlayWidget {
-	private http = inject(HttpClientService);
+	private assets = inject(AssetsAccessService);
 
 	
 	private props: {
@@ -99,7 +99,7 @@ export class EnemySingleTypeWidgetComponent extends OverlayWidget {
 		this.comp.leftGroup.props = [];
 		this.rightGroup.props = [];
 		
-		const enemies = (await lastValueFrom(this.http.getEnemies())).map(v => v.replaceAll('/', '.'));
+		const enemies = (await this.assets.getAllFilesInFolder('data/enemies')).map(v => v.replaceAll('/', '.'));
 		
 		this.props = await Promise.all(enemies.map(async enemy => {
 			const prop: typeof this.props[0] = {

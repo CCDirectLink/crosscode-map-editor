@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject, ChangeDetectionStrategy, afterNextRender, computed, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
@@ -8,6 +8,7 @@ import { GlobalEventsService } from '../../services/global-events.service';
 import { MapLoaderService } from '../../services/map-loader.service';
 import { CCMap } from '../../services/phaser/tilemap/cc-map';
 import { SaveService } from '../../services/save.service';
+import { AssetsAccessService } from '../../services/assets-access.service';
 import { PhaserExportService } from '../../services/phaser-export.service';
 import { MapSettingsComponent } from '../dialogs/map-settings/map-settings.component';
 import { NewMapComponent } from '../dialogs/new-map/new-map.component';
@@ -28,6 +29,7 @@ import { AsyncPipe } from '@angular/common';
     selector: 'app-toolbar',
     templateUrl: './toolbar.component.html',
     styleUrls: ['./toolbar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatToolbar, FlexModule, MatButton, MatMenuTrigger, MatMenu, MatMenuItem, MatCheckbox, ToolbarDividerComponent, GridMenuComponent, MatProgressSpinner, AsyncPipe]
 })
 export class ToolbarComponent implements OnInit {
@@ -39,23 +41,33 @@ export class ToolbarComponent implements OnInit {
 	private router = inject(Router);
 	private save = inject(SaveService);
 	private exporter = inject(PhaserExportService);
+	private assets = inject(AssetsAccessService);
 
-	
+	readonly loaded = signal(false);
+	readonly canLoadMap = computed(() => this.loaded() && !!this.assets.accessibleHandle());
 	map?: CCMap;
-	loaded = false;
 	error = '';
 	is3d = false;
 	is3dLoading = false;
 	
 	@Output()
 	public loadMapClicked = new EventEmitter<void>(false);
-	
+
+	constructor() {
+		// nothing can be loaded without an assets folder, so ask for one right away
+		afterNextRender(() => {
+			if (!this.assets.handle()) {
+				this.showSettings();
+			}
+		});
+	}
+
 	ngOnInit() {
 		this.mapLoader.tileMap.subscribe(map => {
 			this.map = map;
 		});
 		this.events.loadComplete.subscribe(
-			() => this.loaded = true,
+			() => this.loaded.set(true),
 			err => this.error = 'Error: could not load CrossCode assets. Update path in edit/settings'
 		);
 		
@@ -67,7 +79,7 @@ export class ToolbarComponent implements OnInit {
 				// this.mapLoader.loadMapByName('arid/river-1');
 				// this.mapLoader.loadMapByName('tests/all-overlays');
 				// this.mapLoader.loadMapByName('tests/rhombus-sqr_beach-sw');
-				this.mapLoader.loadMapByName('autumn-fall/raid/raid-end');
+				// this.mapLoader.loadMapByName('autumn-fall/raid/raid-end');
 				
 				// automatically opens event editor
 				// console.log('after map load');

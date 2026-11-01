@@ -1,151 +1,117 @@
 {
-	"$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-	"version": 1,
-	"newProjectRoot": "projects",
-	"projects": {
-		"map-editor": {
-			"root": "",
-			"sourceRoot": "src",
-			"projectType": "application",
-			"architect": {
-				"build": {
-					"builder": "@angular/build:application",
-					"options": {
-						"allowedCommonJsDependencies": [
-							"earcut",
-							"jsoneditor"
-						],
-						"externalDependencies": [
-							"electron"
-						],
-						"outputPath": {
-							"base": "distAngular",
-							"browser": ""
-						},
-						"index": "src/index.html",
-						"tsConfig": "src/tsconfig.app.json",
-						"polyfills": [
-							"src/polyfills.ts"
-						],
-						"assets": [
-							"src/assets",
-							"src/favicon.ico"
-						],
-						"styles": [
-							"src/styles.scss"
-						],
-						"stylePreprocessorOptions": {
-							"includePaths": [
-								"src/styles"
-							]
-						},
-						"scripts": [],
-						"aot": true,
-						"extractLicenses": false,
-						"sourceMap": true,
-						"optimization": false,
-						"namedChunks": true,
-						"browser": "src/main.ts"
-					},
-					"configurations": {
-						"production": {
-							"optimization": true,
-							"outputHashing": "all",
-							"sourceMap": false,
-							"namedChunks": false,
-							"aot": true,
-							"extractLicenses": true,
-							"fileReplacements": [
-								{
-									"replace": "src/environments/environment.ts",
-									"with": "src/environments/environment.prod.ts"
-								}
-							]
-						}
-					}
-				},
-				"serve": {
-					"builder": "@angular/build:dev-server",
-					"options": {
-						"buildTarget": "map-editor:build"
-					},
-					"configurations": {
-						"production": {
-							"buildTarget": "map-editor:build:production"
-						}
-					}
-				},
-				"extract-i18n": {
-					"builder": "@angular/build:extract-i18n",
-					"options": {
-						"buildTarget": "map-editor:build"
-					}
-				},
-				"test": {
-					"builder": "@angular/build:karma",
-					"options": {
-						"main": "src/test.ts",
-						"karmaConfig": "./karma.conf.js",
-						"polyfills": "src/polyfills.ts",
-						"tsConfig": "src/tsconfig.spec.json",
-						"sourceMap": true,
-						"scripts": [],
-						"styles": [
-							"src/styles.scss"
-						],
-						"assets": [
-							"src/assets",
-							"src/favicon.ico"
-						],
-						"stylePreprocessorOptions": {
-							"includePaths": [
-								"src/styles"
-							]
-						}
-					}
-				},
-				"lint": {
-					"builder": "@angular-eslint/builder:lint",
-					"options": {
-						"lintFilePatterns": [
-							"src/**/*.ts",
-							"src/**/*.html"
-						]
-					}
-				}
-			}
-		}
-	},
-	"schematics": {
-		"@schematics/angular:component": {
-			"prefix": "app",
-			"style": "scss",
-			"type": "component"
-		},
-		"@schematics/angular:directive": {
-			"prefix": "app",
-			"type": "directive"
-		},
-		"@schematics/angular:service": {
-			"type": "service"
-		},
-		"@schematics/angular:guard": {
-			"typeSeparator": "."
-		},
-		"@schematics/angular:interceptor": {
-			"typeSeparator": "."
-		},
-		"@schematics/angular:module": {
-			"typeSeparator": "."
-		},
-		"@schematics/angular:pipe": {
-			"typeSeparator": "."
-		},
-		"@schematics/angular:resolver": {
-			"typeSeparator": "."
-		}
-	},
-	"cli": {
-		"analytics": false
-	}
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "map-editor": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss",
+          "type": "component"
+        },
+        "@schematics/angular:directive": {
+          "type": "directive"
+        },
+        "@schematics/angular:service": {
+          "type": "service"
+        },
+        "@schematics/angular:guard": {
+          "typeSeparator": "."
+        },
+        "@schematics/angular:interceptor": {
+          "typeSeparator": "."
+        },
+        "@schematics/angular:module": {
+          "typeSeparator": "."
+        },
+        "@schematics/angular:pipe": {
+          "typeSeparator": "."
+        },
+        "@schematics/angular:resolver": {
+          "typeSeparator": "."
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "polyfills": [
+              "src/polyfills.ts"
+            ],
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "outputPath": {
+              "base": "distAngular",
+              "browser": ""
+            },
+            "allowedCommonJsDependencies": [
+              "earcut",
+              "jsoneditor"
+            ],
+            "assets": [
+              "src/assets",
+              "src/favicon.ico"
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/styles"
+              ]
+            }
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "map-editor:build:production"
+            },
+            "development": {
+              "buildTarget": "map-editor:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": false
+  }
 }

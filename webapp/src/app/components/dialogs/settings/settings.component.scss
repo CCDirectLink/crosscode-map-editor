@@ -9,16 +9,33 @@
 	margin-top: 16px;
 }
 
-.actions-container {
+.assets-row {
+	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
-
-	& button {
-		margin-left: 12px;
-	}
+	gap: 8px 12px;
 }
 
-.icon-base {
-	margin-left: 8px;
+.assets-status {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	min-width: 0;
+}
+
+.folder-name {
+	font-weight: 500;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.status-text {
+	color: rgba(255, 255, 255, 0.7);
+}
+
+.status-text-invalid {
+	color: #f44336;
 }
 
 .icon-undefined {

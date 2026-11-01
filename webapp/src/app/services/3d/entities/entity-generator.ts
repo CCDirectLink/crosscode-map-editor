@@ -200,7 +200,7 @@ export class EntityGenerator {
 	
 	private async makeMaterial(entity: CCEntity, fix: Fix, scene: Scene) {
 		const material = new StandardMaterial(fix.gfx, scene);
-		const texture = await this.loadTexture(Globals.URL + fix.gfx, scene);
+		const texture = await this.loadTexture(fix.gfx, scene);
 		// texture.wrapU = Texture.CLAMP_ADDRESSMODE;
 		// texture.wrapV = Texture.CLAMP_ADDRESSMODE;
 		texture.hasAlpha = true;
@@ -231,11 +231,14 @@ export class EntityGenerator {
 		return material;
 	}
 	
-	private async loadTexture(url: string, scene: Scene) {
+	private async loadTexture(path: string, scene: Scene) {
+		path = path.trim();
+		const file = await Globals.assets.getFile(path);
+		const blob = await file.handle.getFile();
 		return new Promise<Texture>((res, rej) => {
-			const texture = new Texture(url, scene, undefined, undefined, Texture.NEAREST_SAMPLINGMODE, () => {
+			const texture = new Texture('data:' + path, scene, undefined, undefined, Texture.NEAREST_SAMPLINGMODE, () => {
 				res(texture);
-			}, rej);
+			}, rej, blob);
 		});
 	}
 	

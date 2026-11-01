@@ -1,6 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ImageSelectOverlayComponent } from '../shared/image-select-overlay/image-select-overlay.component';
-import { HttpClientService } from '../../../services/http-client.service';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
 import { Globals } from '../../../services/globals';
@@ -12,21 +11,19 @@ import { PropListCard } from '../shared/image-select-overlay/image-select-card/i
 import { InputWithButtonComponent } from '../inputs/input-with-button/input-with-button.component';
 
 @Component({
-    selector: 'app-custom-des-type-widget',
-    templateUrl: './custom-des-type-widget.component.html',
-    styleUrls: ['./custom-des-type-widget.component.scss', '../widget.scss'],
-    imports: [InputWithButtonComponent]
+	selector: 'app-custom-des-type-widget',
+	templateUrl: './custom-des-type-widget.component.html',
+	styleUrls: ['./custom-des-type-widget.component.scss', '../widget.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
+	imports: [InputWithButtonComponent],
 })
 export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttributes> {
-	private http = inject(HttpClientService);
-
-	
 	private comp: ImageSelectOverlayComponent = new ImageSelectOverlayComponent();
 	
 	constructor() {
 		const overlayService = inject(OverlayService);
 		const overlay = inject(Overlay);
-
+		
 		super(overlayService, overlay);
 	}
 	
@@ -34,7 +31,7 @@ export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttr
 		const obj = this.overlayService.open(ImageSelectOverlayComponent, {
 			positionStrategy: this.overlay.position().global(),
 			hasBackdrop: false,
-			disablePhaserInput: true
+			disablePhaserInput: true,
 		});
 		
 		this.comp = obj.instance;
@@ -85,20 +82,20 @@ export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttr
 			const settings = await Helper.getJsonPromise('data/global-settings') as GlobalSettings.GlobalSettings;
 			destructibles = Object.values(settings.ENTITY.ItemDestruct).map(v => ({
 				name: v._globalSettingKey,
-				desType: v.desType
+				desType: v.desType,
 			}));
 		} else {
 			const json = await Globals.jsonLoader.loadJsonMerged<ItemDestructTypes>('destructibles.json');
 			destructibles = Object.keys(json).map(v => ({
 				name: v,
-				desType: v
+				desType: v,
 			}));
 		}
 		
 		await Promise.all(destructibles.map(async destructible => {
 			props.push({
 				name: destructible.name,
-				imgSrc: await this.generateImage<ItemDestructAttributes>({desType: destructible.desType}, 'ItemDestruct')
+				imgSrc: await this.generateImage<ItemDestructAttributes>({ desType: destructible.desType }, 'ItemDestruct'),
 			});
 		}));
 		props.sort((a, b) => a.name.localeCompare(b.name));

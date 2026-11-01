@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import mapSettingsjson from '../../../../../assets/map-settings.json';
 import { CrossCodeMap } from '../../../../models/cross-code-map';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +13,7 @@ import { KeyValuePipe } from '@angular/common';
     selector: 'app-map-content-settings',
     templateUrl: './map-content-settings.component.html',
     styleUrls: ['./map-content-settings.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FormsModule, MatButton, MatSelect, MatOption, MatCheckbox, StringWidgetComponent, KeyValuePipe]
 })
 export class MapContentSettingsComponent implements OnInit {

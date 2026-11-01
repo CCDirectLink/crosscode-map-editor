@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import JSONEditor, { JSONEditorOptions } from 'jsoneditor';
 import { Globals } from '../../services/globals';
@@ -10,6 +10,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-json-editor',
     templateUrl: './json-editor.component.html',
     styleUrls: ['./json-editor.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FlexModule, FormsModule, MatButton]
 })
 export class JsonEditorComponent implements AfterViewInit {

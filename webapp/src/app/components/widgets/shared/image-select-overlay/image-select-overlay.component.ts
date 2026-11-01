@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { ImageSelectCardComponent, PropListCard } from './image-select-card/image-select-card.component';
 import { OverlayPanelComponent } from '../../../dialogs/overlay/overlay-panel/overlay-panel.component';
 import { AutocompletedTextboxComponent } from '../../string-widget/autocompleted-textbox/autocompleted-textbox.component';
@@ -21,6 +21,7 @@ export interface PropListGroup {
 	selector: 'app-image-select-overlay',
 	templateUrl: './image-select-overlay.component.html',
 	styleUrls: ['./image-select-overlay.component.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		OverlayPanelComponent,
 		AutocompletedTextboxComponent,

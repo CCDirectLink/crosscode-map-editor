@@ -1,4 +1,4 @@
-import { Component, isDevMode, inject } from '@angular/core';
+import { Component, isDevMode, inject, ChangeDetectionStrategy } from '@angular/core';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
 import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
@@ -8,6 +8,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-confirm-close',
     templateUrl: './confirm-close.component.html',
     styleUrls: ['./confirm-close.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [OverlayPanelComponent, CdkTrapFocus, MatButton]
 })
 export class ConfirmCloseComponent {
