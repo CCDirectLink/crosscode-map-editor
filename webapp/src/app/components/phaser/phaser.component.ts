@@ -14,6 +14,7 @@ import { PhaserEventsService } from '../../services/phaser/phaser-events.service
 import { SettingsService } from '../../services/settings.service';
 import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
 import { JsonLoaderService } from '../../services/json-loader.service';
+import { AssetsAccessService } from '../../services/assets-access.service';
 import { CaptionsComponent } from '../captions/captions.component';
 
 @Component({
@@ -46,6 +47,7 @@ export class PhaserComponent implements AfterViewInit {
 		const autotile = inject(AutotileService);
 		const settingsService = inject(SettingsService);
 		const jsonLoader = inject(JsonLoaderService);
+		const assets = inject(AssetsAccessService);
 
 		Globals.stateHistoryService = stateHistory;
 		Globals.mapLoaderService = mapLoader;
@@ -57,6 +59,7 @@ export class PhaserComponent implements AfterViewInit {
 		Globals.snackbar = snackbar;
 		Globals.settingsService = settingsService;
 		Globals.jsonLoader = jsonLoader;
+		Globals.assets = assets;
 	}
 	
 	

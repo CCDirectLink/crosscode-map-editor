@@ -11,6 +11,7 @@ import { SettingsService } from './settings.service';
 import { signal } from '@angular/core';
 import { type GridSettings } from '../components/toolbar/grid-menu/grid-menu.component';
 import { JsonLoaderService } from './json-loader.service';
+import { AssetsAccessService } from './assets-access.service';
 
 export class Globals {
 	static isElectron = false;
@@ -38,4 +39,5 @@ export class Globals {
 	static settingsService: SettingsService;
 	static snackbar: MatSnackBar;
 	static jsonLoader: JsonLoaderService;
+	static assets: AssetsAccessService;
 }

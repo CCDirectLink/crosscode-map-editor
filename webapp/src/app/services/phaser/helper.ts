@@ -75,25 +75,23 @@ export class Helper {
 		return Object.keys(obj) as (keyof T)[];
 	}
 	
-	public static getJson(key: string, callback: (json: any) => void) {
-		const scene = Globals.scene;
-		
+	public static async getJson(key: string, callback: (json: any) => void) {
+		const cache = Globals.scene.cache.json;
+
 		// get json from cache
-		if (scene.cache.json.has(key)) {
-			return callback(scene.cache.json.get(key));
+		if (cache.has(key)) {
+			return callback(cache.get(key));
 		}
-		
-		Globals.httpService.resolveFile(key + '.json').subscribe(file => {
-			// load json
-			scene.load.json(key, Globals.URL + file);
-			scene.load.once('complete', () => {
-				return callback(scene.cache.json.get(key));
-			});
-			scene.load.start();
-		}, () => {
-			console.warn(`Failed to resolve resource: ${key}.json`);
-			callback(undefined);
-		});
+
+		let json: unknown;
+		try {
+			const file = await Globals.assets.getFile(key + '.json');
+			json = JSON.parse(await (await file.handle.getFile()).text());
+			cache.add(key, json);
+		} catch (e) {
+			console.warn(`Failed to resolve resource: ${key}.json`, e);
+		}
+		callback(json);
 	}
 	
 	public static getJsonPromise(key: string) {
@@ -119,17 +117,22 @@ export class Helper {
 		}
 		
 		// TODO: save promise to avoid loading the same texture simultaneously
-		const file = await Globals.httpService.resolveFile(key).toPromise().catch(() => false);
-		if (!file) {
+		let img: HTMLImageElement;
+		try {
+			const file = await Globals.assets.getFile(key);
+			const url = URL.createObjectURL(await file.handle.getFile());
+			img = new Image();
+			img.src = url;
+			await img.decode().finally(() => URL.revokeObjectURL(url));
+		} catch {
 			return false;
 		}
-		
-		return new Promise(res => {
-			scene.load.image(key, Globals.URL + file);
-			scene.load.once('complete', () => res(true));
-			scene.load.once('loaderror', () => res(false));
-			scene.load.start();
-		});
+
+		// another call might have added the same texture while this one was loading
+		if (!scene.textures.exists(key)) {
+			scene.textures.addImage(key, img);
+		}
+		return true;
 	}
 	
 	/**
