@@ -3,8 +3,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, firstValueFrom, Observable } from 'rxjs';
 import { CrossCodeMap } from '../models/cross-code-map';
 import { AssetFile, AssetsAccessService } from './assets-access.service';
-import { ElectronService } from './electron.service';
-import { Globals } from './globals';
 import { BasePath, FileExtension, PathResolver } from './path-resolver';
 import { CCMap } from './phaser/tilemap/cc-map';
 import { CCMapLayer } from './phaser/tilemap/cc-map-layer';
@@ -12,56 +10,48 @@ import { GlobalEventsService } from './global-events.service';
 import { OverlayService } from '../components/dialogs/overlay/overlay.service';
 import { ConfirmCloseComponent } from '../components/dialogs/confirm-close/confirm-close.component';
 
+export const MAP_FILE_TYPES: FilePickerAcceptType[] = [{
+	description: 'CrossCode map',
+	accept: { 'application/json': ['.json'] },
+}];
+
+export function isPickerAbort(e: unknown) {
+	return e instanceof DOMException && e.name === 'AbortError';
+}
+
 @Injectable({
 	providedIn: 'root',
 })
 export class MapLoaderService {
 	private readonly snackBar = inject(MatSnackBar);
 	private readonly assets = inject(AssetsAccessService);
-	private readonly electron = inject(ElectronService);
 	private readonly eventsService = inject(GlobalEventsService);
 	private readonly overlayService = inject(OverlayService);
 	
 	tileMap = new BehaviorSubject<CCMap | undefined>(undefined);
 	selectedLayer = new BehaviorSubject<CCMapLayer | undefined>(undefined);
-	
+
+	handle?: FileSystemFileHandle;
+
 	private _map = new BehaviorSubject<CrossCodeMap>(undefined as any);
 	get map(): Observable<CrossCodeMap> {
 		return this._map.asObservable();
 	}
 	
-	loadMap(event: Event, confirm = false) {
-		const files: FileList = (event.target as HTMLInputElement).files!;
-		if (files.length === 0) {
+	async openMap(confirm = false) {
+		let handle: FileSystemFileHandle;
+		try {
+			[handle] = await window.showOpenFilePicker({ types: MAP_FILE_TYPES });
+		} catch (e: unknown) {
+			if (!isPickerAbort(e)) {
+				console.error(e);
+			}
 			return;
 		}
-		
-		const file = files[0];
-		const reader = new FileReader();
-		reader.onload = (e: any) => {
-			try {
-				const map = JSON.parse(e.target.result);
-				let path: string | undefined;
-				if (file && Globals.isElectron) {
-					const { webUtils } = require('electron');
-					const filePath = webUtils.getPathForFile(file);
-					path = filePath.split(this.electron.getAssetsPath())[1];
-				}
-				this.loadRawMap(map, file.name, path, confirm);
-			} catch (e: any) {
-				console.error(e);
-				this.snackBar.open('Error: ' + e.message, undefined, {
-					duration: 2500,
-					panelClass: 'snackbar-error',
-				});
-				return;
-			}
-		};
-		
-		reader.readAsText(file);
+		await this.loadMapByFile(handle, confirm);
 	}
-	
-	async loadRawMap(map: CrossCodeMap, name?: string, path?: string, confirm = false) {
+
+	async loadRawMap(map: CrossCodeMap, handle?: FileSystemFileHandle, confirm = false) {
 		if (!map.mapHeight) {
 			throw new Error('Invalid map');
 		}
@@ -71,9 +61,11 @@ export class MapLoaderService {
 				return;
 			}
 		}
-		
-		map.filename = name;
-		map.path = path;
+
+		if (handle) {
+			map.filename = handle.name;
+		}
+		this.handle = handle;
 		this._map.next(map);
 	}
 	
@@ -86,16 +78,16 @@ export class MapLoaderService {
 			this.showLoadError(path, e);
 			return;
 		}
-		await this.loadMapByFile(file, confirm);
+		await this.loadMapByFile(file.handle, confirm);
 	}
 
-	async loadMapByFile(file: AssetFile, confirm = false) {
+	async loadMapByFile(handle: FileSystemFileHandle, confirm = false) {
 		try {
-			const content = await (await file.handle.getFile()).text();
+			const content = await (await handle.getFile()).text();
 			const map = JSON.parse(content) as CrossCodeMap;
-			await this.loadRawMap(map, file.handle.name, file.path, confirm);
+			await this.loadRawMap(map, handle, confirm);
 		} catch (e: unknown) {
-			this.showLoadError(file.path, e);
+			this.showLoadError(handle.name, e);
 		}
 	}
 

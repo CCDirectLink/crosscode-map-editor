@@ -48,9 +48,6 @@ export class LoadMapComponent {
 	private searchFilterService = inject(SearchFilterService);
 	
 	
-	@ViewChild('fileUpload', { static: true })
-	fileUpload!: ElementRef<HTMLInputElement>;
-	
 	@ViewChild('filterInput', { static: true })
 	filterInput!: ElementRef<HTMLInputElement>;
 	
@@ -97,13 +94,12 @@ export class LoadMapComponent {
 		this.ref.markForCheck();
 	}
 	
-	async loadMap(event: Event) {
-		this.mapLoader.loadMap(event, true);
-		this.fileUpload.nativeElement.value = '';
+	async openMap() {
+		await this.mapLoader.openMap(true);
 	}
-	
+
 	async load(file: AssetFile) {
-		await this.mapLoader.loadMapByFile(file, true);
+		await this.mapLoader.loadMapByFile(file.handle, true);
 	}
 	
 	hasChild(_: number, node: VirtualMapNode) {

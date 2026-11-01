@@ -59,7 +59,8 @@ export class NewMapComponent {
 	}
 	
 	close() {
-		this.mapLoader.loadRawMap(this.map, this.map.name, `data/maps/${this.map.name}.json`, true);
+		this.map.filename = this.map.name;
+		this.mapLoader.loadRawMap(this.map, undefined, true);
 		this.ref.close();
 	}
 	
