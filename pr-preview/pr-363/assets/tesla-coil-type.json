@@ -1,0 +1,790 @@
+{
+    "SOURCE": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 32
+        },
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 24,
+                "height": 48,
+                "offX": 0,
+                "offY": 0,
+                "xCount": 2
+            },
+            "wallY": 1,
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "charge",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "charge",
+                    "time": 0.1,
+                    "frames": [
+                        1
+                    ],
+                    "repeat": true,
+                    "renderMode": "lighter"
+                },
+                {
+                    "name": "flash",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "flash",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+                    "framesAlpha": [
+                        1,
+                        1,
+                        1,
+                        0.9,
+                        0.8,
+                        0.6,
+                        0.4,
+                        0.2
+                    ],
+                    "repeat": false,
+                    "renderMode": "lighter"
+                }
+            ]
+        },
+        "source": true
+    },
+    "SOURCE_FAST": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 32
+        },
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 24,
+                "height": 48,
+                "offX": 0,
+                "offY": 0,
+                "xCount": 2
+            },
+            "wallY": 1,
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "charge",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "charge",
+                    "time": 0.1,
+                    "frames": [
+                        1
+                    ],
+                    "repeat": true,
+                    "renderMode": "lighter"
+                },
+                {
+                    "name": "flash",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "flash",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+                    "framesAlpha": [
+                        1,
+                        1,
+                        1,
+                        0.9,
+                        0.8,
+                        0.6,
+                        0.4,
+                        0.2
+                    ],
+                    "repeat": false,
+                    "renderMode": "lighter"
+                }
+            ]
+        },
+        "source": true,
+        "fast": true
+    },
+    "SOURCE_LOOSE": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 32
+        },
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/tesla-loose.png",
+                "width": 24,
+                "height": 64,
+                "offX": 24,
+                "offY": 0,
+                "xCount": 2
+            },
+            "wallY": 0.125,
+            "offset": {
+                "x": 4,
+                "y": 0,
+                "z": -16
+            },
+            "shapeType": "Z_EXPAND",
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "charge",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "charge",
+                    "time": 0.1,
+                    "frames": [
+                        1
+                    ],
+                    "repeat": true,
+                    "renderMode": "lighter"
+                },
+                {
+                    "name": "flash",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "flash",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+                    "framesAlpha": [
+                        1,
+                        1,
+                        1,
+                        0.9,
+                        0.8,
+                        0.6,
+                        0.4,
+                        0.2
+                    ],
+                    "repeat": false,
+                    "renderMode": "lighter"
+                }
+            ]
+        },
+        "source": true
+    },
+    "SOURCE_LOOSE_FLIP": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 32
+        },
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/tesla-loose.png",
+                "width": 24,
+                "height": 64,
+                "offX": 24,
+                "offY": 0,
+                "xCount": 2
+            },
+            "wallY": 0.125,
+            "offset": {
+                "x": -4,
+                "y": 0,
+                "z": -16
+            },
+            "flipX": true,
+            "shapeType": "Z_EXPAND",
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "charge",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "charge",
+                    "time": 0.1,
+                    "frames": [
+                        1
+                    ],
+                    "repeat": true,
+                    "renderMode": "lighter"
+                },
+                {
+                    "name": "flash",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "flash",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+                    "framesAlpha": [
+                        1,
+                        1,
+                        1,
+                        0.9,
+                        0.8,
+                        0.6,
+                        0.4,
+                        0.2
+                    ],
+                    "repeat": false,
+                    "renderMode": "lighter"
+                }
+            ]
+        },
+        "source": true
+    },
+    "EXTENDER": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 16
+        },
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 16,
+                "height": 32,
+                "offX": 16,
+                "offY": 48,
+                "xCount": 2
+            },
+            "wallY": 0.5,
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "flash",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "flash",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+                    "framesAlpha": [
+                        1,
+                        1,
+                        1,
+                        0.9,
+                        0.8,
+                        0.6,
+                        0.4,
+                        0.2
+                    ],
+                    "repeat": false,
+                    "renderMode": "lighter"
+                }
+            ]
+        }
+    },
+    "EXTENDER_LOOSE": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 16
+        },
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/tesla-loose.png",
+                "width": 16,
+                "height": 40,
+                "offX": 88,
+                "offY": 0,
+                "xCount": 2
+            },
+            "wallY": 0.5,
+            "shapeType": "Z_EXPAND",
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": -8
+            },
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "flash",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "flash",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+                    "framesAlpha": [
+                        1,
+                        1,
+                        1,
+                        0.9,
+                        0.8,
+                        0.6,
+                        0.4,
+                        0.2
+                    ],
+                    "repeat": false,
+                    "renderMode": "lighter"
+                }
+            ]
+        }
+    },
+    "EXTENDER_LOOSE_FLIP": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 16
+        },
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/tesla-loose.png",
+                "width": 16,
+                "height": 40,
+                "offX": 88,
+                "offY": 0,
+                "xCount": 2
+            },
+            "wallY": 0.5,
+            "flipX": true,
+            "shapeType": "Z_EXPAND",
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": -8
+            },
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "flash",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "flash",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+                    "framesAlpha": [
+                        1,
+                        1,
+                        1,
+                        0.9,
+                        0.8,
+                        0.6,
+                        0.4,
+                        0.2
+                    ],
+                    "repeat": false,
+                    "renderMode": "lighter"
+                }
+            ]
+        }
+    },
+    "EXTENDER_IGNORE": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 16
+        },
+        "collType": 1,
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 16,
+                "height": 32,
+                "offX": 16,
+                "offY": 48,
+                "xCount": 2
+            },
+            "wallY": 0.5,
+            "shapeType": "Y_FLAT",
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "flash",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "flash",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+                    "framesAlpha": [
+                        1,
+                        1,
+                        1,
+                        0.9,
+                        0.8,
+                        0.6,
+                        0.4,
+                        0.2
+                    ],
+                    "repeat": false,
+                    "renderMode": "lighter"
+                }
+            ]
+        }
+    },
+    "GROUND_DISCHARGE": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 16
+        },
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 16,
+                "height": 32,
+                "offX": 16,
+                "offY": 80,
+                "xCount": 2
+            },
+            "wallY": 1,
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "flash",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "flash",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+                    "framesAlpha": [
+                        1,
+                        1,
+                        1,
+                        0.9,
+                        0.8,
+                        0.6,
+                        0.4,
+                        0.2
+                    ],
+                    "repeat": false,
+                    "renderMode": "lighter"
+                }
+            ]
+        }
+    },
+    "WHALE_DISCHARGE": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 16
+        },
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/tesla-loose.png",
+                "width": 16,
+                "height": 24,
+                "offX": 88,
+                "offY": 0,
+                "xCount": 2
+            },
+            "wallY": 1,
+            "offset": {
+                "x": 0,
+                "y": -8,
+                "z": 0
+            },
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "flash",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "flash",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+                    "framesAlpha": [
+                        1,
+                        1,
+                        1,
+                        0.9,
+                        0.8,
+                        0.6,
+                        0.4,
+                        0.2
+                    ],
+                    "repeat": false,
+                    "renderMode": "lighter"
+                }
+            ]
+        }
+    },
+    "GROUND_DISCHARGE_FISH": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 16
+        },
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 16,
+                "height": 32,
+                "offX": 16,
+                "offY": 80,
+                "xCount": 2
+            },
+            "wallY": 1,
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "flash",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "flash",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+                    "framesAlpha": [
+                        1,
+                        1,
+                        1,
+                        0.9,
+                        0.8,
+                        0.6,
+                        0.4,
+                        0.2
+                    ],
+                    "repeat": false,
+                    "renderMode": "lighter"
+                }
+            ]
+        }
+    }
+}

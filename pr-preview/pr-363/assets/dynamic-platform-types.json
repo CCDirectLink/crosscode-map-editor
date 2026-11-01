@@ -1,0 +1,531 @@
+{
+    "DefaultSmall": {
+        "size": {
+            "x": 32,
+            "y": 32,
+            "z": 2
+        },
+        "styleKey": "dynPlatformSmall",
+        "terrain": 2,
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 32,
+                "height": 32,
+                "offX": 0,
+                "offY": 0
+            },
+            "SUB": [
+                {
+                    "name": "on",
+                    "time": 1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "off",
+                    "time": 1,
+                    "frames": [
+                        1
+                    ],
+                    "repeat": false
+                }
+            ]
+        },
+        "walkAnims": {
+            "on": {
+                "idle": "on"
+            },
+            "off": {
+                "idle": "off"
+            }
+        }
+    },
+    "DefaultMedium": {
+        "size": {
+            "x": 32,
+            "y": 32,
+            "z": 2
+        },
+        "styleKey": "dynPlatformMedium",
+        "terrain": 2,
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 32,
+                "height": 32,
+                "offX": 0,
+                "offY": 0
+            },
+            "SUB": [
+                {
+                    "name": "on",
+                    "time": 1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "off",
+                    "time": 1,
+                    "frames": [
+                        1
+                    ],
+                    "repeat": false
+                }
+            ]
+        },
+        "walkAnims": {
+            "on": {
+                "idle": "on"
+            },
+            "off": {
+                "idle": "off"
+            }
+        }
+    },
+    "Small": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 16
+        },
+        "terrain": 2,
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/puzzle-elements-1.png",
+                "width": 16,
+                "height": 32
+            },
+            "SUB": [
+                {
+                    "name": "default",
+                    "time": 1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "move",
+                    "time": 0.05,
+                    "frames": [
+                        0,
+                        1,
+                        2,
+                        1
+                    ],
+                    "repeat": true
+                }
+            ]
+        },
+        "walkAnims": {
+            "default": {
+                "idle": "default",
+                "move": "move"
+            }
+        }
+    },
+    "Large": {
+        "size": {
+            "x": 32,
+            "y": 32,
+            "z": 32
+        },
+        "terrain": 2,
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/puzzle-elements-1.png",
+                "width": 32,
+                "height": 64,
+                "offY": 32
+            },
+            "SUB": [
+                {
+                    "name": "default",
+                    "time": 1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "move",
+                    "time": 0.05,
+                    "frames": [
+                        0,
+                        1,
+                        2,
+                        1
+                    ],
+                    "repeat": true
+                }
+            ]
+        },
+        "walkAnims": {
+            "default": {
+                "idle": "default",
+                "move": "move"
+            }
+        }
+    },
+    "RhombusMedium": {
+        "size": {
+            "x": 32,
+            "y": 32,
+            "z": 32
+        },
+        "terrain": 2,
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/dynamic-blocks.png",
+                "width": 32,
+                "height": 64
+            },
+            "SUB": [
+                {
+                    "name": "redOn",
+                    "time": 1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "redOff",
+                    "time": 1,
+                    "frames": [
+                        1
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "greenOn",
+                    "time": 1,
+                    "frames": [
+                        2
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "greenOff",
+                    "time": 1,
+                    "frames": [
+                        3
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "blueOn",
+                    "time": 1,
+                    "frames": [
+                        4
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "blueOff",
+                    "time": 1,
+                    "frames": [
+                        5
+                    ],
+                    "repeat": false
+                }
+            ]
+        },
+        "walkAnims": {
+            "greenOn": {
+                "idle": "greenOn"
+            },
+            "greenOff": {
+                "idle": "greenOff"
+            },
+            "redOn": {
+                "idle": "redOn"
+            },
+            "redOff": {
+                "idle": "redOff"
+            },
+            "blueOn": {
+                "idle": "blueOn"
+            },
+            "blueOff": {
+                "idle": "blueOff"
+            }
+        }
+    },
+    "Floating": {
+        "size": {
+            "x": 32,
+            "y": 32,
+            "z": 0
+        },
+        "terrain": 2,
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/dynamic-blocks.png",
+                "width": 32,
+                "height": 36
+            },
+            "shapeType": "Z_EXPAND",
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": -4
+            },
+            "SUB": [
+                {
+                    "name": "redOn",
+                    "time": 1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "redOff",
+                    "time": 1,
+                    "frames": [
+                        1
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "greenOn",
+                    "time": 1,
+                    "frames": [
+                        2
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "greenOff",
+                    "time": 1,
+                    "frames": [
+                        3
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "blueOn",
+                    "time": 1,
+                    "frames": [
+                        4
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "blueOff",
+                    "time": 1,
+                    "frames": [
+                        5
+                    ],
+                    "repeat": false
+                }
+            ]
+        },
+        "walkAnims": {
+            "greenOn": {
+                "idle": "greenOn"
+            },
+            "greenOff": {
+                "idle": "greenOff"
+            },
+            "redOn": {
+                "idle": "redOn"
+            },
+            "redOff": {
+                "idle": "redOff"
+            },
+            "blueOn": {
+                "idle": "blueOn"
+            },
+            "blueOff": {
+                "idle": "blueOff"
+            }
+        }
+    },
+    "FloatingBig": {
+        "size": {
+            "x": 64,
+            "y": 64,
+            "z": 0
+        },
+        "terrain": 2,
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/dynamic-blocks.png",
+                "width": 64,
+                "height": 68,
+                "offY": 40
+            },
+            "shapeType": "Z_EXPAND",
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": -4
+            },
+            "SUB": [
+                {
+                    "name": "blueOn",
+                    "time": 1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "blueOff",
+                    "time": 1,
+                    "frames": [
+                        1
+                    ],
+                    "repeat": false
+                }
+            ]
+        },
+        "walkAnims": {
+            "blueOn": {
+                "idle": "blueOn"
+            },
+            "blueOff": {
+                "idle": "blueOff"
+            }
+        }
+    },
+    "AridBig": {
+        "size": {
+            "x": 80,
+            "y": 72,
+            "z": 2
+        },
+        "terrain": 2,
+        "anims": {
+            "sheet": {
+                "src": "media/map/arid-interior.png",
+                "width": 80,
+                "height": 72,
+                "offX": 336,
+                "offY": 672
+            },
+            "shapeType": "Z_EXPAND",
+            "wallY": 1,
+            "SUB": [
+                {
+                    "name": "default",
+                    "time": 1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                }
+            ]
+        },
+        "walkAnims": {
+            "default": {
+                "idle": "default"
+            }
+        }
+    },
+    "ArWallH": {
+        "size": {
+            "x": 32,
+            "y": 8,
+            "z": 24
+        },
+        "shadowSize": 0,
+        "terrain": 18,
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/dungeon-ar.png",
+                "width": 32,
+                "height": 32,
+                "offX": 56,
+                "offY": 144
+            },
+            "renderMode": "lighter",
+            "SUB": [
+                {
+                    "name": "default",
+                    "time": 0.05,
+                    "frames": [
+                        0,
+                        0
+                    ],
+                    "framesAlpha": [
+                        1,
+                        0.8
+                    ],
+                    "repeat": true
+                }
+            ]
+        },
+        "walkAnims": {
+            "on": {
+                "idle": "default"
+            }
+        },
+        "fx": {
+            "show": {
+                "sheet": "teleport",
+                "name": "barrierShow"
+            },
+            "hide": {
+                "sheet": "teleport",
+                "name": "barrierHide"
+            }
+        }
+    },
+    "ArWallV": {
+        "size": {
+            "x": 8,
+            "y": 32,
+            "z": 24
+        },
+        "shadowSize": 0,
+        "terrain": 18,
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/dungeon-ar.png",
+                "width": 8,
+                "height": 56,
+                "offX": 24,
+                "offY": 176
+            },
+            "renderMode": "lighter",
+            "SUB": [
+                {
+                    "name": "default",
+                    "time": 0.05,
+                    "frames": [
+                        0,
+                        0
+                    ],
+                    "framesAlpha": [
+                        1,
+                        0.8
+                    ],
+                    "repeat": true
+                }
+            ]
+        },
+        "walkAnims": {
+            "on": {
+                "idle": "default"
+            }
+        },
+        "fx": {
+            "show": {
+                "sheet": "teleport",
+                "name": "barrierShow"
+            },
+            "hide": {
+                "sheet": "teleport",
+                "name": "barrierHide"
+            }
+        }
+    }
+}

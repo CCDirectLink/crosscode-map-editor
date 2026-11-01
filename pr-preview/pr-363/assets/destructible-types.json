@@ -1,0 +1,892 @@
+{
+    "boxMedium": {
+        "hitCount": 1,
+        "size": {
+            "x": 24,
+            "y": 24,
+            "z": 22
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "medium"
+        },
+        "debris": {
+            "sheet": "cube-debris",
+            "name": "medium"
+        },
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 24,
+                "height": 48,
+                "offX": 64
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "boxMedNorth": {
+        "hitCount": 1,
+        "size": {
+            "x": 24,
+            "y": 24,
+            "z": 22
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "medium"
+        },
+        "debris": {
+            "sheet": "cube-debris",
+            "name": "medium"
+        },
+        "hitSide": [1, 0, 0, 0],
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 24,
+                "height": 48,
+                "offX": 64
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [2],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "boxMedEast": {
+        "hitCount": 1,
+        "size": {
+            "x": 24,
+            "y": 24,
+            "z": 22
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "medium"
+        },
+        "debris": {
+            "sheet": "cube-debris",
+            "name": "medium"
+        },
+        "hitSide": [0, 1, 0, 0],
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 24,
+                "height": 48,
+                "offX": 64
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [5],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "boxMedSouth": {
+        "hitCount": 1,
+        "size": {
+            "x": 24,
+            "y": 24,
+            "z": 22
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "medium"
+        },
+        "debris": {
+            "sheet": "cube-debris",
+            "name": "medium"
+        },
+        "hitSide": [0, 0, 1, 0],
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 24,
+                "height": 48,
+                "offX": 64
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [3],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "boxMedWest": {
+        "hitCount": 1,
+        "size": {
+            "x": 24,
+            "y": 24,
+            "z": 22
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "medium"
+        },
+        "debris": {
+            "sheet": "cube-debris",
+            "name": "medium"
+        },
+        "hitSide": [0, 0, 0, 1],
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 24,
+                "height": 48,
+                "offX": 64
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [4],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "boxLarge": {
+        "hitCount": 2,
+        "size": {
+            "x": 32,
+            "y": 32,
+            "z": 32
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "large"
+        },
+        "debris": {
+            "sheet": "cube-debris",
+            "name": "large"
+        },
+        "hitSound": {
+            "group": "media/sound/battle/block-hit.ogg",
+            "webAudioBuffer": {
+                "cacheKey": "media/sound/battle/block-hit.ogg",
+                "cacheType": "WebAudioBuffer",
+                "classId": 29,
+                "loaded": true,
+                "failed": false,
+                "path": "media/sound/battle/block-hit.ogg",
+                "tolerateMissingResources": false,
+                "loadListeners": [],
+                "loadCollectors": [],
+                "referenceCount": 7,
+                "emptyMapChangeCount": 0,
+                "loadCallback": null
+            },
+            "volume": 0.7,
+            "variance": 0,
+            "classId": 34
+        },
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 32,
+                "height": 64
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "iceBlock": {
+        "hitCount": 1,
+        "size": {
+            "x": 24,
+            "y": 24,
+            "z": 24
+        },
+        "terrain": 11,
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "iceBlockBoom"
+        },
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 24,
+                "height": 48,
+                "offX": 96,
+                "offY": 96
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "bombBlock": {
+        "hitCount": 1,
+        "size": {
+            "x": 32,
+            "y": 32,
+            "z": 32
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "bombBlockBoom"
+        },
+        "debris": {
+            "name": "bombBlockDebris"
+        },
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 32,
+                "height": 48,
+                "offX": 0,
+                "offY": 64
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "bombWallNorth": {
+        "hitCount": 1,
+        "size": {
+            "x": 32,
+            "y": 4,
+            "z": 48
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "bombBlockBoom"
+        },
+        "debris": {
+            "name": "bombBlockDebrisWall"
+        },
+        "debrisAngle": 0.5,
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 32,
+                "height": 48,
+                "offX": 0,
+                "offY": 112
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "bombWallEast": {
+        "hitCount": 1,
+        "size": {
+            "x": 16,
+            "y": 32,
+            "z": 32
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "bombBlockBoom"
+        },
+        "debris": {
+            "name": "bombBlockDebrisWall"
+        },
+        "debrisAngle": 0.75,
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 16,
+                "height": 64,
+                "offX": 64,
+                "offY": 64
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "bombWallWest": {
+        "hitCount": 1,
+        "size": {
+            "x": 16,
+            "y": 32,
+            "z": 32
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "bombBlockBoom"
+        },
+        "debris": {
+            "name": "bombBlockDebrisWall"
+        },
+        "debrisAngle": 0.25,
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 16,
+                "height": 64,
+                "offX": 64,
+                "offY": 64
+            },
+            "flipX": true,
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "keyWallNorth": {
+        "hitCount": 1,
+        "size": {
+            "x": 32,
+            "y": 4,
+            "z": 32
+        },
+        "preBoom": {
+            "sheet": "puzzle.destructible",
+            "name": "keyDoorPre"
+        },
+        "keyConsume": "DUNGEON_KEY",
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 32,
+                "height": 32,
+                "offX": 96,
+                "offY": 48
+            },
+            "offset": {
+                "x": 0,
+                "y": -4,
+                "z": 0
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "keyPillar": {
+        "hitCount": 1,
+        "collType": 10,
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 96
+        },
+        "preBoom": {
+            "sheet": "puzzle.destructible",
+            "name": "keyPillarPre"
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "keyPillarBoom"
+        },
+        "range": {
+            "key": "KEY_PILLAR",
+            "delay": 0.1,
+            "padding": 8,
+            "startDelay": 1
+        },
+        "keyConsume": "DUNGEON_KEY",
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 16,
+                "height": 48,
+                "offX": 176,
+                "offY": 48
+            },
+            "pivot": {
+                "x": 8,
+                "y": 48
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "keyPillarAR": {
+        "hitCount": 1,
+        "collType": 10,
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 96
+        },
+        "preBoom": {
+            "sheet": "puzzle.destructible",
+            "name": "keyPillarPre"
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "keyPillarBoom"
+        },
+        "range": {
+            "key": "KEY_PILLAR",
+            "delay": 0.1,
+            "padding": 8
+        },
+        "onlyPerma": true,
+        "noBlinking": true,
+        "anims": {
+            "namedSheets": {
+                "floor": {
+                    "src": null,
+                    "width": 16,
+                    "height": 16,
+                    "offX": 144,
+                    "offY": 80
+                },
+                "ar": {
+                    "src": null,
+                    "width": 16,
+                    "height": 48,
+                    "offX": 160,
+                    "offY": 48
+                }
+            },
+            "SUB": [{
+                "name": "default",
+                "sheet": "floor",
+                "time": 1,
+                "frames": [0],
+                "repeat": false,
+                "shapeType": "Z_FLAT",
+                "pivot": {
+                    "x": 8,
+                    "y": 16
+                }
+            }, {
+                "name": "default",
+                "sheet": "ar",
+                "time": 0.05,
+                "frames": [0, 0, 0, 0, 0, 0],
+                "framesAlpha": [1, 1, 1, 0.8, 0.6, 0.8],
+                "repeat": true,
+                "renderMode": "lighter",
+                "pivot": {
+                    "x": 8,
+                    "y": 48
+                }
+            }]
+        }
+    },
+    "masterKeyWallColdDungeon": {
+        "hitCount": 1,
+        "size": {
+            "x": 64,
+            "y": 4,
+            "z": 64
+        },
+        "preBoom": {
+            "sheet": "puzzle.destructible",
+            "name": "keyDoorMasterPre"
+        },
+        "keyConsume": "DUNGEON_MASTER_KEY",
+        "anims": {
+            "sheet": {
+                "src": "media/map/cold-dng.png",
+                "width": 64,
+                "height": 64,
+                "offX": 176,
+                "offY": 416,
+                "xCount": 1
+            },
+            "offset": {
+                "x": 0,
+                "y": -4,
+                "z": 0
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "masterKeyWallHeatDungeon": {
+        "hitCount": 1,
+        "size": {
+            "x": 64,
+            "y": 4,
+            "z": 48
+        },
+        "preBoom": {
+            "sheet": "puzzle.destructible",
+            "name": "keyDoorMasterPre"
+        },
+        "keyConsume": "DUNGEON_MASTER_KEY",
+        "anims": {
+            "sheet": {
+                "src": "media/map/heat-dng.png",
+                "width": 64,
+                "height": 48,
+                "offX": 320,
+                "offY": 544,
+                "xCount": 1
+            },
+            "offset": {
+                "x": 0,
+                "y": -4,
+                "z": 0
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "masterKeyWallTreeDungeon": {
+        "hitCount": 1,
+        "size": {
+            "x": 64,
+            "y": 4,
+            "z": 48
+        },
+        "preBoom": {
+            "sheet": "puzzle.destructible",
+            "name": "keyDoorMasterPre"
+        },
+        "keyConsume": "DUNGEON_MASTER_KEY",
+        "anims": {
+            "sheet": {
+                "src": "media/map/shockwave-dng.png",
+                "width": 64,
+                "height": 48,
+                "offX": 320,
+                "offY": 544,
+                "xCount": 1
+            },
+            "offset": {
+                "x": 0,
+                "y": -4,
+                "z": 0
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "autumnWall": {
+        "hitCount": 1,
+        "size": {
+            "x": 32,
+            "y": 8,
+            "z": 40
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "wallBlockBoom"
+        },
+        "debris": {
+            "sheet": "area.autumn",
+            "name": "wallBoom"
+        },
+        "hitSound": {
+            "group": "media/sound/battle/block-hit.ogg",
+            "webAudioBuffer": {
+                "cacheKey": "media/sound/battle/block-hit.ogg",
+                "cacheType": "WebAudioBuffer",
+                "classId": 29,
+                "loaded": true,
+                "failed": false,
+                "path": "media/sound/battle/block-hit.ogg",
+                "tolerateMissingResources": false,
+                "loadListeners": [],
+                "loadCollectors": [],
+                "referenceCount": 7,
+                "emptyMapChangeCount": 0,
+                "loadCallback": null
+            },
+            "volume": 0.7,
+            "variance": 0,
+            "classId": 34
+        },
+        "anims": {
+            "sheet": {
+                "src": "media/map/autumn-outside.png",
+                "width": 32,
+                "height": 48,
+                "offX": 32,
+                "offY": 768
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "autumnWall2": {
+        "hitCount": 1,
+        "size": {
+            "x": 48,
+            "y": 8,
+            "z": 40
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "wallBlockBoom"
+        },
+        "debris": {
+            "sheet": "area.autumn",
+            "name": "wallBoom"
+        },
+        "hitSound": {
+            "group": "media/sound/battle/block-hit.ogg",
+            "webAudioBuffer": {
+                "cacheKey": "media/sound/battle/block-hit.ogg",
+                "cacheType": "WebAudioBuffer",
+                "classId": 29,
+                "loaded": true,
+                "failed": false,
+                "path": "media/sound/battle/block-hit.ogg",
+                "tolerateMissingResources": false,
+                "loadListeners": [],
+                "loadCollectors": [],
+                "referenceCount": 7,
+                "emptyMapChangeCount": 0,
+                "loadCallback": null
+            },
+            "volume": 0.7,
+            "variance": 0,
+            "classId": 34
+        },
+        "anims": {
+            "sheet": {
+                "src": "media/map/autumn-outside.png",
+                "width": 48,
+                "height": 48,
+                "offX": 32,
+                "offY": 816
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    },
+    "autumnWall3": {
+        "hitCount": 1,
+        "size": {
+            "x": 32,
+            "y": 8,
+            "z": 40
+        },
+        "boom": {
+            "sheet": "puzzle.destructible",
+            "name": "wallBlockBoom"
+        },
+        "debris": {
+            "sheet": "area.autumn",
+            "name": "wallBoom"
+        },
+        "hitSound": {
+            "group": "media/sound/battle/block-hit.ogg",
+            "webAudioBuffer": {
+                "cacheKey": "media/sound/battle/block-hit.ogg",
+                "cacheType": "WebAudioBuffer",
+                "classId": 29,
+                "loaded": true,
+                "failed": false,
+                "path": "media/sound/battle/block-hit.ogg",
+                "tolerateMissingResources": false,
+                "loadListeners": [],
+                "loadCollectors": [],
+                "referenceCount": 7,
+                "emptyMapChangeCount": 0,
+                "loadCallback": null
+            },
+            "volume": 0.7,
+            "variance": 0,
+            "classId": 34
+        },
+        "anims": {
+            "sheet": {
+                "src": "media/map/autumn-outside.png",
+                "width": 32,
+                "height": 48,
+                "offX": 32,
+                "offY": 864
+            },
+            "SUB": [{
+                "name": "default",
+                "time": 1,
+                "frames": [0],
+                "repeat": false
+            }, {
+                "name": "default",
+                "time": 1,
+                "frames": [1],
+                "repeat": false,
+                "aboveZ": 1
+            }]
+        }
+    }
+}

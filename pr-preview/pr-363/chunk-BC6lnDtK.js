@@ -1,0 +1,4 @@
+import{a as H}from"./chunk-DBRZyZM1.js";import{n as t$1,t as e}from"./chunk-B_VM99PE.js";var r;var a;var c;var t=H(()=>{t$1();r=`oitFinalPixelShader`,a=`precision highp float;uniform sampler2D uFrontColor;uniform sampler2D uBackColor;void main() {ivec2 fragCoord=ivec2(gl_FragCoord.xy);vec4 frontColor=texelFetch(uFrontColor,fragCoord,0);vec4 backColor=texelFetch(uBackColor,fragCoord,0);float alphaMultiplier=1.0-frontColor.a;glFragColor=vec4(
+frontColor.rgb+alphaMultiplier*backColor.rgb,
+frontColor.a+backColor.a
+);}`;e.ShadersStore[r]||(e.ShadersStore[r]=a);c={name:r,shader:a}});export{t as n,c as t};

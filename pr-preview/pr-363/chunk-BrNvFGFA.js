@@ -1,0 +1,1 @@
+import"./chunk-B_VM99PE.js";import{n as m,t as S}from"./chunk-BCqAETAS.js";S();export{m as passCubePixelShaderWGSL};

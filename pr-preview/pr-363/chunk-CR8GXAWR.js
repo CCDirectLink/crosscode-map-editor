@@ -1,0 +1,1 @@
+import"./chunk-B_VM99PE.js";import{n as s,t as f}from"./chunk-D0ozHnbK.js";f();export{s as fluidRenderingParticleDepthVertexShaderWGSL};

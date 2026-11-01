@@ -1,0 +1,916 @@
+{
+    "default": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 17
+        },
+        "padding": {
+            "x": 4,
+            "y": 4
+        },
+        "activeZHeight": 0,
+        "useStyleSheet": "puzzle",
+        "anims": {
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "sheet": {
+                "src": null,
+                "width": 16,
+                "height": 32
+            },
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "preOn",
+                    "time": 0.03,
+                    "frames": [
+                        8,
+                        9,
+                        10,
+                        11,
+                        8,
+                        9,
+                        10,
+                        11,
+                        8,
+                        9,
+                        10,
+                        11,
+                        8,
+                        9,
+                        10,
+                        11,
+                        8,
+                        9,
+                        10,
+                        10,
+                        11,
+                        11,
+                        11,
+                        8,
+                        8,
+                        8,
+                        8,
+                        8,
+                        12,
+                        13
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "preOnEnd",
+                    "time": 0.1,
+                    "frames": [
+                        14,
+                        15
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "on",
+                    "time": 1,
+                    "frames": [
+                        15
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "tmpOn",
+                    "time": 0.025,
+                    "frames": [
+                        4,
+                        5,
+                        6,
+                        7
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "tmpOnSlow",
+                    "time": 0.05,
+                    "frames": [
+                        4,
+                        5,
+                        6,
+                        7
+                    ],
+                    "repeat": true
+                }
+            ]
+        }
+    },
+    "turret-switch": {
+        "size": {
+            "x": 24,
+            "y": 24,
+            "z": 21
+        },
+        "padding": {
+            "x": 0,
+            "y": 0
+        },
+        "activeZHeight": 21,
+        "anims": {
+            "offset": {
+                "x": -1,
+                "y": 1,
+                "z": 0
+            },
+            "sheet": {
+                "src": "media/entity/objects/switch-special.png",
+                "width": 24,
+                "height": 48
+            },
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "preOn",
+                    "time": 0.03,
+                    "frames": [
+                        0,
+                        1,
+                        1,
+                        1,
+                        2
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "preOnEnd",
+                    "time": 0.03,
+                    "frames": [
+                        3
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "on",
+                    "time": 1,
+                    "frames": [
+                        3
+                    ],
+                    "repeat": false
+                }
+            ]
+        }
+    },
+    "propeller": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 24
+        },
+        "padding": {
+            "x": 4,
+            "y": 4
+        },
+        "activeZHeight": 21,
+        "preStopTime": 1,
+        "useStyleSheet": "propeller",
+        "anims": {
+            "sheet": {
+                "src": "media/map/heat-dng.png",
+                "width": 24,
+                "height": 32,
+                "offX": 320,
+                "offY": 256
+            },
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "tmpOn",
+                    "time": 0.033,
+                    "frames": [
+                        3,
+                        4,
+                        5
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "tmpOnSlow",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        2,
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "tmpOnEnd",
+                    "time": 0.05,
+                    "frames": [
+                        0,
+                        0,
+                        1,
+                        1,
+                        2,
+                        2,
+                        0,
+                        0,
+                        0,
+                        1,
+                        1,
+                        1,
+                        2,
+                        2,
+                        2,
+                        2
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "on",
+                    "time": 0.033,
+                    "frames": [
+                        3,
+                        4,
+                        5
+                    ],
+                    "repeat": true
+                }
+            ]
+        },
+        "fx": {
+            "tmpOn": {
+                "sheet": "puzzle.propeller",
+                "name": "tmpOn"
+            },
+            "tmpOnSlow": {
+                "sheet": "puzzle.propeller",
+                "name": "tmpOnSlow"
+            },
+            "tmpOnEnd": {
+                "sheet": "puzzle.propeller",
+                "name": "tmpOnEnd"
+            }
+        }
+    },
+    "steamPipe": {
+        "collType": 6,
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 10
+        },
+        "padding": {
+            "x": 0,
+            "y": 0
+        },
+        "activeZHeight": 10,
+        "preStopTime": 1,
+        "ignoreInvalid": true,
+        "hideHitEffect": true,
+        "useStyleSheet": "pipeSwitch",
+        "anims": {
+            "sheet": {
+                "src": "media/map/heat-dng.png",
+                "width": 16,
+                "height": 24,
+                "offX": 368,
+                "offY": 208,
+                "xCount": 1
+            },
+            "wallY": 1,
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "on",
+                    "time": 0.1,
+                    "frames": [
+                        1
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "tmpOn",
+                    "time": 0.05,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "tmpOn",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+                    "framesAlpha": [
+                        1,
+                        0.75,
+                        0.5,
+                        0.5,
+                        0.75,
+                        1
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "tmpOnSlow",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        0
+                    ],
+                    "repeat": true
+                }
+            ]
+        },
+        "fx": {
+            "tmpOn": {
+                "sheet": "puzzle.water-bubble",
+                "name": "steamSwitchTmp"
+            },
+            "on": {
+                "sheet": "puzzle.water-bubble",
+                "name": "steamSwitchOn"
+            }
+        }
+    },
+    "teslaSwitch": {
+        "collType": 3,
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 16
+        },
+        "padding": {
+            "x": 0,
+            "y": 0
+        },
+        "activeZHeight": 16,
+        "preStopTime": 1,
+        "hideHitEffect": true,
+        "useStyleSheet": "teslaSwitch",
+        "anims": {
+            "sheet": {
+                "src": "media/map/shockwave-dng.png",
+                "width": 16,
+                "height": 32,
+                "offX": 208,
+                "offY": 368,
+                "xCount": 2
+            },
+            "wallY": 0,
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "on",
+                    "time": 0.1,
+                    "frames": [
+                        1
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "tmpOn",
+                    "time": 0.05,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "tmpOn",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1
+                    ],
+                    "framesAlpha": [
+                        1,
+                        0.75,
+                        0.5,
+                        0.5,
+                        0.75,
+                        1
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "tmpOnSlow",
+                    "time": 0.05,
+                    "frames": [
+                        1,
+                        0
+                    ],
+                    "repeat": true
+                }
+            ]
+        },
+        "fx": {
+            "tmpOn": {
+                "sheet": "puzzle.tesla",
+                "name": "switchOnTmp"
+            },
+            "on": {
+                "sheet": "puzzle.tesla",
+                "name": "switchOn"
+            }
+        }
+    },
+    "arSwitch": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 17
+        },
+        "padding": {
+            "x": 4,
+            "y": 4
+        },
+        "activeZHeight": 0,
+        "anims": {
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "sheet": {
+                "src": "media/entity/objects/dungeon-ar.png",
+                "width": 16,
+                "height": 32,
+                "offX": 192,
+                "offY": 64,
+                "xCount": 4
+            },
+            "renderMode": "lighter",
+            "SUB": [
+                {
+                    "name": "off",
+                    "time": 0.1,
+                    "frames": [
+                        0,
+                        1,
+                        2,
+                        3
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "preOn",
+                    "time": 0.03,
+                    "frames": [
+                        8,
+                        9,
+                        10,
+                        11,
+                        8,
+                        9,
+                        10,
+                        11,
+                        8,
+                        9,
+                        10,
+                        11,
+                        8,
+                        9,
+                        10,
+                        11,
+                        8,
+                        9,
+                        10,
+                        10,
+                        11,
+                        11,
+                        11,
+                        8,
+                        8,
+                        8,
+                        8,
+                        8,
+                        12,
+                        13
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "preOnEnd",
+                    "time": 0.1,
+                    "frames": [
+                        14,
+                        15
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "on",
+                    "time": 1,
+                    "frames": [
+                        15
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "tmpOn",
+                    "time": 0.025,
+                    "frames": [
+                        4,
+                        5,
+                        6,
+                        7
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "tmpOnSlow",
+                    "time": 0.05,
+                    "frames": [
+                        4,
+                        5,
+                        6,
+                        7
+                    ],
+                    "repeat": true
+                }
+            ]
+        },
+        "fx": {
+            "show": {
+                "sheet": "ar",
+                "name": "arSwitchShow"
+            },
+            "hide": {
+                "sheet": "ar",
+                "name": "arSwitchHide"
+            }
+        }
+    },
+    "waveSwitch": {
+        "collType": 6,
+        "size": {
+            "x": 24,
+            "y": 24,
+            "z": 24
+        },
+        "padding": {
+            "x": 0,
+            "y": 0
+        },
+        "activeZHeight": 24,
+        "preStopTime": 1,
+        "ignoreInvalid": true,
+        "hideHitEffect": false,
+        "useStyleSheet": "waveSwitch",
+        "anims": {
+            "namedSheets": {
+                "box": {
+                    "src": "media/map/shockwave-dng.png",
+                    "width": 24,
+                    "height": 48,
+                    "offX": 0,
+                    "offY": 0,
+                    "xCount": 1
+                },
+                "shock": {
+                    "src": "media/map/shockwave-dng.png",
+                    "width": 24,
+                    "height": 40,
+                    "offX": 24,
+                    "offY": 8
+                }
+            },
+            "SUB": [
+                {
+                    "wallY": 1,
+                    "sheet": "box",
+                    "SUB": [
+                        {
+                            "name": "on",
+                            "time": 0.1,
+                            "frames": [
+                                0
+                            ],
+                            "repeat": true
+                        },
+                        {
+                            "name": "off",
+                            "time": 0.1,
+                            "frames": [
+                                0
+                            ],
+                            "repeat": true
+                        },
+                        {
+                            "name": "tmpOn",
+                            "time": 0.1,
+                            "frames": [
+                                0
+                            ],
+                            "repeat": true
+                        },
+                        {
+                            "name": "tmpOnSlow",
+                            "time": 0.1,
+                            "frames": [
+                                0
+                            ],
+                            "repeat": true
+                        },
+                        {
+                            "name": "tmpOnEnd",
+                            "time": 0.1,
+                            "frames": [
+                                0
+                            ],
+                            "repeat": true
+                        }
+                    ]
+                },
+                {
+                    "sheet": "shock",
+                    "renderMode": "lighter",
+                    "SUB": [
+                        {
+                            "name": "off",
+                            "time": 0.05,
+                            "frames": [
+                                0,
+                                1,
+                                2,
+                                3
+                            ],
+                            "repeat": true
+                        },
+                        {
+                            "name": "tmpOn",
+                            "time": 0.033,
+                            "frames": [
+                                4,
+                                5,
+                                -1,
+                                -1,
+                                -1,
+                                5
+                            ],
+                            "repeat": true
+                        },
+                        {
+                            "name": "tmpOnSlow",
+                            "time": 0.033,
+                            "frames": [
+                                4,
+                                5,
+                                -1,
+                                5
+                            ],
+                            "repeat": true
+                        },
+                        {
+                            "name": "tmpOnEnd",
+                            "time": 0.066,
+                            "frames": [
+                                5
+                            ],
+                            "repeat": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "fx": {
+            "tmpOn": {
+                "sheet": "puzzle.compressor",
+                "name": "waveSwitchTmpOn"
+            },
+            "on": {
+                "sheet": "puzzle.compressor",
+                "name": "waveSwitchOn"
+            }
+        }
+    },
+    "ferroSwitch": {
+        "collType": 7,
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 24
+        },
+        "padding": {
+            "x": 2,
+            "y": 2
+        },
+        "activeZHeight": 24,
+        "preStopTime": 1,
+        "ignoreInvalid": true,
+        "hideHitEffect": true,
+        "checkOverlap": true,
+        "noBallDestroyer": true,
+        "anims": {
+            "namedSheets": {
+                "ground": {
+                    "src": "media/entity/objects/ferro.png",
+                    "width": 16,
+                    "height": 16,
+                    "offX": 144,
+                    "offY": 352
+                },
+                "holo": {
+                    "src": "media/entity/objects/ferro.png",
+                    "width": 16,
+                    "height": 16,
+                    "offX": 144,
+                    "offY": 320,
+                    "xCount": 6
+                }
+            },
+            "SUB": [
+                {
+                    "wallY": 0,
+                    "size": {
+                        "x": 16,
+                        "y": 16,
+                        "z": 0
+                    },
+                    "sheet": "ground",
+                    "time": 0.1,
+                    "repeat": true,
+                    "SUB": [
+                        {
+                            "name": "on",
+                            "frames": [
+                                2
+                            ]
+                        },
+                        {
+                            "name": "off",
+                            "frames": [
+                                1
+                            ]
+                        },
+                        {
+                            "name": "tmpOff",
+                            "frames": [
+                                5
+                            ]
+                        },
+                        {
+                            "name": "tmpOnOverlap",
+                            "frames": [
+                                3
+                            ]
+                        },
+                        {
+                            "name": "tmpOn",
+                            "time": 0.066,
+                            "frames": [
+                                3,
+                                3,
+                                4,
+                                0,
+                                0,
+                                4
+                            ],
+                            "repeat": true
+                        },
+                        {
+                            "name": "tmpOnSlow",
+                            "time": 0.05,
+                            "frames": [
+                                3,
+                                4,
+                                0,
+                                4
+                            ],
+                            "repeat": true
+                        },
+                        {
+                            "name": "tmpOnEnd",
+                            "time": 0.1,
+                            "frames": [
+                                3,
+                                0
+                            ],
+                            "repeat": true
+                        }
+                    ]
+                },
+                {
+                    "sheet": "holo",
+                    "renderMode": "lighter",
+                    "size": {
+                        "x": 16,
+                        "y": 0,
+                        "z": 16
+                    },
+                    "SUB": [
+                        {
+                            "name": "off",
+                            "time": 0.1,
+                            "frames": [
+                                0,
+                                1,
+                                2,
+                                3
+                            ],
+                            "repeat": true,
+                            "offset": {
+                                "z": 14
+                            }
+                        },
+                        {
+                            "name": "tmpOff",
+                            "time": 0.1,
+                            "frames": [
+                                6,
+                                7,
+                                8,
+                                9
+                            ],
+                            "repeat": true,
+                            "offset": {
+                                "z": 14
+                            }
+                        },
+                        {
+                            "name": "on",
+                            "time": 0.1,
+                            "frames": [
+                                4
+                            ],
+                            "repeat": true
+                        },
+                        {
+                            "name": "on",
+                            "time": 0.1,
+                            "frames": [
+                                5
+                            ],
+                            "repeat": true,
+                            "offset": {
+                                "y": -9
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "fx": {
+            "tmpOn": {
+                "sheet": "puzzle.ferro",
+                "name": "switchTmpOn"
+            },
+            "tmpOnOverlap": {
+                "sheet": "puzzle.ferro",
+                "name": "switchTmpOverlap"
+            },
+            "on": {
+                "sheet": "puzzle.ferro",
+                "name": "switchOn"
+            }
+        }
+    }
+}

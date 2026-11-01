@@ -1,0 +1,51 @@
+import{a as H}from"./chunk-DBRZyZM1.js";import{n as t$1,t as e}from"./chunk-B_VM99PE.js";import{n}from"./chunk-BMERetGG.js";import{t as n$1}from"./chunk-B7s5krO3.js";import{t as n$2}from"./chunk-CXEfYdcN.js";var r;var t;var u;var o=H(()=>{t$1();n();n$1();n$2();r=`screenSpaceReflection2BlurCombinerPixelShader`,t=`var textureSamplerSampler: sampler;var textureSampler: texture_2d<f32>; 
+var mainSamplerSampler: sampler;var mainSampler: texture_2d<f32>;var reflectivitySamplerSampler: sampler;var reflectivitySampler: texture_2d<f32>;uniform strength: f32;uniform reflectionSpecularFalloffExponent: f32;uniform reflectivityThreshold: f32;varying vUV: vec2f;
+#include<helperFunctions>
+#ifdef SSR_BLEND_WITH_FRESNEL
+#include<pbrBRDFFunctions>
+#include<screenSpaceRayTrace>
+uniform projection: mat4x4f;uniform invProjectionMatrix: mat4x4f;
+#ifdef SSR_NORMAL_IS_IN_WORLDSPACE
+uniform view: mat4x4f;
+#endif
+var normalSampler: texture_2d<f32>;var depthSampler: texture_2d<f32>;
+#ifdef SSRAYTRACE_SCREENSPACE_DEPTH
+uniform nearPlaneZ: f32;uniform farPlaneZ: f32;
+#endif
+#endif
+@fragment
+fn main(input: FragmentInputs)->FragmentOutputs {
+#ifdef SSRAYTRACE_DEBUG
+fragmentOutputs.color=textureSample(textureSampler,textureSamplerSampler,input.vUV);
+#else
+var SSR: vec3f=textureSample(textureSampler,textureSamplerSampler,input.vUV).rgb;var color: vec4f=textureSample(mainSampler,textureSamplerSampler,input.vUV);var reflectivity: vec4f=textureSample(reflectivitySampler,reflectivitySamplerSampler,input.vUV);
+#ifndef SSR_DISABLE_REFLECTIVITY_TEST
+if (max(reflectivity.r,max(reflectivity.g,reflectivity.b))<=uniforms.reflectivityThreshold) {fragmentOutputs.color=color;return fragmentOutputs;}
+#endif
+#ifdef SSR_INPUT_IS_GAMMA_SPACE
+color=toLinearSpaceVec4(color);
+#endif
+#ifdef SSR_BLEND_WITH_FRESNEL
+var texSize: vec2f= vec2f(textureDimensions(depthSampler,0));var csNormal: vec3f=textureLoad(normalSampler,vec2<i32>(input.vUV*texSize),0).xyz;
+#ifdef SSR_DECODE_NORMAL
+csNormal=csNormal*2.0-1.0;
+#endif
+#ifdef SSR_NORMAL_IS_IN_WORLDSPACE
+csNormal=(uniforms.view*vec4f(csNormal,0.0)).xyz;
+#endif
+var depth: f32=textureLoad(depthSampler,vec2<i32>(input.vUV*texSize),0).r;
+#ifdef SSRAYTRACE_SCREENSPACE_DEPTH
+depth=linearizeDepth(depth,uniforms.nearPlaneZ,uniforms.farPlaneZ);
+#endif
+var csPosition: vec3f=computeViewPosFromUVDepth(input.vUV,depth,uniforms.projection,uniforms.invProjectionMatrix);var csViewDirection: vec3f=normalize(csPosition);var F0: vec3f=reflectivity.rgb;var fresnel: vec3f=fresnelSchlickGGXVec3(max(dot(csNormal,-csViewDirection),0.0),F0, vec3f(1.));var reflectionMultiplier: vec3f=clamp(pow(fresnel*uniforms.strength, vec3f(uniforms.reflectionSpecularFalloffExponent)),vec3f(0.0),vec3f(1.0));
+#else
+var reflectionMultiplier: vec3f=clamp(pow(reflectivity.rgb*uniforms.strength, vec3f(uniforms.reflectionSpecularFalloffExponent)),vec3f(0.0),vec3f(1.0));
+#endif
+var colorMultiplier: vec3f=1.0-reflectionMultiplier;var finalColor: vec3f=(color.rgb*colorMultiplier)+(SSR*reflectionMultiplier);
+#ifdef SSR_OUTPUT_IS_GAMMA_SPACE
+finalColor=toGammaSpaceVec3(finalColor);
+#endif
+fragmentOutputs.color= vec4f(finalColor,color.a);
+#endif
+}
+`;e.ShadersStoreWGSL[r]||(e.ShadersStoreWGSL[r]=t);u={name:r,shader:t}});export{u as n,o as t};

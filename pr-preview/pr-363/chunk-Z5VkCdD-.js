@@ -1,0 +1,1 @@
+import"./chunk-B_VM99PE.js";import{n as l,t as c}from"./chunk-jppWb2tb.js";l();export{c as clipPlaneVertexDeclarationWGSL};

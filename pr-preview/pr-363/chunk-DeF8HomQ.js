@@ -1,0 +1,1 @@
+import"./chunk-B_VM99PE.js";import{n as s,t as c}from"./chunk-DuOKw902.js";s();export{c as bonesVertexWGSL};

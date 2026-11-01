@@ -1,0 +1,409 @@
+{
+	"NPCAvatarSimple": {
+		"name": {
+			"jsonPARAM": "name",
+			"default": null
+		},
+		"realname": {
+			"jsonPARAM": "realname",
+			"default": null
+		},
+		"gender": {
+			"jsonPARAM": "gender",
+			"default": null
+		},
+		"animSheet": {
+			"DOCTYPE": "MULTI_DIR_ANIMATION",
+			"namedSheets": {
+				"move": {
+					"src": {
+						"jsonPARAM": "img"
+					},
+					"width": 32,
+					"height": 40,
+					"xCount": 3,
+					"offX": {
+						"jsonPARAM": "x"
+					},
+					"offY": {
+						"jsonPARAM": "y"
+					}
+				},
+				"offline": {
+					"src": {
+						"jsonPARAM": "img"
+					},
+					"width": 32,
+					"height": 40,
+					"xCount": 3,
+					"offX": {
+						"jsonPARAM": "offlineX"
+					},
+					"offY": {
+						"jsonPARAM": "offlineY"
+					}
+				},
+				"run": {
+					"jsonIF": "runSrc",
+					"src": {
+						"jsonPARAM": "runSrc"
+					},
+					"width": 32,
+					"height": 40,
+					"xCount": 5,
+					"offX": {
+						"jsonPARAM": "runX"
+					},
+					"offY": {
+						"jsonPARAM": "runY"
+					}
+				},
+				"sit": {
+					"jsonIF": "sitX",
+					"src": {
+						"jsonPARAM": "img"
+					},
+					"width": 32,
+					"height": 40,
+					"xCount": 1,
+					"offX": {
+						"jsonPARAM": "sitX"
+					},
+					"offY": {
+						"jsonPARAM": "sitY"
+					}
+				}
+			},
+			"shapeType": "Y_FLAT",
+			"offset": {
+				"x": 0,
+				"y": -2,
+				"z": 0
+			},
+			"SUB": [
+				{
+					"sheet": "move",
+					"dirs": 4,
+					"flipX": [0, 0, 0, 1],
+					"tileOffsets": [0, 3, 6, 3],
+					"SUB": [
+						{
+							"name": "idle",
+							"time": 1,
+							"repeat": false,
+							"frames": [1]
+						},
+						{
+							"name": "walk",
+							"time": 0.133,
+							"repeat": true,
+							"frames": [0, 1, 2, 1]
+						},
+						{
+							"sheet": "offline",
+							"name": "offline",
+							"time": 0.166,
+							"repeat": true,
+							"frames": [0, 1, 2]
+						}
+					]
+				},
+				{
+					"jsonIF": "runSrc",
+					"sheet": "run",
+					"dirs": 6,
+					"flipX": [0, 0, 0, 1, 1, 1],
+					"tileOffsets": [0, 5, 10, 10, 5, 0],
+					"SUB": [
+						{
+							"name": "run",
+							"time": 0.1,
+							"repeat": true,
+							"frames": [0, 1, 2, 3]
+						},
+						{
+							"name": "jump",
+							"time": 0.1,
+							"repeat": true,
+							"frames": [3]
+						},
+						{
+							"name": "fall",
+							"time": 0.1,
+							"repeat": true,
+							"frames": [4]
+						}
+					]
+				},
+				{
+					"jsonIF": "sitX",
+					"sheet": "sit",
+					"dirs": 4,
+					"flipX": [0, 0, 0, 1],
+					"tileOffsets": [0, 1, 2, 1],
+					"SUB": [
+						{
+							"name": "sit",
+							"time": 0.1,
+							"repeat": false,
+							"frames": [0]
+						}
+					]
+				},
+				{
+					"sheet": "move",
+					"dirs": 2,
+					"flipX": [0, 1],
+					"tileOffsets": [9, 9],
+					"SUB": [
+						{
+							"name": "ground",
+							"time": 1,
+							"repeat": false,
+							"frames": [0],
+							"offset": {
+								"x": 0,
+								"y": 2,
+								"z": 0
+							}
+						}
+					]
+				}
+			]
+		},
+		"walkAnimSet": {
+			"normal": {
+				"idle": "idle",
+				"move": "walk",
+				"run": {
+					"jsonIF": "runSrc",
+					"jsonTHEN": "run"
+				},
+				"jump": {
+					"jsonIF": "runSrc",
+					"jsonTHEN": "jump"
+				},
+				"fall": {
+					"jsonIF": "runSrc",
+					"jsonTHEN": "fall"
+				}
+			},
+			"ground": {
+				"idle": "ground"
+			},
+			"sit": {
+				"jsonIF": "sitX",
+				"idle": "sit"
+			},
+			"offline": {
+				"idle": "offline"
+			}
+		},
+		"walkAnims": "normal",
+		"configs": {
+			"normal": {
+				"relativeVel": 0.5
+			},
+			"run": {
+				"jsonIF": "runSrc",
+				"relativeVel": 1
+			},
+			"ground": {
+				"walkAnims": "ground"
+			},
+			"groundFloat": {
+				"walkAnims": "ground",
+				"zGravityFactor": 0,
+				"shadow": 0
+			},
+			"sit": {
+				"jsonIF": "sitX",
+				"walkAnims": "sit"
+			},
+			"sitFloat": {
+				"jsonIF": "sitX",
+				"walkAnims": "sit",
+				"zGravityFactor": 0,
+				"shadow": 0
+			},
+			"offline": {
+				"walkAnims": "offline"
+			}
+		},
+		"face": {
+			"ABSTRACT": {
+				"jsonPARAM": "face"
+			}
+		}
+	},
+	"NPCBasic": {
+		"name": {
+			"jsonPARAM": "name",
+			"default": null
+		},
+		"gender": {
+			"jsonPARAM": "gender",
+			"default": null
+		},
+		"animSheet": {
+			"DOCTYPE": "MULTI_DIR_ANIMATION",
+			"namedSheets": {
+				"move": {
+					"src": {
+						"jsonPARAM": "img"
+					},
+					"width": {
+						"jsonPARAM": "width",
+						"default": 32
+					},
+					"height": {
+						"jsonPARAM": "height",
+						"default": 40
+					},
+					"xCount": 3,
+					"offX": {
+						"jsonPARAM": "x"
+					},
+					"offY": {
+						"jsonPARAM": "y"
+					}
+				},
+				"sit": {
+					"jsonIF": "sitX",
+					"src": {
+						"jsonPARAM": "img"
+					},
+					"width": 32,
+					"height": 40,
+					"xCount": 1,
+					"offX": {
+						"jsonPARAM": "sitX"
+					},
+					"offY": {
+						"jsonPARAM": "sitY"
+					}
+				},
+				"sit2": {
+					"jsonIF": "sit2X",
+					"src": {
+						"jsonPARAM": "img"
+					},
+					"width": 32,
+					"height": 40,
+					"xCount": 1,
+					"offX": {
+						"jsonPARAM": "sit2X"
+					},
+					"offY": {
+						"jsonPARAM": "sit2Y"
+					}
+				}
+			},
+			"shapeType": "Y_FLAT",
+			"offset": {
+				"x": 0,
+				"y": -2,
+				"z": 0
+			},
+			"SUB": [
+				{
+					"sheet": "move",
+					"dirs": 4,
+					"flipX": [0, 0, 0, 1],
+					"tileOffsets": [0, 3, 6, 3],
+					"SUB": [
+						{
+							"name": "idle",
+							"time": 1,
+							"repeat": false,
+							"frames": [1]
+						},
+						{
+							"name": "walk",
+							"time": 0.133,
+							"repeat": true,
+							"frames": [0, 1, 2, 1]
+						}
+					]
+				},
+				{
+					"jsonIF": "sitX",
+					"sheet": "sit",
+					"dirs": 4,
+					"flipX": [0, 0, 0, 1],
+					"tileOffsets": [0, 1, 2, 1],
+					"SUB": [
+						{
+							"name": "sit",
+							"time": 1,
+							"repeat": false,
+							"frames": [0]
+						}
+					]
+				},
+				{
+					"jsonIF": "sit2X",
+					"sheet": "sit2",
+					"dirs": 4,
+					"flipX": [0, 0, 0, 1],
+					"tileOffsets": [0, 1, 2, 1],
+					"SUB": [
+						{
+							"name": "sit2",
+							"time": 1,
+							"repeat": false,
+							"frames": [0]
+						}
+					]
+				}
+			]
+		},
+		"walkAnimSet": {
+			"normal": {
+				"idle": "idle",
+				"move": "walk"
+			},
+			"sit": {
+				"jsonIF": "sitX",
+				"idle": "sit"
+			},
+			"sit2": {
+				"jsonIF": "sit2X",
+				"idle": "sit2"
+			}
+		},
+		"walkAnims": "normal",
+		"configs": {
+			"normal": {
+				"relativeVel": 0.5
+			},
+			"sit": {
+				"jsonIF": "sitX",
+				"walkAnims": "sit",
+				"shadow": 0
+			},
+			"sitFloat": {
+				"jsonIF": "sitX",
+				"walkAnims": "sit",
+				"zGravityFactor": 0,
+				"shadow": 0
+			},
+			"sit2": {
+				"jsonIF": "sit2X",
+				"walkAnims": "sit2",
+				"shadow": 0
+			},
+			"sit2Float": {
+				"jsonIF": "sit2X",
+				"walkAnims": "sit2",
+				"shadow": 0,
+				"zGravityFactor": 0
+			}
+		},
+		"face": {
+			"ABSTRACT": {
+				"jsonPARAM": "face"
+			}
+		}
+	}
+}

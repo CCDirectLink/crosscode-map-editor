@@ -1,0 +1,1 @@
+import"./chunk-B_VM99PE.js";import{n,t as a}from"./chunk-BI8AubQP.js";n();export{a as imageProcessingDeclarationWGSL};

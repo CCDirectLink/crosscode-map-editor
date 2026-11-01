@@ -1,0 +1,1 @@
+import"./chunk-B_VM99PE.js";import"./chunk-C7-Cw1Ov.js";import"./chunk-ETHxQDGw.js";import"./chunk-Bm35bAXl.js";import{n as l,t as h}from"./chunk-D28zdS3g.js";l();export{h as lightProxyVertexShader};

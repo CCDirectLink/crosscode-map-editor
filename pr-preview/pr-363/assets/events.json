@@ -1,0 +1,6595 @@
+{
+	"SELECT_RANDOM": {
+		"attributes": {
+			"options": {
+				"type": "RandomDistribution",
+				"noLabel": true,
+				"description": "RandomDistribution"
+			}
+		},
+		"initialObject": {
+			"options": [],
+			"branches": {}
+		}
+	},
+	"SELECT_FIRST": {
+		"attributes": {
+			"options": {
+				"type": "Array",
+				"sub": {
+					"_type": "VarCondition",
+					"_popup": true
+				},
+				"description": "Face direction options"
+			}
+		},
+		"width": 600,
+		"initialObject": {
+			"options": [],
+			"branches": {}
+		}
+	},
+	"LABEL": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of the label"
+			}
+		},
+		"initialObject": {
+			"name": null
+		}
+	},
+	"GOTO_LABEL": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Label to move to."
+			}
+		},
+		"initialObject": {
+			"name": null
+		}
+	},
+	"GOTO_LABEL_WHILE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Label to move to."
+			},
+			"condition": {
+				"type": "VarCondition",
+				"description": "Condition to jump to the label"
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"condition": null
+		}
+	},
+	"WAIT": {
+		"attributes": {
+			"time": {
+				"type": "NumberExpression",
+				"description": "Time to wait in seconds"
+			},
+			"ignoreSlowDown": {
+				"type": "Boolean",
+				"description": "Ignore slow down rate on wait"
+			}
+		},
+		"initialObject": {
+			"time": 0,
+			"_timer": 0,
+			"ignoreSlowDown": false
+		}
+	},
+	"WAIT_RANDOM": {
+		"attributes": {
+			"minTime": {
+				"type": "NumberExpression",
+				"description": "Minimum time to wait"
+			},
+			"maxTime": {
+				"type": "NumberExpression",
+				"description": "Maximum time to wait"
+			},
+			"ignoreSlowDown": {
+				"type": "Boolean",
+				"description": "Ignore slow down rate on wait"
+			}
+		},
+		"initialObject": {
+			"maxTime": 0,
+			"minTime": 0
+		}
+	},
+	"WAIT_UNTIL_TRUE": {
+		"attributes": {
+			"condition": {
+				"type": "VarCondition",
+				"description": "Condition to evaluate to true to continue"
+			},
+			"maxTime": {
+				"type": "NumberExpression",
+				"optional": true,
+				"description": "If defined: maximal wait this time"
+			}
+		},
+		"initialObject": {
+			"condition": null,
+			"_timer": 0,
+			"ignoreSlowDown": false
+		}
+	},
+	"WAIT_UNTIL_ACTION_DONE": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"visualize": true,
+				"context": "Entity",
+				"description": "Entity to move"
+			}
+		},
+		"initialObject": {
+			"entity": 0
+		}
+	},
+	"STOP_SKIP_MODE": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"SET_ENTITY_STATIC_TIME": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be changed"
+			},
+			"value": {
+				"type": "Boolean",
+				"description": "true: Entity ignores world speed slow down. false: entity is slowed down."
+			},
+			"global": {
+				"type": "Boolean",
+				"description": "If true, set static time globally"
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"value": true,
+			"global": false
+		}
+	},
+	"SET_ENTITY_POS": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be changed"
+			},
+			"position": {
+				"type": "Vec3",
+				"pointSelect": true,
+				"description": "New position of entity"
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"position": null
+		}
+	},
+	"SET_ENTITY_POS_TO_ENTITY": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be placed"
+			},
+			"refEntity": {
+				"type": "Entity",
+				"description": "Entity used to determine position"
+			},
+			"offset": {
+				"type": "Offset",
+				"description": "Offset to entity position"
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"position": null
+		}
+	},
+	"SET_ENTITY_ON_TOP_OTHER": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be changed"
+			},
+			"groundEntity": {
+				"type": "Entity",
+				"description": "Entity the first entity should stand on"
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"groundEntity": null
+		}
+	},
+	"ADJUST_ENTITY_POS": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be changed"
+			},
+			"offset": {
+				"type": "Vec3",
+				"rawZValue": true,
+				"description": "Offset applied to entity position "
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"offset": null
+		}
+	},
+	"HIDE_ENTITY": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be hidden"
+			},
+			"skipEffects": {
+				"type": "Boolean",
+				"description": "If true: Skip effects when showing entity"
+			}
+		},
+		"initialObject": {
+			"entity": null
+		}
+	},
+	"SHOW_ENTITY": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be shown"
+			},
+			"skipEffects": {
+				"type": "Boolean",
+				"description": "If true: Skip effects when showing entity"
+			}
+		},
+		"initialObject": {
+			"entity": null
+		}
+	},
+	"SHOW_ANIMATION": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"context": "Entity",
+				"description": "Entity to be changed"
+			},
+			"anim": {
+				"type": "EntityAnim",
+				"description": "Name of the new animation"
+			},
+			"reset": {
+				"type": "Boolean",
+				"description": "Reset current animation state"
+			},
+			"followUp": {
+				"type": "EntityAnim",
+				"optional": true,
+				"description": "Animation that follows the set animation"
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"anim": null,
+			"reset": false,
+			"followUp": null
+		}
+	},
+	"SHOW_EXTERN_ANIM": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be changed"
+			},
+			"anim": {
+				"type": "Animation",
+				"description": "Animation to play"
+			},
+			"followUp": {
+				"type": "Animation",
+				"optional": true,
+				"description": "Animation to play after this animation"
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"animSheet": null,
+			"animName": null,
+			"followUpSheet": null,
+			"followUpName": null
+		}
+	},
+	"CLEAR_ANIMATION": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to be changed"
+			}
+		},
+		"initialObject": {}
+	},
+	"DO_ACTION": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"visualize": true,
+				"context": "Entity",
+				"description": "Entity to move"
+			},
+			"action": {
+				"type": "Action",
+				"rec_visualize": {},
+				"description": "The action to perform"
+			},
+			"repeating": {
+				"type": "Boolean",
+				"description": "Repeat Action"
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "Wait until action is finished"
+			},
+			"keepState": {
+				"type": "Boolean",
+				"description": "Don't reset entity state after action"
+			},
+			"immediately": {
+				"type": "Boolean",
+				"description": "If true: execute action immediately not interrupting currently running action. Will only execute steps without wait duration."
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"entity": 0,
+			"action": null,
+			"wait": false,
+			"keepState": false,
+			"_actionEntity": null
+		}
+	},
+	"WAIT_UNTIL_ON_GROUND": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"visualize": true,
+				"context": "Entity",
+				"description": "Entity to move"
+			}
+		},
+		"initialObject": {}
+	},
+	"GROUP_FACE_TO_ENTITY": {
+		"attributes": {
+			"group": {
+				"type": "Array",
+				"sub": {
+					"_type": "Entity"
+				},
+				"description": "Entities to move face of"
+			},
+			"entity": {
+				"type": "Entity",
+				"visualize": true,
+				"description": "Entity to face"
+			},
+			"wait": {
+				"type": "Number",
+				"description": "Maximum time to wait before rotating face"
+			},
+			"minWait": {
+				"type": "Number",
+				"optional": true,
+				"description": "Minimum time to wait"
+			},
+			"repeating": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: execute repeating actions to constantly look at entity"
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"entity": 0,
+			"action": null,
+			"wait": false,
+			"keepState": false,
+			"_actionEntity": null
+		}
+	},
+	"MASS_AVATAR_MOVE": {
+		"attributes": {
+			"pointA": {
+				"type": "Vec3",
+				"pointSelect": true,
+				"description": "point A to move to."
+			},
+			"pointB": {
+				"type": "Vec3",
+				"pointSelect": true,
+				"description": "point B to move to. Will use closest point between A and B"
+			},
+			"relativeSpeed": {
+				"type": "Number",
+				"description": "Relative Speed of entities"
+			},
+			"postFace": {
+				"type": "Face",
+				"description": "Direction to face after point is reached"
+			},
+			"forwardTime": {
+				"type": "Number",
+				"description": "Time to move forward after point has been reached"
+			},
+			"waitPerDistance": {
+				"type": "Number",
+				"description": "Seconds to wait per 100 pixel distance"
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"pointA": null,
+			"pointB": null,
+			"relativeSpeed": 1,
+			"postFace": null,
+			"forwardTime": 0,
+			"waitPerDistance": 0
+		}
+	},
+	"MASS_AVATAR_FACE": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"visualize": true,
+				"description": "Entity to face"
+			},
+			"minWait": {
+				"type": "Number",
+				"description": "Minimum time to wait."
+			},
+			"maxWait": {
+				"type": "Number",
+				"description": "Maximum time to wait."
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"action": null,
+			"jumpDensity": 1
+		}
+	},
+	"MASS_AVATAR_JUMP": {
+		"attributes": {
+			"jumpHeight": {
+				"type": "String",
+				"description": "Height of jump",
+				"options": {
+					"S": 0,
+					"M": 0,
+					"L": 0,
+					"XL": 0,
+					"XXL": 0
+				}
+			},
+			"minWait": {
+				"type": "Number",
+				"description": "Minimum time to wait."
+			},
+			"maxWait": {
+				"type": "Number",
+				"description": "Maximum time to wait."
+			},
+			"jumpDensity": {
+				"type": "Number",
+				"description": "Number between 0-1: What percentage of avatars should do the jump - will be randomly selected"
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"action": null,
+			"jumpDensity": 1
+		}
+	},
+	"TELEPORT": {
+		"attributes": {
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"description": "Map to be teleported to"
+			},
+			"marker": {
+				"type": "Marker",
+				"description": "Marker on Map to be teleported to"
+			}
+		},
+		"initialObject": {
+			"map": "",
+			"marker": ""
+		}
+	},
+	"IF": {
+		"attributes": {
+			"condition": {
+				"type": "VarCondition",
+				"description": "Condition for IF statement"
+			},
+			"withElse": {
+				"type": "Boolean",
+				"noLabel": true,
+				"description": "With else case."
+			}
+		},
+		"initialObject": {
+			"condition": null,
+			"withElse": false,
+			"branches": {}
+		}
+	},
+	"FORK_CONDITION": {
+		"attributes": {
+			"condition": {
+				"type": "VarCondition",
+				"description": "Condition for IF statement"
+			},
+			"withElse": {
+				"type": "Boolean",
+				"noLabel": true,
+				"description": "With else case."
+			}
+		},
+		"initialObject": {
+			"condition": null,
+			"withElse": false,
+			"branches": {}
+		}
+	},
+	"CHANGE_VAR_NUMBER": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to change"
+			},
+			"changeType": {
+				"type": "String",
+				"description": "Type of modification",
+				"options": {
+					"set": 0,
+					"add": 0,
+					"sub": 0,
+					"mul": 0,
+					"div": 0,
+					"mod": 0
+				}
+			},
+			"value": {
+				"type": "NumberExpression",
+				"description": "Value to modify with"
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"optional": true,
+				"description": "Change Var from within this map. Will replace map. prefix"
+			}
+		},
+		"initialObject": {
+			"varName": null,
+			"changeType": null,
+			"value": 0
+		}
+	},
+	"SET_RANDOM_VAR_NUMBER": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"withActor": true,
+				"description": "Variable to change"
+			},
+			"min": {
+				"type": "Integer",
+				"description": "Start value"
+			},
+			"max": {
+				"type": "Integer",
+				"description": "End value"
+			}
+		},
+		"initialObject": {
+			"varName": null,
+			"min": 0,
+			"max": 0
+		}
+	},
+	"ROUND_VAR_NUMBER": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"withActor": true,
+				"description": "Variable to round"
+			},
+			"roundType": {
+				"type": "String",
+				"description": "Type of round",
+				"options": {
+					"round": 0,
+					"floor": 0,
+					"ceil": 0
+				}
+			},
+			"digits": {
+				"type": "Integer",
+				"description": "Number of decimals to round to, 0 for whole number"
+			}
+		},
+		"initialObject": {
+			"varName": null
+		}
+	},
+	"SET_VAR_TIME": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to store current timestamp in milliseconds"
+			}
+		},
+		"initialObject": {
+			"varName": null,
+			"changeType": null,
+			"value": 0
+		}
+	},
+	"CHANGE_VAR_VEC2": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to change"
+			},
+			"changeType": {
+				"type": "String",
+				"description": "Type of modification",
+				"options": {
+					"set": 0,
+					"add": 0,
+					"sub": 0,
+					"mul": 0,
+					"div": 0
+				}
+			},
+			"value": {
+				"type": "Vec2Expression",
+				"description": "Value to modify with"
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"optional": true,
+				"description": "Change Var from within this map. Will replace map. prefix"
+			}
+		},
+		"initialObject": {
+			"varName": null,
+			"changeType": null,
+			"value": 0
+		}
+	},
+	"CHANGE_VAR_VEC3": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to change"
+			},
+			"changeType": {
+				"type": "String",
+				"description": "Type of modification",
+				"options": {
+					"set": 0,
+					"add": 0,
+					"sub": 0,
+					"mul": 0,
+					"div": 0
+				}
+			},
+			"value": {
+				"type": "Vec3Expression",
+				"description": "Value to modify with"
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"optional": true,
+				"description": "Change Var from within this map. Will replace map. prefix"
+			}
+		},
+		"initialObject": {
+			"varName": null,
+			"changeType": null,
+			"value": 0
+		}
+	},
+	"CHANGE_VAR_BOOL": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to change"
+			},
+			"changeType": {
+				"type": "String",
+				"description": "Type of modification",
+				"options": {
+					"set": 0,
+					"and": 0,
+					"or": 0,
+					"xor": 0
+				}
+			},
+			"value": {
+				"type": "BooleanExpression",
+				"description": "Value to modify with"
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"optional": true,
+				"description": "Change Var from within this map. Will replace map. prefix"
+			}
+		},
+		"initialObject": {
+			"varName": null,
+			"changeType": null,
+			"value": 0
+		}
+	},
+	"CLEAR_TEMP_STORAGE": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"CHANGE_VAR_STRING": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to change"
+			},
+			"changeType": {
+				"type": "String",
+				"description": "Type of modification",
+				"options": {
+					"set": 0,
+					"append": 0,
+					"prepend": 0
+				}
+			},
+			"value": {
+				"type": "StringExpression",
+				"description": "Value to modify with"
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"optional": true,
+				"description": "Change Var from within this map. Will replace map. prefix"
+			}
+		},
+		"initialObject": {
+			"varName": null,
+			"changeType": null,
+			"value": 0
+		}
+	},
+	"CHANGE_VAR_LANG": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to change"
+			},
+			"changeType": {
+				"type": "String",
+				"description": "Type of modification",
+				"options": {
+					"set": 0,
+					"append": 0
+				}
+			},
+			"value": {
+				"type": "LangLabel",
+				"description": "Value to modify with"
+			},
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"optional": true,
+				"description": "Change Var from within this map. Will replace map. prefix"
+			}
+		},
+		"initialObject": {
+			"varName": null,
+			"changeType": null,
+			"value": 0
+		}
+	},
+	"SET_ATTRIB_VEC2": {
+		"attributes": {
+			"actor": {
+				"type": "Actor",
+				"description": "Actor to change"
+			},
+			"name": {
+				"type": "String",
+				"description": "Name of enemy attribute to set"
+			},
+			"value": {
+				"type": "Vec2Expression",
+				"pointSelect": true,
+				"description": "Vec2 value to be set"
+			}
+		},
+		"initialObject": {
+			"actor": 0,
+			"name": null,
+			"value": null
+		}
+	},
+	"SET_ATTRIB_VEC3": {
+		"attributes": {
+			"actor": {
+				"type": "Actor",
+				"description": "Actor to change"
+			},
+			"name": {
+				"type": "String",
+				"description": "Name of actor attribute to set"
+			},
+			"value": {
+				"type": "Vec3Expression",
+				"pointSelect": true,
+				"description": "Vec3 value to be set"
+			}
+		},
+		"initialObject": {
+			"actor": 0,
+			"name": null,
+			"value": null
+		}
+	},
+	"SET_ATTRIB_STRING": {
+		"attributes": {
+			"actor": {
+				"type": "Actor",
+				"description": "Actor to change"
+			},
+			"name": {
+				"type": "String",
+				"description": "Name of enemy attribute to set"
+			},
+			"value": {
+				"type": "StringExpression",
+				"description": "String value to be set"
+			}
+		},
+		"initialObject": {
+			"actor": 0,
+			"name": null,
+			"value": null
+		}
+	},
+	"PLAY_SOUND": {
+		"attributes": {
+			"sound": {
+				"type": "SoundT",
+				"description": "URL of sound."
+			},
+			"volume": {
+				"type": "Number",
+				"default": 1,
+				"description": "The volume. Value between 0 and 1."
+			},
+			"variance": {
+				"type": "Number",
+				"optional": true,
+				"description": "Variance of sound source"
+			},
+			"position": {
+				"type": "Vec2",
+				"pointSelect": true,
+				"optional": true,
+				"description": "The position to play the sound at."
+			},
+			"name": {
+				"type": "String",
+				"description": "A name for the sound, is only valid if loop is true."
+			},
+			"loop": {
+				"type": "Boolean",
+				"description": "True if the sound should loop. <i>EXPERIMENTAL!</i>"
+			},
+			"offset": {
+				"type": "Number",
+				"description": "Offset to start the sound at. <i>EXPERIMENTAL!</i>"
+			},
+			"startTime": {
+				"type": "Number",
+				"description": "Time to wait before playing the sound. <i>EXPERIMENTAL!</i>"
+			},
+			"speed": {
+				"type": "Number",
+				"optional": true,
+				"description": "Playback speed. 1=default speed. 0.5=half speed."
+			}
+		},
+		"initialObject": {
+			"sound": null,
+			"position": {
+				"x": 0,
+				"y": 0
+			},
+			"loop": false,
+			"settings": null,
+			"name": null,
+			"speed": null
+		}
+	},
+	"STOP_SOUND": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "The of the sound to stop"
+			}
+		},
+		"initialObject": {
+			"name": null
+		}
+	},
+	"SET_MOVING_LAYER_STOP": {
+		"attributes": {
+			"stopped": {
+				"type": "Boolean",
+				"description": "If true: stop moving layers"
+			}
+		},
+		"initialObject": {}
+	},
+	"CONSOLE_LOG": {
+		"attributes": {
+			"text": {
+				"type": "String",
+				"description": "The text to display on the console. "
+			},
+			"consoleType": {
+				"type": "String",
+				"description": "The type of the console log.",
+				"options": {
+					"LOG": 0,
+					"WARN": 0,
+					"DEBUG": 0
+				}
+			}
+		},
+		"initialObject": {
+			"text": null
+		}
+	},
+	"CALL_EVENT_FROM_SHEET": {
+		"attributes": {
+			"eventCall": {
+				"type": "EventSheetCall",
+				"popup": true,
+				"description": "The event to be called"
+			}
+		},
+		"width": 600,
+		"initialObject": {
+			"eventSheet": null,
+			"eventName": null,
+			"eventInput": null
+		}
+	},
+	"NUDGE_PROP": {
+		"attributes": {
+			"prop": {
+				"type": "Entity",
+				"filterClass": "Prop",
+				"visualize": true,
+				"description": "Prop Entity"
+			},
+			"playSound": {
+				"type": "Boolean",
+				"description": "True if the nudge sound should be played"
+			}
+		},
+		"initialObject": {
+			"prop": null,
+			"playSound": false
+		}
+	},
+	"OPEN_DOOR": {
+		"attributes": {
+			"door": {
+				"type": "Entity",
+				"description": "Door Entity to enter"
+			},
+			"openTime": {
+				"type": "Number",
+				"optional": true,
+				"description": "Time in seconds to leave the door open"
+			}
+		},
+		"initialObject": {
+			"door": null
+		}
+	},
+	"CLOSE_DOOR": {
+		"attributes": {
+			"door": {
+				"type": "Entity",
+				"description": "Door Entity to close"
+			}
+		},
+		"initialObject": {
+			"door": null
+		}
+	},
+	"SHOW_MAP_IMAGE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of image"
+			},
+			"tileSheet": {
+				"type": "TileSheet",
+				"popup": true,
+				"description": "Image to be displayed"
+			},
+			"position": {
+				"type": "Vec3",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "Point where to spawn image"
+			},
+			"guiSprite": {
+				"type": "Boolean",
+				"description": "If true: Show sprite as GUI Sprite"
+			},
+			"size": {
+				"type": "Offset",
+				"optional": true,
+				"description": "Optional: Size of entity. If not specified will match image dimensions to x and z size, y always 0"
+			}
+		},
+		"initialObject": {}
+	},
+	"REMOVE_MAP_IMAGE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of image"
+			}
+		},
+		"initialObject": {}
+	},
+	"SET_OVERLAY": {
+		"attributes": {
+			"color": {
+				"type": "Color",
+				"description": "Color of overlay"
+			},
+			"alpha": {
+				"type": "Number",
+				"description": "Alpha of overlay, range [0,1]. 0 = transparent"
+			},
+			"time": {
+				"type": "Number",
+				"description": "Transition time to new overlay color and alpha"
+			},
+			"lighter": {
+				"type": "Boolean",
+				"description": "Apply color in lighter mode"
+			},
+			"overMessage": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: show overlay above messages"
+			}
+		},
+		"initialObject": {
+			"color": null,
+			"alpha": 0,
+			"time": 0,
+			"lighter": false
+		}
+	},
+	"SET_OVERLAY_CORNER": {
+		"attributes": {
+			"color": {
+				"type": "String",
+				"description": "Color of corner"
+			},
+			"alpha": {
+				"type": "Number",
+				"description": "Alpha of corner, range [0,1]. 0 = transparent"
+			},
+			"time": {
+				"type": "Number",
+				"description": "Transition time to new alpha value"
+			},
+			"blinkAlpha": {
+				"type": "Number",
+				"optional": true,
+				"description": "If specified: alterate between alpha and blinkAlpha"
+			}
+		},
+		"initialObject": {
+			"color": null,
+			"alpha": 0,
+			"time": 0,
+			"blinkAlpha": null
+		}
+	},
+	"START_DREAM_FX": {
+		"attributes": {
+			"centerColor": {
+				"type": "Color",
+				"description": "Color of center"
+			},
+			"borderColor": {
+				"type": "Color",
+				"description": "Color of border"
+			},
+			"circleSize": {
+				"type": "Number",
+				"description": "Size of visible circle in center. 1=fullSize"
+			},
+			"transition": {
+				"type": "Boolean",
+				"description": "If true, slowly fade in effects"
+			}
+		},
+		"initialObject": {}
+	},
+	"CLEAR_DREAM_FX": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"SET_DREAM_FX_COLORS": {
+		"attributes": {
+			"centerColor": {
+				"type": "Color",
+				"description": "Color of center"
+			},
+			"borderColor": {
+				"type": "Color",
+				"description": "Color of border"
+			},
+			"duration": {
+				"type": "Number",
+				"description": "Duration of transition"
+			}
+		},
+		"initialObject": {}
+	},
+	"SET_DREAM_FX_CIRCLE_SIZE": {
+		"attributes": {
+			"circleSize": {
+				"type": "Number",
+				"description": "Size of visible circle in center. 1=fullSize"
+			},
+			"duration": {
+				"type": "Number",
+				"description": "Duration of transition"
+			}
+		},
+		"initialObject": {}
+	},
+	"SET_TELEPORT_COLOR": {
+		"attributes": {
+			"color": {
+				"type": "Color",
+				"description": "Color of overlay"
+			},
+			"lighter": {
+				"type": "Boolean",
+				"description": "Apply color in lighter mode"
+			}
+		},
+		"initialObject": {
+			"color": null,
+			"lighter": false
+		}
+	},
+	"SET_TELEPORT_TIME": {
+		"attributes": {
+			"fadeIn": {
+				"type": "Number",
+				"description": "Color fade in time in seconds"
+			},
+			"fadeOut": {
+				"type": "Number",
+				"description": "Color fade out time in seconds"
+			}
+		},
+		"initialObject": {
+			"color": null,
+			"lighter": false
+		}
+	},
+	"LOAD": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"SAVE": {
+		"attributes": {
+			"marker": {
+				"type": "Entity",
+				"optional": true,
+				"description": "Marker to place entity at"
+			}
+		},
+		"initialObject": {
+			"marker": null
+		}
+	},
+	"GOTO_TITLE": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"ADD_MONEY": {
+		"attributes": {
+			"amount": {
+				"type": "Number",
+				"default": 0,
+				"description": "Amount to add"
+			}
+		},
+		"initialObject": {
+			"amount": 0
+		}
+	},
+	"REMOVE_MONEY": {
+		"attributes": {
+			"amount": {
+				"type": "Number",
+				"default": 0,
+				"description": "Amount to remove"
+			}
+		},
+		"initialObject": {
+			"amount": 0
+		}
+	},
+	"DROP_ITEM_ENTITY": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "the entity to spawn the drop from"
+			},
+			"item": {
+				"type": "Item",
+				"description": "The item to spawn."
+			},
+			"amount": {
+				"type": "Number",
+				"default": 1,
+				"description": "Amount of the given item. 0 = 1."
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"item": 0,
+			"amount": 0
+		}
+	},
+	"GIVE_ITEM": {
+		"attributes": {
+			"item": {
+				"type": "Item",
+				"description": "The item to spawn."
+			},
+			"amount": {
+				"type": "NumberExpression",
+				"default": 1,
+				"description": "Amount of the given item. 0 = 1."
+			},
+			"skip": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if the side gui should hide the obtained item"
+			}
+		},
+		"initialObject": {
+			"item": 0,
+			"amount": 0,
+			"skip": false
+		}
+	},
+	"ADD_CP": {
+		"attributes": {
+			"element": {
+				"type": "String",
+				"description": "Element that gets the CP",
+				"options": {
+					"NEUTRAL": 0,
+					"HEAT": 0,
+					"COLD": 0,
+					"SHOCK": 0,
+					"WAVE": 0
+				}
+			},
+			"amount": {
+				"type": "NumberExpression",
+				"default": 1,
+				"description": "Amount of CP to give."
+			}
+		},
+		"initialObject": {
+			"element": null,
+			"amount": 0
+		}
+	},
+	"REMOVE_ITEM": {
+		"attributes": {
+			"item": {
+				"type": "Item",
+				"description": "The item to spawn."
+			},
+			"amount": {
+				"type": "NumberExpression",
+				"default": 1,
+				"description": "Amount of the given item. 0 = 1."
+			},
+			"unequip": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "If true, unequip the item, if it is equipped"
+			}
+		},
+		"initialObject": {
+			"item": 0,
+			"amount": 0,
+			"unequip": false
+		}
+	},
+	"TOGGLE_ITEM": {
+		"attributes": {
+			"item": {
+				"type": "Item",
+				"description": "Item to toggle"
+			}
+		},
+		"initialObject": {
+			"item": 0
+		}
+	},
+	"SET_VAR_ENTITY_STAT": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to store stat"
+			},
+			"entity": {
+				"type": "Entity",
+				"description": "Entity of which to fetch stat"
+			},
+			"stat": {
+				"type": "String",
+				"description": "Type of Stat",
+				"options": {
+					"BOTTOM_POS": 0,
+					"JUMPING": 0,
+					"SIZE": 0,
+					"VELOCITY": 0
+				}
+			}
+		},
+		"initialObject": {
+			"varName": null,
+			"stat": null,
+			"entity": null
+		}
+	},
+	"OPEN_RHOMBUS_MAP": {
+		"attributes": {},
+		"initialObject": {
+			"_characterName": null,
+			"_mapName": null
+		}
+	},
+	"MOVE_ELEVATOR": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"filterClass": "Elevator",
+				"description": "Elevator Entity"
+			},
+			"floorOption": {
+				"type": "Number",
+				"description": "The number of the floor option to use."
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "If true, wait until teleported"
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"floorOption": 0
+		}
+	},
+	"MOVE_ELEVATOR_START": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"filterClass": "Elevator",
+				"description": "Elevator Entity"
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"floorOption": 0
+		}
+	},
+	"UNTRIGGER_PROP": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"filterClass": "Prop",
+				"description": "Prop entity"
+			}
+		},
+		"initialObject": {
+			"entity": null
+		}
+	},
+	"RESET_TRADER": {
+		"attributes": {
+			"trader": {
+				"type": "TraderSelect",
+				"description": "The trader to reset."
+			}
+		},
+		"initialObject": {
+			"trader": null
+		}
+	},
+	"START_NPC_TRADE_MENU": {
+		"attributes": {
+			"withBranches": {
+				"type": "Boolean",
+				"description": "If true, use branches to determine whether things where traded or not."
+			}
+		},
+		"initialObject": {}
+	},
+	"PLAY_BGM": {
+		"attributes": {
+			"bgm": {
+				"type": "String",
+				"description": "Background Music to play",
+				"options": {
+					"silence": 0,
+					"tutorial": 0,
+					"intro": 0,
+					"short": 0,
+					"tutorial-battle": 0,
+					"challenge": 0,
+					"title": 0,
+					"cargoship-exterior": 0,
+					"lolfanfare": 0,
+					"landmark": 0,
+					"ability-got": 0,
+					"exposition": 0,
+					"designer": 0,
+					"challenge2": 0,
+					"puzzle-pg": 0,
+					"bossbattle1": 0,
+					"escape": 0,
+					"crosscounter": 0,
+					"oldHideout1": 0,
+					"oldHideoutBattle": 0,
+					"oldHideoutEnding": 0,
+					"autumnsRise": 0,
+					"fieldBattle": 0,
+					"rhombusDungeon": 0,
+					"rookieHarbor": 0,
+					"firstScholars": 0,
+					"bergenTrail": 0,
+					"rhombusSquare": 0,
+					"apolloTheme": 0,
+					"coldDungeon": 0,
+					"bergenVillage": 0,
+					"heatArea": 0,
+					"heatVillage": 0,
+					"heatDungeon": 0,
+					"shockDungeon": 0,
+					"waveDungeon": 0,
+					"treeDungeon": 0,
+					"jungle": 0,
+					"emilie": 0,
+					"basinKeep": 0,
+					"casual": 0,
+					"briefing": 0,
+					"ponder": 0,
+					"lea": 0,
+					"dreamsequence-intro": 0,
+					"dreamsequence": 0,
+					"sorrow": 0,
+					"raidTheme": 0,
+					"forestField": 0,
+					"designerBoss1": 0,
+					"waiting": 0,
+					"aridField": 0,
+					"aridBattle": 0,
+					"shizukaConfrontation": 0,
+					"confrontationLoop": 0,
+					"evoDungeon1": 0,
+					"evoDungeon2": 0,
+					"evoEscape": 0,
+					"sergeyExposition": 0,
+					"schneiderTour": 0,
+					"infiltration": 0,
+					"sadness": 0,
+					"oldHideout2": 0,
+					"trueIntentions": 0,
+					"rhombusSquare2": 0,
+					"autumnsFall": 0,
+					"snailBattle1": 0,
+					"snailBattle2": 0,
+					"lastDungeon": 0,
+					"shizuka": 0,
+					"finalBoss": 0,
+					"credits": 0,
+					"credits2": 0,
+					"arena": 0,
+					"s-rank": 0,
+					"bossRush": 0,
+					"glitchArea": 0,
+					"evolabSubtle": 0,
+					"evolabMelody": 0,
+					"evolabDissonant": 0,
+					"evolabMid": 0,
+					"evolabHeartbeat": 0,
+					"beach": 0,
+					"finalDungeon": 0,
+					"godBoss": 0,
+					"discoLow": 0,
+					"discoFull": 0
+				}
+			},
+			"volume": {
+				"type": "Number",
+				"description": "Volume of music (0 = silent, 1 = max volume)"
+			},
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			}
+		},
+		"initialObject": {
+			"track": null,
+			"volume": null,
+			"mode": null
+		}
+	},
+	"PAUSE_BGM": {
+		"attributes": {
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			}
+		},
+		"initialObject": {
+			"mode": null
+		}
+	},
+	"RESUME_BGM": {
+		"attributes": {
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			}
+		},
+		"initialObject": {
+			"mode": null
+		}
+	},
+	"PUSH_BGM": {
+		"attributes": {
+			"bgm": {
+				"type": "String",
+				"description": "Background Music to play",
+				"options": {
+					"silence": 0,
+					"tutorial": 0,
+					"intro": 0,
+					"short": 0,
+					"tutorial-battle": 0,
+					"challenge": 0,
+					"title": 0,
+					"cargoship-exterior": 0,
+					"lolfanfare": 0,
+					"landmark": 0,
+					"ability-got": 0,
+					"exposition": 0,
+					"designer": 0,
+					"challenge2": 0,
+					"puzzle-pg": 0,
+					"bossbattle1": 0,
+					"escape": 0,
+					"crosscounter": 0,
+					"oldHideout1": 0,
+					"oldHideoutBattle": 0,
+					"oldHideoutEnding": 0,
+					"autumnsRise": 0,
+					"fieldBattle": 0,
+					"rhombusDungeon": 0,
+					"rookieHarbor": 0,
+					"firstScholars": 0,
+					"bergenTrail": 0,
+					"rhombusSquare": 0,
+					"apolloTheme": 0,
+					"coldDungeon": 0,
+					"bergenVillage": 0,
+					"heatArea": 0,
+					"heatVillage": 0,
+					"heatDungeon": 0,
+					"shockDungeon": 0,
+					"waveDungeon": 0,
+					"treeDungeon": 0,
+					"jungle": 0,
+					"emilie": 0,
+					"basinKeep": 0,
+					"casual": 0,
+					"briefing": 0,
+					"ponder": 0,
+					"lea": 0,
+					"dreamsequence-intro": 0,
+					"dreamsequence": 0,
+					"sorrow": 0,
+					"raidTheme": 0,
+					"forestField": 0,
+					"designerBoss1": 0,
+					"waiting": 0,
+					"aridField": 0,
+					"aridBattle": 0,
+					"shizukaConfrontation": 0,
+					"confrontationLoop": 0,
+					"evoDungeon1": 0,
+					"evoDungeon2": 0,
+					"evoEscape": 0,
+					"sergeyExposition": 0,
+					"schneiderTour": 0,
+					"infiltration": 0,
+					"sadness": 0,
+					"oldHideout2": 0,
+					"trueIntentions": 0,
+					"rhombusSquare2": 0,
+					"autumnsFall": 0,
+					"snailBattle1": 0,
+					"snailBattle2": 0,
+					"lastDungeon": 0,
+					"shizuka": 0,
+					"finalBoss": 0,
+					"credits": 0,
+					"credits2": 0,
+					"arena": 0,
+					"s-rank": 0,
+					"bossRush": 0,
+					"glitchArea": 0,
+					"evolabSubtle": 0,
+					"evolabMelody": 0,
+					"evolabDissonant": 0,
+					"evolabMid": 0,
+					"evolabHeartbeat": 0,
+					"beach": 0,
+					"finalDungeon": 0,
+					"godBoss": 0,
+					"discoLow": 0,
+					"discoFull": 0
+				}
+			},
+			"volume": {
+				"type": "Number",
+				"description": "Volume of music (0 = silent, 1 = max volume)"
+			},
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			}
+		},
+		"initialObject": {
+			"track": null,
+			"volume": null,
+			"mode": null
+		}
+	},
+	"POP_BGM": {
+		"attributes": {
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			}
+		},
+		"initialObject": {}
+	},
+	"PLAY_IN_BETWEEN_BGM": {
+		"attributes": {
+			"bgm": {
+				"type": "String",
+				"description": "Background Music to play only once",
+				"options": {
+					"silence": 0,
+					"tutorial": 0,
+					"intro": 0,
+					"short": 0,
+					"tutorial-battle": 0,
+					"challenge": 0,
+					"title": 0,
+					"cargoship-exterior": 0,
+					"lolfanfare": 0,
+					"landmark": 0,
+					"ability-got": 0,
+					"exposition": 0,
+					"designer": 0,
+					"challenge2": 0,
+					"puzzle-pg": 0,
+					"bossbattle1": 0,
+					"escape": 0,
+					"crosscounter": 0,
+					"oldHideout1": 0,
+					"oldHideoutBattle": 0,
+					"oldHideoutEnding": 0,
+					"autumnsRise": 0,
+					"fieldBattle": 0,
+					"rhombusDungeon": 0,
+					"rookieHarbor": 0,
+					"firstScholars": 0,
+					"bergenTrail": 0,
+					"rhombusSquare": 0,
+					"apolloTheme": 0,
+					"coldDungeon": 0,
+					"bergenVillage": 0,
+					"heatArea": 0,
+					"heatVillage": 0,
+					"heatDungeon": 0,
+					"shockDungeon": 0,
+					"waveDungeon": 0,
+					"treeDungeon": 0,
+					"jungle": 0,
+					"emilie": 0,
+					"basinKeep": 0,
+					"casual": 0,
+					"briefing": 0,
+					"ponder": 0,
+					"lea": 0,
+					"dreamsequence-intro": 0,
+					"dreamsequence": 0,
+					"sorrow": 0,
+					"raidTheme": 0,
+					"forestField": 0,
+					"designerBoss1": 0,
+					"waiting": 0,
+					"aridField": 0,
+					"aridBattle": 0,
+					"shizukaConfrontation": 0,
+					"confrontationLoop": 0,
+					"evoDungeon1": 0,
+					"evoDungeon2": 0,
+					"evoEscape": 0,
+					"sergeyExposition": 0,
+					"schneiderTour": 0,
+					"infiltration": 0,
+					"sadness": 0,
+					"oldHideout2": 0,
+					"trueIntentions": 0,
+					"rhombusSquare2": 0,
+					"autumnsFall": 0,
+					"snailBattle1": 0,
+					"snailBattle2": 0,
+					"lastDungeon": 0,
+					"shizuka": 0,
+					"finalBoss": 0,
+					"credits": 0,
+					"credits2": 0,
+					"arena": 0,
+					"s-rank": 0,
+					"bossRush": 0,
+					"glitchArea": 0,
+					"evolabSubtle": 0,
+					"evolabMelody": 0,
+					"evolabDissonant": 0,
+					"evolabMid": 0,
+					"evolabHeartbeat": 0,
+					"beach": 0,
+					"finalDungeon": 0,
+					"godBoss": 0,
+					"discoLow": 0,
+					"discoFull": 0
+				}
+			},
+			"volume": {
+				"type": "Number",
+				"description": "Volume of music (0 = silent, 1 = max volume)"
+			},
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			}
+		},
+		"initialObject": {
+			"track": null,
+			"volume": null,
+			"mode": null
+		}
+	},
+	"SET_DEFAULT_BGM": {
+		"attributes": {
+			"defaultBgm": {
+				"type": "String",
+				"description": "Default BGM",
+				"options": {
+					"cargoShipIntro": 0,
+					"cargoShip": 0,
+					"cargoChallenge": 0,
+					"cargoShipExterior": 0,
+					"puzzle": 0,
+					"hideout": 0,
+					"hideout2": 0,
+					"forest": 0,
+					"autumn": 0,
+					"autumnsFall": 0,
+					"rookieHarbor": 0,
+					"firstScholars": 0,
+					"bergenTrail": 0,
+					"bergenVillage": 0,
+					"heatArea": 0,
+					"rhombusSquare": 0,
+					"rhombusSquare2": 0,
+					"rhombusSquareArena": 0,
+					"crossCentral": 0,
+					"coldDungeon": 0,
+					"heatVillage": 0,
+					"heatGlitch": 0,
+					"heatDungeonOutside": 0,
+					"silence": 0,
+					"silenceCombat": 0,
+					"heatDungeon": 0,
+					"jungle": 0,
+					"basinKeep": 0,
+					"shockDungeon": 0,
+					"waveDungeon": 0,
+					"treeDungeon": 0,
+					"arid": 0,
+					"aridLab": 0,
+					"aridDng": 0,
+					"lastDng": 0,
+					"lab": 0,
+					"evoVillage": 0,
+					"finalDng": 0,
+					"finalDngEnd": 0,
+					"beach": 0,
+					"disco": 0
+				}
+			},
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			}
+		},
+		"initialObject": {
+			"trackSet": null,
+			"mode": null
+		}
+	},
+	"RESUME_DEFAULT_BGM": {
+		"attributes": {
+			"mode": {
+				"type": "String",
+				"description": "Mode of transition",
+				"options": {
+					"IMMEDIATELY": 0,
+					"FAST_OUT": 0,
+					"MEDIUM_OUT": 0,
+					"SLOW_OUT": 0,
+					"VERY_SLOW_OUT": 0,
+					"FAST": 0,
+					"MEDIUM": 0,
+					"SLOW": 0,
+					"VERY_SLOW": 0
+				}
+			},
+			"delayed": {
+				"type": "Boolean",
+				"description": "Resume default BGM later when changing map or after anything changes about the music"
+			}
+		},
+		"initialObject": {}
+	},
+	"SET_CAMERA_TARGET": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to focus camera on"
+			},
+			"offsetX": {
+				"type": "Number",
+				"description": "x offset to target entity"
+			},
+			"offsetY": {
+				"type": "Number",
+				"description": "y offset to target entity"
+			},
+			"speed": {
+				"type": "String",
+				"description": "Speed of camera movement",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			},
+			"transition": {
+				"type": "String",
+				"description": "Transition type",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0,
+					"LINEAR_EASE_OUT": 0,
+					"LINEAR_EASE_IN_OUT": 0
+				}
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "Wait until camera movement is done"
+			},
+			"waitSkip": {
+				"type": "Number",
+				"description": "The amount of seconds to skip waiting before target is reached."
+			},
+			"zoom": {
+				"type": "Number",
+				"default": 1,
+				"description": "Zoom Value. 1=default, 2=twice pixel size"
+			},
+			"name": {
+				"type": "String",
+				"optional": true,
+				"description": "If set, camera target will remain even after event is done and can only be removed explictly via its name."
+			},
+			"lockZ": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "if true, do not move change cam if entity moves along Z axis."
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"offsetX": 0,
+			"offsetY": 0,
+			"speed": 0,
+			"transition": {},
+			"wait": false,
+			"waitSkip": 0,
+			"zoom": 1,
+			"lockZ": false
+		}
+	},
+	"SET_CAMERA_POS": {
+		"attributes": {
+			"pos": {
+				"type": "Vec2",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "Position to focus camera on"
+			},
+			"speed": {
+				"type": "String",
+				"description": "Speed of camera movement",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			},
+			"transition": {
+				"type": "String",
+				"description": "Transition type",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0,
+					"LINEAR_EASE_OUT": 0,
+					"LINEAR_EASE_IN_OUT": 0
+				}
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "Wait until camera movement is done"
+			},
+			"waitSkip": {
+				"type": "Number",
+				"description": "The amount of seconds to skip waiting before target is reached."
+			},
+			"zoom": {
+				"type": "Number",
+				"default": 1,
+				"description": "Zoom Value. 1=default, 2=twice pixel size"
+			},
+			"name": {
+				"type": "String",
+				"optional": true,
+				"description": "If set, camera target will remain even after event is done and can only be removed explictly via its name."
+			}
+		},
+		"initialObject": {
+			"pos": null,
+			"speed": 0,
+			"transition": {},
+			"wait": false,
+			"waitSkip": 0,
+			"zoom": 1
+		}
+	},
+	"SET_CAMERA_BETWEEN": {
+		"attributes": {
+			"entity1": {
+				"type": "Entity",
+				"description": "First entity"
+			},
+			"entity2": {
+				"type": "Entity",
+				"description": "Second entity"
+			},
+			"speed": {
+				"type": "String",
+				"description": "Speed of camera movement",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			},
+			"transition": {
+				"type": "String",
+				"description": "Transition type",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0,
+					"LINEAR_EASE_OUT": 0,
+					"LINEAR_EASE_IN_OUT": 0
+				}
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "Wait until camera movement is done"
+			},
+			"waitSkip": {
+				"type": "Number",
+				"description": "The amount of seconds to skip waiting before target is reached."
+			},
+			"zoom": {
+				"type": "Number",
+				"default": 1,
+				"description": "Zoom Value. 1=default, 2=twice pixel size"
+			},
+			"name": {
+				"type": "String",
+				"optional": true,
+				"description": "If set, camera target will remain even after event is done and can only be removed explictly via its name."
+			}
+		},
+		"initialObject": {
+			"entity1": null,
+			"entity2": null,
+			"speed": 0,
+			"transition": {},
+			"wait": false,
+			"waitSkip": 0,
+			"zoom": 1
+		}
+	},
+	"RESET_CAMERA": {
+		"attributes": {
+			"speed": {
+				"type": "String",
+				"description": "Speed of camera movement",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			},
+			"transition": {
+				"type": "String",
+				"description": "Transition type",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0,
+					"LINEAR_EASE_OUT": 0,
+					"LINEAR_EASE_IN_OUT": 0
+				}
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "Wait until camera movement is done"
+			},
+			"waitSkip": {
+				"type": "Number",
+				"description": "The amount of seconds to skip waiting before target is reached."
+			},
+			"name": {
+				"type": "String",
+				"optional": true,
+				"description": "If defined: only remove camera target of given name"
+			}
+		},
+		"initialObject": {
+			"speed": 0,
+			"transition": {},
+			"wait": false,
+			"waitSkip": 0,
+			"name": null
+		}
+	},
+	"UNDO_CAMERA": {
+		"attributes": {
+			"speed": {
+				"type": "String",
+				"description": "Speed of camera movement",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			},
+			"transition": {
+				"type": "String",
+				"description": "Transition type",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0,
+					"LINEAR_EASE_OUT": 0,
+					"LINEAR_EASE_IN_OUT": 0
+				}
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "Wait until camera movement is done"
+			},
+			"waitSkip": {
+				"type": "Number",
+				"description": "The amount of seconds to skip waiting before target is reached."
+			}
+		},
+		"initialObject": {
+			"speed": 0,
+			"transition": {},
+			"wait": false,
+			"waitSkip": 0
+		}
+	},
+	"SET_CAMERA_ZOOM": {
+		"attributes": {
+			"zoom": {
+				"type": "Number",
+				"default": 1,
+				"description": "Zoom Value. 1=default, 2=twice pixel size"
+			},
+			"duration": {
+				"type": "Number",
+				"description": "Duration of zoom transition"
+			},
+			"transition": {
+				"type": "String",
+				"description": "Transition type",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0,
+					"LINEAR_EASE_OUT": 0,
+					"LINEAR_EASE_IN_OUT": 0
+				}
+			}
+		},
+		"initialObject": {
+			"duration": 0,
+			"transition": {},
+			"wait": false,
+			"waitSkip": 0
+		}
+	},
+	"RUMBLE_SCREEN": {
+		"attributes": {
+			"rumbleType": {
+				"type": "String",
+				"description": "Type of rumble",
+				"options": {
+					"RANDOM": 0,
+					"HORIZONTAL": 0,
+					"VERTICAL": 0
+				}
+			},
+			"name": {
+				"type": "String",
+				"description": "Name of the rumble. Can be ignored for anonymous rumble effects."
+			},
+			"duration": {
+				"type": "Number",
+				"description": "The time the rumble will take. -1 for continues effect"
+			},
+			"power": {
+				"type": "String",
+				"description": "Power of the rumble.",
+				"options": {
+					"WEAKESTEST": 0,
+					"WEAKEST": 0,
+					"WEAKER": 0,
+					"WEAK": 0,
+					"MEDIUM": 0,
+					"STRONG": 0,
+					"STRONGER": 0,
+					"STRONGEST": 0,
+					"MEGA": 0
+				}
+			},
+			"speed": {
+				"type": "String",
+				"description": "Speed of a single rumble.",
+				"options": {
+					"SLOWEST": 0,
+					"SLOWER": 0,
+					"SLOW": 0,
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0
+				}
+			},
+			"fade": {
+				"type": "Boolean",
+				"description": "Rumble effect gets weaker towards the passed time."
+			}
+		},
+		"initialObject": {
+			"rumbleType": null,
+			"name": null,
+			"duration": 0,
+			"power": 0,
+			"speed": 0,
+			"fade": false
+		}
+	},
+	"RUMBLE_STOP_CONTINUES": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of the rumble to stop. Must be given!"
+			}
+		},
+		"initialObject": {
+			"name": null
+		}
+	},
+	"ADD_SLOW_MOTION": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of the slow motion effect. Used this to remove the effect later on"
+			},
+			"factor": {
+				"type": "Number",
+				"description": "How much to slow down the time. 0.5 = half the speed"
+			},
+			"time": {
+				"type": "Number",
+				"description": "Transition time for slow motion"
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"factor": 0,
+			"time": 0
+		}
+	},
+	"CLEAR_SLOW_MOTION": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of slow motion to be removed"
+			},
+			"time": {
+				"type": "Number",
+				"description": "Transition time for slow motion removal"
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"time": 0
+		}
+	},
+	"SHOW_EFFECT": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to apply effect on"
+			},
+			"effect": {
+				"type": "Effect",
+				"description": "Effect to play"
+			},
+			"duration": {
+				"type": "Number",
+				"description": "Amount of time to play animation.<br /> 0 = actual lenght of animation, -1 = forever until stopped."
+			},
+			"offset": {
+				"type": "Offset",
+				"description": "Offset to entity position"
+			},
+			"align": {
+				"type": "String",
+				"description": "Alignment of Animation relative to target",
+				"options": {
+					"BOTTOM": 0,
+					"CENTER": 0,
+					"TOP": 0,
+					"FACE": 0,
+					"BASE": 0,
+					"WALL_HIT": 0,
+					"FACE_BASE": 0
+				}
+			},
+			"group": {
+				"type": "String",
+				"description": "A string identifying the effect. Optional. Name can be used with CLEAR_EFFECT to clear only certain effects"
+			},
+			"wait": {
+				"type": "Boolean",
+				"description": "Wait until effect is over"
+			},
+			"waitSkip": {
+				"type": "Number",
+				"description": "The amount of seconds to skip waiting before effect is over"
+			},
+			"target2": {
+				"type": "Entity",
+				"optional": true,
+				"description": "Alternative target for homing particles"
+			},
+			"target2Offset": {
+				"type": "Offset",
+				"optional": true,
+				"description": "Offset to entity position"
+			},
+			"target2Align": {
+				"type": "String",
+				"optional": true,
+				"description": "Alignment of Animation relative to target",
+				"options": {
+					"BOTTOM": 0,
+					"CENTER": 0,
+					"TOP": 0,
+					"FACE": 0,
+					"BASE": 0,
+					"WALL_HIT": 0,
+					"FACE_BASE": 0
+				}
+			},
+			"ignoreSlowMo": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: ignore slow motion for this effect"
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"effect": null,
+			"duration": 0,
+			"offset": null,
+			"group": null,
+			"wait": false,
+			"waitSkip": 0,
+			"target2": null,
+			"target2Offset": null,
+			"target2Align": null
+		}
+	},
+	"CLEAR_EFFECTS": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to clear effects from"
+			},
+			"group": {
+				"type": "String",
+				"optional": true,
+				"description": "if provided: only clear effects attached under specified group"
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"group": null
+		}
+	},
+	"ADD_GUI": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"optional": true,
+				"description": "Name to identify GUI for subsequent modifications (e.g. removal)"
+			},
+			"guiInfo": {
+				"type": "GUI",
+				"popup": true,
+				"description": "Type and Settings of GUI to spawn"
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"guiInfo": null,
+			"guiElement": null
+		}
+	},
+	"REMOVE_GUI": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of GUI to be removed"
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"guiInfo": null
+		}
+	},
+	"CHANGE_GUI_STATE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name to identify GUI for subsequent modifications (e.g. removal)"
+			},
+			"guiState": {
+				"type": "GUIState",
+				"description": "Transition to change to"
+			},
+			"immediate": {
+				"type": "Boolean",
+				"description": "If true: skip transition"
+			},
+			"remove": {
+				"type": "Boolean",
+				"description": "Remove GUI after transition"
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"guiState": null,
+			"immediate": false,
+			"remove": false
+		}
+	},
+	"SHOW_IMAGE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of image"
+			},
+			"image": {
+				"type": "TileSheet",
+				"popup": true,
+				"description": "Image to be displayed"
+			},
+			"guiState": {
+				"type": "GuiState",
+				"popup": true,
+				"description": "Initial State of image"
+			},
+			"alignX": {
+				"type": "String",
+				"description": "X alignment",
+				"options": {
+					"LEFT": 0,
+					"RIGHT": 0,
+					"CENTER": 0
+				}
+			},
+			"alignY": {
+				"type": "String",
+				"description": "Y alignment",
+				"options": {
+					"TOP": 0,
+					"BOTTOM": 0,
+					"CENTER": 0
+				}
+			},
+			"renderMode": {
+				"type": "String",
+				"optional": true,
+				"description": "Render Mode if Image",
+				"options": {
+					"source-over": 0,
+					"lighter": 0
+				}
+			},
+			"overGui": {
+				"type": "Boolean",
+				"description": "If true, display image above game hud (e.g. cut scene bars, portraits)"
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"image": null,
+			"guiState": null,
+			"alignX": null,
+			"alignY": null,
+			"renderMode": null,
+			"overGui": false
+		}
+	},
+	"MOVE_IMAGE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of image"
+			},
+			"guiState": {
+				"type": "GuiState",
+				"popup": true,
+				"description": "Initial State of image"
+			},
+			"time": {
+				"type": "Number",
+				"description": "Transition time"
+			},
+			"keySpline": {
+				"type": "String",
+				"description": "Key spline for transition",
+				"options": {
+					"EASE_IN_OUT": 0,
+					"EASE_OUT": 0,
+					"EASE_IN": 0,
+					"EASE": 0,
+					"EASE_SOUND": 0,
+					"LINEAR": 0,
+					"JUMPY": 0,
+					"EASE_OUT_STRONG": 0,
+					"EASE_IN_STRONG": 0,
+					"LINEAR_EASE_OUT": 0,
+					"LINEAR_EASE_IN_OUT": 0
+				}
+			},
+			"removeAfterwards": {
+				"type": "Boolean",
+				"description": "True if image should be removed after transition"
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"guiState": null,
+			"time": null,
+			"keySpline": null,
+			"removeAfterwards": false
+		}
+	},
+	"REMOVE_IMAGE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of image to be removed"
+			}
+		},
+		"initialObject": {
+			"name": null
+		}
+	},
+	"SHOW_PARALLAX": {
+		"attributes": {
+			"parallax": {
+				"type": "String",
+				"description": "Parallax to show",
+				"options": {
+					"0": 0,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 0,
+					"6": 0,
+					"7": 0
+				}
+			}
+		},
+		"initialObject": {
+			"parallaxGui": null
+		}
+	},
+	"SET_SCREEN_BLUR": {
+		"attributes": {
+			"alpha": {
+				"type": "Number",
+				"default": 0.5,
+				"description": "Alpha of Screen blur. The lower, the stronger the effect"
+			}
+		},
+		"initialObject": {
+			"alpha": 0
+		}
+	},
+	"CLEAR_SCREEN_BLUR": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"SET_ZOOM_BLUR": {
+		"attributes": {
+			"zoomType": {
+				"type": "String",
+				"description": "Type of Zoom Blur effect",
+				"options": {
+					"LIGHTEST": 0,
+					"LIGHTER": 0,
+					"LIGHT": 0,
+					"MEDIUM": 0,
+					"SLOW_INTENSE": 0,
+					"STATIC_LIGHT": 0
+				}
+			},
+			"fadeIn": {
+				"type": "Number",
+				"default": 0.2,
+				"description": "Time in seconds for effect to fade in"
+			},
+			"duration": {
+				"type": "Number",
+				"default": 1,
+				"description": "Time of effect. -1 = run forever"
+			},
+			"fadeOut": {
+				"type": "Number",
+				"default": 0.2,
+				"description": "Time in seconds for effect to fade out"
+			},
+			"name": {
+				"type": "String",
+				"optional": true,
+				"description": "Name of zoom blur. Can be used to fadeOut permanent zoom blurs"
+			},
+			"target": {
+				"type": "Entity",
+				"optional": true,
+				"description": "Target on which to focus zoom blur"
+			},
+			"align": {
+				"type": "String",
+				"optional": true,
+				"description": "Alignment on how to get pos from target",
+				"options": {
+					"BOTTOM": 0,
+					"CENTER": 0,
+					"TOP": 0,
+					"FACE": 0,
+					"BASE": 0,
+					"WALL_HIT": 0,
+					"FACE_BASE": 0
+				}
+			},
+			"offset": {
+				"type": "Offset",
+				"optional": true,
+				"description": "Offset to position"
+			}
+		},
+		"initialObject": {
+			"zoomType": null,
+			"fadeIn": 0,
+			"duration": 0,
+			"fadeOut": 0,
+			"name": null
+		}
+	},
+	"FADE_OUT_ZOOM_BLUR": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of zoom blur to be faded out"
+			},
+			"fadeOut": {
+				"type": "Number",
+				"default": 0.2,
+				"description": "Time in seconds for effect to fade out"
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"fadeOut": 0
+		}
+	},
+	"SET_ENV_PARTICLES": {
+		"attributes": {
+			"particleType": {
+				"type": "String",
+				"description": "Type of Env Particles",
+				"options": {
+					"WHITE_DUST": 0,
+					"DARK_DUST": 0,
+					"LEAVES": 0,
+					"GREEN_LEAVES": 0,
+					"JUNGLE_LEAVES": 0,
+					"BLUE_SQUARES": 0,
+					"RED_SQUARES": 0,
+					"SNOW_FLAKES": 0,
+					"COLD_CRYSTALS": 0,
+					"SAND_OUTSIDE": 0,
+					"SANDSTORM": 0,
+					"BEACH_GLOW": 0,
+					"BEACH_GLOW_BIG": 0,
+					"FINAL_GLOW": 0,
+					"FINAL_WHIRL": 0,
+					"FINAL_WHIRL_FAST": 0,
+					"COAL_SPARKS": 0,
+					"COAL_SPARKS_FAST": 0,
+					"INFESTED_DUST": 0,
+					"WAVE_DUST": 0,
+					"SPOOKY_DUST": 0,
+					"ARID_DUST_1": 0,
+					"ARID_DUST_FAST": 0,
+					"ARID_DUST_ELEVATOR_UP": 0,
+					"ARID_DUST_ELEVATOR_DOWN": 0,
+					"RHOMBUS": 0,
+					"HACKING": 0,
+					"STARS": 0,
+					"SLOWDOWN": 0
+				}
+			},
+			"quantity": {
+				"type": "NumberExpression",
+				"default": 10,
+				"description": "Quantity of particles (average number of visible particles)"
+			},
+			"immediately": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: make change immediate"
+			}
+		},
+		"initialObject": {
+			"spawner": 0,
+			"quantity": 0
+		}
+	},
+	"CLEAR_ENV_PARTICLES": {
+		"attributes": {
+			"particleType": {
+				"type": "String",
+				"description": "Type of Env Particles",
+				"options": {
+					"WHITE_DUST": 0,
+					"DARK_DUST": 0,
+					"LEAVES": 0,
+					"GREEN_LEAVES": 0,
+					"JUNGLE_LEAVES": 0,
+					"BLUE_SQUARES": 0,
+					"RED_SQUARES": 0,
+					"SNOW_FLAKES": 0,
+					"COLD_CRYSTALS": 0,
+					"SAND_OUTSIDE": 0,
+					"SANDSTORM": 0,
+					"BEACH_GLOW": 0,
+					"BEACH_GLOW_BIG": 0,
+					"FINAL_GLOW": 0,
+					"FINAL_WHIRL": 0,
+					"FINAL_WHIRL_FAST": 0,
+					"COAL_SPARKS": 0,
+					"COAL_SPARKS_FAST": 0,
+					"INFESTED_DUST": 0,
+					"WAVE_DUST": 0,
+					"SPOOKY_DUST": 0,
+					"ARID_DUST_1": 0,
+					"ARID_DUST_FAST": 0,
+					"ARID_DUST_ELEVATOR_UP": 0,
+					"ARID_DUST_ELEVATOR_DOWN": 0,
+					"RHOMBUS": 0,
+					"HACKING": 0,
+					"STARS": 0,
+					"SLOWDOWN": 0
+				}
+			},
+			"immediately": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: make change immediate"
+			}
+		},
+		"initialObject": {
+			"spawner": 0
+		}
+	},
+	"SET_WEATHER": {
+		"attributes": {
+			"weather": {
+				"type": "String",
+				"description": "Type of Weather",
+				"options": {
+					"NONE": 0,
+					"CARGO_HOLD": 0,
+					"DUSTY": 0,
+					"CLOUDY": 0,
+					"BEFORE_RAIN": 0,
+					"RAINY_WEAK": 0,
+					"RAINY_MEDIUM": 0,
+					"RAINY_STRONG": 0,
+					"ROOKIE_HARBOR": 0,
+					"ROOKIE_HARBOR_INNER": 0,
+					"EVO_VILLAGE_INNER": 0,
+					"EXPO_SPACE": 0,
+					"AUTUMN": 0,
+					"AUTUMN_RAIN_WEAK": 0,
+					"AUTUMN_RAIN_MEDIUM": 0,
+					"OLD_HIDEOUT_OUTSIDE": 0,
+					"OLD_HIDEOUT_OUTSIDE_ALT": 0,
+					"OLD_HIDEOUT_INNER": 0,
+					"OLD_HIDEOUT_OFFICE": 0,
+					"RHOMBUS_DNG_TOP": 0,
+					"RHOMBUS_DUNGEON": 0,
+					"CAVE": 0,
+					"CAVE_BERGEN": 0,
+					"BERGEN_SUNNY": 0,
+					"BERGEN_SNOW_START": 0,
+					"BERGEN_SNOW": 0,
+					"BERGEN_INNER": 0,
+					"COLD_DUNGEON": 0,
+					"COLD_DUNGEON_DARK": 0,
+					"COLD_DUNGEON_POST_BOSS": 0,
+					"HEAT_DUSTY": 0,
+					"HEAT_PARALLAX": 0,
+					"HEAT_SANDSTORM": 0,
+					"HEAT_SANDSTORM_LIGHT": 0,
+					"HEAT_GREEN": 0,
+					"HEAT_VILLAGE_INNER": 0,
+					"HEAT_VILLAGE_INNER_DUSTY": 0,
+					"HEAT_DUNGEON": 0,
+					"HEAT_DUNGEON_MIDBOSS": 0,
+					"HEAT_DUNGEON_COAL": 0,
+					"HEAT_DUNGEON_BOSS": 0,
+					"DREAM": 0,
+					"UNKNOWN_INNER": 0,
+					"OFFICE": 0,
+					"LOBBY": 0,
+					"LOBBY_DARK": 0,
+					"FLAT": 0,
+					"FLAT_DARK": 0,
+					"JUNGLE_SUNNY": 0,
+					"JUNGLE_RAINY_LIGHT": 0,
+					"JUNGLE_RAINY": 0,
+					"JUNGLE_INFESTED_PRE": 0,
+					"JUNGLE_INFESTED": 0,
+					"CAVE_INFESTED": 0,
+					"JUNGLE_CITY_PRE": 0,
+					"JUNGLE_CITY": 0,
+					"JUNGLE_CITY_INNER": 0,
+					"JUNGLE_WAVE_TEMPLE": 0,
+					"WAVE_DNG_INNER": 0,
+					"WAVE_DNG_INNER_FISH": 0,
+					"SHOCK_DNG_INNER": 0,
+					"TREE_DNG_INNER": 0,
+					"TREE_INNER": 0,
+					"TREE_INNER_INFESTED": 0,
+					"TREE_DNG_INNER_WAVE": 0,
+					"TREE_DNG_INNER_SHOCK": 0,
+					"SPOOKY_INNER": 0,
+					"CAVE_FOREST": 0,
+					"CAVE_ARID": 0,
+					"CAVE_ARID_CLOSER": 0,
+					"ARID_OUTSIDE": 0,
+					"ARID_INSIDE": 0,
+					"ARID_ELEVATOR_UP": 0,
+					"ARID_ELEVATOR_DOWN": 0,
+					"ARID_BOSS": 0,
+					"ARID_END_SCENE": 0,
+					"ARID_BETWEEN": 0,
+					"ARID_DNG_OUTSIDE": 0,
+					"SAPPHIRE_RIDGE": 0,
+					"SAPPHIRE_RIDGE_BUILDING": 0,
+					"SAPPHIRE_RIDGE_INNER": 0,
+					"FLASHBACK_OFFICE": 0,
+					"FLASHBACK_HIDEOUT": 0,
+					"FLASHBACK_HIDEOUT_INNER": 0,
+					"FLASHBACK_ARID": 0,
+					"FLASHBACK_DIAGRAM": 0,
+					"TREE_SPACE": 0,
+					"RHOMBUS_SQUARE": 0,
+					"RHOMBUS_SQUARE_BEACH": 0,
+					"RHOMBUS_SQUARE_INNER": 0,
+					"FINAL_BOSS": 0,
+					"GAUTHAM_ROOM": 0,
+					"LAB": 0,
+					"FINAL_DNG_OUTER": 0,
+					"FINAL_DNG_OUTER_BATTLE": 0,
+					"FINAL_DNG_INNER": 0,
+					"FINAL_DNG_INNER_TELEPORT": 0,
+					"FINAL_DNG_INNER_BATTLE": 0,
+					"BEACH_DEFAULT": 0
+				}
+			},
+			"immediately": {
+				"type": "Boolean",
+				"description": "If true, change weather immediately with no transition"
+			}
+		},
+		"initialObject": {
+			"weather": 0
+		}
+	},
+	"RESTORE_WEATHER_PARTICLES": {
+		"attributes": {
+			"immediately": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: make change immediate"
+			}
+		},
+		"initialObject": {}
+	},
+	"SET_MAP_SOUNDS": {
+		"attributes": {
+			"mapSounds": {
+				"type": "String",
+				"withNull": true,
+				"description": "Type of Map Sounds",
+				"options": {
+					"CARGO_SHIP_OUTSIDE": 0,
+					"CARGO_SHIP_OUTSIDE_RAIN": 0,
+					"CARGO_SHIP_INSIDE": 0,
+					"STRONG_RAIN": 0,
+					"LIGHT_WIND": 0,
+					"CARGO_SHIP_AMBIENT_A": 0,
+					"CARGO_SHIP_AMBIENT_B": 0,
+					"CARGO_SHIP_AMBIENT_C": 0,
+					"CARGO_SHIP_AMBIENT_D": 0,
+					"CARGO_SHIP_AMBIENT_E": 0,
+					"CARGO_SHIP_AMBIENT_F": 0,
+					"CARGO_SHIP_AMBIENT_G": 0,
+					"CARGO_SHIP_AMBIENT_H": 0,
+					"HIDEOUT_AMBIENT": 0,
+					"HIDEOUT_INNER_AMBIENT": 0,
+					"SAPPHIRE_RIDGE_AMBIENT": 0,
+					"HIDEOUT_OFFICE_AMBIENT": 0,
+					"CROSS_CENTRAL_INNER": 0,
+					"NEWCOMERS_BRIDGE": 0,
+					"BERGEN_TRAIL_WIND": 0,
+					"BERGEN_TRAIL_WIND_SUBTLE": 0,
+					"ROOKIE_HARBOR_TELEPORTER": 0,
+					"ROOKIE_HARBOR_OCEAN": 0,
+					"CROWD": 0,
+					"ROOKIE_HARBOR_CROWD": 0,
+					"HEAT_AREA_DESERT": 0,
+					"HEAT_AREA_WIND": 0,
+					"HEAT_AREA_OASIS": 0,
+					"CAVE": 0,
+					"CAVE_WATER_DROPS": 0,
+					"BAKI-KUM": 0,
+					"HEAT_DUNGEON_OUTSIDE": 0,
+					"DREAM": 0,
+					"JUNGLE": 0,
+					"JUNGLE_INFESTED": 0,
+					"JUNGLE_CITY_INNER": 0,
+					"JUNGLE_CITY_OUTER": 0,
+					"COLD_DUNGEON": 0,
+					"HEAT_DUNGEON": 0,
+					"HEAT_DUNGEON_WATER": 0,
+					"SHOCK_DUNGEON": 0,
+					"WAVE_DUNGEON": 0,
+					"TREE_DUNGEON": 0,
+					"SPOOKY_INNER": 0,
+					"ARID_OUTSIDE": 0,
+					"ARID_INSIDE": 0,
+					"SERIOUS_AMBIENT": 0,
+					"LAB": 0,
+					"EVO_VILLAGE": 0,
+					"FINAL_DUNGEON_INSIDE": 0,
+					"FINAL_DUNGEON_OUTSIDE": 0,
+					"FINAL_DUNGEON_OUTSIDE_WINDY": 0,
+					"BEACH_AMBIENCE": 0,
+					"ARENA_TOP": 0,
+					"RAID_BOSS_AMBIENCE": 0
+				}
+			}
+		},
+		"initialObject": {
+			"soundEntry": null
+		}
+	},
+	"ADD_TIMER": {
+		"attributes": {
+			"name": {
+				"type": "Timer",
+				"description": "Name of the timer to access it. Must be unique"
+			},
+			"mode": {
+				"type": "Select",
+				"description": "Mode the timer should use",
+				"options": {
+					"COUNTER": 0,
+					"COUNTDOWN": 0
+				}
+			},
+			"millis": {
+				"type": "Boolean",
+				"default": true,
+				"description": "Set false if millis should be shown"
+			},
+			"gui": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "True if a gui should be added to the top-right"
+			},
+			"duration": {
+				"type": "NumberExpression",
+				"optional": true,
+				"description": "Time in seconds the timer should update. Only applicable for COUNTDOWN mode."
+			},
+			"area": {
+				"type": "String",
+				"optional": true,
+				"description": "Only update timer when inside this area.",
+				"options": {
+					"0": 0,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0
+				}
+			},
+			"temp": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "True if the timer should be deleted once a map has been switched"
+			},
+			"quest": {
+				"type": "QuestResetSelect",
+				"optional": true,
+				"description": "If the timer hits the duration on COUNTDOWN mode or your leave the map and the temp property is set to true."
+			},
+			"assist": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: scale time with puzzle speed assist parameter"
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"mode": null,
+			"duration": 0,
+			"area": null,
+			"temp": null,
+			"showGui": false,
+			"millis": true,
+			"quest": null
+		}
+	},
+	"REMOVE_TIMER": {
+		"attributes": {
+			"name": {
+				"type": "Timer",
+				"description": "Name of the timer to remove."
+			}
+		},
+		"initialObject": {
+			"name": null
+		}
+	},
+	"RESET_TIMER": {
+		"attributes": {
+			"name": {
+				"type": "Timer",
+				"description": "Name of the timer to access it. Must be unique"
+			},
+			"mode": {
+				"type": "Select",
+				"optional": true,
+				"description": "New timer mode"
+			},
+			"duration": {
+				"type": "Number",
+				"optional": true,
+				"description": "New duration time if any. Only valid when timer is COUNTDOWN"
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"mode": null,
+			"duration": null
+		}
+	},
+	"PAUSE_TIMER": {
+		"attributes": {
+			"name": {
+				"type": "Timer",
+				"description": "Name of the timer to pause."
+			}
+		},
+		"initialObject": {
+			"name": null
+		}
+	},
+	"RESUME_TIMER": {
+		"attributes": {
+			"name": {
+				"type": "Timer",
+				"description": "Name of the timer to pause."
+			}
+		},
+		"initialObject": {
+			"name": null
+		}
+	},
+	"ENABLED_STATS": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"DISABLE_STATS": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"UNLOCK_TROPHY": {
+		"attributes": {
+			"trophy": {
+				"type": "TrophySelect",
+				"description": "The Trophy to unlock, if already unlocked, nothing will happen."
+			}
+		},
+		"initialObject": {
+			"trophy": null
+		}
+	},
+	"ADD_STAT_MAP_NUMBER": {
+		"attributes": {
+			"map": {
+				"type": "String",
+				"description": "The map of the stat."
+			},
+			"stat": {
+				"type": "String",
+				"description": "The stat name"
+			},
+			"value": {
+				"type": "Number",
+				"description": "The number to add"
+			}
+		},
+		"initialObject": {
+			"map": null,
+			"stat": null,
+			"value": 0
+		}
+	},
+	"SET_STAT_MAP_NUMBER": {
+		"attributes": {
+			"map": {
+				"type": "String",
+				"description": "The map of the stat."
+			},
+			"stat": {
+				"type": "String",
+				"description": "The stat name"
+			},
+			"value": {
+				"type": "NumberExpression",
+				"description": "The number to add"
+			}
+		},
+		"initialObject": {
+			"map": null,
+			"stat": null,
+			"value": 0
+		}
+	},
+	"START_AUTO_CTRL": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"END_AUTO_CTRL": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"SET_AUTO_CTRL_MOUSE": {
+		"attributes": {
+			"pos": {
+				"type": "Vec2",
+				"description": "Position of mouse in screen pixels. 0,0 = top left"
+			},
+			"duration": {
+				"type": "Number",
+				"description": "Duration to move mouse to this position"
+			}
+		},
+		"initialObject": {
+			"pos": {
+				"x": 0,
+				"y": 0
+			},
+			"duration": 0
+		}
+	},
+	"SET_AUTO_CTRL_STICK": {
+		"attributes": {
+			"stick": {
+				"type": "String",
+				"description": "Type of Stick",
+				"options": {
+					"left": 0,
+					"right": 0
+				}
+			},
+			"value": {
+				"type": "Vec2",
+				"description": "Type of value for the axis"
+			},
+			"duration": {
+				"type": "Number",
+				"description": "Time in seconds to hold the stick in that direction. If 0 = hold forever."
+			}
+		},
+		"initialObject": {
+			"stick": null,
+			"value": {
+				"x": 0,
+				"y": 0
+			},
+			"duration": 0
+		}
+	},
+	"SET_AUTO_CTRL_ACTION": {
+		"attributes": {
+			"action": {
+				"type": "String",
+				"description": "Kind of action",
+				"options": {
+					"menu": 0,
+					"quickmenu": 0,
+					"menuConfirm": 0,
+					"menuBack": 0,
+					"menuDown": 0,
+					"menuUp": 0,
+					"menuLeft": 0,
+					"menuRight": 0,
+					"rightPressed": 0,
+					"menuHotkeyHelp": 0,
+					"menuHotkeyHelp2": 0,
+					"menuHotkeyHelp3": 0,
+					"menuCircleLeft": 0,
+					"menuCircleRight": 0,
+					"questCircleLeft": 0,
+					"questCircleRight": 0,
+					"heatMode": 0,
+					"coldMode": 0,
+					"shockMode": 0,
+					"waveMode": 0,
+					"moveDirX": 0,
+					"moveDirY": 0,
+					"aiming": 0,
+					"thrown": 0,
+					"charge": 0,
+					"melee": 0,
+					"dashing": 0,
+					"guarding": 0
+				}
+			},
+			"value": {
+				"type": "Number",
+				"default": 1,
+				"description": "Value for action. 1 usually makes sense"
+			},
+			"hold": {
+				"type": "Boolean",
+				"description": "True if action should be hold"
+			},
+			"deviceFilter": {
+				"type": "String",
+				"withNull": true,
+				"description": "Only do action for a specific device",
+				"options": {
+					"MOUSE": 0,
+					"GAMEPAD": 0
+				}
+			}
+		},
+		"initialObject": {
+			"action": null,
+			"value": null,
+			"hold": false,
+			"deviceFilter": null
+		}
+	},
+	"CLEAR_AUTO_CTRL_ACTION": {
+		"attributes": {
+			"action": {
+				"type": "String",
+				"description": "Kind of action",
+				"options": {
+					"menu": 0,
+					"quickmenu": 0,
+					"menuConfirm": 0,
+					"menuBack": 0,
+					"menuDown": 0,
+					"menuUp": 0,
+					"menuLeft": 0,
+					"menuRight": 0,
+					"rightPressed": 0,
+					"menuHotkeyHelp": 0,
+					"menuHotkeyHelp2": 0,
+					"menuHotkeyHelp3": 0,
+					"menuCircleLeft": 0,
+					"menuCircleRight": 0,
+					"questCircleLeft": 0,
+					"questCircleRight": 0,
+					"heatMode": 0,
+					"coldMode": 0,
+					"shockMode": 0,
+					"waveMode": 0,
+					"moveDirX": 0,
+					"moveDirY": 0,
+					"aiming": 0,
+					"thrown": 0,
+					"charge": 0,
+					"melee": 0,
+					"dashing": 0,
+					"guarding": 0
+				}
+			},
+			"deviceFilter": {
+				"type": "String",
+				"filter": {
+					"MOUSE": 1,
+					"GAMEPAD": 2
+				},
+				"withNull": true,
+				"description": "Only do action for a specific device"
+			}
+		},
+		"initialObject": {
+			"action": null,
+			"deviceFilter": null
+		}
+	},
+	"STOP_TIMER": {
+		"attributes": {
+			"hide": {
+				"type": "Boolean",
+				"description": "True if the timer should be hidden and removed."
+			}
+		},
+		"initialObject": {
+			"hide": null
+		}
+	},
+	"SHOW_AR_MSG": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to show AR Message on"
+			},
+			"text": {
+				"type": "LangLabel",
+				"description": "AR Text to display"
+			},
+			"time": {
+				"type": "NumberExpression",
+				"description": "Time in seconds the message should be visible. 0 = forever"
+			},
+			"mode": {
+				"type": "String",
+				"description": "Mode of AR display.",
+				"options": {
+					"NO_LINE": 0,
+					"LINE_FILL": 0,
+					"LINE_EMPTY": 0
+				}
+			},
+			"color": {
+				"type": "String",
+				"description": "Color of AR display.",
+				"options": {
+					"GREEN": 0,
+					"RED": 0
+				}
+			},
+			"hideOutsideOfScreen": {
+				"type": "Boolean",
+				"description": "If defined: don't show offscreen-msg"
+			},
+			"partName": {
+				"type": "String",
+				"optional": true,
+				"description": "If provided: Show AR display to sub part of entity"
+			},
+			"varFill": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Filling of AR Message depends on value of variable"
+			},
+			"varFillMax": {
+				"type": "NumberExpression",
+				"optional": true,
+				"description": "Maximum Number of variable to fill bar"
+			}
+		},
+		"width": 400,
+		"initialObject": {
+			"entity": null,
+			"text": null,
+			"time": null,
+			"mode": false,
+			"color": null,
+			"partName": null,
+			"varFill": null,
+			"varFillMax": null
+		}
+	},
+	"CLEAR_AR_MSG": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to show AR Message on"
+			}
+		},
+		"width": 400,
+		"initialObject": {
+			"entity": null
+		}
+	},
+	"SPAWN_ENEMY": {
+		"attributes": {
+			"position": {
+				"type": "Vec3",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "Point to navigate to"
+			},
+			"enemyInfo": {
+				"type": "EnemyType",
+				"popup": true,
+				"description": "Enemy information"
+			},
+			"targetPlayer": {
+				"type": "Boolean",
+				"description": "If true, automatically target player"
+			},
+			"name": {
+				"type": "StringExpression",
+				"optional": true,
+				"description": "Name of the enemy to access via action"
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for Enemy to spawn and despawn"
+			},
+			"startAction": {
+				"type": "Action",
+				"rec_visualize": {},
+				"optional": true,
+				"popup": true,
+				"description": "Action that is immediately performed on enemy"
+			},
+			"noEffects": {
+				"type": "Boolean",
+				"description": "If true: Do not show appear effect."
+			}
+		},
+		"initialObject": {
+			"position": null,
+			"enemyInfo": null,
+			"enemyType": null,
+			"targetPlayer": false,
+			"name": null,
+			"noEffects": false
+		}
+	},
+	"SPAWN_DESTRUCTIBLE": {
+		"attributes": {
+			"position": {
+				"type": "Vec3",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "spawn point"
+			},
+			"desType": {
+				"type": "String",
+				"withNull": true,
+				"description": "Type of destructible object"
+			},
+			"onDestructIncrease": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Variable to increase by one when destroyed"
+			},
+			"onPreDestructIncrease": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Variable to increase by one when destroyed"
+			},
+			"effect": {
+				"type": "Effect",
+				"optional": true,
+				"popup": true,
+				"description": "Optional Effect"
+			}
+		},
+		"initialObject": {}
+	},
+	"SPAWN_ENEMY_ON_ENTITY": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to spawn enemy on"
+			},
+			"enemyInfo": {
+				"type": "EnemyType",
+				"popup": true,
+				"description": "Enemy information"
+			},
+			"targetPlayer": {
+				"type": "Boolean",
+				"description": "If true, automatically target player"
+			},
+			"name": {
+				"type": "StringExpression",
+				"optional": true,
+				"description": "Name of the enemy to access via action"
+			},
+			"spawnCondition": {
+				"type": "VarCondition",
+				"popup": true,
+				"optional": true,
+				"description": "Condition for Enemy to spawn and despawn"
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"enemyInfo": null,
+			"enemyType": null,
+			"targetPlayer": false
+		}
+	},
+	"SET_DAMAGE_NUMBERS": {
+		"attributes": {
+			"visibility": {
+				"type": "Boolean",
+				"description": "If false, hide damage nummbers. Will be cleared on level change."
+			}
+		},
+		"initialObject": {
+			"visibility": false
+		}
+	},
+	"KILL_ENEMIES": {
+		"attributes": {
+			"enemyType": {
+				"type": "String",
+				"optional": true,
+				"description": "If provided: only remove enemy of this type",
+				"options": {
+					"0": 0,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 0,
+					"6": 0
+				}
+			},
+			"noRumble": {
+				"type": "Boolean",
+				"optional": true,
+				"default": "true",
+				"description": "If true, do not rumble screen on enemy kill"
+			}
+		},
+		"initialObject": {
+			"enemyType": null,
+			"noRumble": false
+		}
+	},
+	"SET_ENEMY_STATE": {
+		"attributes": {
+			"enemy": {
+				"type": "Actor",
+				"context": "Entity",
+				"description": "Enemy to change"
+			},
+			"enemyState": {
+				"type": "EnemyState",
+				"description": "State of Enemy to switch to"
+			}
+		},
+		"initialObject": {
+			"enemy": 0,
+			"enemyState": 0
+		}
+	},
+	"SET_ENEMY_TARGET": {
+		"attributes": {
+			"enemy": {
+				"type": "Actor",
+				"context": "Entity",
+				"description": "Enemy to change"
+			},
+			"target": {
+				"type": "Entity",
+				"withNull": true,
+				"description": "Entity to target"
+			}
+		},
+		"initialObject": {
+			"enemy": 0,
+			"target": 0
+		}
+	},
+	"SET_SCREEN_ENEMY_TARGET": {
+		"attributes": {
+			"target": {
+				"type": "Entity",
+				"withNull": true,
+				"description": "Entity to target"
+			}
+		},
+		"initialObject": {
+			"target": 0
+		}
+	},
+	"SET_ALL_ENEMY_TARGET": {
+		"attributes": {
+			"target": {
+				"type": "Entity",
+				"withNull": true,
+				"description": "Entity to target"
+			}
+		},
+		"initialObject": {
+			"target": 0
+		}
+	},
+	"REMOVE_ALL_ENEMY_TARGET": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"RESET_SP": {
+		"attributes": {
+			"target": {
+				"type": "Entity",
+				"withNull": true,
+				"description": "Entity to target"
+			},
+			"sp": {
+				"type": "Number",
+				"description": "How much SP to reset. 0.5=50%"
+			}
+		},
+		"initialObject": {
+			"target": 0
+		}
+	},
+	"SET_RELATIVE_HP": {
+		"attributes": {
+			"target": {
+				"type": "Entity",
+				"description": "Entity to set HP of"
+			},
+			"value": {
+				"type": "Number",
+				"description": "Relative amount of HP entity should have. 1= FULL HP"
+			}
+		},
+		"initialObject": {}
+	},
+	"REGEN_HP": {
+		"attributes": {
+			"target": {
+				"type": "Entity",
+				"description": "Entity to target"
+			},
+			"value": {
+				"type": "Number",
+				"description": "Relative amount of HP to regen. 1= FULL HP"
+			},
+			"showNumbers": {
+				"type": "Boolean",
+				"description": "if true: do not show healing numbers"
+			}
+		},
+		"initialObject": {}
+	},
+	"SET_TYPED_ENEMY_TARGET": {
+		"attributes": {
+			"enemyType": {
+				"type": "String",
+				"description": "Type of enemy",
+				"options": {
+					"0": 0,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 0,
+					"6": 0
+				}
+			},
+			"target": {
+				"type": "Entity",
+				"withNull": true,
+				"description": "Entity to target"
+			}
+		},
+		"initialObject": {
+			"target": 0
+		}
+	},
+	"SET_ENEMIES_NAV_TOLERANT": {
+		"attributes": {},
+		"initialObject": {
+			"target": 0
+		}
+	},
+	"SET_FINAL_DRAMATIC_EFFECT": {
+		"attributes": {
+			"effectType": {
+				"type": "String",
+				"withNull": true,
+				"description": "Type of dramatic effect",
+				"options": {
+					"HP_BREAK_ZOOM": 0,
+					"LAST_ENEMY_ZOOM": 0,
+					"BOSS_ZOOM": 0,
+					"BREAK_NONE": 0,
+					"BREAK_NO_TEXT": 0,
+					"BREAK_LIGHT": 0,
+					"BREAK": 0,
+					"BREAK_ALWAYS": 0,
+					"BREAK_BIG": 0,
+					"BREAK_WIDE": 0,
+					"BREAK_WIDE_NOSLOW": 0,
+					"OVERLOAD": 0,
+					"GUARD_COUNTER": 0,
+					"GUARD_BREAK": 0,
+					"RANK_UP": 0,
+					"S_RANK": 0,
+					"PVP_KO": 0,
+					"PVP_FINAL_KO": 0,
+					"ARENA_FINAL_KO": 0,
+					"ONCE_MORE": 0,
+					"ELEMENT_SHIELD": 0,
+					"PERFECT_DASH": 0
+				}
+			}
+		},
+		"initialObject": {
+			"effectType": null
+		}
+	},
+	"SET_COMBAT_SPEED": {
+		"attributes": {
+			"speed": {
+				"type": "Number",
+				"default": 1,
+				"description": "Speed of combat, will scale frequency of enemy attacks"
+			}
+		},
+		"initialObject": {
+			"speed": 0
+		}
+	},
+	"MASS_REPLACE_ENTITIES_WITH_ENEMY": {
+		"attributes": {
+			"regExp": {
+				"type": "String",
+				"description": "Regular Expression used on entityName to find entities"
+			},
+			"enemyInfo": {
+				"type": "EnemyType",
+				"popup": true,
+				"description": "Enemy type to swap with entities"
+			},
+			"target": {
+				"type": "Entity",
+				"optional": true,
+				"description": "Set enemy target when spawned"
+			}
+		},
+		"initialObject": {
+			"regExp": null,
+			"spawnEnemyInfo": null,
+			"enemyType": null,
+			"target": null
+		}
+	},
+	"SWAP_ENTITY_WITH_ENEMY": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"context": "Entity",
+				"description": "Entity to swap with enemy"
+			},
+			"enemyInfo": {
+				"type": "EnemyType",
+				"popup": true,
+				"description": "Enemy to swap with entity"
+			},
+			"manualKill": {
+				"type": "VarName",
+				"optional": true,
+				"description": "Instead of killing the enemy, set specified variable to true."
+			}
+		},
+		"initialObject": {
+			"entity": null,
+			"spawnEnemyInfo": null,
+			"enemyType": null,
+			"manualKill": null
+		}
+	},
+	"SWAP_BACK_ENEMY_WITH_ENTITY": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"context": "Entity",
+				"description": "Entity to swap with enemy"
+			},
+			"expCollect": {
+				"type": "Boolean",
+				"description": "Manually kill enemy, collecting EXP etc."
+			}
+		},
+		"initialObject": {
+			"entity": null
+		}
+	},
+	"SET_COMBAT_ACTIVE": {
+		"attributes": {
+			"active": {
+				"type": "Boolean",
+				"description": "Activity status of combat"
+			}
+		},
+		"initialObject": {
+			"active": false
+		}
+	},
+	"DO_ENEMY_ACTION": {
+		"attributes": {
+			"enemy": {
+				"type": "Actor",
+				"context": "Entity",
+				"description": "Enemy to change"
+			},
+			"actionName": {
+				"type": "String",
+				"description": "Name of action to perform"
+			},
+			"noStateReset": {
+				"type": "Boolean",
+				"description": "If true, do not reset state before switching to action. Also keeps actionAttached!"
+			}
+		},
+		"initialObject": {
+			"enemy": null,
+			"actionName": null
+		}
+	},
+	"SET_VAR_COMBAT_STAT": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to store relative hp in"
+			},
+			"entity": {
+				"type": "Entity",
+				"description": "Combatant of which to fetch stat"
+			},
+			"stat": {
+				"type": "String",
+				"description": "Type of Stat",
+				"options": {
+					"RELATIVE_HP": 0,
+					"CURRENT_HP": 0,
+					"MAX_HP": 0,
+					"ATTACK": 0,
+					"DEFENSE": 0,
+					"FOCUS": 0
+				}
+			}
+		},
+		"initialObject": {
+			"varName": null,
+			"stat": null,
+			"entity": null
+		}
+	},
+	"MANUAL_COMBATANT_KILL": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Combatant to manually kill"
+			}
+		},
+		"initialObject": {
+			"entity": null
+		}
+	},
+	"MANUAL_COMBATANT_REVIVE": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"context": "Entity",
+				"description": "Combatant to manually revive"
+			}
+		},
+		"initialObject": {
+			"entity": null
+		}
+	},
+	"SET_COMBATANT_MANUAL_KILL": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"context": "Entity",
+				"description": "Combatant to set manual kill variable to"
+			},
+			"varName": {
+				"type": "VarName",
+				"description": "Variable to set to true when combatant is killed"
+			}
+		},
+		"initialObject": {
+			"entity": null
+		}
+	},
+	"START_PVP_BATTLE": {
+		"attributes": {
+			"winPoints": {
+				"type": "Integer",
+				"description": "Number of points to win PVP battle"
+			},
+			"enemies": {
+				"type": "Array",
+				"sub": {
+					"_type": "Entity"
+				},
+				"description": "List of all enemies that participate in battle"
+			}
+		},
+		"initialObject": {
+			"winPoints": 0,
+			"entity": null
+		}
+	},
+	"PREPARE_PVP_ROUND": {
+		"attributes": {
+			"autoContinue": {
+				"type": "Boolean",
+				"description": "If true, automatically stop preparation"
+			}
+		},
+		"initialObject": {
+			"autoContinue": false
+		}
+	},
+	"START_PVP_ROUND": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"STOP_PVP_BATTLE": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"SET_RESPAWN_POINT": {
+		"attributes": {
+			"entity": {
+				"type": "Actor",
+				"context": "Entity",
+				"description": "Entity to change"
+			},
+			"marker": {
+				"type": "Entity",
+				"description": "marker Entity to take position from"
+			}
+		},
+		"initialObject": {}
+	},
+	"COMBAT_IF": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Combatant from which to evaluate combat if"
+			},
+			"conditions": {
+				"type": "CombatConditions",
+				"description": "Combat conditions for if statement"
+			},
+			"withElse": {
+				"type": "Boolean",
+				"noLabel": true,
+				"description": "With else case."
+			},
+			"tmpTarget": {
+				"type": "Entity",
+				"optional": true,
+				"description": "Temp target to set temporarily while combat condition is evaluated"
+			}
+		},
+		"initialObject": {
+			"conditions": null,
+			"withElse": false,
+			"branches": {}
+		}
+	},
+	"REMOVE_PROXIES": {
+		"attributes": {
+			"group": {
+				"type": "String",
+				"description": "Only remove proxies with matching group string"
+			}
+		},
+		"initialObject": {}
+	},
+	"START_DEMO_HIGHSCORE_TIMER": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"STOP_DEMO_HIGHSCORE_TIMER": {
+		"attributes": {
+			"observatory": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if this is for the observatory challenge."
+			}
+		},
+		"initialObject": {
+			"observatory": false
+		}
+	},
+	"SET_TASK": {
+		"attributes": {
+			"task": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Current task of the game."
+			},
+			"keepDisplayed": {
+				"type": "Boolean",
+				"description": "Keep Task displayed all the time"
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"task": null,
+			"keepDisplayed": false
+		}
+	},
+	"SET_PERMA_TASK": {
+		"attributes": {
+			"task": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Current perma task of the game. Displayed in Synopsis"
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"task": null
+		}
+	},
+	"SET_PAUSE_MUSIC_STOP": {
+		"attributes": {
+			"stop": {
+				"type": "Boolean",
+				"description": "If true: stop music in pause menu."
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"stop": false
+		}
+	},
+	"SET_MOBILITY_BLOCK": {
+		"attributes": {
+			"value": {
+				"type": "String",
+				"description": "Type of Mobility block. SAVE also blocks teleport",
+				"options": {
+					"NONE": 0,
+					"TELEPORT": 0,
+					"SAVE": 0,
+					"CHECKPOINT": 0,
+					"NO_MAP_LEAVE": 0
+				}
+			}
+		},
+		"initialObject": {
+			"value": null
+		}
+	},
+	"ACTIVATE_CANCEL_BUTTON": {
+		"attributes": {
+			"text": {
+				"type": "LangLabel",
+				"description": "If defined: enable cancel button with this text. If undefined: disable cancel button"
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"text": null
+		}
+	},
+	"CLEAR_CANCEL_BUTTON": {
+		"attributes": {},
+		"width": 500,
+		"initialObject": {}
+	},
+	"SET_FORCE_COMBAT": {
+		"attributes": {
+			"value": {
+				"type": "Boolean",
+				"description": "True if combat should remain active."
+			}
+		},
+		"initialObject": {
+			"value": false
+		}
+	},
+	"FORCE_START_S_RANK": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"INCREASE_COMBAT_RANK": {
+		"attributes": {
+			"value": {
+				"type": "Number",
+				"description": "Increase Combat Rank by this weight. 1=one enemy"
+			}
+		},
+		"initialObject": {
+			"value": false
+		}
+	},
+	"CLEAR_TASK": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"SET_PLAYER_CORE": {
+		"attributes": {
+			"core": {
+				"type": "String",
+				"description": "Type of Core.",
+				"options": {
+					"MOVE": 0,
+					"CHARGE": 0,
+					"DASH": 0,
+					"CLOSE_COMBAT": 0,
+					"GUARD": 0,
+					"CREDITS": 0,
+					"MENU": 0,
+					"ELEMENT_NEUTRAL": 0,
+					"ELEMENT_HEAT": 0,
+					"ELEMENT_COLD": 0,
+					"ELEMENT_SHOCK": 0,
+					"ELEMENT_WAVE": 0,
+					"QUICK_MENU": 0,
+					"THROWING": 0,
+					"ELEMENT_LOAD": 0,
+					"ELEMENT_CHANGE": 0,
+					"SPECIAL": 0,
+					"COMBAT_RANK": 0,
+					"QUEST_SWITCH": 0,
+					"EXP": 0,
+					"MENU_CIRCUIT": 0,
+					"MENU_SYNOPSIS": 0,
+					"MENU_SOCIAL": 0,
+					"MENU_SOCIAL_INVITE": 0,
+					"MENU_BOTANICS": 0,
+					"ITEMS": 0,
+					"MONEY": 0,
+					"MODIFIER": 0
+				}
+			},
+			"value": {
+				"type": "Boolean",
+				"description": "True to activate core."
+			}
+		},
+		"initialObject": {
+			"core": null,
+			"value": null
+		}
+	},
+	"SET_PLAYER_SP_LEVEL": {
+		"attributes": {
+			"level": {
+				"type": "String",
+				"description": "Type of Core.",
+				"options": {
+					"0": 0,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0
+				}
+			}
+		},
+		"initialObject": {
+			"level": null
+		}
+	},
+	"INCREASE_PLAYER_SP_LEVEL": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"ADD_PLAYER_EXP": {
+		"attributes": {
+			"exp": {
+				"type": "NumberExpression",
+				"description": "Experience count."
+			},
+			"level": {
+				"type": "Number",
+				"optional": true,
+				"description": "Level of experience"
+			}
+		},
+		"initialObject": {
+			"exp": 0,
+			"level": 0
+		}
+	},
+	"SET_PLAYER_LEVEL_DEBUG": {
+		"attributes": {
+			"level": {
+				"type": "Number",
+				"description": "New Level of Player"
+			}
+		},
+		"initialObject": {
+			"level": null
+		}
+	},
+	"SET_ALL_PLAYER_CORE": {
+		"attributes": {
+			"value": {
+				"type": "Boolean",
+				"description": "True to activate core."
+			}
+		},
+		"initialObject": {
+			"value": null
+		}
+	},
+	"SHOW_MSG": {
+		"attributes": {
+			"person": {
+				"type": "PersonExpression",
+				"description": "Talking person"
+			},
+			"message": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Message to display"
+			},
+			"autoContinue": {
+				"type": "Boolean",
+				"description": "Automatically continue after message"
+			}
+		},
+		"initialObject": {
+			"person": null,
+			"charExpression": null,
+			"message": null,
+			"autoContinue": false,
+			"hiCount": 0
+		}
+	},
+	"RING_PRIVATE_MSG": {
+		"attributes": {
+			"outgoing": {
+				"type": "Boolean",
+				"description": "If true: this is an outgoing call"
+			}
+		},
+		"initialObject": {
+			"outgoing": false
+		}
+	},
+	"START_PRIVATE_MSG": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"END_PRIVATE_MSG": {
+		"attributes": {
+			"skipSounds": {
+				"type": "Boolean",
+				"description": "If true: skip sounds"
+			}
+		},
+		"initialObject": {}
+	},
+	"SHOW_OFFSCREEN_MSG": {
+		"attributes": {
+			"side": {
+				"type": "String",
+				"description": "Side to display message at.",
+				"options": {
+					"RIGHT": 0,
+					"LEFT": 0
+				}
+			},
+			"message": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Message to display"
+			},
+			"autoContinue": {
+				"type": "Boolean",
+				"description": "Automaticallt continue after message"
+			}
+		},
+		"width": 400,
+		"initialObject": {
+			"leftSide": null,
+			"message": null,
+			"autoContinue": false
+		}
+	},
+	"SHOW_CHOICE": {
+		"attributes": {
+			"person": {
+				"type": "PersonExpression",
+				"description": "Talking person"
+			},
+			"options": {
+				"type": "ChoiceOptions",
+				"noLabel": true,
+				"description": "List of options"
+			},
+			"columns": {
+				"type": "Integer",
+				"optional": true,
+				"default": 2,
+				"description": "Number of buttons columns."
+			},
+			"forceWidth": {
+				"type": "Integer",
+				"optional": true,
+				"description": "Override the default button width. NOTE: Buttons still get matched when a text is to large."
+			}
+		},
+		"initialObject": {
+			"person": null,
+			"charExpression": null,
+			"columns": null,
+			"forceWidth": 0,
+			"options": [],
+			"branches": {}
+		}
+	},
+	"ADD_MSG_PERSON": {
+		"attributes": {
+			"person": {
+				"type": "PersonExpression",
+				"description": "Person + Expression to add"
+			},
+			"name": {
+				"type": "LangLabel",
+				"optional": true,
+				"description": "Name to display under portrait if any"
+			},
+			"side": {
+				"type": "String",
+				"description": "Side to display Person at.",
+				"options": {
+					"RIGHT": 0,
+					"LEFT": 0
+				}
+			},
+			"order": {
+				"type": "Number",
+				"description": "Determines the order in which people are displayed on one side. LOWER values are in FRONT"
+			},
+			"clearSide": {
+				"type": "Boolean",
+				"description": "Clear the side before adding the person"
+			}
+		},
+		"initialObject": {
+			"charExpression": null,
+			"side": 0,
+			"order": 0,
+			"clearSide": false,
+			"name": null
+		}
+	},
+	"REMOVE_MSG_PERSON": {
+		"attributes": {
+			"person": {
+				"type": "Character",
+				"description": "Person to remove"
+			}
+		},
+		"initialObject": {
+			"person": null
+		}
+	},
+	"SET_MSG_EXPRESSION": {
+		"attributes": {
+			"person": {
+				"type": "PersonExpression",
+				"description": "Person + Expression to change"
+			}
+		},
+		"initialObject": {
+			"person": null,
+			"charExpression": null
+		}
+	},
+	"CLEAR_MSG": {
+		"attributes": {
+			"side": {
+				"type": "String",
+				"default": "ALL",
+				"description": "Side to clear",
+				"options": {
+					"RIGHT": 0,
+					"LEFT": 0,
+					"ALL": 0
+				}
+			}
+		},
+		"initialObject": {
+			"side": null
+		}
+	},
+	"SHOW_CENTER_MSG": {
+		"attributes": {
+			"titleText": {
+				"type": "LangLabel",
+				"description": "Title of Box"
+			},
+			"text": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Message in Box"
+			},
+			"overMenu": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "Show over menu"
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"titleText": null,
+			"text": null,
+			"overMenu": null
+		}
+	},
+	"SHOW_DREAM_MSG": {
+		"attributes": {
+			"text": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Message in Box"
+			},
+			"entity": {
+				"type": "Entity",
+				"optional": true,
+				"description": "Entity the dream text will be displayed above or below. Text will be centered on screen if not specified"
+			},
+			"posType": {
+				"type": "String",
+				"default": "TOP",
+				"description": "Whether to display text above or below entity.",
+				"options": {
+					"TOP": 0,
+					"BOTTOM": 0
+				}
+			},
+			"offset": {
+				"type": "Vec2",
+				"description": "Offset added to position"
+			},
+			"time": {
+				"type": "Number",
+				"optional": true,
+				"description": "If set the message will stay on for the given amount of time"
+			},
+			"smallFont": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true: use small font"
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"titleText": null,
+			"text": null,
+			"time": 0
+		}
+	},
+	"SHOW_TUTORIAL_START": {
+		"attributes": {
+			"msgType": {
+				"type": "String",
+				"default": "TUTORIAL",
+				"description": "Type of Message",
+				"options": {
+					"TUTORIAL": 0,
+					"GENERIC": 0
+				}
+			},
+			"title": {
+				"type": "LangLabel",
+				"description": "Title of Toturial"
+			},
+			"content": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Content of Tutorial"
+			},
+			"image": {
+				"type": "Image",
+				"optional": true,
+				"description": "Image to be shown over content text"
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"msgType": null,
+			"title": null,
+			"content": null,
+			"imageSrc": null,
+			"branches": {}
+		}
+	},
+	"SHOW_MODAL_CHOICE": {
+		"attributes": {
+			"text": {
+				"type": "LangLabel",
+				"description": "Text of modal dialog"
+			},
+			"options": {
+				"type": "ModalChoiceOptions",
+				"description": "All the options of the modal dialog"
+			}
+		},
+		"initialObject": {
+			"text": null,
+			"options": [],
+			"branches": {}
+		}
+	},
+	"SHOW_TUTORIAL_MSG": {
+		"attributes": {
+			"text": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Tutorial Text description"
+			},
+			"pos": {
+				"type": "Vec2",
+				"description": "Marker Square position"
+			},
+			"size": {
+				"type": "Vec2",
+				"description": "Marker Square size"
+			},
+			"direction": {
+				"type": "String",
+				"description": "Direction to show text relative to marker square.",
+				"options": {
+					"BOTTOM_RIGHT": 0,
+					"BOTTOM_LEFT": 0,
+					"TOP_RIGHT": 0,
+					"TOP_LEFT": 0
+				}
+			},
+			"connectPos": {
+				"type": "Number",
+				"default": 0.5,
+				"description": "Point where text line touches marker box. Between 0 to 1. 0= left corner, 1=right corner."
+			},
+			"stopTime": {
+				"type": "Boolean",
+				"description": "If true: Stop time while displaying the message"
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"pos": null,
+			"size": null,
+			"text": null,
+			"direction": null,
+			"connectPos": 0
+		}
+	},
+	"SHOW_TUTORIAL_PLAYER_MSG": {
+		"attributes": {
+			"text": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Tutorial Text description"
+			},
+			"targetType": {
+				"type": "String",
+				"description": "Marker Square position",
+				"options": {
+					"PLAYER": 0,
+					"CROSSHAIR": 0,
+					"ENEMY": 0
+				}
+			},
+			"size": {
+				"type": "Vec2",
+				"description": "Marker Square size"
+			},
+			"stopTime": {
+				"type": "Boolean",
+				"description": "If true: Stop time while displaying the message"
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"pos": null,
+			"size": null,
+			"text": null,
+			"direction": null,
+			"connectPos": 0
+		}
+	},
+	"SHOW_DEMO_HIGHSCORE": {
+		"attributes": {
+			"observatory": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if this is for the observatory challenge."
+			}
+		},
+		"initialObject": {
+			"observatory": false
+		}
+	},
+	"SHOW_DEMO_TIME": {
+		"attributes": {
+			"observatory": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if this is for the observatory challenge."
+			}
+		},
+		"initialObject": {
+			"observatory": false
+		}
+	},
+	"SHOW_GET_MSG": {
+		"attributes": {
+			"msgType": {
+				"type": "String",
+				"description": "Type of get message",
+				"options": {
+					"ACTIVATED": 0,
+					"OBTAINED": 0,
+					"REMOVED": 0,
+					"ENEMY": 0,
+					"EXTENDED": 0,
+					"WORD": 0,
+					"FRIENDSHIP": 0,
+					"PARTY": 0,
+					"USED": 0,
+					"HAND_OVER": 0,
+					"RESET": 0
+				}
+			},
+			"object": {
+				"type": "LangLabel",
+				"description": "Object of get message"
+			}
+		},
+		"width": 500,
+		"initialObject": {
+			"text": null,
+			"track": null,
+			"wordLearned": false
+		}
+	},
+	"SHOW_SIDE_MSG": {
+		"attributes": {
+			"person": {
+				"type": "PersonExpression",
+				"description": "Person + Exporession of message"
+			},
+			"message": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Message to display"
+			}
+		},
+		"initialObject": {
+			"charExpression": null,
+			"message": null,
+			"hiCount": 0
+		}
+	},
+	"CLEAR_SIDE_MSG": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"SHOW_BOARD_MSG": {
+		"attributes": {
+			"text": {
+				"type": "LangLabel",
+				"large": true,
+				"description": "Text to display."
+			},
+			"center": {
+				"type": "Boolean",
+				"description": "Center the text."
+			},
+			"side": {
+				"type": "String",
+				"optional": true,
+				"description": "If defined: moved board message to side of screen, allowing to display persons in parallel",
+				"options": {
+					"RIGHT": 0,
+					"LEFT": 0
+				}
+			},
+			"autoContinue": {
+				"type": "Boolean",
+				"description": "Automatically continue after message"
+			}
+		},
+		"width": 600,
+		"initialObject": {
+			"text": null,
+			"title": null,
+			"center": null
+		}
+	},
+	"CLEAR_BOARD_MSG": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"SET_AUTO_SCRIPT": {
+		"attributes": {
+			"value": {
+				"type": "Boolean",
+				"description": "If true: enable auto script (will automatically continue messages"
+			}
+		},
+		"initialObject": {
+			"value": null
+		}
+	},
+	"DO_THE_SHAKE": {
+		"attributes": {
+			"person": {
+				"type": "PersonExpression",
+				"description": "Talking person"
+			}
+		},
+		"initialObject": {
+			"person": null,
+			"expression": null,
+			"message": null
+		}
+	},
+	"RESET_NPC": {
+		"attributes": {
+			"npc": {
+				"type": "Entity",
+				"description": "NPC to reset"
+			}
+		},
+		"initialObject": {
+			"npc": null
+		}
+	},
+	"SET_NPC_RUNNERS": {
+		"attributes": {
+			"frequency": {
+				"type": "String",
+				"withNull": true,
+				"description": "Frequency of NPC Runners. Null = no NPC runners",
+				"options": {
+					"CROSSCENTRAL": 0,
+					"RHOMBUS_SQUARE": 0,
+					"CROWDED": 0,
+					"LIVELY": 0,
+					"REGULAR": 0,
+					"FEW": 0
+				}
+			}
+		},
+		"initialObject": {
+			"frequency": null
+		}
+	},
+	"RESET_NPC_RUNNERS": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"SET_NPC_CONFIG": {
+		"attributes": {
+			"npc": {
+				"type": "NPC",
+				"description": "NPC to change"
+			},
+			"config": {
+				"type": "String",
+				"description": "Config name to apply"
+			}
+		},
+		"initialObject": {
+			"npc": null,
+			"config": null
+		}
+	},
+	"SAVE_PLAYER_MODEL_VALUE": {
+		"attributes": {
+			"modelType": {
+				"type": "String",
+				"description": "Mode value to set",
+				"options": {
+					"NONE": 0,
+					"MONEY": 0
+				}
+			}
+		},
+		"initialObject": {
+			"modelType": null
+		}
+	},
+	"ADD_PLAYER_CAMERA_TARGET": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to target"
+			},
+			"speed": {
+				"type": "String",
+				"optional": true,
+				"description": "Speed of camera transition",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			}
+		},
+		"initialObject": {
+			"entity": null
+		}
+	},
+	"REMOVE_PLAYER_CAMERA_TARGET": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to target"
+			},
+			"speed": {
+				"type": "String",
+				"optional": true,
+				"description": "Speed of camera transition",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			}
+		},
+		"initialObject": {
+			"entity": null
+		}
+	},
+	"REMOVE_ALL_PLAYER_CAMERAS": {
+		"attributes": {
+			"speed": {
+				"type": "String",
+				"optional": true,
+				"description": "Speed of camera transition",
+				"options": {
+					"NORMAL": 0,
+					"FAST": 0,
+					"FASTER": 0,
+					"FASTEST": 0,
+					"FASTESTEST": 0,
+					"SLOW": 0,
+					"SLOWER": 0,
+					"SLOWEST": 0,
+					"SLOWESTEST": 0,
+					"SLOWEST_DREAM": 0,
+					"IMMEDIATELY": 0
+				}
+			}
+		},
+		"initialObject": {
+			"speed": null
+		}
+	},
+	"LEARN_SKILL": {
+		"attributes": {
+			"skill": {
+				"type": "Integer",
+				"description": "Skill ID"
+			}
+		},
+		"initialObject": {
+			"skill": null
+		}
+	},
+	"DO_INLINE_LEVELUP": {
+		"attributes": {},
+		"initialObject": {
+			"skill": null
+		}
+	},
+	"RESET_SKILL_TREE": {
+		"attributes": {
+			"element": {
+				"type": "String",
+				"default": 5,
+				"description": "element to reset",
+				"options": {
+					"NEUTRAL": 0,
+					"HEAT": 0,
+					"COLD": 0,
+					"SHOCK": 0,
+					"WAVE": 0,
+					"ALL_AVAILABLE": 0
+				}
+			}
+		},
+		"initialObject": {
+			"element": null
+		}
+	},
+	"SET_ELEMENT_LOAD": {
+		"attributes": {
+			"value": {
+				"type": "Number",
+				"description": "Value of load. 0=empty, 1=full (instant elemental overload)"
+			}
+		},
+		"initialObject": {
+			"value": null
+		}
+	},
+	"SWITCH_PLAYER_CONFIG": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of player config",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
+				}
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"config": null
+		}
+	},
+	"WAIT_UNTIL_PLAYER_CHARGED": {
+		"attributes": {
+			"level": {
+				"type": "Number",
+				"description": "Wait until this level of charge has been reached"
+			}
+		},
+		"initialObject": {
+			"level": null
+		}
+	},
+	"SWITCH_ELEMENT_MODE": {
+		"attributes": {
+			"element": {
+				"type": "String",
+				"description": "Element to switch to",
+				"options": {
+					"NEUTRAL": 0,
+					"HEAT": 0,
+					"COLD": 0,
+					"SHOCK": 0,
+					"WAVE": 0
+				}
+			},
+			"skipEffect": {
+				"type": "Boolean",
+				"description": "If true: do no show effects of changing elements"
+			}
+		},
+		"initialObject": {
+			"element": null
+		}
+	},
+	"SWITCH_TO_ELEMENT_WITH_COMBAT_ART": {
+		"attributes": {
+			"artType": {
+				"type": "String",
+				"optional": true,
+				"description": "Type of combat art",
+				"options": {
+					"THROW": 0,
+					"ATTACK": 0,
+					"DASH": 0,
+					"GUARD": 0
+				}
+			},
+			"level": {
+				"type": "Integer",
+				"description": "Minimum Level"
+			},
+			"skipEffect": {
+				"type": "Boolean",
+				"description": "If true: do no show effects of changing elements"
+			}
+		},
+		"initialObject": {}
+	},
+	"SET_VAR_COMBAT_ART_TYPE_WITH_MIN_LEVEL": {
+		"attributes": {
+			"varName": {
+				"type": "VarName",
+				"description": "Will include the type of combat art THROW, ATTACK, DASH or GUARD"
+			},
+			"level": {
+				"type": "Integer",
+				"description": "Minimum Level of combat art"
+			}
+		},
+		"initialObject": {}
+	},
+	"HIDE_PETS": {
+		"attributes": {
+			"hide": {
+				"type": "Boolean",
+				"description": "If true: hide pets"
+			}
+		},
+		"initialObject": {}
+	},
+	"ACTIVATE_CROSSHAIR": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Entity to focus camera on"
+			}
+		},
+		"initialObject": {
+			"entity": null
+		}
+	},
+	"DEACTIVATE_CROSSHAIR": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"SET_CROSSHAIR_TARGET": {
+		"attributes": {
+			"pos": {
+				"type": "Vec2",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "Target position for CrossHair"
+			}
+		},
+		"initialObject": {
+			"pos": null
+		}
+	},
+	"SET_CROSSHAIR_SPEED": {
+		"attributes": {
+			"value": {
+				"type": "Number",
+				"description": "Speed of CrossHair. 1 is default, 0 is pause"
+			}
+		},
+		"initialObject": {
+			"value": null
+		}
+	},
+	"REDUCE_CROSSHAIR_PRECISION": {
+		"attributes": {
+			"value": {
+				"type": "Number",
+				"description": "Amount to reduce. 0=nothing, 1=maximum"
+			}
+		},
+		"initialObject": {
+			"value": null
+		}
+	},
+	"GET_CROSSHAIR_DIR": {
+		"attributes": {
+			"variable": {
+				"type": "VarName",
+				"description": "Variable to contain (random) CrossHair direction."
+			}
+		},
+		"initialObject": {
+			"variable": null
+		}
+	},
+	"DESTROY_DESTRUCTIBLE": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Destructible to destroy"
+			}
+		},
+		"initialObject": {
+			"entity": null
+		}
+	},
+	"RESET_PUSH_PULL_POS": {
+		"attributes": {
+			"entity": {
+				"type": "Entity",
+				"description": "Pushpull entity"
+			},
+			"pos": {
+				"type": "Vec3",
+				"actorOption": true,
+				"visualize": true,
+				"pointSelect": true,
+				"optional": true,
+				"description": "If defined, reset to this position"
+			}
+		},
+		"initialObject": {}
+	},
+	"SPAWN_BOMB": {
+		"attributes": {
+			"point": {
+				"type": "Vec3",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "Where to spawn bomb"
+			},
+			"zHeight": {
+				"type": "Number",
+				"description": "From how height the bomb will fall"
+			},
+			"zVary": {
+				"type": "Number",
+				"description": "Value to +- vary the z height"
+			}
+		},
+		"initialObject": {
+			"gfx": null,
+			"pos": null,
+			"offset": null,
+			"align": null,
+			"area": null,
+			"zVary": null
+		}
+	},
+	"SPAWN_BUBBLE": {
+		"attributes": {
+			"point": {
+				"type": "Vec3",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "Where to spawn bubble"
+			}
+		},
+		"initialObject": {
+			"offset": null
+		}
+	},
+	"DESTROY_BOMBS": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"STOP_PLAYER_ELEMENT_SHIELD": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"FIX_SHOCKWAVE_PLATFORMS": {
+		"attributes": {
+			"pointA": {
+				"type": "Vec3",
+				"visualize": true,
+				"pointSelect": true,
+				"description": "Point of first platform to be fixed"
+			},
+			"pointB": {
+				"type": "Vec3",
+				"visualize": true,
+				"pointSelect": true,
+				"optional": true,
+				"description": "If defined: Rise all platforms overlapping with the bounding box of A and B"
+			},
+			"height": {
+				"type": "Number",
+				"description": "How high platforms should be fixed"
+			},
+			"minHeight": {
+				"type": "Number",
+				"optional": true,
+				"description": "If defined, will vary height randomly between this value and height"
+			}
+		},
+		"initialObject": {}
+	},
+	"RELEASE_FIXED_PLATFORMS": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"ADD_PLANT": {
+		"attributes": {
+			"plant": {
+				"type": "DropSelect",
+				"description": "drop to update"
+			}
+		},
+		"initialObject": {
+			"key": null,
+			"anim": null
+		}
+	},
+	"UNLOCK_ENEMY": {
+		"attributes": {
+			"enemy": {
+				"type": "EnemySearch",
+				"description": "Enemy to unlock, note that this enemy, use this only for special enemies."
+			},
+			"asSpecial": {
+				"type": "Boolean",
+				"default": true,
+				"description": "if true 'special' will be displayed instead of kill count"
+			}
+		},
+		"initialObject": {
+			"enemy": null,
+			"asSpecial": null
+		}
+	},
+	"UNLOCK_LORE": {
+		"attributes": {
+			"lore": {
+				"type": "LoreSelect",
+				"description": "Lore to unlock. Unlocks ALL entries "
+			},
+			"notify": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if notification should be displayed"
+			}
+		},
+		"initialObject": {
+			"lore": null,
+			"notify": false
+		}
+	},
+	"UNLOCK_LORE_ALL": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"UNLOCK_LORE_FIRST_TIME": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"UNLOCK_LORE_ENTRY": {
+		"attributes": {
+			"lore": {
+				"type": "LoreSelect",
+				"context": "Lore",
+				"description": "Lore to the entry is associated with"
+			},
+			"entry": {
+				"type": "LoreEntrySelect",
+				"description": "The entry to unlock"
+			},
+			"notify": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if notification should be displayed"
+			}
+		},
+		"initialObject": {
+			"lore": null,
+			"entry": null,
+			"notify": false
+		}
+	},
+	"UNLOCK_LORE_LIST": {
+		"attributes": {
+			"lories": {
+				"type": "Array",
+				"sub": {
+					"_type": "LoreSelect"
+				},
+				"subWidth": 150,
+				"description": "The list from which to pick. will unlock the next 'locked' entry in the array."
+			},
+			"notify": {
+				"type": "Boolean",
+				"default": false,
+				"description": "True if notification should be displayed"
+			}
+		},
+		"initialObject": {
+			"lories": null,
+			"entry": null,
+			"notify": false
+		}
+	},
+	"ACTIVATE_LANDMARK": {
+		"attributes": {
+			"area": {
+				"type": "Area",
+				"context": "Area",
+				"description": "Area to select landmark from",
+				"options": {
+					"0": 0,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0
+				}
+			},
+			"landmark": {
+				"type": "Landmarks",
+				"description": "Landmark to activate"
+			}
+		},
+		"initialObject": {
+			"area": null,
+			"landmark": null
+		}
+	},
+	"SET_LANDMARK_ACTIVE_STATE": {
+		"attributes": {
+			"area": {
+				"type": "Area",
+				"context": "Area",
+				"description": "Area to select landmark from",
+				"options": {
+					"0": 0,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0
+				}
+			},
+			"landmark": {
+				"type": "Landmarks",
+				"optional": true,
+				"description": "Landmark to set state of. If not defined: Set state of all landmarks of area (if found)"
+			},
+			"state": {
+				"type": "Boolean",
+				"description": "New Active State of Landmark"
+			}
+		},
+		"initialObject": {
+			"area": null,
+			"landmark": null
+		}
+	},
+	"UNDO_OPENED_CHEST_TRACK": {
+		"attributes": {
+			"map": {
+				"type": "Maps",
+				"context": "Map",
+				"description": "Map of the chest"
+			},
+			"area": {
+				"type": "Area",
+				"context": "Area",
+				"description": "Area of the map",
+				"options": {
+					"0": 0,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0
+				}
+			},
+			"chestId": {
+				"type": "Integer",
+				"description": "Entity id of the chest that is no more"
+			},
+			"variable": {
+				"type": "String",
+				"optional": true,
+				"description": "Alternative Variable used for chest. Do NOT add map. prefix!"
+			}
+		},
+		"initialObject": {}
+	},
+	"OPEN_SHOP": {
+		"attributes": {
+			"shop": {
+				"type": "Shop",
+				"context": "Shop",
+				"description": "The Shop to access. Below you can see the content"
+			}
+		},
+		"initialObject": {
+			"shop": null
+		}
+	},
+	"OPEN_QUEST_HUB": {
+		"attributes": {
+			"hub": {
+				"type": "QuestHub",
+				"context": "QuestHub",
+				"description": "The hub to access."
+			}
+		},
+		"initialObject": {
+			"hub": null
+		}
+	},
+	"UNDO_VISITED_AREA": {
+		"attributes": {
+			"area": {
+				"type": "String",
+				"description": "Visited area to be undone. WARNING: Will delete ALL map variables of those maps",
+				"options": {
+					"0": 0,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0
+				}
+			}
+		},
+		"initialObject": {
+			"hub": null
+		}
+	},
+	"START_FORCE_INPUT": {
+		"attributes": {
+			"inputEntry": {
+				"type": "String",
+				"description": "Name of player config",
+				"options": {
+					"DODGE_RIGHT": 0,
+					"ATTACK_LEFT": 0,
+					"CHARGE_HOLD": 0,
+					"CHARGE_RELEASE": 0
+				}
+			},
+			"title": {
+				"type": "LangLabel",
+				"description": "Title of input forcer"
+			},
+			"textKeyboard": {
+				"type": "LangLabel",
+				"description": "Text for Keyboard"
+			},
+			"textGamepad": {
+				"type": "LangLabel",
+				"description": "Text for Gamepad"
+			}
+		},
+		"initialObject": {
+			"inputEntry": null,
+			"title": null,
+			"textKeyboard": null,
+			"textGamepad": null
+		}
+	},
+	"CLEAR_FORCE_INPUT": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"CREATE_QUEST": {
+		"attributes": {
+			"name": {
+				"type": "LangLabel",
+				"compact": true,
+				"description": "Name of the quest"
+			},
+			"level": {
+				"type": "Number",
+				"description": "Level of the quest"
+			},
+			"description": {
+				"type": "LangLabel",
+				"large": true,
+				"compact": true,
+				"height": 70,
+				"description": "Starting description text"
+			},
+			"briefing": {
+				"type": "LangLabel",
+				"large": true,
+				"compact": true,
+				"height": 70,
+				"description": "Ending description text"
+			},
+			"rewards": {
+				"type": "QuestRewards",
+				"popup": true,
+				"description": "The rewards the player gets for completing the quest."
+			},
+			"tasks": {
+				"type": "QuestTaskList",
+				"description": "The tasks to complete"
+			}
+		},
+		"initialObject": {
+			"settings": null
+		}
+	},
+	"START_STATIC_QUEST": {
+		"attributes": {
+			"quest": {
+				"type": "QuestNameSelect",
+				"description": "The quest to start"
+			}
+		},
+		"initialObject": {
+			"quest": null
+		}
+	},
+	"SOLVE_QUEST_CONDITION": {
+		"attributes": {
+			"quest": {
+				"type": "QuestLabelSelect",
+				"description": "The label to set to active"
+			}
+		},
+		"initialObject": {
+			"questId": null,
+			"label": null
+		}
+	},
+	"UPDATE_QUEST_LOCATION": {
+		"attributes": {
+			"quest": {
+				"type": "Quest",
+				"description": "the quest to update. ONLY WORKS IF QUEST IS ACTIVE!"
+			}
+		},
+		"initialObject": {
+			"questId": null
+		}
+	},
+	"RESET_QUEST_TASK": {
+		"attributes": {
+			"quest": {
+				"type": "Quest",
+				"context": "Quest",
+				"description": "The quest on which the index should be reset"
+			},
+			"task": {
+				"type": "TaskIndex",
+				"description": "The quest task to reset to"
+			}
+		},
+		"initialObject": {
+			"quest": null,
+			"index": -1
+		}
+	},
+	"OPEN_QUEST_DIALOG": {
+		"attributes": {
+			"quest": {
+				"type": "Quest",
+				"ignoreSubs": true,
+				"description": "The quest to open"
+			},
+			"npc": {
+				"type": "Character",
+				"optional": true,
+				"description": "Character to use as quest giver, override default and can be used in event triggers."
+			},
+			"map": {
+				"type": "Maps",
+				"optional": true,
+				"description": "Map to show instead of the automated one"
+			}
+		},
+		"initialObject": {
+			"quest": null,
+			"acceptVar": null,
+			"npc": null,
+			"_characterName": null,
+			"_mapName": null
+		}
+	},
+	"FINISH_STATIC_QUEST": {
+		"attributes": {
+			"quest": {
+				"type": "QuestNameSelect",
+				"description": "The label to set to solve"
+			}
+		},
+		"initialObject": {
+			"quest": null
+		}
+	},
+	"RESOLVE_FINISHED_QUESTS": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"SET_CONTACT_ONLINE": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
+				}
+			},
+			"online": {
+				"type": "Boolean",
+				"description": "True if online."
+			}
+		},
+		"initialObject": {
+			"member": null,
+			"online": null
+		}
+	},
+	"SET_MEMBER_LOCKED": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to change",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
+				}
+			},
+			"locked": {
+				"type": "Boolean",
+				"description": "True if locked."
+			}
+		},
+		"initialObject": {
+			"member": null,
+			"locked": null
+		}
+	},
+	"SET_CONTACT_TYPE": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
+				}
+			},
+			"status": {
+				"type": "String",
+				"description": "Status to set",
+				"options": {
+					"UNKNOWN": 0,
+					"CONTACT": 0,
+					"FRIEND": 0
+				}
+			}
+		},
+		"initialObject": {
+			"member": null,
+			"status": null
+		}
+	},
+	"SET_CONTACT_TYPE_ALL": {
+		"attributes": {
+			"status": {
+				"type": "String",
+				"description": "Status to set",
+				"options": {
+					"UNKNOWN": 0,
+					"CONTACT": 0,
+					"FRIEND": 0
+				}
+			}
+		},
+		"initialObject": {
+			"status": null
+		}
+	},
+	"ADD_PARTY_MEMBER": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
+				}
+			},
+			"npc": {
+				"type": "NPC",
+				"optional": true,
+				"description": "NPC that will turn into the party member"
+			},
+			"skipEffect": {
+				"type": "Boolean",
+				"description": "If true: skip NPC show effect"
+			},
+			"temporary": {
+				"type": "Boolean",
+				"description": "If true: add Party member temporary"
+			}
+		},
+		"initialObject": {
+			"member": null,
+			"npc": null
+		}
+	},
+	"SET_PARTY_MEMBER_LEVEL": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
+				}
+			},
+			"level": {
+				"type": "Integer",
+				"description": "Level to set"
+			},
+			"exp": {
+				"type": "Integer",
+				"description": "Exp to set"
+			},
+			"updateEquipment": {
+				"type": "Boolean",
+				"description": "If true, also update equipment of party member"
+			}
+		},
+		"initialObject": {
+			"member": null,
+			"level": null,
+			"exp": null,
+			"updateEquipment": false
+		}
+	},
+	"SET_PARTY_MEMBER_NO_DIE": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to modify",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
+				}
+			},
+			"noDie": {
+				"type": "Boolean",
+				"description": "If true: party member won't die, even if you kill him"
+			}
+		},
+		"initialObject": {
+			"noDie": false
+		}
+	},
+	"SET_PARTY_MEMBER_SP_LEVEL": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
+				}
+			},
+			"level": {
+				"type": "String",
+				"description": "Type of Core.",
+				"options": {
+					"0": 0,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0
+				}
+			}
+		},
+		"initialObject": {}
+	},
+	"SET_PARTY_MEMBER_ALL_ELEMENTS": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
+				}
+			},
+			"allElements": {
+				"type": "Boolean",
+				"description": "If true: has all elements. If false: has all elements player has"
+			}
+		},
+		"initialObject": {}
+	},
+	"REMOVE_PARTY_MEMBER": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to add",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
+				}
+			},
+			"npc": {
+				"type": "NPC",
+				"optional": true,
+				"description": "NPC that will turn into the party member"
+			},
+			"skipEffect": {
+				"type": "Boolean",
+				"description": "If true: skip NPC show effect"
+			}
+		},
+		"initialObject": {
+			"member": null,
+			"npc": null
+		}
+	},
+	"REVIVE_PARTY_MEMBER": {
+		"attributes": {
+			"member": {
+				"type": "String",
+				"description": "Party member to revive",
+				"options": {
+					"Lea": 0,
+					"Shizuka": 0,
+					"Shizuka0": 0,
+					"Emilie": 0,
+					"Sergey": 0,
+					"Schneider": 0,
+					"Schneider2": 0,
+					"Hlin": 0,
+					"Grumpy": 0,
+					"Buggy": 0,
+					"Glasses": 0,
+					"Apollo": 0,
+					"Joern": 0,
+					"Triblader1": 0,
+					"Luke": 0
+				}
+			}
+		},
+		"initialObject": {
+			"member": null
+		}
+	},
+	"REVIVE_ALL_PARTY_MEMBERS": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"SET_PARTY_AI": {
+		"attributes": {
+			"battle": {
+				"type": "Number",
+				"optional": true,
+				"description": "Battle AI Factor: 0=default, 1=always the best possible decision."
+			},
+			"aggressive": {
+				"type": "Number",
+				"optional": true,
+				"description": "Aggressiveness Factor: 0=default, 1=attacks as often as possible"
+			},
+			"targeting": {
+				"type": "Number",
+				"optional": true,
+				"description": "Influence enemy targeting behavior: 0=default, 1=enemies will always target party members, -1=enemies will always target player"
+			}
+		},
+		"initialObject": {}
+	},
+	"PARTY_KEEP_MAP_DUNGEON": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"TRIGGER_COMMON_EVENTS": {
+		"attributes": {
+			"commonEventType": {
+				"type": "String",
+				"description": "Type of Common Event",
+				"options": {
+					"CALL": 0,
+					"ENEMY_ATTACKS": 0,
+					"ENEMY_DEFEATED": 0,
+					"BATTLE_OVER": 0,
+					"COOLDOWN_START": 0,
+					"LEVEL_UP": 0,
+					"MENU_LEAVE": 0,
+					"QUEST_ACCEPTED": 0,
+					"PARTY_MEMBER_EVENT": 0,
+					"DUNGEON_TRANSITION": 0,
+					"SOCIAL_ACTION": 0,
+					"MAP_ENTERED": 0,
+					"FORCE_UPDATE": 0
+				}
+			}
+		},
+		"initialObject": {
+			"commonEventType": null
+		}
+	},
+	"CALL_EVENT": {
+		"attributes": {
+			"callEvent": {
+				"type": "CallEvent",
+				"description": "Call event that will be called."
+			}
+		},
+		"initialObject": {
+			"callEvent": null
+		}
+	},
+	"CALL_EVENT_INLINE": {
+		"attributes": {
+			"callEvent": {
+				"type": "CallEvent",
+				"description": "Call event that will be called."
+			}
+		},
+		"initialObject": {
+			"callEvent": null
+		}
+	},
+	"CANCEL_COMMON_EVENTS": {
+		"attributes": {
+			"commonEventType": {
+				"type": "String",
+				"description": "Type of Common Event to cancel",
+				"options": {
+					"CALL": 0,
+					"ENEMY_ATTACKS": 0,
+					"ENEMY_DEFEATED": 0,
+					"BATTLE_OVER": 0,
+					"COOLDOWN_START": 0,
+					"LEVEL_UP": 0,
+					"MENU_LEAVE": 0,
+					"QUEST_ACCEPTED": 0,
+					"PARTY_MEMBER_EVENT": 0,
+					"DUNGEON_TRANSITION": 0,
+					"SOCIAL_ACTION": 0,
+					"MAP_ENTERED": 0,
+					"FORCE_UPDATE": 0
+				}
+			}
+		},
+		"initialObject": {}
+	},
+	"SHOW_CREDIT_SECTION": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of the section. MUST BE GIVEN"
+			},
+			"credits": {
+				"type": "Select",
+				"description": "Credit Section to show",
+				"options": {
+					"0": 0,
+					"1": 0,
+					"2": 0,
+					"3": 0,
+					"4": 0,
+					"5": 0,
+					"6": 0
+				}
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"credits": null,
+			"guiElement": null
+		}
+	},
+	"SET_CREDITS_SPEED": {
+		"attributes": {
+			"value": {
+				"type": "Number",
+				"default": 1,
+				"description": "Credit speed scaling. Default is 1."
+			}
+		},
+		"initialObject": {
+			"value": 1
+		}
+	},
+	"WAIT_UNTIL_CREDIT_TRIGGER": {
+		"attributes": {
+			"credits": {
+				"type": "String",
+				"description": "Name of the credit section gui which contains the trigger"
+			},
+			"trigger": {
+				"type": "CreditsTriggerSelect",
+				"description": "Name of the trigger"
+			}
+		},
+		"initialObject": {
+			"credits": null,
+			"trigger": null
+		}
+	},
+	"WAIT_UNTIL_CREDIT_SECTION_DONE": {
+		"attributes": {
+			"name": {
+				"type": "String",
+				"description": "Name of the section. MUST BE GIVEN"
+			},
+			"offscreen": {
+				"type": "Boolean",
+				"default": false,
+				"description": "If true, waits until credits entry is really offscreen"
+			}
+		},
+		"initialObject": {
+			"name": null,
+			"offscreen": false
+		}
+	},
+	"RESET_ARENA_CHAIN": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"INCREASE_ARENA_CHAIN": {
+		"attributes": {
+			"amount": {
+				"type": "Integer",
+				"default": 1,
+				"description": "Increases the chain by the given amount"
+			}
+		},
+		"initialObject": {
+			"amount": 0
+		}
+	},
+	"ADD_ARENA_SCORE_IGNORE": {
+		"attributes": {
+			"scoreType": {
+				"type": "Select",
+				"description": "Score type to ignore, gets reset every round.",
+				"options": {
+					"DAMAGE_DONE": 0,
+					"DAMAGE_DONE_EFFECTIVE": 0,
+					"DAMAGE_TAKEN": 0,
+					"KILL": 0,
+					"BOSS_KILL": 0,
+					"TARGET_KILL": 0,
+					"MULTI_KILL": 0,
+					"ENVIRONMENT_KILL": 0,
+					"ONE_HIT_KILL": 0,
+					"LOCK_FINISH": 0,
+					"LOCK_FINISH_3": 0,
+					"ELEMENT_OVERLOAD": 0,
+					"PERFECT_SHIELD": 0,
+					"PERFECT_DODGE": 0,
+					"ENEMY_BREAK": 0,
+					"GUARD_COUNTER": 0,
+					"STATUS_INFLICT": 0,
+					"PVP_ROUND_WON": 0,
+					"PVP_ROUND_LOST": 0,
+					"ENEMY_HEAL": 0
+				}
+			}
+		},
+		"initialObject": {
+			"scoreType": null
+		}
+	},
+	"REMOVE_ARENA_SCORE_IGNORE": {
+		"attributes": {
+			"scoreType": {
+				"type": "Select",
+				"description": "Score type to remove, gets reset every round.",
+				"options": {
+					"DAMAGE_DONE": 0,
+					"DAMAGE_DONE_EFFECTIVE": 0,
+					"DAMAGE_TAKEN": 0,
+					"KILL": 0,
+					"BOSS_KILL": 0,
+					"TARGET_KILL": 0,
+					"MULTI_KILL": 0,
+					"ENVIRONMENT_KILL": 0,
+					"ONE_HIT_KILL": 0,
+					"LOCK_FINISH": 0,
+					"LOCK_FINISH_3": 0,
+					"ELEMENT_OVERLOAD": 0,
+					"PERFECT_SHIELD": 0,
+					"PERFECT_DODGE": 0,
+					"ENEMY_BREAK": 0,
+					"GUARD_COUNTER": 0,
+					"STATUS_INFLICT": 0,
+					"PVP_ROUND_WON": 0,
+					"PVP_ROUND_LOST": 0,
+					"ENEMY_HEAL": 0
+				}
+			}
+		},
+		"initialObject": {
+			"scoreType": null
+		}
+	},
+	"CLEAR_ARENA_SCORE_IGNORE": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"ADD_ARENA_IGNORE_TYPE": {
+		"attributes": {
+			"enemy": {
+				"type": "EnemySearch",
+				"description": "Enemy to ignore. Will be cleared each round."
+			}
+		},
+		"initialObject": {
+			"enemy": null
+		}
+	},
+	"ADD_ARENA_SCORE": {
+		"attributes": {
+			"type": {
+				"type": "Select",
+				"default": "KILL",
+				"description": "Type of the score. This is used to for the list at the end of the round.",
+				"options": {
+					"DAMAGE_DONE": 0,
+					"DAMAGE_DONE_EFFECTIVE": 0,
+					"DAMAGE_TAKEN": 0,
+					"KILL": 0,
+					"BOSS_KILL": 0,
+					"TARGET_KILL": 0,
+					"MULTI_KILL": 0,
+					"ENVIRONMENT_KILL": 0,
+					"ONE_HIT_KILL": 0,
+					"LOCK_FINISH": 0,
+					"LOCK_FINISH_3": 0,
+					"ELEMENT_OVERLOAD": 0,
+					"PERFECT_SHIELD": 0,
+					"PERFECT_DODGE": 0,
+					"ENEMY_BREAK": 0,
+					"GUARD_COUNTER": 0,
+					"STATUS_INFLICT": 0,
+					"PVP_ROUND_WON": 0,
+					"PVP_ROUND_LOST": 0,
+					"ENEMY_HEAL": 0
+				}
+			}
+		},
+		"initialObject": {
+			"type": null
+		}
+	},
+	"OPEN_ARENA_MENU": {
+		"attributes": {
+			"custom": {
+				"type": "Boolean",
+				"description": "If true, open menu for custom cups."
+			},
+			"noWait": {
+				"type": "Boolean",
+				"optional": true,
+				"description": "If true, do not wait for menu to be closed in order to continue events"
+			}
+		},
+		"initialObject": {
+			"arenaCache": null,
+			"custom": false,
+			"noWait": false
+		}
+	},
+	"START_ARENA_CUP": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"END_ARENA_CUP": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"CLEAR_ARENA_END_FLAG": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"SPAWN_ARENA_WAVE": {
+		"attributes": {
+			"silent": {
+				"type": "Boolean",
+				"default": false,
+				"description": "If true, do now show any effects"
+			},
+			"increase": {
+				"type": "Boolean",
+				"default": false,
+				"description": "If true, increase the current wave counter before spawning the wave"
+			},
+			"focusPlayer": {
+				"type": "Boolean",
+				"default": true,
+				"description": "If true, enemies will focus the player. Only if this is true the drammatic effect is auto set"
+			}
+		},
+		"initialObject": {}
+	},
+	"START_ARENA_ROUND": {
+		"attributes": {
+			"scoreGui": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "Enable/Disable ScoreGui. Default is true"
+			},
+			"timeGui": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "Enable/Disable Timer Gui. Default is true"
+			}
+		},
+		"initialObject": {
+			"score": true,
+			"time": true
+		}
+	},
+	"TP_TO_CUR_ARENA_ROUND": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"PREP_ARENA_ROUND_END": {
+		"attributes": {},
+		"initialObject": {}
+	},
+	"END_ARENA_ROUND": {
+		"attributes": {
+			"onDeath": {
+				"type": "Boolean",
+				"optional": true,
+				"default": true,
+				"description": "If true, round was ended through player death"
+			}
+		},
+		"initialObject": {
+			"onDeath": false
+		}
+	},
+	"SHOW_ARENA_ROUND_GUI": {
+		"attributes": {
+			"wait": {
+				"type": "Boolean",
+				"description": "If true, wait until the gui has finished animating."
+			}
+		},
+		"initialObject": {}
+	},
+	"APPLY_NEW_GAME_DATA": {
+		"attributes": {
+			"atRhombus": {
+				"type": "Boolean",
+				"description": "If true, apply data for when you start at Rhombus"
+			}
+		},
+		"initialObject": {}
+	}
+}

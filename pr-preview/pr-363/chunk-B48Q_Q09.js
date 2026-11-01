@@ -1,0 +1,1 @@
+import{a as H}from"./chunk-DBRZyZM1.js";var e;var r=H(()=>{e=class s{get underlyingResource(){return null}constructor(){this.references=0,this.capacity=0,this.is32Bits=!1,this.uniqueId=s._Counter++}};e._Counter=0});export{r as n,e as t};

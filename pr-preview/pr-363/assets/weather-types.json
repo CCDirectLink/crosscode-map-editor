@@ -1,0 +1,293 @@
+{
+	"NONE": {
+		"lightMapDarkness": 0.6,
+		"glowColor": "#000000"
+	},
+	"DUSTY": {
+		"lightMapDarkness": 0.6,
+		"glowColor": "#0f0f0f"
+	},
+	"ROOKIE_HARBOR_INNER": {
+		"lightMapDarkness": 0.6,
+		"glowColor": "#0f0f0f"
+	},
+	"EVO_VILLAGE_INNER": {
+		"lightMapDarkness": 0.6,
+		"glowColor": "#1b1c19"
+	},
+	"EXPO_SPACE": {
+		"lightMapDarkness": 0.2
+	},
+	"OLD_HIDEOUT_OUTSIDE": {
+		"lightMapDarkness": 0.2,
+		"glowColor": "#000b2c"
+	},
+	"OLD_HIDEOUT_OUTSIDE_ALT": {
+		"lightMapDarkness": 0.6,
+		"glowColor": "#331251"
+	},
+	"OLD_HIDEOUT_INNER": {
+		"lightMapDarkness": 0.8,
+		"glowColor": "#302313"
+	},
+	"OLD_HIDEOUT_OFFICE": {
+		"lightMapDarkness": 0.8,
+		"glowColor": "#302313"
+	},
+	"RHOMBUS_DUNGEON": {
+		"glowColor": "#101112"
+	},
+	"CAVE": {
+		"lightMapDarkness": 0.8
+	},
+	"CAVE_BERGEN": {
+		"lightMapDarkness": 0.8
+	},
+	"BERGEN_INNER": {
+		"lightMapDarkness": 0.6,
+		"glowColor": "#0f0f0f"
+	},
+	"COLD_DUNGEON": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#021116"
+	},
+	"COLD_DUNGEON_DARK": {
+		"lightMapDarkness": 0.7,
+		"glowColor": "#021116"
+	},
+	"COLD_DUNGEON_POST_BOSS": {
+		"lightMapDarkness": 0.9,
+		"glowColor": "#021116"
+	},
+	"HEAT_VILLAGE_INNER": {
+		"lightMapDarkness": 0.6,
+		"glowColor": "#0f0f0f"
+	},
+	"HEAT_VILLAGE_INNER_DUSTY": {
+		"lightMapDarkness": 0.6,
+		"glowColor": "#0f0f0f"
+	},
+	"HEAT_DUNGEON": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#140e08"
+	},
+	"HEAT_DUNGEON_MIDBOSS": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#140e08"
+	},
+	"HEAT_DUNGEON_COAL": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#140e08"
+	},
+	"HEAT_DUNGEON_BOSS": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#140e08"
+	},
+	"UNKNOWN_INNER": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#4c1221"
+	},
+	"OFFICE": {
+		"lightMapDarkness": 0.6,
+		"glowColor": "#0f0f0f"
+	},
+	"LOBBY": {
+		"lightMapDarkness": 0.8,
+		"glowColor": "#1e3036"
+	},
+	"LOBBY_DARK": {
+		"lightMapDarkness": 1,
+		"glowColor": "#1e3036"
+	},
+	"FLAT": {
+		"lightMapDarkness": 0.8,
+		"glowColor": "#43392c"
+	},
+	"FLAT_DARK": {
+		"lightMapDarkness": 1,
+		"glowColor": "#43392c"
+	},
+	"JUNGLE_RAINY_LIGHT": {
+		"glowColor": "#332a17"
+	},
+	"JUNGLE_RAINY": {
+		"glowColor": "#332a17"
+	},
+	"JUNGLE_INFESTED_PRE": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#32133b"
+	},
+	"JUNGLE_INFESTED": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#32133b"
+	},
+	"CAVE_INFESTED": {
+		"lightMapDarkness": 0.6,
+		"glowColor": "#32133b"
+	},
+	"JUNGLE_CITY_PRE": {
+		"lightMapDarkness": 0.2,
+		"glowColor": "#332a17"
+	},
+	"JUNGLE_CITY": {
+		"glowColor": "#332a17"
+	},
+	"JUNGLE_CITY_INNER": {
+		"lightMapDarkness": 0.6,
+		"glowColor": "#2e271a"
+	},
+	"JUNGLE_WAVE_TEMPLE": {
+		"glowColor": "#173133"
+	},
+	"WAVE_DNG_INNER": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#0a2f29"
+	},
+	"WAVE_DNG_INNER_FISH": {
+		"lightMapDarkness": 0.8,
+		"glowColor": "#0a2f29"
+	},
+	"SHOCK_DNG_INNER": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#220b28"
+	},
+	"TREE_DNG_INNER": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#0a2f29"
+	},
+	"TREE_INNER": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#0a2f29"
+	},
+	"TREE_INNER_INFESTED": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#0a2f29"
+	},
+	"TREE_DNG_INNER_WAVE": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#0a2f29"
+	},
+	"TREE_DNG_INNER_SHOCK": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#220b28"
+	},
+	"SPOOKY_INNER": {
+		"lightMapDarkness": 0.7,
+		"glowColor": "#211f1b"
+	},
+	"CAVE_FOREST": {
+		"lightMapDarkness": 0.8,
+		"glowColor": "#20134c"
+	},
+	"CAVE_ARID": {
+		"lightMapDarkness": 0.8,
+		"glowColor": "#4c121d"
+	},
+	"CAVE_ARID_CLOSER": {
+		"lightMapDarkness": 0.8,
+		"glowColor": "#371008"
+	},
+	"ARID_OUTSIDE": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#4c121d"
+	},
+	"ARID_INSIDE": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#4c1221"
+	},
+	"ARID_ELEVATOR_UP": {
+		"lightMapDarkness": 0.8,
+		"glowColor": "#4c1221"
+	},
+	"ARID_ELEVATOR_DOWN": {
+		"lightMapDarkness": 0.8,
+		"glowColor": "#4c1221"
+	},
+	"ARID_BOSS": {
+		"lightMapDarkness": 0.8,
+		"glowColor": "#4c1221"
+	},
+	"ARID_END_SCENE": {
+		"lightMapDarkness": 0.8,
+		"glowColor": "#4c1221"
+	},
+	"ARID_BETWEEN": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#4c1221"
+	},
+	"ARID_DNG_OUTSIDE": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#4d4032"
+	},
+	"SAPPHIRE_RIDGE": {
+		"lightMapDarkness": 0.6,
+		"glowColor": "#331251"
+	},
+	"SAPPHIRE_RIDGE_BUILDING": {
+		"lightMapDarkness": 0.6,
+		"glowColor": "#4c3127"
+	},
+	"SAPPHIRE_RIDGE_INNER": {
+		"lightMapDarkness": 0.65,
+		"glowColor": "#302313"
+	},
+	"FLASHBACK_OFFICE": {
+		"lightMapDarkness": 1,
+		"glowColor": "#0f0f0f"
+	},
+	"FLASHBACK_HIDEOUT": {
+		"lightMapDarkness": 1,
+		"glowColor": "#411e61"
+	},
+	"FLASHBACK_HIDEOUT_INNER": {
+		"lightMapDarkness": 1,
+		"glowColor": "#411e61"
+	},
+	"FLASHBACK_ARID": {
+		"lightMapDarkness": 1,
+		"glowColor": "#4c121d"
+	},
+	"FLASHBACK_DIAGRAM": {
+		"lightMapDarkness": 1,
+		"glowColor": "#4c121d"
+	},
+	"TREE_SPACE": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#4c1221"
+	},
+	"RHOMBUS_SQUARE_INNER": {
+		"lightMapDarkness": 0.8,
+		"glowColor": "#161c24"
+	},
+	"GAUTHAM_ROOM": {
+		"lightMapDarkness": 0.7,
+		"glowColor": "#360e0f"
+	},
+	"LAB": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#623212"
+	},
+	"FINAL_DNG_OUTER": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#294058"
+	},
+	"FINAL_DNG_OUTER_BATTLE": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#294058"
+	},
+	"FINAL_DNG_INNER": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#373632"
+	},
+	"FINAL_DNG_INNER_TELEPORT": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#2c3737"
+	},
+	"FINAL_DNG_INNER_BATTLE": {
+		"lightMapDarkness": 0.5,
+		"glowColor": "#373632"
+	},
+	"BEACH_DEFAULT": {
+		"glowColor": "#e9d8a9"
+	}
+}

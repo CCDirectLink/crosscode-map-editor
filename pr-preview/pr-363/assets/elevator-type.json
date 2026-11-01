@@ -1,0 +1,829 @@
+{
+    "cargoShip": {
+        "size": {
+            "x": 64,
+            "y": 48,
+            "z": 4
+        },
+        "ground": {
+            "gfx": "media/entity/objects/elevator.png",
+            "x": 0,
+            "y": 24,
+            "w": 64,
+            "h": 64,
+            "flipX": false
+        },
+        "markerDir": "SOUTH",
+        "stuckProbility": 0.5,
+        "switchEntry": {
+            "pos": {
+                "x": 26,
+                "y": 2,
+                "z": 4
+            },
+            "size": {
+                "x": 10,
+                "y": 10,
+                "z": 9
+            },
+            "anims": {
+                "sheet": {
+                    "src": "media/entity/objects/elevator.png",
+                    "width": 16,
+                    "height": 24
+                },
+                "SUB": [
+                    {
+                        "name": "active",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    },
+                    {
+                        "name": "disabled",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "coldDng": {
+        "size": {
+            "x": 96,
+            "y": 64,
+            "z": 2
+        },
+        "ground": {
+            "gfx": "media/map/cold-dng.png",
+            "x": 400,
+            "y": 304,
+            "w": 96,
+            "h": 80,
+            "flipX": false,
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+            }
+        },
+        "markerDir": "SOUTH",
+        "stuckProbility": 0.5,
+        "switchEntry": {
+            "pos": {
+                "x": 43,
+                "y": 0,
+                "z": 2
+            },
+            "size": {
+                "x": 10,
+                "y": 6,
+                "z": 16
+            },
+            "anims": {
+                "sheet": {
+                    "src": "media/map/cold-dng.png",
+                    "width": 16,
+                    "height": 16,
+                    "offX": 448,
+                    "offY": 256,
+                    "xCount": 1
+                },
+                "SUB": [
+                    {
+                        "name": "active",
+                        "time": 1,
+                        "frames": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "disabled",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "lab": {
+        "size": {
+            "x": 96,
+            "y": 64,
+            "z": 2
+        },
+        "ground": {
+            "gfx": "media/map/lab.png",
+            "x": 416,
+            "y": 560,
+            "w": 96,
+            "h": 80,
+            "flipX": false,
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": -1
+            }
+        },
+        "markerDir": "SOUTH",
+        "stuckProbility": 0,
+        "switchEntry": {
+            "pos": {
+                "x": 32,
+                "y": 0,
+                "z": 2
+            },
+            "size": {
+                "x": 32,
+                "y": 3,
+                "z": 13
+            },
+            "anims": {
+                "sheet": {
+                    "src": "media/map/lab.png",
+                    "width": 32,
+                    "height": 16,
+                    "offX": 448,
+                    "offY": 528,
+                    "xCount": 1
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 3
+                },
+                "renderMode": "lighter",
+                "SUB": [
+                    {
+                        "name": "active",
+                        "time": 1,
+                        "frames": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "disabled",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    }
+                ]
+            },
+            "showFx": {
+                "sheet": "map.lab-entrance",
+                "name": "elevatorOn"
+            },
+            "hideFx": {
+                "sheet": "map.lab-entrance",
+                "name": "elevatorOff"
+            }
+        }
+    },
+    "labSmall": {
+        "size": {
+            "x": 32,
+            "y": 28,
+            "z": 2
+        },
+        "ground": {
+            "gfx": "media/map/lab.png",
+            "x": 464,
+            "y": 640,
+            "w": 32,
+            "h": 32,
+            "flipX": false,
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            }
+        },
+        "markerDir": "SOUTH",
+        "stuckProbility": 0,
+        "noEndRunble": true,
+        "speed": 170,
+        "switchEntry": {
+            "pos": {
+                "x": 8,
+                "y": 0,
+                "z": 2
+            },
+            "size": {
+                "x": 16,
+                "y": 2,
+                "z": 20
+            },
+            "collType": 1,
+            "anims": {
+                "sheet": {
+                    "src": "media/map/lab.png",
+                    "width": 16,
+                    "height": 16,
+                    "offX": 496,
+                    "offY": 640,
+                    "xCount": 1
+                },
+                "renderMode": "lighter",
+                "SUB": [
+                    {
+                        "name": "active",
+                        "time": 1,
+                        "frames": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "disabled",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    }
+                ]
+            },
+            "showFx": {
+                "sheet": "map.lab-entrance",
+                "name": "elevatorOnSmall"
+            },
+            "hideFx": {
+                "sheet": "map.lab-entrance",
+                "name": "elevatorOffSmall"
+            }
+        },
+        "partyOffset": [
+            {
+                "x": 24,
+                "y": 0
+            },
+            {
+                "x": -24,
+                "y": 0
+            },
+            {
+                "x": 0,
+                "y": 4
+            }
+        ],
+        "singlePerson": true
+    },
+    "labSmallOutside": {
+        "size": {
+            "x": 32,
+            "y": 28,
+            "z": 2
+        },
+        "ground": {
+            "gfx": "media/map/lab-entrance.png",
+            "x": 32,
+            "y": 64,
+            "w": 32,
+            "h": 32,
+            "flipX": false,
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            }
+        },
+        "markerDir": "SOUTH",
+        "stuckProbility": 0,
+        "noEndRunble": true,
+        "speed": 170,
+        "switchEntry": {
+            "pos": {
+                "x": 8,
+                "y": 0,
+                "z": 2
+            },
+            "size": {
+                "x": 16,
+                "y": 2,
+                "z": 20
+            },
+            "collType": 1,
+            "anims": {
+                "sheet": {
+                    "src": "media/map/lab-entrance.png",
+                    "width": 16,
+                    "height": 16,
+                    "offX": 32,
+                    "offY": 96,
+                    "xCount": 1
+                },
+                "renderMode": "lighter",
+                "SUB": [
+                    {
+                        "name": "active",
+                        "time": 1,
+                        "frames": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "disabled",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    }
+                ]
+            }
+        },
+        "partyOffset": [
+            {
+                "x": 24,
+                "y": 0
+            },
+            {
+                "x": -24,
+                "y": 0
+            },
+            {
+                "x": 0,
+                "y": 4
+            }
+        ],
+        "singlePerson": true
+    },
+    "aridInner": {
+        "size": {
+            "x": 64,
+            "y": 48,
+            "z": 4
+        },
+        "ground": {
+            "gfx": "media/map/arid-interior.png",
+            "x": 384,
+            "y": 368,
+            "w": 64,
+            "h": 56,
+            "flipX": false,
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            }
+        },
+        "markerDir": "NORTH",
+        "stuckProbility": 0.5,
+        "switchEntry": {
+            "pos": {
+                "x": 24,
+                "y": 0,
+                "z": 4
+            },
+            "size": {
+                "x": 16,
+                "y": 8,
+                "z": 16
+            },
+            "collType": 1,
+            "anims": {
+                "sheet": {
+                    "src": "media/map/arid-interior.png",
+                    "width": 16,
+                    "height": 24,
+                    "offX": 448,
+                    "offY": 368,
+                    "xCount": 1
+                },
+                "renderMode": "lighter",
+                "SUB": [
+                    {
+                        "name": "active",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    },
+                    {
+                        "name": "disabled",
+                        "time": 1,
+                        "frames": [
+                            -1
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "aridInnerHuge": {
+        "size": {
+            "x": 448,
+            "y": 256,
+            "z": 4
+        },
+        "ground": {
+            "gfx": "media/map/arid-interior-elevator.png",
+            "x": 0,
+            "y": 0,
+            "w": 448,
+            "h": 260,
+            "flipX": false,
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            }
+        },
+        "markerDir": "NORTH",
+        "stuckProbility": 0,
+        "speed": 120,
+        "startDelta": 64,
+        "switchEntry": {
+            "pos": {
+                "x": 216,
+                "y": 96,
+                "z": 4
+            },
+            "size": {
+                "x": 16,
+                "y": 8,
+                "z": 16
+            },
+            "collType": 1,
+            "anims": {
+                "sheet": {
+                    "src": "media/map/arid-interior.png",
+                    "width": 16,
+                    "height": 24,
+                    "offX": 448,
+                    "offY": 368,
+                    "xCount": 1
+                },
+                "renderMode": "lighter",
+                "SUB": [
+                    {
+                        "name": "active",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    },
+                    {
+                        "name": "disabled",
+                        "time": 1,
+                        "frames": [
+                            -1
+                        ]
+                    }
+                ]
+            },
+            "showFx": {
+                "sheet": "area.arid",
+                "name": "elevatorAppear"
+            },
+            "hideFx": {
+                "sheet": "area.arid",
+                "name": "elevatorDisappear"
+            }
+        }
+    },
+    "aridDngWeird": {
+        "size": {
+            "x": 64,
+            "y": 13,
+            "z": 4
+        },
+        "ground": {
+            "gfx": "media/map/arid-scaffolding.png",
+            "x": 416,
+            "y": 352,
+            "w": 64,
+            "h": 32,
+            "flipX": false,
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            }
+        },
+        "markerDir": "SOUTH",
+        "stuckProbility": 0,
+        "switchEntry": {
+            "pos": {
+                "x": 16,
+                "y": 0,
+                "z": 4
+            },
+            "size": {
+                "x": 16,
+                "y": 2,
+                "z": 14
+            },
+            "collType": 1,
+            "anims": {
+                "sheet": {
+                    "src": "media/map/arid-scaffolding.png",
+                    "width": 16,
+                    "height": 16,
+                    "offX": 480,
+                    "offY": 352,
+                    "xCount": 1
+                },
+                "SUB": [
+                    {
+                        "name": "active",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    },
+                    {
+                        "name": "disabled",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "aridDngOutside": {
+        "size": {
+            "x": 48,
+            "y": 32,
+            "z": 4
+        },
+        "ground": {
+            "gfx": "media/map/arid-dng-outside.png",
+            "x": 304,
+            "y": 24,
+            "w": 48,
+            "h": 56,
+            "flipX": false
+        },
+        "markerDir": "SOUTH",
+        "stuckProbility": 0,
+        "switchEntry": {
+            "pos": {
+                "x": 19,
+                "y": 0,
+                "z": 4
+            },
+            "size": {
+                "x": 10,
+                "y": 8,
+                "z": 12
+            },
+            "anims": {
+                "sheet": {
+                    "src": "media/map/arid-dng-outside.png",
+                    "width": 16,
+                    "height": 24,
+                    "offX": 352,
+                    "offY": 32
+                },
+                "SUB": [
+                    {
+                        "name": "active",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    },
+                    {
+                        "name": "disabled",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "basinKeep": {
+        "size": {
+            "x": 32,
+            "y": 48,
+            "z": 1
+        },
+        "ground": {
+            "gfx": "media/map/jungle-interior.png",
+            "x": 480,
+            "y": 416,
+            "w": 32,
+            "h": 96,
+            "flipX": false
+        },
+        "markerDir": "SOUTH",
+        "stuckProbility": 0,
+        "switchEntry": {
+            "pos": {
+                "x": 16,
+                "y": 0,
+                "z": 0
+            },
+            "size": {
+                "x": 16,
+                "y": 0,
+                "z": 36
+            },
+            "anims": {
+                "sheet": {
+                    "src": "media/map/jungle-interior.png",
+                    "width": 16,
+                    "height": 16,
+                    "offX": 464,
+                    "offY": 416
+                },
+                "offset": {
+                    "z": 16
+                },
+                "SUB": [
+                    {
+                        "name": "active",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    },
+                    {
+                        "name": "disabled",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    }
+                ]
+            }
+        },
+        "posOffset": {
+            "x": 0,
+            "y": -16
+        },
+        "partyOffset": [
+            {
+                "x": 8,
+                "y": 12
+            },
+            {
+                "x": -8,
+                "y": 24
+            },
+            {
+                "x": 0,
+                "y": 16
+            }
+        ],
+        "closeFrontDoor": true
+    },
+    "finalDngMedium": {
+        "size": {
+            "x": 64,
+            "y": 48,
+            "z": 1
+        },
+        "ground": {
+            "gfx": "media/map/final-dungeon-elevator.png",
+            "x": 128,
+            "y": 0,
+            "w": 64,
+            "h": 72,
+            "flipX": false,
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": -2
+            }
+        },
+        "markerDir": "SOUTH",
+        "stuckProbility": 0,
+        "switchEntry": {
+            "pos": {
+                "x": 24,
+                "y": 1,
+                "z": 1
+            },
+            "size": {
+                "x": 16,
+                "y": 4,
+                "z": 20
+            },
+            "anims": {
+                "sheet": {
+                    "src": "media/map/final-dungeon-elevator.png",
+                    "width": 16,
+                    "height": 24,
+                    "offX": 128,
+                    "offY": 72,
+                    "xCount": 2
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "SUB": [
+                    {
+                        "name": "active",
+                        "time": 1,
+                        "frames": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "disabled",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    }
+                ]
+            },
+            "showFx": {
+                "sheet": "area.final",
+                "name": "elevatorOn"
+            },
+            "hideFx": {
+                "sheet": "area.final",
+                "name": "elevatorOff"
+            }
+        }
+    },
+    "finalDngLarge": {
+        "size": {
+            "x": 128,
+            "y": 80,
+            "z": 1
+        },
+        "ground": {
+            "gfx": "media/map/final-dungeon-elevator.png",
+            "x": 0,
+            "y": 0,
+            "w": 128,
+            "h": 112,
+            "flipX": false,
+            "offset": {
+                "x": 0,
+                "y": 0,
+                "z": -2
+            }
+        },
+        "markerDir": "SOUTH",
+        "stuckProbility": 0,
+        "switchEntry": {
+            "pos": {
+                "x": 56,
+                "y": 1,
+                "z": 1
+            },
+            "size": {
+                "x": 16,
+                "y": 4,
+                "z": 20
+            },
+            "anims": {
+                "sheet": {
+                    "src": "media/map/final-dungeon-elevator.png",
+                    "width": 16,
+                    "height": 24,
+                    "offX": 128,
+                    "offY": 72,
+                    "xCount": 2
+                },
+                "offset": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "SUB": [
+                    {
+                        "name": "active",
+                        "time": 1,
+                        "frames": [
+                            1
+                        ]
+                    },
+                    {
+                        "name": "disabled",
+                        "time": 1,
+                        "frames": [
+                            0
+                        ]
+                    }
+                ]
+            },
+            "showFx": {
+                "sheet": "area.final",
+                "name": "elevatorOn"
+            },
+            "hideFx": {
+                "sheet": "area.final",
+                "name": "elevatorOff"
+            }
+        },
+        "posOffset": {
+            "x": 0,
+            "y": -16
+        }
+    }
+}

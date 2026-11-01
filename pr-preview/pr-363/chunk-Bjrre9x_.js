@@ -1,0 +1,1 @@
+import"./chunk-B_VM99PE.js";import{n as i,t as S}from"./chunk-B9_pPXDc.js";S();export{i as boundingBoxRendererPixelShaderWGSL};

@@ -1,0 +1,1 @@
+import"./chunk-B_VM99PE.js";import{n as m,t as l}from"./chunk-C0qb0K6P.js";l();export{m as blackAndWhitePixelShaderWGSL};
