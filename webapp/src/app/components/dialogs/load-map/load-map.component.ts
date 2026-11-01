@@ -2,7 +2,6 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, ElementRef, inject, Input, resource, untracked, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatNestedTreeNode, MatTree, MatTreeNestedDataSource, MatTreeNode, MatTreeNodeDef, MatTreeNodeOutlet, MatTreeNodeToggle } from '@angular/material/tree';
-import { HttpClientService } from '../../../services/http-client.service';
 import { MapLoaderService } from '../../../services/map-loader.service';
 import { SearchFilterService } from '../../../services/search-filter.service';
 import { MapNode, MapNodeRoot } from './mapNode.model';
@@ -14,9 +13,6 @@ import { MatFormField, MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { HighlightDirective } from '../../../directives/highlight.directive';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { SHARED_SERVICE } from '../../../services/shared-service';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { SettingsService } from '../../../services/settings.service';
 import { AssetFile, AssetsAccessService } from '../../../services/assets-access.service';
 import { BasePath, FileExtension } from '../../../services/path-resolver';
 
@@ -42,17 +38,14 @@ import { BasePath, FileExtension } from '../../../services/path-resolver';
 		MatTreeNodeToggle,
 		MatTreeNodeOutlet,
 		MatProgressSpinner,
-		MatCheckbox,
+	
 	],
 })
 export class LoadMapComponent {
 	private mapLoader = inject(MapLoaderService);
-	private http = inject(HttpClientService);
 	private assets = inject(AssetsAccessService);
 	private ref = inject(ChangeDetectorRef);
 	private searchFilterService = inject(SearchFilterService);
-	private readonly sharedService = inject(SHARED_SERVICE);
-	private readonly settingsService = inject(SettingsService);
 	
 	
 	@ViewChild('fileUpload', { static: true })
@@ -63,14 +56,12 @@ export class LoadMapComponent {
 	
 	@Input()
 	sidenav!: MatSidenav;
-	
-	paths = resource({
-		params: () => ({ vanillaMaps: this.vanillaMaps() }),
-		loader: async ({ params }) => {
-			return this.assets.getAllMaps();
-		},
+
+	maps = resource({
+		params: () => this.assets.handle(),
+		loader: () => this.assets.getAllMaps(),
 	});
-	
+
 	treeControl = new NestedTreeControl<VirtualMapNode>(node => node.children);
 	mapsSource = new MatTreeNestedDataSource<VirtualMapNode>();
 	
@@ -78,20 +69,16 @@ export class LoadMapComponent {
 	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering.
 	filter = '';
 	
-	currentMod = '';
-	vanillaMaps = this.settingsService.signalSettings().showVanillaMaps;
-	
 	constructor() {
 		this.mapsSource.data = [];
-		this.currentMod = this.sharedService.getSelectedMod();
-		
+
 		effect(() => {
-			const paths = this.paths.value();
-			if (!paths) {
+			const maps = this.maps.value();
+			if (!maps) {
 				return;
 			}
 			untracked(() => {
-				this.displayMaps(paths);
+				this.displayMaps(maps);
 				this.update();
 			});
 		});
@@ -129,34 +116,34 @@ export class LoadMapComponent {
 	
 	private displayMaps(files: AssetFile[]) {
 		const data: MapNode[] = [];
-
+		
 		let lastPath = '';
 		let lastNode = data;
 		for (const file of files) {
 			const path = file.path.substring(BasePath.MAPS.length, file.path.length - FileExtension.JSON.length);
 			const node = this.resolve(data, path, lastNode, lastPath);
 			const name = path.substring(path.lastIndexOf('/') + 1);
-
+			
 			node.push({ name, file, displayed: true });
-
+			
 			lastPath = path;
 			lastNode = node;
 		}
-
+		
 		this.root.children = data;
 	}
-
+	
 	private resolve(data: MapNode[], path: string, lastNode: MapNode[], lastPath: string): MapNode[] {
 		if (path.substring(0, path.lastIndexOf('/')) === lastPath.substring(0, lastPath.lastIndexOf('/'))) {
 			return lastNode;
 		}
-
+		
 		if (!path.includes('/')) {
 			return data;
 		}
-
+		
 		let node = data;
-
+		
 		const parts = path
 			.substring(0, path.lastIndexOf('/'))
 			.split('/');
