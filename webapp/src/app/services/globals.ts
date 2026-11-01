@@ -13,13 +13,11 @@ import { JsonLoaderService } from './json-loader.service';
 import { AssetsAccessService } from './assets-access.service';
 
 export class Globals {
-	static isElectron = false;
 	static panning = false;
 	static game: Phaser.Game;
 	static scene: Phaser.Scene;
 	static map: CCMap;
 	static TILE_SIZE = 16;
-	static URL = 'http://localhost:8080/';
 	static gridSettings = signal<GridSettings>({
 		size: { x: 8, y: 8 },
 		offset: { x: 0, y: 0 },

@@ -4,7 +4,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AssetsAccessService } from '../../../services/assets-access.service';
 import { AppSettings, SettingsService } from '../../../services/settings.service';
-import { SHARED_SERVICE } from '../../../services/shared-service';
 import { ImageSelectCardComponent, PropListCard } from '../../widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
 import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
@@ -13,9 +12,6 @@ import { MatFormField, MatHint, MatLabel } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { ExtendedModule } from '@angular/flex-layout/extended';
-import { MatSelect } from '@angular/material/select';
-import { MatOption } from '@angular/material/autocomplete';
-import { ColoredTextDirective } from '../../../directives/colored-text.directive';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 type AssetsStatus = 'unknown' | 'valid' | 'invalid';
@@ -41,9 +37,6 @@ const ASSETS_STATUS_DISPLAY: Record<AssetsStatus, { icon: string, iconCss: strin
 		MatButton,
 		MatIcon,
 		ExtendedModule,
-		MatSelect,
-		MatOption,
-		ColoredTextDirective,
 		MatCheckbox,
 		ImageSelectCardComponent,
 	],
@@ -69,7 +62,6 @@ export class SettingsComponent {
 	// TODO: fs-access
 	readonly mods = signal<any[]>([]);
 	
-	mod = '';
 	settings: AppSettings;
 	
 	cardLight: PropListCard = {
@@ -82,11 +74,7 @@ export class SettingsComponent {
 		imgSrc: 'assets/selection-dark.png',
 	};
 	
-	private readonly sharedService = inject(SHARED_SERVICE);
-	
 	constructor() {
-		this.mod = this.sharedService.getSelectedMod();
-		
 		this.settings = {} as AppSettings;
 		for (const [key, val] of Object.entries(this.settingsService.signalSettings())) {
 			this.settings[key as keyof AppSettings] = val();
@@ -109,7 +97,6 @@ export class SettingsComponent {
 		if (picked?.valid) {
 			await this.assetsAccess.setHandle(picked.handle);
 		}
-		this.sharedService.saveModSelect(this.mod);
 		
 		const settings = this.settingsService.signalSettings();
 		for (const [k, val] of Object.entries(this.settings)) {
@@ -122,7 +109,7 @@ export class SettingsComponent {
 			duration: 6000,
 		});
 		
-		ref.onAction().subscribe(() => this.sharedService.relaunch());
+		ref.onAction().subscribe(() => location.reload());
 	}
 	
 	close() {

@@ -1,8 +1,7 @@
 // @ts-check
 'use strict';
 
-const {app, protocol, session, BrowserWindow} = require('electron');
-const electronRemote = require('@electron/remote/main');
+const {app, session, BrowserWindow} = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const path = require('path');
 const url = require('url');
@@ -14,8 +13,6 @@ const IPC = require('@achrinza/node-ipc').default;
 const args = process.argv.slice(1);
 const dev = args.some(val => val === '--dev');
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = '1';
-
-electronRemote.initialize();
 
 let openWindows = 0;
 
@@ -35,13 +32,10 @@ function openWindow() {
 			width: mainWindowState.width,
 			height: mainWindowState.height,
 			webPreferences: {
-				webSecurity: false,
-				nodeIntegration: true,
-				contextIsolation: false
+				webSecurity: false
 			}
 		});
-		electronRemote.enable(win.webContents);
-		
+
 		if (dev) {
 			console.log('dev');
 			contextMenu({
@@ -91,11 +85,6 @@ function openWindow() {
 }
 
 app.whenReady().then(() => {
-	protocol.registerFileProtocol('file', (request, callback) => {
-		const pathname = decodeURI(request.url.replace('file:///', ''));
-		callback(pathname);
-	});
-	
 	session.defaultSession.on('file-system-access-restricted', async (e, details, cb) => {
 		cb('allow');
 	});

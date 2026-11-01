@@ -374,7 +374,7 @@ export class EntityManager extends BaseObject {
 	
 	async generateEntity(entity: MapEntity): Promise<CCEntity> {
 		const entityClass = Globals.entityRegistry.getEntity(entity.type);
-		console.assert(this.map, 'I dont think map is ever undefined, but if it ever happens check the TODO on private map?: CCMap;');
+		console.assert(!!this.map, 'I dont think map is ever undefined, but if it ever happens check the TODO on private map?: CCMap;');
 		const map = this.map!;
 
 		// Preload entities since we need it for loadJsonMergedSync in the entity's constructor

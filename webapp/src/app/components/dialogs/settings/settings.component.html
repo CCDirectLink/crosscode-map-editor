@@ -24,12 +24,13 @@
 			<div fxLayout="row" class="option-row">
 				<mat-form-field fxFlex="auto">
 					<mat-label>Mod</mat-label>
-					<mat-select [(value)]="mod">
-						<mat-option>None</mat-option>
-						@for (mod of mods(); track mod) {
-							<mat-option [value]="mod.id"><span [appColoredText]="mod.displayName"></span></mat-option>
-						}
-					</mat-select>
+<!--					TODO: fs-access-->
+<!--					<mat-select [(value)]="mod">-->
+<!--						<mat-option>None</mat-option>-->
+<!--						@for (mod of mods(); track mod) {-->
+<!--							<mat-option [value]="mod.id"><span [appColoredText]="mod.displayName"></span></mat-option>-->
+<!--						}-->
+<!--					</mat-select>-->
 					<mat-hint>Maps will be stored and loaded from the selected mod</mat-hint>
 				</mat-form-field>
 			</div>

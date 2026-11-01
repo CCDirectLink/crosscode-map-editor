@@ -11,7 +11,7 @@ import { EntryGfxEnds, GfxEndsDir, ScalableProp, ScalablePropAttributes, Scalabl
 import { PropListCard } from '../shared/image-select-overlay/image-select-card/image-select-card.component';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { MatTooltip } from '@angular/material/tooltip';
-import Point = Electron.Point;
+import { Point } from '../../../models/cross-code-map';
 
 @Component({
     selector: 'app-scalable-prop-config-widget',
