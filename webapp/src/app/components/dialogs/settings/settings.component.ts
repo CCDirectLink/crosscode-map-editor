@@ -109,8 +109,11 @@ export class SettingsComponent implements OnInit {
 		}
 	}
 	
-	select() {
+	async select() {
+		const handle = await window.showDirectoryPicker();
+		console.log(handle);
 		const path = this.electron.selectCcFolder();
+		
 		if (path) {
 			this.folderFormControl.setValue(path);
 		}
