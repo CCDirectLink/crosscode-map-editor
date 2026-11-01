@@ -1,0 +1,39 @@
+name: pr preview
+on:
+  pull_request:
+    # closed is needed to remove the preview again
+    types: [ opened, reopened, synchronize, closed ]
+
+concurrency: preview-${{ github.ref }}
+
+jobs:
+  preview:
+    name: deploy pr preview
+    # pull requests from forks don't get write access to the gh-pages branch
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        if: github.event.action != 'closed'
+        with:
+          node-version: '26'
+
+      - name: build
+        if: github.event.action != 'closed'
+        working-directory: webapp
+        run: |
+          npm ci
+          npm run build:prod
+
+      # deploys to gh-pages/pr-preview/pr-<number>/ and comments the link on the pull request,
+      # removes that folder again when the pull request is closed
+      - uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: webapp/distAngular
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview

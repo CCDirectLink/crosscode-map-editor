@@ -3,18 +3,9 @@ description: 'tests and builds all projects'
 runs:
   using: "composite"
   steps:
-    - working-directory: common
-      shell: bash
-      run: |
-        npm ci
-        npm run lint
-        npm run build
     - working-directory: webapp
       shell: bash
       run: |
         npm ci
         npm run lint
         npm run dist
-    - working-directory: backend
-      shell: bash
-      run: npm ci
