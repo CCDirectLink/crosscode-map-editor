@@ -52,7 +52,7 @@
   },
   "private": true,
   "devDependencies": {
-    "@angular-eslint/builder": "^21.2.0",
+    "@angular-eslint/builder": "^22.6.0",
     "@angular/animations": "^22.2.4",
     "@angular/build": "^22.2.5",
     "@angular/cdk": "^22.2.5",
@@ -74,7 +74,7 @@
     "@types/jasmine": "~5.1.9",
     "@types/jsoneditor": "^9.9.0",
     "@types/wicg-file-system-access": "^2023.10.7",
-    "angular-eslint": "^21.1.0",
+    "angular-eslint": "^22.6.0",
     "cc-map-editor-common": "file:../common",
     "earcut": "^3.0.2",
     "electron": "^38.2.0",
