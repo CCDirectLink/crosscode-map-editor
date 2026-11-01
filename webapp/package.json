@@ -93,7 +93,7 @@
     "tailwindcss": "^3.3.1",
     "tslib": "^2.3.0",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.51.0",
+    "typescript-eslint": "^8.72.1",
     "vitest": "^5.0.0",
     "zone.js": "~0.15.1"
   },
