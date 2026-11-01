@@ -15,7 +15,7 @@ module.exports = tseslint.config(
 		processor: angular.processInlineTemplates,
 		languageOptions: {
 			parserOptions: {
-				project: './tsconfig.json',
+				project: ['./tsconfig.app.json', './tsconfig.spec.json'],
 			},
 		},
 		rules: {
