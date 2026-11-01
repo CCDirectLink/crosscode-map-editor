@@ -12,30 +12,6 @@ export class HttpClientService {
 	private http = inject(HttpClient);
 	private electron = inject(ElectronService);
 	
-	getProps(): Observable<string[]> {
-		const folder = 'data/props/';
-		const extension = 'json';
-		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
-	}
-	
-	getScalableProps(): Observable<string[]> {
-		const folder = 'data/scale-props/';
-		const extension = 'json';
-		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
-	}
-	
-	getEnemies(): Observable<string[]> {
-		const folder = 'data/enemies/';
-		const extension = 'json';
-		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
-	}
-	
-	getCharacters(): Observable<string[]> {
-		const folder = 'data/characters/';
-		const extension = 'json';
-		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
-	}
-	
 	getModMapEditorConfigs() {
 		// TODO: fs-access
 		return [] as any[];
