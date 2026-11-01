@@ -21,6 +21,7 @@ import { MatSelect } from '@angular/material/select';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { MatOption } from '@angular/material/autocomplete';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { AssetsAccessService } from '../../services/assets-access.service';
 
 @Component({
 	selector: 'app-layers',
@@ -57,7 +58,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 export class LayersComponent implements OnInit {
 	private mapLoader = inject(MapLoaderService);
 	private stateHistory = inject(StateHistoryService);
-	private http = inject(HttpClientService);
+	private assets = inject(AssetsAccessService);
 	
 	static tilesets: string[] = []; //Cache
 	
@@ -192,7 +193,7 @@ export class LayersComponent implements OnInit {
 			return;
 		}
 		
-		LayersComponent.tilesets = await firstValueFrom(this.http.getAllTilesets());
+		LayersComponent.tilesets = await this.assets.getAllTilesets();
 		this.tilesets = LayersComponent.tilesets;
 	}
 	

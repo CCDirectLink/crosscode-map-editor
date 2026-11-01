@@ -52,6 +52,11 @@ export class AssetsAccessService {
 		return await this.listFiles(folder, '.json');
 	}
 
+	async getAllTilesets(): Promise<string[]> {
+		const files = await this.listFiles('media/map', '.png');
+		return files.map(file => file.path).sort();
+	}
+
 	async getFile(path: string): Promise<AssetFile> {
 		const separator = path.lastIndexOf('/');
 		const dir = await this.getDirectory(path.substring(0, separator));

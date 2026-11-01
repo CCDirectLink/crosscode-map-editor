@@ -2,10 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { api } from 'cc-map-editor-common';
 import { Observable } from 'rxjs';
-import { FileInfos } from '../models/file-infos';
 import { ElectronService } from './electron.service';
 import { Globals } from './globals';
-import { SettingsService } from './settings.service';
 
 @Injectable({
 	providedIn: 'root',
@@ -13,18 +11,6 @@ import { SettingsService } from './settings.service';
 export class HttpClientService {
 	private http = inject(HttpClient);
 	private electron = inject(ElectronService);
-	private settingsService = inject(SettingsService);
-	
-	
-	private readonly fileName = 'config.json';
-	
-	getAllTilesets(): Observable<string[]> {
-		return this.request('api/allTilesets', api.getAllTilesets);
-	}
-	
-	getMaps(): Observable<string[]> {
-		return this.request('api/allMaps', api.getAllMaps, false);
-	}
 	
 	getProps(): Observable<string[]> {
 		const folder = 'data/props/';
