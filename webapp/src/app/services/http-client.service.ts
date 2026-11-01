@@ -18,20 +18,12 @@ export class HttpClientService {
 	
 	private readonly fileName = 'config.json';
 	
-	getAllFiles(): Observable<FileInfos> {
-		return this.request('api/allFiles', api.getAllFiles);
-	}
-	
 	getAllTilesets(): Observable<string[]> {
 		return this.request('api/allTilesets', api.getAllTilesets);
 	}
 	
 	getMaps(): Observable<string[]> {
 		return this.request('api/allMaps', api.getAllMaps, false);
-	}
-	
-	getVanillaMaps(): Observable<string[]> {
-		return this.request('api/allMaps?vanillaMaps=true', api.getAllMaps, true);
 	}
 	
 	getProps(): Observable<string[]> {
@@ -56,10 +48,6 @@ export class HttpClientService {
 		const folder = 'data/characters/';
 		const extension = 'json';
 		return this.request(`api/allFilesInFolder?folder=${folder}&extension=${extension}`, api.getAllFilesInFolder, folder, extension);
-	}
-	
-	getMods(): Observable<{ id: string, displayName: string }[]> {
-		return this.request('api/allMods', api.getAllMods);
 	}
 	
 	getModMapEditorConfigs() {
