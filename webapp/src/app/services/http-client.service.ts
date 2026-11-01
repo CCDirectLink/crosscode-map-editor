@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { api } from 'cc-map-editor-common';
-import { lastValueFrom, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { FileInfos } from '../models/file-infos';
 import { ElectronService } from './electron.service';
 import { Globals } from './globals';
 import { SettingsService } from './settings.service';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class HttpClientService {
 	private http = inject(HttpClient);
@@ -63,7 +63,9 @@ export class HttpClientService {
 	}
 	
 	getModMapEditorConfigs() {
-		return lastValueFrom(this.request('api/allModMapEditorConfigs', api.getAllModMapEditorConfigs));
+		// TODO: fs-access
+		return [] as any[];
+		// return lastValueFrom(this.request('api/allModMapEditorConfigs', api.getAllModMapEditorConfigs));
 	}
 	
 	getAssetsFile<T>(path: string): Observable<T> {

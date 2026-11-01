@@ -42,6 +42,37 @@ export class AssetsAccessService {
 		}
 	}
 
+	async getAllMaps(): Promise<string[]> {
+		const folder = 'data/maps';
+		const paths = await this.listFiles(folder, '.json');
+		return paths
+			.sort()
+			.map(p => p.substring(folder.length + 1, p.length - '.json'.length).replaceAll('/', '.'));
+	}
+
+	private async getDirectory(path: string) {
+		let dir = this.assetsHandle()!;
+		for (const name of path.split('/').filter(Boolean)) {
+			dir = await dir.getDirectoryHandle(name);
+		}
+		return dir;
+	}
+
+	private async listFiles(path: string, extension: string): Promise<string[]> {
+		const dir = await this.getDirectory(path);
+		const files: string[] = [];
+		const subDirs: Promise<string[]>[] = [];
+		for await (const entry of dir.values()) {
+			const entryPath = `${path}/${entry.name}`;
+			if (entry.kind === 'directory') {
+				subDirs.push(this.listFiles(entryPath, extension));
+			} else if (entry.name.toLowerCase().endsWith(extension)) {
+				files.push(entryPath);
+			}
+		}
+		return files.concat(...await Promise.all(subDirs));
+	}
+
 	private async checkPermission(handle: FileSystemDirectoryHandle) {
 		if (await handle.queryPermission({ mode: 'read' }) === 'granted') {
 			return;

@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, ElementR
 import { MatSidenav } from '@angular/material/sidenav';
 import { MatNestedTreeNode, MatTree, MatTreeNestedDataSource, MatTreeNode, MatTreeNodeDef, MatTreeNodeOutlet, MatTreeNodeToggle } from '@angular/material/tree';
 
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 import { HttpClientService } from '../../../services/http-client.service';
 import { MapLoaderService } from '../../../services/map-loader.service';
 import { SearchFilterService } from '../../../services/search-filter.service';
@@ -19,6 +19,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { SHARED_SERVICE } from '../../../services/shared-service';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { SettingsService } from '../../../services/settings.service';
+import { AssetsAccessService } from '../../../services/assets-access.service';
 
 
 @Component({
@@ -48,6 +49,7 @@ import { SettingsService } from '../../../services/settings.service';
 export class LoadMapComponent {
 	private mapLoader = inject(MapLoaderService);
 	private http = inject(HttpClientService);
+	private assets = inject(AssetsAccessService);
 	private ref = inject(ChangeDetectorRef);
 	private searchFilterService = inject(SearchFilterService);
 	private readonly sharedService = inject(SHARED_SERVICE);
@@ -66,7 +68,7 @@ export class LoadMapComponent {
 	paths = resource({
 		params: () => ({ vanillaMaps: this.vanillaMaps() }),
 		loader: async ({ params }) => {
-			const req = params.vanillaMaps ? this.http.getVanillaMaps() : this.http.getMaps();
+			const req = params.vanillaMaps ? this.http.getVanillaMaps() : of(await this.assets.getAllMaps());
 			return await firstValueFrom(req);
 		},
 	});

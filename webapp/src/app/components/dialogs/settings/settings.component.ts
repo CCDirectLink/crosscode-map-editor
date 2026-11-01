@@ -66,7 +66,7 @@ export class SettingsComponent {
 	});
 	readonly assetsStatusDisplay = computed(() => ASSETS_STATUS_DISPLAY[this.assetsStatus()]);
 	
-	// TODO
+	// TODO: fs-access
 	readonly mods = signal<any[]>([]);
 	
 	mod = '';
