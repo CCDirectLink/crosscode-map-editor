@@ -74,11 +74,11 @@ export class AssetsAccessService {
 	}
 
 	private async checkPermission(handle: FileSystemDirectoryHandle) {
-		if (await handle.queryPermission({ mode: 'read' }) === 'granted') {
+		if (await handle.queryPermission({ mode: 'readwrite' }) === 'granted') {
 			return;
 		}
 		this.snackBar.open(`Access to the assets folder "${handle.name}" has to be granted`, 'Grant access')
 			.onAction()
-			.subscribe(() => handle.requestPermission({ mode: 'read' }));
+			.subscribe(() => handle.requestPermission({ mode: 'readwrite' }));
 	}
 }

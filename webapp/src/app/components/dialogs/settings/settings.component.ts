@@ -100,7 +100,7 @@ export class SettingsComponent {
 	}
 	
 	async select() {
-		const handle = await window.showDirectoryPicker();
+		const handle = await window.showDirectoryPicker({ mode: 'readwrite' });
 		this.pickedFolder.set({ handle, valid: await this.isAssetsFolder(handle) });
 	}
 	
