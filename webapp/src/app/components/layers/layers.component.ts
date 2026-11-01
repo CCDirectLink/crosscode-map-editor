@@ -1,10 +1,8 @@
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDragPreview, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, inject, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { ChangeDetectionStrategy, Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { GlobalEventsService } from '../../services/global-events.service';
 import { Globals } from '../../services/globals';
-import { HttpClientService } from '../../services/http-client.service';
 import { MapLoaderService } from '../../services/map-loader.service';
 import { CCMap } from '../../services/phaser/tilemap/cc-map';
 import { CCMapLayer } from '../../services/phaser/tilemap/cc-map-layer';
@@ -52,8 +50,8 @@ import { AssetsAccessService } from '../../services/assets-access.service';
 		FlexModule,
 		MatOption,
 		MatCheckbox,
-		MatButton
-	]
+		MatButton,
+	],
 })
 export class LayersComponent implements OnInit {
 	private mapLoader = inject(MapLoaderService);
@@ -77,7 +75,7 @@ export class LayersComponent implements OnInit {
 			if (this.selectedLayer) {
 				this.toggleVisibility({
 					stopPropagation: () => {
-					}
+					},
 				} as Event, this.selectedLayer);
 			}
 		});
@@ -142,7 +140,7 @@ export class LayersComponent implements OnInit {
 			repeat: false,
 			distance: 1,
 			tilesize: Globals.TILE_SIZE,
-			moveSpeed: {x: 0, y: 0},
+			moveSpeed: { x: 0, y: 0 },
 			data: data,
 		});
 		console.log(layer);
@@ -150,7 +148,7 @@ export class LayersComponent implements OnInit {
 		this.newLayerName = '';
 		this.stateHistory.saveState({
 			name: 'Layer added',
-			icon: 'add'
+			icon: 'add',
 		}, true);
 	}
 	
@@ -165,7 +163,7 @@ export class LayersComponent implements OnInit {
 		this.map.removeLayer(layer);
 		this.stateHistory.saveState({
 			name: 'Layer deleted',
-			icon: 'delete'
+			icon: 'delete',
 		}, true);
 		
 		this.selectLayer(undefined);
@@ -208,14 +206,14 @@ export class LayersComponent implements OnInit {
 		this.selectedLayer?.resize(this.width, this.height);
 		this.stateHistory.saveState({
 			name: 'Layer resized',
-			icon: 'resize'
+			icon: 'resize',
 		});
 	}
 	
 	updateDistance() {
 		this.stateHistory.saveState({
 			name: 'Distance changed',
-			icon: 'fit_screen'
+			icon: 'fit_screen',
 		});
 	}
 	
