@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import settingsJson from '../../../../../assets/npc-settings.json';
 import { createEventArray, destructureEventArray, EventArrayType } from '../../../../models/events';
 import { EventEditorComponent } from '../../event-widget/event-editor/editor/event-editor.component';
@@ -17,6 +17,7 @@ import { KeyValuePipe } from '@angular/common';
 	selector: 'app-npc-states',
 	templateUrl: './npc-states.component.html',
 	styleUrls: ['./npc-states.component.scss', '../../widget.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [OverlayPanelComponent,
 		FlexModule,
 		MatButton,

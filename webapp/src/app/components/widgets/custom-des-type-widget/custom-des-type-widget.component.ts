@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ImageSelectOverlayComponent } from '../shared/image-select-overlay/image-select-overlay.component';
 import { HttpClientService } from '../../../services/http-client.service';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
@@ -15,6 +15,7 @@ import { InputWithButtonComponent } from '../inputs/input-with-button/input-with
     selector: 'app-custom-des-type-widget',
     templateUrl: './custom-des-type-widget.component.html',
     styleUrls: ['./custom-des-type-widget.component.scss', '../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [InputWithButtonComponent]
 })
 export class CustomDesTypeWidgetComponent extends OverlayWidget<ItemDestructAttributes> {

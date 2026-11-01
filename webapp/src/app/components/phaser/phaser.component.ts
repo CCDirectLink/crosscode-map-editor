@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import * as Phaser from 'phaser';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -20,6 +20,7 @@ import { CaptionsComponent } from '../captions/captions.component';
     selector: 'app-phaser',
     templateUrl: './phaser.component.html',
     styleUrls: ['./phaser.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CaptionsComponent]
 })
 export class PhaserComponent implements AfterViewInit {

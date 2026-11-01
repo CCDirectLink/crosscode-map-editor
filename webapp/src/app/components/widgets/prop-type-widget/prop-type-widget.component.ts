@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { OverlayWidget } from '../overlay-widget';
 import { ImageSelectOverlayComponent, PropListGroup } from '../shared/image-select-overlay/image-select-overlay.component';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
@@ -16,6 +16,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     selector: 'app-prop-type-widget',
     templateUrl: './prop-type-widget.component.html',
     styleUrls: ['./prop-type-widget.component.scss', '../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FlexModule, MatTooltip]
 })
 export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {

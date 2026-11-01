@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject, ChangeDetectionStrategy } from '@angular/core';
 import { SearchFilterService } from '../../../../services/search-filter.service';
 import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
 import { FormsModule } from '@angular/forms';
@@ -10,6 +10,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     selector: 'app-autocompleted-textbox',
     templateUrl: './autocompleted-textbox.component.html',
     styleUrls: ['./autocompleted-textbox.component.scss', '../../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatAutocompleteTrigger, FormsModule, MatAutocomplete, MatOption, HighlightDirective, MatIcon, MatTooltip]
 })
 export class AutocompletedTextboxComponent implements OnChanges {

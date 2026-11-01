@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, inject } from '@angular/core';
+import { AfterViewInit, Component, HostListener, inject, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import * as Phaser from 'phaser';
 
@@ -12,6 +12,7 @@ import { FloatingWindowComponent } from '../floating-window.component';
     selector: 'app-tile-selector',
     templateUrl: './tile-selector.component.html',
     styleUrls: ['./tile-selector.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FloatingWindowComponent]
 })
 export class TileSelectorComponent implements AfterViewInit {

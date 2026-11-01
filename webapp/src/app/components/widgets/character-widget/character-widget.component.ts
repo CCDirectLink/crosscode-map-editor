@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { OverlayWidget } from '../overlay-widget';
 import { ImageSelectOverlayComponent, PropListGroup } from '../shared/image-select-overlay/image-select-overlay.component';
 import { HttpClientService } from '../../../services/http-client.service';
@@ -13,6 +13,7 @@ import { InputWithButtonComponent } from '../inputs/input-with-button/input-with
     selector: 'app-character-widget',
     templateUrl: './character-widget.component.html',
     styleUrls: ['./character-widget.component.scss', '../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [InputWithButtonComponent]
 })
 export class CharacterWidgetComponent extends OverlayWidget {

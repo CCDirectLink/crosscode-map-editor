@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
@@ -28,6 +28,7 @@ import { AsyncPipe } from '@angular/common';
     selector: 'app-toolbar',
     templateUrl: './toolbar.component.html',
     styleUrls: ['./toolbar.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [MatToolbar, FlexModule, MatButton, MatMenuTrigger, MatMenu, MatMenuItem, MatCheckbox, ToolbarDividerComponent, GridMenuComponent, MatProgressSpinner, AsyncPipe]
 })
 export class ToolbarComponent implements OnInit {

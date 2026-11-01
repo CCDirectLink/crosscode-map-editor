@@ -1,4 +1,4 @@
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, inject, Input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { JsonEditorComponent } from '../../json-editor/json-editor.component';
 import { AbstractWidget } from '../abstract-widget';
@@ -11,6 +11,7 @@ import { Helper } from '../../../services/phaser/helper';
 	selector: 'app-json-widget',
 	templateUrl: './json-widget.component.html',
 	styleUrls: ['./json-widget.component.scss', '../widget.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FlexModule, MatTooltip, FormsModule]
 })
 export class JsonWidgetComponent extends AbstractWidget {

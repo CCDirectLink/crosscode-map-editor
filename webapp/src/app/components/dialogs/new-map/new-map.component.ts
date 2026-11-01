@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 
 import { CrossCodeMap } from '../../../models/cross-code-map';
 import { MapLoaderService } from '../../../services/map-loader.service';
@@ -12,6 +12,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-new-map',
     templateUrl: './new-map.component.html',
     styleUrls: ['./new-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [OverlayPanelComponent, MapContentSettingsComponent, FlexModule, MatButton]
 })
 export class NewMapComponent {

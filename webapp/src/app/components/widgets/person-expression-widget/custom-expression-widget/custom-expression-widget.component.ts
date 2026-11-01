@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnChanges, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, inject, ChangeDetectionStrategy } from '@angular/core';
 import { OverlayWidget } from '../../overlay-widget';
 import { ImageSelectOverlayComponent } from '../../shared/image-select-overlay/image-select-overlay.component';
 import { HttpClientService } from '../../../../services/http-client.service';
@@ -22,6 +22,7 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-custom-expression-widget',
     templateUrl: './custom-expression-widget.component.html',
     styleUrls: ['./custom-expression-widget.component.scss', '../../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FlexModule, MatTooltip, MatRipple, FormsModule]
 })
 export class CustomExpressionWidgetComponent extends OverlayWidget<Person> implements OnChanges {

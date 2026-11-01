@@ -1,4 +1,4 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 
 import { AddEntityMenuService } from '../../services/add-entity-menu.service';
@@ -16,6 +16,7 @@ import { TileSelectorComponent } from '../dialogs/floating-window/tile-selector/
 	selector: 'app-editor',
 	templateUrl: './editor.component.html',
 	styleUrls: ['./editor.component.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		MatSidenavContainer,
 		MatSidenav,

@@ -1,5 +1,5 @@
 import { CdkDrag, CdkDragDrop, CdkDragHandle, CdkDragPreview, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnInit, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
 import { GlobalEventsService } from '../../services/global-events.service';
@@ -27,6 +27,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 	templateUrl: './layers.component.html',
 	styleUrls: ['./layers.component.scss'],
 	encapsulation: ViewEncapsulation.None,
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		MatNavList,
 		CdkDropList,

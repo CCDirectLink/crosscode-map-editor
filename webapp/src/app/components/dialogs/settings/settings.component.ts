@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -25,6 +25,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 	selector: 'app-settings',
 	templateUrl: './settings.component.html',
 	styleUrls: ['./settings.component.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		OverlayPanelComponent,
 		FlexModule,

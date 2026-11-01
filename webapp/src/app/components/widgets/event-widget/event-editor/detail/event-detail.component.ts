@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, ViewContainerRef, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, Output, ViewChild, ViewContainerRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { HostDirective } from '../../../../../directives/host.directive';
 import { AttributeValue } from '../../../../../services/phaser/entities/cc-entity';
@@ -17,6 +17,7 @@ export type RefreshType = 'Node' | 'Full';
     selector: 'app-event-detail',
     templateUrl: './event-detail.component.html',
     styleUrls: ['./event-detail.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FlexModule, MatIconButton, MatIcon, HostDirective]
 })
 export class EventDetailComponent implements OnDestroy {

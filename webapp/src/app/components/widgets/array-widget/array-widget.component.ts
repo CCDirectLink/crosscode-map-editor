@@ -1,4 +1,4 @@
-import { Component, OnChanges, Type, ViewChild, ViewContainerRef, inject } from '@angular/core';
+import { Component, OnChanges, Type, ViewChild, ViewContainerRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractWidget } from '../abstract-widget';
 import { FlexModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -39,6 +39,7 @@ interface DynamicComponent {
 		MatIcon
 	],
 	templateUrl: './array-widget.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styleUrls: ['./array-widget.component.scss', '../widget.scss']
 })
 export class ArrayWidgetComponent extends AbstractWidget<ArraySettings, ArrayAttributes> implements OnChanges {
