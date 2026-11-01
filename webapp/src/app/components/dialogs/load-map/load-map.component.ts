@@ -55,7 +55,7 @@ export class LoadMapComponent {
 	sidenav!: MatSidenav;
 
 	maps = resource({
-		params: () => this.assets.handle(),
+		params: () => this.assets.accessibleHandle(),
 		loader: () => this.assets.getAllMaps(),
 	});
 
@@ -70,10 +70,10 @@ export class LoadMapComponent {
 		this.mapsSource.data = [];
 
 		effect(() => {
-			const maps = this.maps.value();
-			if (!maps) {
+			if (!this.maps.hasValue()) {
 				return;
 			}
+			const maps = this.maps.value();
 			untracked(() => {
 				this.displayMaps(maps);
 				this.update();

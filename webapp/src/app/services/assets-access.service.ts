@@ -1,4 +1,4 @@
-import { inject, Service, signal } from '@angular/core';
+import { computed, inject, Service, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DBSchema, openDB } from 'idb';
 
@@ -22,7 +22,10 @@ export class AssetsAccessService {
 	private readonly snackBar = inject(MatSnackBar);
 	
 	private readonly assetsHandle = signal<FileSystemDirectoryHandle | undefined>(undefined);
+	private readonly hasAccess = signal(false);
 	readonly handle = this.assetsHandle.asReadonly();
+	/** The assets handle, but only once read/write access is granted. A restored handle needs the user to grant access again. */
+	readonly accessibleHandle = computed(() => this.hasAccess() ? this.assetsHandle() : undefined);
 	
 	private readonly db = openDB<EditorDB>('cc-map-editor', 1, {
 		upgrade: db => db.createObjectStore('handles'),
@@ -30,6 +33,8 @@ export class AssetsAccessService {
 	
 	async setHandle(handle: FileSystemDirectoryHandle) {
 		this.assetsHandle.set(handle);
+		// the handle comes from showDirectoryPicker({ mode: 'readwrite' }), which already granted access
+		this.hasAccess.set(true);
 		const db = await this.db;
 		await db.put('handles', handle, ASSETS_KEY);
 	}
@@ -105,10 +110,15 @@ export class AssetsAccessService {
 	
 	private async checkPermission(handle: FileSystemDirectoryHandle) {
 		if (await handle.queryPermission({ mode: 'readwrite' }) === 'granted') {
+			this.hasAccess.set(true);
 			return;
 		}
 		this.snackBar.open(`Access to the assets folder "${handle.name}" has to be granted`, 'Grant access')
 			.onAction()
-			.subscribe(() => handle.requestPermission({ mode: 'readwrite' }));
+			.subscribe(async () => {
+				if (await handle.requestPermission({ mode: 'readwrite' }) === 'granted') {
+					this.hasAccess.set(true);
+				}
+			});
 	}
 }
