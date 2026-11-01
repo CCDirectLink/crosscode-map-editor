@@ -1,44 +1,45 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, computed, inject, signal } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { ElectronService } from '../../../services/electron.service';
-import { Globals } from '../../../services/globals';
-import { HttpClientService } from '../../../services/http-client.service';
+import { AssetsAccessService } from '../../../services/assets-access.service';
 import { AppSettings, SettingsService } from '../../../services/settings.service';
 import { SHARED_SERVICE } from '../../../services/shared-service';
 import { ImageSelectCardComponent, PropListCard } from '../../widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
 import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
 import { FlexModule } from '@angular/flex-layout/flex';
-import { MatError, MatFormField, MatHint, MatInput, MatLabel } from '@angular/material/input';
+import { MatFormField, MatHint, MatLabel } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { NgClass } from '@angular/common';
 import { ExtendedModule } from '@angular/flex-layout/extended';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/autocomplete';
 import { ColoredTextDirective } from '../../../directives/colored-text.directive';
 import { MatCheckbox } from '@angular/material/checkbox';
 
+type AssetsStatus = 'unknown' | 'valid' | 'invalid';
+
+const ASSETS_STATUS_DISPLAY: Record<AssetsStatus, { icon: string, iconCss: string, textCss: string, text: string }> = {
+	unknown: { icon: 'help_outline', iconCss: 'icon-undefined', textCss: 'status-text', text: '' },
+	valid: { icon: 'check_circle', iconCss: 'icon-valid', textCss: 'status-text', text: 'Valid CrossCode assets folder' },
+	invalid: { icon: 'error', iconCss: 'icon-invalid', textCss: 'status-text-invalid', text: 'Not a CrossCode assets folder' },
+};
+
 @Component({
 	selector: 'app-settings',
 	templateUrl: './settings.component.html',
 	styleUrls: ['./settings.component.scss'],
-	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		OverlayPanelComponent,
 		FlexModule,
 		FormsModule,
 		MatFormField,
 		MatLabel,
-		MatInput,
 		ReactiveFormsModule,
 		MatHint,
-		MatError,
 		MatButton,
 		MatIcon,
-		NgClass,
 		ExtendedModule,
 		MatSelect,
 		MatOption,
@@ -47,18 +48,27 @@ import { MatCheckbox } from '@angular/material/checkbox';
 		ImageSelectCardComponent,
 	],
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent {
 	private ref = inject(OverlayRefControl);
-	private electron = inject(ElectronService);
 	private settingsService = inject(SettingsService);
 	private snackBar = inject(MatSnackBar);
 	
+	private readonly assetsAccess = inject(AssetsAccessService);
+	private readonly pickedFolder = signal<{ handle: FileSystemDirectoryHandle, valid: boolean } | undefined>(undefined);
+	readonly folderName = computed(() => (this.pickedFolder()?.handle ?? this.assetsAccess.handle())?.name ?? '');
+	readonly assetsStatus = computed<AssetsStatus>(() => {
+		const picked = this.pickedFolder();
+		if (picked) {
+			return picked.valid ? 'valid' : 'invalid';
+		}
+		// only valid folders get stored
+		return this.assetsAccess.handle() ? 'valid' : 'unknown';
+	});
+	readonly assetsStatusDisplay = computed(() => ASSETS_STATUS_DISPLAY[this.assetsStatus()]);
 	
-	isElectron = Globals.isElectron;
-	folderFormControl = new FormControl();
-	icon = 'help_outline';
-	iconCss = 'icon-undefined';
-	mods: { id: string, displayName: string }[] = [];
+	// TODO
+	readonly mods = signal<any[]>([]);
+	
 	mod = '';
 	settings: AppSettings;
 	
@@ -75,9 +85,6 @@ export class SettingsComponent implements OnInit {
 	private readonly sharedService = inject(SHARED_SERVICE);
 	
 	constructor() {
-		const http = inject(HttpClientService);
-		
-		http.getMods().subscribe(mods => this.mods = mods);
 		this.mod = this.sharedService.getSelectedMod();
 		
 		this.settings = {} as AppSettings;
@@ -86,55 +93,21 @@ export class SettingsComponent implements OnInit {
 		}
 	}
 	
-	ngOnInit() {
-		if (this.isElectron) {
-			this.folderFormControl.setValue(this.electron.getAssetsPath());
-			this.folderFormControl.valueChanges.subscribe(() => this.resetIcon());
-		}
-		
-		this.check();
-	}
-	
-	private resetIcon() {
-		this.icon = 'help_outline';
-		this.iconCss = 'icon-undefined';
-	}
-	
-	private setIcon(valid: boolean) {
-		if (valid) {
-			this.icon = 'check';
-			this.iconCss = 'icon-valid';
-		} else {
-			this.icon = 'close';
-			this.iconCss = 'icon-invalid';
-		}
+	private async isAssetsFolder(handle: FileSystemDirectoryHandle) {
+		const hasDir = (name: string) => handle.getDirectoryHandle(name).then(() => true, () => false);
+		const [data, media] = await Promise.all([hasDir('data'), hasDir('media')]);
+		return data && media;
 	}
 	
 	async select() {
 		const handle = await window.showDirectoryPicker();
-		console.log(handle);
-		const path = this.electron.selectCcFolder();
-		
-		if (path) {
-			this.folderFormControl.setValue(path);
-		}
+		this.pickedFolder.set({ handle, valid: await this.isAssetsFolder(handle) });
 	}
 	
-	check() {
-		const valid = this.electron.checkAssetsPath(this.folderFormControl.value);
-		this.setIcon(valid);
-		if (valid) {
-			this.folderFormControl.setErrors(null);
-		} else {
-			this.folderFormControl.setErrors({
-				invalid: true,
-			});
-		}
-	}
-	
-	save() {
-		if (this.isElectron) {
-			this.electron.saveAssetsPath(this.folderFormControl.value);
+	async save() {
+		const picked = this.pickedFolder();
+		if (picked?.valid) {
+			await this.assetsAccess.setHandle(picked.handle);
 		}
 		this.sharedService.saveModSelect(this.mod);
 		

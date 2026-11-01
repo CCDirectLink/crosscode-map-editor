@@ -1,4 +1,4 @@
-import { enableProdMode, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import { enableProdMode, importProvidersFrom, inject, provideAppInitializer, provideZoneChangeDetection } from '@angular/core';
 
 
 import { Globals } from './app/services/globals';
@@ -6,6 +6,7 @@ import { environment } from './environments/environment';
 
 import { BrowserService } from './app/services/browser.service';
 import { ElectronService } from './app/services/electron.service';
+import { AssetsAccessService } from './app/services/assets-access.service';
 import { bootstrapApplication, BrowserModule } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
@@ -51,6 +52,7 @@ console.log('is electron: ', Globals.isElectron);
 			provideHttpClient(withInterceptorsFromDi()),
 			provideRouter(routes),
 			provideZoneChangeDetection(),
+			provideAppInitializer(() => inject(AssetsAccessService).init()),
 			{
 				provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
 				useValue: tooltipOptions,

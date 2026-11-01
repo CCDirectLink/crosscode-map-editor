@@ -2,12 +2,23 @@
 	<ng-container ngProjectAs="content">
 		<div fxLayout="column" class="content-container">
 			<form fxLayout="row" class="option-row">
-				<div class="actions-container" fxLayout="row">
-					<button mat-stroked-button (click)="select()">CrossCode Assets path</button>
-					<button mat-stroked-button (click)="check()">
-						Check
-						<mat-icon [ngClass]="iconCss" class="icon-base">{{ icon }}</mat-icon>
+				<div class="assets-row">
+					<button mat-stroked-button (click)="select()">
+						<mat-icon>folder_open</mat-icon>
+						CrossCode assets folder
 					</button>
+					<div class="assets-status">
+						@if (folderName()) {
+							@let status = assetsStatusDisplay();
+							<mat-icon [class]="status.iconCss">{{ status.icon }}</mat-icon>
+							<span class="folder-name">{{ folderName() }}</span>
+							<span class="status-text">·</span>
+							<span [class]="status.textCss">{{ status.text }}</span>
+						} @else {
+							<mat-icon class="icon-undefined">help_outline</mat-icon>
+							<span class="status-text">No folder selected</span>
+						}
+					</div>
 				</div>
 			</form>
 			<div fxLayout="row" class="option-row">
@@ -15,7 +26,7 @@
 					<mat-label>Mod</mat-label>
 					<mat-select [(value)]="mod">
 						<mat-option>None</mat-option>
-						@for (mod of mods; track mod) {
+						@for (mod of mods(); track mod) {
 							<mat-option [value]="mod.id"><span [appColoredText]="mod.displayName"></span></mat-option>
 						}
 					</mat-select>

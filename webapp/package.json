@@ -80,6 +80,7 @@
     "electron": "^38.2.0",
     "electron-builder": "^26.7.0",
     "eslint": "^9.39.2",
+    "idb": "^8.0.4",
     "istanbul-lib-instrument": "^6.0.3",
     "jasmine-core": "~4.5.0",
     "jsoneditor": "^9.10.0",
