@@ -67,6 +67,12 @@ export class AssetsAccessService {
 			.sort();
 	}
 	
+	async getModMapEditorConfigs() {
+		// TODO: fs-access
+		return [] as any[];
+		// return lastValueFrom(this.request('api/allModMapEditorConfigs', api.getAllModMapEditorConfigs));
+	}
+	
 	async getFile(path: string): Promise<AssetFile> {
 		const separator = path.lastIndexOf('/');
 		const dir = await this.getDirectory(path.substring(0, separator));

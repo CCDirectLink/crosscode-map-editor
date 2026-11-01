@@ -12,12 +12,6 @@ export class HttpClientService {
 	private http = inject(HttpClient);
 	private electron = inject(ElectronService);
 	
-	getModMapEditorConfigs() {
-		// TODO: fs-access
-		return [] as any[];
-		// return lastValueFrom(this.request('api/allModMapEditorConfigs', api.getAllModMapEditorConfigs));
-	}
-	
 	getAssetsFile<T>(path: string): Observable<T> {
 		if (!Globals.isElectron) {
 			return this.http.post<T>(Globals.URL + 'api/get', { path });
