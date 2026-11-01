@@ -8,7 +8,6 @@ import { ImageSelectCardComponent, PropListCard } from '../../widgets/shared/ima
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
 import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
 import { FlexModule } from '@angular/flex-layout/flex';
-import { MatFormField, MatHint, MatLabel } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { ExtendedModule } from '@angular/flex-layout/extended';
@@ -30,10 +29,7 @@ const ASSETS_STATUS_DISPLAY: Record<AssetsStatus, { icon: string, iconCss: strin
 		OverlayPanelComponent,
 		FlexModule,
 		FormsModule,
-		MatFormField,
-		MatLabel,
 		ReactiveFormsModule,
-		MatHint,
 		MatButton,
 		MatIcon,
 		ExtendedModule,

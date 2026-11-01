@@ -89,7 +89,7 @@ app.whenReady().then(() => {
 		cb('allow');
 	});
 	
-	session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
+	session.defaultSession.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
 		// Is used so electron doesn't ask for folder permissions on every restart. test if this is actually required.
 		if (permission === 'fileSystem') {
 			return true;
