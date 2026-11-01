@@ -76,7 +76,7 @@
     "@types/wicg-file-system-access": "^2023.10.7",
     "angular-eslint": "^22.6.0",
     "earcut": "^3.0.2",
-    "electron": "^38.2.0",
+    "electron": "^45.2.1",
     "electron-builder": "^26.7.0",
     "eslint": "^9.39.2",
     "idb": "^8.0.4",
