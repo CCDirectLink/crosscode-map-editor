@@ -2,7 +2,7 @@
 	
 	<div fxLayoutAlign="start">
 		<div [style.visibility]="is3d ? 'hidden': 'visible'" class="flex flex-row items-center">
-			<button mat-button [matMenuTriggerFor]="file">File</button>
+			<button [disabled]="!canLoadMap()" mat-button [matMenuTriggerFor]="file">File</button>
 			<mat-menu #file="matMenu">
 				<button [disabled]="!canLoadMap()" mat-menu-item (click)="newMap()">New Map</button>
 				<button [disabled]="!canLoadMap()" mat-menu-item (click)="loadMapClicked.emit()">Load Map</button>
