@@ -67,6 +67,10 @@ input[type=text].default-input, input:not([type]).default-input, input[type=numb
 	padding-left: 4px;
 }
 
+input[type=button].default-input {
+	cursor: pointer;
+}
+
 .small-input {
 	width: 60px;
 }
