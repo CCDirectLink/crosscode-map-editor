@@ -21,6 +21,7 @@ export interface ModInfo {
 	displayName: string;
 	assets?: FileSystemDirectoryHandle;
 	root?: FileSystemDirectoryHandle;
+	dependencies?: string[];
 	version?: string;
 	type: ModType;
 }
@@ -34,23 +35,26 @@ interface DlcManifest {
 	name: Label;
 }
 
-interface CCmodManifest {
+interface ModManifest {
 	id?: string;
-	title?: string | { en_US?: string };
-	version?: string;
-}
-
-interface ModPackageManifest {
 	name?: string;
+	title?: string | Label;
 	displayName?: string;
 	ccmodHumanName?: string;
 	version?: string;
+	ccmodDependencies?: Record<string, string>;
+	dependencies?: Record<string, string>;
 }
 
 const ASSETS_KEY = 'assets';
 
 function byDisplayName(a: ModInfo, b: ModInfo) {
 	return a.displayName.localeCompare(b.displayName);
+}
+
+// 'dependencies' of a package.json can also be npm packages, so 'ccmodDependencies' goes first
+function getDependencies(manifest: ModManifest) {
+	return Object.keys(manifest.ccmodDependencies ?? manifest.dependencies ?? {});
 }
 
 @Service()
@@ -186,7 +190,7 @@ export class AssetsAccessService {
 			};
 		}
 		
-		const ccmod = await this.readJson<CCmodManifest>(`${path}/ccmod.json`);
+		const ccmod = await this.readJson<ModManifest>(`${path}/ccmod.json`);
 		if (ccmod) {
 			const id = ccmod.id ?? folder;
 			const title = typeof ccmod.title === 'string' ? ccmod.title : ccmod.title?.en_US;
@@ -195,9 +199,10 @@ export class AssetsAccessService {
 				id: id,
 				displayName: title ?? id,
 				version: ccmod.version,
+				dependencies: getDependencies(ccmod),
 			};
 		}
-		const pkg = await this.readJson<ModPackageManifest>(`${path}/package.json`);
+		const pkg = await this.readJson<ModManifest>(`${path}/package.json`);
 		if (pkg) {
 			const id = pkg.name ?? folder;
 			return {
@@ -205,6 +210,7 @@ export class AssetsAccessService {
 				id: id,
 				displayName: pkg.displayName ?? pkg.ccmodHumanName ?? id,
 				version: pkg.version,
+				dependencies: getDependencies(pkg),
 			};
 		}
 		
