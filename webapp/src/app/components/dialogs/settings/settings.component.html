@@ -1,13 +1,13 @@
 <cc-overlay-panel title="Settings">
 	<ng-container ngProjectAs="content">
-		<div fxLayout="column" class="content-container">
-			<form fxLayout="row" class="option-row">
-				<div class="assets-row">
+		<div class="p-4 flex flex-col gap-5">
+			<form class="pt-1">
+				<div class="flex flex-row gap-3 flex-wrap">
 					<button mat-stroked-button (click)="select()">
 						<mat-icon>folder_open</mat-icon>
 						CrossCode assets folder
 					</button>
-					<div class="assets-status">
+					<div class="flex items-center gap-2 min-w-0">
 						@if (folderName()) {
 							@let status = assetsStatusDisplay();
 							<mat-icon [class]="status.iconCss">{{ status.icon }}</mat-icon>
@@ -21,24 +21,30 @@
 					</div>
 				</div>
 			</form>
-			@for (list of modLists; track list.title) {
-				<div class="flex flex-col pt-5">
-					<h2 class="mat-h2">{{ list.title }}</h2>
-					@if (list.mods().length) {
-						<mat-selection-list color="primary" [(ngModel)]="list.selected">
-							@for (mod of list.mods(); track mod.id) {
-								<mat-list-option togglePosition="before" [value]="mod.id">
-									<span [appColoredText]="mod.displayName"></span>
-									@if (mod.version) {
-										<span class="status-text ml-2">v{{ mod.version }}</span>
-									}
-								</mat-list-option>
-							}
-						</mat-selection-list>
-					}
-				</div>
-			}
-			<div fxLayout="row" class="option-row">
+			
+			<app-divider [margin]="16"/>
+			<div class="flex flex-row gap-4 modlist">
+				@for (list of modLists; track list.title) {
+					<div class="flex flex-col">
+						<h2 class="settings-headline">{{ list.title }}</h2>
+						@if (list.mods().length) {
+							<mat-selection-list color="primary" [(ngModel)]="list.selected">
+								@for (mod of list.mods(); track mod.id) {
+									<mat-list-option togglePosition="before" [value]="mod.id">
+										<span [appColoredText]="mod.displayName"></span>
+										@if (mod.version) {
+											<span class="status-text ml-2">v{{ mod.version }}</span>
+										}
+									</mat-list-option>
+								}
+							</mat-selection-list>
+						}
+					</div>
+				}
+			</div>
+			<app-divider [margin]="16"/>
+			
+			<div class="flex flex-row">
 				<mat-checkbox
 					[(ngModel)]="settings.wrapEventEditorLines"
 					color="primary"
@@ -46,8 +52,9 @@
 					Wrap event editor lines
 				</mat-checkbox>
 			</div>
-			<div class="flex flex-col pt-5">
-				<h2 class="mat-h2 ">Selection Box Style</h2>
+			<app-divider [margin]="16"/>
+			<div class="flex flex-col">
+				<h2 class="settings-headline pb-4">Selection Box Style</h2>
 				<div class="flex flex-row gap-4">
 					<app-image-select-card
 						[card]="cardLight"

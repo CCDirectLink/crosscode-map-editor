@@ -7,13 +7,12 @@ import { SettingsService } from '../../../services/settings.service';
 import { ImageSelectCardComponent, PropListCard } from '../../widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
 import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
-import { FlexModule } from '@angular/flex-layout/flex';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { ExtendedModule } from '@angular/flex-layout/extended';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatListOption, MatSelectionList } from '@angular/material/list';
 import { ColoredTextDirective } from '../../../directives/colored-text.directive';
+import { DividerComponent } from '../../divider/divider.component';
 
 type AssetsStatus = 'unknown' | 'valid' | 'invalid';
 
@@ -29,17 +28,16 @@ const ASSETS_STATUS_DISPLAY: Record<AssetsStatus, { icon: string, iconCss: strin
 	styleUrls: ['./settings.component.scss'],
 	imports: [
 		OverlayPanelComponent,
-		FlexModule,
 		FormsModule,
 		ReactiveFormsModule,
 		MatButton,
 		MatIcon,
-		ExtendedModule,
 		MatCheckbox,
 		MatSelectionList,
 		MatListOption,
 		ColoredTextDirective,
 		ImageSelectCardComponent,
+		DividerComponent,
 	],
 })
 export class SettingsComponent {
@@ -79,7 +77,7 @@ export class SettingsComponent {
 		mods: computed(() => this.availableMods().mods),
 		selected: this.settings.selectedMods,
 	};
-	readonly modLists = [this.dlcList, this.modList];
+	readonly modLists = [this.modList, this.dlcList];
 	
 	cardLight: PropListCard = {
 		name: 'Light',

@@ -1,27 +1,7 @@
 @use '@angular/material' as mat;
 
-.content-container {
-	padding: 16px;
-	@include mat.list-density(-4)
-}
-
-.option-row {
-	align-items: center;
-	margin-top: 16px;
-}
-
-.assets-row {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 8px 12px;
-}
-
-.assets-status {
-	display: flex;
-	align-items: center;
-	gap: 6px;
-	min-width: 0;
+.modlist {
+	@include mat.list-density(-4);
 }
 
 .folder-name {
@@ -29,6 +9,11 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+
+.settings-headline {
+	font-weight: 500;
+	font-size: 20px;
 }
 
 .status-text {
