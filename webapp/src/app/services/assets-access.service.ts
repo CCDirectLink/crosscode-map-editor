@@ -2,6 +2,7 @@ import { computed, inject, Service, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DBSchema, openDB } from 'idb';
 import { Label } from '../models/events';
+import { DirectoryHandleCache } from './directory-handle-cache';
 
 interface EditorDB extends DBSchema {
 	handles: {
@@ -54,6 +55,10 @@ export class AssetsAccessService {
 	readonly handle = this.assetsHandle.asReadonly();
 	/** The assets handle, but only once read/write access is granted. A restored handle needs the user to grant access again. */
 	readonly accessibleHandle = computed(() => this.hasAccess() ? this.assetsHandle() : undefined);
+	private readonly directories = computed(() => {
+		const root = this.assetsHandle();
+		return root && new DirectoryHandleCache(root);
+	});
 	
 	private readonly db = openDB<EditorDB>('cc-map-editor', 1, {
 		upgrade: db => db.createObjectStore('handles'),
@@ -137,11 +142,7 @@ export class AssetsAccessService {
 	}
 	
 	private async getDirectory(path: string) {
-		let dir = this.assetsHandle()!;
-		for (const name of path.split('/').filter(Boolean)) {
-			dir = await dir.getDirectoryHandle(name);
-		}
-		return dir;
+		return this.directories()!.get(path);
 	}
 	
 	private async listFiles(path: string, extension: string): Promise<AssetFile[]> {
