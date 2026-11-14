@@ -71,10 +71,6 @@ export class Helper {
 		return JSON.parse(JSON.stringify(obj));
 	}
 	
-	public static typedKeys<T extends object>(obj: T): (keyof T)[] {
-		return Object.keys(obj) as (keyof T)[];
-	}
-	
 	public static async getJson(key: string, callback: (json: any) => void) {
 		const cache = Globals.scene.cache.json;
 
