@@ -2,7 +2,7 @@ import { computed, inject, resource, Service, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DBSchema, openDB } from 'idb';
 import { Label } from '../models/events';
-import { DirectoryHandleCache } from './directory-handle-cache';
+import { DirectoryHandleCache, undefinedIfNotFound } from './directory-handle-cache';
 
 interface EditorDB extends DBSchema {
 	handles: {
@@ -134,11 +134,11 @@ export class AssetsAccessService {
 		// return lastValueFrom(this.request('api/allModMapEditorConfigs', api.getAllModMapEditorConfigs));
 	}
 	
-	async getFile(path: string): Promise<AssetFile> {
+	async getFile(path: string): Promise<AssetFile | undefined> {
 		const separator = path.lastIndexOf('/');
 		const dir = await this.getDirectory(path.substring(0, separator));
-		const handle = await dir.getFileHandle(path.substring(separator + 1));
-		return { path, handle };
+		const handle = await dir?.getFileHandle(path.substring(separator + 1)).catch(undefinedIfNotFound);
+		return handle && { path, handle };
 	}
 	
 	private async getDirectory(path: string) {
@@ -147,6 +147,9 @@ export class AssetsAccessService {
 	
 	private async listFiles(path: string, extension: string): Promise<AssetFile[]> {
 		const dir = await this.getDirectory(path);
+		if (!dir) {
+			return [];
+		}
 		const files: AssetFile[] = [];
 		const subDirs: Promise<AssetFile[]>[] = [];
 		for await (const entry of dir.values()) {
@@ -219,7 +222,7 @@ export class AssetsAccessService {
 	
 	private async listFolders(path: string): Promise<string[]> {
 		// an unmodded game has no 'mods' folder
-		const dir = await this.getDirectory(path).catch(() => undefined);
+		const dir = await this.getDirectory(path);
 		if (!dir) {
 			return [];
 		}
@@ -234,7 +237,7 @@ export class AssetsAccessService {
 	}
 	
 	private async readJson<T>(path: string): Promise<T | undefined> {
-		const file = await this.getFile(path).catch(() => undefined);
+		const file = await this.getFile(path);
 		if (!file) {
 			return undefined;
 		}

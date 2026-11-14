@@ -71,11 +71,15 @@ export class MapLoaderService {
 	
 	async loadMapByName(name: string, confirm = false) {
 		const path = PathResolver.convertToPath(BasePath.MAPS, name, FileExtension.JSON);
-		let file: AssetFile;
+		let file: AssetFile | undefined;
 		try {
 			file = await this.assets.getFile(path);
 		} catch (e: unknown) {
 			this.showLoadError(path, e);
+			return;
+		}
+		if (!file) {
+			this.showLoadError(path, 'file not found');
 			return;
 		}
 		await this.loadMapByFile(file.handle, confirm);

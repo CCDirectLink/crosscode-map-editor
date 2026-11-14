@@ -82,8 +82,12 @@ export class Helper {
 		let json: unknown;
 		try {
 			const file = await Globals.assets.getFile(key + '.json');
-			json = JSON.parse(await (await file.handle.getFile()).text());
-			cache.add(key, json);
+			if (file) {
+				json = JSON.parse(await (await file.handle.getFile()).text());
+				cache.add(key, json);
+			} else {
+				console.warn(`Resource not found: ${key}.json`);
+			}
 		} catch (e) {
 			console.warn(`Failed to resolve resource: ${key}.json`, e);
 		}
@@ -116,6 +120,9 @@ export class Helper {
 		let img: HTMLImageElement;
 		try {
 			const file = await Globals.assets.getFile(key);
+			if (!file) {
+				return false;
+			}
 			const url = URL.createObjectURL(await file.handle.getFile());
 			img = new Image();
 			img.src = url;
