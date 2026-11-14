@@ -2,7 +2,8 @@ import { computed, inject, resource, Service, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DBSchema, openDB } from 'idb';
 import { Label } from '../models/events';
-import { DirectoryHandleCache, undefinedIfNotFound } from './directory-handle-cache';
+import { AssetSource, AssetSources } from './asset-sources';
+import { DirectoryHandleCache } from './directory-handle-cache';
 import { SettingsService } from './settings.service';
 
 interface EditorDB extends DBSchema {
@@ -15,13 +16,14 @@ interface EditorDB extends DBSchema {
 export interface AssetFile {
 	path: string;
 	handle: FileSystemFileHandle;
+	mod?: ModInfo;
 }
 
 export interface ModInfo {
 	id: string;
 	displayName: string;
-	assets?: FileSystemDirectoryHandle;
-	root?: FileSystemDirectoryHandle;
+	assets?: DirectoryHandleCache;
+	root?: DirectoryHandleCache;
 	dependencies?: string[];
 	version?: string;
 	type: ModType;
@@ -85,13 +87,28 @@ export class AssetsAccessService {
 		defaultValue: [],
 	});
 	
-	public allMods = this._allMods.asReadonly();
+	public readonly allMods = this._allMods.asReadonly();
 	
-	public readonly activatedMods = computed(() => {
+	public readonly activeMods = computed(() => {
 		const allMods = this.allMods.value();
 		const settings = this.settings.signalSettings();
 		const selectedMods = new Set(settings.selectedMods().concat(settings.selectedDlcs()));
 		return allMods.filter(mod => selectedMods.has(mod.id));
+	});
+	
+	// priority is mod > dlc > base game, activeMods has the mods before the DLCs
+	private readonly sources = computed(() => {
+		const sources: AssetSource[] = [];
+		for (const mod of this.activeMods()) {
+			if (mod.assets) {
+				sources.push({ directories: mod.assets, mod });
+			}
+		}
+		const base = this.directories();
+		if (base) {
+			sources.push({ directories: base });
+		}
+		return new AssetSources(sources);
 	});
 	
 	// ready when all mods are loaded
@@ -129,11 +146,11 @@ export class AssetsAccessService {
 	
 	async getAllMaps(): Promise<AssetFile[]> {
 		const folder = 'data/maps';
-		return await this.listFiles(folder, '.json');
+		return await this.getSources().listFiles(folder, '.json', true);
 	}
 	
 	async getAllTilesets(): Promise<string[]> {
-		const files = await this.listFiles('media/map', '.png');
+		const files = await this.getSources().listFiles('media/map', '.png');
 		return files.map(file => file.path).sort();
 	}
 	
@@ -141,7 +158,7 @@ export class AssetsAccessService {
 	 * @returns paths how the game files use them. e.g. 'dungeon/ar' for 'data/props/dungeon/ar.json'
 	 */
 	async getAllFilesInFolder(folder: string, extension = '.json'): Promise<string[]> {
-		const files = await this.listFiles(folder, extension);
+		const files = await this.getSources().listFiles(folder, extension);
 		return files
 			.map(file => file.path.substring(folder.length + 1, file.path.length - extension.length))
 			.sort();
@@ -154,18 +171,14 @@ export class AssetsAccessService {
 	}
 	
 	async getFile(path: string): Promise<AssetFile | undefined> {
+		return this.getSources().getFile(path);
+	}
+	
+	private getSources() {
 		this.assertModsLoaded();
-		return this.findFile(path);
+		return this.sources();
 	}
-
-	// unguarded: the mod list itself is read through this
-	private async findFile(path: string): Promise<AssetFile | undefined> {
-		const separator = path.lastIndexOf('/');
-		const dir = await this.getDirectory(path.substring(0, separator));
-		const handle = await dir?.getFileHandle(path.substring(separator + 1)).catch(undefinedIfNotFound);
-		return handle && { path, handle };
-	}
-
+	
 	private assertModsLoaded() {
 		if (!this.accessibleHandle()) {
 			const error = new Error('Assets accessed before mods are loaded');
@@ -173,28 +186,9 @@ export class AssetsAccessService {
 			throw error;
 		}
 	}
-
+	
 	private async getDirectory(path: string) {
 		return this.directories()!.get(path);
-	}
-
-	private async listFiles(path: string, extension: string): Promise<AssetFile[]> {
-		this.assertModsLoaded();
-		const dir = await this.getDirectory(path);
-		if (!dir) {
-			return [];
-		}
-		const files: AssetFile[] = [];
-		const subDirs: Promise<AssetFile[]>[] = [];
-		for await (const entry of dir.values()) {
-			const entryPath = `${path}/${entry.name}`;
-			if (entry.kind === 'directory') {
-				subDirs.push(this.listFiles(entryPath, extension));
-			} else if (entry.name.toLowerCase().endsWith(extension)) {
-				files.push({ path: entryPath, handle: entry });
-			}
-		}
-		return files.concat(...await Promise.all(subDirs));
 	}
 	
 	private async readAllMods(modType: ModType) {
@@ -206,16 +200,35 @@ export class AssetsAccessService {
 	private async readModInfo(folder: string, modType: ModType): Promise<ModInfo | undefined> {
 		const path = `${modType}/${folder}`;
 		
+		const dir = this.directories()!;
+		
+		const readManifest = async <T>(name: string): Promise<T | undefined> => {
+			const handle = await dir.getFileHandle(`${path}/${name}`);
+			if (!handle) {
+				return undefined;
+			}
+			
+			try {
+				return JSON.parse(await (await handle.getFile()).text());
+			} catch (e) {
+				console.error(`Invalid json data in ${path}/${name}`, e);
+				return undefined;
+			}
+		};
+		
+		const assets = await dir.get(`${path}/assets`);
+		const root = await dir.get(path);
+		
 		const base: ModInfo = {
 			id: '?',
 			displayName: '?',
 			type: modType,
-			assets: await this.directories()?.get(`${path}/assets`),
-			root: await this.directories()?.get(path),
+			assets: assets ? new DirectoryHandleCache(assets) : undefined,
+			root: root ? new DirectoryHandleCache(root) : undefined,
 		};
 		
 		if (modType === ModType.DLC) {
-			const manifest = await this.readJson<DlcManifest>(`${path}/${folder}.json`);
+			const manifest = await readManifest<DlcManifest>(`${folder}.json`);
 			if (!manifest) {
 				return undefined;
 			}
@@ -227,7 +240,7 @@ export class AssetsAccessService {
 			};
 		}
 		
-		const ccmod = await this.readJson<ModManifest>(`${path}/ccmod.json`);
+		const ccmod = await readManifest<ModManifest>('ccmod.json');
 		if (ccmod) {
 			const id = ccmod.id ?? folder;
 			const title = typeof ccmod.title === 'string' ? ccmod.title : ccmod.title?.en_US;
@@ -239,7 +252,7 @@ export class AssetsAccessService {
 				dependencies: getDependencies(ccmod),
 			};
 		}
-		const pkg = await this.readJson<ModManifest>(`${path}/package.json`);
+		const pkg = await readManifest<ModManifest>('package.json');
 		if (pkg) {
 			const id = pkg.name ?? folder;
 			return {
@@ -268,20 +281,6 @@ export class AssetsAccessService {
 			}
 		}
 		return folders;
-	}
-	
-	private async readJson<T>(path: string): Promise<T | undefined> {
-		const file = await this.findFile(path);
-		if (!file) {
-			return undefined;
-		}
-
-		try {
-			return JSON.parse(await (await file.handle.getFile()).text());
-		} catch (e) {
-			console.error(`Invalid json data in ${path}`, e);
-			return undefined;
-		}
 	}
 	
 	private async checkPermission(handle: FileSystemDirectoryHandle) {

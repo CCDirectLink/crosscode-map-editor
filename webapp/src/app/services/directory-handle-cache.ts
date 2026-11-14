@@ -22,6 +22,12 @@ export class DirectoryHandleCache {
 		return dir;
 	}
 	
+	async getFileHandle(path: string): Promise<FileSystemFileHandle | undefined> {
+		const separator = path.lastIndexOf('/');
+		const dir = await this.get(path.substring(0, separator));
+		return dir?.getFileHandle(path.substring(separator + 1)).catch(undefinedIfNotFound);
+	}
+	
 	// caches the promise, so simultaneous lookups share one request
 	private getChild(parent: Promise<FileSystemDirectoryHandle | undefined>, path: string, name: string) {
 		let child = this.cache.get(path);
