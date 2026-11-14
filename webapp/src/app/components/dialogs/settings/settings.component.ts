@@ -1,9 +1,9 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, resource, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AssetsAccessService } from '../../../services/assets-access.service';
-import { AppSettings, SettingsService } from '../../../services/settings.service';
+import { SettingsService } from '../../../services/settings.service';
 import { ImageSelectCardComponent, PropListCard } from '../../widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
 import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
@@ -12,6 +12,8 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { ExtendedModule } from '@angular/flex-layout/extended';
 import { MatCheckbox } from '@angular/material/checkbox';
+import { MatListOption, MatSelectionList } from '@angular/material/list';
+import { ColoredTextDirective } from '../../../directives/colored-text.directive';
 
 type AssetsStatus = 'unknown' | 'valid' | 'invalid';
 
@@ -34,6 +36,9 @@ const ASSETS_STATUS_DISPLAY: Record<AssetsStatus, { icon: string, iconCss: strin
 		MatIcon,
 		ExtendedModule,
 		MatCheckbox,
+		MatSelectionList,
+		MatListOption,
+		ColoredTextDirective,
 		ImageSelectCardComponent,
 	],
 })
@@ -55,10 +60,32 @@ export class SettingsComponent {
 	});
 	readonly assetsStatusDisplay = computed(() => ASSETS_STATUS_DISPLAY[this.assetsStatus()]);
 	
-	// TODO: fs-access
-	readonly mods = signal<any[]>([]);
-	
-	settings: AppSettings;
+	private readonly availableMods = resource({
+		params: () => this.assetsAccess.accessibleHandle(),
+		loader: async () => {
+			const [dlcs, mods] = await Promise.all([
+				this.assetsAccess.getAllDlcs(),
+				this.assetsAccess.getAllMods(),
+			]);
+			return { dlcs, mods };
+		},
+	});
+	private readonly loadedMods = computed(() => this.availableMods.hasValue() ? this.availableMods.value() : undefined);
+	readonly settings = this.settingsService.createDraft();
+	private readonly dlcList = {
+		title: 'DLC',
+		emptyText: 'No DLC found',
+		mods: computed(() => this.loadedMods()?.dlcs ?? []),
+		selected: this.settings.selectedDlcs,
+	};
+	private readonly modList = {
+		title: 'Mods',
+		emptyText: 'No mods found',
+		mods: computed(() => this.loadedMods()?.mods ?? []),
+		selected: this.settings.selectedMods,
+	};
+	readonly modsLoading = this.availableMods.isLoading;
+	readonly modLists = [this.dlcList, this.modList];
 	
 	cardLight: PropListCard = {
 		name: 'Light',
@@ -69,13 +96,6 @@ export class SettingsComponent {
 		name: 'Dark',
 		imgSrc: 'assets/selection-dark.png',
 	};
-	
-	constructor() {
-		this.settings = {} as AppSettings;
-		for (const [key, val] of Object.entries(this.settingsService.signalSettings())) {
-			this.settings[key as keyof AppSettings] = val();
-		}
-	}
 	
 	private async isAssetsFolder(handle: FileSystemDirectoryHandle) {
 		const hasDir = (name: string) => handle.getDirectoryHandle(name).then(() => true, () => false);
@@ -93,12 +113,7 @@ export class SettingsComponent {
 		if (picked?.valid) {
 			await this.assetsAccess.setHandle(picked.handle);
 		}
-		
-		const settings = this.settingsService.signalSettings();
-		for (const [k, val] of Object.entries(this.settings)) {
-			const key = k as keyof AppSettings;
-			settings[key].set(val);
-		}
+		this.settingsService.applyDraft(this.settings);
 		
 		this.close();
 		const ref = this.snackBar.open('Changing the path requires to restart the editor', 'Restart', {

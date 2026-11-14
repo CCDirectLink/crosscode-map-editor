@@ -1,4 +1,5 @@
 import { effect, Injectable, signal, WritableSignal } from '@angular/core';
+import { getKeys } from './object-helper';
 
 export type Signalify<T> = {
 	[K in keyof T]: WritableSignal<T[K]>;
@@ -7,6 +8,22 @@ export type Signalify<T> = {
 export interface AppSettings {
 	wrapEventEditorLines: boolean;
 	selectionBoxDark: boolean;
+	selectedDlcs: string[];
+	selectedMods: string[];
+}
+
+function copySignals<T extends object>(source: Signalify<T>): Signalify<T> {
+	const copy = {} as Signalify<T>;
+	for (const key of getKeys(source)) {
+		copy[key] = signal(source[key]());
+	}
+	return copy;
+}
+
+function applySignals<T extends object>(source: Signalify<T>, target: Signalify<T>) {
+	for (const key of getKeys(source)) {
+		target[key].set(source[key]());
+	}
 }
 
 @Injectable({
@@ -15,14 +32,16 @@ export interface AppSettings {
 export class SettingsService {
 	
 	private readonly settings: Signalify<AppSettings> = {
-		wrapEventEditorLines: this.loadBooleanOrDefault('wrapEventEditorLines', true),
-		selectionBoxDark: this.loadBooleanOrDefault('selectionBoxDark', true),
+		wrapEventEditorLines: this.loadOrDefault('wrapEventEditorLines', true),
+		selectionBoxDark: this.loadOrDefault('selectionBoxDark', true),
+		selectedDlcs: this.loadOrDefault('selectedDlcs', []),
+		selectedMods: this.loadOrDefault('selectedMods', []),
 	};
 	
 	constructor() {
 		for (const [key, val] of Object.entries(this.settings)) {
 			effect(() => {
-				localStorage.setItem(key, val().toString());
+				localStorage.setItem(key, JSON.stringify(val()));
 			});
 		}
 	}
@@ -31,9 +50,24 @@ export class SettingsService {
 		return this.settings;
 	}
 	
-	private loadBooleanOrDefault(key: keyof AppSettings, defaultValue: boolean): WritableSignal<boolean> {
+	createDraft(): Signalify<AppSettings> {
+		return copySignals(this.settings);
+	}
+	
+	applyDraft(draft: Signalify<AppSettings>) {
+		applySignals(draft, this.settings);
+	}
+	
+	private loadOrDefault<K extends keyof AppSettings>(key: K, defaultValue: AppSettings[K]): WritableSignal<AppSettings[K]> {
 		const loadedValue = localStorage.getItem(key);
-		const val = loadedValue === null ? defaultValue : (loadedValue === 'true');
+		let val = defaultValue;
+		if (loadedValue !== null) {
+			try {
+				val = JSON.parse(loadedValue);
+			} catch (e) {
+				console.error(`Invalid value for setting ${key}`, e);
+			}
+		}
 		return signal(val);
 	}
 }

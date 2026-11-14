@@ -2,6 +2,7 @@
 
 .content-container {
 	padding: 16px;
+	@include mat.list-density(-4)
 }
 
 .option-row {

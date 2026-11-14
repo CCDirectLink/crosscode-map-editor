@@ -21,20 +21,25 @@
 					</div>
 				</div>
 			</form>
-			<!-- TODO: fs-access
-			<div fxLayout="row" class="option-row">
-				<mat-form-field fxFlex="auto">
-					<mat-label>Mod</mat-label>
-					<mat-select [(value)]="mod">
-						<mat-option>None</mat-option>
-						@for (mod of mods(); track mod) {
-							<mat-option [value]="mod.id"><span [appColoredText]="mod.displayName"></span></mat-option>
-						}
-					</mat-select>
-					<mat-hint>Maps will be stored and loaded from the selected mod</mat-hint>
-				</mat-form-field>
-			</div>
-			-->
+			@for (list of modLists; track list.title) {
+				<div class="flex flex-col pt-5">
+					<h2 class="mat-h2">{{ list.title }}</h2>
+					@if (list.mods().length) {
+						<mat-selection-list color="primary" [(ngModel)]="list.selected">
+							@for (mod of list.mods(); track mod.id) {
+								<mat-list-option togglePosition="before" [value]="mod.id">
+									<span [appColoredText]="mod.displayName"></span>
+									@if (mod.version) {
+										<span class="status-text ml-2">v{{ mod.version }}</span>
+									}
+								</mat-list-option>
+							}
+						</mat-selection-list>
+					} @else if (!modsLoading()) {
+						<span class="status-text">{{ list.emptyText }}</span>
+					}
+				</div>
+			}
 			<div fxLayout="row" class="option-row">
 				<mat-checkbox
 					[(ngModel)]="settings.wrapEventEditorLines"
@@ -48,13 +53,13 @@
 				<div class="flex flex-row gap-4">
 					<app-image-select-card
 						[card]="cardLight"
-						[selected]="!settings.selectionBoxDark"
-						(onClick)="settings.selectionBoxDark = false"
+						[selected]="!settings.selectionBoxDark()"
+						(onClick)="settings.selectionBoxDark.set(false)"
 					></app-image-select-card>
 					<app-image-select-card
 						[card]="cardDark"
-						[selected]="settings.selectionBoxDark"
-						(onClick)="settings.selectionBoxDark = true"
+						[selected]="settings.selectionBoxDark()"
+						(onClick)="settings.selectionBoxDark.set(true)"
 					></app-image-select-card>
 				</div>
 			</div>

@@ -1,6 +1,7 @@
 import { computed, inject, Service, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DBSchema, openDB } from 'idb';
+import { Label } from '../models/events';
 
 interface EditorDB extends DBSchema {
 	handles: {
@@ -14,7 +15,34 @@ export interface AssetFile {
 	handle: FileSystemFileHandle;
 }
 
+export interface ModInfo {
+	id: string;
+	displayName: string;
+	version?: string;
+}
+
+interface DlcManifest {
+	name: Label;
+}
+
+interface CCmodManifest {
+	id?: string;
+	title?: string | { en_US?: string };
+	version?: string;
+}
+
+interface ModPackageManifest {
+	name?: string;
+	displayName?: string;
+	ccmodHumanName?: string;
+	version?: string;
+}
+
 const ASSETS_KEY = 'assets';
+
+function byDisplayName(a: ModInfo, b: ModInfo) {
+	return a.displayName.localeCompare(b.displayName);
+}
 
 @Service()
 export class AssetsAccessService {
@@ -72,6 +100,29 @@ export class AssetsAccessService {
 			.sort();
 	}
 	
+	async getAllDlcs(): Promise<ModInfo[]> {
+		const folders = await this.listFolders('extension');
+		const dlcs = await Promise.all(folders.map(async (folder): Promise<ModInfo | undefined> => {
+			const manifest = await this.readJson<DlcManifest>(`extension/${folder}/${folder}.json`);
+			return manifest && { id: folder, displayName: manifest.name?.en_US?.trim() || folder };
+		}));
+		return dlcs
+			.filter(dlc => dlc !== undefined)
+			.sort(byDisplayName);
+	}
+	
+	async getAllMods(): Promise<ModInfo[]> {
+		const folders = await this.listFolders('mods');
+		// a mod is identified by its id, not by its folder
+		const mods = new Map<string, ModInfo>();
+		for (const mod of await Promise.all(folders.map(folder => this.readModInfo(folder)))) {
+			if (mod) {
+				mods.set(mod.id, mod);
+			}
+		}
+		return [...mods.values()].sort(byDisplayName);
+	}
+	
 	async getModMapEditorConfigs() {
 		// TODO: fs-access
 		return [] as any[];
@@ -106,6 +157,53 @@ export class AssetsAccessService {
 			}
 		}
 		return files.concat(...await Promise.all(subDirs));
+	}
+	
+	private async readModInfo(folder: string): Promise<ModInfo | undefined> {
+		const ccmod = await this.readJson<CCmodManifest>(`mods/${folder}/ccmod.json`);
+		if (ccmod) {
+			const id = ccmod.id ?? folder;
+			const title = typeof ccmod.title === 'string' ? ccmod.title : ccmod.title?.en_US;
+			return { id, displayName: title ?? id, version: ccmod.version };
+		}
+		
+		const pkg = await this.readJson<ModPackageManifest>(`mods/${folder}/package.json`);
+		if (pkg) {
+			const id = pkg.name ?? folder;
+			return { id, displayName: pkg.displayName ?? pkg.ccmodHumanName ?? id, version: pkg.version };
+		}
+		
+		return undefined;
+	}
+	
+	private async listFolders(path: string): Promise<string[]> {
+		// an unmodded game has no 'mods' folder
+		const dir = await this.getDirectory(path).catch(() => undefined);
+		if (!dir) {
+			return [];
+		}
+		
+		const folders: string[] = [];
+		for await (const entry of dir.values()) {
+			if (entry.kind === 'directory') {
+				folders.push(entry.name);
+			}
+		}
+		return folders;
+	}
+	
+	private async readJson<T>(path: string): Promise<T | undefined> {
+		const file = await this.getFile(path).catch(() => undefined);
+		if (!file) {
+			return undefined;
+		}
+		
+		try {
+			return JSON.parse(await (await file.handle.getFile()).text());
+		} catch (e) {
+			console.error(`Invalid json data in ${path}`, e);
+			return undefined;
+		}
 	}
 	
 	private async checkPermission(handle: FileSystemDirectoryHandle) {
