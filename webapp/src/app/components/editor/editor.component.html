@@ -10,7 +10,7 @@
 					<app-sidenav></app-sidenav>
 				</mat-sidenav>
 				<mat-sidenav-content>
-					@if (assets.accessibleHandle()) {
+					@if (assets.ready | async) {
 						<div class="green inner-container no-scroll">
 							
 							<app-phaser></app-phaser>

@@ -12,6 +12,7 @@ import { RouterOutlet } from '@angular/router';
 import { HistoryComponent } from '../dialogs/floating-window/history/history.component';
 import { TileSelectorComponent } from '../dialogs/floating-window/tile-selector/tile-selector.component';
 import { AssetsAccessService } from '../../services/assets-access.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
 	selector: 'app-editor',
@@ -30,6 +31,7 @@ import { AssetsAccessService } from '../../services/assets-access.service';
 		RouterOutlet,
 		HistoryComponent,
 		TileSelectorComponent,
+		AsyncPipe,
 	],
 })
 export class EditorComponent {
