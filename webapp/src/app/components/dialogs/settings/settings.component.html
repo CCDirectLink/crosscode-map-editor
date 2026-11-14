@@ -35,6 +35,13 @@
 										@if (mod.version) {
 											<span class="status-text ml-2">v{{ mod.version }}</span>
 										}
+										@if (modConfigError()?.mod === mod.id) {
+											<mat-icon
+												class="icon-invalid ml-2 align-middle"
+												[matTooltip]="modConfigError()?.message"
+												matTooltipClass="linebreak-tooltip max-width-tooltip"
+											>error</mat-icon>
+										}
 									</mat-list-option>
 								}
 							</mat-selection-list>

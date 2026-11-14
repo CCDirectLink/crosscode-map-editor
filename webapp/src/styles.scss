@@ -130,6 +130,18 @@ body {
 	white-space: pre-line;
 }
 
+.linebreak-tooltip {
+	white-space: pre-line;
+
+	& > * {
+		text-align: start !important;
+	}
+}
+
+.max-width-tooltip .mdc-tooltip__surface {
+	max-width: unset !important;
+}
+
 .snackbar-error {
 	> * {
 		background: #d32f2f !important;

@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { AssetsAccessService, ModType } from '../../../services/assets-access.service';
+import { JsonLoaderService } from '../../../services/json-loader.service';
 import { SettingsService } from '../../../services/settings.service';
 import { ImageSelectCardComponent, PropListCard } from '../../widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
@@ -11,6 +12,7 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatListOption, MatSelectionList } from '@angular/material/list';
+import { MatTooltip } from '@angular/material/tooltip';
 import { DividerComponent } from '../../divider/divider.component';
 
 type AssetsStatus = 'unknown' | 'valid' | 'invalid';
@@ -34,6 +36,7 @@ const ASSETS_STATUS_DISPLAY: Record<AssetsStatus, { icon: string, iconCss: strin
 		MatCheckbox,
 		MatSelectionList,
 		MatListOption,
+		MatTooltip,
 		ImageSelectCardComponent,
 		DividerComponent,
 	],
@@ -76,6 +79,7 @@ export class SettingsComponent {
 		selected: this.settings.selectedMods,
 	};
 	readonly modLists = [this.modList, this.dlcList];
+	readonly modConfigError = inject(JsonLoaderService).modConfigError;
 	
 	cardLight: PropListCard = {
 		name: 'Light',

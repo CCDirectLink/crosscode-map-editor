@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -14,6 +14,7 @@ export class JsonLoaderService {
 	
 	private readonly initialized?: Promise<void>;
 	private configs = new Map<string, unknown[]>;
+	readonly modConfigError = signal<{ mod?: string, message: string } | undefined>(undefined);
 	
 	private cache: Record<string, unknown> = {};
 	private promiseCache: Record<string, Promise<unknown>> = {};
@@ -34,6 +35,7 @@ export class JsonLoaderService {
 			try {
 				parsedFile = JSON.parse(await (await config.handle.getFile()).text());
 			} catch (e) {
+				this.modConfigError.set({ mod: config.mod?.id, message: `Failed to parse ${config.path}\n${e}` });
 				this.snackbar.open(
 					`Failed to parse mod config: ${config.mod?.id}/${config.path}`,
 					'close',
