@@ -24,13 +24,11 @@ import { CaptionsComponent } from '../captions/captions.component';
 	imports: [CaptionsComponent],
 })
 export class PhaserComponent implements AfterViewInit {
-	private element = inject(ElementRef);
 	private mapLoader = inject(MapLoaderService);
 	private globalEvents = inject(GlobalEventsService);
 	private stateHistory = inject(StateHistoryService);
 	private phaserEventsService = inject(PhaserEventsService);
 	private heightMap = inject(HeightMapService);
-	
 	
 	@ViewChild('content', { static: true }) content!: ElementRef<HTMLElement>;
 	
@@ -63,6 +61,9 @@ export class PhaserComponent implements AfterViewInit {
 		this.heightMap.init();
 		const scene = new MainScene();
 		const scale = this.getScale();
+		if (Globals.game) {
+			Globals.game.destroy(true);
+		}
 		Globals.game = new Phaser.Game({
 			width: scale.width,
 			height: scale.height,
