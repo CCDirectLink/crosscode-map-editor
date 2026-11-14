@@ -67,15 +67,17 @@ export class AssetsAccessService {
 	private readonly assetsHandle = signal<FileSystemDirectoryHandle | undefined>(undefined);
 	private readonly hasAccess = signal(false);
 	readonly handle = this.assetsHandle.asReadonly();
-	/** The assets handle, but only once read/write access is granted. A restored handle needs the user to grant access again. */
-	readonly accessibleHandle = computed(() => this.hasAccess() ? this.assetsHandle() : undefined);
+	
+	// when the user gave permission to the assets folder
+	private readonly grantedHandle = computed(() => this.hasAccess() ? this.assetsHandle() : undefined);
+	
 	private readonly directories = computed(() => {
 		const root = this.assetsHandle();
 		return root && new DirectoryHandleCache(root);
 	});
 	
 	private _allMods = resource({
-		params: () => this.accessibleHandle(),
+		params: () => this.grantedHandle(),
 		loader: async () => [
 			...await this.readAllMods(ModType.MOD),
 			...await this.readAllMods(ModType.DLC),
@@ -85,11 +87,19 @@ export class AssetsAccessService {
 	
 	public allMods = this._allMods.asReadonly();
 	
-	private activatedMods = computed(() => {
+	public readonly activatedMods = computed(() => {
 		const allMods = this.allMods.value();
 		const settings = this.settings.signalSettings();
 		const selectedMods = new Set(settings.selectedMods().concat(settings.selectedDlcs()));
 		return allMods.filter(mod => selectedMods.has(mod.id));
+	});
+	
+	// ready when all mods are loaded
+	public readonly accessibleHandle = computed(() => {
+		if (this.allMods.status() === 'resolved') {
+			return this.grantedHandle();
+		}
+		return undefined;
 	});
 	
 	private readonly db = openDB<EditorDB>('cc-map-editor', 1, {
@@ -144,17 +154,32 @@ export class AssetsAccessService {
 	}
 	
 	async getFile(path: string): Promise<AssetFile | undefined> {
+		this.assertModsLoaded();
+		return this.findFile(path);
+	}
+
+	// unguarded: the mod list itself is read through this
+	private async findFile(path: string): Promise<AssetFile | undefined> {
 		const separator = path.lastIndexOf('/');
 		const dir = await this.getDirectory(path.substring(0, separator));
 		const handle = await dir?.getFileHandle(path.substring(separator + 1)).catch(undefinedIfNotFound);
 		return handle && { path, handle };
 	}
-	
+
+	private assertModsLoaded() {
+		if (!this.accessibleHandle()) {
+			const error = new Error('Assets accessed before mods are loaded');
+			console.error(error);
+			throw error;
+		}
+	}
+
 	private async getDirectory(path: string) {
 		return this.directories()!.get(path);
 	}
-	
+
 	private async listFiles(path: string, extension: string): Promise<AssetFile[]> {
+		this.assertModsLoaded();
 		const dir = await this.getDirectory(path);
 		if (!dir) {
 			return [];
@@ -246,11 +271,11 @@ export class AssetsAccessService {
 	}
 	
 	private async readJson<T>(path: string): Promise<T | undefined> {
-		const file = await this.getFile(path);
+		const file = await this.findFile(path);
 		if (!file) {
 			return undefined;
 		}
-		
+
 		try {
 			return JSON.parse(await (await file.handle.getFile()).text());
 		} catch (e) {
