@@ -48,12 +48,12 @@ export class JsonLoaderService {
 	}
 	
 	async loadJson<T>(file: string): Promise<T[]> {
+		const json = lastValueFrom(this.angularHttp.get(`./assets/${file}`));
 		await this.initialized;
-		const json = await lastValueFrom(this.angularHttp.get(`./assets/${file}`));
 		const modJson = (this.configs.get(file) ?? []) as T[];
 		
 		return [
-			json as T,
+			await json as T,
 			...modJson,
 		];
 	}
