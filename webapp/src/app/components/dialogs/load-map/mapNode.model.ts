@@ -8,6 +8,7 @@ export interface MapNode {
 	displayed: boolean;
 	file?: AssetFile;
 	children?: MapNode[];
+	section?: boolean;
 }
 
 export interface MapNodeRoot extends MapNode {

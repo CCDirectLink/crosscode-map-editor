@@ -11,7 +11,6 @@ import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatListOption, MatSelectionList } from '@angular/material/list';
-import { ColoredTextDirective } from '../../../directives/colored-text.directive';
 import { DividerComponent } from '../../divider/divider.component';
 
 type AssetsStatus = 'unknown' | 'valid' | 'invalid';
@@ -35,7 +34,6 @@ const ASSETS_STATUS_DISPLAY: Record<AssetsStatus, { icon: string, iconCss: strin
 		MatCheckbox,
 		MatSelectionList,
 		MatListOption,
-		ColoredTextDirective,
 		ImageSelectCardComponent,
 		DividerComponent,
 	],

@@ -17,6 +17,8 @@ export interface AssetFile {
 	path: string;
 	handle: FileSystemFileHandle;
 	mod?: ModInfo;
+	overrides?: boolean;
+	overridden?: boolean;
 }
 
 export interface ModInfo {
@@ -80,10 +82,19 @@ export class AssetsAccessService {
 	
 	private _allMods = resource({
 		params: () => this.grantedHandle(),
-		loader: async () => [
-			...await this.readAllMods(ModType.MOD),
-			...await this.readAllMods(ModType.DLC),
-		],
+		loader: async () => {
+			try {
+				const [mods, dlcs] = await Promise.all([
+					this.readAllMods(ModType.MOD),
+					this.readAllMods(ModType.DLC),
+				]);
+				return [...mods, ...dlcs];
+			} catch (e) {
+				console.error('Failed to load mods', e);
+				this.snackBar.open('failed to load mods', 'ok', { panelClass: 'snackbar-error' });
+				throw e;
+			}
+		},
 		defaultValue: [],
 	});
 	
@@ -216,8 +227,8 @@ export class AssetsAccessService {
 			}
 		};
 		
-		const assets = await dir.get(`${path}/assets`);
 		const root = await dir.get(path);
+		const assets = modType === ModType.DLC ? undefined : await dir.get(`${path}/assets`);
 		
 		const base: ModInfo = {
 			id: '?',

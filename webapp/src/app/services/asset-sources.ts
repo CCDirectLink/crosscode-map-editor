@@ -14,16 +14,17 @@ export class AssetSources {
 	async listFiles(path: string, extension: string, includeOverridden = false): Promise<AssetFile[]> {
 		const lists = await Promise.all(this.sources.map(source => this.listSource(source, path, extension)));
 		const all = lists.flat();
-		if (includeOverridden) {
-			return all;
-		}
 		const files = new Map<string, AssetFile>();
 		for (const file of all) {
-			if (!files.has(file.path)) {
+			const used = files.get(file.path);
+			if (used) {
+				used.overrides = true;
+				file.overridden = true;
+			} else {
 				files.set(file.path, file);
 			}
 		}
-		return Array.from(files.values());
+		return includeOverridden ? all : Array.from(files.values());
 	}
 	
 	async getFile(path: string): Promise<AssetFile | undefined> {

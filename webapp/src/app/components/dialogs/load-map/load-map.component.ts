@@ -1,7 +1,6 @@
-import { NestedTreeControl } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, ElementRef, inject, Input, resource, untracked, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, ElementRef, inject, Input, resource, signal, untracked, ViewChild, viewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { MatNestedTreeNode, MatTree, MatTreeNestedDataSource, MatTreeNode, MatTreeNodeDef, MatTreeNodeOutlet, MatTreeNodeToggle } from '@angular/material/tree';
+import { MatTree, MatTreeNode, MatTreeNodeDef, MatTreeNodeToggle } from '@angular/material/tree';
 import { MapLoaderService } from '../../../services/map-loader.service';
 import { SearchFilterService } from '../../../services/search-filter.service';
 import { MapNode, MapNodeRoot } from './mapNode.model';
@@ -13,7 +12,7 @@ import { MatFormField, MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { HighlightDirective } from '../../../directives/highlight.directive';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { AssetFile, AssetsAccessService } from '../../../services/assets-access.service';
+import { AssetFile, AssetsAccessService, ModInfo } from '../../../services/assets-access.service';
 import { BasePath, FileExtension } from '../../../services/path-resolver';
 
 
@@ -34,9 +33,7 @@ import { BasePath, FileExtension } from '../../../services/path-resolver';
 		MatTreeNode,
 		MatButton,
 		HighlightDirective,
-		MatNestedTreeNode,
 		MatTreeNodeToggle,
-		MatTreeNodeOutlet,
 		MatProgressSpinner,
 	
 	],
@@ -59,16 +56,16 @@ export class LoadMapComponent {
 		loader: () => this.assets.getAllMaps(),
 	});
 
-	treeControl = new NestedTreeControl<VirtualMapNode>(node => node.children);
-	mapsSource = new MatTreeNestedDataSource<VirtualMapNode>();
+	nodes: VirtualMapNode[] = [];
+	childrenAccessor = (node: VirtualMapNode) => node.children ?? [];
+	private matTree = viewChild<MatTree<VirtualMapNode>>(MatTree);
+	private sections = signal<VirtualMapNode[]>([]);
 	
 	root: MapNodeRoot = { name: '', displayed: true, children: [] }; // The root itself is never displayed. It is used as a datasource for virtualRoot.
 	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering.
 	filter = '';
 	
 	constructor() {
-		this.mapsSource.data = [];
-
 		effect(() => {
 			if (!this.maps.hasValue()) {
 				return;
@@ -77,6 +74,17 @@ export class LoadMapComponent {
 			untracked(() => {
 				this.displayMaps(maps);
 				this.update();
+			});
+		});
+		
+		// sections start expanded
+		effect(() => {
+			const tree = this.matTree();
+			const sections = this.sections();
+			untracked(() => {
+				for (const section of sections) {
+					tree?.expand(section);
+				}
 			});
 		});
 	}
@@ -89,8 +97,8 @@ export class LoadMapComponent {
 		for (const node of this.root.children) {
 			this.filterNode(node, this.filter);
 		}
-		this.mapsSource.data = [];
-		this.mapsSource.data = this.virtualRoot.children || [];
+		this.virtualRoot.refresh();
+		this.nodes = this.virtualRoot.children ?? [];
 		this.ref.markForCheck();
 	}
 	
@@ -106,11 +114,37 @@ export class LoadMapComponent {
 		return node.children !== undefined;
 	}
 	
+	isSection(_: number, node: VirtualMapNode) {
+		return node.section;
+	}
+	
 	close() {
 		return this.sidenav.close();
 	}
 	
 	private displayMaps(files: AssetFile[]) {
+		const sources = new Map<ModInfo | undefined, AssetFile[]>();
+		for (const file of files) {
+			const sourceFiles = sources.get(file.mod);
+			if (sourceFiles) {
+				sourceFiles.push(file);
+			} else {
+				sources.set(file.mod, [file]);
+			}
+		}
+		
+		this.root.children = Array.from(sources).map(([mod, sourceFiles]) => ({
+			name: mod?.displayName ?? 'CrossCode',
+			section: true,
+			displayed: true,
+			children: this.buildTree(sourceFiles),
+		}));
+		
+		this.virtualRoot.refresh();
+		this.sections.set(this.virtualRoot.children ?? []);
+	}
+	
+	private buildTree(files: AssetFile[]): MapNode[] {
 		const data: MapNode[] = [];
 		
 		let lastPath = '';
@@ -126,7 +160,7 @@ export class LoadMapComponent {
 			lastNode = node;
 		}
 		
-		this.root.children = data;
+		return data;
 	}
 	
 	private resolve(data: MapNode[], path: string, lastNode: MapNode[], lastPath: string): MapNode[] {
@@ -162,7 +196,7 @@ export class LoadMapComponent {
 	}
 	
 	private filterNode(node: MapNode, filter: string): boolean {
-		if (this.searchFilterService.test(node.name, filter)) {
+		if (!node.section && this.searchFilterService.test(node.name, filter)) {
 			node.displayed = true;
 			this.displayChildren(node);
 			return true;
