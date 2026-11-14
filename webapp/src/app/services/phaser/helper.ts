@@ -8,7 +8,7 @@ import Scene = Phaser.Scene;
 export class Helper {
 	
 	public static worldToTile(x: number, y: number): Point {
-		const p: Point = {x: 0, y: 0};
+		const p: Point = { x: 0, y: 0 };
 		
 		p.x = Math.floor(x / Globals.TILE_SIZE);
 		p.y = Math.floor(y / Globals.TILE_SIZE);
@@ -17,14 +17,14 @@ export class Helper {
 	}
 	
 	public static getPointerPos(pointer: Phaser.Input.Pointer): Point {
-		return {x: pointer.worldX, y: pointer.worldY};
+		return { x: pointer.worldX, y: pointer.worldY };
 	}
 	
 	public static getTilesetSize(scene: Phaser.Scene, tileset: string): Point {
 		const img = scene.textures.get(tileset).source[0];
 		return {
 			x: Math.ceil(img.width / Globals.TILE_SIZE),
-			y: Math.ceil(img.height / Globals.TILE_SIZE)
+			y: Math.ceil(img.height / Globals.TILE_SIZE),
 		};
 	}
 	
@@ -32,7 +32,7 @@ export class Helper {
 		index -= 1;
 		return {
 			x: index % tileCountX,
-			y: Math.floor(index / tileCountX)
+			y: Math.floor(index / tileCountX),
 		};
 	}
 	
@@ -71,33 +71,8 @@ export class Helper {
 		return JSON.parse(JSON.stringify(obj));
 	}
 	
-	public static async getJson(key: string, callback: (json: any) => void) {
-		const cache = Globals.scene.cache.json;
-
-		// get json from cache
-		if (cache.has(key)) {
-			return callback(cache.get(key));
-		}
-
-		let json: unknown;
-		try {
-			const file = await Globals.assets.getFile(key + '.json');
-			if (file) {
-				json = JSON.parse(await (await file.handle.getFile()).text());
-				cache.add(key, json);
-			} else {
-				console.warn(`Resource not found: ${key}.json`);
-			}
-		} catch (e) {
-			console.warn(`Failed to resolve resource: ${key}.json`, e);
-		}
-		callback(json);
-	}
-	
-	public static getJsonPromise(key: string) {
-		return new Promise(resolve => {
-			this.getJson(key, json => resolve(json));
-		});
+	public static getJsonPromise(key: string): Promise<unknown> {
+		return Globals.jsonLoader.loadGameJson(key + '.json');
 	}
 	
 	/**
@@ -110,32 +85,7 @@ export class Helper {
 		
 		//Sometimes RFG adds a whitespace after (or even in front) of the name.
 		//This is invalid behaviour for loading a file but the game trims it as well.
-		const key = name.trim();
-		
-		if (scene.textures.exists(key)) {
-			return true;
-		}
-		
-		// TODO: save promise to avoid loading the same texture simultaneously
-		let img: HTMLImageElement;
-		try {
-			const file = await Globals.assets.getFile(key);
-			if (!file) {
-				return false;
-			}
-			const url = URL.createObjectURL(await file.handle.getFile());
-			img = new Image();
-			img.src = url;
-			await img.decode().finally(() => URL.revokeObjectURL(url));
-		} catch {
-			return false;
-		}
-
-		// another call might have added the same texture while this one was loading
-		if (!scene.textures.exists(key)) {
-			scene.textures.addImage(key, img);
-		}
-		return true;
+		return Globals.jsonLoader.loadTexture(name.trim(), scene);
 	}
 	
 	/**

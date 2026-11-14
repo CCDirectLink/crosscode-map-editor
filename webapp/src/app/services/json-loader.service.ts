@@ -12,35 +12,37 @@ export class JsonLoaderService {
 	private angularHttp = inject(HttpClient);
 	private snackbar = inject(MatSnackBar);
 	
-	
 	private readonly initialized?: Promise<void>;
 	private configs = new Map<string, unknown[]>;
 	
 	private cache: Record<string, unknown> = {};
 	private promiseCache: Record<string, Promise<unknown>> = {};
+	private gameJsons: Record<string, Promise<unknown> | undefined> = {};
+	private images: Record<string, Promise<HTMLImageElement | undefined> | undefined> = {};
 	
 	constructor() {
 		this.initialized = this.init();
 	}
 	
 	async init() {
+		await this.assets.ready;
 		const configs = await this.assets.getModMapEditorConfigs();
 		
-		for (const config of configs) {
+		// they start with the highest priority, but a later json overrides the ones before it
+		for (const config of configs.reverse()) {
 			let parsedFile: unknown;
 			try {
-				parsedFile = JSON.parse(config.file);
+				parsedFile = JSON.parse(await (await config.handle.getFile()).text());
 			} catch (e) {
-				console.error(e);
 				this.snackbar.open(
-					`Failed to parse mod config: ${config.mod}/map-editor/${config.filename}`,
+					`Failed to parse mod config: ${config.mod?.id}/${config.path}`,
 					'close',
 					{ panelClass: 'snackbar-error' },
 				);
-				continue;
+				throw e;
 			}
-			const configs = this.configs.get(config.filename) ?? [];
-			this.configs.set(config.filename, configs);
+			const configs = this.configs.get(config.handle.name) ?? [];
+			this.configs.set(config.handle.name, configs);
 			configs.push(parsedFile);
 		}
 	}
@@ -77,5 +79,55 @@ export class JsonLoaderService {
 			return cached;
 		}
 		throw new Error('Tried to get json synchronous, but its not loaded');
+	}
+	
+	loadGameJson(path: string): Promise<unknown> {
+		return this.gameJsons[path] ??= this.readGameJson(path);
+	}
+	
+	async loadTexture(path: string, scene: Phaser.Scene): Promise<boolean> {
+		// check phaser cache first for images loaded outside of this service 
+		if (scene.textures.exists(path)) {
+			return true;
+		}
+		
+		const img = await (this.images[path] ??= this.readImage(path));
+		if (!img) {
+			return false;
+		}
+		// another call might have added the same texture while this one was loading
+		if (!scene.textures.exists(path)) {
+			scene.textures.addImage(path, img);
+		}
+		return true;
+	}
+	
+	private async readGameJson(path: string): Promise<unknown> {
+		try {
+			const file = await this.assets.getFile(path);
+			if (file) {
+				return JSON.parse(await (await file.handle.getFile()).text());
+			}
+			console.warn(`Resource not found: ${path}`);
+		} catch (e) {
+			console.warn(`Failed to resolve resource: ${path}`, e);
+		}
+		return undefined;
+	}
+	
+	private async readImage(path: string): Promise<HTMLImageElement | undefined> {
+		try {
+			const file = await this.assets.getFile(path);
+			if (!file) {
+				return undefined;
+			}
+			const url = URL.createObjectURL(await file.handle.getFile());
+			const img = new Image();
+			img.src = url;
+			await img.decode().finally(() => URL.revokeObjectURL(url));
+			return img;
+		} catch {
+			return undefined;
+		}
 	}
 }

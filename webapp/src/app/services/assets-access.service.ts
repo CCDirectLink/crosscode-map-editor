@@ -1,4 +1,4 @@
-import { computed, inject, resource, Service, signal } from '@angular/core';
+import { computed, effect, inject, resource, Service, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DBSchema, openDB } from 'idb';
 import { Label } from '../models/events';
@@ -25,7 +25,7 @@ export interface ModInfo {
 	id: string;
 	displayName: string;
 	assets?: DirectoryHandleCache;
-	root?: DirectoryHandleCache;
+	root: DirectoryHandleCache;
 	dependencies?: string[];
 	version?: string;
 	type: ModType;
@@ -129,7 +129,15 @@ export class AssetsAccessService {
 		}
 		return undefined;
 	});
-	
+
+	public readonly ready = new Promise<boolean>(resolve => {
+		effect(() => {
+			if (this.accessibleHandle()) {
+				resolve(true);
+			}
+		});
+	});
+
 	private readonly db = openDB<EditorDB>('cc-map-editor', 1, {
 		upgrade: db => db.createObjectStore('handles'),
 	});
@@ -175,10 +183,10 @@ export class AssetsAccessService {
 			.sort();
 	}
 	
-	async getModMapEditorConfigs() {
-		// TODO: fs-access
-		return [] as any[];
-		// return lastValueFrom(this.request('api/allModMapEditorConfigs', api.getAllModMapEditorConfigs));
+	async getModMapEditorConfigs(): Promise<AssetFile[]> {
+		this.assertModsLoaded();
+		const sources = this.activeMods().map(mod => ({ directories: mod.root, mod }));
+		return new AssetSources(sources).listFiles('map-editor', '.json', true);
 	}
 	
 	async getFile(path: string): Promise<AssetFile | undefined> {
@@ -227,15 +235,15 @@ export class AssetsAccessService {
 			}
 		};
 		
-		const root = await dir.get(path);
+		const root = (await dir.get(path))!;
 		const assets = modType === ModType.DLC ? undefined : await dir.get(`${path}/assets`);
 		
 		const base: ModInfo = {
 			id: '?',
 			displayName: '?',
 			type: modType,
+			root: new DirectoryHandleCache(root),
 			assets: assets ? new DirectoryHandleCache(assets) : undefined,
-			root: root ? new DirectoryHandleCache(root) : undefined,
 		};
 		
 		if (modType === ModType.DLC) {
