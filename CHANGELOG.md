@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Added
+- The editor is now available as a website: [ccdirectlink.github.io/crosscode-map-editor](https://ccdirectlink.github.io/crosscode-map-editor/)
+- Added support for the base game DLCs
+- Added missing destructible types
+
+### Changed
+- Multiple mods can be selected at once
+- The editor now runs fully as a website using the File System Access API (Chromium browsers only). The backend is no longer needed.
+- Files are now saved to where they were loaded from
+- Simplified the project structure. The separate backend and common projects and the Electron specific code in the webapp are gone.
+- Updated all dependencies (Angular 21 -> 22)
+
 ## [2.6.0] 2026-10-25
 ### Added
 - Add a water terrain to autumn height map generation.
