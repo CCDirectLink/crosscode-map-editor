@@ -212,7 +212,11 @@ export class AssetsAccessService {
 	
 	private async readAllMods(modType: ModType) {
 		const folders = await this.listFolders(modType);
-		const out = await Promise.all(folders.map(folder => this.readModInfo(folder, modType)));
+		const out = await Promise.all(folders.map(folder => this.readModInfo(folder, modType).catch(e => {
+			console.error(`Failed to load mod ${modType}/${folder}`, e);
+			this.snackBar.open(`Failed to load mod: ${modType}/${folder}`, 'ok', { panelClass: 'snackbar-error' });
+			return undefined;
+		})));
 		return out.filter(v => !!v).sort(byDisplayName);
 	}
 	
