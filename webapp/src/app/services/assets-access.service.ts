@@ -1,4 +1,4 @@
-import { computed, inject, Service, signal } from '@angular/core';
+import { computed, inject, resource, Service, signal } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DBSchema, openDB } from 'idb';
 import { Label } from '../models/events';
@@ -19,7 +19,15 @@ export interface AssetFile {
 export interface ModInfo {
 	id: string;
 	displayName: string;
+	assets?: FileSystemDirectoryHandle;
+	root?: FileSystemDirectoryHandle;
 	version?: string;
+	type: ModType;
+}
+
+export enum ModType {
+	MOD = 'mods',
+	DLC = 'extension'
 }
 
 interface DlcManifest {
@@ -59,6 +67,17 @@ export class AssetsAccessService {
 		const root = this.assetsHandle();
 		return root && new DirectoryHandleCache(root);
 	});
+	
+	private _allMods = resource({
+		params: () => this.accessibleHandle(),
+		loader: async () => [
+			...await this.readAllMods(ModType.MOD),
+			...await this.readAllMods(ModType.DLC),
+		],
+		defaultValue: [],
+	});
+	
+	public allMods = this._allMods.asReadonly();
 	
 	private readonly db = openDB<EditorDB>('cc-map-editor', 1, {
 		upgrade: db => db.createObjectStore('handles'),
@@ -105,29 +124,6 @@ export class AssetsAccessService {
 			.sort();
 	}
 	
-	async getAllDlcs(): Promise<ModInfo[]> {
-		const folders = await this.listFolders('extension');
-		const dlcs = await Promise.all(folders.map(async (folder): Promise<ModInfo | undefined> => {
-			const manifest = await this.readJson<DlcManifest>(`extension/${folder}/${folder}.json`);
-			return manifest && { id: folder, displayName: manifest.name?.en_US?.trim() || folder };
-		}));
-		return dlcs
-			.filter(dlc => dlc !== undefined)
-			.sort(byDisplayName);
-	}
-	
-	async getAllMods(): Promise<ModInfo[]> {
-		const folders = await this.listFolders('mods');
-		// a mod is identified by its id, not by its folder
-		const mods = new Map<string, ModInfo>();
-		for (const mod of await Promise.all(folders.map(folder => this.readModInfo(folder)))) {
-			if (mod) {
-				mods.set(mod.id, mod);
-			}
-		}
-		return [...mods.values()].sort(byDisplayName);
-	}
-	
 	async getModMapEditorConfigs() {
 		// TODO: fs-access
 		return [] as any[];
@@ -160,18 +156,56 @@ export class AssetsAccessService {
 		return files.concat(...await Promise.all(subDirs));
 	}
 	
-	private async readModInfo(folder: string): Promise<ModInfo | undefined> {
-		const ccmod = await this.readJson<CCmodManifest>(`mods/${folder}/ccmod.json`);
+	private async readAllMods(modType: ModType) {
+		const folders = await this.listFolders(modType);
+		const out = await Promise.all(folders.map(folder => this.readModInfo(folder, modType)));
+		return out.filter(v => !!v).sort(byDisplayName);
+	}
+	
+	private async readModInfo(folder: string, modType: ModType): Promise<ModInfo | undefined> {
+		const path = `${modType}/${folder}`;
+		
+		const base: ModInfo = {
+			id: '?',
+			displayName: '?',
+			type: modType,
+			assets: await this.directories()?.get(`${path}/assets`),
+			root: await this.directories()?.get(path),
+		};
+		
+		if (modType === ModType.DLC) {
+			const manifest = await this.readJson<DlcManifest>(`${path}/${folder}.json`);
+			if (!manifest) {
+				return undefined;
+			}
+			return {
+				...base,
+				id: folder,
+				displayName: manifest.name?.en_US?.trim() || folder,
+				assets: base.root,
+			};
+		}
+		
+		const ccmod = await this.readJson<CCmodManifest>(`${path}/ccmod.json`);
 		if (ccmod) {
 			const id = ccmod.id ?? folder;
 			const title = typeof ccmod.title === 'string' ? ccmod.title : ccmod.title?.en_US;
-			return { id, displayName: title ?? id, version: ccmod.version };
+			return {
+				...base,
+				id: id,
+				displayName: title ?? id,
+				version: ccmod.version,
+			};
 		}
-		
-		const pkg = await this.readJson<ModPackageManifest>(`mods/${folder}/package.json`);
+		const pkg = await this.readJson<ModPackageManifest>(`${path}/package.json`);
 		if (pkg) {
 			const id = pkg.name ?? folder;
-			return { id, displayName: pkg.displayName ?? pkg.ccmodHumanName ?? id, version: pkg.version };
+			return {
+				...base,
+				id: id,
+				displayName: pkg.displayName ?? pkg.ccmodHumanName ?? id,
+				version: pkg.version,
+			};
 		}
 		
 		return undefined;

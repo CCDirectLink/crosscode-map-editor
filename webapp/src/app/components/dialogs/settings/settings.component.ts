@@ -1,8 +1,8 @@
-import { Component, computed, inject, resource, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { AssetsAccessService } from '../../../services/assets-access.service';
+import { AssetsAccessService, ModType } from '../../../services/assets-access.service';
 import { SettingsService } from '../../../services/settings.service';
 import { ImageSelectCardComponent, PropListCard } from '../../widgets/shared/image-select-overlay/image-select-card/image-select-card.component';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
@@ -60,31 +60,25 @@ export class SettingsComponent {
 	});
 	readonly assetsStatusDisplay = computed(() => ASSETS_STATUS_DISPLAY[this.assetsStatus()]);
 	
-	private readonly availableMods = resource({
-		params: () => this.assetsAccess.accessibleHandle(),
-		loader: async () => {
-			const [dlcs, mods] = await Promise.all([
-				this.assetsAccess.getAllDlcs(),
-				this.assetsAccess.getAllMods(),
-			]);
-			return { dlcs, mods };
-		},
+	private readonly availableMods = computed(() => {
+		const mods = this.assetsAccess.allMods.value();
+		return {
+			dlcs: mods.filter(v => v.type === ModType.DLC),
+			mods: mods.filter(v => v.type === ModType.MOD),
+		};
 	});
-	private readonly loadedMods = computed(() => this.availableMods.hasValue() ? this.availableMods.value() : undefined);
+	
 	readonly settings = this.settingsService.createDraft();
 	private readonly dlcList = {
 		title: 'DLC',
-		emptyText: 'No DLC found',
-		mods: computed(() => this.loadedMods()?.dlcs ?? []),
+		mods: computed(() => this.availableMods().dlcs),
 		selected: this.settings.selectedDlcs,
 	};
 	private readonly modList = {
 		title: 'Mods',
-		emptyText: 'No mods found',
-		mods: computed(() => this.loadedMods()?.mods ?? []),
+		mods: computed(() => this.availableMods().mods),
 		selected: this.settings.selectedMods,
 	};
-	readonly modsLoading = this.availableMods.isLoading;
 	readonly modLists = [this.dlcList, this.modList];
 	
 	cardLight: PropListCard = {
