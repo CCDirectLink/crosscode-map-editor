@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { DBSchema, openDB } from 'idb';
 import { Label } from '../models/events';
 import { DirectoryHandleCache, undefinedIfNotFound } from './directory-handle-cache';
+import { SettingsService } from './settings.service';
 
 interface EditorDB extends DBSchema {
 	handles: {
@@ -61,6 +62,7 @@ function getDependencies(manifest: ModManifest) {
 export class AssetsAccessService {
 	
 	private readonly snackBar = inject(MatSnackBar);
+	private readonly settings = inject(SettingsService);
 	
 	private readonly assetsHandle = signal<FileSystemDirectoryHandle | undefined>(undefined);
 	private readonly hasAccess = signal(false);
@@ -82,6 +84,13 @@ export class AssetsAccessService {
 	});
 	
 	public allMods = this._allMods.asReadonly();
+	
+	private activatedMods = computed(() => {
+		const allMods = this.allMods.value();
+		const settings = this.settings.signalSettings();
+		const selectedMods = new Set(settings.selectedMods().concat(settings.selectedDlcs()));
+		return allMods.filter(mod => selectedMods.has(mod.id));
+	});
 	
 	private readonly db = openDB<EditorDB>('cc-map-editor', 1, {
 		upgrade: db => db.createObjectStore('handles'),
