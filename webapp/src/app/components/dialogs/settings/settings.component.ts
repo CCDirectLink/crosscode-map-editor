@@ -110,7 +110,7 @@ export class SettingsComponent {
 		this.settingsService.applyDraft(this.settings);
 		
 		this.close();
-		const ref = this.snackBar.open('Changing the path requires to restart the editor', 'Restart', {
+		const ref = this.snackBar.open('Changing the path/mods requires to restart the editor', 'Restart', {
 			duration: 6000,
 		});
 		
