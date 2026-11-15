@@ -15,6 +15,7 @@ import { NewMapComponent } from '../dialogs/new-map/new-map.component';
 import { OffsetMapComponent } from '../dialogs/offset-map/offset-map.component';
 import { OverlayService } from '../dialogs/overlay/overlay.service';
 import { SettingsComponent } from '../dialogs/settings/settings.component';
+import { UnsupportedBrowserComponent } from '../dialogs/unsupported-browser/unsupported-browser.component';
 import { MatToolbar } from '@angular/material/toolbar';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { MatButton } from '@angular/material/button';
@@ -56,7 +57,9 @@ export class ToolbarComponent implements OnInit {
 	constructor() {
 		// nothing can be loaded without an assets folder, so ask for one right away
 		afterNextRender(() => {
-			if (!this.assets.handle()) {
+			if (!('showDirectoryPicker' in window)) {
+				this.overlayService.open(UnsupportedBrowserComponent, { hasBackdrop: true, width: 'auto', height: 'auto' });
+			} else if (!this.assets.handle()) {
 				this.showSettings();
 			}
 		});
