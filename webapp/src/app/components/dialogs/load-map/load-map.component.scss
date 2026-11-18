@@ -21,7 +21,7 @@
 	height: 40px;
 	padding: 0 16px;
 	background: #373737;
-	font-size: 13px;
+	font-size: 14px;
 	font-weight: 500;
 	text-align: left;
 	
@@ -35,13 +35,13 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	flex-grow: 1;
 }
 
 .section-count {
-	margin-left: auto;
-	color: rgba(255, 255, 255, 0.6);
+	font-size: 12px;
 	font-weight: 400;
-	font-variant-numeric: tabular-nums;
+	opacity: 0.8;
 }
 
 .mapTree-button {
