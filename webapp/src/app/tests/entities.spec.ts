@@ -1,15 +1,14 @@
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AppModule } from '../app.module';
 
 import { StateHistoryService } from '../components/dialogs/floating-window/history/state-history.service';
 import { PhaserComponent } from '../components/phaser/phaser.component';
 import { CrossCodeMap, MapEntity } from '../models/cross-code-map';
 import { AutotileService } from '../services/autotile/autotile.service';
 import { HeightMapService } from '../services/height-map/height-map.service';
-import { HttpClientService } from '../services/http-client.service';
 import { MapLoaderService } from '../services/map-loader.service';
 import { TestHelper } from './test-helper';
+import testMap from '../../../../test-maps/test-scale-prop.json';
 
 class SimpleServiceMock {
 	init() {
@@ -21,7 +20,7 @@ describe('Entities', () => {
 	let fixture: ComponentFixture<PhaserComponent>;
 	
 	beforeEach(() => TestBed.configureTestingModule({
-    imports: [AppModule, PhaserComponent],
+    imports: [PhaserComponent],
     providers: [
         { provide: AutotileService, useValue: new SimpleServiceMock() },
         { provide: HeightMapService, useValue: new SimpleServiceMock() },
@@ -30,9 +29,7 @@ describe('Entities', () => {
     ]
 }).compileComponents());
 	
-	beforeEach(() => {
-		jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
-	});
+	beforeEach(() => TestHelper.initAssets());
 	
 	beforeEach(() => {
 		fixture = TestBed.createComponent(PhaserComponent);
@@ -40,10 +37,11 @@ describe('Entities', () => {
 		fixture.detectChanges();
 	});
 	
+	afterEach(() => vi.restoreAllMocks());
+	
 	it('make new npc and export map', async () => {
 		const service: MapLoaderService = TestBed.inject(MapLoaderService);
-		const http: HttpClientService = TestBed.inject(HttpClientService);
-		const res = await TestHelper.loadMap(service, http, 'autumn/entrance');
+		const res = await TestHelper.loadMap(service, testMap);
 		const map = res.ccmap;
 		const exported1 = map.exportMap();
 		
@@ -52,14 +50,13 @@ describe('Entities', () => {
 		expect(e).toBeDefined();
 		const exported2 = map.exportMap();
 		
-		expect(exported2.entities.length - exported1.entities.length).toBe(1, 'exported map should have 1 additional entity');
+		expect(exported2.entities.length - exported1.entities.length, 'exported map should have 1 additional entity').toBe(1);
 	});
 	
 	
 	it('entities should have a unique mapId (instanceof Number)', async () => {
 		const service: MapLoaderService = TestBed.inject(MapLoaderService);
-		const http: HttpClientService = TestBed.inject(HttpClientService);
-		const res = await TestHelper.loadMap(service, http, 'autumn/entrance');
+		const res = await TestHelper.loadMap(service, testMap);
 		const map = res.ccmap;
 		
 		await map.entityManager.generateNewEntity(makeNewNpc());
@@ -70,9 +67,14 @@ describe('Entities', () => {
 	});
 	
 	it('copy paste entity', async () => {
+		let clipboard = '';
+		vi.spyOn(navigator.clipboard, 'writeText').mockImplementation(async text => {
+			clipboard = text;
+		});
+		vi.spyOn(navigator.clipboard, 'readText').mockImplementation(async () => clipboard);
+		
 		const service: MapLoaderService = TestBed.inject(MapLoaderService);
-		const http: HttpClientService = TestBed.inject(HttpClientService);
-		const res = await TestHelper.loadMap(service, http, 'autumn/entrance');
+		const res = await TestHelper.loadMap(service, testMap);
 		const map = res.ccmap;
 		
 		map.entityManager.setActive(true);
@@ -81,12 +83,12 @@ describe('Entities', () => {
 		const exported1 = map.exportMap();
 		
 		map.entityManager.selectEntity(entity, false);
-		map.entityManager.copy();
+		await map.entityManager.copy();
 		await map.entityManager.paste();
 		
 		const exported2 = map.exportMap();
 		
-		expect(exported2.entities.length - exported1.entities.length).toBe(1, 'copy paste should add 1 entity');
+		expect(exported2.entities.length - exported1.entities.length, 'copy paste should add 1 entity').toBe(1);
 		checkMapId(exported2);
 	});
 	
@@ -108,8 +110,8 @@ function checkMapId(exported: CrossCodeMap) {
 	ids.sort((a, b) => (a ?? -9) - (b ?? -9));
 	console.log(ids);
 	for (const id of ids) {
-		expect(id).toBeInstanceOf(Number);
+		expect(id).toBeTypeOf('number');
 	}
 	
-	expect(new Set(ids).size).toBe(exported.entities.length, 'mapId should be unique for every entity');
+	expect(new Set(ids).size, 'mapId should be unique for every entity').toBe(exported.entities.length);
 }

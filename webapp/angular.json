@@ -41,6 +41,7 @@
           "options": {
             "browser": "src/main.ts",
             "polyfills": [
+              "zone.js",
               "src/polyfills.ts"
             ],
             "tsConfig": "tsconfig.app.json",
@@ -97,7 +98,12 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "browsers": [
+              "ChromiumHeadless"
+            ]
+          }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
