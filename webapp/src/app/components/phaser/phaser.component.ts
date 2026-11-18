@@ -29,6 +29,7 @@ export class PhaserComponent implements AfterViewInit {
 	private stateHistory = inject(StateHistoryService);
 	private phaserEventsService = inject(PhaserEventsService);
 	private heightMap = inject(HeightMapService);
+	private jsonLoader = inject(JsonLoaderService);
 	
 	@ViewChild('content', { static: true }) content!: ElementRef<HTMLElement>;
 	
@@ -41,7 +42,7 @@ export class PhaserComponent implements AfterViewInit {
 		const registry = inject(EntityRegistryService);
 		const autotile = inject(AutotileService);
 		const settingsService = inject(SettingsService);
-		const jsonLoader = inject(JsonLoaderService);
+		const jsonLoader = this.jsonLoader;
 		const assets = inject(AssetsAccessService);
 		
 		Globals.stateHistoryService = stateHistory;
@@ -57,7 +58,14 @@ export class PhaserComponent implements AfterViewInit {
 	}
 	
 	
-	ngAfterViewInit() {
+	async ngAfterViewInit() {
+		// makes sure they are synchronously available
+		await Promise.all([
+			this.jsonLoader.loadJsonMerged('actions.json'),
+			this.jsonLoader.loadJsonMerged('events.json'),
+			this.jsonLoader.loadJsonMerged('map-styles.json'),
+		]);
+		
 		this.heightMap.init();
 		const scene = new MainScene();
 		const scale = this.getScale();

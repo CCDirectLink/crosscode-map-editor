@@ -3,7 +3,6 @@ import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/mat
 
 import { AddEntityMenuService } from '../../services/add-entity-menu.service';
 import { LoadMapComponent } from '../dialogs/load-map/load-map.component';
-import { JsonLoaderService } from '../../services/json-loader.service';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
 import { SidenavComponent } from '../sidenav/sidenav.component';
@@ -45,14 +44,8 @@ export class EditorComponent {
 	
 	constructor() {
 		const addEntity = inject(AddEntityMenuService);
-		const jsonLoader = inject(JsonLoaderService);
 		
 		addEntity.init();
-		
-		// makes sure they are synchronously available
-		jsonLoader.loadJsonMerged('actions.json');
-		jsonLoader.loadJsonMerged('events.json');
-		jsonLoader.loadJsonMerged('map-styles.json');
 		
 	}
 	
