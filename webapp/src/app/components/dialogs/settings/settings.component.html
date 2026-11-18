@@ -31,7 +31,7 @@
 							<mat-selection-list color="primary" [(ngModel)]="list.selected">
 								@for (mod of list.mods(); track mod.id) {
 									<mat-list-option togglePosition="before" [value]="mod.id">
-										<span>{{ mod.displayName }}</span>
+										<span [appColoredText]="mod.displayName"></span>
 										@if (mod.version) {
 											<span class="status-text ml-2">v{{ mod.version }}</span>
 										}

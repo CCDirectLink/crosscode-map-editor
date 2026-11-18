@@ -31,7 +31,7 @@
 			<mat-tree #tree [dataSource]="nodes" [childrenAccessor]="childrenAccessor" class="mapTree">
 				<mat-tree-node *matTreeNodeDef="let node; when: isSection" class="mapTree-section" isExpandable>
 					<button class="section-header" matTreeNodeToggle>
-						<span class="section-name">{{ node.names[0] }}</span>
+						<span class="section-name" [appColoredText]="node.names[0]"></span>
 						<span class="section-count">{{ node.mapCount }}</span>
 					</button>
 				</mat-tree-node>

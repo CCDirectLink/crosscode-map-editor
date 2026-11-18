@@ -11,6 +11,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { HighlightDirective } from '../../../directives/highlight.directive';
+import { ColoredTextDirective } from '../../../directives/colored-text.directive';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { AssetFile, AssetsAccessService, ModInfo } from '../../../services/assets-access.service';
 import { BasePath, FileExtension } from '../../../services/path-resolver';
@@ -33,6 +34,7 @@ import { BasePath, FileExtension } from '../../../services/path-resolver';
 		MatTreeNode,
 		MatButton,
 		HighlightDirective,
+		ColoredTextDirective,
 		MatTreeNodeToggle,
 		MatProgressSpinner,
 	
