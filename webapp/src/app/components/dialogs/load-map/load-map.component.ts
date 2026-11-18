@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { HighlightDirective } from '../../../directives/highlight.directive';
 import { ColoredTextDirective } from '../../../directives/colored-text.directive';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatTooltip } from '@angular/material/tooltip';
 import { AssetFile, AssetsAccessService, ModInfo } from '../../../services/assets-access.service';
 import { BasePath, FileExtension } from '../../../services/path-resolver';
 
@@ -37,7 +38,7 @@ import { BasePath, FileExtension } from '../../../services/path-resolver';
 		ColoredTextDirective,
 		MatTreeNodeToggle,
 		MatProgressSpinner,
-	
+		MatTooltip,
 	],
 })
 export class LoadMapComponent {

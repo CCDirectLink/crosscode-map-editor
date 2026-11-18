@@ -50,11 +50,14 @@
 							</span>
 						}
 						@if (node.file?.overrides) {
-							<mat-icon iconPositionEnd class="override" title="Replaces a map with the same path">swap_horiz</mat-icon>
+							<mat-icon iconPositionEnd class="override" matTooltip="Replaces a map with the same path">swap_horiz</mat-icon>
+						}
+						@if (node.file?.overridden) {
+							<mat-icon iconPositionEnd class="override" matTooltip="Replaced by a mod">info_outline</mat-icon>
 						}
 					</button>
 				</mat-tree-node>
-				
+
 				<mat-tree-node *matTreeNodeDef="let node; when: hasChild" #treeNode="matTreeNode" class="mapTree-row"
 				               [style.--depth]="treeNode.level - 1" isExpandable>
 					<button mat-button class="mapTree-button" matTreeNodeToggle>
