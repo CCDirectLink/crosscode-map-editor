@@ -11,7 +11,7 @@
 						@if (folderName()) {
 							@let status = assetsStatusDisplay();
 							<mat-icon [class]="status.iconCss">{{ status.icon }}</mat-icon>
-							<span class="folder-name">{{ folderName() }}</span>
+							<span class="truncate font-medium">{{ folderName() }}</span>
 							<span class="status-text">·</span>
 							<span [class]="status.textCss">{{ status.text }}</span>
 						} @else {
