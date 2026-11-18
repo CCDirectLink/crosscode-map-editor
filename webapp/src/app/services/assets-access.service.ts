@@ -129,15 +129,16 @@ export class AssetsAccessService {
 		}
 		return undefined;
 	});
-
+	
 	public readonly ready = new Promise<boolean>(resolve => {
-		effect(() => {
+		const ref = effect(() => {
 			if (this.accessibleHandle()) {
 				resolve(true);
+				ref.destroy();
 			}
 		});
 	});
-
+	
 	private readonly db = openDB<EditorDB>('cc-map-editor', 1, {
 		upgrade: db => db.createObjectStore('handles'),
 	});
