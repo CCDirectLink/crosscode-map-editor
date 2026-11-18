@@ -1,5 +1,4 @@
 import { effect, Injectable, signal, WritableSignal } from '@angular/core';
-import { getKeys } from './object-helper';
 
 export type Signalify<T> = {
 	[K in keyof T]: WritableSignal<T[K]>;
@@ -10,20 +9,6 @@ export interface AppSettings {
 	selectionBoxDark: boolean;
 	selectedDlcs: string[];
 	selectedMods: string[];
-}
-
-function copySignals<T extends object>(source: Signalify<T>): Signalify<T> {
-	const copy = {} as Signalify<T>;
-	for (const key of getKeys(source)) {
-		copy[key] = signal(source[key]());
-	}
-	return copy;
-}
-
-function applySignals<T extends object>(source: Signalify<T>, target: Signalify<T>) {
-	for (const key of getKeys(source)) {
-		target[key].set(source[key]());
-	}
 }
 
 @Injectable({
@@ -51,11 +36,18 @@ export class SettingsService {
 	}
 	
 	createDraft(): Signalify<AppSettings> {
-		return copySignals(this.settings);
+		const draft: Record<string, WritableSignal<unknown>> = {};
+		for (const [key, val] of Object.entries(this.settings)) {
+			draft[key] = signal(val());
+		}
+		return draft as Signalify<AppSettings>;
 	}
 	
 	applyDraft(draft: Signalify<AppSettings>) {
-		applySignals(draft, this.settings);
+		const settings: Record<string, WritableSignal<unknown>> = this.settings;
+		for (const [key, val] of Object.entries(draft)) {
+			settings[key].set(val());
+		}
 	}
 	
 	private loadOrDefault<K extends keyof AppSettings>(key: K, defaultValue: AppSettings[K]): WritableSignal<AppSettings[K]> {
