@@ -2,6 +2,9 @@
 
 .modlist {
 	@include mat.list-density(-4);
+	flex: 1 0 266px;
+	max-height: max-content;
+	overflow-y: auto;
 }
 
 .folder-name {

@@ -1,7 +1,7 @@
 <cc-overlay-panel title="Settings">
 	<ng-container ngProjectAs="content">
-		<div class="p-4 flex flex-col gap-5">
-			<form class="pt-1">
+		<div class="py-4 flex flex-col min-h-full">
+			<form class="px-4 pt-1 pb-5">
 				<div class="flex flex-row gap-3 flex-wrap">
 					<button mat-stroked-button (click)="select()">
 						<mat-icon>folder_open</mat-icon>
@@ -22,8 +22,8 @@
 				</div>
 			</form>
 			
-			<app-divider [margin]="16"/>
-			<div class="flex flex-row gap-4 modlist">
+			<app-divider/>
+			<div class="flex flex-row gap-4 px-4 py-5 modlist">
 				@for (list of modLists; track list.title) {
 					<div class="flex flex-col">
 						<h2 class="settings-headline">{{ list.title }}</h2>
@@ -49,9 +49,9 @@
 					</div>
 				}
 			</div>
-			<app-divider [margin]="16"/>
-			
-			<div class="flex flex-row">
+			<app-divider/>
+
+			<div class="flex flex-row px-4 py-5">
 				<mat-checkbox
 					[(ngModel)]="settings.wrapEventEditorLines"
 					color="primary"
@@ -59,8 +59,8 @@
 					Wrap event editor lines
 				</mat-checkbox>
 			</div>
-			<app-divider [margin]="16"/>
-			<div class="flex flex-col">
+			<app-divider/>
+			<div class="flex flex-col px-4 pt-5">
 				<h2 class="settings-headline pb-4">Selection Box Style</h2>
 				<div class="flex flex-row gap-4">
 					<app-image-select-card
