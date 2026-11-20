@@ -1,10 +1,9 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ChangeDetectionStrategy } from '@angular/core';
 import { OverlayWidget } from '../overlay-widget';
 import { ImageSelectOverlayComponent, PropListGroup } from '../shared/image-select-overlay/image-select-overlay.component';
-import { HttpClientService } from '../../../services/http-client.service';
+import { AssetsAccessService } from '../../../services/assets-access.service';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
-import { lastValueFrom } from 'rxjs';
 import { CharacterSettings, NPC, NpcAttributes } from '../../../services/phaser/entities/registry/npc';
 import { Helper } from '../../../services/phaser/helper';
 import { InputWithButtonComponent } from '../inputs/input-with-button/input-with-button.component';
@@ -13,10 +12,11 @@ import { InputWithButtonComponent } from '../inputs/input-with-button/input-with
     selector: 'app-character-widget',
     templateUrl: './character-widget.component.html',
     styleUrls: ['./character-widget.component.scss', '../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [InputWithButtonComponent]
 })
 export class CharacterWidgetComponent extends OverlayWidget {
-	private http = inject(HttpClientService);
+	private assets = inject(AssetsAccessService);
 
 	
 	@Input() onlyFaces = false;
@@ -107,7 +107,7 @@ export class CharacterWidgetComponent extends OverlayWidget {
 		this.comp.leftGroup.props = [];
 		this.rightGroup.props = [];
 		
-		let chars = (await lastValueFrom(this.http.getCharacters())).map(v => v.replaceAll('/', '.'));
+		let chars = (await this.assets.getAllFilesInFolder('data/characters')).map(v => v.replaceAll('/', '.'));
 		
 		if (this.onlyFaces) {
 			chars = await Helper.asyncFilter(chars, async v => {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { AttributeValue } from '../../../../services/phaser/entities/cc-entity';
 import { AbstractWidget } from '../../abstract-widget';
 import { OverlayPanelComponent } from '../../../dialogs/overlay/overlay-panel/overlay-panel.component';
@@ -14,6 +14,7 @@ import { MatButton } from '@angular/material/button';
 	selector: 'app-enemy-type-overlay',
 	templateUrl: './enemy-type-overlay.component.html',
 	styleUrls: ['./enemy-type-overlay.component.scss', '../../widget.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [
 		OverlayPanelComponent,
 		FlexModule,

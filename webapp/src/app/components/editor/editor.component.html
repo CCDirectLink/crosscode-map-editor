@@ -10,12 +10,15 @@
 					<app-sidenav></app-sidenav>
 				</mat-sidenav>
 				<mat-sidenav-content>
-					<div class="green inner-container no-scroll">
-						<app-phaser></app-phaser>
-						<router-outlet></router-outlet>
-					</div>
-					<app-history></app-history>
-					<app-tile-selector></app-tile-selector>
+					@if (assets.ready | async) {
+						<div class="green inner-container no-scroll">
+							
+							<app-phaser></app-phaser>
+							<router-outlet></router-outlet>
+						</div>
+						<app-history></app-history>
+						<app-tile-selector></app-tile-selector>
+					}
 				</mat-sidenav-content>
 			</mat-sidenav-container>
 		</mat-sidenav-content>

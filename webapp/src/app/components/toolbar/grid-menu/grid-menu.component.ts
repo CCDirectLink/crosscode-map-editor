@@ -1,4 +1,4 @@
-import { Component, effect, OnInit, inject } from '@angular/core';
+import { Component, effect, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -46,6 +46,7 @@ const gridSettingsKey = 'gridSettingsKey';
 		PointInputComponent
 	],
 	templateUrl: './grid-menu.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styleUrl: './grid-menu.component.scss'
 })
 export class GridMenuComponent implements OnInit {

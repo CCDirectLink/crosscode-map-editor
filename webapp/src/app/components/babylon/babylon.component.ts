@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BabylonViewerService } from '../../services/3d/babylon-viewer.service';
@@ -8,6 +8,7 @@ import { Globals } from '../../services/globals';
 @Component({
     selector: 'app-babylon',
     templateUrl: './babylon.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./babylon.component.scss']
 })
 export class BabylonComponent implements OnInit, AfterViewInit, OnDestroy {

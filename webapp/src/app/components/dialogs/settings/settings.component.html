@@ -1,41 +1,57 @@
 <cc-overlay-panel title="Settings">
 	<ng-container ngProjectAs="content">
-		<div fxLayout="column" class="content-container">
-			@if (isElectron) {
-				<form fxLayout="row" class="option-row">
-					<mat-form-field fxFlex="auto">
-						<mat-label>Assets folder</mat-label>
-						<input matInput placeholder="C:\Program Files (x86)\Steam\steamapps\common\CrossCode\assets"
-						       [formControl]="folderFormControl">
-						<mat-hint>Path to CrossCode Assets folder</mat-hint>
-						@if (folderFormControl.hasError('invalid')) {
-							<mat-error>
-								Path to CrossCode Assets folder is invalid
-							</mat-error>
+		<div class="py-4 flex flex-col min-h-full">
+			<form class="px-4 pt-1 pb-5">
+				<div class="flex flex-row gap-3 flex-wrap">
+					<button mat-stroked-button (click)="select()">
+						<mat-icon>folder_open</mat-icon>
+						CrossCode assets folder
+					</button>
+					<div class="flex items-center gap-2 min-w-0">
+						@if (folderName()) {
+							@let status = assetsStatusDisplay();
+							<mat-icon [class]="status.iconCss">{{ status.icon }}</mat-icon>
+							<span class="truncate font-medium">{{ folderName() }}</span>
+							<span class="status-text">·</span>
+							<span [class]="status.textCss">{{ status.text }}</span>
+						} @else {
+							<mat-icon class="icon-undefined">help_outline</mat-icon>
+							<span class="status-text">No folder selected</span>
 						}
-					</mat-form-field>
-					<div class="actions-container" fxLayout="row">
-						<button mat-stroked-button (click)="select()">Select</button>
-						<button mat-stroked-button (click)="check()">
-							Check
-							<mat-icon [ngClass]="iconCss" class="icon-base">{{ icon }}</mat-icon>
-						</button>
 					</div>
-				</form>
-			}
-			<div fxLayout="row" class="option-row">
-				<mat-form-field fxFlex="auto">
-					<mat-label>Mod</mat-label>
-					<mat-select [(value)]="mod">
-						<mat-option>None</mat-option>
-						@for (mod of mods; track mod) {
-							<mat-option [value]="mod.id"><span [appColoredText]="mod.displayName"></span></mat-option>
+				</div>
+			</form>
+			
+			<app-divider/>
+			<div class="flex flex-row gap-4 px-4 py-5 modlist">
+				@for (list of modLists; track list.title) {
+					<div class="flex flex-col">
+						<h2 class="settings-headline">{{ list.title }}</h2>
+						@if (list.mods().length) {
+							<mat-selection-list color="primary" [(ngModel)]="list.selected">
+								@for (mod of list.mods(); track mod.id) {
+									<mat-list-option togglePosition="before" [value]="mod.id">
+										<span [appColoredText]="mod.displayName"></span>
+										@if (mod.version) {
+											<span class="status-text ml-2">v{{ mod.version }}</span>
+										}
+										@if (modConfigError()?.mod === mod.id) {
+											<mat-icon
+												class="icon-invalid ml-2 align-middle"
+												[matTooltip]="modConfigError()?.message"
+												matTooltipClass="linebreak-tooltip max-width-tooltip"
+											>error</mat-icon>
+										}
+									</mat-list-option>
+								}
+							</mat-selection-list>
 						}
-					</mat-select>
-					<mat-hint>Maps will be stored and loaded from the selected mod</mat-hint>
-				</mat-form-field>
+					</div>
+				}
 			</div>
-			<div fxLayout="row" class="option-row">
+			<app-divider/>
+
+			<div class="flex flex-row px-4 py-5">
 				<mat-checkbox
 					[(ngModel)]="settings.wrapEventEditorLines"
 					color="primary"
@@ -43,18 +59,19 @@
 					Wrap event editor lines
 				</mat-checkbox>
 			</div>
-			<div class="flex flex-col pt-5">
-				<h2 class="mat-h2 ">Selection Box Style</h2>
+			<app-divider/>
+			<div class="flex flex-col px-4 pt-5">
+				<h2 class="settings-headline pb-4">Selection Box Style</h2>
 				<div class="flex flex-row gap-4">
 					<app-image-select-card
 						[card]="cardLight"
-						[selected]="!settings.selectionBoxDark"
-						(onClick)="settings.selectionBoxDark = false"
+						[selected]="!settings.selectionBoxDark()"
+						(onClick)="settings.selectionBoxDark.set(false)"
 					></app-image-select-card>
 					<app-image-select-card
 						[card]="cardDark"
-						[selected]="settings.selectionBoxDark"
-						(onClick)="settings.selectionBoxDark = true"
+						[selected]="settings.selectionBoxDark()"
+						(onClick)="settings.selectionBoxDark.set(true)"
 					></app-image-select-card>
 				</div>
 			</div>

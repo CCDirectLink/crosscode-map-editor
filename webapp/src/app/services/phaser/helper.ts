@@ -8,7 +8,7 @@ import Scene = Phaser.Scene;
 export class Helper {
 	
 	public static worldToTile(x: number, y: number): Point {
-		const p: Point = {x: 0, y: 0};
+		const p: Point = { x: 0, y: 0 };
 		
 		p.x = Math.floor(x / Globals.TILE_SIZE);
 		p.y = Math.floor(y / Globals.TILE_SIZE);
@@ -17,14 +17,14 @@ export class Helper {
 	}
 	
 	public static getPointerPos(pointer: Phaser.Input.Pointer): Point {
-		return {x: pointer.worldX, y: pointer.worldY};
+		return { x: pointer.worldX, y: pointer.worldY };
 	}
 	
 	public static getTilesetSize(scene: Phaser.Scene, tileset: string): Point {
 		const img = scene.textures.get(tileset).source[0];
 		return {
 			x: Math.ceil(img.width / Globals.TILE_SIZE),
-			y: Math.ceil(img.height / Globals.TILE_SIZE)
+			y: Math.ceil(img.height / Globals.TILE_SIZE),
 		};
 	}
 	
@@ -32,7 +32,7 @@ export class Helper {
 		index -= 1;
 		return {
 			x: index % tileCountX,
-			y: Math.floor(index / tileCountX)
+			y: Math.floor(index / tileCountX),
 		};
 	}
 	
@@ -71,35 +71,8 @@ export class Helper {
 		return JSON.parse(JSON.stringify(obj));
 	}
 	
-	public static typedKeys<T extends object>(obj: T): (keyof T)[] {
-		return Object.keys(obj) as (keyof T)[];
-	}
-	
-	public static getJson(key: string, callback: (json: any) => void) {
-		const scene = Globals.scene;
-		
-		// get json from cache
-		if (scene.cache.json.has(key)) {
-			return callback(scene.cache.json.get(key));
-		}
-		
-		Globals.httpService.resolveFile(key + '.json').subscribe(file => {
-			// load json
-			scene.load.json(key, Globals.URL + file);
-			scene.load.once('complete', () => {
-				return callback(scene.cache.json.get(key));
-			});
-			scene.load.start();
-		}, () => {
-			console.warn(`Failed to resolve resource: ${key}.json`);
-			callback(undefined);
-		});
-	}
-	
-	public static getJsonPromise(key: string) {
-		return new Promise(resolve => {
-			this.getJson(key, json => resolve(json));
-		});
+	public static getJsonPromise(key: string): Promise<unknown> {
+		return Globals.jsonLoader.loadGameJson(key + '.json');
 	}
 	
 	/**
@@ -112,24 +85,7 @@ export class Helper {
 		
 		//Sometimes RFG adds a whitespace after (or even in front) of the name.
 		//This is invalid behaviour for loading a file but the game trims it as well.
-		const key = name.trim();
-		
-		if (scene.textures.exists(key)) {
-			return true;
-		}
-		
-		// TODO: save promise to avoid loading the same texture simultaneously
-		const file = await Globals.httpService.resolveFile(key).toPromise().catch(() => false);
-		if (!file) {
-			return false;
-		}
-		
-		return new Promise(res => {
-			scene.load.image(key, Globals.URL + file);
-			scene.load.once('complete', () => res(true));
-			scene.load.once('loaderror', () => res(false));
-			scene.load.start();
-		});
+		return Globals.jsonLoader.loadTexture(name.trim(), scene);
 	}
 	
 	/**

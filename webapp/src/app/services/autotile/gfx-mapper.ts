@@ -4,6 +4,7 @@ import { Helper } from '../phaser/helper';
 import { Vec2 } from '../phaser/vec2';
 import { AutotileConfig, AutotileType, FILL_TYPE, FILL_TYPE_CLIFF, FILL_TYPE_CLIFF_ALT, FILL_TYPE_CLIFF_BORDER, FillType } from './autotile.constants';
 import { JsonLoaderService } from '../json-loader.service';
+import { getKeys } from '../object-helper';
 
 interface JsonType {
 	map: string;
@@ -40,7 +41,7 @@ export class GfxMapper {
 		this.TILESET_CONFIG = await this.jsonLoader.loadJsonMerged('tilesets.json');
 		await this.generateAutotileConfig();
 		
-		for (const type of Helper.typedKeys(FILL_TYPE)) {
+		for (const type of getKeys(FILL_TYPE)) {
 			const map = new Map<number, keyof FillType>();
 			this.mapping[type] = map;
 			this.generateMapping(map, FILL_TYPE[type]);

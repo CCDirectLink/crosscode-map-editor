@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { EnemyTypeWidgetOverlayComponent } from './enemy-type-overlay/enemy-type-overlay.component';
 import { OverlayWidget } from '../overlay-widget';
 import { FlexModule } from '@angular/flex-layout/flex';
@@ -9,6 +9,7 @@ import { CombinedTooltipPipe } from '../../../pipes/combined-tooltip.pipe';
     selector: 'app-enemy-type-widget',
     templateUrl: './enemy-type-widget.component.html',
     styleUrls: ['./enemy-type-widget.component.scss', '../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FlexModule, MatTooltip, CombinedTooltipPipe]
 })
 export class EnemyTypeWidgetComponent extends OverlayWidget {

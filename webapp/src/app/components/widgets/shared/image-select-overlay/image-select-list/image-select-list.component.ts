@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 
 import { ImageSelectCardComponent, PropListCard } from '../image-select-card/image-select-card.component';
 import { MatInputModule } from '@angular/material/input';
@@ -12,6 +12,7 @@ import { AutofocusDirective } from '../../../../../directives/autofocus.directiv
 	selector: 'app-image-select-list',
 	imports: [ImageSelectCardComponent, MatInputModule, MatIconModule, FormsModule, MatButtonModule, ListFilterPipe, AutofocusDirective],
 	templateUrl: './image-select-list.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styleUrls: ['./image-select-list.component.scss']
 })
 export class ImageSelectListComponent {

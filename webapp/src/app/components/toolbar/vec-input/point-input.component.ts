@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, Input, OnDestroy, inject } from '@angular/core';
+import { Component, ElementRef, HostBinding, Input, OnDestroy, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { Point } from '../../../models/cross-code-map';
 import { MatFormFieldControl } from '@angular/material/form-field';
@@ -13,6 +13,7 @@ import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 	],
 	providers: [{provide: MatFormFieldControl, useExisting: PointInputComponent}],
 	templateUrl: './point-input.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styleUrl: './point-input.component.scss'
 })
 export class PointInputComponent implements MatFormFieldControl<Point>, OnDestroy, ControlValueAccessor {

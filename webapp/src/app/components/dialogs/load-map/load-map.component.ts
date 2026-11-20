@@ -1,10 +1,6 @@
-import { NestedTreeControl } from '@angular/cdk/tree';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, ElementRef, inject, Input, resource, untracked, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, effect, ElementRef, inject, Input, resource, signal, untracked, ViewChild, viewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { MatNestedTreeNode, MatTree, MatTreeNestedDataSource, MatTreeNode, MatTreeNodeDef, MatTreeNodeOutlet, MatTreeNodeToggle } from '@angular/material/tree';
-
-import { firstValueFrom } from 'rxjs';
-import { HttpClientService } from '../../../services/http-client.service';
+import { MatTree, MatTreeNode, MatTreeNodeDef, MatTreeNodeToggle } from '@angular/material/tree';
 import { MapLoaderService } from '../../../services/map-loader.service';
 import { SearchFilterService } from '../../../services/search-filter.service';
 import { MapNode, MapNodeRoot } from './mapNode.model';
@@ -15,10 +11,11 @@ import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { HighlightDirective } from '../../../directives/highlight.directive';
+import { ColoredTextDirective } from '../../../directives/colored-text.directive';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { SHARED_SERVICE } from '../../../services/shared-service';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { SettingsService } from '../../../services/settings.service';
+import { MatTooltip } from '@angular/material/tooltip';
+import { AssetFile, AssetsAccessService, ModInfo } from '../../../services/assets-access.service';
+import { BasePath, FileExtension } from '../../../services/path-resolver';
 
 
 @Component({
@@ -38,61 +35,59 @@ import { SettingsService } from '../../../services/settings.service';
 		MatTreeNode,
 		MatButton,
 		HighlightDirective,
-		MatNestedTreeNode,
+		ColoredTextDirective,
 		MatTreeNodeToggle,
-		MatTreeNodeOutlet,
 		MatProgressSpinner,
-		MatCheckbox,
+		MatTooltip,
 	],
 })
 export class LoadMapComponent {
 	private mapLoader = inject(MapLoaderService);
-	private http = inject(HttpClientService);
+	private assets = inject(AssetsAccessService);
 	private ref = inject(ChangeDetectorRef);
 	private searchFilterService = inject(SearchFilterService);
-	private readonly sharedService = inject(SHARED_SERVICE);
-	private readonly settingsService = inject(SettingsService);
 	
-	
-	@ViewChild('fileUpload', { static: true })
-	fileUpload!: ElementRef<HTMLInputElement>;
 	
 	@ViewChild('filterInput', { static: true })
 	filterInput!: ElementRef<HTMLInputElement>;
 	
 	@Input()
 	sidenav!: MatSidenav;
-	
-	paths = resource({
-		params: () => ({ vanillaMaps: this.vanillaMaps() }),
-		loader: async ({ params }) => {
-			const req = params.vanillaMaps ? this.http.getVanillaMaps() : this.http.getMaps();
-			return await firstValueFrom(req);
-		},
+
+	maps = resource({
+		params: () => this.assets.accessibleHandle(),
+		loader: () => this.assets.getAllMaps(),
 	});
-	
-	treeControl = new NestedTreeControl<VirtualMapNode>(node => node.children);
-	mapsSource = new MatTreeNestedDataSource<VirtualMapNode>();
+
+	nodes: VirtualMapNode[] = [];
+	childrenAccessor = (node: VirtualMapNode) => node.children ?? [];
+	private matTree = viewChild<MatTree<VirtualMapNode>>(MatTree);
+	private sections = signal<VirtualMapNode[]>([]);
 	
 	root: MapNodeRoot = { name: '', displayed: true, children: [] }; // The root itself is never displayed. It is used as a datasource for virtualRoot.
 	virtualRoot = new VirtualMapNode(this.root); // To reuse the children filtering.
 	filter = '';
 	
-	currentMod = '';
-	vanillaMaps = this.settingsService.signalSettings().showVanillaMaps;
-	
 	constructor() {
-		this.mapsSource.data = [];
-		this.currentMod = this.sharedService.getSelectedMod();
-		
 		effect(() => {
-			const paths = this.paths.value();
-			if (!paths) {
+			if (!this.maps.hasValue()) {
 				return;
 			}
+			const maps = this.maps.value();
 			untracked(() => {
-				this.displayMaps(paths);
+				this.displayMaps(maps);
 				this.update();
+			});
+		});
+		
+		// sections start expanded
+		effect(() => {
+			const tree = this.matTree();
+			const sections = this.sections();
+			untracked(() => {
+				for (const section of sections) {
+					tree?.expand(section);
+				}
 			});
 		});
 	}
@@ -105,60 +100,86 @@ export class LoadMapComponent {
 		for (const node of this.root.children) {
 			this.filterNode(node, this.filter);
 		}
-		this.mapsSource.data = [];
-		this.mapsSource.data = this.virtualRoot.children || [];
+		this.virtualRoot.refresh();
+		this.nodes = this.virtualRoot.children ?? [];
 		this.ref.markForCheck();
 	}
 	
-	async loadMap(event: Event) {
-		this.mapLoader.loadMap(event, true);
-		this.fileUpload.nativeElement.value = '';
+	async openMap() {
+		await this.mapLoader.openMap(true);
 	}
-	
-	async load(name: string) {
-		await this.mapLoader.loadMapByName(name, true);
+
+	async load(file: AssetFile) {
+		await this.mapLoader.loadMapByFile(file.handle, true);
 	}
 	
 	hasChild(_: number, node: VirtualMapNode) {
 		return node.children !== undefined;
 	}
 	
+	isSection(_: number, node: VirtualMapNode) {
+		return node.section;
+	}
+	
 	close() {
 		return this.sidenav.close();
 	}
 	
-	private displayMaps(paths: string[]) {
+	private displayMaps(files: AssetFile[]) {
+		const sources = new Map<ModInfo | undefined, AssetFile[]>();
+		for (const file of files) {
+			const sourceFiles = sources.get(file.mod);
+			if (sourceFiles) {
+				sourceFiles.push(file);
+			} else {
+				sources.set(file.mod, [file]);
+			}
+		}
+		
+		this.root.children = Array.from(sources).map(([mod, sourceFiles]) => ({
+			name: mod?.displayName ?? 'CrossCode',
+			section: true,
+			displayed: true,
+			children: this.buildTree(sourceFiles),
+		}));
+		
+		this.virtualRoot.refresh();
+		this.sections.set(this.virtualRoot.children ?? []);
+	}
+	
+	private buildTree(files: AssetFile[]): MapNode[] {
 		const data: MapNode[] = [];
 		
 		let lastPath = '';
 		let lastNode = data;
-		for (const path of paths) {
+		for (const file of files) {
+			const path = file.path.substring(BasePath.MAPS.length, file.path.length - FileExtension.JSON.length);
 			const node = this.resolve(data, path, lastNode, lastPath);
-			const name = path.substring(path.lastIndexOf('.') + 1);
+			const name = path.substring(path.lastIndexOf('/') + 1);
 			
-			node.push({ name, path, displayed: true });
+			node.push({ name, file, displayed: true });
 			
 			lastPath = path;
 			lastNode = node;
 		}
 		
-		this.root.children = data;
+		return data;
 	}
 	
 	private resolve(data: MapNode[], path: string, lastNode: MapNode[], lastPath: string): MapNode[] {
-		if (path.substring(0, path.lastIndexOf('.')) === lastPath.substring(0, lastPath.lastIndexOf('.'))) {
+		if (path.substring(0, path.lastIndexOf('/')) === lastPath.substring(0, lastPath.lastIndexOf('/'))) {
 			return lastNode;
 		}
 		
-		if (!path.includes('.')) {
+		if (!path.includes('/')) {
 			return data;
 		}
 		
 		let node = data;
 		
 		const parts = path
-			.substring(0, path.lastIndexOf('.'))
-			.split('.');
+			.substring(0, path.lastIndexOf('/'))
+			.split('/');
 		for (const name of parts) {
 			const child = node.find(n => n.name === name);
 			if (child && child.children) {
@@ -178,7 +199,7 @@ export class LoadMapComponent {
 	}
 	
 	private filterNode(node: MapNode, filter: string): boolean {
-		if (this.searchFilterService.test(node.name, filter)) {
+		if (!node.section && this.searchFilterService.test(node.name, filter)) {
 			node.displayed = true;
 			this.displayChildren(node);
 			return true;

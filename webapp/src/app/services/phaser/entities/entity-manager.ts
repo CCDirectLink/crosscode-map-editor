@@ -183,7 +183,6 @@ export class EntityManager extends BaseObject {
 		const pointerUpFun = (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
 			if (pointer.rightButtonReleased() && this.rightPointerDown) {
 				this.rightPointerDown = false;
-				this.selectEntity();
 				this.showAddEntityMenu();
 			} else if (pointer.leftButtonReleased() && this.leftPointerDown) {
 				this.leftPointerDown = false;
@@ -374,7 +373,7 @@ export class EntityManager extends BaseObject {
 	
 	async generateEntity(entity: MapEntity): Promise<CCEntity> {
 		const entityClass = Globals.entityRegistry.getEntity(entity.type);
-		console.assert(this.map, 'I dont think map is ever undefined, but if it ever happens check the TODO on private map?: CCMap;');
+		console.assert(!!this.map, 'I dont think map is ever undefined, but if it ever happens check the TODO on private map?: CCMap;');
 		const map = this.map!;
 
 		// Preload entities since we need it for loadJsonMergedSync in the entity's constructor

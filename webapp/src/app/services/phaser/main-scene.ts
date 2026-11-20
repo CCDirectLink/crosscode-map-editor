@@ -38,9 +38,7 @@ export class MainScene extends Phaser.Scene {
 		const game = this.game;
 		this.cameras.main.setBackgroundColor('#616161');
 		this.cameras.main.setRoundPixels(false);
-		game.canvas.oncontextmenu = function (e) {
-			e.preventDefault();
-		};
+		this.input.mouse!.disableContextMenu();
 		
 		game.scale.scaleMode = Phaser.Scale.ScaleModes.NONE;
 		

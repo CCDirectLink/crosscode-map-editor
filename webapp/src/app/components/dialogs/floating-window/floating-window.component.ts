@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { MatButton } from '@angular/material/button';
@@ -9,6 +9,7 @@ import { ExtendedModule } from '@angular/flex-layout/extended';
     selector: 'app-floating-window',
     templateUrl: './floating-window.component.html',
     styleUrls: ['./floating-window.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [CdkDrag, FlexModule, CdkDragHandle, MatButton, NgStyle, ExtendedModule]
 })
 export class FloatingWindowComponent implements OnInit, OnChanges {

@@ -1,4 +1,4 @@
-import { Component, HostListener, inject } from '@angular/core';
+import { Component, HostListener, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ConfirmCloseComponent } from './components/dialogs/confirm-close/confirm-close.component';
 import { OverlayService } from './components/dialogs/overlay/overlay.service';
 import { GlobalEventsService } from './services/global-events.service';
@@ -8,6 +8,7 @@ import { RouterOutlet } from '@angular/router';
 	selector: 'app-root',
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [RouterOutlet]
 })
 export class AppComponent {
@@ -16,9 +17,9 @@ export class AppComponent {
 	
 	
 	@HostListener('window:beforeunload', ['$event'])
-	onUnload($event: any) {
+	onUnload($event: BeforeUnloadEvent) {
 		if (this.eventsService.hasUnsavedChanges.getValue()) {
-			$event.returnValue = 'Are you sure you want to discard your changes?';
+			$event.preventDefault();
 			
 			const dialogRef = this.overlayService.open(ConfirmCloseComponent, {
 				hasBackdrop: true,

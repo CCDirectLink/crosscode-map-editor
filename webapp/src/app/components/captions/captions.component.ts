@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Globals } from '../../services/globals';
 
@@ -10,6 +10,7 @@ export interface BottomUiElement {
 @Component({
     selector: 'app-captions',
     templateUrl: './captions.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./captions.component.scss']
 })
 export class CaptionsComponent implements OnInit {

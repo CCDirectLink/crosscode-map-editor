@@ -1,24 +1,23 @@
 @use '@angular/material' as mat;
 
-.content-container {
-	padding: 16px;
+.modlist {
+	@include mat.list-density(-4);
+	flex: 1 0 266px;
+	max-height: max-content;
+	overflow-y: auto;
 }
 
-.option-row {
-	align-items: center;
-	margin-top: 16px;
+.settings-headline {
+	font-weight: 500;
+	font-size: 20px;
 }
 
-.actions-container {
-	align-items: center;
-
-	& button {
-		margin-left: 12px;
-	}
+.status-text {
+	color: rgba(255, 255, 255, 0.7);
 }
 
-.icon-base {
-	margin-left: 8px;
+.status-text-invalid {
+	color: #f44336;
 }
 
 .icon-undefined {

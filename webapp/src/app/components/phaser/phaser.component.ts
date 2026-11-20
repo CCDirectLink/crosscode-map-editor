@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostListener, inject, ViewChild } from '@angular/core';
 import * as Phaser from 'phaser';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -6,7 +6,6 @@ import { AutotileService } from '../../services/autotile/autotile.service';
 import { GlobalEventsService } from '../../services/global-events.service';
 import { Globals } from '../../services/globals';
 import { HeightMapService } from '../../services/height-map/height-map.service';
-import { HttpClientService } from '../../services/http-client.service';
 import { MapLoaderService } from '../../services/map-loader.service';
 import { EntityRegistryService } from '../../services/phaser/entities/registry/entity-registry.service';
 import { MainScene } from '../../services/phaser/main-scene';
@@ -14,55 +13,65 @@ import { PhaserEventsService } from '../../services/phaser/phaser-events.service
 import { SettingsService } from '../../services/settings.service';
 import { StateHistoryService } from '../dialogs/floating-window/history/state-history.service';
 import { JsonLoaderService } from '../../services/json-loader.service';
+import { AssetsAccessService } from '../../services/assets-access.service';
 import { CaptionsComponent } from '../captions/captions.component';
 
 @Component({
-    selector: 'app-phaser',
-    templateUrl: './phaser.component.html',
-    styleUrls: ['./phaser.component.scss'],
-    imports: [CaptionsComponent]
+	selector: 'app-phaser',
+	templateUrl: './phaser.component.html',
+	styleUrls: ['./phaser.component.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
+	imports: [CaptionsComponent],
 })
 export class PhaserComponent implements AfterViewInit {
-	private element = inject(ElementRef);
 	private mapLoader = inject(MapLoaderService);
 	private globalEvents = inject(GlobalEventsService);
 	private stateHistory = inject(StateHistoryService);
 	private phaserEventsService = inject(PhaserEventsService);
 	private heightMap = inject(HeightMapService);
-	private http = inject(HttpClientService);
-
+	private jsonLoader = inject(JsonLoaderService);
 	
-	@ViewChild('content', {static: true}) content!: ElementRef<HTMLElement>;
+	@ViewChild('content', { static: true }) content!: ElementRef<HTMLElement>;
 	
 	constructor() {
 		const mapLoader = this.mapLoader;
 		const globalEvents = this.globalEvents;
 		const stateHistory = this.stateHistory;
 		const phaserEventsService = this.phaserEventsService;
-		const http = this.http;
 		const snackbar = inject(MatSnackBar);
 		const registry = inject(EntityRegistryService);
 		const autotile = inject(AutotileService);
 		const settingsService = inject(SettingsService);
-		const jsonLoader = inject(JsonLoaderService);
-
+		const jsonLoader = this.jsonLoader;
+		const assets = inject(AssetsAccessService);
+		
 		Globals.stateHistoryService = stateHistory;
 		Globals.mapLoaderService = mapLoader;
 		Globals.phaserEventsService = phaserEventsService;
 		Globals.globalEventsService = globalEvents;
 		Globals.autotileService = autotile;
 		Globals.entityRegistry = registry;
-		Globals.httpService = http;
 		Globals.snackbar = snackbar;
 		Globals.settingsService = settingsService;
 		Globals.jsonLoader = jsonLoader;
+		Globals.assets = assets;
 	}
 	
 	
-	ngAfterViewInit() {
+	async ngAfterViewInit() {
+		// makes sure they are synchronously available
+		await Promise.all([
+			this.jsonLoader.loadJsonMerged('actions.json'),
+			this.jsonLoader.loadJsonMerged('events.json'),
+			this.jsonLoader.loadJsonMerged('map-styles.json'),
+		]);
+		
 		this.heightMap.init();
 		const scene = new MainScene();
 		const scale = this.getScale();
+		if (Globals.game) {
+			Globals.game.destroy(true);
+		}
 		Globals.game = new Phaser.Game({
 			width: scale.width,
 			height: scale.height,
@@ -70,14 +79,14 @@ export class PhaserComponent implements AfterViewInit {
 			parent: 'content',
 			scale: {
 				mode: Phaser.Scale.ScaleModes.NONE,
-				zoom: 1 / window.devicePixelRatio
+				zoom: 1 / window.devicePixelRatio,
 			},
 			render: {
 				antialiasGL: false,
-				pixelArt: true
+				pixelArt: true,
 			},
 			zoom: 1,
-			scene: [scene]
+			scene: [scene],
 		});
 		Globals.scene = scene;
 	}
@@ -90,7 +99,7 @@ export class PhaserComponent implements AfterViewInit {
 		const scale = this.getScale();
 		Globals.game.scale.resize(
 			scale.width,
-			scale.height
+			scale.height,
 		);
 		Globals.game.scale.setZoom(1 / window.devicePixelRatio);
 	}
@@ -99,7 +108,7 @@ export class PhaserComponent implements AfterViewInit {
 		const rect = this.content.nativeElement.getBoundingClientRect();
 		return {
 			width: rect.width * window.devicePixelRatio,
-			height: rect.height * window.devicePixelRatio
+			height: rect.height * window.devicePixelRatio,
 		};
 	}
 }

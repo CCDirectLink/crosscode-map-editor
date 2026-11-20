@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Component, OnChanges, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 
 import { EventArray } from '../../../models/events';
 import { OverlayRefControl } from '../../dialogs/overlay/overlay-ref-control';
@@ -31,6 +31,7 @@ export interface NPCState {
     selector: 'app-npcstates-widget',
     templateUrl: './npc-states-widget.component.html',
     styleUrls: ['./npc-states-widget.component.scss', '../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FlexModule, MatTooltip]
 })
 export class NPCStatesWidgetComponent extends AbstractWidget implements OnInit, OnChanges, OnDestroy {

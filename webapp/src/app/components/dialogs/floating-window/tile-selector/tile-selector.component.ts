@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, HostListener, inject, OnDestroy } from '@angular/core';
 import { NavigationStart, Router } from '@angular/router';
 import * as Phaser from 'phaser';
 
@@ -9,12 +9,13 @@ import { FloatingWindowComponent } from '../floating-window.component';
 
 
 @Component({
-    selector: 'app-tile-selector',
-    templateUrl: './tile-selector.component.html',
-    styleUrls: ['./tile-selector.component.scss'],
-    imports: [FloatingWindowComponent]
+	selector: 'app-tile-selector',
+	templateUrl: './tile-selector.component.html',
+	styleUrls: ['./tile-selector.component.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
+	imports: [FloatingWindowComponent],
 })
-export class TileSelectorComponent implements AfterViewInit {
+export class TileSelectorComponent implements AfterViewInit, OnDestroy {
 	private display?: Phaser.Game;
 	private scene?: TileSelectorScene;
 	hide = false;
@@ -22,7 +23,7 @@ export class TileSelectorComponent implements AfterViewInit {
 	constructor() {
 		const globalEvents = inject(GlobalEventsService);
 		const router = inject(Router);
-
+		
 		globalEvents.currentView.subscribe(view => this.hide = view !== EditorView.Layers);
 		
 		// TODO: floating windows should be handled globally
@@ -42,14 +43,18 @@ export class TileSelectorComponent implements AfterViewInit {
 			parent: 'tile-selector-content',
 			scale: {
 				mode: Phaser.Scale.ScaleModes.NONE,
-				zoom: 1 / window.devicePixelRatio
+				zoom: 1 / window.devicePixelRatio,
 			},
 			render: {
-				pixelArt: true
+				pixelArt: true,
 			},
 			zoom: 1,
-			scene: [this.scene]
+			scene: [this.scene],
 		});
+	}
+	
+	ngOnDestroy() {
+		this.display?.destroy(true);
 	}
 	
 	@HostListener('window:resize', ['$event'])

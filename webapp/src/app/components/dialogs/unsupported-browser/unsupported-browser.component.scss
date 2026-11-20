@@ -1,0 +1,13 @@
+.panel {
+	background: var(--gray-800);
+}
+
+a {
+	text-decoration: none;
+	color: hsl(205, 100%, 56%);
+
+	&:hover {
+		text-decoration: underline;
+		color: hsl(205, 100%, 66%);
+	}
+}
