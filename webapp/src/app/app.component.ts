@@ -17,9 +17,9 @@ export class AppComponent {
 	
 	
 	@HostListener('window:beforeunload', ['$event'])
-	onUnload($event: any) {
+	onUnload($event: BeforeUnloadEvent) {
 		if (this.eventsService.hasUnsavedChanges.getValue()) {
-			$event.returnValue = 'Are you sure you want to discard your changes?';
+			$event.preventDefault();
 			
 			const dialogRef = this.overlayService.open(ConfirmCloseComponent, {
 				hasBackdrop: true,
