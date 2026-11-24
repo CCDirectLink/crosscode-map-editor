@@ -1,0 +1,1 @@
+import"./chunk-B_VM99PE.js";import{n as f,t as d}from"./chunk-Bu-EGwTB.js";d();export{f as morphTargetsVertexGlobal};
