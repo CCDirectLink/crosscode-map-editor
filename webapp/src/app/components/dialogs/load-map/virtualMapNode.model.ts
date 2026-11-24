@@ -1,39 +1,60 @@
+import { AssetFile } from '../../../services/assets-access.service';
 import { MapNode } from './mapNode.model';
+
+const collator = new Intl.Collator(undefined, { numeric: true });
 
 /**
  * A class that only returns the children that are included in the filter.
  */
 export class VirtualMapNode {
+	public names: string[] = [];
+	public children?: VirtualMapNode[];
+	public mapCount = 0;
+
 	private original: MapNode;
 	private knownChildren = new WeakMap<MapNode, VirtualMapNode>();
-	
+
 	public constructor(original: MapNode) {
 		this.original = original;
-
-		if (original.children) {
-			for (const node of original.children) {
-				this.knownChildren.set(node, new VirtualMapNode(node));
-			}
-		}
 	}
 
-	public get names(): string[] {
-		if (!this.containsSingleDirectory) {
-			return [this.original.name];
-		}
-
-		return [this.original.name].concat(...this.realChildren![0].names);
+	public get file(): AssetFile | undefined {
+		return this.original.file;
 	}
 
-	public get path(): string | undefined {
-		return this.original.path;
+	public get section(): boolean {
+		return !!this.original.section;
 	}
 
-	public get children(): VirtualMapNode[] | undefined {
-		if (this.containsSingleDirectory) {
-			return this.realChildren![0].children;
+	public refresh() {
+		this.names = [this.original.name];
+		if (!this.original.children) {
+			this.mapCount = 1;
+			return;
 		}
-		return this.realChildren;
+
+		const displayed = this.original.children.filter(n => n.displayed);
+		if (!this.isRoot) {
+			displayed.sort((a, b) => this.sort(a, b));
+		}
+
+		const children = displayed.map(n => this.resolve(n));
+		this.mapCount = 0;
+		for (const child of children) {
+			child.refresh();
+			this.mapCount += child.mapCount;
+		}
+
+		const singleDirectory = children.length === 1
+			&& children[0].children !== undefined
+			&& !this.isRoot
+			&& !this.section;
+		if (singleDirectory) {
+			this.names = this.names.concat(children[0].names);
+			this.children = children[0].children;
+		} else {
+			this.children = children;
+		}
 	}
 
 	private resolve(node: MapNode): VirtualMapNode {
@@ -47,31 +68,8 @@ export class VirtualMapNode {
 		return result;
 	}
 
-	private get isDirectory(): boolean {
-		return this.children !== undefined;
-	}
-
 	private get isRoot(): boolean {
 		return this.original.name === '';
-	}
-
-	private get containsSingleDirectory(): boolean {
-		const realChildren = this.realChildren;
-		return realChildren !== undefined
-			&& realChildren.length === 1
-			&& realChildren[0].isDirectory
-			&& !this.isRoot;
-	}
-
-	private get realChildren(): VirtualMapNode[] | undefined {
-		if (!this.original.children) {
-			return undefined;
-		}
-
-		return this.original.children
-			.filter(n => n.displayed)
-			.sort((a, b) => this.sort(a, b))
-			.map(n => this.resolve(n));
 	}
 
 	private sort(a: MapNode, b: MapNode): number {
@@ -82,6 +80,6 @@ export class VirtualMapNode {
 			return aIsDir ? -1 : 1;
 		}
 
-		return a.name.localeCompare(b.name, undefined, {numeric: true});
+		return collator.compare(a.name, b.name);
 	}
 }

@@ -67,6 +67,10 @@ input[type=text].default-input, input:not([type]).default-input, input[type=numb
 	padding-left: 4px;
 }
 
+input[type=button].default-input {
+	cursor: pointer;
+}
+
 .small-input {
 	width: 60px;
 }
@@ -124,6 +128,18 @@ body {
 
 .newline-tooltip {
 	white-space: pre-line;
+}
+
+.linebreak-tooltip {
+	white-space: pre-line;
+
+	& > * {
+		text-align: start !important;
+	}
+}
+
+.max-width-tooltip .mdc-tooltip__surface {
+	max-width: unset !important;
 }
 
 .snackbar-error {

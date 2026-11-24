@@ -75,7 +75,8 @@
 					<span class="label">Type: </span>
 					<mat-form-field>
 						<mat-select fxFlex [disabled]="!selectedLayer" class="list-item" floatPlaceholder="never"
-						            [(ngModel)]="selectedLayer?.details!.type">
+						            [ngModel]="selectedLayer?.details.type"
+						            (ngModelChange)="selectedLayer!.details.type = $event">
 							<mat-option value="Background">Background</mat-option>
 							<mat-option value="Collision">Collision</mat-option>
 							<mat-option value="Navigation">Navigation</mat-option>
@@ -88,7 +89,9 @@
 				<div class="flex flex-row items-baseline">
 					<span class="label">Name: </span>
 					<mat-form-field [floatLabel]="$any('never')">
-						<input matInput [disabled]="!selectedLayer" [(ngModel)]="selectedLayer?.details!.name">
+						<input matInput [disabled]="!selectedLayer"
+						       [ngModel]="selectedLayer?.details.name"
+						       (ngModelChange)="selectedLayer!.details.name = $event">
 					</mat-form-field>
 				</div>
 				
@@ -119,7 +122,8 @@
 							step="0.1"
 							matInput
 							[disabled]="!selectedLayer"
-							[(ngModel)]="selectedLayer?.details!.distance"
+							[ngModel]="selectedLayer?.details.distance"
+							(ngModelChange)="selectedLayer!.details.distance = $event"
 							(blur)="updateDistance()"
 						>
 					</mat-form-field>

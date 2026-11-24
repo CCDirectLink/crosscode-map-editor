@@ -1,5 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 
 import { SearchFilterService } from '../../../services/search-filter.service';
 import { OverlayPanelComponent } from '../overlay/overlay-panel/overlay-panel.component';
@@ -33,7 +33,8 @@ const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 			transition('* => scale', [
 				style({
 					'transform-origin': '0 0 0',
-					transform: 'scale(0, 0)'
+					// makes it clickable so browser doesn't show default context menu
+					transform: 'scale(0.1, 0.1)'
 				}),
 				animate(ANIMATION_TIMING)
 			]),
@@ -42,6 +43,10 @@ const ANIMATION_TIMING = '300ms cubic-bezier(0.25, 0.8, 0.25, 1)';
 	selector: 'app-list-search-overlay',
 	templateUrl: './list-search-overlay.component.html',
 	styleUrls: ['./list-search-overlay.component.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
+	host: {
+		'(contextmenu)': '$event.preventDefault()'
+	},
 	imports: [
 		OverlayPanelComponent,
 		FlexModule,

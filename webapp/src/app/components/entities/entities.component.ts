@@ -1,4 +1,4 @@
-import { Component, ViewChild, ViewContainerRef, inject } from '@angular/core';
+import { Component, ViewChild, ViewContainerRef, inject, ChangeDetectionStrategy } from '@angular/core';
 import { HostDirective } from '../../directives/host.directive';
 import { GlobalEventsService } from '../../services/global-events.service';
 import { MapLoaderService } from '../../services/map-loader.service';
@@ -17,6 +17,7 @@ import { LevelWidgetComponent } from '../widgets/level-widget/level-widget.compo
     selector: 'app-entities',
     templateUrl: './entities.component.html',
     styleUrls: ['./entities.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FlexModule, MatFormField, MatInput, FormsModule, StringWidgetComponent, Vec2WidgetComponent, LevelWidgetComponent, HostDirective]
 })
 export class EntitiesComponent {

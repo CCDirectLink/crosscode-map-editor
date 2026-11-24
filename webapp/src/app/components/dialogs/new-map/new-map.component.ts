@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 
 import { CrossCodeMap } from '../../../models/cross-code-map';
 import { MapLoaderService } from '../../../services/map-loader.service';
@@ -12,6 +12,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-new-map',
     templateUrl: './new-map.component.html',
     styleUrls: ['./new-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [OverlayPanelComponent, MapContentSettingsComponent, FlexModule, MatButton]
 })
 export class NewMapComponent {
@@ -58,7 +59,8 @@ export class NewMapComponent {
 	}
 	
 	close() {
-		this.mapLoader.loadRawMap(this.map, this.map.name, `data/maps/${this.map.name}.json`, true);
+		this.map.filename = this.map.name;
+		this.mapLoader.loadRawMap(this.map, undefined, true);
 		this.ref.close();
 	}
 	

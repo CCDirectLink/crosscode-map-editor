@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Point } from '../../../models/cross-code-map';
 import { GlobalEventsService } from '../../../services/global-events.service';
 import { OverlayRefControl } from '../overlay/overlay-ref-control';
@@ -14,6 +14,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-offset-map',
     templateUrl: './offset-map.component.html',
     styleUrls: ['./offset-map.component.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [OverlayPanelComponent, MatFormField, MatInput, FormsModule, MatCheckbox, MatButton]
 })
 export class OffsetMapComponent {

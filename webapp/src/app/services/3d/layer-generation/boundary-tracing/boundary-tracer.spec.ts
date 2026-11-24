@@ -700,7 +700,7 @@ describe('boundary tracing', () => {
 	// doesn't matter where the path starts, only the order is important
 	function reorder(path: Point[], startPoint: Point) {
 		const index = path.findIndex(p => p.x === startPoint.x && p.y === startPoint.y);
-		expect(index).toBeGreaterThanOrEqual(0, `path should not contain point: {${startPoint.x}/${startPoint.y}}`);
+		expect(index, `path should not contain point: {${startPoint.x}/${startPoint.y}}`).toBeGreaterThanOrEqual(0);
 		return rotate(path, index);
 	}
 	

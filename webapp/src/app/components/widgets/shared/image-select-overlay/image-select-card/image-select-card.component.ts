@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 
 import { HighlightDirective } from '../../../../../directives/highlight.directive';
 
@@ -14,6 +14,7 @@ export interface PropListCard {
 	selector: 'app-image-select-card',
 	imports: [HighlightDirective],
 	templateUrl: './image-select-card.component.html',
+	changeDetection: ChangeDetectionStrategy.Eager,
 	styleUrls: ['./image-select-card.component.scss']
 })
 export class ImageSelectCardComponent {

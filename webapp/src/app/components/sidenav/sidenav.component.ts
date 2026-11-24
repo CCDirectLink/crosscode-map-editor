@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
 import { MatTab, MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { EditorView } from '../../models/editor-view';
 import { GlobalEventsService } from '../../services/global-events.service';
@@ -13,6 +13,7 @@ import { EntitiesComponent } from '../entities/entities.component';
 	templateUrl: './sidenav.component.html',
 	styleUrls: ['./sidenav.component.scss'],
 	encapsulation: ViewEncapsulation.None,
+	changeDetection: ChangeDetectionStrategy.Eager,
 	imports: [FlexModule, MatTabGroup, MatTab, LayersComponent, EntitiesComponent]
 })
 export class SidenavComponent implements OnInit {

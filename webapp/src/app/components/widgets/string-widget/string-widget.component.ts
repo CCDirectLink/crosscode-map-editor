@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { SearchFilterService } from '../../../services/search-filter.service';
 import { AbstractWidget } from '../abstract-widget';
 import { FlexModule } from '@angular/flex-layout/flex';
@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
     selector: 'app-string-widget',
     templateUrl: './string-widget.component.html',
     styleUrls: ['./string-widget.component.scss', '../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FlexModule, MatTooltip, AutocompletedTextboxComponent, FormsModule]
 })
 export class StringWidgetComponent extends AbstractWidget implements OnInit {

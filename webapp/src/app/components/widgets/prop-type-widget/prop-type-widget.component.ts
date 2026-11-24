@@ -1,26 +1,26 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { OverlayWidget } from '../overlay-widget';
 import { ImageSelectOverlayComponent, PropListGroup } from '../shared/image-select-overlay/image-select-overlay.component';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { Overlay } from '@angular/cdk/overlay';
-import { HttpClientService } from '../../../services/http-client.service';
-import { lastValueFrom } from 'rxjs';
 import { Prop, PropAttributes } from '../../../services/phaser/entities/registry/prop';
 import { Helper } from '../../../services/phaser/helper';
 import { Anims, prepareSheet, PropDef, PropSheet } from '../../../services/phaser/sheet-parser';
 import { PropListCard } from '../shared/image-select-overlay/image-select-card/image-select-card.component';
 import { FlexModule } from '@angular/flex-layout/flex';
 import { MatTooltip } from '@angular/material/tooltip';
+import { AssetsAccessService } from '../../../services/assets-access.service';
 
 @Component({
-    selector: 'app-prop-type-widget',
-    templateUrl: './prop-type-widget.component.html',
-    styleUrls: ['./prop-type-widget.component.scss', '../widget.scss'],
-    imports: [FlexModule, MatTooltip]
+	selector: 'app-prop-type-widget',
+	templateUrl: './prop-type-widget.component.html',
+	styleUrls: ['./prop-type-widget.component.scss', '../widget.scss'],
+	changeDetection: ChangeDetectionStrategy.Eager,
+	imports: [FlexModule, MatTooltip],
 })
 export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
-	private http = inject(HttpClientService);
-
+	private assets = inject(AssetsAccessService);
+	
 	
 	private sheetKey = ['propType', 'sheet'];
 	private nameKey = ['propType', 'name'];
@@ -33,7 +33,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 	}[] = [];
 	
 	private rightGroup: PropListGroup = {
-		props: []
+		props: [],
 	};
 	
 	private comp: ImageSelectOverlayComponent = new ImageSelectOverlayComponent();
@@ -41,7 +41,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 	constructor() {
 		const overlayService = inject(OverlayService);
 		const overlay = inject(Overlay);
-
+		
 		super(overlayService, overlay);
 	}
 	
@@ -49,7 +49,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 		const obj = this.overlayService.open(ImageSelectOverlayComponent, {
 			positionStrategy: this.overlay.position().global(),
 			hasBackdrop: false,
-			disablePhaserInput: true
+			disablePhaserInput: true,
 		});
 		
 		this.comp = obj.instance;
@@ -71,7 +71,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 		this.comp.leftGroup.click = prop => this.setPropType(prop);
 		this.rightGroup.click = prop => this.setPropAnim(prop);
 		
-		this.comp.sheets = await lastValueFrom(this.http.getProps());
+		this.comp.sheets = await this.assets.getAllFilesInFolder('data/props');
 		
 		this.comp.manualKey = this.key;
 		this.comp.manualValue = this.settings.propType?.name;
@@ -154,14 +154,14 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 				const imgSrc = await this.generateImage({
 					propType: {
 						sheet: sheetPath,
-						name: def.name
+						name: def.name,
 					},
-					propAnim: name
+					propAnim: name,
 				}, 'Prop');
 				props.push({
 					name: def.name,
 					propAnim: name,
-					imgSrc: imgSrc
+					imgSrc: imgSrc,
 				});
 				searchName += name;
 				firstImg = firstImg || imgSrc;
@@ -170,7 +170,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 				name: def.name,
 				searchName: searchName,
 				imgSrc: firstImg,
-				count: names.length
+				count: names.length,
 			});
 		}));
 		
@@ -186,7 +186,7 @@ export class PropTypeWidgetComponent extends OverlayWidget<PropAttributes> {
 		const name = this.settings.propType?.name;
 		this.rightGroup.props = this.props.filter(v => v.name === name).map(v => ({
 			name: v.propAnim,
-			imgSrc: v.imgSrc
+			imgSrc: v.imgSrc,
 		}));
 	}
 	

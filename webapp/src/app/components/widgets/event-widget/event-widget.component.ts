@@ -1,5 +1,5 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Component, OnChanges, inject } from '@angular/core';
+import { Component, OnChanges, inject, ChangeDetectionStrategy } from '@angular/core';
 
 import { OverlayRefControl } from '../../dialogs/overlay/overlay-ref-control';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
@@ -13,6 +13,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     selector: 'app-event-widget',
     templateUrl: './event-widget.component.html',
     styleUrls: ['./event-widget.component.scss', '../widget.scss'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     imports: [FlexModule, MatTooltip]
 })
 export class EventWidgetComponent extends AbstractWidget implements OnChanges {
