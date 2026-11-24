@@ -1,1 +1,0 @@
-import"./chunk-B_VM99PE.js";import{n as r,t as a}from"./chunk-aerXCi5h.js";r();export{a as lightVxUboDeclarationWGSL};

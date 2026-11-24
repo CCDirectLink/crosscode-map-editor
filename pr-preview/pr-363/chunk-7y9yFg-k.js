@@ -1,1 +1,0 @@
-import"./chunk-B_VM99PE.js";import{n as v,t as r}from"./chunk-CKM_wAFS.js";r();export{v as lightVxFragmentDeclaration};

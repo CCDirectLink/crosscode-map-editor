@@ -1,1 +1,0 @@
-import"./chunk-B_VM99PE.js";import{n as p,t as n}from"./chunk-DojsXtSw.js";p();export{n as passPixelShaderWGSL};
