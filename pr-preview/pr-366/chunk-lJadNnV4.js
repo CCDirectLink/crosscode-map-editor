@@ -1,0 +1,1 @@
+import"./chunk-B_VM99PE.js";import{n as i,t as f}from"./chunk-DeN8loix.js";i();export{f as boundingBoxRendererVertexShaderWGSL};

@@ -1,0 +1,2109 @@
+{
+	"sensei": {
+		"src": "sensei.png",
+		"width": 184,
+		"height": 184,
+		"centerX": 94,
+		"centerY": 70,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 100,
+					"width": 184,
+					"height": 84,
+					"destX": 0,
+					"destY": 100
+				}
+			},
+			{
+				"head": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 184,
+					"height": 100,
+					"destX": 0,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"oldman": {
+		"src": "oldman.png",
+		"width": 168,
+		"height": 160,
+		"centerX": 50,
+		"centerY": 60,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 100,
+					"width": 168,
+					"height": 60,
+					"destX": 0,
+					"destY": 100
+				}
+			},
+			{
+				"head": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 168,
+					"height": 100,
+					"destX": 0,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"henry": {
+		"src": "henry.png",
+		"width": 134,
+		"height": 160,
+		"centerX": 50,
+		"centerY": 60,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 100,
+					"width": 134,
+					"height": 60,
+					"destX": 0,
+					"destY": 100
+				},
+				"torsoH": {
+					"srcX": 144,
+					"srcY": 100,
+					"width": 134,
+					"height": 60,
+					"destX": 0,
+					"destY": 100
+				}
+			},
+			{
+				"head": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 134,
+					"height": 100,
+					"destX": 0,
+					"destY": 0
+				},
+				"headH": {
+					"srcX": 144,
+					"srcY": 0,
+					"width": 134,
+					"height": 100,
+					"destX": 0,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			},
+			"HOLOGRAM": {
+				"faces": [
+					[
+						"torsoH",
+						"headH"
+					]
+				]
+			}
+		}
+	},
+	"shadAlbino": {
+		"src": "albinoshad.png",
+		"width": 136,
+		"height": 160,
+		"centerX": 44,
+		"centerY": 92,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 100,
+					"width": 136,
+					"height": 60,
+					"destX": 0,
+					"destY": 100
+				}
+			},
+			{
+				"head": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 100,
+					"destX": 0,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleNormalHair1": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 152,
+		"centerX": 43,
+		"centerY": 55,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 136,
+					"srcY": 0,
+					"width": 72,
+					"height": 88,
+					"destX": 24,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleNormalHair2": {
+		"src": "npc-portrait.png",
+		"width": 128,
+		"height": 152,
+		"centerX": 43,
+		"centerY": 55,
+		"parts": [
+			{
+				"straight": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"norm": {
+					"srcX": 280,
+					"srcY": 0,
+					"width": 80,
+					"height": 88,
+					"destX": 24,
+					"destY": 0
+				},
+				"glass": {
+					"srcX": 360,
+					"srcY": 0,
+					"width": 80,
+					"height": 88,
+					"destX": 24,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"straight",
+						"norm"
+					]
+				]
+			},
+			"GLASS": {
+				"faces": [
+					[
+						"straight",
+						"glass"
+					]
+				]
+			}
+		}
+	},
+	"maleNormalBald1": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 152,
+		"centerX": 43,
+		"centerY": 55,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 64,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 208,
+					"srcY": 0,
+					"width": 72,
+					"height": 88,
+					"destX": 24,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleFarmer": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 160,
+		"centerX": 43,
+		"centerY": 63,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 64,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 96
+				}
+			},
+			{
+				"head": {
+					"srcX": 440,
+					"srcY": 0,
+					"width": 104,
+					"height": 96,
+					"destX": 8,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"femaleShortHair1": {
+		"src": "npc-portrait.png",
+		"width": 104,
+		"height": 144,
+		"centerX": 36,
+		"centerY": 60,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 128,
+					"width": 104,
+					"height": 56,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 136,
+					"srcY": 88,
+					"width": 80,
+					"height": 88,
+					"destX": 8,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"femaleLongHair1": {
+		"src": "npc-portrait.png",
+		"width": 104,
+		"height": 144,
+		"centerX": 36,
+		"centerY": 60,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 128,
+					"width": 104,
+					"height": 56,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 216,
+					"srcY": 88,
+					"width": 80,
+					"height": 88,
+					"destX": 8,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"femalePigtails": {
+		"src": "npc-portrait.png",
+		"width": 104,
+		"height": 144,
+		"centerX": 36,
+		"centerY": 60,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 184,
+					"width": 104,
+					"height": 56,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 296,
+					"srcY": 88,
+					"width": 80,
+					"height": 88,
+					"destX": 8,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"femaleFarmer": {
+		"src": "npc-portrait.png",
+		"width": 104,
+		"height": 152,
+		"centerX": 36,
+		"centerY": 68,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 184,
+					"width": 104,
+					"height": 56,
+					"destX": 0,
+					"destY": 96
+				}
+			},
+			{
+				"head": {
+					"srcX": 544,
+					"srcY": 0,
+					"width": 104,
+					"height": 96,
+					"destX": 0,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleNormalMustache": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 158,
+		"centerX": 40,
+		"centerY": 64,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 94
+				}
+			},
+			{
+				"head": {
+					"srcX": 352,
+					"srcY": 272,
+					"width": 80,
+					"height": 96,
+					"destX": 16,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleNormalOldBeard": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 150,
+		"centerX": 40,
+		"centerY": 58,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 86
+				}
+			},
+			{
+				"head": {
+					"srcX": 512,
+					"srcY": 288,
+					"width": 72,
+					"height": 88,
+					"destX": 16,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleShadyBaldEyepatch": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 152,
+		"centerX": 43,
+		"centerY": 55,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 112,
+					"srcY": 264,
+					"width": 72,
+					"height": 88,
+					"destX": 24,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleHairSunglasses": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 152,
+		"centerX": 48,
+		"centerY": 55,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 664,
+					"srcY": 288,
+					"width": 72,
+					"height": 88,
+					"destX": 24,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"femaleAdvisor": {
+		"src": "npc-portrait.png",
+		"width": 104,
+		"height": 160,
+		"centerX": 36,
+		"centerY": 72,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 128,
+					"width": 104,
+					"height": 56,
+					"destX": 0,
+					"destY": 104
+				}
+			},
+			{
+				"head": {
+					"srcX": 264,
+					"srcY": 176,
+					"width": 80,
+					"height": 104,
+					"destX": 8,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleAdvisor": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 168,
+		"centerX": 43,
+		"centerY": 67,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 104
+				}
+			},
+			{
+				"head": {
+					"srcX": 192,
+					"srcY": 176,
+					"width": 72,
+					"height": 104,
+					"destX": 24,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"femaleAdventurerPonytail": {
+		"src": "npc-portrait.png",
+		"width": 104,
+		"height": 144,
+		"centerX": 36,
+		"centerY": 54,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 128,
+					"width": 104,
+					"height": 56,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 104,
+					"srcY": 176,
+					"width": 88,
+					"height": 88,
+					"destX": 8,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"femaleAdventurerPigtails": {
+		"src": "npc-portrait.png",
+		"width": 104,
+		"height": 144,
+		"centerX": 36,
+		"centerY": 54,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 128,
+					"width": 104,
+					"height": 56,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 664,
+					"srcY": 104,
+					"width": 96,
+					"height": 88,
+					"destX": 8,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleAdventurerSpikeHair": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 168,
+		"centerX": 43,
+		"centerY": 71,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 104
+				}
+			},
+			{
+				"head": {
+					"srcX": 648,
+					"srcY": 0,
+					"width": 72,
+					"height": 104,
+					"destX": 24,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleAdventurerBald": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 152,
+		"centerX": 43,
+		"centerY": 51,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 600,
+					"srcY": 104,
+					"width": 64,
+					"height": 88,
+					"destX": 32,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"femaleMiner": {
+		"src": "npc-portrait.png",
+		"width": 104,
+		"height": 152,
+		"centerX": 36,
+		"centerY": 68,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 128,
+					"width": 104,
+					"height": 56,
+					"destX": 0,
+					"destY": 96
+				}
+			},
+			{
+				"head": {
+					"srcX": 520,
+					"srcY": 96,
+					"width": 80,
+					"height": 96,
+					"destX": 8,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleMiner": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 160,
+		"centerX": 43,
+		"centerY": 63,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 64,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 96
+				}
+			},
+			{
+				"head": {
+					"srcX": 440,
+					"srcY": 96,
+					"width": 80,
+					"height": 96,
+					"destX": 24,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"femaleColonialShorthair": {
+		"src": "npc-portrait.png",
+		"width": 104,
+		"height": 152,
+		"centerX": 40,
+		"centerY": 59,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 128,
+					"width": 104,
+					"height": 56,
+					"destX": 0,
+					"destY": 96
+				}
+			},
+			{
+				"head": {
+					"srcX": 344,
+					"srcY": 176,
+					"width": 80,
+					"height": 96,
+					"destX": 8,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"femaleColonialPigtails": {
+		"src": "npc-portrait.png",
+		"width": 104,
+		"height": 152,
+		"centerX": 40,
+		"centerY": 59,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 128,
+					"width": 104,
+					"height": 56,
+					"destX": 0,
+					"destY": 96
+				}
+			},
+			{
+				"head": {
+					"srcX": 424,
+					"srcY": 192,
+					"width": 112,
+					"height": 96,
+					"destX": 0,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleColonialBlack": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 160,
+		"centerX": 48,
+		"centerY": 59,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 96
+				}
+			},
+			{
+				"head": {
+					"srcX": 536,
+					"srcY": 192,
+					"width": 80,
+					"height": 96,
+					"destX": 24,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleColonialMonocle": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 160,
+		"centerX": 48,
+		"centerY": 59,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 96
+				}
+			},
+			{
+				"head": {
+					"srcX": 616,
+					"srcY": 192,
+					"width": 80,
+					"height": 96,
+					"destX": 24,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleGuard": {
+		"src": "guards-portrait.png",
+		"width": 136,
+		"height": 160,
+		"centerX": 48,
+		"centerY": 59,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 72,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 136,
+					"srcY": 0,
+					"width": 88,
+					"height": 88,
+					"destX": 16,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"femaleGuard": {
+		"src": "guards-portrait.png",
+		"width": 104,
+		"height": 152,
+		"centerX": 48,
+		"centerY": 59,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 72,
+					"width": 104,
+					"height": 64,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 224,
+					"srcY": 0,
+					"width": 88,
+					"height": 88,
+					"destX": 8,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleGuardGlasses": {
+		"src": "guards-portrait.png",
+		"width": 136,
+		"height": 160,
+		"centerX": 48,
+		"centerY": 59,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 72,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 136,
+					"srcY": 96,
+					"width": 88,
+					"height": 88,
+					"destX": 16,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"femaleMonk": {
+		"src": "npc-portrait.png",
+		"width": 104,
+		"height": 144,
+		"centerX": 34,
+		"centerY": 58,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 128,
+					"width": 104,
+					"height": 56,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 440,
+					"srcY": 288,
+					"width": 72,
+					"height": 88,
+					"destX": 16,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleMonk": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 152,
+		"centerX": 43,
+		"centerY": 55,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 376,
+					"srcY": 88,
+					"width": 64,
+					"height": 88,
+					"destX": 32,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"maleBusinessHeatHeadscarf": {
+		"src": "npc-portrait.png",
+		"width": 136,
+		"height": 158,
+		"centerX": 40,
+		"centerY": 66,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 136,
+					"height": 64,
+					"destX": 0,
+					"destY": 94
+				}
+			},
+			{
+				"head": {
+					"srcX": 192,
+					"srcY": 280,
+					"width": 72,
+					"height": 96,
+					"destX": 20,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"femaleBusinessHeatHeadscarf": {
+		"src": "npc-portrait.png",
+		"width": 104,
+		"height": 150,
+		"centerX": 40,
+		"centerY": 66,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 128,
+					"width": 104,
+					"height": 56,
+					"destX": 0,
+					"destY": 94
+				}
+			},
+			{
+				"head": {
+					"srcX": 264,
+					"srcY": 280,
+					"width": 80,
+					"height": 96,
+					"destX": 12,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"femaleGlassesCap": {
+		"src": "npc-portrait.png",
+		"width": 104,
+		"height": 144,
+		"centerX": 28,
+		"centerY": 60,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 128,
+					"width": 104,
+					"height": 56,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 584,
+					"srcY": 288,
+					"width": 80,
+					"height": 88,
+					"destX": 8,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"tribladerMale": {
+		"src": "avatars-new.png",
+		"width": 152,
+		"height": 168,
+		"centerX": 54,
+		"centerY": 62,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 152,
+					"height": 80,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 152,
+					"srcY": 0,
+					"width": 80,
+					"height": 96,
+					"destX": 32,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"tribladerFemale": {
+		"src": "avatars-new.png",
+		"width": 128,
+		"height": 152,
+		"centerX": 38,
+		"centerY": 54,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 80,
+					"width": 128,
+					"height": 72,
+					"destX": 0,
+					"destY": 80
+				}
+			},
+			{
+				"head": {
+					"srcX": 152,
+					"srcY": 96,
+					"width": 80,
+					"height": 88,
+					"destX": 16,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"pentafistMale": {
+		"src": "avatars-new.png",
+		"width": 128,
+		"height": 160,
+		"centerX": 42,
+		"centerY": 60,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 152,
+					"width": 128,
+					"height": 72,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 232,
+					"srcY": 0,
+					"width": 96,
+					"height": 88,
+					"destX": 16,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"pentafistMaleRasta": {
+		"src": "avatars-new.png",
+		"width": 128,
+		"height": 160,
+		"centerX": 42,
+		"centerY": 58,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 152,
+					"width": 128,
+					"height": 72,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 224,
+					"srcY": 376,
+					"width": 96,
+					"height": 88,
+					"destX": 24,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"pentafistFemale": {
+		"src": "avatars-new.png",
+		"width": 96,
+		"height": 152,
+		"centerX": 30,
+		"centerY": 56,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 224,
+					"width": 96,
+					"height": 64,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 232,
+					"srcY": 88,
+					"width": 96,
+					"height": 88,
+					"destX": 0,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"pentafistFemaleRasta": {
+		"src": "avatars-new.png",
+		"width": 96,
+		"height": 152,
+		"centerX": 28,
+		"centerY": 56,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 224,
+					"width": 96,
+					"height": 64,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 320,
+					"srcY": 384,
+					"width": 104,
+					"height": 88,
+					"destX": -8,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"hexacastMale": {
+		"src": "avatars-new.png",
+		"width": 136,
+		"height": 160,
+		"centerX": 42,
+		"centerY": 55,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 288,
+					"width": 136,
+					"height": 72,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 232,
+					"srcY": 176,
+					"width": 96,
+					"height": 88,
+					"destX": 16,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"hexacastMaleBlockhead": {
+		"src": "avatars-new.png",
+		"width": 136,
+		"height": 160,
+		"centerX": 44,
+		"centerY": 58,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 288,
+					"width": 136,
+					"height": 72,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 136,
+					"srcY": 352,
+					"width": 88,
+					"height": 88,
+					"destX": 24,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"hexacastFemale": {
+		"src": "avatars-new.png",
+		"width": 104,
+		"height": 152,
+		"centerX": 26,
+		"centerY": 56,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 360,
+					"width": 104,
+					"height": 40,
+					"destX": 0,
+					"destY": 112
+				}
+			},
+			{
+				"head": {
+					"srcX": 328,
+					"srcY": 0,
+					"width": 104,
+					"height": 112,
+					"destX": 0,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"quadroguardMale": {
+		"src": "avatars-new.png",
+		"width": 168,
+		"height": 168,
+		"centerX": 60,
+		"centerY": 48,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 536,
+					"width": 168,
+					"height": 96,
+					"destX": 0,
+					"destY": 72
+				}
+			},
+			{
+				"head": {
+					"srcX": 152,
+					"srcY": 184,
+					"width": 80,
+					"height": 80,
+					"destX": 40,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"quadroguardMaleSpiky": {
+		"src": "avatars-new.png",
+		"width": 168,
+		"height": 176,
+		"centerX": 60,
+		"centerY": 58,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 536,
+					"width": 168,
+					"height": 96,
+					"destX": 0,
+					"destY": 80
+				}
+			},
+			{
+				"head": {
+					"srcX": 152,
+					"srcY": 264,
+					"width": 80,
+					"height": 88,
+					"destX": 40,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"quadroguardFemale": {
+		"src": "avatars-new.png",
+		"width": 128,
+		"height": 144,
+		"centerX": 42,
+		"centerY": 46,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 472,
+					"width": 128,
+					"height": 64,
+					"destX": 0,
+					"destY": 80
+				}
+			},
+			{
+				"head": {
+					"srcX": 328,
+					"srcY": 216,
+					"width": 96,
+					"height": 80,
+					"destX": 16,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"quadroguardFemalePony": {
+		"src": "avatars-new.png",
+		"width": 128,
+		"height": 152,
+		"centerX": 44,
+		"centerY": 54,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 472,
+					"width": 128,
+					"height": 64,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 336,
+					"srcY": 296,
+					"width": 88,
+					"height": 88,
+					"destX": 24,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"spheromancerMale": {
+		"src": "avatars-new.png",
+		"width": 135,
+		"height": 176,
+		"centerX": 50,
+		"centerY": 66,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 400,
+					"width": 135,
+					"height": 72,
+					"destX": 0,
+					"destY": 104
+				}
+			},
+			{
+				"head": {
+					"srcX": 328,
+					"srcY": 112,
+					"width": 96,
+					"height": 104,
+					"destX": 24,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"spheromancerFemale": {
+		"src": "avatars-new.png",
+		"width": 96,
+		"height": 168,
+		"centerX": 30,
+		"centerY": 66,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 168,
+					"srcY": 576,
+					"width": 96,
+					"height": 56,
+					"destX": 0,
+					"destY": 112
+				}
+			},
+			{
+				"head": {
+					"srcX": 232,
+					"srcY": 264,
+					"width": 88,
+					"height": 112,
+					"destX": 0,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"shadMale": {
+		"src": "shad-portrait.png",
+		"width": 120,
+		"height": 160,
+		"centerX": 43,
+		"centerY": 55,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 0,
+					"width": 120,
+					"height": 72,
+					"destX": 0,
+					"destY": 88
+				}
+			},
+			{
+				"head": {
+					"srcX": 120,
+					"srcY": 0,
+					"width": 96,
+					"height": 88,
+					"destX": 8,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	},
+	"shadFemale": {
+		"src": "shad-portrait.png",
+		"width": 112,
+		"height": 144,
+		"centerX": 43,
+		"centerY": 55,
+		"parts": [
+			{
+				"torso": {
+					"srcX": 0,
+					"srcY": 72,
+					"width": 112,
+					"height": 48,
+					"destX": 0,
+					"destY": 96
+				}
+			},
+			{
+				"head": {
+					"srcX": 216,
+					"srcY": 0,
+					"width": 80,
+					"height": 96,
+					"destX": 8,
+					"destY": 0
+				}
+			}
+		],
+		"expressions": {
+			"DEFAULT": {
+				"faces": [
+					[
+						"torso",
+						"head"
+					]
+				]
+			}
+		}
+	}
+}

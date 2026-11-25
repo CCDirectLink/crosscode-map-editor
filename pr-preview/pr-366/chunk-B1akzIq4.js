@@ -1,0 +1,1 @@
+import"./chunk-B_VM99PE.js";import{n as m,t as f}from"./chunk-JS9oXCYm.js";f();export{m as bonesDeclaration};
