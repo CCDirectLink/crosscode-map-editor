@@ -10,19 +10,20 @@ import { GotoLabel } from './goto-label';
 import { If } from './if';
 import { Label } from './label';
 import { OpenQuestDialog } from './open-quest-dialogue';
+import { SelectRandom } from './select-random';
 import { SetCameraBetween } from './set-camera-between';
 import { SetCameraPos } from './set-camera-pos';
 import { SetCameraTarget } from './set-camera-target';
 import { SetCameraZoom } from './set-camera-zoom';
+import { SetMsgExpression } from './set-msg-expression';
 import { SetOverlay } from './set-overlay';
 import { SetPlayerCore } from './set-player-core';
 import { ShowChoice } from './show-choice';
+import { ShowModalChoice } from './show-modal-choice';
 import { ShowMsg } from './show-msg';
+import { ShowSideMsg } from './show-side-msg';
 import { StartNpcTradeMenu } from './start-npc-trade-menu';
 import { Wait } from './wait';
-import { ShowSideMsg } from './show-side-msg';
-import { ShowModalChoice } from './show-modal-choice';
-import { SetMsgExpression } from './set-msg-expression';
 
 type EventConstructor<T extends EventType> = new (
 	domSanitizer: DomSanitizer,
@@ -42,6 +43,7 @@ export class EventRegistryService {
 		this.register('ADD_MSG_PERSON', AddMsgPerson);
 		this.register('SHOW_MSG', ShowMsg);
 		this.register('SHOW_CHOICE', ShowChoice);
+		this.register('SELECT_RANDOM', SelectRandom);
 		this.register('IF', If);
 		this.register('SET_PLAYER_CORE', SetPlayerCore);
 		this.register('CLEAR_SLOW_MOTION', ClearSlowMotion);

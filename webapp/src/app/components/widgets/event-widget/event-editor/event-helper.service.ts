@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { AbstractEvent, EventType } from '../event-registry/abstract-event';
 import { EventRegistryService } from '../event-registry/event-registry.service';
+import { SelectRandomData } from '../event-registry/select-random';
 
 @Injectable({
 	providedIn: 'root'
@@ -28,6 +29,14 @@ export class EventHelperService {
 			const valChoice = val as any;
 			valChoice.options.forEach((option: any, index: number) => {
 				valChoice[index] = valChoice[index].map((v: EventType) => this.getEventFromType(v, actionStep));
+			});
+		} else if (val.type === 'SELECT_RANDOM') {
+			const valRandom = val as SelectRandomData;
+			valRandom.options.forEach((option, optionIndex) => {
+				for (let branch = 0; branch < option.count; branch++) {
+					const key = optionIndex  + '_' + branch as `${number}_${number}`;
+					valRandom[key] = valRandom[key].map((v) => this.getEventFromType(v as any, actionStep));
+				}
 			});
 		} else if (val.type === 'START_NPC_TRADE_MENU') {
 			const valTradeMenu = val as any;

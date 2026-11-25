@@ -1,0 +1,21 @@
+<div class="flex flex-col property-container">
+	<div class="flex flex-row items-center mb-2">
+		<label class="property-name" [matTooltip]="attribute?.description">{{ key }}:</label>
+		<button mat-icon-button (click)="add()">
+			<mat-icon>add</mat-icon>
+		</button>
+	</div>
+	
+	<div class="flex flex-col">
+		@for (option of settings[key]; track $index) {
+			<div class="ms-14 flex flex-row gap-2">
+				<button mat-icon-button (click)="remove($index)">
+					<mat-icon>remove</mat-icon>
+				</button>
+				<app-number-widget [entity]="entity" [custom]="option" key="count" class="grow" (onChange)="update()"></app-number-widget>
+				<app-number-widget [entity]="entity" [custom]="option" key="weight" class="grow" (onChange)="update()"></app-number-widget>
+				<app-string-widget [entity]="entity" [custom]="option" key="activeCondition" class="grow" (onChange)="update()"></app-string-widget>
+			</div>
+		}
+	</div>
+</div>

@@ -1,0 +1,5 @@
+@use '@angular/material' as mat;
+
+:host {
+	@include mat.icon-button-density(-4);
+}
