@@ -1,25 +1,26 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
-import settingsJson from '../../../../../assets/npc-settings.json';
-import { createEventArray, destructureEventArray, EventArrayType } from '../../../../models/events';
-import { EventEditorComponent } from '../../event-widget/event-editor/editor/event-editor.component';
-import { EventType } from '../../event-widget/event-registry/abstract-event';
-import { type NPCState } from '../npc-states-widget.component';
-import { OverlayPanelComponent } from '../../../dialogs/overlay/overlay-panel/overlay-panel.component';
-import { FlexModule } from '@angular/flex-layout/flex';
-import { MatButton } from '@angular/material/button';
-import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButton } from '@angular/material/button';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatIcon } from '@angular/material/icon';
-import { KeyValuePipe } from '@angular/common';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { createEventArray, destructureEventArray, EventArrayType } from '../../../../models/events';
+import { EntityAttributes } from '../../../../services/phaser/entities/cc-entity';
+import { OverlayPanelComponent } from '../../../dialogs/overlay/overlay-panel/overlay-panel.component';
+import { BooleanWidgetComponent } from '../../boolean-widget/boolean-widget.component';
+import { EventEditorComponent } from '../../event-widget/event-editor/editor/event-editor.component';
+import { EventType } from '../../event-widget/event-registry/abstract-event';
+import { EventWidgetComponent } from '../../event-widget/event-widget.component';
+import { JsonWidgetComponent } from '../../json-widget/json-widget.component';
+import { StringWidgetComponent } from '../../string-widget/string-widget.component';
+import { type NPCState } from '../npc-states-widget.component';
 
 @Component({
 	selector: 'app-npc-states',
 	templateUrl: './npc-states.component.html',
 	styleUrls: ['./npc-states.component.scss', '../../widget.scss'],
-	changeDetection: ChangeDetectionStrategy.Eager,
-	imports: [OverlayPanelComponent,
-		FlexModule,
+	imports: [
+		OverlayPanelComponent,
 		MatButton,
 		MatTabGroup,
 		MatTab,
@@ -27,7 +28,10 @@ import { KeyValuePipe } from '@angular/common';
 		MatCheckbox,
 		MatIcon,
 		EventEditorComponent,
-		KeyValuePipe
+		EventWidgetComponent,
+		JsonWidgetComponent,
+		StringWidgetComponent,
+		BooleanWidgetComponent,
 	]
 })
 export class NpcStatesComponent implements OnInit {
@@ -35,22 +39,127 @@ export class NpcStatesComponent implements OnInit {
 	
 	@Input() states: NPCState[] = [];
 	@Output() exit: EventEmitter<NPCState[]> = new EventEmitter<NPCState[]>();
-	currentState?: NPCState;
-	index = 0;
+	protected currentState?: NPCState;
+	protected index = 0;
 	
-	props = settingsJson;
-	eventTypes = Object.values(EventArrayType);
-	warnings: string[] = [];
+	protected warnings: string[] = [];
 	private missingTradeEvent = false;
 	
+	// Used by app-string-widget
 	eventType: EventArrayType = EventArrayType.Simple;
+	// Used by app-string-widget
 	trader?: string;
 	
 	// TODO: move to global events service
-	clipboard = '';
+	protected clipboard = '';
 	
-	constructor() {
-	}
+	protected readonly attributes = {
+		condition: {
+			type: 'VarCondition',
+			description: 'Condition for this page to be active',
+			height: 24
+		},
+		position: {
+			type: 'Vec3',
+			description: 'Position of NPC for this page',
+			pointSelect: true,
+			optional: true
+		},
+		reactType: {
+			type: 'String',
+			description: 'How NPC will react on touches and talking',
+			float: true,
+			options: {
+				PUSHABLE: 0,
+				FIXED_POS: 1,
+				FIXED_FACE: 2
+			},
+			default: 'FIXED_POS'
+		},
+		face: {
+			type: 'Face',
+			description: 'Face direction.',
+			float: true,
+			options: {
+				NORTH: 0,
+				EAST: 1,
+				SOUTH: 2,
+				WEST: 3,
+				NORTH_EAST: 4,
+				SOUTH_EAST: 5,
+				SOUTH_WEST: 6,
+				NORTH_WEST: 7
+			}
+		},
+		config: {
+			type: 'CharConfig',
+			description: 'Configuration of Charater for this page',
+			float: true,
+			options: {
+				'normal': 0,
+				'run': 0,
+				'ground': 0,
+				'groundFloat': 0,
+				'offline': 0,
+				'sit': 0,
+				'sitFloat': 0,
+				'sit2': 0,
+				'sit2Float': 0
+			}
+		},
+		action: {
+			type: 'Action',
+			description: 'Action to perform constantly',
+			popup: true,
+			float: true,
+			clear: true,
+			optional: true
+		},
+		showFx: {
+			type: 'Effect',
+			description: 'Action to perform constantly',
+			popup: true,
+			float: true,
+			optional: true
+		},
+		hideFx: {
+			type: 'Effect',
+			description: 'Action to perform constantly',
+			popup: true,
+			float: true,
+			optional: true
+		},
+		permaFx: {
+			type: 'Effect',
+			description: 'Action to perform constantly',
+			popup: true,
+			float: true,
+			optional: true
+		},
+		hidden: {
+			type: 'Boolean',
+			description: 'If true: NPC is hidden.',
+			float: true,
+			clear: true
+		},
+		door: {
+			type: 'Entity',
+			description: 'Door that NPC should enter from/leave to (only specify when hidden!)',
+			optional: true,
+			float: true
+		},
+		eventType: {
+			type: 'String',
+			description: 'Type of npc event. e.g. simple event or trade.',
+			options: {
+				simple: 'simple',
+				quest: 'quest',
+				shop: 'shop',
+				arena: 'arena',
+				trade: 'trade'
+			}
+		}
+	} satisfies EntityAttributes;
 	
 	ngOnInit() {
 		this.states.forEach(state => {
@@ -68,7 +177,7 @@ export class NpcStatesComponent implements OnInit {
 		this.selectTab(this.index);
 	}
 	
-	selectTab(index: number) {
+	protected selectTab(index: number) {
 		if (this.currentState) {
 			if (!this.eventEditor) {
 				throw new Error('event editor is not defined');
@@ -83,10 +192,10 @@ export class NpcStatesComponent implements OnInit {
 		}
 	}
 	
-	newPage() {
+	protected newPage() {
 		this.index++;
 		this.states.splice(this.index, 0, {
-			reactType: '',
+			reactType: 'FIXED_POS',
 			position: {
 				x: 0,
 				y: 0,
@@ -103,7 +212,7 @@ export class NpcStatesComponent implements OnInit {
 	}
 	
 	// TODO: make proper export for copy/paste and export
-	copyPage() {
+	protected copyPage() {
 		if (!this.currentState) {
 			return;
 		}
@@ -115,17 +224,17 @@ export class NpcStatesComponent implements OnInit {
 		console.log(JSON.parse(this.clipboard));
 	}
 	
-	pastePage() {
+	protected pastePage() {
 		this.index++;
 		this.states.splice(this.index, 0, JSON.parse(this.clipboard));
 	}
 	
-	removePage() {
+	protected removePage() {
 		this.states.splice(this.index, 1);
 		this.index = Math.max(0, this.index - 1);
 	}
 	
-	export() {
+	private export() {
 		if (!this.eventEditor) {
 			throw new Error('event editor is not defined');
 		}
@@ -144,15 +253,15 @@ export class NpcStatesComponent implements OnInit {
 		return out;
 	}
 	
-	save() {
+	protected save() {
 		this.exit.emit(this.export());
 	}
 	
-	cancel() {
+	protected cancel() {
 		this.exit.error('cancel');
 	}
 	
-	updateDisplayedWarnings() {
+	private updateDisplayedWarnings() {
 		this.warnings.length = 0;
 		if (this.isTradeEvent) {
 			if (!this.trader) {
@@ -165,7 +274,7 @@ export class NpcStatesComponent implements OnInit {
 		}
 	}
 	
-	updateTradeEventWarning(updatedEvents: EventType[]) {
+	protected updateTradeEventWarning(updatedEvents: EventType[]) {
 		function hasEventOfTypeRecursive(object: any, type: string): boolean {
 			if (typeof object !== 'object' || object === null) {
 				return false;
@@ -185,7 +294,7 @@ export class NpcStatesComponent implements OnInit {
 		this.updateDisplayedWarnings();
 	}
 	
-	get isTradeEvent() {
+	protected get isTradeEvent() {
 		return this.eventType === EventArrayType.Trade;
 	}
 }

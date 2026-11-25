@@ -1,6 +1,6 @@
 <cc-overlay-panel>
 	<ng-container ngProjectAs="toolbar">
-		<div class="toolbar" fxLayout="row" fxFlexAlign="start">
+		<div class="px-3 gap-3 flex flex-row">
 			<button mat-stroked-button (click)="newPage()">New Page</button>
 			<button mat-stroked-button (click)="copyPage()">Copy Page</button>
 			<button mat-stroked-button (click)="pastePage()" [disabled]="!clipboard">Paste Page</button>
@@ -8,125 +8,79 @@
 		</div>
 	</ng-container>
 	<ng-container ngProjectAs="content">
-		<div fxLayout="column" class="container">
-			
-			<mat-tab-group fxFlex="0 0 auto"
-			               id="groupTabGroup"
+		<div class="h-full flex flex-col">
+			<mat-tab-group id="groupTabGroup"
 			               animationDuration="0ms"
 			               mat-stretch-tabs="false"
 			               (selectedIndexChange)="selectTab($event)"
 			               [selectedIndex]="index">
 				@for (state of states; track state; let index = $index) {
-					<mat-tab class="stretched-tabs"
-					         [label]="state.pageName && state.pageName.trim() ? state.pageName : ((index + 1) + '')">
+					<mat-tab [label]="state.pageName && state.pageName.trim() ? state.pageName : ((index + 1) + '')">
 					</mat-tab>
 				}
 			</mat-tab-group>
 			
 			@if (currentState) {
-				<div class="tab-content" fxLayout="column" fxFlex="1 1 0">
-					
-					<!-- condition -->
-					<div fxFlex="0 0 54px" fxLayout="row">
-						<div fxLayout="row" fxFlexAlign="center" fxFlex="auto">
-							<label for="condition" class="condition-label" fxFlexAlign="center">condition:</label>
-							<input class="default-input condition-padding" id="condition"
-							       [(ngModel)]="currentState.condition">
-							<div class="condition-icon">
-								<!--TODO: search icon-->
-							</div>
-						</div>
+				<div class="tab-content flex flex-col grow">
+					<div class="flex flex-row items-center p-3 gap-2">
+						<label [for]="condition">Condition:</label>
+						<input class="default-input" #condition [(ngModel)]="currentState.condition">
 					</div>
-					<div fxFlex="1 1 0" fxLayout="row" class="middle-container tab-content-inner">
-						<div class="content-left" fxFlex="0 0 225px" fxLayout="column">
+
+					<div class="tab-content-inner flex flex-row grow overflow-hidden">
+						<div class="w-[250px] flex flex-col px-3">
 							
 							<!-- Position -->
-							<div fxFlex="0 0 auto">
-								<div fxLayout="row" class="attribute">
-									<mat-checkbox color="primary" [(ngModel)]="currentState.position!.active">Position
-									</mat-checkbox>
-								</div>
+							<div class="flex flex-row">
+								<mat-checkbox color="primary" [(ngModel)]="currentState.position!.active">
+									Position
+								</mat-checkbox>
 							</div>
 							@if (currentState.position!.active) {
-								<div fxFlex="0 1 auto">
-									<div fxLayout="row" class="property-container">
-										<label fxFlexAlign="center" class="pos-label">Pos:</label>
-										
+								<div class="grid grid-cols-3 gap-2">
+									<label>Pos:</label>
+									<div class="flex">
 										<label class="property-name-small">X:</label>
-										<input type="number" class="default-input small-input"
-										       [(ngModel)]="currentState.position!.x">
-										
-										<label class="property-name-small">Y:</label>
-										<input type="number" class="default-input small-input"
-										       [(ngModel)]="currentState.position!.y">
+										<input type="number" class="default-input small-input" [(ngModel)]="currentState.position!.x">
 									</div>
-									
-									<div fxLayout="row" class="property-container">
-										<label fxFlexAlign="center" class="pos-label" for="level">Level:</label>
-										
-										<input id="level" type="number" class="default-input small-input" min="0"
-										       [(ngModel)]="currentState.position!.lvl">
-										
+									<div class="flex">
+										<label class="property-name-small">Y:</label>
+										<input type="number" class="default-input small-input" [(ngModel)]="currentState.position!.y">
+									</div>
+									<label [for]="level">Level:</label>
+									<input #level type="number" class="default-input small-input" min="0" [(ngModel)]="currentState.position!.lvl">
+									<div class="flex">
 										<label for="offset" class="property-name-small">+</label>
 										<input disabled id="offset" type="number" class="default-input small-input">
 									</div>
 									<br><br>
 								</div>
 							}
-							
-							<!-- page name -->
-							<div fxLayout="row" class="attribute" fxFlex="0 0 auto">
-								<span fxFlex="0 0 87px" fxFlexAlign="center">Page name: </span>
-								<input class="default-input" [(ngModel)]="currentState.pageName">
-							</div>
-							
-							<!-- Event type -->
-							<div fxLayout="row" class="attribute" fxFlex="0 0 auto">
-								<span fxFlex="0 0 87px" fxFlexAlign="center">Event type: </span>
-								<select class="default-input select-input" [(ngModel)]="eventType"
-								        (ngModelChange)="updateDisplayedWarnings()">
-									@for (type of eventTypes; track type) {
-										<option [value]="type">
-											{{ type }}
-										</option>
-									}
-								</select>
-							</div>
-							
-							<!-- Trader -->
+
+							<app-string-widget [custom]="currentState" key="pageName" />
+							<app-string-widget [custom]="this" key="eventType" [attribute]="attributes.eventType" />
 							@if (isTradeEvent) {
-								<div fxLayout="row" class="attribute" fxFlex="0 0 auto">
-									<span fxFlex="0 0 87px" fxFlexAlign="center">Trader: </span>
-									<input class="default-input" [(ngModel)]="trader"
-									       (ngModelChange)="updateDisplayedWarnings()">
-								</div>
+								<app-string-widget [custom]="this" key="trader" />
 							}
+							<app-string-widget [custom]="currentState" key="reactType" [attribute]="attributes.reactType" />
+							<app-string-widget [custom]="currentState" key="face" [attribute]="attributes.face" />
+							<app-string-widget [custom]="currentState" key="config" [attribute]="attributes.config" />
+							<app-event-widget [custom]="currentState" key="action" [attribute]="attributes.action" />
+							<app-json-widget [custom]="currentState" key="showFx" [attribute]="attributes.showFx" />
+							<app-json-widget [custom]="currentState" key="hideFx" [attribute]="attributes.hideFx" />
+							<app-json-widget [custom]="currentState" key="permaFx" [attribute]="attributes.permaFx" />
+							<app-boolean-widget [custom]="currentState" key="hidden" [attribute]="attributes.hidden" />
+							<app-json-widget [custom]="currentState" key="door" [attribute]="attributes.door" />
 							
-							<!-- Other -->
-							@for (prop of props | keyvalue; track prop) {
-								<div fxLayout="row" class="attribute" fxFlex="0 0 auto">
-									<span fxFlex="0 0 87px" fxFlexAlign="center">{{ prop.key }}: </span>
-									<select class="default-input select-input" [(ngModel)]="$any(currentState)[$any(prop.key)]">
-										@for (item of $any(prop.value); track item) {
-											<option [value]="item">
-												{{ item }}
-											</option>
-										}
-									</select>
-								</div>
-							}
-							
-							<!-- Warnings -->
 							@for (warning of warnings; track warning) {
-								<div fxLayout="row" class="warning-message">
-									<mat-icon>warning</mat-icon>
-									<span fxFlexAlign="center">{{ warning }}</span>
+								<div class="flex flex-row warning-message">
+									<mat-icon class="!w-7 shrink-0">warning</mat-icon>
+									<span>{{ warning }}</span>
 								</div>
 							}
 						</div>
-						<div fxFlex="1 1 0" fxLayout="column" class="event-container">
-							<!-- Event Editor -->
-							<app-event-editor #eventEditor class="event-block" fxLayout="column"
+						<div class="min-w-0 flex flex-col grow">
+							<app-event-editor #eventEditor class="mx-2 flex flex-col"
 							                  [eventData]="currentState.event"
 							                  (eventsChanged)="updateTradeEventWarning($event)"
 							></app-event-editor>

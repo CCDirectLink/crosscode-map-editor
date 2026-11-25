@@ -6,6 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 ### Added
 - Added support for SELECT_RANDOM events
+- Added missing properties to NPC States
 
 ## [2.7.0] 2026-11-24
 ### Added
