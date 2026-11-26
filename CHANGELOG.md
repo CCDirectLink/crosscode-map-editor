@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+## [2.8.0] 2026-11-26
 ### Added
 - Added support for SELECT_RANDOM events
 - Added missing properties to NPC States
