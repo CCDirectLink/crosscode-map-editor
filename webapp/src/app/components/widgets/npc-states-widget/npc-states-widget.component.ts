@@ -1,21 +1,26 @@
 import { Overlay } from '@angular/cdk/overlay';
-import { Component, OnChanges, OnDestroy, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnChanges, OnDestroy, OnInit, inject } from '@angular/core';
 
+import { FlexModule } from '@angular/flex-layout/flex';
+import { MatTooltip } from '@angular/material/tooltip';
 import { EventArray } from '../../../models/events';
+import { FACE8 } from '../../../services/phaser/entities/registry/npc';
 import { OverlayRefControl } from '../../dialogs/overlay/overlay-ref-control';
 import { OverlayService } from '../../dialogs/overlay/overlay.service';
 import { AbstractWidget } from '../abstract-widget';
+import { EventType, WMTypes } from '../event-widget/event-registry/abstract-event';
 import { NpcStatesComponent } from './npc-states/npc-states.component';
-import { FACE8 } from '../../../services/phaser/entities/registry/npc';
-import { FlexModule } from '@angular/flex-layout/flex';
-import { MatTooltip } from '@angular/material/tooltip';
 
 export interface NPCState {
 	reactType: string;
 	pageName?: string;
 	face: keyof typeof FACE8;
-	action: any;
+	action?: EventType[];
+	showFx?: WMTypes.Effect;
+	hideFx?: WMTypes.Effect;
+	permaFx?: WMTypes.Effect;
 	hidden: boolean;
+	door?: WMTypes.Entity;
 	position?: {
 		x: number;
 		y: number;

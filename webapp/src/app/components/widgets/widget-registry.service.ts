@@ -1,20 +1,21 @@
 import { Injectable } from '@angular/core';
+import { ArrayWidgetComponent } from './array-widget/array-widget.component';
 import { BooleanWidgetComponent } from './boolean-widget/boolean-widget.component';
+import { CharacterWidgetComponent } from './character-widget/character-widget.component';
+import { CustomDesTypeWidgetComponent } from './custom-des-type-widget/custom-des-type-widget.component';
 import { EnemyTypeWidgetComponent } from './enemy-type-widget/enemy-type-widget.component';
 import { EventWidgetComponent } from './event-widget/event-widget.component';
 import { JsonWidgetComponent } from './json-widget/json-widget.component';
 import { LangLabelWidgetComponent } from './langlabel-widget/langlabel-widget.component';
+import { MapsWidgetComponent } from './maps-widget/maps-widget.component';
 import { NPCStatesWidgetComponent } from './npc-states-widget/npc-states-widget.component';
 import { NumberWidgetComponent } from './number-widget/number-widget.component';
 import { PersonExpressionWidgetComponent } from './person-expression-widget/person-expression-widget.component';
+import { PropTypeWidgetComponent } from './prop-type-widget/prop-type-widget.component';
+import { RandomDistributionWidgetComponent } from './random-distribution-widget/random-distribution-widget.component';
+import { ScalablePropConfigWidgetComponent } from './scalable-prop-config-widget/scalable-prop-config-widget.component';
 import { StringWidgetComponent } from './string-widget/string-widget.component';
 import { Vec2WidgetComponent } from './vec2-widget/vec2-widget.component';
-import { PropTypeWidgetComponent } from './prop-type-widget/prop-type-widget.component';
-import { ScalablePropConfigWidgetComponent } from './scalable-prop-config-widget/scalable-prop-config-widget.component';
-import { CustomDesTypeWidgetComponent } from './custom-des-type-widget/custom-des-type-widget.component';
-import { CharacterWidgetComponent } from './character-widget/character-widget.component';
-import { ArrayWidgetComponent } from './array-widget/array-widget.component';
-import { MapsWidgetComponent } from './maps-widget/maps-widget.component';
 
 @Injectable({
 	providedIn: 'root'
@@ -45,6 +46,7 @@ export class WidgetRegistryService {
 		this.register('Array', ArrayWidgetComponent);
 		this.register('Maps', MapsWidgetComponent);
 		this.register('Face', StringWidgetComponent);
+		this.register('RandomDistribution', RandomDistributionWidgetComponent);
 	}
 	
 	private setDefaultWidget(widget: any) {

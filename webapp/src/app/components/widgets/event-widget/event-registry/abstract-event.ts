@@ -160,6 +160,7 @@ export interface EventType {
 
 export interface EventTypeChild {
 	title?: string;
+	key?: string;
 	draggable?: boolean;
 	events: AbstractEvent<any>[];
 }
