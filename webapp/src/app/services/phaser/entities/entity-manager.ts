@@ -7,6 +7,13 @@ import { Vec2 } from '../vec2';
 import { CCEntity } from './cc-entity';
 import { SelectionBox } from './selection-box';
 
+const arrowDirections: Record<string, Point> = {
+	ArrowLeft: { x: -1, y: 0 },
+	ArrowRight: { x: 1, y: 0 },
+	ArrowUp: { x: 0, y: -1 },
+	ArrowDown: { x: 0, y: 1 },
+};
+
 export class EntityManager extends BaseObject {
 	
 	// TODO: If ? is really required, add a description why.
@@ -22,6 +29,7 @@ export class EntityManager extends BaseObject {
 	private visibilityKey!: Phaser.Input.Keyboard.Key;
 	private leftPointerDown = false;
 	private rightPointerDown = false;
+	private arrowKeyMoved = false;
 	
 	private skipEdit = false;
 	
@@ -58,7 +66,7 @@ export class EntityManager extends BaseObject {
 		prevEntity: undefined,
 		entity: undefined,
 		timer: 0,
-		pos: {x: 0, y: 0}
+		pos: { x: 0, y: 0 },
 	};
 	
 	private selectedEntities: CCEntity[] = [];
@@ -69,7 +77,7 @@ export class EntityManager extends BaseObject {
 	
 	constructor(
 		scene: Phaser.Scene,
-		active = true
+		active = true,
 	) {
 		super(scene, 'entityManager', active);
 	}
@@ -177,7 +185,7 @@ export class EntityManager extends BaseObject {
 					this.selectionBox.onInputDown(pointer);
 				}
 			},
-			emitter: this.scene.input
+			emitter: this.scene.input,
 		});
 		
 		const pointerUpFun = (pointer: Phaser.Input.Pointer, gameObject: Phaser.GameObjects.GameObject[]) => {
@@ -199,7 +207,7 @@ export class EntityManager extends BaseObject {
 					this.gameObjectDown = false;
 					Globals.stateHistoryService.saveState({
 						name: 'Entity moved',
-						icon: 'open_with'
+						icon: 'open_with',
 					});
 				} else {
 					const entities = this.selectionBox.onInputUp();
@@ -217,7 +225,7 @@ export class EntityManager extends BaseObject {
 					entity = gameObject[0].getData('entity');
 				}
 				if (entity) {
-					const p = {x: pointer.worldX, y: pointer.worldY};
+					const p = { x: pointer.worldX, y: pointer.worldY };
 					if (this.leftClickOpts.timer < 200 && Vec2.distance2(p, this.leftClickOpts.pos) < 10) {
 						this.selectEntity(entity, this.multiSelectKey.isDown);
 						
@@ -235,13 +243,13 @@ export class EntityManager extends BaseObject {
 		this.addKeybinding({
 			event: 'pointerup',
 			fun: pointerUpFun,
-			emitter: this.scene.input
+			emitter: this.scene.input,
 		});
 		
 		this.addKeybinding({
 			event: 'pointerupoutside',
 			fun: pointerUpFun,
-			emitter: this.scene.input
+			emitter: this.scene.input,
 		});
 		
 		this.addKeybinding({
@@ -253,9 +261,9 @@ export class EntityManager extends BaseObject {
 				}
 				Globals.gridSettings.update(settings => ({
 					...settings,
-					enableGrid: !settings.enableGrid
+					enableGrid: !settings.enableGrid,
 				}));
-			}
+			},
 		});
 		
 		// TODO: still triggers when npc editor is open
@@ -267,7 +275,7 @@ export class EntityManager extends BaseObject {
 					return;
 				}
 				this.deleteSelectedEntities();
-			}
+			},
 		});
 		
 		this.addKeybinding({
@@ -278,7 +286,40 @@ export class EntityManager extends BaseObject {
 					return;
 				}
 				this.hideEntities();
-			}
+			},
+		});
+		
+		this.addKeybinding({
+			event: 'keydown',
+			emitter: this.scene.input.keyboard!,
+			fun: (event: KeyboardEvent) => {
+				const dir = arrowDirections[event.key];
+				if (!dir || Helper.isInputFocused() || this.selectedEntities.length === 0) {
+					return;
+				}
+				const grid = Globals.gridSettings();
+				const step = grid.enableGrid ? grid.size : { x: 1, y: 1 };
+				this.selectedEntities.forEach(entity => {
+					entity.addPosition(dir.x * step.x, dir.y * step.y);
+					entity.updateZIndex();
+				});
+				this.arrowKeyMoved = true;
+			},
+		});
+		
+		this.addKeybinding({
+			event: 'keyup',
+			emitter: this.scene.input.keyboard!,
+			fun: (event: KeyboardEvent) => {
+				if (!this.arrowKeyMoved || !arrowDirections[event.key]) {
+					return;
+				}
+				this.arrowKeyMoved = false;
+				Globals.stateHistoryService.saveState({
+					name: 'Entity moved',
+					icon: 'open_with',
+				});
+			},
 		});
 		
 		
@@ -314,15 +355,15 @@ export class EntityManager extends BaseObject {
 		for (const entity of map.entities) {
 			promises.push(this.generateEntity(entity));
 		}
-
+		
 		const newEntities = await Promise.all(promises);
-
+		
 		if (entities === this._entities) {
 			//Add at the start of the array, in case a user somehow managed to add a new entity while the map is loading
-			entities.unshift(...newEntities); 
+			entities.unshift(...newEntities);
 		} else {
 			// Someone called `this.initialize` before we finished loading map. Destroy everything.
-			newEntities.forEach(e => e.destroy()); 
+			newEntities.forEach(e => e.destroy());
 		}
 	}
 	
@@ -365,7 +406,7 @@ export class EntityManager extends BaseObject {
 		
 		Globals.stateHistoryService.saveState({
 			name: 'Entity added',
-			icon: 'add'
+			icon: 'add',
 		}, true);
 		
 		return e;
@@ -375,10 +416,10 @@ export class EntityManager extends BaseObject {
 		const entityClass = Globals.entityRegistry.getEntity(entity.type);
 		console.assert(!!this.map, 'I dont think map is ever undefined, but if it ever happens check the TODO on private map?: CCMap;');
 		const map = this.map!;
-
+		
 		// Preload entities since we need it for loadJsonMergedSync in the entity's constructor
 		await Globals.jsonLoader.loadJsonMerged('entities.json');
-
+		
 		const ccEntity = new entityClass(this.scene, map, entity.x, entity.y, entity.type);
 		if (!entity.settings.mapId) {
 			entity.settings.mapId = map.getUniqueMapid();
@@ -395,7 +436,7 @@ export class EntityManager extends BaseObject {
 			return;
 		}
 		await navigator.clipboard.writeText(JSON.stringify(entities));
-		Globals.snackbar.open('copied entity to clipboard', undefined, {duration: 1000});
+		Globals.snackbar.open('copied entity to clipboard', undefined, { duration: 1000 });
 		
 	}
 	
@@ -418,7 +459,7 @@ export class EntityManager extends BaseObject {
 		} catch (e) {
 			Globals.snackbar.open('could not parse entities from clipboard', undefined, {
 				duration: 2000,
-				panelClass: 'snackbar-error'
+				panelClass: 'snackbar-error',
 			});
 			return;
 		}
@@ -475,7 +516,7 @@ export class EntityManager extends BaseObject {
 		if (saveHistory) {
 			Globals.stateHistoryService.saveState({
 				name: 'Entity deleted',
-				icon: 'delete'
+				icon: 'delete',
 			}, true);
 		}
 	}
