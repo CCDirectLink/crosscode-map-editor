@@ -1,0 +1,1 @@
+import"./chunk-B_VM99PE.js";import{n as h,t as a}from"./chunk-C5RPuElg.js";a();export{h as shadowMapFragment};
