@@ -3,6 +3,7 @@
 
 # CrossCode Map Editor
 
+### ▶ [Use the editor in your browser](https://ccdirectlink.github.io/crosscode-map-editor/)
 
 A Map Editor for the game [CrossCode](http://www.cross-code.com/en/home), build with [Angular](https://angular.io/) and [Phaser](https://phaser.io/).
 
@@ -12,7 +13,7 @@ A Map Editor for the game [CrossCode](http://www.cross-code.com/en/home), build 
 [Learn about the latest improvements](CHANGELOG.md).
 
 ## Getting started
-If you just want to use the editor install the latest [Release](https://github.com/CCDirectLink/crosscode-map-editor/releases/latest).
+If you just want to use the editor open the [web version](https://ccdirectlink.github.io/crosscode-map-editor/) or install the latest [Release](https://github.com/CCDirectLink/crosscode-map-editor/releases/latest).
 
 ## Getting started - Development
 
