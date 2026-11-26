@@ -1,1 +1,0 @@
-import"./chunk-B_VM99PE.js";import{n as d,t as T}from"./chunk-B2EIfOYf.js";T();export{d as morphTargetsVertexDeclaration};
