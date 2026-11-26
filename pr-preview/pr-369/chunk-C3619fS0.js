@@ -1,0 +1,3 @@
+import{a as H}from"./chunk-DBRZyZM1.js";import{n as t,t as e$1}from"./chunk-B_VM99PE.js";var e;var r;var s;var n=H(()=>{t();e=`oitBackBlendPixelShader`,r=`var uBackColor: texture_2d<f32>;@fragment
+fn main(input: FragmentInputs)->FragmentOutputs {fragmentOutputs.color=textureLoad(uBackColor,vec2i(fragmentInputs.position.xy),0);if (fragmentOutputs.color.a==0.0) {discard;}}
+`;e$1.ShadersStoreWGSL[e]||(e$1.ShadersStoreWGSL[e]=r);s={name:e,shader:r}});export{s as n,n as t};
