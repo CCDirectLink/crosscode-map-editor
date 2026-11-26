@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+### Fixed
+- Fixed an issue where keyboard shortcuts conflicted with input elements [#364](https://github.com/CCDirectLink/crosscode-map-editor/issues/364)
+
 ## [2.8.0] 2026-11-26
 ### Added
 - Added support for SELECT_RANDOM events
