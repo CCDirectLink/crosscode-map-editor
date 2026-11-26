@@ -1,0 +1,385 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://crosscode-map-editor.local/schemas/entities.schema.json",
+  "title": "CrossCode Map Editor entities.json",
+  "description": "Schema for webapp/src/assets/entities.json. Mirrors JsonEntityType in default-entity.ts and the nested types it references.",
+  "type": "object",
+  "additionalProperties": {
+    "$ref": "#/$defs/JsonEntityType"
+  },
+  "$defs": {
+    "JsonEntityType": {
+      "type": "object",
+      "required": [
+        "attributes"
+      ],
+      "properties": {
+        "attributes": {
+          "$ref": "#/$defs/EntityAttributes"
+        },
+        "spawnable": {
+          "type": "boolean"
+        },
+        "drawBox": {
+          "type": "boolean"
+        },
+        "borderColor": {
+          "type": "string"
+        },
+        "boxColor": {
+          "type": "string"
+        },
+        "circleColor": {
+          "type": "string"
+        },
+        "frontColor": {
+          "type": "string"
+        },
+        "scalableX": {
+          "type": "boolean"
+        },
+        "scalableY": {
+          "type": "boolean"
+        },
+        "scalableStep": {
+          "type": "number"
+        },
+        "alwaysRecreate": {
+          "type": "boolean"
+        },
+        "noZLine": {
+          "type": "boolean"
+        },
+        "anims": {
+          "$ref": "#/$defs/Anims"
+        },
+        "size": {
+          "$ref": "#/$defs/PartialPoint3"
+        }
+      },
+      "additionalProperties": false
+    },
+    "EntityAttributes": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/AttributeValue"
+      }
+    },
+    "AttributeValue": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "withNull": {
+          "type": "boolean"
+        },
+        "large": {
+          "type": "boolean"
+        },
+        "optional": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "Point": {
+      "type": "object",
+      "required": [
+        "x",
+        "y"
+      ],
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Point3": {
+      "type": "object",
+      "required": [
+        "x",
+        "y",
+        "z"
+      ],
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "z": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "PartialPoint3": {
+      "type": "object",
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "z": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "AnimSheet": {
+      "type": "object",
+      "required": [
+        "width",
+        "height"
+      ],
+      "properties": {
+        "src": {
+          "type": "string"
+        },
+        "mapStyle": {
+          "type": "string"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "offX": {
+          "type": "number"
+        },
+        "offY": {
+          "type": "number"
+        },
+        "xCount": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    },
+    "SubJsonInstance": {
+      "type": "object",
+      "required": [
+        "jsonINSTANCE"
+      ],
+      "properties": {
+        "jsonINSTANCE": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SubJsonParam": {
+      "type": "object",
+      "required": [
+        "jsonPARAM"
+      ],
+      "properties": {
+        "jsonPARAM": {
+          "type": "string"
+        },
+        "default": true
+      },
+      "additionalProperties": false
+    },
+    "Anims": {
+      "type": "object",
+      "properties": {
+        "jsonIF": {
+          "type": "string"
+        },
+        "jsonTHEN": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "frames": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "time": {
+          "type": "number"
+        },
+        "repeat": {
+          "type": "boolean"
+        },
+        "sheet": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/AnimSheet"
+            }
+          ]
+        },
+        "renderMode": {
+          "type": "string"
+        },
+        "shapeType": {
+          "type": "string"
+        },
+        "framesAlpha": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "flipX": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          ]
+        },
+        "SUB": {
+          "oneOf": [
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Anims"
+              }
+            },
+            {
+              "$ref": "#/$defs/SubJsonInstance"
+            },
+            {
+              "$ref": "#/$defs/SubJsonParam"
+            }
+          ]
+        },
+        "tileOffset": {
+          "type": "number"
+        },
+        "wallY": {
+          "type": "number"
+        },
+        "offset": {
+          "$ref": "#/$defs/PartialPoint3"
+        },
+        "shape": {
+          "type": "string"
+        },
+        "framesGfxOffset": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "size": {
+          "$ref": "#/$defs/Point3"
+        },
+        "pivot": {
+          "$ref": "#/$defs/Point"
+        },
+        "gfxOffset": {
+          "$ref": "#/$defs/Point"
+        },
+        "aboveZ": {
+          "type": "number"
+        },
+        "offX": {
+          "type": "number"
+        },
+        "namedSheets": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/AnimSheet"
+          }
+        },
+        "framesSpriteOffset": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "globalTiming": {
+          "type": "boolean"
+        },
+        "DOCTYPE": {
+          "type": "string"
+        },
+        "dirs": {
+          "oneOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "tileOffsets": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "guiSprites": {
+          "type": "boolean"
+        },
+        "shadow": {
+          "$ref": "#/$defs/ShadowSpec"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ShadowSpec": {
+      "type": "object",
+      "required": [
+        "size"
+      ],
+      "properties": {
+        "size": {
+          "type": "number"
+        },
+        "scaleY": {
+          "type": "number"
+        },
+        "offset": {
+          "type": "object",
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "aboveZ": {
+          "type": "number"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
