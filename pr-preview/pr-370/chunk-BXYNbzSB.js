@@ -1,0 +1,1 @@
+import"./chunk-B_VM99PE.js";import{n as o,t as a}from"./chunk-8BNrKNGE.js";a();export{o as bonesDeclarationWGSL};

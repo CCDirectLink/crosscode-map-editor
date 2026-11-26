@@ -1,0 +1,2 @@
+import{a as H}from"./chunk-DBRZyZM1.js";import{n as t,t as e$1}from"./chunk-B_VM99PE.js";var e;var o;var f;var l=H(()=>{t();e=`fluidRenderingParticleDiffusePixelShader`,o=`uniform float particleAlpha;varying vec2 uv;varying vec3 diffuseColor;void main(void) {vec3 normal;normal.xy=uv*2.0-1.0;float r2=dot(normal.xy,normal.xy);if (r2>1.0) discard;glFragColor=vec4(diffuseColor,1.0);}
+`;e$1.ShadersStore[e]||(e$1.ShadersStore[e]=o);f={name:e,shader:o}});export{l as n,f as t};

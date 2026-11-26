@@ -1,0 +1,1 @@
+import{n as b,t as A}from"./chunk-DOIlkKnJ.js";b();export{A as OptimizeIndices};

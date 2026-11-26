@@ -1,0 +1,172 @@
+{
+	"iceBlock": {
+		"size": {"x": 24, "y": 24, "z": 24},
+		"anims": {
+			"namedSheets": {
+				"fullIce": {"src": null, "width": 24, "height": 48, "offX": 96, "offY": 96},
+				"bottomIce": {"src": null, "width": 24, "height": 24, "offX": 144, "offY": 96}
+			},
+			"SUB": [{
+				"sheet": "bottomIce",
+				"shapeType": "Z_FLAT",
+				"frames": [0],
+				"repeat": false,
+				"SUB": [
+					{"name": "cut"},
+					{"name": "transition"}
+				]
+			}, {
+				"shapeType": "Z_EXPAND",
+				"sheet": "fullIce",
+				"SUB": [
+					{"name": "default", "time": 1, "frames": [0], "repeat": false},
+					{"name": "transition", "time": 1, "frames": [0], "repeat": false}
+				]
+			}]
+		}
+	},
+	"flame": {
+		"size": {"x": 32, "y": 32, "z": 24},
+		"anims": {
+			"namedSheets": {
+				"flame": {"src": "media/entity/effects/heat.png", "width": 32, "height": 48, "offX": 288, "offY": 288},
+				"bottom": {"src": null, "width": 16, "height": 16, "offX": 168, "offY": 96}
+			},
+			"SUB": [{
+				"sheet": "bottom",
+				"shapeType": "Z_FLAT",
+				"frames": [0],
+				"repeat": false,
+				"offset": {"x": 0, "y": -8, "z": 0},
+				"SUB": [
+					{"name": "default"},
+					{"name": "destroy"},
+					{"name": "cut"},
+					{"name": "regen"},
+					{"name": "shuffle"}
+				]
+			}, {
+				"sheet": "flame",
+				"offset": {"x": 0, "y": 0, "z": 8},
+				"SUB": [
+					{"name": "default", "time": 0.1, "frames": [3, 4, 5, 6], "repeat": true},
+					{"name": "destroy", "time": 0.066, "frames": [2, 1, 0], "repeat": false},
+					{"name": "regen", "time": 0.066, "frames": [0, 1, 2], "repeat": false},
+					{"name": "shuffle", "time": 0.05, "frames": [0, 1, 2], "repeat": false}
+				]
+			}]
+		}
+	},
+	"shock": {
+		"size": {"x": 16, "y": 16, "z": 48},
+		"anims": {
+			"namedSheets": {
+				"shock": {"src": "media/map/shockwave-dng.png", "width": 16, "height": 40, "offX": 16, "offY": 744},
+				"bottom": {"src": "media/map/shockwave-dng.png", "width": 16, "height": 16, "offX": 0, "offY": 768},
+				"ball": {"src": "media/map/shockwave-dng.png", "width": 16, "height": 16, "offX": 0, "offY": 736, "xCount": 1}
+			},
+			"SUB": [{
+				"sheet": "bottom",
+				"shapeType": "Z_FLAT",
+				"frames": [0],
+				"repeat": false,
+				"SUB": [
+					{"name": "default"},
+					{"name": "destroy"},
+					{"name": "cut"},
+					{"name": "regen"}
+				]
+			}, {
+				"sheet": "shock",
+				"offset": {"x": 0, "y": -8, "z": 0},
+				"renderMode": "lighter",
+				"SUB": [
+					{"name": "default", "time": 0.05, "frames": [0, 1, 2, 3, 4, 5], "repeat": true},
+					{"name": "destroy", "time": 0.066, "frames": [4, 4, 4, 4], "framesAlpha": [0.8, 0.6, 0.3, 0], "repeat": false},
+					{"name": "regen", "time": 0.05, "frames": [0, 1, 2, 3, 4, 5], "framesAlpha": [0.2, 0.4, 0.6, 0.8], "repeat": false}
+				]
+			}, {
+				"sheet": "ball",
+				"shapeType": "Y_FLAT",
+				"SUB": [
+					{"name": "default", "time": 0.1, "frames": [0, 0, 0, 0, 0, 0], "repeat": true, "framesSpriteOffset": [0, 0, 32, 0, 0, 33, 0, 0, 33, 0, 0, 32, 0, 0, 31, 0, 0, 31]},
+					{"name": "cut", "time": 0.5, "frames": [1], "repeat": false, "shapeType": "Z_FLAT"},
+					{"name": "destroy", "time": 0.05, "frames": [1, 1, 1, 1, 1, 1, 1, 1, 1], "repeat": false, "framesSpriteOffset": [0, 0, 30, 0, 0, 28, 0, 0, 24, 0, 0, 18, 0, 0, 10, 0, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0]},
+					{"name": "regen", "time": 0.05, "frames": [0, 0, 0, 0, 0, 0], "repeat": false, "framesSpriteOffset": [0, 0, 8, 0, 0, 16, 0, 0, 24, 0, 0, 28, 0, 0, 30, 0, 0, 31]}
+				]
+			}]
+		}
+	},
+	"ferroHeat": {
+		"size": {"x": 16, "y": 16, "z": 48},
+		"anims": {
+			"namedSheets": {
+				"pillar": {"src": "media/entity/objects/ferro-barrier.png", "width": 24, "height": 48, "offX": 0, "offY": 0, "xCount": 6}
+			},
+			"SUB": [{
+				"sheet": "pillar",
+				"offset": {"x": 0, "y": 0, "z": 0},
+				"SUB": [
+					{"name": "default", "time": 0.1, "frames": [0, 1, 2], "repeat": true, "tileOffset": 0},
+					{"name": "destroy", "time": 0.1, "frames": [0, 1, 2, 3], "repeat": false, "tileOffset": 12, "shapeType": "Y_FLAT"},
+					{"name": "cut", "time": 0.1, "frames": [3], "repeat": false, "tileOffset": 12},
+					{"name": "regen", "time": 0.066, "frames": [3, 2, 1], "repeat": false, "tileOffset": 12, "shapeType": "Y_FLAT"}
+				]
+			}]
+		}
+	},
+	"ferroCold": {
+		"size": {"x": 16, "y": 16, "z": 48},
+		"anims": {
+			"namedSheets": {
+				"pillar": {"src": "media/entity/objects/ferro-barrier.png", "width": 24, "height": 48, "offX": 0, "offY": 0, "xCount": 6}
+			},
+			"SUB": [{
+				"sheet": "pillar",
+				"offset": {"x": 0, "y": 0, "z": 0},
+				"SUB": [
+					{"name": "default", "time": 0.1, "frames": [0, 1, 2], "repeat": true, "tileOffset": 3},
+					{"name": "destroy", "time": 0.1, "frames": [0, 1, 2, 3], "repeat": false, "tileOffset": 12, "shapeType": "Y_FLAT"},
+					{"name": "cut", "time": 0.1, "frames": [3], "repeat": false, "tileOffset": 12},
+					{"name": "regen", "time": 0.066, "frames": [3, 2, 1], "repeat": false, "tileOffset": 12, "shapeType": "Y_FLAT"}
+				]
+			}]
+		}
+	},
+	"ferroShock": {
+		"size": {"x": 16, "y": 16, "z": 48},
+		"anims": {
+			"namedSheets": {
+				"pillar": {"src": "media/entity/objects/ferro-barrier.png", "width": 24, "height": 48, "offX": 0, "offY": 0, "xCount": 6}
+			},
+			"SUB": [{
+				"sheet": "pillar",
+				"offset": {"x": 0, "y": 0, "z": 0},
+				"SUB": [
+					{"name": "default", "time": 0.1, "frames": [0, 1, 2], "repeat": true, "tileOffset": 6},
+					{"name": "destroy", "time": 0.1, "frames": [0, 1, 2, 3], "repeat": false, "tileOffset": 12, "shapeType": "Y_FLAT"},
+					{"name": "cut", "time": 0.1, "frames": [3], "repeat": false, "tileOffset": 12},
+					{"name": "regen", "time": 0.066, "frames": [3, 2, 1], "repeat": false, "tileOffset": 12, "shapeType": "Y_FLAT"}
+				]
+			}]
+		}
+	},
+	"ferroWave": {
+		"size": {"x": 16, "y": 16, "z": 48},
+		"anims": {
+			"namedSheets": {
+				"pillar": {"src": "media/entity/objects/ferro-barrier.png", "width": 24, "height": 48, "offX": 0, "offY": 0, "xCount": 6}
+			},
+			"SUB": [{
+				"sheet": "pillar",
+				"offset": {"x": 0, "y": 0, "z": 0},
+				"SUB": [
+					{"name": "default", "time": 0.1, "frames": [0, 1, 2], "repeat": true, "tileOffset": 9},
+					{"name": "destroy", "time": 0.1, "frames": [0, 1, 2, 3], "repeat": false, "tileOffset": 12, "shapeType": "Y_FLAT"},
+					{"name": "cut", "time": 0.1, "frames": [3], "repeat": false, "tileOffset": 12},
+					{"name": "regen", "time": 0.066, "frames": [3, 2, 1], "repeat": false, "tileOffset": 12, "shapeType": "Y_FLAT"}
+				]
+			}]
+		}
+	}
+}

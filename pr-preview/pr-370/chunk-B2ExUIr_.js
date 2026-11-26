@@ -1,0 +1,2 @@
+import{a as H}from"./chunk-DBRZyZM1.js";import{n as t,t as e$1}from"./chunk-B_VM99PE.js";var r;var e;var d;var l=H(()=>{t();r=`oitBackBlendPixelShader`,e=`precision highp float;uniform sampler2D uBackColor;void main() {glFragColor=texelFetch(uBackColor,ivec2(gl_FragCoord.xy),0);if (glFragColor.a==0.0) { 
+discard;}}`;e$1.ShadersStore[r]||(e$1.ShadersStore[r]=e);d={name:r,shader:e}});export{l as n,d as t};

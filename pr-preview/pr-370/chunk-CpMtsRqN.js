@@ -1,0 +1,3 @@
+import{a as H}from"./chunk-DBRZyZM1.js";import{n as t,t as e$1}from"./chunk-B_VM99PE.js";var i;var o;var s;var e=H(()=>{t();i=`lightProxyPixelShader`,o=`flat varying vec2 vLimits;flat varying highp uint vMask;void main(void) {if (gl_FragCoord.y<vLimits.x || gl_FragCoord.y>vLimits.y) {discard;}
+gl_FragColor=vec4(vMask,0,0,1);}
+`;e$1.ShadersStore[i]||(e$1.ShadersStore[i]=o);s={name:i,shader:o}});export{s as n,e as t};

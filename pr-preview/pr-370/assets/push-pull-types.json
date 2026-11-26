@@ -1,0 +1,223 @@
+{
+    "Large": {
+        "size": {
+            "x": 32,
+            "y": 32,
+            "z": 32
+        },
+        "terrain": 2,
+        "useStyleSheet": true,
+        "anims": {
+            "sheet": {
+                "src": null,
+                "width": 32,
+                "height": 64,
+                "offX": 224,
+                "offY": 128
+            },
+            "aboveZ": 1,
+            "wallY": 0.05,
+            "SUB": [
+                {
+                    "name": "default",
+                    "time": 1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "moveV",
+                    "time": 0.03,
+                    "frames": [
+                        0,
+                        0
+                    ],
+                    "framesGfxOffset": [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "moveH",
+                    "time": 0.03,
+                    "frames": [
+                        0,
+                        0
+                    ],
+                    "framesGfxOffset": [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "repeat": true
+                }
+            ]
+        }
+    },
+    "BergenLeftRight": {
+        "size": {
+            "x": 32,
+            "y": 32,
+            "z": 32
+        },
+        "terrain": 7,
+        "direction": 1,
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/puzzle-elements-1.png",
+                "width": 32,
+                "height": 64,
+                "offX": 32,
+                "offY": 32
+            },
+            "aboveZ": 1,
+            "wallY": 0.05,
+            "SUB": [
+                {
+                    "name": "default",
+                    "time": 1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "moveV",
+                    "time": 0.03,
+                    "frames": [
+                        0,
+                        0
+                    ],
+                    "framesGfxOffset": [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "moveH",
+                    "time": 0.03,
+                    "frames": [
+                        0,
+                        0
+                    ],
+                    "framesGfxOffset": [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "repeat": true
+                }
+            ]
+        }
+    },
+    "BergenUpDown": {
+        "size": {
+            "x": 32,
+            "y": 32,
+            "z": 32
+        },
+        "terrain": 7,
+        "direction": 2,
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/puzzle-elements-1.png",
+                "width": 32,
+                "height": 64,
+                "offX": 64,
+                "offY": 32
+            },
+            "aboveZ": 1,
+            "wallY": 0.05,
+            "SUB": [
+                {
+                    "name": "default",
+                    "time": 1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "moveV",
+                    "time": 0.03,
+                    "frames": [
+                        0,
+                        0
+                    ],
+                    "framesGfxOffset": [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "repeat": true
+                },
+                {
+                    "name": "moveH",
+                    "time": 0.03,
+                    "frames": [
+                        0,
+                        0
+                    ],
+                    "framesGfxOffset": [
+                        0,
+                        0,
+                        0,
+                        0
+                    ],
+                    "repeat": true
+                }
+            ]
+        }
+    },
+    "SmallTest": {
+        "size": {
+            "x": 16,
+            "y": 16,
+            "z": 16
+        },
+        "terrain": 2,
+        "anims": {
+            "sheet": {
+                "src": "media/entity/objects/puzzle-elements-1.png",
+                "width": 16,
+                "height": 32
+            },
+            "aboveZ": 1,
+            "SUB": [
+                {
+                    "name": "default",
+                    "time": 1,
+                    "frames": [
+                        0
+                    ],
+                    "repeat": false
+                },
+                {
+                    "name": "move",
+                    "time": 0.05,
+                    "frames": [
+                        0,
+                        1,
+                        2,
+                        1
+                    ],
+                    "repeat": true
+                }
+            ]
+        },
+        "walkAnims": {
+            "idle": "default",
+            "move": "move"
+        }
+    }
+}
