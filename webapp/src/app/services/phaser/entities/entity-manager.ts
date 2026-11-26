@@ -298,7 +298,11 @@ export class EntityManager extends BaseObject {
 					return;
 				}
 				const grid = Globals.gridSettings();
-				const step = grid.enableGrid ? grid.size : { x: 1, y: 1 };
+				const step = grid.enableGrid ? { ...grid.size } : { x: 1, y: 1 };
+				if (this.multiSelectKey.isDown) {
+					step.x *= 5;
+					step.y *= 5;
+				}
 				this.selectedEntities.forEach(entity => {
 					entity.addPosition(dir.x * step.x, dir.y * step.y);
 					entity.updateZIndex();
