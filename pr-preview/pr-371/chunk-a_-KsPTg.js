@@ -1,0 +1,1 @@
+import"./chunk-B_VM99PE.js";import{n as r,t as d}from"./chunk-yalV6mxE.js";d();export{r as shadowsVertex};
