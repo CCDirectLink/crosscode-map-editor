@@ -6,6 +6,7 @@ import { Vec2 } from '../vec2';
 
 import { Subscription } from 'rxjs';
 import { type AbstractWidget } from '../../../components/widgets/abstract-widget';
+import { type ArrayWidgetSub } from '../../../components/widgets/array-widget/array-widget.component';
 import { Globals } from '../../globals';
 import { BaseObject } from '../base-object';
 
@@ -29,7 +30,8 @@ export interface AttributeValue {
 	withNull?: boolean;
 	large?: boolean;
 	optional?: boolean;
-	
+	sub?: ArrayWidgetSub;
+
 	// TODO: not needed anymore, cc source is not obfuscated
 	[key: string]: any;
 }
