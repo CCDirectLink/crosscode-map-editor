@@ -103,7 +103,13 @@ export class PhaserComponent implements AfterViewInit {
 		);
 		Globals.game.scale.setZoom(1 / window.devicePixelRatio);
 	}
-	
+
+	blurActiveElement() {
+		if (document.activeElement instanceof HTMLElement) {
+			document.activeElement.blur();
+		}
+	}
+
 	private getScale() {
 		const rect = this.content.nativeElement.getBoundingClientRect();
 		return {
