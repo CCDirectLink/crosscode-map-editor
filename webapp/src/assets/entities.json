@@ -201,6 +201,10 @@
 		},
 		"scalableX": true,
 		"scalableY": true,
+		"size": {
+			"x": 8,
+			"y": 8
+		},
 		"drawBox": true,
 		"boxColor": "rgba(255,0,255, 0.25)",
 		"frontColor": "rgba(188,0,188, 0.5)"
@@ -753,6 +757,10 @@
 		},
 		"scalableX": true,
 		"scalableY": true,
+		"size": {
+			"x": 8,
+			"y": 8
+		},
 		"drawBox": true,
 		"boxColor": "rgba(255,255,0, 0.5)",
 		"frontColor": "rgba(120,120,0, 0.8)"
